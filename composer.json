@@ -6,6 +6,9 @@
         "framework",
         "laravel"
     ],
+    "repositories": [
+        { "type": "path", "url": "./packages/laravel-nami", "options": {"symlink": true} }
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
@@ -16,7 +19,8 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "spatie/laravel-medialibrary": "^7.19"
+        "spatie/laravel-medialibrary": "^7.19",
+        "zoomyboy/laravel-nami": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

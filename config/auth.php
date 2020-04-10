@@ -67,8 +67,8 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
+            'driver' => 'nami',
+            'model' => \App\User::class
         ],
 
         // 'users' => [

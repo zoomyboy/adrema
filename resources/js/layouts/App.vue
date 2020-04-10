@@ -5,6 +5,7 @@
         <wrapper
             admin-toolbar="adminToolbar"
             profile-toolbar="profileToolbar"
+            search-background="bg-primary-600"
         >
             <template slot="mainnav">
                 <mainnav name="main" sm></mainnav>

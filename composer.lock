@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3a7d51481df2c886f69c3071572c278",
+    "content-hash": "62db182c80f51832cfe1d9cef34a9063",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1571,16 +1571,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.3.0",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc"
+                "reference": "bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9a9981c347c5c49d6dfe5cf826bb882b824080dc",
-                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120",
+                "reference": "bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120",
                 "shasum": ""
             },
             "require": {
@@ -1619,7 +1619,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-11-08T13:50:10+00:00"
+            "time": "2020-04-10T16:34:50+00:00"
         },
         {
             "name": "opis/closure",
@@ -4384,6 +4384,38 @@
                 }
             ],
             "time": "2020-03-13T01:23:26+00:00"
+        },
+        {
+            "name": "zoomyboy/laravel-nami",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./packages/laravel-nami",
+                "reference": "ac5c544c32b21f5f6b0c281b216baa13ab2feda8"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Zoomyboy\\LaravelNami\\NamiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zoomyboy\\LaravelNami\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Philipp Lang",
+                    "email": "philipp@zoomyboy.de"
+                }
+            ],
+            "description": "Authentication provider against NaMi for Laravel",
+            "transport-options": {
+                "symlink": true
+            }
         }
     ],
     "packages-dev": [
@@ -6406,7 +6438,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "zoomyboy/laravel-nami": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

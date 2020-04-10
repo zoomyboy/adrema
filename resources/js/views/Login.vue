@@ -10,7 +10,7 @@
             </item>
 
             <item>
-                <f-password label="Gruppierungsnr" v-model="values.groupid"></f-password>
+                <f-text label="Gruppierungsnummer" v-model="values.groupid"></f-text>
             </item>
 
             <item>
@@ -28,7 +28,11 @@ export default {
 
     data: function() {
         return {
-            values: {}
+            values: {
+                mglnr: 90166,
+                password: 'ibm0g',
+                groupid: 100105
+            }
         };
     },
     methods: {
