@@ -1,0 +1,23 @@
+/node_modules
+/public/hot
+/public/storage
+/public/js
+/public/css
+/public/fonts
+/public/img
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+tags
+/resources/js/libs
+
+# Temporary files
+*.swp
+*.swo
+*.swm
