@@ -4,6 +4,8 @@ import { Checkbox } from 'js-modules';
 import { InertiaApp } from '@inertiajs/inertia-vue'
 import store from './store.js';
 import 'font-awesome/css/font-awesome.css';
+import Echo from 'laravel-echo';
+window.io = require('socket.io-client');
 
 Vue.use(modules);
 Vue.use(init);
@@ -11,6 +13,11 @@ Vue.use(InertiaApp);
 Vue.component('checkbox', Checkbox);
 
 const app = document.getElementById('app')
+
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: window.location.hostname+':'+document.querySelector('meta[name=socketport]').getAttribute('content'),
+});
 
 new Vue({
     render: h => h(InertiaApp, {

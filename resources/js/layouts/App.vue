@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="font-sans flex flex-col flex-grow">
+    <div class="app font-sans flex flex-col flex-grow">
         <notification :errors="$page.errors"></notification>
         <process></process>
         <wrapper
@@ -20,7 +20,7 @@
 
 <script>
 import Notification from 'agnoster/components/Notification.vue';
-import Process from 'agnoster/components/Process.vue';
+import Process from 'agnoster/components/Progress.vue';
 import Wrapper from 'agnoster/components/Wrapper.vue';
 import Mainnav from 'agnoster/components/Mainnav.vue';
 
