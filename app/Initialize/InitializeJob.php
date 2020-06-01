@@ -25,6 +25,7 @@ class InitializeJob implements ShouldQueue
         InitializeGenders::class,
         InitializeRegions::class,
         InitializeActivities::class,
+        InitializeMembers::class,
     ];
 
     public function __construct(User $user)

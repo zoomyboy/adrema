@@ -4,18 +4,12 @@ namespace App;
 
 use App\Collections\OwnCollection;
 use App\Events\MemberCreated;
-use App\Nami\Traits\HasNamiId;
-use App\Relations\HasSameRelation;
-use App\Traits\HasNamiFallbacks;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 class Member extends Model
 {
     use Notifiable;
-    use HasSameRelation;
-    use HasNamiId;
-    use HasNamiFallbacks;
 
     public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'keepdata', 'sendnewspaper', 'address', 'further_address', 'zip', 'city', 'phone', 'mobile', 'business_phone', 'fax', 'email', 'email_parents', 'nami_id', 'active', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'subscription_id', 'region_id', 'gender_id', 'confession_id'];
 
