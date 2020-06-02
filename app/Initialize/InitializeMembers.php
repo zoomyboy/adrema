@@ -59,7 +59,7 @@ class InitializeMembers {
                 'active' => $data->status == 'Aktiv'
             ];
 
-            $m = new \App\Member($attributes);
+            $m = new \App\Member\Member($attributes);
 
             $m->gender()->associate($gender);
             $m->country()->associate($country);

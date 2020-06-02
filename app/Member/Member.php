@@ -1,8 +1,7 @@
 <?php
 
-namespace App;
+namespace App\Member;
 
-use App\Collections\OwnCollection;
 use App\Events\MemberCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -27,10 +26,14 @@ class Member extends Model
         'nami_id' => 'integer',
     ];
 
-    public function newCollection(array $models = [])
-    {
-        return new OwnCollection($models);
+    public function scopeSearch($q, $text) {
+        return $q->where('firstname', 'LIKE', '%'.$text.'%')
+             ->orWhere('lastname', 'LIKE', '%'.$text.'%')
+             ->orWhere('address', 'LIKE', '%'.$text.'%')
+             ->orWhere('zip', 'LIKE', '%'.$text.'%')
+             ->orWhere('city', 'LIKE', '%'.$text.'%');
     }
+
 
     //----------------------------------- Getters -----------------------------------
     public function getFullnameAttribute() {
@@ -65,21 +68,21 @@ class Member extends Model
 
     public function way()
     {
-        return $this->belongsTo(Way::class);
+        return $this->belongsTo(App\Way::class);
     }
 
     public function nationality()
     {
-        return $this->belongsTo(Nationality::class);
+        return $this->belongsTo(App\Nationality::class);
     }
 
     public function memberships()
     {
-        return $this->hasMany(Membership::class);
+        return $this->hasMany(App\Membership::class);
     }
 
     public function subscription()
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->belongsTo(App\Subscription::class);
     }
 }

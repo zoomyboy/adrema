@@ -15,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         JsonResource::withoutWrapping();
+
+        \Inertia::share('search', request()->query('search', ''));
     }
 
     /**

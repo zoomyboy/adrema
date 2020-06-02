@@ -3,6 +3,7 @@ export default {
         open: false,
         links: [
             { icon: 'home', href: '/', title: 'Dashboard' },
+            { icon: 'user', href: '/member', title: 'Mitglieder' },
         ]
     },
     footer: {
