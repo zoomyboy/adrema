@@ -9,6 +9,6 @@ Route::group(['namespace' => 'App\\Http\\Controllers'], function() {
 
 Route::group(['middleware' => 'auth:web'], function () {
     Route::get('/', HomeController::class)->name('home');
-    Route::resource('/initialize', InitializeController::class);
+    Route::resource('initialize', InitializeController::class);
 });
 
