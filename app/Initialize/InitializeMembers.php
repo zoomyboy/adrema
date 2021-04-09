@@ -2,6 +2,13 @@
 
 namespace App\Initialize;
 
+use App\Gender;
+use App\Confession;
+use App\Country;
+use App\Member\Member;
+use App\Region;
+use App\Nationality;
+
 class InitializeMembers {
 
     private $bar;
@@ -15,60 +22,35 @@ class InitializeMembers {
     public function handle() {
         $allMembers = collect([]);
 
-        $this->bar->task('Finde Mitglieder', function() use (&$allMembers) {
-            $allMembers = collect($this->api->allMembers()->data);
-        });
-
-        $this->bar->tasks($allMembers, function($member) {
-            return "Synchronisiere {$member->entries_vorname} {$member->entries_nachname}";
-        }, function($member) {
-            $data = $this->api->getMember($member->id)->data;
-            $gender = \App\Gender::where('nami_id', $data->geschlechtId)->where('is_null', false)->first();
-
-            $confession = $data->konfessionId
-                ? \App\Confession::where('nami_id', $data->konfessionId)->first()
-                : null
-            ;
-            $region = \App\Region::where('nami_id', $data->regionId)->where('is_null', false)->first();
-            $country = \App\Country::where('nami_id', $data->landId)->first();
-            $nationality = \App\Nationality::where('nami_id', $data->staatsangehoerigkeitId)->first();
-
-            $sub = null;
-
-            $attributes = [
-                'firstname' => $data->vorname,
-                'lastname' => $data->nachname,
-                'nickname' => $data->spitzname,
-                'joined_at' => $data->eintrittsdatum,
-                'birthday' => $data->geburtsDatum,
-                'keepdata' => $data->wiederverwendenFlag,
-                'sendnewspaper' => $data->zeitschriftenversand,
-                'address' => $data->strasse,
-                'zip' => $data->plz,
-                'city' => $data->ort,
-                'nickname' => $data->spitzname,
-                'other_country' => $data->staatsangehoerigkeitText,
-                'further_address' => $data->nameZusatz,
-                'phone' => $data->telefon1,
-                'mobile' => $data->telefon2,
-                'business_phone' => $data->telefon3,
-                'fax' => $data->telefax,
-                'email' => $data->email,
-                'email_parents' => $data->emailVertretungsberechtigter,
-                'nami_id' => $data->id,
-                'active' => $data->status == 'Aktiv'
-            ];
-
-            $m = new \App\Member\Member($attributes);
-
-            $m->gender()->associate($gender);
-            $m->country()->associate($country);
-            $m->region()->associate($region);
-            // $m->way()->associate(\Setting::get('defaultWay'));
-            $m->confession()->associate($confession);
-            $m->nationality()->associate($nationality);
-
-            $m->save();
+        $this->bar->task('Synchronisiere Mitglieder', function() {
+            $this->api->group(auth()->user()->getNamiGroupId())->members()->each(function($member) {
+                $m = Member::create([
+                    'firstname' => $member->firstname,
+                    'lastname' => $member->lastname,
+                    'nickname' => $member->nickname,
+                    'joined_at' => $member->joined_at,
+                    'birthday' => $member->birthday,
+                    'sendnewspaper' => true,           // @todo implement in nami api
+                    'address' => $member->address,
+                    'zip' => $member->zip,
+                    'location' => $member->location,
+                    'nickname' => $member->nickname,
+                    'other_country' => $member->other_country,
+                    'further_address' => $member->further_address,
+                    'main_phone' => $member->main_phone,
+                    'mobile_phone' => $member->mobile_phone,
+                    'work_phone' => $member->work_phone,
+                    'fax' => $member->fax,
+                    'email' => $member->email,
+                    'email_parents' => $member->email_parents,
+                    'nami_id' => $member->id,
+                    'gender_id' => Gender::firstOrFail('nami_id', $member->gender_id)->id,
+                    'confession_id' => optional(Confession::firstWhere('nami_id', $member->confession_id))->id,
+                    'region_id' => 1,       // @todo implement in nami api
+                    'country_id' => 1,      // @todo implement in nami api
+                    'nationality_id' => 1,  // @todo implement in nami api
+                ]);
+            });
         });
     }
 }

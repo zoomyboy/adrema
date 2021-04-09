@@ -10,12 +10,11 @@ class Member extends Model
 {
     use Notifiable;
 
-    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'sendnewspaper', 'address', 'further_address', 'zip', 'city', 'phone', 'mobile', 'business_phone', 'fax', 'email', 'email_parents', 'nami_id', 'active', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'subscription_id', 'region_id', 'gender_id', 'confession_id'];
+    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'sendnewspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'subscription_id', 'region_id', 'gender_id', 'confession_id'];
 
     public $dates = ['joined_at', 'birthday'];
 
     public $casts = [
-        'active' => 'boolean',
         'sendnewspaper' => 'boolean',
         'gender_id' => 'integer',
         'way_id' => 'integer',
@@ -30,7 +29,7 @@ class Member extends Model
              ->orWhere('lastname', 'LIKE', '%'.$text.'%')
              ->orWhere('address', 'LIKE', '%'.$text.'%')
              ->orWhere('zip', 'LIKE', '%'.$text.'%')
-             ->orWhere('city', 'LIKE', '%'.$text.'%');
+             ->orWhere('location', 'LIKE', '%'.$text.'%');
     }
 
 
