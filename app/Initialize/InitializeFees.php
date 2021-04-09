@@ -14,9 +14,8 @@ class InitializeFees {
 
     public function handle() {
         $this->bar->task('Synchronisiere Beiträge', function() {
-            collect($this->api->fees()->data)->each(function($fee) {
-                $title = preg_replace('/^.*\((.*)\).*$/', '\\1', $fee->descriptor);
-                \App\Fee::create(['nami_id' => $fee->id, 'title' => $title]);
+            $this->api->group(auth()->user()->getNamiGroupId())->fees()->each(function($fee) {
+                \App\Fee::create(['nami_id' => $fee->id, 'name' => $fee->name]);
             });
         });
     }

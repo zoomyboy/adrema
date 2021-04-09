@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Fee extends Model
 {
-    public $fillable = ['title', 'nami_id'];
+    public $fillable = ['name', 'nami_id'];
     public $timestamps = false;
 }
