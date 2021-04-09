@@ -15,8 +15,8 @@ class InitializeConfessions {
 
     public function handle() {
         $this->bar->task('Synchronisiere Konfessionen', function() {
-            collect($this->api->confessions()->data)->each(function($confession) {
-                \App\Confession::create(['nami_id' => $confession->id, 'name' => $confession->descriptor, 'is_null' => $this->nullName === $confession->descriptor]);
+            $this->api->confessions()->each(function($confession) {
+                \App\Confession::create(['nami_id' => $confession->id, 'name' => $confession->name, 'is_null' => $this->nullName === $confession->name]);
             });
         });
     }
