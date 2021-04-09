@@ -6,7 +6,7 @@ class InitializeRegions {
 
     private $bar;
     private $api;
-    private $nullName = 'Nicht-DE (Ausland)';
+    private $nullName = 'Nicht-DE';
     
     public function __construct($bar, $api) {
         $this->bar = $bar;
@@ -15,8 +15,8 @@ class InitializeRegions {
 
     public function handle() {
         $this->bar->task('Synchronisiere Bundesländer', function() {
-            collect($this->api->regions()->data)->each(function($region) {
-                \App\Region::create(['nami_id' => $region->id, 'name' => $region->descriptor, 'is_null' => $region->descriptor === $this->nullName]);
+            $this->api->regions()->each(function($region) {
+                \App\Region::create(['nami_id' => $region->id, 'name' => $region->name, 'is_null' => $region->name == $this->nullName]);
             });
         });
     }
