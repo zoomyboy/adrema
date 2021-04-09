@@ -6,7 +6,7 @@ class InitializeGenders {
 
     private $bar;
     private $api;
-    public $nullName = 'keine Angabe';
+    public $nullName = 'Keine Angabe';
 
     public function __construct($bar, $api) {
         $this->bar = $bar;
@@ -15,8 +15,8 @@ class InitializeGenders {
 
     public function handle() {
         $this->bar->task('Synchronisiere Geschlechter', function() {
-            collect($this->api->genders()->data)->each(function($gender) {
-                \App\Gender::create(['nami_id' => $gender->id, 'name' => $gender->descriptor, 'is_null' => $gender->descriptor === $this->nullName]);
+            $this->api->genders()->each(function($gender) {
+                \App\Gender::create(['nami_id' => $gender->id, 'name' => $gender->name, 'is_null' => $gender->name === $this->nullName]);
             });
         });
     }
