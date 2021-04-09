@@ -14,12 +14,12 @@ class InitializeActivities {
 
     public function handle() {
         $this->bar->task('Synchronisiere Tätigkeiten', function() {
-            collect($this->api->activities()->data)->each(function($activity) {
-                $activity =  \App\Activity::create(['nami_id' => $activity->id, 'name' => $activity->descriptor]);
+            $this->api->group(auth()->user()->getNamiGroupId())->activities()->each(function($activity) {
+                $activity =  \App\Activity::create(['nami_id' => $activity->id, 'name' => $activity->name]);
 
                 $groups = [];
-                collect($this->api->groupForActivity($activity->id)->data)->each(function($group) use ($activity, &$groups) {
-                    $group = \App\Group::updateOrCreate(['nami_id' => $group->id], ['nami_id' => $group->id, 'name' => $group->descriptor]);
+                $this->api->subactivitiesOf($activity->id)->each(function($group) use ($activity, &$groups) {
+                    $group = \App\Group::updateOrCreate(['nami_id' => $group->id], ['nami_id' => $group->id, 'name' => $group->name]);
                     $groups[] = $group->id;
                 });
                 $activity->groups()->sync($groups);
