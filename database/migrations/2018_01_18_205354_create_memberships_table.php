@@ -14,13 +14,13 @@ class CreateMembershipsTable extends Migration
     public function up()
     {
         Schema::create('memberships', function (Blueprint $table) {
-            $table->increments('id');
-			$table->integer('activity_id');
-			$table->integer('group_id')->nullable();
-			$table->integer('member_id');
-			$table->integer('nami_id')->nullable();
+            $table->id();
+            $table->integer('activity_id');
+            $table->integer('group_id')->nullable();
+            $table->integer('member_id');
+            $table->integer('nami_id')->nullable();
             $table->timestamps();
-			$table->unique(['activity_id', 'group_id', 'member_id', 'nami_id']);
+            $table->unique(['activity_id', 'group_id', 'member_id', 'nami_id']);
         });
     }
 
