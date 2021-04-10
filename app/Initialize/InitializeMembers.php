@@ -30,7 +30,7 @@ class InitializeMembers {
                     'nickname' => $member->nickname,
                     'joined_at' => $member->joined_at,
                     'birthday' => $member->birthday,
-                    'sendnewspaper' => true,           // @todo implement in nami api
+                    'send_newspaper' => $member->send_newspaper,
                     'address' => $member->address,
                     'zip' => $member->zip,
                     'location' => $member->location,
@@ -46,9 +46,9 @@ class InitializeMembers {
                     'nami_id' => $member->id,
                     'gender_id' => Gender::firstOrFail('nami_id', $member->gender_id)->id,
                     'confession_id' => optional(Confession::firstWhere('nami_id', $member->confession_id))->id,
-                    'region_id' => 1,       // @todo implement in nami api
-                    'country_id' => 1,      // @todo implement in nami api
-                    'nationality_id' => 1,  // @todo implement in nami api
+                    'region_id' => Region::firstOrFail('nami_id', $member->region_id)->id,
+                    'country_id' => Country::firstOrFail('nami_id', $member->country_id)->id,
+                    'nationality_id' => Nationality::firstOrFail('nami_id', $member->nationality_id)->id,
                 ]);
             });
         });

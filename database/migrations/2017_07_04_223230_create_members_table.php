@@ -24,7 +24,7 @@ class CreateMembersTable extends Migration
             $table->integer('confession_id')->unsigned()->nullable();
             $table->date('birthday');
             $table->date('joined_at');
-            $table->boolean('sendnewspaper');
+            $table->boolean('send_newspaper');
             $table->string('address');
             $table->string('further_address')->nullable();
             $table->string('zip');
