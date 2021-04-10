@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!--
         <v-table :headers="[
             {text: 'Nachname', value: 'lastname', align: 'left'},
             {text: 'Vorname', value: 'firstname', align: 'left'},
@@ -16,6 +17,7 @@
             </template>
             <template slot="Aktion" slot-scope="{item}"></template>
         </v-table>
+        -->
     </div>
 </template>
 

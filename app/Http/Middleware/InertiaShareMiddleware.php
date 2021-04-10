@@ -19,11 +19,10 @@ class InertiaShareMiddleware
     public function handle($request, Closure $next)
     {
         \Inertia::share([
-            'auth' => ['user' => auth()->check() ? new UserResource(auth()->user()) : null]
-        ]);
-
-        \Inertia::share([
-            'menu' => session()->get('menu'),
+            'auth' => ['user' => auth()->check() ? new UserResource(auth()->user()) : null],
+            'menu' => function() {
+                return session()->get('menu');
+            },
             'errors' => function () {
                 return Session::get('errors')
                     ? Session::get('errors')->getBag('default')->getMessages()
