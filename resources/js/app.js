@@ -3,11 +3,13 @@ import { App, plugin } from '@inertiajs/inertia-vue'
 import 'font-awesome/css/font-awesome.css';
 import Echo from 'laravel-echo';
 window.io = require('socket.io-client');
+import Sprite from './components/Sprite.js';
 
 import FText from './components/FText.vue';
 
 Vue.use(plugin)
 Vue.component('f-text', FText);
+Vue.component('sprite', Sprite);
 
 const el = document.getElementById('app')
 

@@ -23,6 +23,7 @@ class InertiaShareMiddleware
         ]);
 
         \Inertia::share([
+            'menu' => session()->get('menu'),
             'errors' => function () {
                 return Session::get('errors')
                     ? Session::get('errors')->getBag('default')->getMessages()
