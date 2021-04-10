@@ -10,7 +10,7 @@ class Member extends Model
 {
     use Notifiable;
 
-    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'subscription_id', 'region_id', 'gender_id', 'confession_id'];
+    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id'];
 
     public $dates = ['joined_at', 'birthday'];
 
@@ -79,8 +79,8 @@ class Member extends Model
         return $this->hasMany(App\Membership::class);
     }
 
-    public function subscription()
+    public function fee()
     {
-        return $this->belongsTo(App\Subscription::class);
+        return $this->belongsTo(App\Fee::class);
     }
 }

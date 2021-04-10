@@ -14,14 +14,14 @@ class CreateMembersTable extends Migration
     public function up()
     {
         Schema::create('members', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('firstname');
             $table->string('lastname');
             $table->string('nickname')->nullable();
-            $table->integer('gender_id')->unsigned()->nullable();
-            $table->integer('country_id')->unsigned();
+            $table->foreignId('gender_id')->nullable()->constrained();
+            $table->foreignId('country_id')->constrained();
             $table->string('other_country')->nullable();
-            $table->integer('confession_id')->unsigned()->nullable();
+            $table->foreignId('confession_id')->nullable()->constrained();
             $table->date('birthday');
             $table->date('joined_at');
             $table->boolean('send_newspaper');
@@ -29,7 +29,7 @@ class CreateMembersTable extends Migration
             $table->string('further_address')->nullable();
             $table->string('zip');
             $table->string('location');
-            $table->string('region_id')->nullable();
+            $table->foreignId('region_id')->nullable()->constrained();
             $table->string('main_phone')->nullable();
             $table->string('mobile_phone')->nullable();
             $table->string('work_phone')->nullable();
@@ -37,8 +37,8 @@ class CreateMembersTable extends Migration
             $table->string('email')->nullable();
             $table->string('email_parents')->nullable();
             $table->integer('nami_id')->nullable();
-            $table->integer('nationality_id')->unsigned();
-            $table->integer('subscription_id')->nullable();
+            $table->foreignId('nationality_id')->constrained();
+            $table->foreignId('fee_id')->constrained();
             
             $table->timestamps();
         });
