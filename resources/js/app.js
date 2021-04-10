@@ -1,30 +1,22 @@
 import Vue from 'vue';
-import { modules, init } from 'agnoster';
-import { Checkbox } from 'js-modules';
-import { InertiaApp } from '@inertiajs/inertia-vue'
-import store from './store.js';
+import { App, plugin } from '@inertiajs/inertia-vue'
 import 'font-awesome/css/font-awesome.css';
 import Echo from 'laravel-echo';
 window.io = require('socket.io-client');
 
-Vue.use(modules);
-Vue.use(init);
-Vue.use(InertiaApp);
-Vue.component('checkbox', Checkbox);
+import FText from './components/FText.vue';
 
-const app = document.getElementById('app')
+Vue.use(plugin)
+Vue.component('f-text', FText);
 
-window.Echo = new Echo({
-    broadcaster: 'socket.io',
-    host: window.location.hostname+':'+document.querySelector('meta[name=socketport]').getAttribute('content'),
-});
+const el = document.getElementById('app')
 
 new Vue({
-    render: h => h(InertiaApp, {
-        props: {
-            initialPage: JSON.parse(app.dataset.page),
-            resolveComponent: name => require(`./views/${name}`).default,
-        },
-    }),
-    store
-}).$mount(app)
+  render: h => h(App, {
+    props: {
+      initialPage: JSON.parse(el.dataset.page),
+      resolveComponent: name => require(`./views/${name}`).default,
+    },
+  }),
+}).$mount(el);
+

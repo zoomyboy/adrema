@@ -4,79 +4,79 @@
 }
 
 .form-group {
-    @apply .mb-4;
+    @apply mb-4;
 }
 
-.label-font {
-    @apply .form-control-font;
-}
 
 .form-control-font {
-    @apply .leading-tight .text-gray-600 .text-sm;
+    @apply leading-tight text-gray-600 text-sm;
 }
-
 
 .label-placeholder {
     position: relative;
-    @apply .py-2 .cursor-text;
+    @apply py-2 cursor-text;
     top: 34px;
-    transition: color 0.2s, padding-bottom 0.2s, font-size 0.2s, top 0.2s;
+    transition: color 02s, padding-bottom 02s, font-size 02s, top 02s;
 }
-.field-wrapper.focused .label-placeholder, .label-placeholder-focused {
+.field-wrapperfocused label-placeholder, label-placeholder-focused {
     top: 0;
-    @apply .text-sm .text-gray-600;
+    @apply text-sm text-gray-600;
     padding-bottom: 10px;
-    transition: color 0.2s, padding-bottom 0.2s, font-size 0.2s, top 0.2s;
+    transition: color 02s, padding-bottom 02s, font-size 02s, top 02s;
 }
 
 .form-control {
-    @apply .py-2 .appearance-none .border-b .border-solid .form-control-font;
+    @apply py-2 appearance-none border-b border-solid form-control-font;
     -moz-appearance: none;
 }
 
+.label-font {
+    @apply form-control-font;
+}
+
 .btn {
-    @apply .px-3 .py-2 .uppercase .no-underline .text-sm .rounded .text-white;
+    @apply px-3 py-2 uppercase no-underline text-sm rounded text-white;
 }
 .btn-sm {
-    @apply .text-xs !important;
+    @apply text-xs !important;
 }
-.btn.p-0 {
+.btnp-0 {
     padding: 0 !important;
 }
 .btn-primary {
-    @apply .bg-primary;
+    @apply bg-primary;
 }
 .btn-primary:hover {
-    @apply .bg-primary-light;
+    @apply bg-primary-light;
 }
 .btn-danger {
-    @apply .bg-danger;
+    @apply bg-danger;
 }
 .btn-danger:hover {
-    @apply .bg-danger-light;
+    @apply bg-danger-light;
 }
 .btn-default {
-    @apply .bg-gray-600;
+    @apply bg-gray-600;
 }
 .btn-primary-light {
-    @apply .bg-primary-light;
+    @apply bg-primary-light;
 }
 .btn-default:hover {
-    @apply .bg-gray-600;
+    @apply bg-gray-600;
 }
 
 .field-wrapper {
-    @apply .flex .flex-col;
+    @apply flex flex-col;
 }
 
 .toolbar-title {
-    @apply .font-bold .text-gray-700 .text-lg;
+    @apply font-bold text-gray-700 text-lg;
 }
 
 .subtitle {
-    @apply .subtitle .text-xl .font-semibold .mt-6 .font-thin .uppercase .text-gray-600;
+    @apply text-xl font-semibold mt-6 font-thin uppercase text-gray-600;
 }
 
 .mainnav > div > a {
-    @apply .py-2;
+    @apply py-2;
 }
