@@ -5,12 +5,13 @@ namespace App\Member;
 use App\Events\MemberCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Bill\BillKind;
 
 class Member extends Model
 {
     use Notifiable;
 
-    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address'];
+    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id'];
 
     public $dates = ['joined_at', 'birthday'];
 
@@ -82,5 +83,17 @@ class Member extends Model
     public function fee()
     {
         return $this->belongsTo(App\Fee::class);
+    }
+
+    public function billKind() {
+        return $this->belongsTo(BillKind::class);
+    }
+
+    public static function booted() {
+        static::updating(function($model) {
+            if ($model->nami_id === null) {
+                $model->bill_kind_id = null;
+            }
+        });
     }
 }

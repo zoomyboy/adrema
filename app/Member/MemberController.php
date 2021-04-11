@@ -10,6 +10,7 @@ use App\Region;
 use App\Country;
 use App\Nationality;
 use App\Confession;
+use App\Bill\BillKind;
 
 class MemberController extends Controller
 {
@@ -18,7 +19,7 @@ class MemberController extends Controller
         session()->put('title', 'Mitglieder');
 
         return \Inertia::render('member/Index', [
-            'data' => MemberResource::collection(Member::search($request->query('search', null))->paginate(15))
+            'data' => MemberResource::collection(Member::search($request->query('search', null))->with('billKind')->paginate(15))
         ]);
     }
 
@@ -27,6 +28,7 @@ class MemberController extends Controller
         session()->put('title', 'Mitglied bearbeiten');
 
         return \Inertia::render('member/Edit', [
+            'billKinds' => BillKind::get()->pluck('name', 'id'),
             'genders' => Gender::get()->pluck('name', 'id'),
             'countries' => Country::get()->pluck('name', 'id'),
             'regions' => Region::where('is_null', false)->get()->pluck('name', 'id'),

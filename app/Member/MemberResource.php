@@ -41,6 +41,8 @@ class MemberResource extends JsonResource
             'other_country' => $this->other_country,
             'confession_id' => $this->confession_id,
             'letter_address' => $this->letter_address,
+            'bill_kind_id' => $this->bill_kind_id,
+            'bill_kind_name' => optional($this->billKind)->name,
         ];
     }
 }

@@ -66,6 +66,11 @@
                     <f-text id="fax" v-model="inner.fax" label="Fax"></f-text>
                 </div>
             </div>
+            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'System'">
+                <div>
+                    <f-select :options="billKinds" id="bill_kind_id" v-model="inner.bill_kind_id" label="Rechnung versenden über"></f-select>
+                </div>
+            </div>
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Sonstiges'">
                 <div>
                     <f-text id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
@@ -93,6 +98,7 @@ export default {
             menu: [
                 { title: 'Stammdaten' },
                 { title: 'Kontakt' },
+                { title: 'System' },
                 { title: 'Sonstiges' },
             ]
         };
@@ -106,6 +112,7 @@ export default {
         countries: {},
         nationalities: {},
         confessions: {},
+        billKinds: {},
     },
 
     methods: {

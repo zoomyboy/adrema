@@ -9,6 +9,7 @@
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Ort</div>
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Mittendrin</div>
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Nami</div>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Rechnung</div>
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Geburtstag</div>
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Eintritt</div>
             </header>
@@ -24,6 +25,10 @@
                 </div>
                 <div class="py-1 px-6">
                     <v-bool v-model="member.nami_id !== null"></v-bool>
+                </div>
+                <div class="py-1 px-6">
+                    <div class="py-1 rounded-full flex text-xs items-center justify-center leading-none bg-primary-900" v-text="member.bill_kind_name" v-if="member.bill_kind_name"></div>
+                    <div class="py-1 rounded-full flex text-xs items-center justify-center leading-none" v-else>Kein</div>
                 </div>
                 <div class="py-1 px-6" v-text="`${member.birthday_human}`"></div>
                 <div class="py-1 px-6" v-text="`${member.joined_at_human}`"></div>

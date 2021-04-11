@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Bill\BillKind;
 
 class CreateMembersTable extends Migration
 {
@@ -13,6 +14,14 @@ class CreateMembersTable extends Migration
      */
     public function up()
     {
+        Schema::create('bill_kinds', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+        });
+
+        BillKind::create(['name' => 'E-Mail']);
+        BillKind::create(['name' => 'Post']);
+
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('firstname');
@@ -40,6 +49,7 @@ class CreateMembersTable extends Migration
             $table->foreignId('nationality_id')->constrained();
             $table->foreignId('fee_id')->constrained();
             $table->text('letter_address')->nullable();
+            $table->foreignId('bill_kind_id')->nullable()->constrained();
             
             $table->timestamps();
         });
@@ -53,5 +63,6 @@ class CreateMembersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('members');
+        Schema::dropIfExists('bill_kinds');
     }
 }
