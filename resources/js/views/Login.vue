@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="submit">
-        <div class="h-24 px-10 bg-primary flex justify-between items-center w-full">
-            <span class="text-primary-200 text-lg">Login über NaMi</span>
+        <div class="h-24 px-10 bg-primary-800 flex justify-between items-center w-full">
+            <span class="text-primary-500 text-xl">Login über NaMi</span>
             <img src="/img/dpsg.gif" class="w-24">
         </div>
         <div class="p-10 grid gap-5">

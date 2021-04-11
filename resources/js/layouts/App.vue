@@ -1,5 +1,5 @@
 <template>
-    <div class="flex font-sans flex-grow">
+    <div id="app" class="flex font-sans flex-grow">
 
         <!-- ******************************** Sidebar ******************************** -->
         <div class="fixed bg-gray-800 p-6 w-56 left-0 top-0 h-screen border-r border-gray-600 border-solid">
