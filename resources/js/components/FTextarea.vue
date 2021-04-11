@@ -1,6 +1,6 @@
 <template>
     <label class="flex flex-col relative">
-        <span v-if="label && !inset" class="font-semibold text-gray-700" :class="{
+        <span v-if="label && !inset" class="font-semibold text-gray-400" :class="{
             'text-xs': size == 'sm',
             'text-sm': size === null
         }">{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span>
@@ -9,9 +9,9 @@
             'text-sm': size === null
         }">{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span>
         <textarea v-text="value" @input="trigger" :placeholder="placeholder"
-            class="h-full outline-none border-gray-400 border-solid" :rows="rows"
+            class="h-full outline-none bg-gray-700 border-gray-600 border-solid" :rows="rows"
             :class="{
-                'rounded-lg text-sm border-2 p-2 text-gray-800': size === null,
+                'rounded-lg text-sm border-2 p-2 text-gray-300': size === null,
                 'rounded-lg py-2 px-2 text-xs border-2 text-gray-800': size == 'sm'
             }"
         ></textarea>

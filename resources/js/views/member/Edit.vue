@@ -76,6 +76,9 @@
                 <div>
                     <f-select :options="confessions" id="confession_id" v-model="inner.confession_id" label="Konfession"></f-select>
                 </div>
+                <div>
+                    <f-textarea rows="4" id="letter_address" v-model="inner.letter_address" label="Brief-Adresse"></f-textarea>
+                </div>
             </div>
         </div>
     </form>

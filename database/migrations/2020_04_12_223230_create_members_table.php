@@ -39,6 +39,7 @@ class CreateMembersTable extends Migration
             $table->integer('nami_id')->nullable();
             $table->foreignId('nationality_id')->constrained();
             $table->foreignId('fee_id')->constrained();
+            $table->text('letter_address')->nullable();
             
             $table->timestamps();
         });
