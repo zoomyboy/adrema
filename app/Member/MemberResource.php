@@ -34,7 +34,6 @@ class MemberResource extends JsonResource
             'email' => $this->email,
             'email_parents' => $this->email_parents,
             'fax' => $this->fax,
-            'nami_id' => $this->nami_id,
             'country_id' => $this->country_id,
             'region_id' => $this->region_id,
             'nationality_id' => $this->nationality_id,
@@ -43,6 +42,7 @@ class MemberResource extends JsonResource
             'letter_address' => $this->letter_address,
             'bill_kind_id' => $this->bill_kind_id,
             'bill_kind_name' => optional($this->billKind)->name,
+            'has_nami' => $this->nami_id !== null,
         ];
     }
 }

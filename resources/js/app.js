@@ -6,6 +6,7 @@ window.io = require('socket.io-client');
 import Sprite from './components/Sprite.js';
 
 import FText from './components/FText.vue';
+import FSwitch from './components/FSwitch.vue';
 import FSelect from './components/FSelect.vue';
 import FTextarea from './components/FTextarea.vue';
 import Pages from './components/Pages.vue';
@@ -14,6 +15,7 @@ import App from './layouts/App.vue';
 
 Vue.use(plugin)
 Vue.component('f-text', FText);
+Vue.component('f-switch', FSwitch);
 Vue.component('f-select', FSelect);
 Vue.component('f-textarea', FTextarea);
 Vue.component('sprite', Sprite);

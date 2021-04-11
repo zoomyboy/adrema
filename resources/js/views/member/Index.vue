@@ -24,7 +24,7 @@
                     <v-bool v-model="member.send_newspaper"></v-bool>
                 </div>
                 <div class="py-1 px-6">
-                    <v-bool v-model="member.nami_id !== null"></v-bool>
+                    <v-bool v-model="member.has_nami"></v-bool>
                 </div>
                 <div class="py-1 px-6">
                     <div class="py-1 rounded-full flex text-xs items-center justify-center leading-none bg-primary-900" v-text="member.bill_kind_name" v-if="member.bill_kind_name"></div>

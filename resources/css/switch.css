@@ -1,0 +1,112 @@
+:root {
+    --margin: 0.2rem;
+    --n-width: 37px;
+    --sm-width: 35px;
+    --sm-margin: 0.2rem;
+    --xs-width: 23px;
+    --xs-margin: 0.2rem;
+}
+
+.field-switch {
+    input:checked + span {
+        transition: background 0.3s;
+    }
+
+    .display {
+        width: calc(var(--n-width) * 2);
+        height: var(--n-width);
+        border-radius: 0.3rem;
+        var {
+            width: calc(var(--n-width) - var(--margin) * 2);
+            height: calc(var(--n-width) - var(--margin) * 2);
+            top: var(--margin);
+            left: var(--margin);
+            transition: left 0.3s;
+        }
+        & > span:nth-of-type(1) {
+            position: absolute;
+            width: calc(var(--n-width) - var(--margin));
+            height: calc(var(--n-width) - var(--margin) * 2);
+            top: var(--margin);
+            left: var(--margin);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        & > span:nth-of-type(2) {
+            position: absolute;
+            width: calc(var(--n-width) - var(--margin));
+            height: calc(var(--n-width) - var(--margin) * 2);
+            top: var(--margin);
+            left: calc(100% - var(--n-width));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    input:checked + .display var {
+        left: calc(var(--n-width) + var(--margin));
+        transition: left 0.3s;
+    }
+
+    /* --------------------------------- small size ---------------------------------- */
+    .inner-field.h-field-sm {
+        input:checked + .display var {
+            left: calc(var(--sm-width) + var(--sm-margin));
+        }
+
+        .display {
+            width: calc(var(--sm-width) * 2);
+            height: var(--sm-width);
+            var {
+                width: calc(var(--sm-width) - var(--sm-margin) * 2);
+                height: calc(var(--sm-width) - var(--sm-margin) * 2);
+                top: var(--sm-margin);
+                left: var(--sm-margin);
+            }
+            & > span:nth-of-type(1) {
+                width: calc(var(--sm-width) - var(--sm-margin));
+                height: calc(var(--sm-width) - var(--sm-margin) * 2);
+                top: var(--sm-margin);
+                left: var(--sm-margin);
+            }
+            & > span:nth-of-type(2) {
+                width: calc(var(--sm-width) - var(--sm-margin));
+                height: calc(var(--sm-width) - var(--sm-margin) * 2);
+                top: var(--sm-margin);
+                left: calc(100% - var(--sm-width));
+            }
+        }
+    }
+
+    /* ------------------------------ very small size -------------------------------- */
+    .inner-field.h-field-xs {
+        input:checked + .display var {
+            left: calc(var(--xs-width) + var(--xs-margin));
+        }
+
+        .display {
+            width: calc(var(--xs-width) * 2);
+            height: var(--xs-width);
+            var {
+                width: calc(var(--xs-width) - var(--xs-margin) * 2);
+                height: calc(var(--xs-width) - var(--xs-margin) * 2);
+                top: var(--xs-margin);
+                left: var(--xs-margin);
+            }
+            & > span:nth-of-type(1) {
+                width: calc(var(--xs-width) - var(--xs-margin));
+                height: calc(var(--xs-width) - var(--xs-margin) * 2);
+                top: var(--xs-margin);
+                left: var(--xs-margin);
+            }
+            & > span:nth-of-type(2) {
+                width: calc(var(--xs-width) - var(--xs-margin));
+                height: calc(var(--xs-width) - var(--xs-margin) * 2);
+                top: var(--xs-margin);
+                left: calc(100% - var(--xs-width));
+            }
+        }
+    }
+}

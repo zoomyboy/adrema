@@ -76,6 +76,9 @@
                     <f-text id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
                 </div>
                 <div>
+                    <f-switch id="has_nami" v-model="inner.has_nami" label="In Nami eintragen"></f-switch>
+                </div>
+                <div>
                     <f-text type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum"></f-text>
                 </div>
                 <div>

@@ -1,7 +1,7 @@
 <template>
     <label class="flex flex-col relative" :for="id" :class="{['h-field-'+size]: inset === true}">
         <div class="relative h-full flex flex-col">
-            <span v-if="label && !inset" class="font-semibold relative z-10 text-gray-400" :class="{
+            <span v-if="label && !inset" class="font-semibold leading-none relative z-10 text-gray-400" :class="{
                 'text-xs': size == 'sm',
                 'text-sm': size === null
             }">{{ label }}<span v-show="required" class="text-red-300">&nbsp;*</span></span>
@@ -9,7 +9,7 @@
                 'text-xs': size == 'sm',
                 'text-sm': size === null
             }" v-text="label"></span>
-            <div class="relative h-full" :class="{['h-field-'+size]: inset === false}">
+            <div class="relative h-full mt-1" :class="{['h-field-'+size]: inset === false}">
                 <input :type="type" :name="name" :value="transformedValue" @input="onInput" @change="onChange" :disabled="disabled" :placeholder="placeholder"
                     @focus="onFocus" @blur="onBlur"
                     class="border-gray-600 border-solid bg-gray-700 w-full appearance-none outline-none h-full"

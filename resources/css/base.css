@@ -84,3 +84,21 @@
 input, select {
     outline: none;
 }
+
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"],
+input[type="month"],
+select,
+input[type="week"] {
+    height: 37px;
+    &::-webkit-inner-spin-button {
+        display: none;
+    }
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
