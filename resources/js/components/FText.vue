@@ -1,10 +1,10 @@
 <template>
     <label class="flex flex-col relative" :for="id" :class="{['h-field-'+size]: inset === true}">
         <div class="relative h-full flex flex-col">
-            <span v-if="label && !inset" class="font-semibold relative z-10 text-gray-700" :class="{
+            <span v-if="label && !inset" class="font-semibold relative z-10 text-gray-400" :class="{
                 'text-xs': size == 'sm',
                 'text-sm': size === null
-            }">{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span>
+            }">{{ label }}<span v-show="required" class="text-red-300">&nbsp;*</span></span>
             <span v-if="label && inset" class="absolute z-10 top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700" :class="{
                 'text-xs': size == 'sm',
                 'text-sm': size === null
@@ -12,9 +12,9 @@
             <div class="relative h-full" :class="{['h-field-'+size]: inset === false}">
                 <input :type="type" :name="name" :value="transformedValue" @input="onInput" @change="onChange" :disabled="disabled" :placeholder="placeholder"
                     @focus="onFocus" @blur="onBlur"
-                    class="border-gray-400 border-solid bg-white w-full appearance-none outline-none h-full"
+                    class="border-gray-600 border-solid bg-gray-700 w-full appearance-none outline-none h-full"
                     :class="{
-                        'rounded-lg text-sm border-2 p-2 text-gray-800': size === null,
+                        'rounded-lg text-sm border-2 p-2 text-gray-300': size === null,
                         'rounded-lg py-2 px-2 text-xs border-2 text-gray-800': size == 'sm'
                     }"
                 />

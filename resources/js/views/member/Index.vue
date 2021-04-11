@@ -12,7 +12,7 @@
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Eintritt</div>
             </header>
 
-            <inertia-link :href="`/member/${member.id}`" :key="index" v-for="member, index in data.data" class="text-gray-200 transition-all duration-500 rounded flex hover:bg-gray-600">
+            <inertia-link :href="`/member/${member.id}/edit`" :key="index" v-for="member, index in data.data" class="text-gray-200 transition-all duration-500 rounded flex hover:bg-gray-600">
                 <div class="py-1 px-6" v-text="member.firstname"></div>
                 <div class="py-1 px-6" v-text="member.lastname"></div>
                 <div class="py-1 px-6" v-text="`${member.address}`"></div>

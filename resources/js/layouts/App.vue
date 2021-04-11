@@ -17,7 +17,7 @@
                 </label>
             </div>
 
-            <div class="flex-grow">
+            <div class="flex-grow flex flex-col">
                 <slot></slot>
             </div>
         </div>

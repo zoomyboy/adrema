@@ -23,6 +23,16 @@ class MemberResource extends JsonResource
             'send_newspaper' => $this->send_newspaper,
             'birthday' => $this->birthday->format('d.m.Y'),
             'joined_at' => $this->joined_at->format('d.m.Y'),
+            'id' => $this->id,
+            'gender_id' => $this->gender_id,
+            'further_address' => $this->further_address,
+            'work_phone' => $this->work_phone,
+            'mobile_phone' => $this->mobile_phone,
+            'main_phone' => $this->main_phone,
+            'email' => $this->email,
+            'email_parents' => $this->email_parents,
+            'fax' => $this->fax,
+            'nami_id' => $this->nami_id,
         ];
     }
 }

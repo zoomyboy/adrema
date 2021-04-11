@@ -1,0 +1,96 @@
+<template>
+    <form class="flex flex-grow relative" @submit.prevent="$inertia.patch(`/member/${inner.id}`, inner)">
+        <!-- ****************************** menu links ******************************* -->
+        <div class="p-6 bg-gray-700 border-r border-gray-600 flex-none w-maxc flex flex-col justify-between">
+            <div class="grid gap-1">
+                <a v-for="item, index in menu" :key="index" href="#" @click.prevent="openMenu(index)" class="rounded py-1 px-3 text-gray-400" :class="index == active ? `bg-gray-600` : ''" v-text="item.title"></a>
+            </div>
+            <div>
+                <button type="submit" class="btn block w-full btn-primary">Speichern</button>
+            </div>
+        </div>
+
+        <div class="flex-grow">
+            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Stammdaten'">
+                <div>
+                    <f-select id="gender_id" :options="genders" v-model="inner.gender_id" label="Geschlecht" required></f-select>
+                </div>
+                <div>
+                    <f-text id="firstname" v-model="inner.firstname" label="Vorname"></f-text>
+                </div>
+                <div>
+                    <f-text id="lastname" v-model="inner.lastname" label="Nachname"></f-text>
+                </div>
+                <div>
+                    <f-text id="address" v-model="inner.address" label="Adresse"></f-text>
+                </div>
+                <div>
+                    <f-text id="further_address" v-model="inner.further_address" label="Adresszusatz"></f-text>
+                </div>
+                <div>
+                    <f-text id="zip" v-model="inner.zip" label="PLZ"></f-text>
+                </div>
+                <div>
+                    <f-text id="location" v-model="inner.location" label="Ort"></f-text>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Kontakt'">
+                <div>
+                    <f-text id="main_phone" v-model="inner.main_phone" label="Telefon"></f-text>
+                </div>
+                <div>
+                    <f-text id="mobile_phone" v-model="inner.mobile_phone" label="Handy"></f-text>
+                </div>
+                <div>
+                    <f-text id="work_phone" v-model="inner.work_phone" label="Tel geschäftlich"></f-text>
+                </div>
+                <div>
+                    <f-text id="email" v-model="inner.email" label="E-Mail"></f-text>
+                </div>
+                <div>
+                    <f-text id="email_parents" v-model="inner.email_parents" label="E-Mail eltern"></f-text>
+                </div>
+                <div>
+                    <f-text id="fax" v-model="inner.fax" label="Fax"></f-text>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
+
+<script>
+export default {
+    data: function() {
+        return {
+            inner: {},
+            active: 0,
+            menu: [
+                { title: 'Stammdaten' },
+                { title: 'Kontakt' },
+            ]
+        };
+    },
+
+    props: {
+        genders: {},
+        fees: {},
+        data: {}
+    },
+
+    methods: {
+        openMenu(index) {
+            this.active = index;
+        }
+    },
+
+    computed: {
+        menuTitle() {
+            return this.menu[this.active].title;
+        }
+    },
+
+    created() {
+        this.inner = this.data;
+    }
+};
+</script>
