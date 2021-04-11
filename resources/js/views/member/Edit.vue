@@ -13,37 +13,37 @@
         <div class="flex-grow">
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Stammdaten'">
                 <div>
-                    <f-select id="gender_id" :options="genders" v-model="inner.gender_id" label="Geschlecht" required></f-select>
+                    <f-select id="gender_id" :options="genders" v-model="inner.gender_id" label="Geschlecht"></f-select>
                 </div>
                 <div>
-                    <f-text id="firstname" v-model="inner.firstname" label="Vorname"></f-text>
+                    <f-text id="firstname" v-model="inner.firstname" label="Vorname" required></f-text>
                 </div>
                 <div>
-                    <f-text id="lastname" v-model="inner.lastname" label="Nachname"></f-text>
+                    <f-text id="lastname" v-model="inner.lastname" label="Nachname" required></f-text>
                 </div>
                 <div>
-                    <f-text id="address" v-model="inner.address" label="Adresse"></f-text>
+                    <f-text id="address" v-model="inner.address" label="Adresse" required></f-text>
                 </div>
                 <div>
                     <f-text id="further_address" v-model="inner.further_address" label="Adresszusatz"></f-text>
                 </div>
                 <div>
-                    <f-text id="zip" v-model="inner.zip" label="PLZ"></f-text>
+                    <f-text id="zip" v-model="inner.zip" label="PLZ" required></f-text>
                 </div>
                 <div>
-                    <f-text id="location" v-model="inner.location" label="Ort"></f-text>
+                    <f-text id="location" v-model="inner.location" label="Ort" required></f-text>
                 </div>
                 <div>
-                    <f-text type="date" id="birthday" v-model="inner.birthday" label="Geburtsdatum"></f-text>
+                    <f-text type="date" id="birthday" v-model="inner.birthday" label="Geburtsdatum" required></f-text>
                 </div>
                 <div>
                     <f-select :options="regions" id="region_id" v-model="inner.region_id" label="Bundesland"></f-select>
                 </div>
                 <div>
-                    <f-select :options="countries" id="country_id" v-model="inner.country_id" label="Land"></f-select>
+                    <f-select :options="countries" id="country_id" v-model="inner.country_id" label="Land" required></f-select>
                 </div>
                 <div>
-                    <f-select :options="nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit"></f-select>
+                    <f-select :options="nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit" required></f-select>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Kontakt'">
@@ -69,6 +69,9 @@
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Sonstiges'">
                 <div>
                     <f-text id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
+                </div>
+                <div>
+                    <f-text type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum"></f-text>
                 </div>
                 <div>
                     <f-select :options="confessions" id="confession_id" v-model="inner.confession_id" label="Konfession"></f-select>

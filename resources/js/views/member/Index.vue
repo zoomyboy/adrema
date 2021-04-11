@@ -26,7 +26,7 @@
                     <v-bool v-model="member.nami_id !== null"></v-bool>
                 </div>
                 <div class="py-1 px-6" v-text="`${member.birthday_human}`"></div>
-                <div class="py-1 px-6" v-text="`${member.joined_at}`"></div>
+                <div class="py-1 px-6" v-text="`${member.joined_at_human}`"></div>
             </inertia-link>
 
         </div>
