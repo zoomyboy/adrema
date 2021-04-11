@@ -34,6 +34,9 @@
                     <f-text id="location" v-model="inner.location" label="Ort"></f-text>
                 </div>
                 <div>
+                    <f-text type="date" id="birthday" v-model="inner.birthday" label="Geburtsdatum"></f-text>
+                </div>
+                <div>
                     <f-select :options="regions" id="region_id" v-model="inner.region_id" label="Bundesland"></f-select>
                 </div>
                 <div>
