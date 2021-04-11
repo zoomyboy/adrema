@@ -33,6 +33,11 @@ class MemberResource extends JsonResource
             'email_parents' => $this->email_parents,
             'fax' => $this->fax,
             'nami_id' => $this->nami_id,
+            'country_id' => $this->country_id,
+            'region_id' => $this->region_id,
+            'nationality_id' => $this->nationality_id,
+            'other_country' => $this->other_country,
+            'confession_id' => $this->confession_id,
         ];
     }
 }

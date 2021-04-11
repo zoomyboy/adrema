@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Gender;
 use App\Fee;
+use App\Region;
+use App\Country;
+use App\Nationality;
+use App\Confession;
 
 class MemberController extends Controller
 {
@@ -24,6 +28,10 @@ class MemberController extends Controller
 
         return \Inertia::render('member/Edit', [
             'genders' => Gender::where('is_null', false)->get()->pluck('name', 'id'),
+            'countries' => Country::get()->pluck('name', 'id'),
+            'regions' => Region::where('is_null', false)->get()->pluck('name', 'id'),
+            'nationalities' => Nationality::get()->pluck('name', 'id'),
+            'confessions' => Confession::where('is_null', false)->get()->pluck('name', 'id'),
             'fees' => Fee::get()->pluck('name', 'id'),
             'data' => new MemberResource($member)
         ]);

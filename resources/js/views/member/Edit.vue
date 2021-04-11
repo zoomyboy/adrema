@@ -33,6 +33,15 @@
                 <div>
                     <f-text id="location" v-model="inner.location" label="Ort"></f-text>
                 </div>
+                <div>
+                    <f-select :options="regions" id="region_id" v-model="inner.region_id" label="Bundesland"></f-select>
+                </div>
+                <div>
+                    <f-select :options="countries" id="country_id" v-model="inner.country_id" label="Land"></f-select>
+                </div>
+                <div>
+                    <f-select :options="nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit"></f-select>
+                </div>
             </div>
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Kontakt'">
                 <div>
@@ -54,6 +63,14 @@
                     <f-text id="fax" v-model="inner.fax" label="Fax"></f-text>
                 </div>
             </div>
+            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Sonstiges'">
+                <div>
+                    <f-text id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
+                </div>
+                <div>
+                    <f-select :options="confessions" id="confession_id" v-model="inner.confession_id" label="Konfession"></f-select>
+                </div>
+            </div>
         </div>
     </form>
 </template>
@@ -63,10 +80,11 @@ export default {
     data: function() {
         return {
             inner: {},
-            active: 0,
+            active: 2,
             menu: [
                 { title: 'Stammdaten' },
                 { title: 'Kontakt' },
+                { title: 'Sonstiges' },
             ]
         };
     },
@@ -74,7 +92,11 @@ export default {
     props: {
         genders: {},
         fees: {},
-        data: {}
+        data: {},
+        regions: {},
+        countries: {},
+        nationalities: {},
+        confessions: {},
     },
 
     methods: {
