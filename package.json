@@ -9,8 +9,6 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "img": "rm -R public/img && cd resources/img/svg && svg-sprite -s --symbol-dest=sprite *.svg && mv sprite/svg/sprite.symbol.svg ../sprite.svg && rm -R sprite && cd ../../../ && cp -R resources/img public/img"
-
-
     },
     "devDependencies": {
         "laravel-mix": "^6.0.1",

@@ -12,7 +12,7 @@ class MemberController extends Controller
         session()->put('title', 'Mitglieder');
 
         return \Inertia::render('member/Index', [
-            'data' => MemberResource::collection(Member::search($request->query('search', null))->paginate(20))
+            'data' => MemberResource::collection(Member::search($request->query('search', null))->paginate(15))
         ]);
     }
 }

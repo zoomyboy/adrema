@@ -9,8 +9,12 @@
             </div>
         </div>
 
-        <div class="flex-grow ml-56 bg-gray-900">
-            <slot></slot>
+        <div class="flex-grow ml-56 bg-gray-900 flex flex-col">
+            <div class="h-16 text-xl font-semibold text-white flex items-center pl-5 border-b border-gray-600" v-html="$page.props.title"></div>
+
+            <div class="flex-grow">
+                <slot></slot>
+            </div>
         </div>
 
     </div>

@@ -1,33 +1,59 @@
 <template>
     <div>
-        <!--
-        <v-table :headers="[
-            {text: 'Nachname', value: 'lastname', align: 'left'},
-            {text: 'Vorname', value: 'firstname', align: 'left'},
-            {text: 'Adresse', value: 'address', align: 'left'},
-        ]" :items="data" actions>
-            <template slot="Nachname" slot-scope="{item}">
-                {{item.lastname}}
-            </template>
-            <template slot="Vorname" slot-scope="{item}">
-                {{item.firstname}}
-            </template>
-            <template slot="Adresse" slot-scope="{item}">
-                {{item.address}} {{item.zip}}, {{item.city}}
-            </template>
-            <template slot="Aktion" slot-scope="{item}"></template>
-        </v-table>
-        -->
+        <div class="member-table">
+            <header>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Nachname</div>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Vorname</div>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Straße</div>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">PLZ</div>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Ort</div>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Z</div>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Geburtstag</div>
+                <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Eintritt</div>
+            </header>
+
+            <inertia-link :href="`/member/${member.id}`" :key="index" v-for="member, index in data.data" class="text-gray-200 transition-all duration-500 rounded flex hover:bg-gray-600">
+                <div class="py-1 px-6" v-text="member.firstname"></div>
+                <div class="py-1 px-6" v-text="member.lastname"></div>
+                <div class="py-1 px-6" v-text="`${member.address}`"></div>
+                <div class="py-1 px-6" v-text="`${member.zip}`"></div>
+                <div class="py-1 px-6" v-text="`${member.location}`"></div>
+                <div class="py-1 px-6">
+                    <v-bool v-model="member.send_newspaper"></v-bool>
+                </div>
+                <div class="py-1 px-6" v-text="`${member.birthday}`"></div>
+                <div class="py-1 px-6" v-text="`${member.joined_at}`"></div>
+            </inertia-link>
+
+        </div>
+
+        <div class="px-6">
+            <pages class="mt-4" :value="data.meta" :only="['data']"></pages>
+        </div>
     </div>
 </template>
 
 <script>
-    import App from '../../layouts/App';
+import App from '../../layouts/App';
 
-    export default {
-        layout: App,
+export default {
+    layout: App,
 
-        props: ['data']
+    props:{
+        data: {}
     }
+}
 </script>
 
+<style scoped>
+.member-table {
+    display: table;
+    width: 100%;
+}
+.member-table > * {
+    display: table-row;
+}
+.member-table > * > * {
+    display: table-cell;
+}
+</style>

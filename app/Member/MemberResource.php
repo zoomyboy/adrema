@@ -14,6 +14,15 @@ class MemberResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'address' => $this->address,
+            'zip' => $this->zip,
+            'location' => $this->location,
+            'send_newspaper' => $this->send_newspaper,
+            'birthday' => $this->birthday->format('d.m.Y'),
+            'joined_at' => $this->joined_at->format('d.m.Y'),
+        ];
     }
 }
