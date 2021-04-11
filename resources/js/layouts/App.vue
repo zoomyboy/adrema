@@ -10,7 +10,12 @@
         </div>
 
         <div class="flex-grow ml-56 bg-gray-900 flex flex-col">
-            <div class="h-16 text-xl font-semibold text-white flex items-center pl-5 border-b border-gray-600" v-html="$page.props.title"></div>
+            <div class="h-16 p-6 flex justify-between items-center border-b border-gray-600">
+                <span class="text-xl font-semibold text-white" v-html="$page.props.title"></span>
+                <label for="search">
+                    <input class="shadow-lg bg-gray-800 rounded-lg py-2 px-3 text-gray-300 hover:bg-gray-700 focus:bg-gray-700 placeholder-gray-400" placeholder="Suchen…" name="search" v-model="isearch"></input>
+                </label>
+            </div>
 
             <div class="flex-grow">
                 <slot></slot>
@@ -22,9 +27,27 @@
 
 <script>
 import VLink from './_VLink.vue';
+import { debounce } from 'lodash';
+import mergesQueryString from '../mixins/mergesQueryString.js';
 
 export default {
-    components: { VLink }
+    components: { VLink },
+    mixins: [ mergesQueryString ],
+
+    computed: {
+        isearch: {
+            set: debounce(function(v) {
+                this.$inertia.visit(this.qs({ search: v }), {
+                    only: ['search', 'data'],
+                    preserveState: true,
+                });
+            }, 500),
+            get() {
+                return this.$page.props.search;
+            }
+        }
+    }
+
 };
 </script>
 

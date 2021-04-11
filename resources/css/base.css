@@ -80,3 +80,7 @@
 .mainnav > div > a {
     @apply py-2;
 }
+
+input, select {
+    outline: none;
+}

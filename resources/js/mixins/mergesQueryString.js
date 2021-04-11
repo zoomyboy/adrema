@@ -9,8 +9,7 @@ export default {
             var mn = {};
 
             Object.keys(m).forEach((k) => {
-                console.log(m[k]);
-                if (m[k] !== null && !isNaN(m[k])) {
+                if (m[k] !== null) {
                     mn[k] = m[k];
                 }
             });
