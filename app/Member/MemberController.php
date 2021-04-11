@@ -27,7 +27,7 @@ class MemberController extends Controller
         session()->put('title', 'Mitglied bearbeiten');
 
         return \Inertia::render('member/Edit', [
-            'genders' => Gender::where('is_null', false)->get()->pluck('name', 'id'),
+            'genders' => Gender::get()->pluck('name', 'id'),
             'countries' => Country::get()->pluck('name', 'id'),
             'regions' => Region::where('is_null', false)->get()->pluck('name', 'id'),
             'nationalities' => Nationality::get()->pluck('name', 'id'),
