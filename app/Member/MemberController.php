@@ -14,6 +14,7 @@ use App\Bill\BillKind;
 
 class MemberController extends Controller
 {
+
     public function index(Request $request) {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
@@ -39,8 +40,8 @@ class MemberController extends Controller
         ]);
     }
 
-    public function update(Member $member, Request $request) {
-        $member->update($request->input());
+    public function update(Member $member, MemberRequest $request) {
+        $request->persistUpdate($member);
 
         return redirect()->route('member.index');
     }
