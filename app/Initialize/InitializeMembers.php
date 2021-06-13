@@ -9,6 +9,7 @@ use App\Member\Member;
 use App\Region;
 use App\Nationality;
 use App\Fee;
+use App\Group;
 
 class InitializeMembers {
 
@@ -45,11 +46,12 @@ class InitializeMembers {
                     'email' => $member->email,
                     'email_parents' => $member->email_parents,
                     'nami_id' => $member->id,
-                    'gender_id' => optional(Gender::firstWhere('nami_id', $member->gender_id))->id,
-                    'confession_id' => optional(Confession::firstWhere('nami_id', $member->confession_id))->id,
-                    'region_id' => Region::where('nami_id', $member->region_id)->firstOrFail()->id,
-                    'country_id' => Country::where('nami_id', '=', $member->country_id)->firstOrFail()->id,
-                    'fee_id' => optional(Fee::firstWhere('nami_id', '=', $member->fee_id))->id,
+                    'group_id' => Group::firstOrCreate(['nami_id' => $member->group_id], ['nami_id' => $member->group_id, 'name' => 'AAA'])->id,
+                    'gender_id' => optional(Gender::firstWhere('nami_id', $member->gender_id ?: -1))->id,
+                    'confession_id' => optional(Confession::firstWhere('nami_id', $member->confession_id ?: -1))->id,
+                    'region_id' => optional(Region::firstWhere('nami_id', $member->region_id ?: -1))->id,
+                    'country_id' => Country::where('nami_id', $member->country_id)->firstOrFail()->id,
+                    'fee_id' => optional(Fee::firstWhere('nami_id', $member->fee_id ?: -1))->id,
                     'nationality_id' => Nationality::where('nami_id', $member->nationality_id)->firstOrFail()->id,
                 ]);
             });

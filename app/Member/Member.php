@@ -6,12 +6,17 @@ use App\Events\MemberCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Bill\BillKind;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Nationality;
+use App\Fee;
+use App\Group;
 
 class Member extends Model
 {
     use Notifiable;
+    use HasFactory;
 
-    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id'];
+    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id'];
 
     public $dates = ['joined_at', 'birthday'];
 
@@ -72,7 +77,7 @@ class Member extends Model
 
     public function nationality()
     {
-        return $this->belongsTo(App\Nationality::class);
+        return $this->belongsTo(Nationality::class);
     }
 
     public function memberships()
@@ -82,11 +87,15 @@ class Member extends Model
 
     public function fee()
     {
-        return $this->belongsTo(App\Fee::class);
+        return $this->belongsTo(Fee::class);
     }
 
     public function billKind() {
         return $this->belongsTo(BillKind::class);
+    }
+
+    public function group() {
+        return $this->belongsTo(Group::class);
     }
 
     public static function booted() {
@@ -94,6 +103,10 @@ class Member extends Model
             if ($model->nami_id === null) {
                 $model->bill_kind_id = null;
             }
+        });
+
+        static::updated(function($model) {
+            UpdateJob::dispatch($model);
         });
     }
 }
