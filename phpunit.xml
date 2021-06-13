@@ -10,9 +10,6 @@
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
-        <testsuite name="Nami">
-            <directory suffix="Test.php">./packages/laravel-nami/tests</directory>
-        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
