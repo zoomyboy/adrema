@@ -38,6 +38,7 @@ class CreateMembersTable extends Migration
             $table->string('further_address')->nullable();
             $table->string('zip');
             $table->string('location');
+            $table->foreignId('group_id')->constrained();
             $table->foreignId('region_id')->nullable()->constrained();
             $table->string('main_phone')->nullable();
             $table->string('mobile_phone')->nullable();
