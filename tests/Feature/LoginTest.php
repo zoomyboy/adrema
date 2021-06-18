@@ -14,7 +14,7 @@ class LoginTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $this->fakeNamiMembers([
-            [ 'gruppierungId' => 11222, 'vorname' => 'Max', 'id' => 123 ]
+            [ 'gruppierungId' => 11222, 'vorname' => 'Max', 'nachname' => 'Muster', 'id' => 123 ]
         ]);
         $this->fakeNamiPassword(123, 'secret', [11222]);
 
@@ -27,8 +27,11 @@ class LoginTest extends TestCase
 
         $key = session()->get('auth_key');
         $cache = Cache::get("namiauth-{$key}");
-        $this->assertEquals('JSESSIONID', data_get($cache, 'cookie.0.Name'));
         $this->assertEquals('secret', data_get($cache, 'credentials.password'));
         $this->assertEquals(123, auth()->user()->mglnr);
+        $this->assertEquals('Max', auth()->user()->firstname);
+        $this->assertEquals('Muster', auth()->user()->lastname);
+        $this->assertTrue(auth()->check());
+
     }
 }
