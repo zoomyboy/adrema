@@ -17,9 +17,8 @@ class UpdateTest extends TestCase
 
     public function test_it_can_update_a_member()
     {
-        $this->fakeNamiMembers([
-            [ 'gruppierungId' => 12399, 'vorname' => 'Max', 'id' => 999 ]
-        ]);
+        $this->withoutExceptionHandling();
+        $this->login();
 
         $member = Member::factory()
             ->for(Country::factory())
