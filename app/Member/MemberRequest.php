@@ -42,7 +42,7 @@ class MemberRequest extends FormRequest
     }
 
     public function persistCreate() {
-        
+        Member::create($this->input());
     }
 
     public function persistUpdate(Member $member) {
