@@ -16,8 +16,8 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->name,
-            'email' => $this->email,
+            'name' => $this->getFirstname(),
+            'email' => null,
             'avatar' => [
                 'src' => Storage::url('avatar.png')
             ]

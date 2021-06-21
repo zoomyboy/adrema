@@ -16,7 +16,7 @@ class Member extends Model
     use Notifiable;
     use HasFactory;
 
-    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id'];
+    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id', 'version'];
 
     public $dates = ['joined_at', 'birthday'];
 
@@ -42,6 +42,10 @@ class Member extends Model
     //----------------------------------- Getters -----------------------------------
     public function getFullnameAttribute() {
         return $this->firstname.' '.$this->lastname;
+    }
+
+    public function getHasNamiAttribute() {
+        return $this->nami_id !== null;
     }
 
     //---------------------------------- Relations ----------------------------------
@@ -106,7 +110,7 @@ class Member extends Model
         });
 
         static::updated(function($model) {
-            UpdateJob::dispatch($model);
+            UpdateJob::dispatch($model, auth()->user());
         });
     }
 }

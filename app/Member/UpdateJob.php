@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
+use App\Confession;
 
 class UpdateJob implements ShouldQueue
 {
@@ -15,10 +16,12 @@ class UpdateJob implements ShouldQueue
 
     public $memberId;
     public $member;
+    public $user;
 
-    public function __construct(Member $member)
+    public function __construct(Member $member, $user)
     {
         $this->memberId = $member->id;
+        $this->user = $user;
     }
 
     /**
@@ -30,7 +33,11 @@ class UpdateJob implements ShouldQueue
     {
         $this->member = Member::find($this->memberId);
 
-        Nami::putMember([
+        if (!$this->member->hasNami) {
+            return false;
+        }
+
+        $response = Nami::login($this->user->mglnr)->putMember([
             'firstname' => $this->member->firstname,
             'lastname' => $this->member->lastname,
             'nickname' => $this->member->nickname,
@@ -49,14 +56,18 @@ class UpdateJob implements ShouldQueue
             'fax' => $this->member->fax,
             'email' => $this->member->email,
             'email_parents' => $this->member->email_parents,
-            'gender_id' => optional($this->member)->nami_id,
-            'confession_id' => optional($this->member->confession)->nami_id,
+            'gender_id' => optional($this->member->gender)->nami_id,
+            'confession_id' => $this->member->confession ? $this->member->confession->nami_id : Confession::firstWhere('is_null', true)->id,
             'region_id' => optional($this->member->region)->nami_id,
             'country_id' => $this->member->country->nami_id,
             'fee_id' => optional($this->member->fee)->nami_id,
             'nationality_id' => $this->member->nationality->nami_id,
             'id' => $this->member->nami_id,
             'group_id' => $this->member->group->nami_id,
+            'version' => $this->member->version,
         ]);
+        Member::withoutEvents(function() use ($response) {
+            $this->member->update(['version' => $response['version']]);
+        });
     }
 }

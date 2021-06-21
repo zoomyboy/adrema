@@ -51,6 +51,7 @@ class CreateMembersTable extends Migration
             $table->foreignId('fee_id')->constrained();
             $table->text('letter_address')->nullable();
             $table->foreignId('bill_kind_id')->nullable()->constrained();
+            $table->unsignedInteger('version')->default(1);
             
             $table->timestamps();
         });

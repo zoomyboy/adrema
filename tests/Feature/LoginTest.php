@@ -28,9 +28,9 @@ class LoginTest extends TestCase
         $key = session()->get('auth_key');
         $cache = Cache::get("namiauth-{$key}");
         $this->assertEquals('secret', data_get($cache, 'credentials.password'));
-        $this->assertEquals(123, auth()->user()->mglnr);
-        $this->assertEquals('Max', auth()->user()->firstname);
-        $this->assertEquals('Muster', auth()->user()->lastname);
+        $this->assertEquals(123, auth()->user()->getMglnr());
+        $this->assertEquals('Max', auth()->user()->getFirstname());
+        $this->assertEquals('Muster', auth()->user()->getLastname());
         $this->assertTrue(auth()->check());
 
     }

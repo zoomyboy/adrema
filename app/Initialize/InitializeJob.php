@@ -2,7 +2,6 @@
 
 namespace App\Initialize;
 
-use App\User;
 use App\Member;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -10,6 +9,7 @@ use Aweos\Agnoster\Progress\HasProgress;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Zoomyboy\LaravelNami\NamiUser;
 
 class InitializeJob implements ShouldQueue
 {
@@ -28,7 +28,7 @@ class InitializeJob implements ShouldQueue
         InitializeMembers::class,
     ];
 
-    public function __construct(User $user)
+    public function __construct(NamiUser $user)
     {
         $this->user = $user;
     }
@@ -40,7 +40,7 @@ class InitializeJob implements ShouldQueue
      */
     public function handle()
     {
-        $api = $this->user->getNamiApi();
+        $api = $this->user->api();
         $bar = $this->createProgressBar('Initialisiere');
 
         foreach (static::$initializers as $initializer) {

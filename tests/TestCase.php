@@ -24,11 +24,9 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         $this->fakeNamiPassword(999, 'secret', [12399]);
-
         $api = Nami::login(999, 'secret');
 
-        $this->be(new NamiUser([
-            'cookie' => $api->cookie->toArray(),
+        $this->be(NamiUser::fromPayload([
             'credentials' => [
                 'mglnr' => 999,
                 'password' => 'secret'

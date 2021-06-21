@@ -53,6 +53,7 @@ class InitializeMembers {
                     'country_id' => Country::where('nami_id', $member->country_id)->firstOrFail()->id,
                     'fee_id' => optional(Fee::firstWhere('nami_id', $member->fee_id ?: -1))->id,
                     'nationality_id' => Nationality::where('nami_id', $member->nationality_id)->firstOrFail()->id,
+                    'version' => $member->version,
                 ]);
             });
         });

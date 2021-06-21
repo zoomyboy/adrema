@@ -14,7 +14,6 @@ class InitializeNationalities {
 
     public function handle() {
         $this->bar->task('Synchronisiere Nationalitäten', function() {
-            $this->api->group(auth()->user()->getNamiGroupId())->fees();
             $this->api->nationalities()->each(function($nationality) {
                 \App\Nationality::create(['nami_id' => $nationality->id, 'name' => $nationality->name]);
             });

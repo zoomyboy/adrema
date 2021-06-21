@@ -71,22 +71,13 @@
                     <f-select :options="billKinds" id="bill_kind_id" v-model="inner.bill_kind_id" label="Rechnung versenden über"></f-select>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Sonstiges'">
-                <div>
-                    <f-text id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
-                </div>
-                <div>
-                    <f-switch id="has_nami" v-model="inner.has_nami" label="In Nami eintragen"></f-switch>
-                </div>
-                <div>
-                    <f-text type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum"></f-text>
-                </div>
-                <div>
-                    <f-select :options="confessions" id="confession_id" v-model="inner.confession_id" label="Konfession"></f-select>
-                </div>
-                <div>
-                    <f-textarea rows="4" id="letter_address" v-model="inner.letter_address" label="Brief-Adresse"></f-textarea>
-                </div>
+            <div class="grid grid-cols-4 gap-3 p-4" v-if="menuTitle == 'Sonstiges'">
+                <f-text class="col-span-2" id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
+                <f-switch id="has_nami" v-model="inner.has_nami" label="In Nami eintragen"></f-switch>
+                <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin"></f-switch>
+                <f-text class="col-span-2" type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum"></f-text>
+                <f-select class="col-span-2" :options="confessions" id="confession_id" v-model="inner.confession_id" label="Konfession"></f-select>
+                <f-textarea class="col-span-2" rows="4" id="letter_address" v-model="inner.letter_address" label="Brief-Adresse"></f-textarea>
             </div>
         </div>
     </form>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "939238f463369e99565304bd5d3e68de",
+    "content-hash": "d960b31f70a251387c83d7ab9803fb0e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -61,6 +61,35 @@
                 "source": "https://github.com/asm89/stack-cors/tree/1.3.0"
             },
             "time": "2019-12-24T22:41:47+00:00"
+        },
+        {
+            "name": "aweos/agnoster-installer",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "./packages/agnoster-installer",
+                "reference": "e33794cdf0a68d161ce22856650c288700cdbd7c"
+            },
+            "bin": [
+                "bin/agnoster"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Aweos\\Agnoster\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "philipp lang",
+                    "email": "philipp@aweos.de"
+                }
+            ],
+            "description": "Agnoster Backend package for UI scaffolding",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "brick/math",
@@ -1432,16 +1461,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.6.2",
+            "version": "1.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "7d70d2f19c84bcc16275ea47edabee24747352eb"
+                "reference": "c3c8b7217c52572fb42aaf84211abccf75a151b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/7d70d2f19c84bcc16275ea47edabee24747352eb",
-                "reference": "7d70d2f19c84bcc16275ea47edabee24747352eb",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c3c8b7217c52572fb42aaf84211abccf75a151b2",
+                "reference": "c3c8b7217c52572fb42aaf84211abccf75a151b2",
                 "shasum": ""
             },
             "require": {
@@ -1459,7 +1488,7 @@
                 "github/gfm": "0.29.0",
                 "michelf/php-markdown": "~1.4",
                 "mikehaertl/php-shellcommand": "^1.4",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^0.12.90",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.2",
                 "scrutinizer/ocular": "^1.5",
                 "symfony/finder": "^4.2"
@@ -1529,7 +1558,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-12T11:39:41+00:00"
+            "time": "2021-06-19T20:08:14+00:00"
         },
         {
             "name": "league/flysystem",
@@ -5769,7 +5798,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/laravel-nami",
-                "reference": "4a89f167f825dc7e58aaf7b426657531163d82cf"
+                "reference": "009a9b1678b4736d3b45144cf410a5a5c9a27bed"
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3.1|^7.0"
@@ -8226,6 +8255,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-09-28T06:45:17+00:00"
         },
         {
