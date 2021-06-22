@@ -22,7 +22,7 @@ class InitializeActivities {
                     $group = \App\Subactivity::updateOrCreate(['nami_id' => $group->id], ['nami_id' => $group->id, 'name' => $group->name]);
                     $groups[] = $group->id;
                 });
-                $activity->groups()->sync($groups);
+                $activity->subactivities()->sync($groups);
             });
         });
     }
