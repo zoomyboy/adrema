@@ -118,14 +118,5 @@ class Member extends Model
                 $model->bill_kind_id = null;
             }
         });
-
-        static::updated(function($model) {
-            if ($model->nami_id !== null && $model->getOriginal()['nami_id'] !== null) {
-                UpdateJob::dispatch($model, auth()->user());
-            }
-            if ($model->nami_id !== null && $model->getOriginal()['nami_id'] === null) {
-                CreateJob::dispatch($model, auth()->user());
-            }
-        });
     }
 }
