@@ -81,8 +81,8 @@ export default {
         },
         submit() {
             this.mode === 'create'
-                ? $inertia.post(`/member`, inner)
-                : $inertia.patch(`/member/${inner.id}`, inner);
+                ? this.$inertia.post(`/member`, inner)
+                : this.$inertia.patch(`/member/${inner.id}`, inner);
         }
     },
 
