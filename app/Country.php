@@ -11,5 +11,9 @@ class Country extends Model
 
     public $fillable = ['name', 'nami_id'];
 
+    public static function default(): int {
+        return self::whereName('Deutschland')->firstOrFail()->id;
+    }
+
     public $timestamps = false;
 }

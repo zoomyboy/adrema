@@ -37,7 +37,9 @@ class MemberController extends Controller
             'nationalities' => Nationality::get()->pluck('name', 'id'),
             'confessions' => Confession::where('is_null', false)->get()->pluck('name', 'id'),
             'fees' => Fee::get()->pluck('name', 'id'),
-            'data' => null,
+            'data' => [
+                'country_id' => Country::default()
+            ],
             'mode' => 'create',
         ]);
     }
