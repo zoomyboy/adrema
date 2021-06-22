@@ -48,9 +48,11 @@ class CreateMembersTable extends Migration
             $table->string('email_parents')->nullable();
             $table->integer('nami_id')->nullable();
             $table->foreignId('nationality_id')->constrained();
-            $table->foreignId('fee_id')->constrained();
+            $table->foreignId('fee_id')->nullable()->constrained();
             $table->text('letter_address')->nullable();
             $table->foreignId('bill_kind_id')->nullable()->constrained();
+            $table->foreignId('first_activity_id')->nullable()->constrained('activities');
+            $table->foreignId('first_subactivity_id')->nullable()->constrained('subactivities');
             $table->unsignedInteger('version')->default(1);
             
             $table->timestamps();

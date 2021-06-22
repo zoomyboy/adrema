@@ -10,6 +10,7 @@ use App\Region;
 use App\Nationality;
 use App\Fee;
 use App\Group;
+use App\Activity;
 
 class InitializeMembers {
 

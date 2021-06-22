@@ -3,6 +3,8 @@
 namespace App\Member;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Group;
 
 class MemberRequest extends FormRequest
 {
@@ -24,6 +26,8 @@ class MemberRequest extends FormRequest
     public function rules()
     {
         return [
+            'first_activity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'), 
+            'first_subactivity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'), 
             'firstname' => 'required',
             'lastname' => 'required',
             'address' => 'required',
@@ -42,7 +46,8 @@ class MemberRequest extends FormRequest
     }
 
     public function persistCreate() {
-        Member::create($this->input());
+        $this->merge(['group_id' => Group::where('nami_id', auth()->user()->getNamiGroupId())->firstOrFail()->id]);
+        $m = Member::create($this->input());
     }
 
     public function persistUpdate(Member $member) {

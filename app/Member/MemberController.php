@@ -11,6 +11,8 @@ use App\Country;
 use App\Nationality;
 use App\Confession;
 use App\Bill\BillKind;
+use App\Activity;
+use App\Group;
 
 class MemberController extends Controller
 {
@@ -29,7 +31,13 @@ class MemberController extends Controller
         session()->put('menu', 'member');
         session()->put('title', 'Mitglied erstellen');
 
+        $activities = Activity::with('subactivities')->get();
+
         return \Inertia::render('member/Form', [
+            'activities' => $activities->pluck('name', 'id'),
+            'subactivities' => $activities->map(function($activity) {
+                return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
+            })->pluck('subactivities', 'id'),
             'billKinds' => BillKind::get()->pluck('name', 'id'),
             'genders' => Gender::get()->pluck('name', 'id'),
             'countries' => Country::get()->pluck('name', 'id'),

@@ -15,7 +15,7 @@ class Activity extends Model
         'nami_id' => 'integer'
     ];
 
-    public function groups() {
-        return $this->belongsToMany(Group::class);
+    public function subactivities() {
+        return $this->belongsToMany(Subactivity::class);
     }
 }

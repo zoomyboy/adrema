@@ -19,7 +19,7 @@ class InitializeActivities {
 
                 $groups = [];
                 $this->api->subactivitiesOf($activity->id)->each(function($group) use ($activity, &$groups) {
-                    $group = \App\Group::updateOrCreate(['nami_id' => $group->id], ['nami_id' => $group->id, 'name' => $group->name]);
+                    $group = \App\Subactivity::updateOrCreate(['nami_id' => $group->id], ['nami_id' => $group->id, 'name' => $group->name]);
                     $groups[] = $group->id;
                 });
                 $activity->groups()->sync($groups);

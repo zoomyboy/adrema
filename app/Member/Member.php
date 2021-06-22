@@ -10,13 +10,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Nationality;
 use App\Fee;
 use App\Group;
+use App\Activity;
+use App\Subactivity;
 
 class Member extends Model
 {
     use Notifiable;
     use HasFactory;
 
-    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id', 'version'];
+    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id', 'version', 'first_subactivity_id', 'first_activity_id'];
 
     public $dates = ['joined_at', 'birthday'];
 
@@ -102,6 +104,14 @@ class Member extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function firstActivity() {
+        return $this->belongsTo(Activity::class, 'first_activity_id');
+    }
+
+    public function firstSubActivity() {
+        return $this->belongsTo(Subactivity::class, 'first_subactivity_id');
+    }
+
     public static function booted() {
         static::updating(function($model) {
             if ($model->nami_id === null) {
@@ -110,7 +120,12 @@ class Member extends Model
         });
 
         static::updated(function($model) {
-            UpdateJob::dispatch($model, auth()->user());
+            if ($model->nami_id !== null && $model->getOriginal()['nami_id'] !== null) {
+                UpdateJob::dispatch($model, auth()->user());
+            }
+            if ($model->nami_id !== null && $model->getOriginal()['nami_id'] === null) {
+                CreateJob::dispatch($model, auth()->user());
+            }
         });
     }
 }

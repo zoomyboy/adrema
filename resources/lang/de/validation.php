@@ -185,5 +185,7 @@ return [
         'zip' => 'PLZ',
         'location' => 'Ort',
         'nationality_id' => 'Staatsangehörigkeit',
+        'first_group_id' => 'Erste Untertätigkeit',
+        'first_activity_id' => 'Erste Tätigkeit',
     ],
 ];

@@ -24,6 +24,12 @@
                 <f-select :options="regions" id="region_id" v-model="inner.region_id" label="Bundesland"></f-select>
                 <f-select :options="countries" id="country_id" v-model="inner.country_id" label="Land" required></f-select>
                 <f-select :options="nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit" required></f-select>
+
+                <div class="contents" v-show="mode === 'create'">
+                    <h2 class="col-span-full font-semibold text-lg text-white">Erste Gruppierung</h2>
+                    <f-select :options="activities" id="first_activity_id" v-model="inner.first_activity_id" label="Erste Tätigkeit" required></f-select>
+                    <f-select v-if="inner.first_activity_id" :options="subactivities[inner.first_activity_id]" id="first_subactivity_id" v-model="inner.first_subactivity_id" label="Erste Untertätigkeit" required></f-select>
+                </div>
             </div>
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Kontakt'">
                 <f-text id="main_phone" v-model="inner.main_phone" label="Telefon"></f-text>
@@ -64,6 +70,8 @@ export default {
     },
 
     props: {
+        subactivities: {},
+        activities: {},
         mode: {},
         genders: {},
         fees: {},

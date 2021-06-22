@@ -2,18 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
     use HasFactory;
 
-    public $fillable = ['name', 'nami_id'];
-
+    public $fillable = ['nami_id', 'name'];
     public $timestamps = false;
-
-    public function activities() {
-        return $this->belongsToMany(Activity::class);
-    }
 }
