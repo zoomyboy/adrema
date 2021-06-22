@@ -67,7 +67,8 @@ class CreateJob implements ShouldQueue
             'first_subactivity_id' => $this->member->firstSubactivity->nami_id,
         ]);
         Member::withoutEvents(function() use ($response) {
-            $this->member->update(['version' => $response['version']]);
+            $version = Nami::login($this->user->mglnr)->member($this->member->group->nami_id, $response['id'])['version'];
+            $this->member->update(['version' => $version, 'nami_id' => $response['id']]);
         });
     }
 }

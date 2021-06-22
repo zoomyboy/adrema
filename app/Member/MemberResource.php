@@ -26,6 +26,7 @@ class MemberResource extends JsonResource
             'joined_at' => $this->joined_at->format('Y-m-d'),
             'joined_at_human' => $this->joined_at->format('d.m.Y'),
             'id' => $this->id,
+            'fee_id' => $this->fee_id,
             'gender_id' => $this->gender_id,
             'further_address' => $this->further_address,
             'work_phone' => $this->work_phone,
