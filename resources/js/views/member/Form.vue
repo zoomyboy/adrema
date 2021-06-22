@@ -81,8 +81,8 @@ export default {
         },
         submit() {
             this.mode === 'create'
-                ? this.$inertia.post(`/member`, inner)
-                : this.$inertia.patch(`/member/${inner.id}`, inner);
+                ? this.$inertia.post(`/member`, this.inner)
+                : this.$inertia.patch(`/member/${this.inner.id}`, this.inner);
         }
     },
 
@@ -93,7 +93,7 @@ export default {
     },
 
     created() {
-        this.inner = this.mode === 'edit' ? this.data : {};
+        this.inner = this.data;
     }
 };
 </script>

@@ -177,5 +177,13 @@ return [
         'size'                  => 'Größe',
         'mglnr'                 => 'Mitgliesnummer',
         'groupid'               => 'Gruppierungsnummer',
+        'firstname' => 'Vorname',
+        'lastname' => 'Nachname',
+        'birthday' => 'Geburtsdatum',
+        'country_id' => 'Land',
+        'joined_at' => 'Eintrittsdatum',
+        'zip' => 'PLZ',
+        'location' => 'Ort',
+        'nationality_id' => 'Staatsangehörigkeit',
     ],
 ];
