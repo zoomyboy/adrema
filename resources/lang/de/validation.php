@@ -187,5 +187,6 @@ return [
         'nationality_id' => 'Staatsangehörigkeit',
         'first_group_id' => 'Erste Untertätigkeit',
         'first_activity_id' => 'Erste Tätigkeit',
+        'fee_id' => 'Beitragsart',
     ],
 ];

@@ -59,7 +59,10 @@ class MemberRequest extends FormRequest
 
     public function persistCreate() {
         $this->merge(['group_id' => Group::where('nami_id', auth()->user()->getNamiGroupId())->firstOrFail()->id]);
-        $m = Member::create($this->input());
+        $member = Member::create($this->input());
+        if($this->input('has_nami')) {
+            CreateJob::dispatch($member, auth()->user());
+        }
     }
 
     public function persistUpdate(Member $member) {
@@ -70,6 +73,9 @@ class MemberRequest extends FormRequest
         }
         if($this->input('has_nami') && $member->nami_id !== null) {
             UpdateJob::dispatch($member, auth()->user());
+        }
+        if(!$this->input('has_nami') && $member->nami_id !== null) {
+            DeleteJob::dispatch($member, auth()->user());
         }
     }
 }
