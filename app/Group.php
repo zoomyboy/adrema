@@ -11,4 +11,8 @@ class Group extends Model
 
     public $fillable = ['nami_id', 'name'];
     public $timestamps = false;
+
+    public static function nami($id) {
+        return static::firstWhere('nami_id', $id);
+    }
 }

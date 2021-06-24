@@ -18,4 +18,8 @@ class Activity extends Model
     public function subactivities() {
         return $this->belongsToMany(Subactivity::class);
     }
+
+    public static function nami($id) {
+        return static::firstWhere('nami_id', $id);
+    }
 }

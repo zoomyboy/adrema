@@ -9,6 +9,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
 use App\Confession;
+use App\Group;
+use App\Activity;
 
 class CreateJob implements ShouldQueue
 {
@@ -37,7 +39,7 @@ class CreateJob implements ShouldQueue
             return false;
         }
 
-        $response = Nami::login($this->user->mglnr)->putMember([
+        $response = $this->user->api()->putMember([
             'firstname' => $this->member->firstname,
             'lastname' => $this->member->lastname,
             'nickname' => $this->member->nickname,
@@ -70,5 +72,16 @@ class CreateJob implements ShouldQueue
             $version = Nami::login($this->user->mglnr)->member($this->member->group->nami_id, $response['id'])['version'];
             $this->member->update(['version' => $version, 'nami_id' => $response['id']]);
         });
+
+        $memberships = $this->member->getNamiMemberships($this->user->api());
+        foreach ($memberships as $membership) {
+            $this->member->memberships()->create([
+                'activity_id' => Activity::nami($membership['activity_id'])->id, 
+                'group_id' => Group::nami($membership['group_id'])->id,
+                'nami_id' => $membership['id'],
+                'created_at' => $membership['starts_at'],
+            ]);
+        }
+
     }
 }

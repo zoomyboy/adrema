@@ -12,6 +12,7 @@ use App\Fee;
 use App\Group;
 use App\Activity;
 use App\Subactivity;
+use Zoomyboy\LaravelNami\NamiUser;
 
 class Member extends Model
 {
@@ -88,7 +89,7 @@ class Member extends Model
 
     public function memberships()
     {
-        return $this->hasMany(App\Membership::class);
+        return $this->hasMany(Membership::class);
     }
 
     public function fee()
@@ -119,4 +120,9 @@ class Member extends Model
             }
         });
     }
+
+    public function getNamiMemberships($api) {
+        return $api->group($this->group->nami_id)->member($this->nami_id)->memberships()->toArray();
+    }
+
 }
