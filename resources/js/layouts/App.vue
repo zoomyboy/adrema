@@ -48,8 +48,8 @@ export default {
     computed: {
         isearch: {
             set: debounce(function(v) {
-                this.$inertia.visit(this.qs({ search: v }), {
-                    only: ['search', 'data'],
+                this.$inertia.visit(this.qs({ page: 1, search: v }), {
+                    only: ['page', 'search', 'data'],
                     preserveState: true,
                 });
             }, 500),
