@@ -60,7 +60,7 @@ class MemberController extends Controller
 
     public function edit(Member $member, Request $request) {
         session()->put('menu', 'member');
-        session()->put('title', 'Mitglied bearbeiten');
+        session()->put('title', "Mitglied {$member->firstname} {$member->lastname} bearbeiten");
 
         return \Inertia::render('member/Form', [
             'billKinds' => BillKind::get()->pluck('name', 'id'),
