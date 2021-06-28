@@ -33,9 +33,10 @@
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Kontakt'">
-                <f-text id="main_phone" v-model="inner.main_phone" label="Telefon"></f-text>
-                <f-text id="mobile_phone" v-model="inner.mobile_phone" label="Handy"></f-text>
-                <f-text id="work_phone" v-model="inner.work_phone" label="Tel geschäftlich"></f-text>
+                <f-text id="main_phone" v-model="inner.main_phone" label="Telefon (Eltern)"></f-text>
+                <f-text id="mobile_phone" v-model="inner.mobile_phone" label="Handy (Eltern)"></f-text>
+                <f-text id="work_phone" v-model="inner.work_phone" label="Tel geschäftlich (Eltern)"></f-text>
+                <f-text id="children_phone" v-model="inner.children_phone" label="Telefon (Kind)"></f-text>
                 <f-text id="email" v-model="inner.email" label="E-Mail"></f-text>
                 <f-text id="email_parents" v-model="inner.email_parents" label="E-Mail eltern"></f-text>
                 <f-text id="fax" v-model="inner.fax" label="Fax"></f-text>

@@ -45,6 +45,7 @@ class MemberResource extends JsonResource
             'bill_kind_name' => optional($this->billKind)->name,
             'has_nami' => $this->nami_id !== null,
             'is_confirmed' => $this->is_confirmed,
+            'children_phone' => $this->children_phone,
         ];
     }
 }
