@@ -22,7 +22,7 @@ class MemberController extends Controller
         session()->put('title', 'Mitglieder');
 
         return \Inertia::render('member/Index', [
-            'data' => MemberResource::collection(Member::search($request->query('search', null))->with('billKind')->paginate(15)),
+            'data' => MemberResource::collection(Member::select('*')->search($request->query('search', null))->with('billKind')->withIsConfirmed()->paginate(15)),
             'toolbar' => [ ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'] ],
         ]);
     }

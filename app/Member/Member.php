@@ -19,7 +19,7 @@ class Member extends Model
     use Notifiable;
     use HasFactory;
 
-    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id', 'version', 'first_subactivity_id', 'first_activity_id'];
+    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'fee_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id', 'version', 'first_subactivity_id', 'first_activity_id', 'confirmed_at'];
 
     public $dates = ['joined_at', 'birthday'];
 
@@ -31,6 +31,7 @@ class Member extends Model
         'region_id' => 'integer',
         'confession_id' => 'integer',
         'nami_id' => 'integer',
+        'is_confirmed' => 'boolean',
     ];
 
     public function scopeSearch($q, $text) {
@@ -49,6 +50,10 @@ class Member extends Model
 
     public function getHasNamiAttribute() {
         return $this->nami_id !== null;
+    }
+
+    public function getNamiMemberships($api) {
+        return $api->group($this->group->nami_id)->member($this->nami_id)->memberships()->toArray();
     }
 
     //---------------------------------- Relations ----------------------------------
@@ -121,8 +126,9 @@ class Member extends Model
         });
     }
 
-    public function getNamiMemberships($api) {
-        return $api->group($this->group->nami_id)->member($this->nami_id)->memberships()->toArray();
+    // ---------------------------------- Scopes -----------------------------------
+    public function scopeWithIsConfirmed($q) {
+        $q->selectSub('DATEDIFF(NOW(), IFNULL(confirmed_at, DATE_SUB(NOW(), INTERVAL 3 YEAR))) < 712', 'is_confirmed');
     }
 
 }

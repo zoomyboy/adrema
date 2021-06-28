@@ -6,7 +6,8 @@
                 <a v-for="item, index in menu" :key="index" href="#" @click.prevent="openMenu(index)" class="rounded py-1 px-3 text-gray-400" :class="index == active ? `bg-gray-600` : ''" v-text="item.title"></a>
             </div>
             <div>
-                <button type="submit" class="btn block w-full btn-primary">Speichern</button>
+                <button type="button" v-show="mode !== 'create'" @click.prevent="confirm" class="btn block w-full btn-primary">Daten bestätigen</button>
+                <button type="submit" class="mt-3 btn block w-full btn-primary">Speichern</button>
             </div>
         </div>
 
@@ -85,6 +86,9 @@ export default {
     },
 
     methods: {
+        confirm() {
+            this.$inertia.post(`/member/${this.inner.id}/confirm`);
+        },
         openMenu(index) {
             this.active = index;
         },
