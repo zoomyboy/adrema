@@ -3,7 +3,7 @@
         <!-- ****************************** menu links ******************************* -->
         <div class="p-6 bg-gray-700 border-r border-gray-600 flex-none w-maxc flex flex-col justify-between">
             <div class="grid gap-1">
-                <a v-for="item, index in menu" :key="index" href="#" @click.prevent="openMenu(index)" class="rounded py-1 px-3 text-gray-400" :class="index == active ? `bg-gray-600` : ''" v-text="item.title"></a>
+                <a v-for="item, index in menu" :key="index" href="#" :data-cy="`menu-${item.id}`" @click.prevent="openMenu(index)" class="rounded py-1 px-3 text-gray-400" :class="index == active ? `bg-gray-600` : ''" v-text="item.title"></a>
             </div>
             <div>
                 <button type="button" v-show="mode !== 'create'" @click.prevent="confirm" class="btn block w-full btn-primary">Daten bestätigen</button>
@@ -64,10 +64,10 @@ export default {
             inner: {},
             active: 0,
             menu: [
-                { title: 'Stammdaten' },
-                { title: 'Kontakt' },
-                { title: 'System' },
-                { title: 'Sonstiges' },
+                { id: 'stammdaten', title: 'Stammdaten' },
+                { id: 'kontakt', title: 'Kontakt' },
+                { id: 'system', title: 'System' },
+                { id: 'sonstiges', title: 'Sonstiges' },
             ]
         };
     },
