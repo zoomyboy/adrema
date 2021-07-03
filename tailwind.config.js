@@ -28,6 +28,14 @@ module.exports = {
             gray: colors.gray,
             white: colors.white,
             red: colors.red,
+            blue: {
+                500: colors.blue[500],
+                700: colors.blue[700],
+            },
+            yellow: {
+                500: colors.yellow[500],
+                700: colors.yellow[700],
+            },
             green: {
                 100: colors.green[100],
                 800: colors.green[800],

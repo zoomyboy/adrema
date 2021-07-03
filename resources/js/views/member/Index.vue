@@ -13,9 +13,10 @@
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Rechnung</div>
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Geburtstag</div>
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Eintritt</div>
+                <div class="px-6 py-3 border-gray-600 border-b"></div>
             </header>
 
-            <inertia-link :href="`/member/${member.id}/edit`" :key="index" v-for="member, index in data.data" class="text-gray-200 transition-all duration-500 rounded flex hover:bg-gray-600">
+            <div v-for="member, index in data.data" class="text-gray-200 transition-all duration-300 rounded flex items-center hover:bg-gray-800">
                 <div class="py-1 px-6" v-text="member.firstname"></div>
                 <div class="py-1 px-6" v-text="member.lastname"></div>
                 <div class="py-1 px-6" v-text="`${member.address}`"></div>
@@ -36,7 +37,11 @@
                 </div>
                 <div class="py-1 px-6" v-text="`${member.birthday_human}`"></div>
                 <div class="py-1 px-6" v-text="`${member.joined_at_human}`"></div>
-            </inertia-link>
+                <div class="py-1 px-6 flex">
+                    <inertia-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
+                    <inertia-link :href="`/member/${member.id}/payment`" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></inertia-link>
+                </div>
+            </div>
 
         </div>
 
