@@ -28,6 +28,10 @@ module.exports = {
             gray: colors.gray,
             white: colors.white,
             red: colors.red,
+            green: {
+                100: colors.green[100],
+                800: colors.green[800],
+            }
         }
     },
     corePlugins: {
