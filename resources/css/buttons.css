@@ -1,0 +1,25 @@
+.btn {
+    @apply px-3 py-2 uppercase no-underline text-sm rounded text-white;
+    svg {
+
+    }
+
+    &.btn-sm {
+        @apply text-xs !important;
+        svg {
+        }
+    }
+    &.btn-primary {
+        @apply bg-primary-700;
+        &:hover {
+            @apply bg-primary-500;
+        }
+    }
+    &.btn-danger {
+        @apply bg-red-700;
+        &:hover {
+            @apply bg-red-500;
+        }
+    }
+}
+

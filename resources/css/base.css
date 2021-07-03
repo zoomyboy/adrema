@@ -34,37 +34,6 @@
     @apply form-control-font;
 }
 
-.btn {
-    @apply px-3 py-2 uppercase no-underline text-sm rounded text-white;
-}
-.btn-sm {
-    @apply text-xs !important;
-}
-.btnp-0 {
-    padding: 0 !important;
-}
-.btn-primary {
-    @apply bg-primary;
-}
-.btn-primary:hover {
-    @apply bg-primary-light;
-}
-.btn-danger {
-    @apply bg-danger;
-}
-.btn-danger:hover {
-    @apply bg-danger-light;
-}
-.btn-default {
-    @apply bg-gray-600;
-}
-.btn-primary-light {
-    @apply bg-primary-light;
-}
-.btn-default:hover {
-    @apply bg-gray-600;
-}
-
 .field-wrapper {
     @apply flex flex-col;
 }

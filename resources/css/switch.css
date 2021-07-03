@@ -7,6 +7,10 @@
     --xs-margin: 0.2rem;
 }
 
+.bg-switch {
+    @apply bg-primary-700;
+}
+
 .field-switch {
     input:checked + span {
         transition: background 0.3s;

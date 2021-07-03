@@ -1,0 +1,12 @@
+--ignore-dir=vendor/composer
+--ignore-dir=public/js
+--ignore-dir=public/vendor
+--ignore-dir=vendor
+--ignore-dir=public/css
+--ignore-dir=storage/debugbar
+--type-set=tags:is:tags
+--type-set=log:ext:log
+--type-set=packagelock:is:package-lock.json
+--notags
+--nolog
+--nopackagelock
