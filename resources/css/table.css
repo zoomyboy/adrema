@@ -1,0 +1,10 @@
+.custom-table {
+    display: table;
+    width: 100%;
+}
+.custom-table > * {
+    display: table-row;
+}
+.custom-table > * > * {
+    display: table-cell;
+}

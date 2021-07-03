@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="member-table">
+        <div class="custom-table">
             <header>
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Nachname</div>
                 <div class="px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b">Vorname</div>
@@ -63,15 +63,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.member-table {
-    display: table;
-    width: 100%;
-}
-.member-table > * {
-    display: table-row;
-}
-.member-table > * > * {
-    display: table-cell;
-}
-</style>
