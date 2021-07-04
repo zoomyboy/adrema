@@ -50,7 +50,7 @@
                 <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin"></f-switch>
                 <f-text class="col-span-2" type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum"></f-text>
                 <f-select class="col-span-2" :options="confessions" id="confession_id" v-model="inner.confession_id" label="Konfession"></f-select>
-                <f-select class="col-span-2" :options="fees" id="fee_id" v-model="inner.fee_id" label="Beitrag"></f-select>
+                <f-select class="col-span-2" :options="subscriptions" id="subscription_id" v-model="inner.subscription_id" label="Beitrag"></f-select>
                 <f-textarea class="col-span-2" rows="4" id="letter_address" v-model="inner.letter_address" label="Brief-Adresse"></f-textarea>
             </div>
         </div>
@@ -77,7 +77,7 @@ export default {
         activities: {},
         mode: {},
         genders: {},
-        fees: {},
+        subscriptions: {},
         data: {},
         regions: {},
         countries: {},

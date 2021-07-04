@@ -22,6 +22,15 @@ class InitializeMembers {
         $this->api = $api;
     }
 
+    public function getSubscriptionId($member) {
+        $fee = Fee::firstWhere('nami_id', $member->fee_id ?: -1);
+        if (is_null($fee)) {
+            return null;
+        }
+
+        return optional($fee->subscriptions()->first())->id;
+    }
+
     public function handle() {
         $allMembers = collect([]);
 
@@ -52,7 +61,7 @@ class InitializeMembers {
                     'confession_id' => optional(Confession::firstWhere('nami_id', $member->confession_id ?: -1))->id,
                     'region_id' => optional(Region::firstWhere('nami_id', $member->region_id ?: -1))->id,
                     'country_id' => Country::where('nami_id', $member->country_id)->firstOrFail()->id,
-                    'fee_id' => optional(Fee::firstWhere('nami_id', $member->fee_id ?: -1))->id,
+                    'subscription_id' => $this->getSubscriptionId($member),
                     'nationality_id' => Nationality::where('nami_id', $member->nationality_id)->firstOrFail()->id,
                     'version' => $member->version,
                 ]);

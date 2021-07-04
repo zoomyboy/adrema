@@ -60,7 +60,7 @@ class UpdateJob implements ShouldQueue
             'confession_id' => $this->member->confession ? $this->member->confession->nami_id : Confession::firstWhere('is_null', true)->id,
             'region_id' => optional($this->member->region)->nami_id,
             'country_id' => $this->member->country->nami_id,
-            'fee_id' => optional($this->member->fee)->nami_id,
+            'fee_id' => $this->member->getNamiFeeId(),
             'nationality_id' => $this->member->nationality->nami_id,
             'id' => $this->member->nami_id,
             'group_id' => $this->member->group->nami_id,

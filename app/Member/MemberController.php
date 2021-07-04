@@ -5,7 +5,6 @@ namespace App\Member;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Gender;
-use App\Fee;
 use App\Region;
 use App\Country;
 use App\Nationality;
@@ -13,6 +12,7 @@ use App\Confession;
 use App\Bill\BillKind;
 use App\Activity;
 use App\Group;
+use App\Payment\Subscription;
 
 class MemberController extends Controller
 {
@@ -44,7 +44,7 @@ class MemberController extends Controller
             'regions' => Region::where('is_null', false)->get()->pluck('name', 'id'),
             'nationalities' => Nationality::get()->pluck('name', 'id'),
             'confessions' => Confession::where('is_null', false)->get()->pluck('name', 'id'),
-            'fees' => Fee::get()->pluck('name', 'id'),
+            'subscriptions' => Subscription::get()->pluck('name', 'id'),
             'data' => [
                 'country_id' => Country::default()
             ],
@@ -69,7 +69,7 @@ class MemberController extends Controller
             'regions' => Region::where('is_null', false)->get()->pluck('name', 'id'),
             'nationalities' => Nationality::get()->pluck('name', 'id'),
             'confessions' => Confession::where('is_null', false)->get()->pluck('name', 'id'),
-            'fees' => Fee::get()->pluck('name', 'id'),
+            'subscriptions' => Subscription::get()->pluck('name', 'id'),
             'data' => new MemberResource($member),
             'mode' => 'edit',
         ]);

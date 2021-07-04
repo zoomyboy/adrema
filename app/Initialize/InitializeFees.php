@@ -15,7 +15,11 @@ class InitializeFees {
     public function handle() {
         $this->bar->task('Synchronisiere Beiträge', function() {
             $this->api->group(auth()->user()->getNamiGroupId())->fees()->each(function($fee) {
-                \App\Fee::create(['nami_id' => $fee->id, 'name' => $fee->name]);
+                \App\Fee::create(['nami_id' => $fee->id, 'name' => $fee->name])
+                    ->subscriptions()->create([
+                        'name' => $fee->name,
+                        'amount' => 1000,
+                    ]);
             });
         });
     }
