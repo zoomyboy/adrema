@@ -1,0 +1,26 @@
+.bool {
+    @apply rounded-full text-xs w-5 h-5 flex items-center justify-center leading-none;
+    &.enabled {
+        @apply bg-green-800 text-red-100;
+    }
+    &.disabled {
+        @apply bg-red-800 text-green-100;
+    }
+    svg {
+        @apply w-2 h-2;
+    }
+}
+
+
+.bool-row {
+    @apply flex;
+    .bool {
+        @apply rounded-none;
+        &:last-child {
+            @apply rounded-r-full;
+        }
+        &:first-child {
+            @apply rounded-l-full;
+        }
+    }
+}

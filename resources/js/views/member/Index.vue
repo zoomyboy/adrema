@@ -8,9 +8,7 @@
                 <div>Straße</div>
                 <div>PLZ</div>
                 <div>Ort</div>
-                <div>Mittendrin</div>
-                <div>Nami</div>
-                <div>Check</div>
+                <div>Tags</div>
                 <div>Rechnung</div>
                 <div>Geburtstag</div>
                 <div>Eintritt</div>
@@ -24,13 +22,11 @@
                 <div v-text="`${member.zip}`"></div>
                 <div v-text="`${member.location}`"></div>
                 <div>
-                    <v-bool v-model="member.send_newspaper"></v-bool>
-                </div>
-                <div>
-                    <v-bool v-model="member.has_nami"></v-bool>
-                </div>
-                <div>
-                    <v-bool v-model="member.is_confirmed"></v-bool>
+                    <div class="bool-row">
+                        <v-bool v-model="member.send_newspaper">M</v-bool>
+                        <v-bool v-model="member.has_nami">N</v-bool>
+                        <v-bool v-model="member.is_confirmed">C</v-bool>
+                    </div>
                 </div>
                 <div>
                     <div class="py-1 rounded-full flex text-xs items-center justify-center leading-none bg-primary-900" v-text="member.bill_kind_name" v-if="member.bill_kind_name"></div>
