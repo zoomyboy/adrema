@@ -12,7 +12,7 @@ use App\Payment\PaymentResource;
 class MemberView {
     public function index(Request $request) {
         return [
-            'data' => MemberResource::collection(Member::select('*')->search($request->query('search', null))->with('billKind')->withSubscriptionName()->withIsConfirmed()->orderByRaw('lastname, firstname')->paginate(15)),
+            'data' => MemberResource::collection(Member::select('*')->search($request->query('search', null))->with('billKind')->withSubscriptionName()->withIsConfirmed()->withPendingPayment()->orderByRaw('lastname, firstname')->paginate(15)),
             'toolbar' => [ ['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus'] ]
         ];
     }

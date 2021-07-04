@@ -25,6 +25,7 @@ class Member extends Model
     public $dates = ['joined_at', 'birthday'];
 
     public $casts = [
+        'pending_payment' => 'integer',
         'send_newspaper' => 'boolean',
         'gender_id' => 'integer',
         'way_id' => 'integer',
@@ -147,6 +148,15 @@ class Member extends Model
     public function scopeWithSubscriptionName($q) {
         return $q->addSelect([
             'subscription_name' => Subscription::select('name')->whereColumn('subscriptions.id', 'members.subscription_id')->limit(1)
+        ]);
+    }
+
+    public function scopeWithPendingPayment($q) {
+        return $q->addSelect([
+            'pending_payment' => Payment::selectRaw('SUM(subscriptions.amount)')
+                ->whereColumn('payments.member_id', 'members.id')
+                ->whereNeedsPayment()
+                ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')
         ]);
     }
 

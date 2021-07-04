@@ -49,6 +49,7 @@ class MemberResource extends JsonResource
             'is_confirmed' => $this->is_confirmed,
             'children_phone' => $this->children_phone,
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),
+            'pending_payment' => $this->pending_payment ? number_format($this->pending_payment / 100, 2, ',', '.').' €' : null,
         ];
     }
 }

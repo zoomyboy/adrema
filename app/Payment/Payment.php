@@ -25,4 +25,10 @@ class Payment extends Model
     public function status() {
         return $this->belongsTo(Status::class);
     }
+
+    public function scopeWhereNeedsPayment($q) {
+        return $q->whereHas('status', function($q) {
+            return $q->needsPayment();
+        });
+    }
 }

@@ -10,8 +10,9 @@
                 <div>Ort</div>
                 <div>Tags</div>
                 <div>Beitrag</div>
-                <div>Rechnung</div>
                 <div>Geburtstag</div>
+                <div>Rechnung</div>
+                <div>Ausstand</div>
                 <div>Eintritt</div>
                 <div></div>
             </header>
@@ -30,11 +31,18 @@
                     </div>
                 </div>
                 <div v-text="member.subscription_name"></div>
-                <div>
-                    <div class="py-1 rounded-full flex text-xs items-center justify-center leading-none bg-primary-900" v-text="member.bill_kind_name" v-if="member.bill_kind_name"></div>
-                    <div class="py-1 rounded-full flex text-xs items-center justify-center leading-none" v-else>Kein</div>
-                </div>
                 <div v-text="`${member.birthday_human}`"></div>
+                <div>
+                    <div class="flex justify-center">
+                        <div class="btn btn-sm label primary" v-text="member.bill_kind_name" v-if="member.bill_kind_name"></div>
+                        <div class="text-xs" v-else>Kein</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-center">
+                        <div class="btn btn-sm label primary" v-show="member.pending_payment" v-text="member.pending_payment"></div>
+                    </div>
+                </div>
                 <div v-text="`${member.joined_at_human}`"></div>
                 <div class="flex">
                     <inertia-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>

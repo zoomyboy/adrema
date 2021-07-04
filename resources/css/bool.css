@@ -1,5 +1,8 @@
 .bool {
-    @apply rounded-full text-xs w-5 h-5 flex items-center justify-center leading-none;
+    @apply rounded-full w-5 h-5 text-xs flex items-center justify-center leading-none;
+    &.bool-inline {
+        @apply w-auto;
+    }
     &.enabled {
         @apply bg-green-800 text-red-100;
     }

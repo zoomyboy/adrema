@@ -5,7 +5,7 @@
     }
 
     &.btn-sm {
-        @apply text-xs w-6 h-6 px-1 py-1;
+        @apply text-xs px-2 py-1;
         svg {
             @apply w-3 h-3 text-primary-100 flex-none;
         }

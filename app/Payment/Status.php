@@ -24,4 +24,11 @@ class Status extends Model
     public function isAccepted() {
         return $this->is_bill === false && $this->is_remember === false;
     }
+
+    // ---------------------------------- Scopes -----------------------------------
+    public function scopeNeedsPayment($q) {
+        return $q->where(function($q) {
+            $q->where('is_bill', true)->orWhere('is_remember', true);
+        });
+    }
 }
