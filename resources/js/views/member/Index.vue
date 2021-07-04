@@ -39,6 +39,7 @@
                 <div class="flex">
                     <inertia-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
                     <inertia-link :href="`/member/${member.id}/payment`" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></inertia-link>
+                    <inertia-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
                 </div>
             </div>
 
@@ -62,9 +63,18 @@ import Payments from './Payments.vue';
 import PaymentForm from './PaymentForm.vue';
 
 export default {
+
     layout: App,
 
     components: { Payments, PaymentForm },
+
+    methods: {
+        remove(member) {
+            if (window.confirm('Mitglied löschen?')) {
+                this.$inertia.delete(`/member/${member.id}`);
+            }
+        }
+    },
 
     props:{
         data: {},

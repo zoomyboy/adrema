@@ -14,6 +14,7 @@ use App\Activity;
 use App\Group;
 use App\Payment\Subscription;
 use App\Http\Views\MemberView;
+use App\Member\DeleteJob;
 
 class MemberController extends Controller
 {
@@ -80,5 +81,15 @@ class MemberController extends Controller
         $request->persistUpdate($member);
 
         return redirect()->route('member.index');
+    }
+
+    public function destroy(Member $member) {
+        if ($member->has_nami) {
+            DeleteJob::dispatch($member, auth()->user());
+        }
+
+        $member->delete();
+
+        return redirect()->back();
     }
 }

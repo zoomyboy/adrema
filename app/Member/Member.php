@@ -133,6 +133,10 @@ class Member extends Model
                 $model->bill_kind_id = null;
             }
         });
+
+        static::deleting(function($model) {
+            $model->payments->each->delete();
+        });
     }
 
     // ---------------------------------- Scopes -----------------------------------
