@@ -1,8 +1,5 @@
 .btn {
-    @apply px-3 py-2 uppercase no-underline text-sm text-white items-center justify-center bg-primary-700 rounded;
-    svg {
-
-    }
+    @apply px-3 py-2 uppercase no-underline text-sm items-center justify-center bg-primary-700 rounded;
 
     &.btn-sm {
         @apply text-xs px-2 py-1;
@@ -11,15 +8,15 @@
         }
     }
     &.btn-primary {
-        @apply bg-primary-700;
+        @apply bg-primary-700 text-primary-300;
         &:hover {
-            @apply bg-primary-500;
+            @apply bg-primary-500 text-primary-100;
         }
     }
     &.btn-primary-light {
-        @apply bg-primary-600 text-primary-800;
+        @apply bg-primary-600 text-primary-200;
         &:hover {
-            @apply bg-primary-500 text-primary-700;
+            @apply bg-primary-500 text-primary-100;
         }
     }
     &.btn-warning {
@@ -42,19 +39,13 @@
     }
 
     &.label {
-        @apply rounded-full leading-none transition-all normal-case;
-        &.primary {
-            @apply bg-primary-800 text-primary-500;
-            &:hover {
-                @apply text-primary-400 bg-primary-700;
-            }
-        }
+        @apply py-0 h-6 flex justify-center items-center rounded-full leading-none transition-all normal-case;
     }
 
     &.icon {
         @apply p-0 flex justify-center items-center w-6 h-6;
         svg {
-            @apply w-3 h-3 text-primary-100 flex-none;
+            @apply w-3 h-3 flex-none;
         }
     }
 }
