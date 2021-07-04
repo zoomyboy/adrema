@@ -154,4 +154,14 @@ class Member extends Model
         ]);
     }
 
+    public function scopePayable($q) {
+        $q->where('bill_kind_id', '!=', null)->where('subscription_id', '!=', null);
+    }
+
+    public function scopeWhereNoPayment($q, $year) {
+        return $q->whereDoesntHave('payments', function($q) use ($year) {
+            return $q->where('nr', '=', $year);
+        });
+    }
+
 }

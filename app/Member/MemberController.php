@@ -24,7 +24,10 @@ class MemberController extends Controller
         session()->put('title', 'Mitglieder');
 
         $payload = app(MemberView::class)->index($request);
-        $payload['toolbar'] = [ ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'] ];
+        $payload['toolbar'] = [
+            ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'],
+            ['href' => route('allpayment.create'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'plus']
+        ];
 
         return \Inertia::render('member/Index', $payload);
     }
