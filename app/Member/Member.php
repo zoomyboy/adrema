@@ -129,12 +129,6 @@ class Member extends Model
     }
 
     public static function booted() {
-        static::updating(function($model) {
-            if ($model->nami_id === null) {
-                $model->bill_kind_id = null;
-            }
-        });
-
         static::deleting(function($model) {
             $model->payments->each->delete();
         });
