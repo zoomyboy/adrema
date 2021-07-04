@@ -16,6 +16,7 @@
                 <div v-text="payment.subscription_name"></div>
                 <div class="flex">
                     <inertia-link :href="`/member/${value.data.id}/payment/${payment.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
+                    <inertia-link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><sprite src="check"></sprite></inertia-link>
                     <inertia-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
                 </div>
             </div>
@@ -32,6 +33,10 @@ export default {
     methods: {
         remove(payment) {
             this.$inertia.delete(`/member/${this.value.data.id}/payment/${payment.id}`);
+        },
+
+        accept(payment) {
+            this.$inertia.patch(`/member/${this.value.data.id}/payment/${payment.id}`, { ...payment, status_id: 3 });
         }
     },
 

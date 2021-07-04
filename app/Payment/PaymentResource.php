@@ -21,6 +21,7 @@ class PaymentResource extends JsonResource
             'status_id' => $this->status->id,
             'nr' => $this->nr,
             'id' => $this->id,
+            'is_accepted' => $this->status->isAccepted(),
         ];
     }
 }
