@@ -1,6 +1,39 @@
 .custom-table {
     display: table;
     width: 100%;
+    & > header > div {
+        @apply px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b;
+    }
+
+    & > div {
+        @apply text-gray-200 transition-all duration-300 rounded hover:bg-gray-800;
+        & > div {
+            @apply py-1 px-6;
+        }
+    }
+
+    &.custom-table-sm {
+        & > header > div {
+            @apply px-3 py-2;
+        }
+        & > div {
+            & > div {
+                @apply py-1 px-3;
+            }
+        }
+    }
+
+    &.custom-table-light {
+        & > header > div {
+            @apply border-gray-500;
+        }
+        & > div {
+            &:hover {
+                @apply bg-gray-700;
+            }
+        }
+    }
+
 }
 .custom-table > * {
     display: table-row;

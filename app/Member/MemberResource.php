@@ -3,6 +3,7 @@
 namespace App\Member;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Payment\PaymentResource;
 
 class MemberResource extends JsonResource
 {
@@ -46,6 +47,7 @@ class MemberResource extends JsonResource
             'has_nami' => $this->nami_id !== null,
             'is_confirmed' => $this->is_confirmed,
             'children_phone' => $this->children_phone,
+            'payments' => PaymentResource::collection($this->whenLoaded('payments')),
         ];
     }
 }

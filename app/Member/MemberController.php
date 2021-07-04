@@ -13,6 +13,7 @@ use App\Bill\BillKind;
 use App\Activity;
 use App\Group;
 use App\Payment\Subscription;
+use App\Http\Views\MemberView;
 
 class MemberController extends Controller
 {
@@ -21,10 +22,10 @@ class MemberController extends Controller
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
 
-        return \Inertia::render('member/Index', [
-            'data' => MemberResource::collection(Member::select('*')->search($request->query('search', null))->with('billKind')->withIsConfirmed()->paginate(15)),
-            'toolbar' => [ ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'] ],
-        ]);
+        $payload = app(MemberView::class)->index($request);
+        $payload['toolbar'] = [ ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'] ];
+
+        return \Inertia::render('member/Index', $payload);
     }
 
     public function create() {

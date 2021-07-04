@@ -13,6 +13,7 @@ use App\Activity;
 use App\Subactivity;
 use Zoomyboy\LaravelNami\NamiUser;
 use App\Payment\Subscription;
+use App\Payment\Payment;
 
 class Member extends Model
 {
@@ -87,7 +88,7 @@ class Member extends Model
 
     public function payments()
     {
-        return $this->hasMany(\App\Payment::class)->orderBy('nr');
+        return $this->hasMany(Payment::class)->orderBy('nr');
     }
 
     public function way()
