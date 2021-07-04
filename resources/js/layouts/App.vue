@@ -15,9 +15,9 @@
         <div class="flex-grow ml-56 bg-gray-900 flex flex-col">
             <div class="h-16 px-6 flex justify-between items-center border-b border-gray-600">
                 <div class="flex">
-                    <span class="text-xl font-semibold text-white" v-html="$page.props.title"></span>
+                    <span class="text-xl font-semibold text-white leading-none" v-html="$page.props.title"></span>
                     <div class="flex ml-4">
-                        <inertia-link v-for="link, index in $page.props.toolbar" :key="index" :href="link.href" v-text="link.label" class="btn label mr-2" :class="link.color">
+                        <inertia-link v-for="link, index in $page.props.toolbar" :key="index" :href="link.href" v-text="link.label" class="btn label btn-primary mr-2" :class="link.color">
                             <sprite :src="link.icon"></sprite>
                         </inertia-link>
                     </div>

@@ -40,7 +40,9 @@ class MemberView {
     public function paymentIndex($member) {
         return $this->additional($member, [
             'model' => null,
-            'links' => [ ['label' => 'Zahlung hinzufügen', 'href' => route('member.payment.create', ['member' => $member]) ] ],
+            'links' => [
+                ['icon' => 'plus', 'href' => route('member.payment.create', ['member' => $member]) ],
+            ],
             'mode' => 'index',
         ]);
     }
