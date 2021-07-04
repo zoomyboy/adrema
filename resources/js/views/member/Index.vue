@@ -9,6 +9,7 @@
                 <div>PLZ</div>
                 <div>Ort</div>
                 <div>Tags</div>
+                <div>Beitrag</div>
                 <div>Rechnung</div>
                 <div>Geburtstag</div>
                 <div>Eintritt</div>
@@ -28,6 +29,7 @@
                         <v-bool v-model="member.is_confirmed">C</v-bool>
                     </div>
                 </div>
+                <div v-text="member.subscription_name"></div>
                 <div>
                     <div class="py-1 rounded-full flex text-xs items-center justify-center leading-none bg-primary-900" v-text="member.bill_kind_name" v-if="member.bill_kind_name"></div>
                     <div class="py-1 rounded-full flex text-xs items-center justify-center leading-none" v-else>Kein</div>
