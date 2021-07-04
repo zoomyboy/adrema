@@ -154,6 +154,12 @@ class Member extends Model
         ]);
     }
 
+    public function scopeWhereHasPendingPayment($q) {
+        return $q->whereHas('payments', function($q) {
+            return $q->whereNeedsPayment();
+        });
+    }
+
     public function scopePayable($q) {
         $q->where('bill_kind_id', '!=', null)->where('subscription_id', '!=', null);
     }
@@ -162,6 +168,10 @@ class Member extends Model
         return $q->whereDoesntHave('payments', function($q) use ($year) {
             return $q->where('nr', '=', $year);
         });
+    }
+
+    public function scopeForDashboard($q) {
+        return $q->selectRaw('SUM(id)');
     }
 
 }
