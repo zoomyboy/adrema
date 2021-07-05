@@ -66,7 +66,7 @@ class MemberRequest extends FormRequest
     }
 
     public function persistUpdate(Member $member) {
-        $member->update(Arr::except($this->input(), ['first_activity_id', 'first_subactivity_id']));
+        $member->update($this->input());
 
         if($this->input('has_nami') && $member->nami_id === null) {
             CreateJob::dispatch($member, auth()->user());
