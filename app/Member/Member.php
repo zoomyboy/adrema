@@ -14,6 +14,12 @@ use App\Subactivity;
 use Zoomyboy\LaravelNami\NamiUser;
 use App\Payment\Subscription;
 use App\Payment\Payment;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Confession;
+use App\Region;
+use Zoomyboy\LaravelNami\Api;
 
 class Member extends Model
 {
@@ -36,7 +42,7 @@ class Member extends Model
         'is_confirmed' => 'boolean',
     ];
 
-    public function scopeSearch($q, $text) {
+    public function scopeSearch(Builder $q, string $text): Builder {
         return $q->where('firstname', 'LIKE', '%'.$text.'%')
              ->orWhere('lastname', 'LIKE', '%'.$text.'%')
              ->orWhere('address', 'LIKE', '%'.$text.'%')
@@ -46,19 +52,19 @@ class Member extends Model
 
 
     //----------------------------------- Getters -----------------------------------
-    public function getFullnameAttribute() {
+    public function getFullnameAttribute(): string {
         return $this->firstname.' '.$this->lastname;
     }
 
-    public function getHasNamiAttribute() {
+    public function getHasNamiAttribute(): bool {
         return $this->nami_id !== null;
     }
 
-    public function getNamiMemberships($api) {
+    public function getNamiMemberships(Api $api): string {
         return $api->group($this->group->nami_id)->member($this->nami_id)->memberships()->toArray();
     }
 
-    public function getNamiFeeId() {
+    public function getNamiFeeId(): ?int {
         if (!$this->subscription) {
             return null;
         }
@@ -67,85 +73,72 @@ class Member extends Model
     }
 
     //---------------------------------- Relations ----------------------------------
-    public function country()
-    {
+    public function country(): BelongsTo {
         return $this->belongsTo(\App\Country::class);
     }
 
-    public function gender()
-    {
+    public function gender(): BelongsTo {
         return $this->belongsTo(\App\Gender::class);
     }
 
-    public function region()
-    {
-        return $this->belongsTo(\App\Region::class);
+    public function region(): BelongsTo {
+        return $this->belongsTo(Region::class);
     }
 
-    public function confession()
-    {
-        return $this->belongsTo(\App\Confession::class);
+    public function confession(): BelongsTo {
+        return $this->belongsTo(Confession::class);
     }
 
-    public function payments()
-    {
+    public function payments(): HasMany {
         return $this->hasMany(Payment::class)->orderBy('nr');
     }
 
-    public function way()
-    {
-        return $this->belongsTo(App\Way::class);
-    }
-
-    public function nationality()
-    {
+    public function nationality(): BelongsTo {
         return $this->belongsTo(Nationality::class);
     }
 
-    public function memberships()
-    {
+    public function memberships(): HasMany {
         return $this->hasMany(Membership::class);
     }
 
-    public function subscription()
-    {
+    public function subscription(): BelongsTo {
         return $this->belongsTo(Subscription::class);
     }
 
-    public function billKind() {
+    public function billKind(): BelongsTo {
         return $this->belongsTo(BillKind::class);
     }
 
-    public function group() {
+    public function group(): BelongsTo {
         return $this->belongsTo(Group::class);
     }
 
-    public function firstActivity() {
+    public function firstActivity(): BelongsTo {
         return $this->belongsTo(Activity::class, 'first_activity_id');
     }
 
-    public function firstSubActivity() {
+    public function firstSubActivity(): BelongsTo {
         return $this->belongsTo(Subactivity::class, 'first_subactivity_id');
     }
 
     public static function booted() {
-        static::deleting(function($model) {
+        static::deleting(function(self $model): void {
             $model->payments->each->delete();
         });
     }
 
     // ---------------------------------- Scopes -----------------------------------
-    public function scopeWithIsConfirmed($q) {
-        $q->selectSub('DATEDIFF(NOW(), IFNULL(confirmed_at, DATE_SUB(NOW(), INTERVAL 3 YEAR))) < 712', 'is_confirmed');
+    public function scopeWithIsConfirmed(Builder $q): Builder {
+        return $q->selectSub('DATEDIFF(NOW(), IFNULL(confirmed_at, DATE_SUB(NOW(), INTERVAL 3 YEAR))) < 712', 'is_confirmed');
     }
 
-    public function scopeWithSubscriptionName($q) {
+    public function scopeWithSubscriptionName(Builder $q): Builder {
         return $q->addSelect([
             'subscription_name' => Subscription::select('name')->whereColumn('subscriptions.id', 'members.subscription_id')->limit(1)
         ]);
     }
 
-    public function scopeWithPendingPayment($q) {
+    public function scopeWithPendingPayment(Builder $q): Builder {
         return $q->addSelect([
             'pending_payment' => Payment::selectRaw('SUM(subscriptions.amount)')
                 ->whereColumn('payments.member_id', 'members.id')
@@ -154,23 +147,23 @@ class Member extends Model
         ]);
     }
 
-    public function scopeWhereHasPendingPayment($q) {
-        return $q->whereHas('payments', function($q) {
-            return $q->whereNeedsPayment();
+    public function scopeWhereHasPendingPayment(Builder $q): Builder {
+        return $q->whereHas('payments', function(Builder $q): void {
+            $q->whereNeedsPayment();
         });
     }
 
-    public function scopePayable($q) {
-        $q->where('bill_kind_id', '!=', null)->where('subscription_id', '!=', null);
+    public function scopePayable(Builder $q): Builder {
+        return $q->where('bill_kind_id', '!=', null)->where('subscription_id', '!=', null);
     }
 
-    public function scopeWhereNoPayment($q, $year) {
-        return $q->whereDoesntHave('payments', function($q) use ($year) {
-            return $q->where('nr', '=', $year);
+    public function scopeWhereNoPayment(Builder $q, int $year): Builder {
+        return $q->whereDoesntHave('payments', function(Builder $q) use ($year) {
+            $q->where('nr', '=', $year);
         });
     }
 
-    public function scopeForDashboard($q) {
+    public function scopeForDashboard(Builder $q): Builder {
         return $q->selectRaw('SUM(id)');
     }
 
