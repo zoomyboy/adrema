@@ -31,7 +31,7 @@ class MemberRequest extends FormRequest
         return [
             'first_activity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'), 
             'first_subactivity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'), 
-            'fee_id' => Rule::requiredIf(function() {
+            'subscription_id' => Rule::requiredIf(function() {
                 if ($this->method() != 'POST') {
                     return false;
                 }
