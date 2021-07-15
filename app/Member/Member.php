@@ -14,7 +14,7 @@ use App\Subactivity;
 use Zoomyboy\LaravelNami\NamiUser;
 use App\Payment\Subscription;
 use App\Payment\Payment;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Confession;
@@ -42,7 +42,8 @@ class Member extends Model
         'is_confirmed' => 'boolean',
     ];
 
-    public function scopeSearch(Builder $q, string $text): Builder {
+    public function scopeSearch(Builder $q, ?string $text): Builder {
+        if (is_null($text)) { return $q; }
         return $q->where('firstname', 'LIKE', '%'.$text.'%')
              ->orWhere('lastname', 'LIKE', '%'.$text.'%')
              ->orWhere('address', 'LIKE', '%'.$text.'%')
