@@ -8,6 +8,7 @@ use App\Group;
 use Illuminate\Support\Str;
 use App\Activity;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class MemberRequest extends FormRequest
 {
@@ -57,8 +58,8 @@ class MemberRequest extends FormRequest
         ];
     }
 
-    public function persistCreate() {
-        $this->merge(['group_id' => Group::where('nami_id', auth()->user()->getNamiGroupId())->firstOrFail()->id]);
+    public function persistCreate(): void {
+        $this->merge(['group_id' => Group::where('nami_id', Auth::user()->getNamiGroupId())->firstOrFail()->id]);
         $member = Member::create($this->input());
         if($this->input('has_nami')) {
             CreateJob::dispatch($member, auth()->user());

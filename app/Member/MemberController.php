@@ -15,11 +15,12 @@ use App\Group;
 use App\Payment\Subscription;
 use App\Http\Views\MemberView;
 use App\Member\DeleteJob;
+use Inertia\Response;
 
 class MemberController extends Controller
 {
 
-    public function index(Request $request) {
+    public function index(Request $request): Response {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
 
@@ -32,7 +33,7 @@ class MemberController extends Controller
         return \Inertia::render('member/Index', $payload);
     }
 
-    public function create() {
+    public function create(): Response {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglied erstellen');
 
@@ -40,7 +41,7 @@ class MemberController extends Controller
 
         return \Inertia::render('member/Form', [
             'activities' => $activities->pluck('name', 'id'),
-            'subactivities' => $activities->map(function($activity) {
+            'subactivities' => $activities->map(function(Activity $activity) {
                 return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
             'billKinds' => BillKind::get()->pluck('name', 'id'),

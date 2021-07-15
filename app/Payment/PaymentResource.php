@@ -24,4 +24,5 @@ class PaymentResource extends JsonResource
             'is_accepted' => $this->status->isAccepted(),
         ];
     }
+
 }
