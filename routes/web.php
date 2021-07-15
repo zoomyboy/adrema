@@ -1,12 +1,13 @@
-<?php 
+<?php
 
-use App\Member\MemberController;
-use App\Payment\PaymentController;
-use App\Payment\AllpaymentController;
-use App\Payment\SubscriptionController;
-use App\Member\MemberConfirmController;
 use App\Http\Controllers\HomeController;
 use App\Initialize\InitializeController;
+use App\Member\MemberConfirmController;
+use App\Member\MemberController;
+use App\Payment\AllpaymentController;
+use App\Payment\PaymentController;
+use App\Payment\SubscriptionController;
+use App\Pdf\MemberPdfController;
 
 Route::group(['namespace' => 'App\\Http\\Controllers'], function() {
     Auth::routes(['register' => false]);
@@ -20,5 +21,6 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::resource('allpayment', AllpaymentController::class);
     Route::resource('subscription', SubscriptionController::class);
     Route::post('/member/{member}/confirm', MemberConfirmController::class);
+    Route::post('/member/{member}/pdf', MemberPdfController::class)->name('member.singlepdf');
 });
 
