@@ -1,0 +1,3 @@
+[submodule "packages/silvaletter"]
+	path = packages/silvaletter
+	url = git@zoomyboy.de:silvaletter.git

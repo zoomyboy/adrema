@@ -2,12 +2,12 @@
 
 namespace App\Http\Views;
 
-use App\Member\MemberResource;
 use App\Member\Member;
-use Illuminate\Http\Request;
+use App\Member\MemberResource;
+use App\Payment\PaymentResource;
 use App\Payment\Status;
 use App\Payment\Subscription;
-use App\Payment\PaymentResource;
+use Illuminate\Http\Request;
 
 class MemberView {
     public function index(Request $request) {

@@ -15,7 +15,7 @@ class MemberPdfController extends Controller
 
         return $repo === null
             ? response()->noContent()
-            : app(PdfGenerator::class)->render($repo);
+            : app(PdfGenerator::class)->setRepository($repo)->render();
     }
 
 }

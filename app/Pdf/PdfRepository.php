@@ -13,4 +13,8 @@ interface PdfRepository
 
     public function getFilename(): string;
 
+    public function getView(): string;
+
+    public function getTemplate(): string;
+
 }

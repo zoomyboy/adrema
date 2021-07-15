@@ -31,4 +31,14 @@ class BillType implements PdfRepository
         return $this->filename;
     }
 
+    public function getView(): string
+    {
+        return 'tex.bill';
+    }
+
+    public function getTemplate(): string
+    {
+        return 'default';
+    }
+
 }

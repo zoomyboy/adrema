@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::resource('allpayment', AllpaymentController::class);
     Route::resource('subscription', SubscriptionController::class);
     Route::post('/member/{member}/confirm', MemberConfirmController::class);
-    Route::post('/member/{member}/pdf', MemberPdfController::class)->name('member.singlepdf');
+    Route::get('/member/{member}/pdf', MemberPdfController::class)
+        ->name('member.singlepdf');
 });
 

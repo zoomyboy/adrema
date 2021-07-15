@@ -16,8 +16,8 @@ npm-debug.log
 yarn-error.log
 tags
 /resources/js/libs
-/packages
 /public/vendor
+/storage/temp
 
 # Temporary files
 *.swp

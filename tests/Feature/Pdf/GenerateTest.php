@@ -10,6 +10,8 @@ use App\Nationality;
 use App\Payment\Payment;
 use App\Payment\Subscription;
 use App\Pdf\BillType;
+use App\Pdf\PdfGenerator;
+use App\Pdf\PdfRepositoryFactory;
 use Database\Factories\Member\MemberFactory;
 use Database\Factories\Payment\PaymentFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,13 +24,11 @@ class GenerateTest extends TestCase
 {
 
     use RefreshDatabase;
-    use FakesTex;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->fakeTex();
         Storage::fake('temp');
     }
 
@@ -63,7 +63,7 @@ class GenerateTest extends TestCase
                 'type' => BillType::class,
                 'filename' => 'rechnung-fur-firstname-lastname.pdf',
                 'output' => [
-                    '12,00 €',
+                    '12.00',
                     'Familie ::lastname::',
                 ],
             ],
@@ -80,8 +80,55 @@ class GenerateTest extends TestCase
     ): void {
         $this->withoutExceptionHandling();
         $this->login();
+        $members = $this->setupMembers($members);
 
-        $members = collect($members)->map(function (array $member): Member {
+        $urlId = call_user_func($urlCallable, $members);
+        $response = $this->call('GET', "/member/{$urlId}/pdf", [
+            'type' => $type,
+        ]);
+
+        if ($filename === null) {
+            $response->assertStatus(204);
+
+            return;
+        }
+
+        $this->assertEquals('application/pdf', $response->headers->get('content-type'));
+        $this->assertEquals('inline; filename="' . $filename . '"', $response->headers->get('content-disposition'));
+    }
+
+    /** @dataProvider generatorProvider */
+    public function testItGeneratesTheLayout(
+        array $members,
+        callable $urlCallable,
+        string $type,
+        ?string $filename = null,
+        ?array $output = null
+    ): void {
+        $this->withoutExceptionHandling();
+        $this->login();
+        $members = $this->setupMembers($members);
+
+        $urlId = call_user_func($urlCallable, $members);
+        $member = Member::find($urlId);
+        $repo = app(PdfRepositoryFactory::class)->fromSingleRequest($type, $member);
+
+        if ($filename === null) {
+            $this->assertNull($repo);
+
+            return;
+        }
+
+        $content = app(PdfGenerator::class)->setRepository($repo)->compileView();
+
+        foreach ($output as $out) {
+            $this->assertStringContainsString($out, $content);
+        }
+    }
+
+    private function setupMembers(array $members): Collection
+    {
+        return collect($members)->map(function (array $member): Member {
             $memberFactory = Member::factory()
                 ->for(Nationality::factory())
                 ->for(Subscription::factory()->for(Fee::factory()))
@@ -97,25 +144,6 @@ class GenerateTest extends TestCase
 
             return $memberModel->load('payments');
         });
-
-        $urlId = call_user_func($urlCallable, $members);
-        $response = $this->post("/member/{$urlId}/pdf", [
-            'type' => $type,
-        ]);
-
-        if ($filename === null) {
-            $response->assertStatus(204);
-            $this->assertTexCount(0);
-
-            return;
-        }
-
-        $this->assertEquals('application/pdf', $response->headers->get('content-type'));
-        $this->assertTrue('attachment; filename="' . $filename . '"', $response->headers->get('content-disposition'));
-
-        foreach ($output as $out) {
-            $this->assertTexGeneratedWith($out);
-        }
     }
 
 }
