@@ -1,8 +1,8 @@
 <template>
-    <div class="sidebar">
+    <div class="sidebar flex flex-col">
         <sidebar-header :links="value.links" @close="$inertia.visit('/member')" title="Zahlungen"></sidebar-header>
 
-        <div class="custom-table custom-table-light custom-table-sm text-sm">
+        <div class="custom-table custom-table-light custom-table-sm text-sm flex-grow">
             <header>
                 <div>Nr</div>
                 <div>Status</div>
@@ -20,6 +20,10 @@
                     <inertia-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
                 </div>
             </div>
+        </div>
+        <div class="flex flex-col pb-6 px-6">
+            <a href="#" class="text-center btn btn-primary">Rechnung erstellen</a>
+            <a href="#" class="text-center mt-1 btn btn-primary">Erinnerung erstellen</a>
         </div>
     </div>
 </template>
