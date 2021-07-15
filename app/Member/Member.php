@@ -6,12 +6,9 @@ use App\Activity;
 use App\Bill\BillKind;
 use App\Confession;
 use App\Country;
-use App\Events\MemberCreated;
 use App\Group;
 use App\Nationality;
 use App\Payment\Payment;
-use App\Payment\Payment;
-use App\Payment\Subscription;
 use App\Payment\Subscription;
 use App\Region;
 use App\Subactivity;
@@ -19,11 +16,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class Member extends Model
 {
