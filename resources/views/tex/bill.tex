@@ -1,0 +1,38 @@
+\documentclass[silvaletter,12pt]{scrlttr2}
+
+\setkomavar{subject}{<-- $subject -->}
+
+\begin{document}
+\begin{letter}{Familie Charnay\\Junkerstr 4\\42699 Solingen}
+    \sffamily
+    \gdef\TotalHT{0}
+    \opening{Liebe Familie Charnay,}
+
+    Hiermit stellen wir Ihnen den aktuellen Mitgliedsbeitrag für den \usekomavar*{fromname} und die DPSG in Rechnung. Dieser setzt sich wie folgt zusammen:
+
+    \begin{center}
+        \begin{tabular}{@{}p{0.5\textwidth}|r}
+            \product{Beitrag FE 2021 für Noah Charnay (1. HJ)}{25.00}
+            \hline
+            \textbf{Gesamt} & \textbf{\numprint[€]{\TotalHT}} \\
+        \end{tabular}
+    \end{center}
+
+    Somit bitten wir Sie, den ausstehenden Betrag von \totalttc bis zum 18.07.2021 auf folgendes Konto zu überweisen:
+
+    \begin{tabular}{ll}
+        Kontoinhaber: & DPSG Stamm Silva \\
+        IBAN: & DE40 3425 0000 0000 2145 51 \\
+        Bic: & SOLSDE33XXX \\
+        Verwendungszweck: & Mitgliedsbeitrag für Noah Charnay
+    \end{tabular}
+
+    Bitte nehmen Sie zur Kenntnis, dass der für jedes Mitglied obligatorische Versicherungsschutz über die DPSG nur dann für Ihr Kind / Ihre Kinder gilt, wenn der Mitgliedsbeitrag bezahlt wurde. Wenn dies nicht geschieht, müssen wir Ihr Kind / Ihre Kinder von allen Pfadfinderaktionen ausschließen. Dazu gehören sowohl die Gruppenstunden sowie Tagesaktionen als auch mehrtägige Lager.
+    
+    Bei Fragen zur Rechnung können Sie mich auch persönlich erreichen.
+
+    \closing{Viele Grüße \\ Nils Montag $\cdot$ Kassenwart}
+\end{letter}
+
+\end{document}
+
