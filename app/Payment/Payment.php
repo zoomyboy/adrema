@@ -31,4 +31,16 @@ class Payment extends Model
             return $q->needsPayment();
         });
     }
+
+    public function scopeWhereNeedsBill($q) {
+        return $q->whereHas('status', function($q) {
+            return $q->where('is_bill', true);
+        });
+    }
+
+    public function scopeWhereNeedsRemember($q) {
+        return $q->whereHas('status', function($q) {
+            return $q->where('is_remember', true);
+        });
+    }
 }
