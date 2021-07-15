@@ -2,24 +2,28 @@
 
 namespace App\Member;
 
-use App\Events\MemberCreated;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use App\Bill\BillKind;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Nationality;
-use App\Group;
 use App\Activity;
-use App\Subactivity;
-use Zoomyboy\LaravelNami\NamiUser;
-use App\Payment\Subscription;
+use App\Bill\BillKind;
+use App\Confession;
+use App\Country;
+use App\Events\MemberCreated;
+use App\Group;
+use App\Nationality;
 use App\Payment\Payment;
+use App\Payment\Payment;
+use App\Payment\Subscription;
+use App\Payment\Subscription;
+use App\Region;
+use App\Subactivity;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Confession;
-use App\Region;
+use Illuminate\Notifications\Notifiable;
 use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\NamiUser;
 
 class Member extends Model
 {
@@ -74,55 +78,68 @@ class Member extends Model
     }
 
     //---------------------------------- Relations ----------------------------------
-    public function country(): BelongsTo {
-        return $this->belongsTo(\App\Country::class);
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
     }
 
-    public function gender(): BelongsTo {
+    public function gender(): BelongsTo
+    {
         return $this->belongsTo(\App\Gender::class);
     }
 
-    public function region(): BelongsTo {
+    public function region(): BelongsTo
+    {
         return $this->belongsTo(Region::class);
     }
 
-    public function confession(): BelongsTo {
+    public function confession(): BelongsTo
+    {
         return $this->belongsTo(Confession::class);
     }
 
-    public function payments(): HasMany {
+    public function payments(): HasMany
+    {
         return $this->hasMany(Payment::class)->orderBy('nr');
     }
 
-    public function nationality(): BelongsTo {
+    public function nationality(): BelongsTo
+    {
         return $this->belongsTo(Nationality::class);
     }
 
-    public function memberships(): HasMany {
+    public function memberships(): HasMany
+    {
         return $this->hasMany(Membership::class);
     }
 
-    public function subscription(): BelongsTo {
+    public function subscription(): BelongsTo
+    {
         return $this->belongsTo(Subscription::class);
     }
 
-    public function billKind(): BelongsTo {
+    public function billKind(): BelongsTo
+    {
         return $this->belongsTo(BillKind::class);
     }
 
-    public function group(): BelongsTo {
+    public function group(): BelongsTo
+    {
         return $this->belongsTo(Group::class);
     }
 
-    public function firstActivity(): BelongsTo {
+    public function firstActivity(): BelongsTo
+    {
         return $this->belongsTo(Activity::class, 'first_activity_id');
     }
 
-    public function firstSubActivity(): BelongsTo {
+    public function firstSubActivity(): BelongsTo
+    {
         return $this->belongsTo(Subactivity::class, 'first_subactivity_id');
     }
 
-    public static function booted() {
+    public static function booted()
+    {
         static::deleting(function(self $model): void {
             $model->payments->each->delete();
         });
