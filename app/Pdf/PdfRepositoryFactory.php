@@ -20,7 +20,7 @@ class PdfRepositoryFactory
 
     public function fromSingleRequest(string $type, Member $member): ?PdfRepository
     {
-        $members = $this->singleMemberCollection($member);
+        $members = $this->singleMemberCollection($member, $type);
 
         if ($members->isEmpty()) {
             return null;
@@ -34,11 +34,11 @@ class PdfRepositoryFactory
         );
     }
 
-    public function singleMemberCollection(Member $member): Collection
+    public function singleMemberCollection(Member $member, string $type): Collection
     {
-        $members = Member::where($member->only(['firstname', 'lastname', 'address', 'zip', 'location']))
-            ->whereHas('payments', fn ($q) => $q->whereNeedsPayment())
-            ->get();
+        $members = Member::where($member->only(['lastname', 'address', 'zip', 'location']))
+            ->get()
+            ->filter(fn (Member $member) => app($type)->createable($member));
 
         return $this->toMemberGroup($members);
     }
@@ -52,7 +52,7 @@ class PdfRepositoryFactory
     {
         return $members->groupBy(
             fn ($member) => Str::slug(
-                "{$member->firstname}{$member->lastname}{$member->address}{$member->zip}{$member->location}",
+                "{$member->lastname}{$member->address}{$member->zip}{$member->location}",
             ),
         );
     }

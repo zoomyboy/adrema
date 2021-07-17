@@ -98,6 +98,47 @@ class GenerateTest extends TestCase
                     '29.04.2021',
                 ],
             ],
+            'families' => [
+                'members' => [
+                    [
+                        'factory' => fn (MemberFactory $member): MemberFactory => $member
+                            ->state([
+                                'firstname' => '::firstname1::',
+                                'lastname' => '::lastname::',
+                                'address' => '::address::',
+                                'zip' => '12345',
+                                'location' => '::location::',
+                            ]),
+                        'payments' => [
+                            fn (PaymentFactory $payment): PaymentFactory => $payment
+                                ->nr('::nr::')->notPaid()->subscription('::subName::', 1500),
+                        ],
+                    ],
+                    [
+                        'factory' => fn (MemberFactory $member): MemberFactory => $member
+                            ->state([
+                                'firstname' => '::firstname2::',
+                                'lastname' => '::lastname::',
+                                'address' => '::address::',
+                                'zip' => '12345',
+                                'location' => '::location::',
+                            ]),
+                        'payments' => [
+                            fn (PaymentFactory $payment): PaymentFactory => $payment
+                                ->nr('::nr2::')->notPaid()->subscription('::subName2::', 1600),
+                        ],
+                    ],
+                ],
+                'urlCallable' => fn (Collection $members): int => $members->first()->id,
+                'type' => BillType::class,
+                'filename' => 'rechnung-fur-lastname.pdf',
+                'output' => [
+                    '::nr::',
+                    '::nr2::',
+                    '::subName::',
+                    '::subName2::',
+                ],
+            ],
         ];
     }
 
