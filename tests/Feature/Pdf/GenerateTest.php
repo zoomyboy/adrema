@@ -7,18 +7,17 @@ use App\Fee;
 use App\Group;
 use App\Member\Member;
 use App\Nationality;
-use App\Payment\Payment;
 use App\Payment\Subscription;
 use App\Pdf\BillType;
 use App\Pdf\PdfGenerator;
 use App\Pdf\PdfRepositoryFactory;
+use Carbon\Carbon;
 use Database\Factories\Member\MemberFactory;
 use Database\Factories\Payment\PaymentFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Storage;
 use Tests\TestCase;
-use Tests\Traits\FakesTex;
 
 class GenerateTest extends TestCase
 {
@@ -28,6 +27,8 @@ class GenerateTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        Carbon::setTestNow(Carbon::parse('2021-04-15 00:00:00'));
 
         Storage::fake('temp');
     }
@@ -73,6 +74,27 @@ class GenerateTest extends TestCase
                     '15.00',
                     'Beitrag für 1995 (::subName::)',
                     'Familie ::lastname::\\\\::street::\\\\::zip:: ::location::',
+                ],
+            ],
+            'bill_has_deadline' => [
+                'members' => [
+                    [
+                        'factory' => fn (MemberFactory $member): MemberFactory => $member
+                            ->state([
+                                'firstname' => '::firstname::',
+                                'lastname' => '::lastname::',
+                            ]),
+                        'payments' => [
+                            fn (PaymentFactory $payment): PaymentFactory => $payment
+                                ->nr('A')->notPaid()->subscription('::subName::', 1500),
+                        ],
+                    ],
+                ],
+                'urlCallable' => fn (Collection $members): int => $members->first()->id,
+                'type' => BillType::class,
+                'filename' => 'rechnung-fur-firstname-lastname.pdf',
+                'output' => [
+                    '29.04.2021',
                 ],
             ],
         ];

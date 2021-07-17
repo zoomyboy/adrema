@@ -3,6 +3,7 @@
 namespace App\Pdf;
 
 use App\Member\Member;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 interface PdfRepository
@@ -31,5 +32,7 @@ interface PdfRepository
     public function createable(Member $member): bool;
 
     public function linkLabel(): string;
+
+    public function getUntil(): Carbon;
 
 }
