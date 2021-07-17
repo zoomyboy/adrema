@@ -57,7 +57,8 @@ class BillType extends Repository implements PdfRepository
     public function getPositions(Collection $page): array
     {
         $memberIds = $page->pluck('id')->toArray();
-        $payments = Payment::whereIn('member_id', $memberIds)->whereNeedsBill()->get();
+        $payments = Payment::whereIn('member_id', $memberIds)
+            ->orderByRaw('nr, member_id')->whereNeedsBill()->get();
 
         return $payments->mapWithKeys(function (Payment $payment) {
             $key = "Beitrag für {$payment->nr} ({$payment->subscription->name})";
