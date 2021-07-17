@@ -1,3 +1,6 @@
 [submodule "packages/silvaletter"]
 	path = packages/silvaletter
 	url = git@zoomyboy.de:silvaletter.git
+[submodule "packages/agnoster-installer"]
+	path = packages/agnoster-installer
+	url = git@gitlab.weaw.de:philipp/agnoster-installer.git
