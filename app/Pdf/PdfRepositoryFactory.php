@@ -30,7 +30,7 @@ class PdfRepositoryFactory
         $firstMember = $members->first()->first();
 
         return $repo->setFilename(
-            Str::slug("{$repo->getSubject()} für {$firstMember->firstname} {$firstMember->lastname}"),
+            Str::slug("{$repo->getSubject()} für {$firstMember->lastname}"),
         );
     }
 

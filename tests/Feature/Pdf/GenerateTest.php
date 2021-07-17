@@ -68,11 +68,12 @@ class GenerateTest extends TestCase
                 ],
                 'urlCallable' => fn (Collection $members): int => $members->first()->id,
                 'type' => BillType::class,
-                'filename' => 'rechnung-fur-firstname-lastname.pdf',
+                'filename' => 'rechnung-fur-lastname.pdf',
                 'output' => [
                     'Rechnung',
                     '15.00',
                     'Beitrag 1995 für ::firstname:: ::lastname:: (::subName::)',
+                    'Mitgliedsbeitrag für ::lastname::',
                     'Familie ::lastname::\\\\::street::\\\\::zip:: ::location::',
                 ],
             ],
@@ -92,7 +93,7 @@ class GenerateTest extends TestCase
                 ],
                 'urlCallable' => fn (Collection $members): int => $members->first()->id,
                 'type' => BillType::class,
-                'filename' => 'rechnung-fur-firstname-lastname.pdf',
+                'filename' => 'rechnung-fur-lastname.pdf',
                 'output' => [
                     '29.04.2021',
                 ],

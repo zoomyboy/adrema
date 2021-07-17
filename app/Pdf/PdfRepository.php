@@ -35,4 +35,6 @@ interface PdfRepository
 
     public function getUntil(): Carbon;
 
+    public function getUsage(Collection $page): string;
+
 }

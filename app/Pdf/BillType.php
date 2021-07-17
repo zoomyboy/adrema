@@ -87,4 +87,9 @@ class BillType extends Repository implements PdfRepository
         return $page->first()->location;
     }
 
+    public function getUsage(Collection $page): string
+    {
+        return "Mitgliedsbeitrag für {$this->getFamilyName($page)}";
+    }
+
 }
