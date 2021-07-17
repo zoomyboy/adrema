@@ -37,13 +37,23 @@ class PdfRepositoryFactory
 
     public function forAll(string $type): ?PdfRepository
     {
-        $members = $this->allMemberCollection($type);
+        $members = $this->toMemberGroup($this->allMemberCollection($type));
 
         if ($members->isEmpty()) {
             return null;
         }
 
         return $this->resolve($type, $members)->setFilename('alle-rechnungen');
+    }
+
+    public function afterAll(string $type): void
+    {
+        $members = $this->allMemberCollection($type);
+        $repo = $this->resolve($type, $this->toMemberGroup($this->allMemberCollection($type)));
+
+        foreach ($repo->allPayments() as $payment) {
+            $payment->update(['status_id' => 2]);
+        }
     }
 
     public function singleMemberCollection(Member $member, string $type): Collection
@@ -57,11 +67,9 @@ class PdfRepositoryFactory
 
     public function allMemberCollection(string $type): Collection
     {
-        $members = Member::whereHas('billKind', fn (Builder $q) => $q->where('name', 'Post'))
+        return Member::whereHas('billKind', fn (Builder $q) => $q->where('name', 'Post'))
             ->get()
             ->filter(fn (Member $member) => app($type)->createable($member));
-
-        return $this->toMemberGroup($members);
     }
 
     private function resolve(string $kind, Collection $members): PdfRepository

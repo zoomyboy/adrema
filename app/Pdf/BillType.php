@@ -17,9 +17,9 @@ class BillType extends Repository implements PdfRepository
         $this->pages = $pages;
     }
 
-    public function createable(Member $member): bool
+    public function getPayments(Member $member): Collection
     {
-        return $member->payments()->whereNeedsBill()->count() !== 0;
+        return $member->payments()->whereNeedsBill()->get();
     }
 
     public function linkLabel(): string

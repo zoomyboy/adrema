@@ -31,6 +31,8 @@ interface PdfRepository
 
     public function createable(Member $member): bool;
 
+    public function getPayments(Member $member): Collection;
+
     public function linkLabel(): string;
 
     public function getUntil(): Carbon;
