@@ -26,9 +26,9 @@
         }
     }
     &.btn-info {
-        @apply bg-blue-700;
+        @apply bg-blue-700 text-blue-300;
         &:not(.disabled):hover {
-            @apply bg-blue-500;
+            @apply bg-blue-500 text-blue-100;
         }
     }
     &.btn-danger {

@@ -3,6 +3,7 @@
 namespace App\Pdf;
 
 use App\Member\Member;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -34,9 +35,29 @@ class PdfRepositoryFactory
         );
     }
 
+    public function forAll(string $type): ?PdfRepository
+    {
+        $members = $this->allMemberCollection($type);
+
+        if ($members->isEmpty()) {
+            return null;
+        }
+
+        return $this->resolve($type, $members)->setFilename('alle-rechnungen');
+    }
+
     public function singleMemberCollection(Member $member, string $type): Collection
     {
         $members = Member::where($member->only(['lastname', 'address', 'zip', 'location']))
+            ->get()
+            ->filter(fn (Member $member) => app($type)->createable($member));
+
+        return $this->toMemberGroup($members);
+    }
+
+    public function allMemberCollection(string $type): Collection
+    {
+        $members = Member::whereHas('billKind', fn (Builder $q) => $q->where('name', 'Post'))
             ->get()
             ->filter(fn (Member $member) => app($type)->createable($member));
 

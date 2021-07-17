@@ -22,4 +22,16 @@ class ActionFactory
         });
     }
 
+    public function allLinks(): Collection
+    {
+        return app(PdfRepositoryFactory::class)->getTypes()->map(function(string $repo) {
+            $repo = app($repo);
+
+            return [
+                'href' => route('sendpayment.pdf', ['type' => get_class($repo)]),
+                'label' => $repo->allLabel(),
+            ];
+        });
+    }
+
 }

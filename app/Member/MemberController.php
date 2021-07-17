@@ -2,19 +2,19 @@
 
 namespace App\Member;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Gender;
-use App\Region;
-use App\Country;
-use App\Nationality;
-use App\Confession;
-use App\Bill\BillKind;
 use App\Activity;
+use App\Bill\BillKind;
+use App\Confession;
+use App\Country;
+use App\Gender;
 use App\Group;
-use App\Payment\Subscription;
+use App\Http\Controllers\Controller;
 use App\Http\Views\MemberView;
 use App\Member\DeleteJob;
+use App\Nationality;
+use App\Payment\Subscription;
+use App\Region;
+use Illuminate\Http\Request;
 use Inertia\Response;
 
 class MemberController extends Controller
@@ -27,7 +27,8 @@ class MemberController extends Controller
         $payload = app(MemberView::class)->index($request);
         $payload['toolbar'] = [
             ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'],
-            ['href' => route('allpayment.create'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'plus']
+            ['href' => route('allpayment.create'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'plus'],
+            ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope'],
         ];
 
         return \Inertia::render('member/Index', $payload);

@@ -17,7 +17,7 @@
                 <div class="flex">
                     <span class="text-xl font-semibold text-white leading-none" v-html="$page.props.title"></span>
                     <div class="flex ml-4">
-                        <inertia-link v-for="link, index in $page.props.toolbar" :key="index" :href="link.href" v-text="link.label" class="btn label btn-primary mr-2" :class="link.color">
+                        <inertia-link v-for="link, index in $page.props.toolbar" :key="index" :href="link.href" v-text="link.label" class="btn label mr-2" :class="`btn-${link.color}`">
                             <sprite :src="link.icon"></sprite>
                         </inertia-link>
                     </div>

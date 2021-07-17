@@ -92,4 +92,9 @@ class BillType extends Repository implements PdfRepository
         return "Mitgliedsbeitrag für {$this->getFamilyName($page)}";
     }
 
+    public function allLabel(): string 
+    {
+        return 'Rechnungen versenden';
+    }
+
 }

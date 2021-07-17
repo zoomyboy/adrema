@@ -37,4 +37,6 @@ interface PdfRepository
 
     public function getUsage(Collection $page): string;
 
+    public function allLabel(): string;
+
 }
