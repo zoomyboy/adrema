@@ -140,15 +140,10 @@ class GenerateTest extends TestCase
             $memberFactory = Member::factory()
                 ->for(Nationality::factory())
                 ->for(Subscription::factory()->for(Fee::factory()))
+                ->withPayments(data_get($member, 'payments', []))
                 ->forCountry(Country::find(5))
                 ->for(Group::factory());
             $memberModel = call_user_func($member['factory'], $memberFactory)->create();
-
-            foreach (data_get($member, 'payments', []) as $payment) {
-                $paymentFactory = Payment::factory()->for($memberModel);
-                $paymentFactory = call_user_func($payment, $paymentFactory);
-                $paymentFactory->create();
-            }
 
             return $memberModel->load('payments');
         });

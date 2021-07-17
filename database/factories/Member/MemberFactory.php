@@ -7,6 +7,7 @@ use App\Fee;
 use App\Group;
 use App\Member\Member;
 use App\Nationality;
+use App\Payment\Payment;
 use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -58,6 +59,17 @@ class MemberFactory extends Factory
             ->for($group)
             ->for($nationality)
             ->for($subscription);
+    }
+
+    public function withPayments(array $payments): self
+    {
+        return $this->afterCreating(function (Member $model) use ($payments): void {
+            foreach ($payments as $paymentClosure) {
+                $factory = Payment::factory()->for($model);
+                $factory = call_user_func($paymentClosure, $factory);
+                $factory->create();
+            }
+        });
     }
 
 }
