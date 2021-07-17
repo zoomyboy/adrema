@@ -18,8 +18,8 @@
             </header>
 
             <div v-for="member, index in data.data">
-                <div v-text="member.firstname"></div>
                 <div v-text="member.lastname"></div>
+                <div v-text="member.firstname"></div>
                 <div v-text="`${member.address}`"></div>
                 <div v-text="`${member.zip}`"></div>
                 <div v-text="`${member.location}`"></div>
