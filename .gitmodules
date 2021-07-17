@@ -4,3 +4,6 @@
 [submodule "packages/agnoster-installer"]
 	path = packages/agnoster-installer
 	url = git@gitlab.weaw.de:philipp/agnoster-installer.git
+[submodule "packages/laravel-nami"]
+	path = packages/laravel-nami
+	url = git@github.com:DPSGKoeln/laravel-nami.git
