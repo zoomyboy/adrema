@@ -50,12 +50,18 @@ class GenerateTest extends TestCase
                 'members' => [
                     [
                         'factory' => fn (MemberFactory $member): MemberFactory => $member
-                            ->state(['firstname' => '::firstname::', 'lastname' => '::lastname::']),
+                            ->state([
+                                'firstname' => '::firstname::',
+                                'lastname' => '::lastname::',
+                                'address' => '::street::',
+                                'zip' => '::zip::',
+                                'location' => '::location::',
+                            ]),
                         'payments' => [
                             fn (PaymentFactory $payment): PaymentFactory => $payment
                                 ->notPaid()
                                 ->nr('1995')
-                                ->subscription('::subName::', 1200),
+                                ->subscription('::subName::', 1500),
                         ],
                     ],
                 ],
@@ -63,38 +69,13 @@ class GenerateTest extends TestCase
                 'type' => BillType::class,
                 'filename' => 'rechnung-fur-firstname-lastname.pdf',
                 'output' => [
-                    '12.00',
-                    'Familie ::lastname::',
+                    'Rechnung',
+                    '15.00',
+                    'Beitrag für 1995 (::subName::)',
+                    'Familie ::lastname::\\\\::street::\\\\::zip:: ::location::',
                 ],
             ],
         ];
-    }
-
-    /** @dataProvider generatorProvider */
-    public function testItGeneratesAPdf(
-        array $members,
-        callable $urlCallable,
-        string $type,
-        ?string $filename = null,
-        ?array $output = null
-    ): void {
-        $this->withoutExceptionHandling();
-        $this->login();
-        $members = $this->setupMembers($members);
-
-        $urlId = call_user_func($urlCallable, $members);
-        $response = $this->call('GET', "/member/{$urlId}/pdf", [
-            'type' => $type,
-        ]);
-
-        if ($filename === null) {
-            $response->assertStatus(204);
-
-            return;
-        }
-
-        $this->assertEquals('application/pdf', $response->headers->get('content-type'));
-        $this->assertEquals('inline; filename="' . $filename . '"', $response->headers->get('content-disposition'));
     }
 
     /** @dataProvider generatorProvider */
@@ -124,6 +105,33 @@ class GenerateTest extends TestCase
         foreach ($output as $out) {
             $this->assertStringContainsString($out, $content);
         }
+    }
+
+    /** @dataProvider generatorProvider */
+    public function testItGeneratesAPdf(
+        array $members,
+        callable $urlCallable,
+        string $type,
+        ?string $filename = null,
+        ?array $output = null
+    ): void {
+        $this->withoutExceptionHandling();
+        $this->login();
+        $members = $this->setupMembers($members);
+
+        $urlId = call_user_func($urlCallable, $members);
+        $response = $this->call('GET', "/member/{$urlId}/pdf", [
+            'type' => $type,
+        ]);
+
+        if ($filename === null) {
+            $response->assertStatus(204);
+
+            return;
+        }
+
+        $this->assertEquals('application/pdf', $response->headers->get('content-type'));
+        $this->assertEquals('inline; filename="' . $filename . '"', $response->headers->get('content-disposition'));
     }
 
     private function setupMembers(array $members): Collection

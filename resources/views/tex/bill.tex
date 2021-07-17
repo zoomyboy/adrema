@@ -1,18 +1,21 @@
 \documentclass[silvaletter,12pt]{scrlttr2}
 
-\setkomavar{subject}{Rechnung}
+\setkomavar{subject}{<<< $data->getSubject() >>>}
 
 \begin{document}
-\begin{letter}{Familie Charnay\\Junkerstr 4\\42699 Solingen}
+@foreach($data->pages as $page)
+\begin{letter}{Familie <<< $data->getFamilyName($page) >>>\\<<< $data->getAddress($page) >>>\\<<< $data->getZip($page) >>> <<< $data->getLocation($page) >>>}
     \sffamily
     \gdef\TotalHT{0}
-    \opening{Liebe Familie Charnay,}
+    \opening{Liebe Familie <<< $data->getFamilyName($page) >>>,}
 
     Hiermit stellen wir Ihnen den aktuellen Mitgliedsbeitrag für den \usekomavar*{fromname} und die DPSG in Rechnung. Dieser setzt sich wie folgt zusammen:
 
     \begin{center}
         \begin{tabular}{@{}p{0.5\textwidth}|r}
-            \product{Beitrag FE 2021 für Noah Charnay (1. HJ)}{25.00}
+            @foreach($data->getPositions($page) as $desc => $price)
+            \product{<<< $desc >>>}{<<< $price >>>}
+            @endforeach
             \hline
             \textbf{Gesamt} & \textbf{\numprint[€]{\TotalHT}} \\
         \end{tabular}
@@ -33,6 +36,6 @@
 
     \closing{Viele Grüße \\ Nils Montag $\cdot$ Kassenwart}
 \end{letter}
-
+@endforeach
 \end{document}
 
