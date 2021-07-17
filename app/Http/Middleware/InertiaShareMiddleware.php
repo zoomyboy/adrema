@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Session;
-use Closure;
 use App\Http\Resources\UserResource;
+use Closure;
+use Session;
 
 class InertiaShareMiddleware
 {
