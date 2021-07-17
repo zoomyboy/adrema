@@ -4,6 +4,7 @@ namespace App\Http\Views;
 
 use App\Member\Member;
 use App\Member\MemberResource;
+use App\Payment\ActionFactory;
 use App\Payment\PaymentResource;
 use App\Payment\Status;
 use App\Payment\Subscription;
@@ -43,6 +44,7 @@ class MemberView {
             'links' => [
                 ['icon' => 'plus', 'href' => route('member.payment.create', ['member' => $member]) ],
             ],
+            'payment_links' => app(ActionFactory::class)->forMember($member),
             'mode' => 'index',
         ]);
     }

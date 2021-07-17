@@ -22,8 +22,7 @@
             </div>
         </div>
         <div class="flex flex-col pb-6 px-6">
-            <a href="#" class="text-center btn btn-primary">Rechnung erstellen</a>
-            <a href="#" class="text-center mt-1 btn btn-primary">Erinnerung erstellen</a>
+            <a href="#" @click.prevent="openLink(link)" :class="{'disabled': link.disabled}" target="_BLANK" v-for="link in value.payment_links" class="mt-1 text-center btn btn-primary" v-text="link.label"></a>
         </div>
     </div>
 </template>
@@ -41,6 +40,14 @@ export default {
 
         accept(payment) {
             this.$inertia.patch(`/member/${this.value.data.id}/payment/${payment.id}`, { ...payment, status_id: 3 });
+        },
+
+        openLink(link) {
+            if (link.disabled) {
+                return;
+            }
+
+            window.open(link.href);
         }
     },
 

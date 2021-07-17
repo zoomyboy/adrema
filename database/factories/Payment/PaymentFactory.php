@@ -25,6 +25,11 @@ class PaymentFactory extends Factory
         return $this->for(Status::whereName('Nicht bezahlt')->first());
     }
 
+    public function paid(): self
+    {
+        return $this->for(Status::whereName('Rechnung beglichen')->first());
+    }
+
     public function nr(string $nr): self
     {
         return $this->state(['nr' => $nr]);

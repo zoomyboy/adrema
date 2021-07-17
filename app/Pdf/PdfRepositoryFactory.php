@@ -9,6 +9,15 @@ use Illuminate\Support\Str;
 class PdfRepositoryFactory
 {
 
+    private array $types = [
+        BillType::class,
+    ];
+
+    public function getTypes(): Collection
+    {
+        return collect($this->types);
+    }
+
     public function fromSingleRequest(string $type, Member $member): ?PdfRepository
     {
         $members = $this->singleMemberCollection($member);

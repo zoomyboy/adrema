@@ -2,6 +2,7 @@
 
 namespace App\Pdf;
 
+use App\Member\Member;
 use App\Payment\Payment;
 use Illuminate\Support\Collection;
 
@@ -14,6 +15,16 @@ class BillType extends Repository implements PdfRepository
     public function __construct(Collection $pages)
     {
         $this->pages = $pages;
+    }
+
+    public function createable(Member $member): bool
+    {
+        return $member->payments()->whereNeedsBill()->count() !== 0;
+    }
+
+    public function linkLabel(): string
+    {
+        return 'Rechnung erstellen';
     }
 
     public function getSubject(): string

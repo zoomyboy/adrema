@@ -2,6 +2,7 @@
 
 namespace App\Pdf;
 
+use App\Member\Member;
 use Illuminate\Support\Collection;
 
 interface PdfRepository
@@ -26,5 +27,9 @@ interface PdfRepository
     public function getZip(Collection $page): string;
 
     public function getLocation(Collection $page): string;
+
+    public function createable(Member $member): bool;
+
+    public function linkLabel(): string;
 
 }

@@ -2,8 +2,8 @@
 
 namespace App\Member;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Payment\PaymentResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class MemberResource extends JsonResource
 {
