@@ -61,7 +61,7 @@ class BillType extends Repository implements PdfRepository
             ->orderByRaw('nr, member_id')->whereNeedsBill()->get();
 
         return $payments->mapWithKeys(function (Payment $payment) {
-            $key = "Beitrag für {$payment->nr} ({$payment->subscription->name})";
+            $key = "Beitrag {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname} ({$payment->subscription->name})";
 
             return [$key => $this->number($payment->subscription->amount)];
         })->toArray();

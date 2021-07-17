@@ -72,7 +72,7 @@ class GenerateTest extends TestCase
                 'output' => [
                     'Rechnung',
                     '15.00',
-                    'Beitrag für 1995 (::subName::)',
+                    'Beitrag 1995 für ::firstname:: ::lastname:: (::subName::)',
                     'Familie ::lastname::\\\\::street::\\\\::zip:: ::location::',
                 ],
             ],
