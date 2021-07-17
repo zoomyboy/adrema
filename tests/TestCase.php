@@ -3,6 +3,8 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Testing\TestResponse;
+use Tests\Lib\InertiaMixin;
 use Zoomyboy\LaravelNami\FakesNami;
 use Zoomyboy\LaravelNami\Nami;
 use Zoomyboy\LaravelNami\NamiUser;
@@ -16,6 +18,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
     
         $this->fakeNami();
+        TestResponse::mixin(new InertiaMixin());
     }
 
     public function login() {

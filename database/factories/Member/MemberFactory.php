@@ -2,9 +2,13 @@
 
 namespace Database\Factories\Member;
 
-use App\Member\Member;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Country;
+use App\Fee;
+use App\Group;
+use App\Member\Member;
+use App\Nationality;
+use App\Payment\Subscription;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MemberFactory extends Factory
 {
@@ -33,4 +37,27 @@ class MemberFactory extends Factory
             'location' => $this->faker->city,
         ];
     }
+
+    public function defaults(): self
+    {
+        $country = Country::count()
+            ? Country::get()->random()
+            : Country::factory()->create();
+        $group = Group::count()
+            ? Group::get()->random()
+            : Group::factory()->create();
+        $nationality = Nationality::count()
+            ? Nationality::get()->random()
+            : Nationality::factory()->create();
+        $subscription = Subscription::count()
+            ? Subscription::get()->random()
+            : Subscription::factory()->for(Fee::factory())->create();
+
+        return $this
+            ->for($country)
+            ->for($group)
+            ->for($nationality)
+            ->for($subscription);
+    }
+
 }
