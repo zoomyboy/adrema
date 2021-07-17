@@ -3,8 +3,8 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Zoomyboy\LaravelNami\Nami;
 use Zoomyboy\LaravelNami\FakesNami;
+use Zoomyboy\LaravelNami\Nami;
 use Zoomyboy\LaravelNami\NamiUser;
 
 abstract class TestCase extends BaseTestCase
@@ -20,7 +20,7 @@ abstract class TestCase extends BaseTestCase
 
     public function login() {
         $this->fakeNamiMembers([
-            [ 'gruppierungId' => 12399, 'vorname' => 'Max', 'id' => 999 ]
+            [ 'gruppierungId' => 12399, 'vorname' => 'Max', 'nachname' => '::lastname::', 'id' => 999 ]
         ]);
 
         $this->fakeNamiPassword(999, 'secret', [12399]);
