@@ -35,9 +35,9 @@ class PdfRepositoryFactory
         );
     }
 
-    public function forAll(string $type): ?PdfRepository
+    public function forAll(string $type, string $billKind): ?PdfRepository
     {
-        $members = $this->toMemberGroup($this->allMemberCollection($type));
+        $members = $this->toMemberGroup($this->allMemberCollection($type, $billKind));
 
         if ($members->isEmpty()) {
             return null;
@@ -46,14 +46,30 @@ class PdfRepositoryFactory
         return $this->resolve($type, $members)->setFilename('alle-rechnungen');
     }
 
-    public function afterAll(string $type): void
+    public function repoCollection(string $type, string $billKind): Collection
     {
-        $members = $this->allMemberCollection($type);
-        $repo = $this->resolve($type, $this->toMemberGroup($this->allMemberCollection($type)));
+        $members = $this->toMemberGroup($this->allMemberCollection($type, $billKind));
 
+        return $members->map(function (Collection $members) use ($type) {
+            $repo = $this->resolve($type, collect([$members]));
+
+            return $repo->setFilename(Str::slug("{$repo->getSubject()} für {$members->first()->lastname}"));
+        });
+    }
+
+    public function afterSingle(PdfRepository $repo): void
+    {
         foreach ($repo->allPayments() as $payment) {
             $payment->update(['status_id' => 2]);
         }
+    }
+
+    public function afterAll(string $type, string $billKind): void
+    {
+        $members = $this->allMemberCollection($type, $billKind);
+        $repo = $this->resolve($type, $this->toMemberGroup($members));
+
+        $this->afterSingle($repo);
     }
 
     public function singleMemberCollection(Member $member, string $type): Collection
@@ -65,9 +81,9 @@ class PdfRepositoryFactory
         return $this->toMemberGroup($members);
     }
 
-    public function allMemberCollection(string $type): Collection
+    private function allMemberCollection(string $type, string $billKind): Collection
     {
-        return Member::whereHas('billKind', fn (Builder $q) => $q->where('name', 'Post'))
+        return Member::whereHas('billKind', fn (Builder $q) => $q->where('name', $billKind))
             ->get()
             ->filter(fn (Member $member) => app($type)->createable($member));
     }

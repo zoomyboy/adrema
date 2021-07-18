@@ -24,10 +24,10 @@ class SendpaymentController extends Controller
 
     public function send(Request $request)
     {
-        $repo = app(PdfRepositoryFactory::class)->forAll($request->type);
+        $repo = app(PdfRepositoryFactory::class)->forAll($request->type, 'Post');
 
         $pdfFile = app(PdfGenerator::class)->setRepository($repo)->render();
-        app(PdfRepositoryFactory::class)->afterAll($request->type);
+        app(PdfRepositoryFactory::class)->afterAll($request->type, 'Post');
 
         return $repo === null
             ? response()->noContent()

@@ -82,6 +82,11 @@ class BillType extends Repository implements PdfRepository
         return $page->first()->zip;
     }
 
+    public function getEmail(Collection $page): string
+    {
+        return $page->first()->email_parents ?: $page->first()->email;
+    }
+
     public function getLocation(Collection $page): string
     {
         return $page->first()->location;

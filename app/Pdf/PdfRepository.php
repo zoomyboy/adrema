@@ -41,4 +41,6 @@ interface PdfRepository
 
     public function allLabel(): string;
 
+    public function getEmail(Collection $page): string;
+
 }
