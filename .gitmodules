@@ -3,7 +3,13 @@
 	url = git@zoomyboy.de:silvaletter.git
 [submodule "packages/agnoster-installer"]
 	path = packages/agnoster-installer
-	url = git@gitlab.weaw.de:philipp/agnoster-installer.git
+	url = gl-agnoster-installer:philipp/agnoster-installer.git
 [submodule "packages/laravel-nami"]
 	path = packages/laravel-nami
 	url = git@github.com:DPSGKoeln/laravel-nami.git
+[submodule "resources/js/libs/agnoster"]
+	path = resources/js/libs/agnoster
+	url = gl-agnoster:aweos/agnoster.git
+[submodule "resources/js/libs/js-modules"]
+	path = resources/js/libs/js-modules
+	url = gl-js-modules:aweos/js-modules.git
