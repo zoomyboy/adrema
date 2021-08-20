@@ -60,7 +60,7 @@ class Member extends Model
         return $this->nami_id !== null;
     }
 
-    public function getNamiMemberships(Api $api): string {
+    public function getNamiMemberships(Api $api): array {
         return $api->group($this->group->nami_id)->member($this->nami_id)->memberships()->toArray();
     }
 
