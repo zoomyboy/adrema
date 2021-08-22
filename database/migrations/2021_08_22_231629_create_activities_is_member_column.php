@@ -17,6 +17,10 @@ class CreateActivitiesIsMemberColumn extends Migration
         Schema::table('activities', function (Blueprint $table) {
             $table->boolean('is_member')->default(false);
         });
+        Schema::table('activities', function (Blueprint $table) {
+            $table->boolean('is_try')->default(false);
+        });
+        Activity::firstWhere('name', 'Schnuppermitgliedschaft')->update(['is_try' => true]);
         Activity::whereIn('name', ['€ Mitglied', 'Schnuppermitgliedschaft'])->update(['is_member' => true]);
     }
 

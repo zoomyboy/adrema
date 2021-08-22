@@ -27,7 +27,7 @@ class Member extends Model
 
     public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'subscription_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id', 'version', 'first_subactivity_id', 'first_activity_id', 'confirmed_at', 'children_phone'];
 
-    public $dates = ['joined_at', 'birthday'];
+    public $dates = ['try_created_at', 'joined_at', 'birthday'];
 
     public $casts = [
         'pending_payment' => 'integer',
@@ -216,6 +216,19 @@ class Member extends Model
         }
 
         return $q;
+    }
+
+    public function scopeEndingTries(Builder $q): Builder
+    {
+        return $q->whereHas('memberships', fn ($q) => $q
+            ->where('created_at', '<=', now()->subWeeks(7))
+            ->whereHas('activity', fn ($q) => $q->where('is_try', true)))
+            ->addSelect([
+                'try_created_at' => Membership::select('created_at')
+                    ->whereColumn('memberships.member_id', 'members.id')
+                    ->join('activities', 'activities.id', 'memberships.activity_id')
+                    ->where('activities.is_try', true)
+            ]);
     }
 
 }

@@ -15,7 +15,6 @@ class HomeView {
         $amount = Payment::whereNeedsPayment()->selectRaw('sum(subscriptions.amount) AS a')->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')->first()->a;
         $members = Member::whereHasPendingPayment()->count();
 
-
         return [
             'data' => [
                 'payments' => [
@@ -30,7 +29,8 @@ class HomeView {
                     ->where('activities.is_member', true)
                     ->groupBy('subactivities.name', 'subactivities.slug')
                     ->orderBy('subactivities.id')
-                    ->get()
+                    ->get(),
+                'ending_tries' => MemberTriesResource::collection(Member::endingTries()->get()),
             ]
         ];
     }
