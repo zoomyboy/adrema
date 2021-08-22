@@ -46,7 +46,7 @@
                 <div v-text="`${member.joined_at_human}`"></div>
                 <div class="flex">
                     <inertia-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
-                    <inertia-link :href="`/member/${member.id}/payment${query({only: ['page']})}`" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></inertia-link>
+                    <a href="#" @click.prevent="openSidebar(index, 'payment.index')" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></a>
                     <inertia-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
                 </div>
             </div>
@@ -58,9 +58,7 @@
         </div>
 
         <transition name="sidebar">
-            <payments v-if="single !== null && single.mode === 'index'" v-model="single"></payments>
-            <payment-form v-if="single !== null && single.mode === 'create'" v-model="single"></payment-form>
-            <payment-form v-if="single !== null && single.mode === 'edit'" v-model="single"></payment-form>
+            <payments v-if="single !== null && sidebar === 'payment.index'" @close="closeSidebar" :subscriptions="subscriptions" :statuses="statuses" v-model="data.data[single]"></payments>
         </transition>
     </div>
 </template>
@@ -68,30 +66,44 @@
 <script>
 import App from '../../layouts/App';
 import Payments from './Payments.vue';
-import PaymentForm from './PaymentForm.vue';
 import mergesQueryString from '../../mixins/mergesQueryString.js';
 
 export default {
+
+    data: function() {
+        return {
+            sidebar: null,
+            single: null,
+        };
+    },
 
     layout: App,
 
     mixins: [mergesQueryString],
 
-    components: { Payments, PaymentForm },
+    components: { Payments },
 
     methods: {
         remove(member) {
             if (window.confirm('Mitglied löschen?')) {
                 this.$inertia.delete(`/member/${member.id}`);
             }
+        },
+        openSidebar(index, name) {
+            this.single = index;
+            this.sidebar = name;
+        },
+        closeSidebar() {
+            this.single = null;
+            this.sidebar = null;
         }
     },
 
     props:{
         data: {},
-        single: {
-            default: function() { return null; }
-        },
+        subscriptions: {},
+        statuses: {},
+        paymentDefaults: {},
     }
 }
 </script>

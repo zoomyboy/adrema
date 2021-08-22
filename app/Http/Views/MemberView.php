@@ -13,21 +13,12 @@ use Illuminate\Http\Request;
 class MemberView {
     public function index(Request $request) {
         return [
-            'data' => MemberResource::collection(Member::select('*')->search($request->query('search', null))->with('billKind')->withSubscriptionName()->withIsConfirmed()->withPendingPayment()->orderByRaw('lastname, firstname')->paginate(15)),
-            'toolbar' => [ ['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus'] ]
+            'data' => MemberResource::collection(Member::select('*')->search($request->query('search', null))->with('billKind')->with('payments')->withSubscriptionName()->withIsConfirmed()->withPendingPayment()->orderByRaw('lastname, firstname')->paginate(15)),
+            'toolbar' => [ ['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus'] ],
+            'paymentDefaults' => ['nr' => date('Y')],
+            'subscriptions' => Subscription::get()->pluck('name', 'id'),
+            'statuses' => Status::get()->pluck('name', 'id'),
         ];
-    }
-
-    public function paymentCreate($member) {
-        return $this->additional($member, [
-            'model' => [
-                'subscription_id' => $member->subscription_id,
-                'status_id' => Status::default(),
-                'nr' => date('Y'),
-            ],
-            'links' => [ ['label' => 'Zurück', 'href' => route('member.payment.index', ['member' => $member]) ] ],
-            'mode' => 'create',
-        ]);
     }
 
     public function paymentEdit($member, $payment) {
