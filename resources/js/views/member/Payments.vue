@@ -9,25 +9,25 @@
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 
-        <div v-else class="custom-table custom-table-light custom-table-sm text-sm flex-grow">
-            <header>
-                <div>Nr</div>
-                <div>Status</div>
-                <div>Beitrag</div>
-                <div></div>
-            </header>
+        <table v-else class="custom-table custom-table-light custom-table-sm text-sm flex-grow">
+            <thead>
+                <th>Nr</th>
+                <th>Status</th>
+                <th>Beitrag</th>
+                <th></th>
+            </thead>
 
-            <div v-for="payment, index in value.payments">
-                <div v-text="payment.nr"></div>
-                <div v-text="payment.status_name"></div>
-                <div v-text="payment.subscription_name"></div>
-                <div class="flex">
+            <tr v-for="payment, index in value.payments">
+                <td v-text="payment.nr"></td>
+                <td v-text="payment.status_name"></td>
+                <td v-text="payment.subscription_name"></td>
+                <td class="flex">
                     <a href="#" @click.prevent="single = payment; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
                     <inertia-link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><sprite src="check"></sprite></inertia-link>
                     <inertia-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
-                </div>
-            </div>
-        </div>
+                </td>
+            </tr>
+        </table>
         <div class="flex flex-col pb-6 px-6">
             <a href="#" @click.prevent="openLink(link)" :class="{'disabled': link.disabled}" target="_BLANK" v-for="link in value.payment_links" class="mt-1 text-center btn btn-primary" v-text="link.label"></a>
         </div>
