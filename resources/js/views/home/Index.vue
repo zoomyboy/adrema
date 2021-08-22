@@ -6,6 +6,13 @@
                 <span class="text-sm" v-text="`von ${data.payments.users} / ${data.payments.all_users} Mitgliedern`"></span>
             </div>
         </block>
+        <block title="Gruppierungs-Verteilung">
+            <div v-for="group in data.groups" class="flex mt-2 items-center leading-none text-gray-100">
+                <sprite class="w-4 h-4 mr-2" src="lilie" :class="`text-${group.slug}`"></sprite>
+                <span v-text="group.name" class="flex-grow"></span>
+                <span v-text="group.count"></span>
+            </div>
+        </block>
     </div>
 </template>
 
