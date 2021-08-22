@@ -22,3 +22,4 @@ tags
 *.swp
 *.swo
 *.swm
+/public/mix-manifest.json
