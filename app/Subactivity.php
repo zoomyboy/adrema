@@ -2,18 +2,39 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Nami\HasNamiField;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Subactivity extends Model
 {
-    use HasFactory;
 
-    public $fillable = ['name', 'nami_id'];
+    use HasFactory;
+    use HasNamiField;
+    use Sluggable;
+
+    public $fillable = ['is_age_group', 'slug', 'name', 'nami_id'];
 
     public $timestamps = false;
 
-    public function activities() {
+    public $casts = [
+        'is_age_group' => 'boolean',
+    ];
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+            ],
+        ];
+    }
+
+    public function activities(): BelongsToMany
+    {
         return $this->belongsToMany(Activity::class);
     }
+
 }

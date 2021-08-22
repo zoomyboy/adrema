@@ -160,6 +160,16 @@ class Member extends Model
         ]);
     }
 
+    public function scopeWithAgeGroup(Builder $q): Builder {
+        return $q->addSelect([
+            'age_group_icon' => Subactivity::select('slug')
+                ->join('memberships', 'memberships.subactivity_id', 'subactivities.id')
+                ->where('subactivities.is_age_group', true)
+                ->whereColumn('memberships.member_id', 'members.id')
+                ->limit(1)
+        ]);
+    }
+
     public function scopeWhereHasPendingPayment(Builder $q): Builder {
         return $q->whereHas('payments', function(Builder $q): void {
             $q->whereNeedsPayment();

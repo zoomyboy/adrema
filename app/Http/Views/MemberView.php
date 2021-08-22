@@ -13,7 +13,13 @@ use Illuminate\Http\Request;
 class MemberView {
     public function index(Request $request, array $filter) {
         return [
-            'data' => MemberResource::collection(Member::select('*')->filter($filter)->search($request->query('search', null))->with('billKind')->with('payments')->withSubscriptionName()->withIsConfirmed()->withPendingPayment()->orderByRaw('lastname, firstname')->paginate(15)),
+            'data' => MemberResource::collection(Member::select('*')
+                ->filter($filter)->search($request->query('search', null))
+                ->with('billKind')->with('payments')
+                ->withSubscriptionName()->withIsConfirmed()->withPendingPayment()->withAgeGroup()
+                ->orderByRaw('lastname, firstname')
+                ->paginate(15)
+            ),
             'toolbar' => [ ['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus'] ],
             'paymentDefaults' => ['nr' => date('Y')],
             'subscriptions' => Subscription::get()->pluck('name', 'id'),

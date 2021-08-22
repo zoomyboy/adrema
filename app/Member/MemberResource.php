@@ -52,6 +52,7 @@ class MemberResource extends JsonResource
             'pending_payment' => $this->pending_payment ? number_format($this->pending_payment / 100, 2, ',', '.').' €' : null,
             'first_activity_id' => $this->first_activity_id,
             'first_subactivity_id' => $this->first_subactivity_id,
+            'age_group_icon' => $this->age_group_icon,
         ];
     }
 }

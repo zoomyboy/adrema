@@ -13,6 +13,12 @@ module.exports = {
         extend: {
         },
         colors: {
+            woelfling: '#ff6400',
+            jungpfadfinder: '#2f53a7',
+            pfadfinder: '#00823c',
+            rover: '#cc1f2f',
+            biber: '#ffed00',
+            leiter: '#9d9d9c',
             teal: [],
             primary: {
                 100: 'hsl(181, 98%, 93%)',

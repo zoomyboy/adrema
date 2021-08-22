@@ -1,33 +1,32 @@
 .custom-table {
-    display: table;
     width: 100%;
-    & > header > div {
-        @apply px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b;
+    & > thead > th {
+        @apply text-left px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b;
     }
 
-    & > div {
+    & > tr {
         @apply text-gray-200 transition-all duration-300 rounded hover:bg-gray-800;
-        & > div {
+        & > td {
             @apply py-1 px-6;
         }
     }
 
     &.custom-table-sm {
-        & > header > div {
+        & > thead > th {
             @apply px-3 py-2;
         }
-        & > div {
-            & > div {
+        & > tr {
+            & > td {
                 @apply py-1 px-3;
             }
         }
     }
 
     &.custom-table-light {
-        & > header > div {
+        & > thead > th {
             @apply border-gray-500;
         }
-        & > div {
+        & > td {
             &:hover {
                 @apply bg-gray-700;
             }

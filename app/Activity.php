@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Nami\HasNamiField;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Activity extends Model
 {
+
+    use HasNamiField;
 
     public $fillable = ['name', 'nami_id'];
     public $timestamps = false;
@@ -20,7 +22,4 @@ class Activity extends Model
         return $this->belongsToMany(Subactivity::class);
     }
 
-    public static function nami(int $id): ?self {
-        return static::firstWhere('nami_id', $id);
-    }
 }
