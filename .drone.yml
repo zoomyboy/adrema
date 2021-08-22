@@ -1,0 +1,22 @@
+kind: pipeline
+type: ssh
+name: scoutrobot
+
+server:
+  host: zoomyboy.de
+  user: stammsilva
+  ssh_key:
+    from_secret: private_key
+
+clone:
+  disable: true
+
+steps:
+- name: master
+  commands:
+  - /usr/local/bin/deploy_scoutrobot_master
+  when:
+    branch:
+    - master
+    event:
+    - push
