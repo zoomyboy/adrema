@@ -23,3 +23,4 @@ tags
 *.swo
 *.swm
 /public/mix-manifest.json
+resources/img/sprite.svg

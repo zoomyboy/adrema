@@ -12,7 +12,7 @@
                     v-html="option.name" :value="option.id"
                 ></option>
             </select>
-            <div class="info-wrap pointer-events-none">
+            <div class="info-wrap">
                 <div v-if="hint" v-tooltip="hint">
                     <sprite src="info-button" class="info-button"></sprite>
                 </div>

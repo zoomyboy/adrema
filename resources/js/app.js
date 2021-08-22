@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import { App as InertiaApp, plugin } from '@inertiajs/inertia-vue'
-import 'font-awesome/css/font-awesome.css';
 import Echo from 'laravel-echo';
 window.io = require('socket.io-client');
 import Sprite from './components/Sprite.js';
@@ -12,8 +11,10 @@ import FTextarea from './components/FTextarea.vue';
 import Pages from './components/Pages.vue';
 import VBool from './components/VBool.vue';
 import App from './layouts/App.vue';
+import VTooltip from 'v-tooltip'
 
 Vue.use(plugin)
+Vue.use(VTooltip);
 Vue.component('f-text', FText);
 Vue.component('f-switch', FSwitch);
 Vue.component('f-select', FSelect);
