@@ -46,7 +46,7 @@
                 <div v-text="`${member.joined_at_human}`"></div>
                 <div class="flex">
                     <inertia-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
-                    <inertia-link :href="`/member/${member.id}/payment`" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></inertia-link>
+                    <inertia-link :href="`/member/${member.id}/payment${query({only: ['page']})}`" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></inertia-link>
                     <inertia-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
                 </div>
             </div>
@@ -69,10 +69,13 @@
 import App from '../../layouts/App';
 import Payments from './Payments.vue';
 import PaymentForm from './PaymentForm.vue';
+import mergesQueryString from '../../mixins/mergesQueryString.js';
 
 export default {
 
     layout: App,
+
+    mixins: [mergesQueryString],
 
     components: { Payments, PaymentForm },
 
