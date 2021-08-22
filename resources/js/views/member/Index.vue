@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <filt v-model="query.filter" :bill-kinds="billKinds"></filt>
+        <filt v-model="query.filter" :activities="filterActivities" :subactivities="filterSubactivities" :bill-kinds="billKinds"></filt>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
@@ -118,6 +118,8 @@ export default {
         billKinds: {},
         activities: {},
         subactivities: {},
+        filterActivities: {},
+        filterSubactivities: {},
     }
 }
 </script>

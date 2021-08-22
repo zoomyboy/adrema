@@ -23,6 +23,8 @@ class MemberController extends Controller
     public $filter = [
         'ausstand' => false,
         'bill_kind' => null,
+        'activity_id' => null,
+        'subactivity_id' => null,
     ];
 
     public function index(Request $request): Response {

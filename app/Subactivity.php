@@ -15,7 +15,7 @@ class Subactivity extends Model
     use HasNamiField;
     use Sluggable;
 
-    public $fillable = ['is_age_group', 'slug', 'name', 'nami_id'];
+    public $fillable = ['is_age_group', 'is_filterable', 'slug', 'name', 'nami_id'];
 
     public $timestamps = false;
 

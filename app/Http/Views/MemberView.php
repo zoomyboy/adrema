@@ -9,6 +9,7 @@ use App\Payment\ActionFactory;
 use App\Payment\PaymentResource;
 use App\Payment\Status;
 use App\Payment\Subscription;
+use App\Subactivity;
 use Illuminate\Http\Request;
 
 class MemberView {
@@ -23,6 +24,8 @@ class MemberView {
                 ->orderByRaw('lastname, firstname')
                 ->paginate(15)
             ),
+            'filterActivities' => Activity::where('is_filterable', true)->get()->pluck('name', 'id'),
+            'filterSubactivities' => Subactivity::where('is_filterable', true)->get()->pluck('name', 'id'),
             'toolbar' => [ ['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus'] ],
             'paymentDefaults' => ['nr' => date('Y')],
             'subscriptions' => Subscription::get()->pluck('name', 'id'),

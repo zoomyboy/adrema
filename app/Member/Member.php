@@ -204,6 +204,16 @@ class Member extends Model
         if (data_get($filter, 'bill_kind', false)) {
             $q->where('bill_kind_id', $filter['bill_kind']);
         }
+        if (data_get($filter, 'subactivity_id', false) || data_get($filter, 'activity_id', false)) {
+            $q->whereHas('memberships', function ($q) use ($filter) {
+                if (data_get($filter, 'subactivity_id', false)) {
+                    $q->where('subactivity_id', $filter['subactivity_id']);
+                }
+                if (data_get($filter, 'activity_id', false)) {
+                    $q->where('activity_id', $filter['activity_id']);
+                }
+            });
+        }
 
         return $q;
     }

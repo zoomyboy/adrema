@@ -11,7 +11,7 @@ class Activity extends Model
 
     use HasNamiField;
 
-    public $fillable = ['name', 'nami_id'];
+    public $fillable = ['name', 'is_filterable', 'nami_id'];
     public $timestamps = false;
 
     public $casts = [
