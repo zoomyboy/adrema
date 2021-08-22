@@ -2,15 +2,16 @@
 
 namespace App\Member;
 
+use App\Activity;
+use App\Confession;
+use App\Group;
+use App\Subactivity;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
-use App\Confession;
-use App\Group;
-use App\Activity;
 
 class CreateJob implements ShouldQueue
 {
@@ -77,6 +78,9 @@ class CreateJob implements ShouldQueue
         foreach ($memberships as $membership) {
             $this->member->memberships()->create([
                 'activity_id' => Activity::nami($membership['activity_id'])->id, 
+                'subactivity_id' => $membership['subactivity_id']
+                    ? Subactivity::nami($membership['subactivity_id'])->id
+                    : null, 
                 'group_id' => Group::nami($membership['group_id'])->id,
                 'nami_id' => $membership['id'],
                 'created_at' => $membership['starts_at'],
