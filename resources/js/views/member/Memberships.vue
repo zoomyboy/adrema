@@ -46,8 +46,8 @@ export default {
     components: { SidebarHeader },
 
     methods: {
-        remove(payment) {
-            this.$inertia.delete(`/member/${this.value.id}/payment/${payment.id}`);
+        remove(membership) {
+            this.$inertia.delete(`/member/${this.value.id}/membership/${membership.id}`);
         },
 
         accept(payment) {
