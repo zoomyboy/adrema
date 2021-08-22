@@ -2,6 +2,7 @@
 
 namespace App\Member;
 
+use App\Membership\MembershipResource;
 use App\Payment\PaymentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -49,6 +50,7 @@ class MemberResource extends JsonResource
             'is_confirmed' => $this->is_confirmed,
             'children_phone' => $this->children_phone,
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),
+            'memberships' => MembershipResource::collection($this->whenLoaded('memberships')),
             'pending_payment' => $this->pending_payment ? number_format($this->pending_payment / 100, 2, ',', '.').' €' : null,
             'first_activity_id' => $this->first_activity_id,
             'first_subactivity_id' => $this->first_subactivity_id,

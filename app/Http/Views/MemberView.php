@@ -2,6 +2,7 @@
 
 namespace App\Http\Views;
 
+use App\Activity;
 use App\Member\Member;
 use App\Member\MemberResource;
 use App\Payment\ActionFactory;
@@ -12,10 +13,12 @@ use Illuminate\Http\Request;
 
 class MemberView {
     public function index(Request $request, array $filter) {
+        $activities = Activity::with('subactivities')->get();
+
         return [
             'data' => MemberResource::collection(Member::select('*')
                 ->filter($filter)->search($request->query('search', null))
-                ->with('billKind')->with('payments')
+                ->with('billKind')->with('payments')->with('memberships')
                 ->withSubscriptionName()->withIsConfirmed()->withPendingPayment()->withAgeGroup()
                 ->orderByRaw('lastname, firstname')
                 ->paginate(15)
@@ -24,6 +27,10 @@ class MemberView {
             'paymentDefaults' => ['nr' => date('Y')],
             'subscriptions' => Subscription::get()->pluck('name', 'id'),
             'statuses' => Status::get()->pluck('name', 'id'),
+            'activities' => $activities->pluck('name', 'id'),
+            'subactivities' => $activities->map(function(Activity $activity) {
+                return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
+            })->pluck('subactivities', 'id'),
         ];
     }
 

@@ -53,6 +53,7 @@
                 <td class="flex">
                     <inertia-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
                     <a href="#" @click.prevent="openSidebar(index, 'payment.index')" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></a>
+                    <a href="#" @click.prevent="openSidebar(index, 'membership.index')" class="inline-flex btn btn-info btn-sm"><sprite src="user"></sprite></a>
                     <inertia-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
                 </td>
             </tr>
@@ -65,6 +66,7 @@
 
         <transition name="sidebar">
             <payments v-if="single !== null && sidebar === 'payment.index'" @close="closeSidebar" :subscriptions="subscriptions" :statuses="statuses" v-model="data.data[single]"></payments>
+            <memberships v-if="single !== null && sidebar === 'membership.index'" @close="closeSidebar" :activities="activities" :subactivities="subactivities" v-model="data.data[single]"></memberships>
         </transition>
     </div>
 </template>
@@ -72,6 +74,7 @@
 <script>
 import App from '../../layouts/App';
 import Payments from './Payments.vue';
+import Memberships from './Memberships.vue';
 import Filt from './Filt.vue';
 import mergesQueryString from '../../mixins/mergesQueryString.js';
 
@@ -88,7 +91,7 @@ export default {
 
     mixins: [mergesQueryString],
 
-    components: { Payments, Filt },
+    components: { Memberships, Payments, Filt },
 
     methods: {
         remove(member) {
@@ -113,6 +116,8 @@ export default {
         paymentDefaults: {},
         query: {},
         billKinds: {},
+        activities: {},
+        subactivities: {},
     }
 }
 </script>
