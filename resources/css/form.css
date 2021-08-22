@@ -157,6 +157,9 @@
         input[type="color"] {
             @apply size-sm px-0;
         }
+        select {
+            @apply pr-6;
+        }
         .switch {
             width: calc(var(--h-field-sm) * 2);
             input[type="checkbox"] {
