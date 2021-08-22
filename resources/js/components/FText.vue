@@ -1,27 +1,14 @@
 <template>
-    <label class="flex flex-col relative" :for="id" :class="{['h-field-'+size]: inset === true}">
-        <div class="relative h-full flex flex-col">
-            <span v-if="label && !inset" class="font-semibold leading-none relative z-10 text-gray-400" :class="{
-                'text-xs': size == 'sm',
-                'text-sm': size === null
-            }">{{ label }}<span v-show="required" class="text-red-300">&nbsp;*</span></span>
-            <span v-if="label && inset" class="absolute z-10 top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700" :class="{
-                'text-xs': size == 'sm',
-                'text-sm': size === null
-            }" v-text="label"></span>
-            <div class="relative h-full mt-1" :class="{['h-field-'+size]: inset === false}">
-                <input :type="type" :name="name" :value="transformedValue" @input="onInput" @change="onChange" :disabled="disabled" :placeholder="placeholder"
-                    @focus="onFocus" @blur="onBlur"
-                    class="border-gray-600 border-solid bg-gray-700 w-full appearance-none outline-none h-full"
-                    :class="{
-                        'rounded-lg text-sm border-2 p-2 text-gray-300': size === null,
-                        'rounded-lg py-2 px-2 text-xs border-2 text-gray-800': size == 'sm'
-                    }"
-                />
-                <div class="absolute top-0 right-0 -mx-1 flex items-center h-full cursor-pointer">
-                    <div v-if="hint" class="absolute top-0 right-0 h-full items-center mr-2 flex w-6" v-tooltip="hint">
-                        <sprite src="info-button" class="w-5 h-5 text-indigo-200"></sprite>
-                    </div>
+    <label class="field-wrap" :for="id" :class="`field-wrap-${size}`">
+        <span v-if="label" class="field-label">
+            {{ label }}
+            <span v-show="required" class="text-red-800">&nbsp;*</span>
+        </span>
+        <div class="real-field-wrap" :class="`size-${size}`">
+            <input :name="name" :type="type" :value="transformedValue" @input="onInput" @change="onChange" :disabled="disabled" :placeholder="placeholder" @focus="onFocus" @blur="onBlur">
+            <div v-if="hint" class="info-wrap">
+                <div v-tooltip="hint">
+                    <sprite src="info-button" class="info-button"></sprite>
                 </div>
             </div>
         </div>
@@ -54,6 +41,17 @@ var numb = {
             return a / 100;
         }
     }),
+    naturalDetailRaw: wNumb({
+        mark: '',
+        thousand: '',
+        decimals: 0,
+        decoder(a) {
+            return a * 10000;
+        },
+        encoder(a) {
+            return a / 10000;
+        }
+    }),
     area: wNumb({
         mark: ',',
         thousand: '.',
@@ -65,6 +63,17 @@ var numb = {
             return a / 100;
         }
     }),
+    areaDetail: wNumb({
+        mark: ',',
+        thousand: '.',
+        decimals: 4,
+        decoder(a) {
+            return a * 10000;
+        },
+        encoder(a) {
+            return a / 10000;
+        }
+    }),
     twoDecimalRaw: wNumb({
         mark: ',',
         thousand: '',
@@ -74,6 +83,17 @@ var numb = {
         },
         encoder(a) {
             return a / 100;
+        }
+    }),
+    fourDecimalRaw: wNumb({
+        mark: ',',
+        thousand: '',
+        decimals: 4,
+        decoder(a) {
+            return a * 10000;
+        },
+        encoder(a) {
+            return a / 10000;
         }
     })
 };
@@ -136,6 +156,25 @@ var transformers = {
                 return numb.twoDecimalRaw.from(v);
             }
         }
+    },
+    currencyDetail: {
+        display: {
+            to(v) { return v === null ? '' : numb.areaDetail.to(v); },
+            from(v) { return v === '' ? null : numb.areaDetail.from(v); }
+        },
+        edit: {
+            to(v) {
+                if (v === null) { return ''; }
+                if (Math.round(v / 10000) * 10000 === v) { return numb.naturalDetailRaw.to(v); }
+                return numb.fourDecimalRaw.to(v);
+            },
+            from(v) {
+                if (v === '') { return null; }
+                if (v.indexOf(',') === -1) { return numb.naturalDetailRaw.from(v); }
+
+                return numb.fourDecimalRaw.from(v);
+            }
+        }
     }
 };
 
@@ -146,11 +185,6 @@ export default {
         };
     },
     props: {
-        name: {
-            default: function() {
-                return '';
-            }
-        },
         placeholder: {
             default: function() {
                 return '';
@@ -170,7 +204,9 @@ export default {
             }
         },
         size: {
-            default: null
+            default: function() {
+                return 'base';
+            }
         },
         id: {
             required: true
@@ -194,7 +230,8 @@ export default {
         disabled: {
             default: false,
             type: Boolean
-        }
+        },
+        name: {},
     },
     methods: {
         onFocus() {

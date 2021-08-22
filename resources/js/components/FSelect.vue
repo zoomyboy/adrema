@@ -1,36 +1,26 @@
 <template>
-    <label class="flex flex-col relative" :for="id" :class="{['h-field-'+size]: inset === true}">
-        <div class="relative h-full flex flex-col">
-            <span v-if="label && !inset" class="leading-none font-semibold relative z-10 text-gray-400" :class="{
-                'text-xs': size == 'sm',
-                'text-sm': size === null
-            }">{{ label }}<span v-show="required" class="text-red-300">&nbsp;*</span></span>
-            <span v-if="label && inset" class="absolute z-10 top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700" :class="{
-                'text-xs': size == 'sm',
-                'text-sm': size === null
-            }" v-text="label"></span>
-            <div class="relative h-full mt-1" :class="{['h-field-'+size]: inset === false}">
-                <select :value="value" @change="trigger"
-                    class="border-gray-600 border-solid bg-gray-700 w-full appearance-none outline-none"
-                    :class="{
-                        'rounded-lg text-sm border-2 p-2 text-gray-300': size === null,
-                        'rounded-lg py-2 px-2 text-xs border-2 text-gray-800': size == 'sm'
-                    }"
-                >
-                    <option v-if="placeholder" v-html="placeholder" :value="null"></option>
+    <label class="field-wrap" :for="id" :class="`field-wrap-${size}`">
+        <span v-if="label" class="field-label">
+            {{ label }}
+            <span v-show="required" class="text-red-800">&nbsp;*</span>
+        </span>
+        <div class="real-field-wrap" :class="`size-${size}`">
+            <select :disabled="disabled" :value="value" @change="trigger">
+                <option v-if="placeholder" v-html="placeholder" :value="null"></option>
 
-                    <option v-for="(option, key) in parsedOptions" :key="key"
-                        v-html="option" :value="key"
-                    ></option>
-                </select>
-
-                <div class="absolute pointer-events-none top-0 right-0 -mx-1 flex items-center h-full mr-4 cursor-pointer">
-                    <div v-if="hint" v-tooltip="hint" class="px-1">
-                        <sprite src="info-button" class="w-5 h-5 text-indigo-200"></sprite>
-                    </div>
-                    <div class="px-1 relative">
-                        <sprite class="w-3 h-3 fill-current" src="chevron-down"></sprite>
-                    </div>
+                <option v-for="option in parsedOptions" :key="option.id"
+                    v-html="option.name" :value="option.id"
+                ></option>
+            </select>
+            <div class="info-wrap pointer-events-none">
+                <div v-if="hint" v-tooltip="hint">
+                    <sprite src="info-button" class="info-button"></sprite>
+                </div>
+                <div class="px-1 relative" v-if="size != 'xs'">
+                    <sprite class="chevron w-3 h-3 fill-current" src="chevron-down"></sprite>
+                </div>
+                <div class="px-1 relative" v-if="size == 'xs'">
+                    <sprite class="chevron w-2 h-2 fill-current" src="chevron-down"></sprite>
                 </div>
             </div>
         </div>
@@ -38,15 +28,23 @@
 </template>
 
 <script>
+import mapValues from 'lodash/mapValues';
+import keyBy from 'lodash/keyBy';
+import map from 'lodash/map';
+
 export default {
     props: {
+        disabled: {
+            type: Boolean,
+            default: function() { return false; }
+        },
         id: {},
         inset: {
             type: Boolean,
             default: false
         },
         size: {
-            default: function() { return null; }
+            default: function() { return 'base'; }
         },
         emptyLabel: {
             default: false,
@@ -78,7 +76,11 @@ export default {
     },
     computed: {
         parsedOptions() {
-            return this.options;
+            return Array.isArray(this.options)
+                ? this.options
+                : map(this.options, (value, key) => {
+                    return {'name': value, id: key};
+                });
         }
     },
     methods: {

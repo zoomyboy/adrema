@@ -1,0 +1,310 @@
+:root {
+    --h-field-sm: 23px;
+    --h-field-base: 35px;
+    --h-field-lg: 42px;
+    --m-field-sm: 0.2rem;
+    --m-field-base: 0.3rem;
+    --m-field-lg: 0.4rem;
+}
+.size-sm {
+    height: var(--h-field-sm);
+}
+.size-base {
+    height: var(--h-field-base);
+}
+.size-lg {
+    height: var(--h-field-lg);
+}
+
+.checkbox {
+    @apply flex flex-col relative cursor-pointer;
+    input[type="checkbox"] {
+        @apply invisible absolute;
+        & + span {
+            @apply transition-colors duration-300 flex items-center;
+            span {
+                @apply border-2 border-gray-800 relative rounded cursor-pointer flex flex-none justify-center items-center;
+            }
+            svg {
+                @apply text-white transition-opacity duration-300;
+                opacity: 0;
+            }
+            & + span {
+                a {
+                    @apply text-primary-300;
+                }
+            }
+        }
+        &:checked + span svg {
+            opacity: 1;
+        }
+    }
+    &.size-sm {
+        height: auto;
+        input[type="checkbox"] {
+            & + span {
+                min-height: var(--h-field-sm);
+                span {
+                    width: var(--h-field-sm);
+                    height: var(--h-field-sm);
+                }
+                svg {
+                    width: calc(var(--h-field-sm) - var(--m-field-sm) * 2);
+                    height: calc(var(--h-field-sm) - var(--m-field-sm) * 2);
+                }
+            }
+            & + span + span {
+                min-height: var(--h-field-sm);
+            }
+        }
+    }
+    &.size-base {
+        height: auto;
+        input[type="checkbox"] {
+            & + span {
+                min-height: var(--h-field-base);
+                span {
+                    width: var(--h-field-base);
+                    height: var(--h-field-base);
+                }
+                svg {
+                    width: calc(var(--h-field-base) - var(--m-field-base) * 2);
+                    height: calc(var(--h-field-base) - var(--m-field-base) * 2);
+                }
+            }
+            & + span + span {
+                min-height: var(--h-field-base);
+            }
+        }
+    }
+    &.size-lg {
+        height: auto;
+        input[type="checkbox"] {
+            & + span {
+                min-height: var(--h-field-lg);
+                span {
+                    width: var(--h-field-lg);
+                    height: var(--h-field-lg);
+                }
+                svg {
+                    width: calc(var(--h-field-lg) - var(--m-field-lg) * 2);
+                    height: calc(var(--h-field-lg) - var(--m-field-lg) * 2);
+                }
+            }
+            & + span + span {
+                min-height: var(--h-field-lg);
+            }
+        }
+    }
+}
+
+.field-wrap {
+    @apply flex flex-col;
+
+    .field-label {
+        @apply font-semibold leading-none text-gray-400;
+    }
+
+    .real-field-wrap {
+        @apply relative flex-none flex;
+    }
+
+    .info-wrap {
+        @apply h-full items-center flex;
+        &:not(.info-wrap-inline) {
+            @apply absolute top-0 right-0;
+        }
+        &.info-wrap-inline {
+            @apply ml-2;
+        }
+        .info-button {
+            @apply text-primary-200;
+        }
+        svg.chevron {
+            @apply text-gray-400;
+        }
+    }
+
+    input:not([type="checkbox"]):not([type="color"]), select {
+        @apply border-gray-600 text-gray-300 leading-none border-solid bg-gray-700 w-full appearance-none outline-none rounded-lg;
+        &:disabled {
+            @apply bg-gray-400;
+        }
+    }
+    .switch {
+        input[type="checkbox"] {
+            @apply invisible absolute;
+            & + span {
+                @apply rounded transition-colors duration-300 relative cursor-pointer flex flex-grow h-full;
+                span {
+                    @apply absolute flex items-center justify-center;
+                }
+                var {
+                    @apply duration-300;
+                    transition-property: left;
+                }
+            }
+        }
+    }
+
+    &.field-wrap-sm {
+        .field-label {
+            @apply text-xs;
+        }
+        input:not([type="checkbox"]), select, input:not([type="color"]) {
+            @apply size-sm text-xs px-1 border;
+        }
+        input[type="color"] {
+            @apply size-sm px-0;
+        }
+        .switch {
+            width: calc(var(--h-field-sm) * 2);
+            input[type="checkbox"] {
+                & + span {
+                    span:nth-of-type(1) {
+                        width: calc(var(--h-field-sm) - var(--m-field-sm));
+                        height: calc(var(--h-field-sm) - var(--m-field-sm) * 2);
+                        top: var(--m-field-sm);
+                        left: var(--m-field-sm);
+                    }
+                    span:nth-of-type(2) {
+                        width: calc(var(--h-field-sm) - var(--m-field-sm));
+                        height: calc(var(--h-field-sm) - var(--m-field-sm) * 2);
+                        top: var(--m-field-sm);
+                        left: calc(100% - var(--h-field-sm));
+                    }
+                    var {
+                        width: calc(var(--h-field-sm) - var(--m-field-sm) * 2);
+                        height: calc(var(--h-field-sm) - var(--m-field-sm) * 2);
+                        top: var(--m-field-sm);
+                        left: var(--m-field-sm);
+                    }
+                    svg {
+                        @apply w-2 h-2;
+                    }
+                }
+                &:checked + span var {
+                    left: calc(var(--h-field-sm) + var(--m-field-sm));
+                }
+            }
+        }
+        .info-wrap {
+            @apply mr-1;
+            .info-button {
+                @apply w-4 h-4;
+            }
+        }
+    }
+
+    &.field-wrap-base {
+        .field-label {
+            @apply text-sm;
+        }
+        input:not([type="checkbox"]):not([type="color"]), select {
+            @apply size-base text-sm px-2 border-2;
+        }
+        input[type="color"] {
+            @apply size-base px-0;
+        }
+        .switch {
+            width: calc(var(--h-field-base) * 2);
+            input[type="checkbox"] {
+                & + span {
+                    span:nth-of-type(1) {
+                        width: calc(var(--h-field-base) - var(--m-field-base));
+                        height: calc(var(--h-field-base) - var(--m-field-base) * 2);
+                        top: var(--m-field-base);
+                        left: var(--m-field-base);
+                    }
+                    span:nth-of-type(2) {
+                        width: calc(var(--h-field-base) - var(--m-field-base));
+                        height: calc(var(--h-field-base) - var(--m-field-base) * 2);
+                        top: var(--m-field-base);
+                        left: calc(100% - var(--h-field-base));
+                    }
+                    var {
+                        width: calc(var(--h-field-base) - var(--m-field-base) * 2);
+                        height: calc(var(--h-field-base) - var(--m-field-base) * 2);
+                        top: var(--m-field-base);
+                        left: var(--m-field-base);
+                    }
+                    svg {
+                        @apply w-3 h-3;
+                    }
+                }
+                &:checked + span var {
+                    left: calc(var(--h-field-base) + var(--m-field-base));
+                }
+            }
+        }
+        .info-wrap {
+            @apply mr-2;
+            .info-button {
+                @apply w-5 h-5;
+            }
+        }
+    }
+
+    &.field-wrap-lg {
+        .field-label {
+            @apply text-sm;
+        }
+        input:not([type="checkbox"]):not([type="color"]), select {
+            @apply size-lg px-3 border-2;
+        }
+        input[type="color"] {
+            @apply size-lg px-0;
+        }
+        .switch {
+            width: calc(var(--h-field-lg) * 2);
+            input[type="checkbox"] {
+                & + span {
+                    span:nth-of-type(1) {
+                        width: calc(var(--h-field-lg) - var(--m-field-lg));
+                        height: calc(var(--h-field-lg) - var(--m-field-lg) * 2);
+                        top: var(--m-field-lg);
+                        left: var(--m-field-lg);
+                    }
+                    span:nth-of-type(2) {
+                        width: calc(var(--h-field-lg) - var(--m-field-lg));
+                        height: calc(var(--h-field-lg) - var(--m-field-lg) * 2);
+                        top: var(--m-field-lg);
+                        left: calc(100% - var(--h-field-lg));
+                    }
+                    var {
+                        width: calc(var(--h-field-lg) - var(--m-field-lg) * 2);
+                        height: calc(var(--h-field-lg) - var(--m-field-lg) * 2);
+                        top: var(--m-field-lg);
+                        left: var(--m-field-lg);
+                    }
+                    svg {
+                        @apply w-5 h-5;
+                    }
+                }
+                &:checked + span var {
+                    left: calc(var(--h-field-lg) + var(--m-field-lg));
+                }
+            }
+        }
+        .info-wrap {
+            @apply mr-3;
+            .info-button {
+                @apply w-6 h-6;
+            }
+        }
+    }
+
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+input:disabled, selct:disabled {
+    @apply bg-gray-400;
+}
+
+.justify-self-end {
+    justify-self: end;
+}
+

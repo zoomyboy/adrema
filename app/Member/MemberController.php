@@ -22,7 +22,7 @@ class MemberController extends Controller
 
     public $filter = [
         'ausstand' => false,
-        'bill_kind' => false,
+        'bill_kind' => null,
     ];
 
     public function index(Request $request): Response {
