@@ -1,6 +1,8 @@
 <template>
     <div>
 
+        <filt v-model="query.filter" :bill-kinds="billKinds"></filt>
+
         <div class="custom-table">
             <header>
                 <div>Nachname</div>
@@ -66,6 +68,7 @@
 <script>
 import App from '../../layouts/App';
 import Payments from './Payments.vue';
+import Filt from './Filt.vue';
 import mergesQueryString from '../../mixins/mergesQueryString.js';
 
 export default {
@@ -81,7 +84,7 @@ export default {
 
     mixins: [mergesQueryString],
 
-    components: { Payments },
+    components: { Payments, Filt },
 
     methods: {
         remove(member) {
@@ -99,11 +102,13 @@ export default {
         }
     },
 
-    props:{
+    props: {
         data: {},
         subscriptions: {},
         statuses: {},
         paymentDefaults: {},
+        query: {},
+        billKinds: {},
     }
 }
 </script>

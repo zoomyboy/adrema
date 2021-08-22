@@ -20,16 +20,30 @@ use Inertia\Response;
 class MemberController extends Controller
 {
 
+    public $filter = [
+        'ausstand' => false,
+        'bill_kind' => false,
+    ];
+
     public function index(Request $request): Response {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
+        
+        $query = [
+            'filter' => array_merge(
+                $this->filter,
+                json_decode($request->query('filter', '{}'), true)
+            ),
+        ];
 
-        $payload = app(MemberView::class)->index($request);
+        $payload = app(MemberView::class)->index($request, $query['filter']);
         $payload['toolbar'] = [
             ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'],
             ['href' => route('allpayment.create'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'plus'],
             ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope'],
         ];
+        $payload['query'] = $query;
+        $payload['billKinds'] = BillKind::get()->pluck('name', 'id');
 
         return \Inertia::render('member/Index', $payload);
     }

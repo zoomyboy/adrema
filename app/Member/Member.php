@@ -166,6 +166,12 @@ class Member extends Model
         });
     }
 
+    public function scopeWhereAusstand(Builder $q): Builder {
+        return $q->whereHas('payments', function($q) {
+            return $q->whereHas('status', fn ($q) => $q->where('is_remember', true));
+        });
+    }
+
     public function scopePayable(Builder $q): Builder {
         return $q->where('bill_kind_id', '!=', null)->where('subscription_id', '!=', null);
     }
@@ -178,6 +184,18 @@ class Member extends Model
 
     public function scopeForDashboard(Builder $q): Builder {
         return $q->selectRaw('SUM(id)');
+    }
+
+    public function scopeFilter(Builder $q, array $filter): Builder
+    {
+        if (data_get($filter, 'ausstand', false) === true) {
+            $q->whereAusstand();
+        }
+        if (data_get($filter, 'bill_kind', false)) {
+            $q->where('bill_kind_id', $filter['bill_kind']);
+        }
+
+        return $q;
     }
 
 }
