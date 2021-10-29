@@ -21,7 +21,7 @@ class PaymentController extends Controller
     }
 
     public function store(Request $request, Member $member) {
-        $member->payments()->create($request->validate([
+        $member->createPayment($request->validate([
             'nr' => 'required|numeric',
             'subscription_id' => 'required|exists:subscriptions,id',
             'status_id' => 'required|exists:statuses,id',

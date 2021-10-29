@@ -23,7 +23,7 @@ class AllpaymentController extends Controller
         ]);
 
         foreach (Member::payable()->whereNoPayment($request->year)->get() as $member) {
-            $member->payments()->create([
+            $member->createPayment([
                 'nr' => $request->year,
                 'subscription_id' => $member->subscription_id,
                 'status_id' => Status::default(),

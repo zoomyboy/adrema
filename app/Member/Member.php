@@ -58,6 +58,13 @@ class Member extends Model
         $this->update(['version' => $version]);
     }
 
+    public function createPayment(array $attributes): void
+    {
+        $this->payments()->create(array_merge($attributes, [
+            'last_remembered_at' => now(),
+        ]));
+    }
+
     //----------------------------------- Getters -----------------------------------
     public function getFullnameAttribute(): string {
         return $this->firstname.' '.$this->lastname;
