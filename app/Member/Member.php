@@ -50,6 +50,13 @@ class Member extends Model
              ->orWhere('location', 'LIKE', '%'.$text.'%');
     }
 
+    // ---------------------------------- Actions ----------------------------------
+    public function syncVersion($api): void
+    {
+        $version = $api->group($this->group->nami_id)->member($this->nami_id)->version;
+
+        $this->update(['version' => $version]);
+    }
 
     //----------------------------------- Getters -----------------------------------
     public function getFullnameAttribute(): string {

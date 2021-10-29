@@ -28,6 +28,8 @@ class MembershipController extends Controller
             ['nami_id' => $namiId],
         ));
 
+        $member->syncVersion(auth()->user()->api());
+
         return redirect()->back();
     }
 
@@ -37,6 +39,7 @@ class MembershipController extends Controller
             ->deleteMembership($membership->nami_id);
 
         $membership->delete();
+        $member->syncVersion(auth()->user()->api());
 
         return redirect()->back();
     }
