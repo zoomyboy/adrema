@@ -48,4 +48,6 @@ interface PdfRepository
 
     public function afterSingle(Payment $payment): void;
 
+    public function getMailSubject(): string;
+
 }

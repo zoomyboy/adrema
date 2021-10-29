@@ -5,6 +5,7 @@ namespace App\Payment;
 use App\Pdf\BillType;
 use App\Pdf\PdfGenerator;
 use App\Pdf\PdfRepositoryFactory;
+use App\Pdf\RememberType;
 use Illuminate\Console\Command;
 use Mail;
 
@@ -41,6 +42,12 @@ class PaymentSendCommand extends Command
      */
     public function handle()
     {
+        $this->sendBills();
+        $this->sendRemembers();
+    }
+
+    private function sendBills(): void
+    {
         $repos = app(PdfRepositoryFactory::class)->repoCollection(BillType::class, 'E-Mail');
 
         foreach ($repos as $repo) {
@@ -52,8 +59,21 @@ class PaymentSendCommand extends Command
             Mail::to($to)->send(new PaymentMail($repo, $generator->getCompiledFilename()));
             app(PdfRepositoryFactory::class)->afterSingle($repo);
         }
+    }
 
-        return 0;
+    private function sendRemembers(): void
+    {
+        $repos = app(PdfRepositoryFactory::class)->repoCollection(RememberType::class, 'E-Mail');
+
+        foreach ($repos as $repo) {
+            $generator = app(PdfGenerator::class)->setRepository($repo)->render();
+            $to = (object) [
+                'email' => $repo->getEmail($repo->pages->first()),
+                'name' => $repo->getFamilyName($repo->pages->first()),
+            ];
+            Mail::to($to)->send(new PaymentMail($repo, $generator->getCompiledFilename()));
+            app(PdfRepositoryFactory::class)->afterSingle($repo);
+        }
     }
 
 }

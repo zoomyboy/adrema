@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class PaymentMail extends Mailable
 {
@@ -33,9 +34,10 @@ class PaymentMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.payment.payment')
+        $template = Str::snake(class_basename($this->repo));
+        return $this->markdown('mail.payment.'.$template)
                     ->attach($this->filename)
                     ->replyTo('kasse@stamm-silva.de')
-                    ->subject('Jahresrechnung | DPSG Stamm Silva');
+                    ->subject($this->repo->getMailSubject().' | DPSG Stamm Silva');
     }
 }

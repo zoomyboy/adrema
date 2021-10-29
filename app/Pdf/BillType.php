@@ -120,4 +120,9 @@ class BillType extends Repository implements PdfRepository
         $payment->update(['status_id' => 2]);
     }
 
+    public function getMailSubject(): string
+    {
+        return 'Jahresrechnung';
+    }
+
 }

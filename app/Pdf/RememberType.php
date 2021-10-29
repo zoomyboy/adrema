@@ -97,7 +97,7 @@ class RememberType extends Repository implements PdfRepository
         return "Mitgliedsbeitrag für {$this->getFamilyName($page)}";
     }
 
-    public function allLabel(): string 
+    public function allLabel(): string
     {
         return 'Erinnerungen versenden';
     }
@@ -118,6 +118,11 @@ class RememberType extends Repository implements PdfRepository
     public function afterSingle(Payment $payment): void
     {
         $payment->update(['last_remembered_at' => now()]);
+    }
+
+    public function getMailSubject(): string
+    {
+        return 'Zahlungserinnerung';
     }
 
 }
