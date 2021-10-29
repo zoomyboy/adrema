@@ -1,7 +1,7 @@
 <template>
     <div id="app" class="flex font-sans flex-grow">
 
-        <notification class="fixed z-40 right-0 top-0 mt-3 mr-3"></notification>
+        <notification class="fixed z-40 right-0 bottom-0 mb-3 mr-3"></notification>
 
         <!-- ******************************** Sidebar ******************************** -->
         <div class="fixed bg-gray-800 p-6 w-56 left-0 top-0 h-screen border-r border-gray-600 border-solid">

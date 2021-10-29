@@ -21,6 +21,7 @@ class InertiaShareMiddleware
         \Inertia::share([
             'auth' => ['user' => auth()->check() ? new UserResource(auth()->user()) : null],
             'search' => $request->query('search', ''),
+            'flash' => session()->get('flash'),
             'menu' => function() {
                 return session()->get('menu');
             },

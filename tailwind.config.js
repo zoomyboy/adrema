@@ -46,6 +46,7 @@ module.exports = {
             },
             green: {
                 100: colors.green[100],
+                300: colors.green[300],
                 800: colors.green[800],
             }
         }

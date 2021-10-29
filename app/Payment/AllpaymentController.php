@@ -3,9 +3,9 @@
 namespace App\Payment;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Member\Member;
 use App\Payment\Status;
+use Illuminate\Http\Request;
 
 class AllpaymentController extends Controller
 {
@@ -30,6 +30,6 @@ class AllpaymentController extends Controller
             ]);
         }
 
-        return redirect()->back();
+        return redirect()->back()->success('Zahlungen erstellt');
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,13 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
 
         \Inertia::share('search', request()->query('search', ''));
+
+        RedirectResponse::macro('success', function($flash) {
+            session()->flash('flash', ['success' => $flash]);
+
+            return $this;
+        });
+
     }
 
     /**
