@@ -28,8 +28,11 @@ class ActionFactory
             $repo = app($repo);
 
             return [
-                'href' => route('sendpayment.pdf', ['type' => get_class($repo)]),
-                'label' => $repo->allLabel(),
+                'link' => [
+                    'href' => route('sendpayment.pdf', ['type' => get_class($repo)]),
+                    'label' => $repo->allLabel(),
+                ],
+                'text' => $repo->getDescription(),
             ];
         });
     }

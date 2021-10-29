@@ -12,6 +12,7 @@ class PdfRepositoryFactory
 
     private array $types = [
         BillType::class,
+        RememberType::class,
     ];
 
     public function getTypes(): Collection
@@ -60,7 +61,7 @@ class PdfRepositoryFactory
     public function afterSingle(PdfRepository $repo): void
     {
         foreach ($repo->allPayments() as $payment) {
-            $payment->update(['status_id' => 2]);
+            $repo->afterSingle($payment);
         }
     }
 

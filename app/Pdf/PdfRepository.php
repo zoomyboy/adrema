@@ -3,6 +3,7 @@
 namespace App\Pdf;
 
 use App\Member\Member;
+use App\Payment\Payment;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -42,5 +43,9 @@ interface PdfRepository
     public function allLabel(): string;
 
     public function getEmail(Collection $page): string;
+
+    public function getDescription(): array;
+
+    public function afterSingle(Payment $payment): void;
 
 }

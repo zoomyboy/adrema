@@ -1,0 +1,41 @@
+\documentclass[silvaletter,12pt]{scrlttr2}
+
+\setkomavar{subject}{<<< $data->getSubject() >>>}
+
+\begin{document}
+@foreach($data->pages as $page)
+\begin{letter}{Familie <<< $data->getFamilyName($page) >>>\\<<< $data->getAddress($page) >>>\\<<< $data->getZip($page) >>> <<< $data->getLocation($page) >>>}
+    \sffamily
+    \gdef\TotalHT{0}
+    \opening{Liebe Familie <<< $data->getFamilyName($page) >>>,}
+
+    Ihr Mitgliedbeitrag ist noch ausstehend. Dieser setzt sich wie folgt zusammen:
+
+    \begin{center}
+        \begin{tabular}{@{}p{0.5\textwidth}|r}
+            @foreach($data->getPositions($page) as $desc => $price)
+            \product{<<< $desc >>>}{<<< $price >>>}
+            @endforeach
+            \hline
+            \textbf{Gesamt} & \textbf{\numprint[€]{\TotalHT}} \\
+        \end{tabular}
+    \end{center}
+
+    Somit bitten wir Sie, den ausstehenden Betrag von \totalttc bis zum \textbf{<<< $data->getUntil()->format('d.m.Y') >>>} auf folgendes Konto zu überweisen:
+
+    \begin{tabular}{ll}
+        Kontoinhaber: & DPSG Stamm Silva \\
+        IBAN: & DE40 3425 0000 0000 2145 51 \\
+        Bic: & SOLSDE33XXX \\
+        Verwendungszweck: & <<<$data->getUsage($page)>>>
+    \end{tabular}
+
+    Bitte nehmen Sie zur Kenntnis, dass der für jedes Mitglied obligatorische Versicherungsschutz über die DPSG nur dann für Ihr Kind / Ihre Kinder gilt, wenn der Mitgliedsbeitrag bezahlt wurde. Wenn dies nicht geschieht, müssen wir Ihr Kind / Ihre Kinder von allen Pfadfinderaktionen ausschließen. Dazu gehören sowohl die Gruppenstunden sowie Tagesaktionen als auch mehrtägige Lager.
+    
+    Bei Fragen zur Rechnung können Sie mich auch persönlich erreichen.
+
+    \closing{Viele Grüße \\ Der Stammesvorstand}
+\end{letter}
+@endforeach
+\end{document}
+

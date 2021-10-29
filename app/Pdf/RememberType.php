@@ -6,7 +6,7 @@ use App\Member\Member;
 use App\Payment\Payment;
 use Illuminate\Support\Collection;
 
-class BillType extends Repository implements PdfRepository
+class RememberType extends Repository implements PdfRepository
 {
 
     public string $filename;
@@ -19,17 +19,17 @@ class BillType extends Repository implements PdfRepository
 
     public function getPayments(Member $member): Collection
     {
-        return $member->payments()->whereNeedsBill()->get();
+        return $member->payments()->whereNeedsRemember()->get();
     }
 
     public function linkLabel(): string
     {
-        return 'Rechnung erstellen';
+        return 'Erinnerung erstellen';
     }
 
     public function getSubject(): string
     {
-        return 'Rechnung';
+        return 'Zahlungserinnerung';
     }
 
     public function setFilename(string $filename): self
@@ -46,7 +46,7 @@ class BillType extends Repository implements PdfRepository
 
     public function getView(): string
     {
-        return 'tex.bill';
+        return 'tex.remember';
     }
 
     public function getTemplate(): string
@@ -58,7 +58,7 @@ class BillType extends Repository implements PdfRepository
     {
         $memberIds = $page->pluck('id')->toArray();
         $payments = Payment::whereIn('member_id', $memberIds)
-            ->orderByRaw('nr, member_id')->whereNeedsBill()->get();
+            ->orderByRaw('nr, member_id')->whereNeedsRemember()->get();
 
         return $payments->mapWithKeys(function (Payment $payment) {
             $key = "Beitrag {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname} ({$payment->subscription->name})";
@@ -99,7 +99,7 @@ class BillType extends Repository implements PdfRepository
 
     public function allLabel(): string 
     {
-        return 'Rechnungen versenden';
+        return 'Erinnerungen versenden';
     }
 
     /**
@@ -110,14 +110,14 @@ class BillType extends Repository implements PdfRepository
     public function getDescription(): array 
     {
         return [
-            'Diese Funktion erstellt ein PDF mit allen noch nicht versendenden Rechnungen bei den Mitgliedern die Post als Versandweg haben.',
-            'Die Rechnungen werden automatisch auf "Rechnung gestellt" aktualisiert.',
+            'Diese Funktion erstellt Erinnerungs-PDFs mit allen versendeten aber noch nich bezahlten Rechnungen bei den Mitgliedern die Post als Versandweg haben.',
+            'Das zuletzt erinnerte Datum wird auf heute gesetzt.',
         ];
     }
 
     public function afterSingle(Payment $payment): void
     {
-        $payment->update(['status_id' => 2]);
+        $payment->update(['last_remembered_at' => now()]);
     }
 
 }
