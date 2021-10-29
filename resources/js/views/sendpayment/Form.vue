@@ -1,6 +1,8 @@
 <template>
     <div class="p-6">
-        <a :href="link.href" target="_BLANK" v-for="link in links" class="btn btn-primary" v-text="link.label"></a>
+        <p class="text-white">Diese Funktion erstellt ein PDF mit allen noch nicht versendenden Rechnungen bei den Mitgliedern die Post als Versandweg haben.</p>
+        <p class="text-white">Die Rechnungen werden automatisch auf "Rechnung gestellt" aktualisiert.</p>
+        <a :href="link.href" target="_BLANK" v-for="link in links" class="btn btn-primary mt-3 inline-block" v-text="link.label"></a>
     </div>
 </template>
 
