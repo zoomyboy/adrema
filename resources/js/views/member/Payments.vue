@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar flex flex-col">
-        <sidebar-header :links="value.links" @close="$emit('close')" title="Zahlungen"></sidebar-header>
+        <sidebar-header :links="indexLinks" @close="$emit('close')" @create="mode = 'create'; single = {}" title="Zahlungen"></sidebar-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
             <f-text id="nr" v-model="single.nr" label="Jahr" required></f-text>
@@ -42,6 +42,9 @@ export default {
         return {
             mode: null,
             single: null,
+            indexLinks: [
+                {event: 'create', label: 'Neue Zahlung'}
+            ]
         };
     },
 
@@ -68,7 +71,11 @@ export default {
             var _self = this;
 
             this.mode === 'create' 
-                ? this.$inertia.post(`/member/${this.value.data.id}/payment`, this.inner)
+                ? this.$inertia.post(`/member/${this.value.id}/payment`, this.single, {
+                    onFinish() {
+                        _self.single = null;
+                    }
+                })
                 : this.$inertia.patch(`/member/${this.value.id}/payment/${this.single.id}`, this.single, {
                     onFinish() {
                         _self.single = null;

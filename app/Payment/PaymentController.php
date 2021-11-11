@@ -27,7 +27,7 @@ class PaymentController extends Controller
             'status_id' => 'required|exists:statuses,id',
         ]));
 
-        return redirect()->route('member.payment.index', ['member' => $member]);
+        return redirect()->back();
     }
 
     public function edit(Member $member, Request $request, Payment $payment) {
