@@ -53,6 +53,26 @@ class LoginTest extends TestCase
         Http::assertSentCount(2);
     }
 
+    public function testItResolvesTheLoginFromTheCache()
+    {
+        $this->withoutExceptionHandling();
+        app('nami.backend')->fakeLogin(123, [], 'cookie-123');
+
+        $this->post('/login', [
+            'mglnr' => 123,
+            'password' => 'secret'
+        ]);
+        auth()->setUser(null);
+        $this->post('/login', [
+            'mglnr' => 123,
+            'password' => 'secret'
+        ]);
+
+        $this->assertTrue(auth()->check());
+
+        Http::assertSentCount(2);
+    }
+
     public function testItThrowsExceptionWhenLoginFailed()
     {
         app('nami.backend')->fakeFailedLogin(123);
