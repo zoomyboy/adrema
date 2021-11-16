@@ -25,6 +25,7 @@
         "laravel/telescope": "^4.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
+        "nunomaduro/larastan": "^0.7.12",
         "predis/predis": "^1.1",
         "spatie/laravel-medialibrary": "^7.19",
         "zoomyboy/laravel-nami": "dev-master"
