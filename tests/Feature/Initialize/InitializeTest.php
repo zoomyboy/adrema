@@ -110,9 +110,25 @@ class InitializeTest extends TestCase
             'location' => '::location::',
             'version' => 40,
         ]);
-        $this->assertEquals([306], Activity::firstWhere('nami_id', 305)->subactivities()->pluck('nami_id')->toArray());
+        $this->assertEquals([306], Activity::where('nami_id', 305)->firstOrFail()->subactivities()->pluck('nami_id')->toArray());
 
         Http::assertSentCount(13);
+    }
+
+    public function testItDoesntGetMembersWithNoJoinedAtDate(): void
+    {
+        $this->withoutExceptionHandling();
+        $this->initializeProvider(function($backend) {
+            $backend->fakeMembers([$this->member(['eintrittsdatum' => null])]);
+        });
+        $this->post('/login', [
+            'mglnr' => 123,
+            'password' => 'secret',
+        ]);
+
+        $this->post('/initialize');
+
+        $this->assertDatabaseCount('members', 0);
     }
 
     /**
@@ -133,32 +149,14 @@ class InitializeTest extends TestCase
     /**
      * @dataProvider pageProvider
      */
-    public function testItInitializesPages($num): void
+    public function testItInitializesPages(int $num): void
     {
         $this->withoutExceptionHandling();
         $this->initializeProvider(function($backend) use ($num) {
             $members = collect([]);
 
             foreach (range(1, $num) as $i) {
-                $members->push([
-                    'vorname' => '::firstname::',
-                    'nachname' => '::lastname::',
-                    'beitragsartId' => 300,
-                    'geburtsDatum' => '2014-07-11 00:00:00',
-                    'gruppierungId' => 1000,
-                    'geschlechtId' => 303,
-                    'id' => $i,
-                    'eintrittsdatum' => '2020-11-17 00:00:00',
-                    'geschlechtId' => 303,
-                    'landId' => 302,
-                    'staatsangehoerigkeitId' => 291,
-                    'zeitschriftenversand' => true,
-                    'strasse' => '::street',
-                    'plz' => '12345',
-                    'ort' => '::location::',
-                    'version' => 40,
-                    'gruppierung' => '::group::',
-                ]);
+                $members->push($this->member(['id' => $i]));
             }
 
             $backend->fakeMembers($members->toArray());
@@ -172,6 +170,33 @@ class InitializeTest extends TestCase
         $this->post('/initialize');
 
         $this->assertDatabaseCount('members', $num);
+    }
+
+    /**
+     * @param array<string, mixed> $overwrites
+     * @return array<string, mixed>
+     */
+    private function member(array $overwrites): array
+    {
+        return array_merge([
+            'vorname' => '::firstname::',
+            'nachname' => '::lastname::',
+            'beitragsartId' => 300,
+            'geburtsDatum' => '2014-07-11 00:00:00',
+            'gruppierungId' => 1000,
+            'geschlechtId' => 303,
+            'id' => 116,
+            'eintrittsdatum' => '2020-11-17 00:00:00',
+            'geschlechtId' => 303,
+            'landId' => 302,
+            'staatsangehoerigkeitId' => 291,
+            'zeitschriftenversand' => true,
+            'strasse' => '::street',
+            'plz' => '12345',
+            'ort' => '::location::',
+            'version' => 40,
+            'gruppierung' => '::group::',
+        ], $overwrites);
     }
 
 }

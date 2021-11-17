@@ -39,6 +39,9 @@ class InitializeMembers {
         $this->bar->task('Synchronisiere Mitglieder', function() {
             $this->api->search([])->each(function($member) {
                 $member = NamiMember::fromNami($this->api->member($member->group_id, $member->id));
+                if (!$member->joined_at) {
+                    return;
+                }
                 try {
                     $m = Member::create([
                         'firstname' => $member->firstname,
