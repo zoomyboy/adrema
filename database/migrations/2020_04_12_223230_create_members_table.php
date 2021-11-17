@@ -54,7 +54,7 @@ class CreateMembersTable extends Migration
             $table->foreignId('first_activity_id')->nullable()->constrained('activities');
             $table->foreignId('first_subactivity_id')->nullable()->constrained('subactivities');
             $table->unsignedInteger('version')->default(1);
-            
+
             $table->timestamps();
         });
     }
