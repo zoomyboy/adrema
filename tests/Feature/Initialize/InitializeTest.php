@@ -17,10 +17,9 @@ class InitializeTest extends TestCase
 
     use RefreshDatabase;
 
-    public function testItInitializesGenders(): void
+    public function initializeProvider(callable $callback = null): void
     {
-        $this->withoutExceptionHandling();
-        app(FakeBackend::class)
+        $backend = app(FakeBackend::class)
             ->fakeLogin('123', [])
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000])
             ->fakeNationalities([['name' => 'deutsch', 'id' => 291]])
@@ -29,8 +28,10 @@ class InitializeTest extends TestCase
             ->fakeCountries([['name' => 'Germany', 'id' => 302]])
             ->fakeGenders([['name' => 'Male', 'id' => 303]])
             ->fakeRegions([['name' => 'nrw', 'id' => 304]])
-            ->fakeActivities(1000, [['name' => 'leiter', 'id' => 305]])
-            ->fakeMember([
+            ->fakeActivities(1000, [['name' => 'leiter', 'id' => 305]]);
+
+        if (!$callback) {
+            $backend->fakeMember([
                 'vorname' => '::firstname::',
                 'nachname' => '::lastname::',
                 'beitragsartId' => 300,
@@ -47,10 +48,20 @@ class InitializeTest extends TestCase
                 'plz' => '12345',
                 'ort' => '::location::',
                 'version' => 40,
-            ])
-            ->fakeSubactivities([
-                305 => [['name' => 'wö', 'id' => 306]]
             ]);
+        } else {
+            $callback($backend);
+        }
+
+        $backend->fakeSubactivities([
+            305 => [['name' => 'wö', 'id' => 306]]
+        ]);
+    }
+
+    public function testItInitializesGenders(): void
+    {
+        $this->withoutExceptionHandling();
+        $this->initializeProvider();
         $this->post('/login', [
             'mglnr' => 123,
             'password' => 'secret',
@@ -101,4 +112,63 @@ class InitializeTest extends TestCase
 
         Http::assertSentCount(13);
     }
+
+    /**
+     * @return array<int, array<int, int>>
+     */
+    public function pageProvider(): array
+    {
+        return [
+            [99],
+            [100],
+            [101],
+            [199],
+            [200],
+            [201],
+        ];
+    }
+
+    /**
+     * @dataProvider pageProvider
+     */
+    public function testItInitializesPages($num): void
+    {
+        $this->withoutExceptionHandling();
+        $this->initializeProvider(function($backend) use ($num) {
+            $members = collect([]);
+
+            foreach (range(1, $num) as $i) {
+                $members->push([
+                    'vorname' => '::firstname::',
+                    'nachname' => '::lastname::',
+                    'beitragsartId' => 300,
+                    'geburtsDatum' => '2014-07-11 00:00:00',
+                    'gruppierungId' => 1000,
+                    'geschlechtId' => 303,
+                    'id' => $i,
+                    'eintrittsdatum' => '2020-11-17 00:00:00',
+                    'geschlechtId' => 303,
+                    'landId' => 302,
+                    'staatsangehoerigkeitId' => 291,
+                    'zeitschriftenversand' => true,
+                    'strasse' => '::street',
+                    'plz' => '12345',
+                    'ort' => '::location::',
+                    'version' => 40,
+                ]);
+            }
+
+            $backend->fakeMembers($members->toArray());
+        });
+
+        $this->post('/login', [
+            'mglnr' => 123,
+            'password' => 'secret',
+        ]);
+
+        $this->post('/initialize');
+
+        $this->assertDatabaseCount('members', $num);
+    }
+
 }
