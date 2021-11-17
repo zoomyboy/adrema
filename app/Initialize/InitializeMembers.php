@@ -73,7 +73,7 @@ class InitializeMembers {
                         'version' => $member->version,
                     ]);
                 } catch (ModelNotFoundException $e) {
-                    dd($e->exception(), $member);
+                    dd($e->getMessage(), $member);
                 }
             });
         });
