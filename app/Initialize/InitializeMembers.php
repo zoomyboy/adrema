@@ -67,7 +67,7 @@ class InitializeMembers {
                         'gender_id' => optional(Gender::firstWhere('nami_id', $member->gender_id ?: -1))->id,
                         'confession_id' => optional(Confession::firstWhere('nami_id', $member->confession_id ?: -1))->id,
                         'region_id' => optional(Region::firstWhere('nami_id', $member->region_id ?: -1))->id,
-                        'country_id' => Country::where('nami_id', $member->country_id)->firstOrFail()->id,
+                        'country_id' => optional(Country::where('nami_id', $member->country_id)->first())->id,
                         'subscription_id' => $this->getSubscriptionId($member),
                         'nationality_id' => Nationality::where('nami_id', $member->nationality_id)->firstOrFail()->id,
                         'version' => $member->version,

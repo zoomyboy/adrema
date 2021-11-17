@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\Bill\BillKind;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateMembersTable extends Migration
 {
@@ -28,7 +28,7 @@ class CreateMembersTable extends Migration
             $table->string('lastname');
             $table->string('nickname')->nullable();
             $table->foreignId('gender_id')->nullable()->constrained();
-            $table->foreignId('country_id')->constrained();
+            $table->foreignId('country_id')->nullable()->constrained();
             $table->string('other_country')->nullable();
             $table->foreignId('confession_id')->nullable()->constrained();
             $table->date('birthday');
