@@ -47,6 +47,7 @@ class InitializeTest extends TestCase
                 'strasse' => '::street',
                 'plz' => '12345',
                 'ort' => '::location::',
+                'gruppierung' => '::group::',
                 'version' => 40,
             ]);
         } else {
@@ -97,6 +98,7 @@ class InitializeTest extends TestCase
             'name' => 'Leiter',
             'nami_id' => 305
         ]);
+        $this->assertDatabaseHas('groups', ['nami_id' => 1000, 'name' => '::group::']);
         $this->assertDatabaseHas('members', [
             'nami_id' => 411,
             'gender_id' => Gender::nami(303)->id,
@@ -155,6 +157,7 @@ class InitializeTest extends TestCase
                     'plz' => '12345',
                     'ort' => '::location::',
                     'version' => 40,
+                    'gruppierung' => '::group::',
                 ]);
             }
 
