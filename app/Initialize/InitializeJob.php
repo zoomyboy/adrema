@@ -44,7 +44,7 @@ class InitializeJob implements ShouldQueue
         $bar = $this->createProgressBar('Initialisiere');
 
         foreach (static::$initializers as $initializer) {
-            (new $initializer($bar, $api))->handle();
+            (new $initializer($bar, $api))->handle($this->user);
         }
 
         $bar->finish('Initialisierung abgeschlossen');

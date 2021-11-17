@@ -2,6 +2,8 @@
 
 namespace App\Initialize;
 
+use Zoomyboy\LaravelNami\NamiUser;
+
 class InitializeFees {
 
     private $bar;
@@ -12,9 +14,9 @@ class InitializeFees {
         $this->api = $api;
     }
 
-    public function handle() {
-        $this->bar->task('Synchronisiere Beiträge', function() {
-            $this->api->feesOf(auth()->user()->getNamiGroupId())->each(function($fee) {
+    public function handle(NamiUser $user) {
+        $this->bar->task('Synchronisiere Beiträge', function() use ($user) {
+            $this->api->feesOf($user->getNamiGroupId())->each(function($fee) {
                 \App\Fee::create(['nami_id' => $fee->id, 'name' => $fee->name])
                     ->subscriptions()->create([
                         'name' => $fee->name,

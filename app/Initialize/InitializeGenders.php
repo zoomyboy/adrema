@@ -2,6 +2,8 @@
 
 namespace App\Initialize;
 
+use Zoomyboy\LaravelNami\NamiUser;
+
 class InitializeGenders {
 
     private $bar;
@@ -12,7 +14,7 @@ class InitializeGenders {
         $this->api = $api;
     }
 
-    public function handle() {
+    public function handle(NamiUser $user) {
         $this->bar->task('Synchronisiere Geschlechter', function() {
             $this->api->genders()->each(function($gender) {
                 \App\Gender::create(['nami_id' => $gender->id, 'name' => $gender->name]);

@@ -2,6 +2,8 @@
 
 namespace App\Initialize;
 
+use Zoomyboy\LaravelNami\NamiUser;
+
 class InitializeActivities {
 
     private $bar;
@@ -21,9 +23,9 @@ class InitializeActivities {
         $this->api = $api;
     }
 
-    public function handle() {
-        $this->bar->task('Synchronisiere Tätigkeiten', function() {
-            $this->api->activities(auth()->user()->getNamiGroupId())->each(function($activity) {
+    public function handle(NamiUser $user) {
+        $this->bar->task('Synchronisiere Tätigkeiten', function() use ($user) {
+            $this->api->activities($user->getNamiGroupId())->each(function($activity) {
                 $activity =  \App\Activity::create([
                     'nami_id' => $activity->id,
                     'name' => $activity->name,
