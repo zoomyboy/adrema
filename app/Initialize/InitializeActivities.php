@@ -23,17 +23,17 @@ class InitializeActivities {
 
     public function handle() {
         $this->bar->task('Synchronisiere Tätigkeiten', function() {
-            $this->api->group(auth()->user()->getNamiGroupId())->activities()->each(function($activity) {
+            $this->api->activities(auth()->user()->getNamiGroupId())->each(function($activity) {
                 $activity =  \App\Activity::create([
                     'nami_id' => $activity->id,
                     'name' => $activity->name,
-                    'is_try' => in_array($group->name, $this->tries),
-                    'is_member' => in_array($group->name, $this->members),
+                    'is_try' => in_array($activity->name, $this->tries),
+                    'is_member' => in_array($activity->name, $this->members),
                 ]);
 
 
                 $groups = [];
-                $this->api->subactivitiesOf($activity->id)->each(function($group) use ($activity, &$groups) {
+                $this->api->subactivitiesOf($activity->nami_id)->each(function($group) use ($activity, &$groups) {
                     $group = \App\Subactivity::updateOrCreate(['nami_id' => $group->id], [
                         'nami_id' => $group->id,
                         'name' => $group->name,

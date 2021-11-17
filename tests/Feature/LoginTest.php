@@ -19,7 +19,9 @@ class LoginTest extends TestCase
     public function testItCanLoginWithANamiAccount()
     {
         $this->withoutExceptionHandling();
-        app('nami.backend')->fakeLogin(123, [], 'cookie-123');
+        app('nami.backend')
+            ->fakeLogin(123, [], 'cookie-123')
+            ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
 
         $this->post('/login', [
             'mglnr' => 123,
@@ -29,6 +31,9 @@ class LoginTest extends TestCase
         $key = session()->get('auth_key');
         $cache = Cache::get("namiauth-{$key}");
         $this->assertEquals('secret', data_get($cache, 'credentials.password'));
+        $this->assertEquals('::firstname::', data_get($cache, 'firstname'));
+        $this->assertEquals('::lastname::', data_get($cache, 'lastname'));
+        $this->assertEquals(1000, data_get($cache, 'group_id'));
         $this->assertEquals(123, data_get($cache, 'credentials.mglnr'));
         $this->assertTrue(auth()->check());
     }
@@ -36,7 +41,9 @@ class LoginTest extends TestCase
     public function testItDoesntLoginTwoTimes()
     {
         $this->withoutExceptionHandling();
-        app('nami.backend')->fakeLogin(123, [], 'cookie-123');
+        app('nami.backend')
+            ->fakeLogin(123, [], 'cookie-123')
+            ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
 
         $this->post('/login', [
             'mglnr' => 123,
@@ -50,13 +57,15 @@ class LoginTest extends TestCase
 
         $this->assertTrue(auth()->check());
 
-        Http::assertSentCount(2);
+        Http::assertSentCount(4);
     }
 
     public function testItResolvesTheLoginFromTheCache()
     {
         $this->withoutExceptionHandling();
-        app('nami.backend')->fakeLogin(123, [], 'cookie-123');
+        app('nami.backend')
+            ->fakeLogin(123, [], 'cookie-123')
+            ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
 
         $this->post('/login', [
             'mglnr' => 123,
@@ -70,7 +79,7 @@ class LoginTest extends TestCase
 
         $this->assertTrue(auth()->check());
 
-        Http::assertSentCount(2);
+        Http::assertSentCount(3);
     }
 
     public function testItThrowsExceptionWhenLoginFailed()

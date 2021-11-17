@@ -2,15 +2,16 @@
 
 namespace App\Initialize;
 
-use App\Gender;
+use App\Activity;
 use App\Confession;
 use App\Country;
-use App\Member\Member;
-use App\Region;
-use App\Nationality;
 use App\Fee;
+use App\Gender;
 use App\Group;
-use App\Activity;
+use App\Member\Member;
+use App\Nationality;
+use App\Region;
+use Zoomyboy\LaravelNami\Member as NamiMember;
 
 class InitializeMembers {
 
@@ -35,7 +36,8 @@ class InitializeMembers {
         $allMembers = collect([]);
 
         $this->bar->task('Synchronisiere Mitglieder', function() {
-            $this->api->group(auth()->user()->getNamiGroupId())->members()->each(function($member) {
+            $this->api->search([])->each(function($member) {
+                $member = NamiMember::fromNami($this->api->member($member->group_id, $member->id));
                 $m = Member::create([
                     'firstname' => $member->firstname,
                     'lastname' => $member->lastname,

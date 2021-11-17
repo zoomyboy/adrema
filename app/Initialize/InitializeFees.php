@@ -14,7 +14,7 @@ class InitializeFees {
 
     public function handle() {
         $this->bar->task('Synchronisiere Beiträge', function() {
-            $this->api->group(auth()->user()->getNamiGroupId())->fees()->each(function($fee) {
+            $this->api->feesOf(auth()->user()->getNamiGroupId())->each(function($fee) {
                 \App\Fee::create(['nami_id' => $fee->id, 'name' => $fee->name])
                     ->subscriptions()->create([
                         'name' => $fee->name,

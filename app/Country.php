@@ -2,12 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Nami\HasNamiField;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
     use HasFactory;
+    use HasNamiField;
 
     public $fillable = ['name', 'nami_id'];
 
