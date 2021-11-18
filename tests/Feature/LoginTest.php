@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
+use Zoomyboy\LaravelNami\Authentication\NamiGuard;
+use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
 class LoginTest extends TestCase
 {
@@ -16,11 +18,11 @@ class LoginTest extends TestCase
         parent::setUp();
     }
 
-    public function testItCanLoginWithANamiAccount()
+    public function testItCanLoginWithANamiAccount(): void
     {
         $this->withoutExceptionHandling();
-        app('nami.backend')
-            ->fakeLogin(123, [], 'cookie-123')
+        app(FakeBackend::class)
+            ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
 
         $this->post('/login', [
@@ -38,11 +40,11 @@ class LoginTest extends TestCase
         $this->assertTrue(auth()->check());
     }
 
-    public function testItDoesntLoginTwoTimes()
+    public function testItDoesntLoginTwoTimes(): void
     {
         $this->withoutExceptionHandling();
-        app('nami.backend')
-            ->fakeLogin(123, [], 'cookie-123')
+        app(FakeBackend::class)
+            ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
 
         $this->post('/login', [
@@ -60,18 +62,18 @@ class LoginTest extends TestCase
         Http::assertSentCount(4);
     }
 
-    public function testItResolvesTheLoginFromTheCache()
+    public function testItResolvesTheLoginFromTheCache(): void
     {
         $this->withoutExceptionHandling();
-        app('nami.backend')
-            ->fakeLogin(123, [], 'cookie-123')
+        app(FakeBackend::class)
+            ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
 
         $this->post('/login', [
             'mglnr' => 123,
             'password' => 'secret'
         ]);
-        auth()->setUser(null);
+        app(NamiGuard::class)->setUser(null);
         $this->post('/login', [
             'mglnr' => 123,
             'password' => 'secret'
@@ -82,9 +84,9 @@ class LoginTest extends TestCase
         Http::assertSentCount(3);
     }
 
-    public function testItThrowsExceptionWhenLoginFailed()
+    public function testItThrowsExceptionWhenLoginFailed(): void
     {
-        app('nami.backend')->fakeFailedLogin(123);
+        app(FakeBackend::class)->fakeFailedLogin();
 
         $this->post('/login', [
             'mglnr' => 123,
