@@ -12,6 +12,7 @@ import Pages from './components/Pages.vue';
 import VBool from './components/VBool.vue';
 import App from './layouts/App.vue';
 import VTooltip from 'v-tooltip'
+import hasModule from './mixins/hasModule.js';
 
 Vue.use(plugin)
 Vue.use(VTooltip);
@@ -24,6 +25,8 @@ Vue.component('pages', Pages);
 Vue.component('v-bool', VBool);
 
 const el = document.getElementById('app')
+
+Vue.mixin(hasModule);
 
 new Vue({
     render: h => h(InertiaApp, {

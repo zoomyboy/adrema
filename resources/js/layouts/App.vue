@@ -8,7 +8,7 @@
             <div class="grid gap-2">
                 <v-link href="/" menu="dashboard" icon="loss">Dashboard</v-link>
                 <v-link href="/member" menu="member" icon="user">Mitglieder</v-link>
-                <v-link href="/subscription" menu="subscription" icon="money">Beiträge</v-link>
+                <v-link href="/subscription" v-show="hasModule('bill')" menu="subscription" icon="money">Beiträge</v-link>
             </div>
         </div>
 

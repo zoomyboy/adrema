@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
+use App\Setting\GeneralSettings;
 use Closure;
 use Session;
 
@@ -14,6 +15,7 @@ class InertiaShareMiddleware
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param GeneralSettings $settings
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -32,7 +34,10 @@ class InertiaShareMiddleware
             },
             'title' => function() {
                 return session()->get('title', '');
-            }
+            },
+            'settings' => [
+                'modules' => app(GeneralSettings::class)->modules,
+            ]
         ]);
 
         $response = $next($request);

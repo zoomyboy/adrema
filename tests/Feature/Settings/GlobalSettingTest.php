@@ -15,7 +15,7 @@ class GlobalSettingTest extends TestCase
     public function testItLoadsGeneralSettings(): void
     {
         GeneralSettings::fake([
-            'modes' => ['bill']
+            'modules' => ['bill']
         ]);
         $this->withoutExceptionHandling();
         $this->login()->init();
@@ -23,7 +23,7 @@ class GlobalSettingTest extends TestCase
         $response = $this->get('/setting');
                          
         $response->assertInertiaComponent('setting/Index');
-        $this->assertEquals(['bill'], $response->inertia('general.modes'));
+        $this->assertEquals(['bill'], $response->inertia('general.modules'));
     }
 
     public function testItGetsOptionsForModels(): void
@@ -33,7 +33,7 @@ class GlobalSettingTest extends TestCase
 
         $response = $this->get('/setting');
                          
-        $this->assertContains('bill', $response->inertia('options.modes'));
+        $this->assertContains('bill', $response->inertia('options.modules'));
     }
 
 }

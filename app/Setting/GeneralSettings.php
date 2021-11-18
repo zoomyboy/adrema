@@ -8,12 +8,14 @@ class GeneralSettings extends Settings
 {
 
     /** @var array<int, string> */
-    public array $modes;
+    public array $modules;
+
+    public bool $single_view;
 
     /**
      * @return array<int, string>
      */
-    public function modeOptions(): array
+    public function moduleOptions(): array
     {
         return [
             'bill',

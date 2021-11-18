@@ -13,10 +13,12 @@ class CreateGeneralSettings extends SettingsMigration
     {
         $defaults = [
             'diözese' => [
-                'modes' => []
+                'modules' => [],
+                'single_view' => false,
             ],
             'stamm' => [
-                'modes' => ['bill']
+                'modules' => ['bill'],
+                'single_view' => true,
             ]
         ];
 
@@ -26,6 +28,7 @@ class CreateGeneralSettings extends SettingsMigration
     public function up(): void
     {
         $defaults = $this->defaults(config('app.mode'));
-        $this->migrator->add('general.modes', $defaults['modes']);
+        $this->migrator->add('general.modules', $defaults['modules']);
+        $this->migrator->add('general.single_view', $defaults['single_view']);
     }
 }

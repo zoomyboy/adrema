@@ -18,10 +18,10 @@ class SettingController extends Controller
     {
         return Inertia::render('setting/Index', [
             'options' => [
-                'modes' => $generalSettings->modeOptions()
+                'modules' => $generalSettings->moduleOptions()
             ],
             'general' => [
-                'modes' => $generalSettings->modes
+                'modules' => $generalSettings->modules
             ]
         ]);
     }
