@@ -127,7 +127,7 @@ class InitializeTest extends TestCase
         $this->withoutExceptionHandling();
         $this->initializeProvider(function($backend) {
             $backend->fakeMembers([
-                $this->member(['courses' => [ ['entries_baustein' => '1a', 'entries_id' => 788, 'entries_veranstalter' => 'KJA', 'entries_vstgName' => 'eventname', 'entries_vstgTag' => '2021-11-12 00:00:00'] ]])
+                $this->member(['courses' => [ ['bausteinId' => 506, 'id' => 788, 'veranstalter' => 'KJA', 'vstgName' => 'eventname', 'vstgTag' => '2021-11-12 00:00:00'] ]])
             ]);
         });
         $this->post('/login', [
