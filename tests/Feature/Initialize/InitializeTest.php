@@ -22,7 +22,7 @@ class InitializeTest extends TestCase
     public function initializeProvider(callable $callback = null): void
     {
         $backend = app(FakeBackend::class)
-            ->fakeLogin('123', [])
+            ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000])
             ->fakeNationalities([['name' => 'deutsch', 'id' => 291]])
             ->fakeFees(1000, [['name' => 'Family', 'id' => 300]])
@@ -40,7 +40,6 @@ class InitializeTest extends TestCase
                 'beitragsartId' => 300,
                 'geburtsDatum' => '2014-07-11 00:00:00',
                 'gruppierungId' => 1000,
-                'geschlechtId' => 303,
                 'id' => 411,
                 'eintrittsdatum' => '2020-11-17 00:00:00',
                 'geschlechtId' => 303,
@@ -219,7 +218,6 @@ class InitializeTest extends TestCase
             'geschlechtId' => 303,
             'id' => 116,
             'eintrittsdatum' => '2020-11-17 00:00:00',
-            'geschlechtId' => 303,
             'landId' => 302,
             'staatsangehoerigkeitId' => 291,
             'zeitschriftenversand' => true,

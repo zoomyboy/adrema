@@ -7,7 +7,7 @@ use Exception;
 trait HasNamiField
 {
 
-    public static function nami(int $id): ?self
+    public static function nami(int $id): self
     {
         $model = static::firstWhere('nami_id', $id);
 
