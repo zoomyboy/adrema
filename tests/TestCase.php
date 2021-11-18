@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Member\Member;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Testing\TestResponse;
 use Tests\Lib\InertiaMixin;
@@ -19,7 +20,7 @@ abstract class TestCase extends BaseTestCase
         TestResponse::mixin(new InertiaMixin());
     }
 
-    public function login(): void
+    public function login(): self
     {
         app(FakeBackend::class)
             ->fakeLogin('123')
@@ -28,6 +29,15 @@ abstract class TestCase extends BaseTestCase
             'mglnr' => 123,
             'password' => 'secret',
         ]);
+
+        return $this;
+    }
+
+    public function init(): self
+    {
+        Member::factory()->defaults()->create();
+
+        return $this;
     }
 
 }

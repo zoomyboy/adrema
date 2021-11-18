@@ -10,6 +10,7 @@ use App\Payment\PaymentController;
 use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
 use App\Pdf\MemberPdfController;
+use App\Setting\Controllers\SettingController;
 
 Route::group(['namespace' => 'App\\Http\\Controllers'], function(): void {
     Auth::routes(['register' => false]);
@@ -28,4 +29,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
     Route::apiResource('member.membership', MembershipController::class);
+    Route::resource('setting', SettingController::class);
 });
