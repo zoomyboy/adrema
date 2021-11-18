@@ -5,6 +5,7 @@ namespace App\Initialize;
 use App\Activity;
 use App\Confession;
 use App\Country;
+use App\Course;
 use App\Fee;
 use App\Gender;
 use App\Group;
@@ -72,6 +73,15 @@ class InitializeMembers {
                         'nationality_id' => Nationality::where('nami_id', $member->nationality_id)->firstOrFail()->id,
                         'version' => $member->version,
                     ]);
+
+                    foreach ($this->api->coursesFor($member->id) as $course) {
+                        $m->courses()->attach(Course::where('nami_id', $course->course_id)->firstOrFail(), [
+                            'organizer' => $course->organizer,
+                            'event_name' => $course->event_name,
+                            'completed_at' => $course->completed_at,
+                            'nami_id' => $course->id,
+                        ]);
+                    }
                 } catch (ModelNotFoundException $e) {
                     dd($e->getMessage(), $member);
                 }

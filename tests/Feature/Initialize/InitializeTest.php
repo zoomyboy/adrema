@@ -4,7 +4,9 @@ namespace Tests\Feature\Initialize;
 
 use App\Activity;
 use App\Country;
+use App\Course;
 use App\Gender;
+use App\Member\Member;
 use App\Nationality;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -28,6 +30,7 @@ class InitializeTest extends TestCase
             ->fakeCountries([['name' => 'Germany', 'id' => 302]])
             ->fakeGenders([['name' => 'Male', 'id' => 303]])
             ->fakeRegions([['name' => 'nrw', 'id' => 304]])
+            ->fakeCourses([['name' => '1a', 'id' => 506]])
             ->fakeActivities(1000, [['name' => 'leiter', 'id' => 305]]);
 
         if (!$callback) {
@@ -59,7 +62,7 @@ class InitializeTest extends TestCase
         ]);
     }
 
-    public function testItInitializesGenders(): void
+    public function testItInitializesAll(): void
     {
         $this->withoutExceptionHandling();
         $this->initializeProvider();
@@ -98,6 +101,10 @@ class InitializeTest extends TestCase
             'name' => 'Leiter',
             'nami_id' => 305
         ]);
+        $this->assertDatabaseHas('courses', [
+            'name' => '1a',
+            'nami_id' => 506
+        ]);
         $this->assertDatabaseHas('groups', ['nami_id' => 1000, 'name' => '::group::']);
         $this->assertDatabaseHas('members', [
             'nami_id' => 411,
@@ -112,7 +119,32 @@ class InitializeTest extends TestCase
         ]);
         $this->assertEquals([306], Activity::where('nami_id', 305)->firstOrFail()->subactivities()->pluck('nami_id')->toArray());
 
-        Http::assertSentCount(13);
+        Http::assertSentCount(15);
+    }
+
+    public function testSyncCoursesOfMember(): void
+    {
+        $this->withoutExceptionHandling();
+        $this->initializeProvider(function($backend) {
+            $backend->fakeMembers([
+                $this->member(['courses' => [ ['bausteinId' => 506, 'id' => 788, 'veranstalter' => 'KJA', 'vstgName' => 'eventname', 'vstgTag' => '2021-11-12 00:00:00'] ]])
+            ]);
+        });
+        $this->post('/login', [
+            'mglnr' => 123,
+            'password' => 'secret',
+        ]);
+
+        $this->post('/initialize');
+
+        $this->assertDatabaseHas('course_member', [
+            'member_id' => Member::where('firstname', '::firstname::')->firstOrFail()->id,
+            'course_id' => Course::where('name', '1a')->firstOrFail()->id,
+            'event_name' => 'eventname',
+            'completed_at' => '2021-11-12',
+            'organizer' => 'KJA',
+            'nami_id' => 788,
+        ]);
     }
 
     public function testItDoesntGetMembersWithNoJoinedAtDate(): void

@@ -25,6 +25,7 @@ class InitializeJob implements ShouldQueue
         InitializeGenders::class,
         InitializeRegions::class,
         InitializeActivities::class,
+        InitializeCourses::class,
         InitializeMembers::class,
     ];
 

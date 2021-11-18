@@ -6,6 +6,7 @@ use App\Activity;
 use App\Bill\BillKind;
 use App\Confession;
 use App\Country;
+use App\Course;
 use App\Group;
 use App\Nationality;
 use App\Payment\Payment;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Zoomyboy\LaravelNami\Api;
@@ -145,6 +147,11 @@ class Member extends Model
     public function firstSubActivity(): BelongsTo
     {
         return $this->belongsTo(Subactivity::class, 'first_subactivity_id');
+    }
+
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class)->withPivot(['organizer', 'completed_at', 'event_name']);
     }
 
     public static function booted()
