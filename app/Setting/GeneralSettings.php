@@ -27,4 +27,9 @@ class GeneralSettings extends Settings
         return 'general';
     }
 
+    public function hasModule(string $module): bool
+    {
+        return in_array($module, $this->modules);
+    }
+
 }

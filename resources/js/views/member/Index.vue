@@ -14,8 +14,8 @@
                 <th>Tags</th>
                 <th>Beitrag</th>
                 <th>Geburtstag</th>
-                <th>Rechnung</th>
-                <th>Ausstand</th>
+                <th v-show="hasModule('bill')">Rechnung</th>
+                <th v-show="hasModule('bill')">Ausstand</th>
                 <th>Eintritt</th>
                 <th></th>
             </thead>
@@ -38,13 +38,13 @@
                 </td>
                 <td v-text="member.subscription_name"></td>
                 <td v-text="`${member.birthday_human}`"></td>
-                <td>
+                <td v-show="hasModule('bill')">
                     <div class="flex justify-center">
                         <div class="btn btn-sm label primary" v-text="member.bill_kind_name" v-if="member.bill_kind_name"></div>
                         <div class="text-xs" v-else>Kein</div>
                     </div>
                 </td>
-                <td>
+                <td v-show="hasModule('bill')">
                     <div class="flex justify-center">
                         <div class="btn btn-sm label primary" v-show="member.pending_payment" v-text="member.pending_payment"></div>
                     </div>
@@ -52,7 +52,7 @@
                 <td v-text="`${member.joined_at_human}`"></td>
                 <td class="flex">
                     <inertia-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
-                    <a href="#" @click.prevent="openSidebar(index, 'payment.index')" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></a>
+                    <a href="#" v-show="hasModule('bill')" @click.prevent="openSidebar(index, 'payment.index')" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></a>
                     <a href="#" @click.prevent="openSidebar(index, 'membership.index')" class="inline-flex btn btn-info btn-sm"><sprite src="user"></sprite></a>
                     <inertia-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
                 </td>

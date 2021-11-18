@@ -14,6 +14,7 @@ use App\Member\DeleteJob;
 use App\Nationality;
 use App\Payment\Subscription;
 use App\Region;
+use App\Setting\GeneralSettings;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
@@ -27,7 +28,7 @@ class MemberController extends Controller
         'subactivity_id' => null,
     ];
 
-    public function index(Request $request): Response {
+    public function index(Request $request, GeneralSettings $settings): Response {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
         
@@ -41,8 +42,8 @@ class MemberController extends Controller
         $payload = app(MemberView::class)->index($request, $query['filter']);
         $payload['toolbar'] = [
             ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'],
-            ['href' => route('allpayment.create'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'plus'],
-            ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope'],
+            ['href' => route('allpayment.create'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'plus', 'show' => $settings->hasModule('bill')],
+            ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope', 'show' => $settings->hasModule('bill')],
         ];
         $payload['query'] = $query;
         $payload['billKinds'] = BillKind::get()->pluck('name', 'id');
