@@ -101,4 +101,22 @@ class StoreTest extends TestCase
         ]);
     }
 
+    public function testItReceivesUnknownErrors(): void
+    {
+        $this->login()->init();
+        $member = Member::factory()->defaults()->inNami(123)->createOne();
+        $course = Course::factory()->inNami(456)->createOne();
+        app(CourseFake::class)->doesntCreateWithError(123);
+
+        $response = $this->post("/member/{$member->id}/course", [
+            'course_id' => $course->id,
+            'completed_at' => '2021-01-02',
+            'event_name' => '::event::',
+            'organizer' => '::org::',
+        ]);
+                         
+        $response->assertSessionHasErrors(['id' => 'Unbekannter Fehler']);
+        $this->assertDatabaseCount('course_member', 0);
+    }
+
 }

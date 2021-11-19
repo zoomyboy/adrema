@@ -6,6 +6,8 @@ use App\Course\Models\Course;
 use App\Member\Member;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
+use Zoomyboy\LaravelNami\NamiException;
 
 class StoreRequest extends FormRequest
 {
@@ -36,12 +38,17 @@ class StoreRequest extends FormRequest
 
     public function persist(Member $member): void
     {
-        $course = Course::findOrFail($this->input('course_id'));
+        $course = Course::where('id', $this->input('course_id'))->firstOrFail();
         $payload = array_merge(
             $this->only(['event_name', 'completed_at', 'course_id', 'organizer']),
             ['course_id' => $course->nami_id],
         );
-        $namiId = auth()->user()->api()->createCourse($member->nami_id, $payload);
+
+        try {
+            $namiId = auth()->user()->api()->createCourse($member->nami_id, $payload);
+        } catch(NamiException $e) {
+            throw ValidationException::withMessages(['id' => 'Unbekannter Fehler']);
+        }
 
         $member->courses()->attach(
             $course,
