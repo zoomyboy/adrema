@@ -6,7 +6,7 @@ use App\Activity;
 use App\Bill\BillKind;
 use App\Confession;
 use App\Country;
-use App\Course\Models\Course;
+use App\Course\Models\CourseMember;
 use App\Group;
 use App\Nationality;
 use App\Payment\Payment;
@@ -149,9 +149,9 @@ class Member extends Model
         return $this->belongsTo(Subactivity::class, 'first_subactivity_id');
     }
 
-    public function courses(): BelongsToMany
+    public function courses(): HasMany
     {
-        return $this->belongsToMany(Course::class)->withPivot(['organizer', 'completed_at', 'event_name']);
+        return $this->hasMany(CourseMember::class);
     }
 
     public static function booted()

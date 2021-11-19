@@ -75,7 +75,8 @@ class InitializeMembers {
                     ]);
 
                     foreach ($this->api->coursesFor($member->id) as $course) {
-                        $m->courses()->attach(Course::where('nami_id', $course->course_id)->firstOrFail(), [
+                        $m->courses()->create([
+                            'course_id' => Course::where('nami_id', $course->course_id)->firstOrFail()->id,
                             'organizer' => $course->organizer,
                             'event_name' => $course->event_name,
                             'completed_at' => $course->completed_at,

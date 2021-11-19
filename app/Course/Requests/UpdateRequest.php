@@ -3,13 +3,14 @@
 namespace App\Course\Requests;
 
 use App\Course\Models\Course;
+use App\Course\Models\CourseMember;
 use App\Member\Member;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 use Zoomyboy\LaravelNami\NamiException;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,20 +37,14 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function persist(Member $member): void
+    public function persist(Member $member, CourseMember $course): void
     {
-        $course = Course::where('id', $this->input('course_id'))->firstOrFail();
-        $payload = array_merge(
-            $this->only(['event_name', 'completed_at', 'organizer']),
-            ['course_id' => $course->nami_id],
-        );
-
         try {
-            $namiId = auth()->user()->api()->createCourse($member->nami_id, $payload);
+            auth()->user()->api()->updateCourse($member->nami_id, $course->nami_id, $this->safe()->merge(['course_id' => Course::find($this->input('course_id'))->nami_id])->toArray());
         } catch(NamiException $e) {
             throw ValidationException::withMessages(['id' => 'Unbekannter Fehler']);
         }
 
-        $member->courses()->create($this->safe()->collect()->put('nami_id', $namiId)->toArray());
+        $course->update($this->safe()->toArray());
     }
 }

@@ -2,21 +2,13 @@
 
 namespace Database\Factories\Course\Models;
 
-use App\Course\Models\Course;
+use App\Course\Models\CourseMember;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Course>
- */
-class CourseFactory extends Factory
+class CourseMemberFactory extends Factory
 {
 
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    public $model = Course::class;
+    public $model = CourseMember::class;
 
     /**
      * Define the model's default state.
@@ -26,8 +18,10 @@ class CourseFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->words(5, true),
+            'organizer' => $this->faker->words(5, true),
+            'event_name' => $this->faker->words(5, true),
             'nami_id' => $this->faker->numberBetween(1111, 9999),
+            'completed_at' => $this->faker->date(),
         ];
     }
 

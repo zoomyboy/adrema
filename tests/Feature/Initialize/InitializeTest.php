@@ -136,7 +136,7 @@ class InitializeTest extends TestCase
 
         $this->post('/initialize');
 
-        $this->assertDatabaseHas('course_member', [
+        $this->assertDatabaseHas('course_members', [
             'member_id' => Member::where('firstname', '::firstname::')->firstOrFail()->id,
             'course_id' => Course::where('name', '1a')->firstOrFail()->id,
             'event_name' => 'eventname',

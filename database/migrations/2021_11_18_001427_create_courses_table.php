@@ -18,13 +18,15 @@ class CreateCoursesTable extends Migration
             $table->unsignedInteger('nami_id');
             $table->string('name');
         });
-        Schema::create('course_member', function($table) {
+        Schema::create('course_members', function($table) {
+            $table->id();
             $table->foreignId('member_id')->constrained();
             $table->foreignId('course_id')->constrained();
             $table->string('organizer');
             $table->string('event_name');
             $table->unsignedInteger('nami_id');
             $table->date('completed_at');
+            $table->timestamps();
         });
     }
 
