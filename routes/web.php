@@ -1,5 +1,6 @@
 <?php
 
+use App\Course\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
 use App\Initialize\InitializeController;
 use App\Member\MemberConfirmController;
@@ -30,4 +31,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
     Route::apiResource('member.membership', MembershipController::class);
     Route::resource('setting', SettingController::class);
+    Route::resource('member.course', CourseController::class);
 });

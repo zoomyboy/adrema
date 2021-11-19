@@ -6,7 +6,7 @@ use App\Activity;
 use App\Bill\BillKind;
 use App\Confession;
 use App\Country;
-use App\Course;
+use App\Course\Models\Course;
 use App\Group;
 use App\Nationality;
 use App\Payment\Payment;

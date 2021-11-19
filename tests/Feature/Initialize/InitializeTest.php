@@ -4,7 +4,7 @@ namespace Tests\Feature\Initialize;
 
 use App\Activity;
 use App\Country;
-use App\Course;
+use App\Course\Models\Course;
 use App\Gender;
 use App\Member\Member;
 use App\Nationality;

@@ -2,7 +2,7 @@
 
 namespace App\Initialize;
 
-use App\Course;
+use App\Course\Models\Course;
 use Aweos\Agnoster\Progress\Progress;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\NamiUser;

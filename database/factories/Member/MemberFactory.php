@@ -11,6 +11,9 @@ use App\Payment\Payment;
 use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Member>
+ */
 class MemberFactory extends Factory
 {
     /**
@@ -23,7 +26,7 @@ class MemberFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
@@ -34,7 +37,7 @@ class MemberFactory extends Factory
             'joined_at' => $this->faker->dateTimeBetween('-30 years'),
             'send_newspaper' => $this->faker->boolean,
             'address' => $this->faker->streetAddress,
-            'zip' => $this->faker->postCode,
+            'zip' => $this->faker->postcode,
             'location' => $this->faker->city,
         ];
     }
@@ -61,6 +64,14 @@ class MemberFactory extends Factory
             ->for($subscription);
     }
 
+    public function inNami(int $namiId): self
+    {
+        return $this->state(['nami_id' => $namiId]);
+    }
+
+    /**
+     * @param array<int, callable> $payments
+     */
     public function withPayments(array $payments): self
     {
         return $this->afterCreating(function (Member $model) use ($payments): void {

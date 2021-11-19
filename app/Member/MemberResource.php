@@ -2,6 +2,7 @@
 
 namespace App\Member;
 
+use App\Course\Resources\CourseResource;
 use App\Membership\MembershipResource;
 use App\Payment\PaymentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -55,6 +56,7 @@ class MemberResource extends JsonResource
             'first_activity_id' => $this->first_activity_id,
             'first_subactivity_id' => $this->first_subactivity_id,
             'age_group_icon' => $this->age_group_icon,
+            'courses' => CourseResource::collection($this->whenLoaded('courses')),
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Initialize;
 use App\Activity;
 use App\Confession;
 use App\Country;
-use App\Course;
+use App\Course\Models\Course;
 use App\Fee;
 use App\Gender;
 use App\Group;

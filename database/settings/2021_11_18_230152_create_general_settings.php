@@ -13,11 +13,11 @@ class CreateGeneralSettings extends SettingsMigration
     {
         $defaults = [
             'diözese' => [
-                'modules' => [],
+                'modules' => ['courses'],
                 'single_view' => false,
             ],
             'stamm' => [
-                'modules' => ['bill'],
+                'modules' => ['bill', 'courses'],
                 'single_view' => true,
             ]
         ];

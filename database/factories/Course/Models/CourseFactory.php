@@ -1,18 +1,22 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Course\Models;
 
-use App\Group;
+use App\Course\Models\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class GroupFactory extends Factory
+/**
+ * @extends Factory<Course>
+ */
+class CourseFactory extends Factory
 {
+
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Group::class;
+    public $model = Course::class;
 
     /**
      * Define the model's default state.
@@ -23,7 +27,11 @@ class GroupFactory extends Factory
     {
         return [
             'name' => $this->faker->words(5, true),
-            'nami_id' => $this->faker->randomNumber(),
         ];
+    }
+
+    public function inNami(int $namiId): self
+    {
+        return $this->state(['nami_id' => $namiId]);
     }
 }

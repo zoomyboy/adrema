@@ -40,7 +40,7 @@ return [
     'distinct'       => ':attribute beinhaltet einen bereits vorhandenen Wert.',
     'email'          => ':attribute muss eine gültige E-Mail-Adresse sein.',
     'ends_with'      => ':attribute muss eine der folgenden Endungen aufweisen: :values',
-    'exists'         => 'Der gewählte Wert für :attribute ist ungültig.',
+    'exists'         => ':attribute ist nicht vorhanden.',
     'file'           => ':attribute muss eine Datei sein.',
     'filled'         => ':attribute muss ausgefüllt sein.',
     'gt'             => [
@@ -95,7 +95,7 @@ return [
     'password'             => 'Das Passwort ist falsch.',
     'present'              => ':attribute muss vorhanden sein.',
     'regex'                => ':attribute Format ist ungültig.',
-    'required'             => ':attribute muss ausgefüllt werden.',
+    'required'             => ':attribute ist erforderlich.',
     'required_if'          => ':attribute muss ausgefüllt werden, wenn :other den Wert :value hat.',
     'required_unless'      => ':attribute muss ausgefüllt werden, wenn :other nicht den Wert :values hat.',
     'required_with'        => ':attribute muss ausgefüllt werden, wenn :values ausgefüllt wurde.',
@@ -188,5 +188,9 @@ return [
         'first_group_id' => 'Erste Untertätigkeit',
         'first_activity_id' => 'Erste Tätigkeit',
         'fee_id' => 'Beitragsart',
+        'course_id' => 'Baustein',
+        'completed_at' => 'Datum',
+        'event_name' => 'Veranstaltung',
+        'organizer' => 'Veranstalter',
     ],
 ];

@@ -3,6 +3,7 @@
 namespace App\Http\Views;
 
 use App\Activity;
+use App\Course\Models\Course;
 use App\Member\Member;
 use App\Member\MemberResource;
 use App\Payment\ActionFactory;
@@ -19,18 +20,19 @@ class MemberView {
         return [
             'data' => MemberResource::collection(Member::select('*')
                 ->filter($filter)->search($request->query('search', null))
-                ->with('billKind')->with('payments')->with('memberships')
+                ->with('billKind')->with('payments')->with('memberships')->with('courses')
                 ->withSubscriptionName()->withIsConfirmed()->withPendingPayment()->withAgeGroup()
                 ->orderByRaw('lastname, firstname')
                 ->paginate(15)
             ),
-            'filterActivities' => Activity::where('is_filterable', true)->get()->pluck('name', 'id'),
-            'filterSubactivities' => Subactivity::where('is_filterable', true)->get()->pluck('name', 'id'),
+            'filterActivities' => Activity::where('is_filterable', true)->pluck('name', 'id'),
+            'filterSubactivities' => Subactivity::where('is_filterable', true)->pluck('name', 'id'),
             'toolbar' => [ ['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus'] ],
             'paymentDefaults' => ['nr' => date('Y')],
-            'subscriptions' => Subscription::get()->pluck('name', 'id'),
-            'statuses' => Status::get()->pluck('name', 'id'),
+            'subscriptions' => Subscription::pluck('name', 'id'),
+            'statuses' => Status::pluck('name', 'id'),
             'activities' => $activities->pluck('name', 'id'),
+            'courses' => Course::pluck('name', 'id'),
             'subactivities' => $activities->map(function(Activity $activity) {
                 return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
