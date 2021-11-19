@@ -102,24 +102,21 @@ class UpdateTest extends TestCase
         ]);
     }
 
-    /*
     public function testItReceivesUnknownErrors(): void
     {
         $this->login()->init();
-        $member = Member::factory()->defaults()->inNami(123)->createOne();
-        $course = Course::factory()->inNami(456)->createOne();
-        app(CourseFake::class)->doesntCreateWithError(123);
+        app(CourseFake::class)->doesntUpdateWithError(123, 999);
+        $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
+        $newCourse = Course::factory()->inNami(789)->create();
 
-        $response = $this->post("/member/{$member->id}/course", [
-            'course_id' => $course->id,
+        $response = $this->patch("/member/{$member->id}/course/{$member->courses->first()->id}", [
+            'course_id' => $newCourse->id,
             'completed_at' => '2021-01-02',
             'event_name' => '::event::',
             'organizer' => '::org::',
         ]);
                          
         $response->assertSessionHasErrors(['id' => 'Unbekannter Fehler']);
-        $this->assertDatabaseCount('course_member', 0);
     }
-     */
 
 }
