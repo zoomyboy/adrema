@@ -96,7 +96,7 @@ class StoreTest extends TestCase
         app(CourseFake::class)->assertCreated(123, [
             'bausteinId' => 456,
             'veranstalter' => '::org::',
-            'vstgName' => '::event',
+            'vstgName' => '::event::',
             'vstgTag' => '2021-01-02T00:00:00',
         ]);
     }
