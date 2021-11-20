@@ -17,20 +17,20 @@ class CourseController extends Controller
     {
         $request->persist($member);
 
-        return redirect()->back();
+        return redirect()->back()->success('Ausbildung erstellt');
     }
 
     public function update(Member $member, CourseMember $course, UpdateRequest $request): RedirectResponse
     {
         $request->persist($member, $course);
 
-        return redirect()->back();
+        return redirect()->back()->success('Ausbildung aktualisiert');
     }
 
     public function destroy(Member $member, CourseMember $course, DestroyRequest $request): RedirectResponse
     {
         $request->persist($member, $course);
 
-        return redirect()->back();
+        return redirect()->back()->success('Ausbildung gelöscht');
     }
 }
