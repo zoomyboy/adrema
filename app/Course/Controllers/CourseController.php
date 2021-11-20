@@ -17,20 +17,20 @@ class CourseController extends Controller
     {
         $request->persist($member);
 
-        return redirect()->route('member.index');
+        return redirect()->back();
     }
 
     public function update(Member $member, CourseMember $course, UpdateRequest $request): RedirectResponse
     {
         $request->persist($member, $course);
 
-        return redirect()->route('member.index');
+        return redirect()->back();
     }
 
     public function destroy(Member $member, CourseMember $course, DestroyRequest $request): RedirectResponse
     {
         $request->persist($member, $course);
 
-        return redirect()->route('member.index');
+        return redirect()->back();
     }
 }

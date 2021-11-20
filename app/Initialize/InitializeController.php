@@ -2,8 +2,8 @@
 
 namespace App\Initialize;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class InitializeController extends Controller
 {
@@ -14,6 +14,6 @@ class InitializeController extends Controller
     public function store() {
         InitializeJob::dispatch(auth()->user());
 
-        return \Inertia::render('Initialize/Index');
+        return redirect()->route('home');
     }
 }

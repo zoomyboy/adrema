@@ -17,11 +17,12 @@ class CourseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'organizer' => $this->pivot->organizer,
-            'event_name' => $this->pivot->event_name,
-            'completed_at_human' => Carbon::parse($this->pivot->completed_at)->format('d.m.Y'),
-            'completed_at' => $this->pivot->completed_at,
-            'course_name' => $this->name,
+            'organizer' => $this->organizer,
+            'event_name' => $this->event_name,
+            'completed_at_human' => Carbon::parse($this->completed_at)->format('d.m.Y'),
+            'completed_at' => $this->completed_at,
+            'course_name' => $this->course->name,
+            'course_id' => $this->course->id,
         ];
     }
 }

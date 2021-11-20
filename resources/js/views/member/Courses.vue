@@ -3,9 +3,10 @@
         <sidebar-header :links="indexLinks" @close="$emit('close')" @create="mode = 'create'; single = {}" title="Ausbildungen"></sidebar-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
-            <f-text id="nr" v-model="single.nr" label="Jahr" required></f-text>
-            <f-select id="subscription_id" :options="subscriptions" v-model="single.subscription_id" label="Beitrag" required></f-select>
-            <f-select id="status_id" :options="statuses" v-model="single.status_id" label="Status" required></f-select>
+            <f-text id="completed_at" type="date" v-model="single.completed_at" label="Datum" required></f-text>
+            <f-select id="course_id" :options="courses" v-model="single.course_id" label="Baustein" required></f-select>
+            <f-text id="event_name" v-model="single.event_name" label="Veranstaltung" required></f-text>
+            <f-text id="organizer" v-model="single.organizer" label="Veranstalter" required></f-text>
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 
@@ -47,6 +48,7 @@ export default {
     },
 
     props: {
+        courses: {},
         value: {}
     },
 
@@ -54,11 +56,7 @@ export default {
 
     methods: {
         remove(payment) {
-            this.$inertia.delete(`/member/${this.value.id}/payment/${payment.id}`);
-        },
-
-        accept(payment) {
-            this.$inertia.patch(`/member/${this.value.id}/payment/${payment.id}`, { ...payment, status_id: 3 });
+            this.$inertia.delete(`/member/${this.value.id}/course/${payment.id}`);
         },
 
         openLink(link) {
@@ -73,23 +71,17 @@ export default {
             var _self = this;
 
             this.mode === 'create' 
-                ? this.$inertia.post(`/member/${this.value.id}/payment`, this.single, {
+                ? this.$inertia.post(`/member/${this.value.id}/course`, this.single, {
                     onFinish() {
                         _self.single = null;
                     }
                 })
-                : this.$inertia.patch(`/member/${this.value.id}/payment/${this.single.id}`, this.single, {
+                : this.$inertia.patch(`/member/${this.value.id}/course/${this.single.id}`, this.single, {
                     onFinish() {
                         _self.single = null;
                     }
                 });
         }
-    },
-
-    props: {
-        value: {},
-        subscriptions: {},
-        statuses: {},
     }
 };
 </script>
