@@ -26,7 +26,7 @@ abstract class TestCase extends BaseTestCase
         app(FakeBackend::class)
             ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
-        auth()->login([
+        auth()->loginNami([
             'mglnr' => 123,
             'password' => 'secret',
         ]);

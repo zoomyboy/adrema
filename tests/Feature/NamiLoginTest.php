@@ -11,7 +11,7 @@ use Tests\TestCase;
 use Zoomyboy\LaravelNami\Authentication\NamiGuard;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
-class LoginTest extends TestCase
+class NamiLoginTest extends TestCase
 {
 
     use RefreshDatabase;
@@ -31,6 +31,7 @@ class LoginTest extends TestCase
 
         $this->post('/login', [
             'mglnr' => 123,
+            'provider' => 'nami',
             'password' => 'secret'
         ]);
 
@@ -54,11 +55,13 @@ class LoginTest extends TestCase
 
         $this->post('/login', [
             'mglnr' => 123,
+            'provider' => 'nami',
             'password' => 'secret'
         ]);
         auth()->logout();
         $this->post('/login', [
             'mglnr' => 123,
+            'provider' => 'nami',
             'password' => 'secret'
         ]);
 
@@ -77,11 +80,13 @@ class LoginTest extends TestCase
 
         $this->post('/login', [
             'mglnr' => 123,
+            'provider' => 'nami',
             'password' => 'secret'
         ]);
         app(NamiGuard::class)->setUser(null);
         $this->post('/login', [
             'mglnr' => 123,
+            'provider' => 'nami',
             'password' => 'secret'
         ]);
 
@@ -97,6 +102,7 @@ class LoginTest extends TestCase
 
         $this->post('/login', [
             'mglnr' => 123,
+            'provider' => 'nami',
             'password' => 'secret'
         ])->assertRedirect('/');
 
@@ -113,6 +119,7 @@ class LoginTest extends TestCase
 
         $this->post('/login', [
             'mglnr' => 123,
+            'provider' => 'nami',
             'password' => 'secret'
         ])->assertRedirect('/');
 

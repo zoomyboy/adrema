@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+
 return [
 
     /*
@@ -37,7 +39,8 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'nami'
+            'driver' => 'nami',
+            'other_providers' => ['database'],
         ],
 
         'api' => [
@@ -65,15 +68,10 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'nami',
-            'model' => \App\User::class
+        'database' => [
+            'driver' => 'eloquent',
+            'model' => User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
