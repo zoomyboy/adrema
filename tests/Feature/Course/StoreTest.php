@@ -77,14 +77,13 @@ class StoreTest extends TestCase
         $course = Course::factory()->inNami(456)->createOne();
         app(CourseFake::class)->createsSuccessful(123, 999);
 
-        $response = $this->post("/member/{$member->id}/course", [
+        $this->post("/member/{$member->id}/course", [
             'course_id' => $course->id,
             'completed_at' => '2021-01-02',
             'event_name' => '::event::',
             'organizer' => '::org::',
         ]);
 
-        $response->assertRedirect("/member");
         $this->assertDatabaseHas('course_members', [
             'member_id' => $member->id,
             'course_id' => $course->id,

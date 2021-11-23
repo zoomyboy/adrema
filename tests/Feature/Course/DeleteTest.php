@@ -23,9 +23,8 @@ class DeleteTest extends TestCase
         app(CourseFake::class)->deleteSuccessful(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
 
-        $response = $this->delete("/member/{$member->id}/course/{$member->courses->first()->id}");
+        $this->delete("/member/{$member->id}/course/{$member->courses->first()->id}");
 
-        $response->assertRedirect("/member");
         $this->assertDatabaseCount('course_members', 0);
         app(CourseFake::class)->assertDeleted(123, 999);
     }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Setting\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Cache;
@@ -13,6 +14,8 @@ use Zoomyboy\LaravelNami\Backend\FakeBackend;
 class LoginTest extends TestCase
 {
 
+    use RefreshDatabase;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -21,6 +24,7 @@ class LoginTest extends TestCase
     public function testItCanLoginWithANamiAccount(): void
     {
         $this->withoutExceptionHandling();
+        $this->setLoginId(123);
         app(FakeBackend::class)
             ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
@@ -43,6 +47,7 @@ class LoginTest extends TestCase
     public function testItDoesntLoginTwoTimes(): void
     {
         $this->withoutExceptionHandling();
+        $this->setLoginId(123);
         app(FakeBackend::class)
             ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
@@ -65,6 +70,7 @@ class LoginTest extends TestCase
     public function testItResolvesTheLoginFromTheCache(): void
     {
         $this->withoutExceptionHandling();
+        $this->setLoginId(123);
         app(FakeBackend::class)
             ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
@@ -86,6 +92,7 @@ class LoginTest extends TestCase
 
     public function testItThrowsExceptionWhenLoginFailed(): void
     {
+        $this->setLoginId(123);
         app(FakeBackend::class)->fakeFailedLogin();
 
         $this->post('/login', [
@@ -96,6 +103,31 @@ class LoginTest extends TestCase
         $this->assertFalse(auth()->check());
 
         Http::assertSentCount(2);
+    }
+
+    public function testItCannotLoginWithAWrongNamiId(): void
+    {
+        app(FakeBackend::class)
+            ->fakeLogin('123')
+            ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
+
+        $this->post('/login', [
+            'mglnr' => 123,
+            'password' => 'secret'
+        ])->assertRedirect('/');
+
+        $this->assertTrue(auth()->guest());
+
+        Http::assertSentCount(0);
+    }
+
+    private function setLoginId(int $mglNr): self
+    {
+        GeneralSettings::fake([
+            'allowed_nami_accounts' => [$mglNr]
+        ]);
+
+        return $this;
     }
 
 }

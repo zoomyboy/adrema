@@ -15,7 +15,7 @@ class GlobalSettingTest extends TestCase
     public function testItLoadsGeneralSettings(): void
     {
         GeneralSettings::fake([
-            'modules' => ['bill']
+            'modules' => ['bill'],
         ]);
         $this->withoutExceptionHandling();
         $this->login()->init();

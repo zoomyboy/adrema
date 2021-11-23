@@ -151,7 +151,7 @@ class GenerateTest extends TestCase
         ?array $output = null
     ): void {
         $this->withoutExceptionHandling();
-        $this->login();
+        $this->login()->init();
         $members = $this->setupMembers($members);
 
         $urlId = call_user_func($urlCallable, $members);
@@ -180,7 +180,7 @@ class GenerateTest extends TestCase
         ?array $output = null
     ): void {
         $this->withoutExceptionHandling();
-        $this->login();
+        $this->login()->init();
         $members = $this->setupMembers($members);
 
         $urlId = call_user_func($urlCallable, $members);

@@ -78,14 +78,13 @@ class UpdateTest extends TestCase
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
         $newCourse = Course::factory()->inNami(789)->create();
 
-        $response = $this->patch("/member/{$member->id}/course/{$member->courses->first()->id}", array_merge([
+        $this->patch("/member/{$member->id}/course/{$member->courses->first()->id}", array_merge([
             'course_id' => $newCourse->id,
             'completed_at' => '1999-02-03',
             'event_name' => '::newevent::',
             'organizer' => '::neworg::',
         ]));
 
-        $response->assertRedirect("/member");
         $this->assertDatabaseHas('course_members', [
             'member_id' => $member->id,
             'course_id' => $newCourse->id,
@@ -115,7 +114,7 @@ class UpdateTest extends TestCase
             'event_name' => '::event::',
             'organizer' => '::org::',
         ]);
-                         
+
         $response->assertSessionHasErrors(['id' => 'Unbekannter Fehler']);
     }
 

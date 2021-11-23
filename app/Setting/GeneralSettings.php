@@ -12,6 +12,9 @@ class GeneralSettings extends Settings
 
     public bool $single_view;
 
+    /** @var array<int, int> */
+    public array $allowed_nami_accounts;
+
     /**
      * @return array<int, string>
      */

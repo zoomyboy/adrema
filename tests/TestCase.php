@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Member\Member;
+use App\Setting\GeneralSettings;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Testing\TestResponse;
 use Tests\Lib\InertiaMixin;
@@ -25,7 +26,7 @@ abstract class TestCase extends BaseTestCase
         app(FakeBackend::class)
             ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
-        $this->post('/login', [
+        auth()->login([
             'mglnr' => 123,
             'password' => 'secret',
         ]);

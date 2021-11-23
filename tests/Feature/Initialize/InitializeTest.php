@@ -65,10 +65,7 @@ class InitializeTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $this->initializeProvider();
-        $this->post('/login', [
-            'mglnr' => 123,
-            'password' => 'secret',
-        ]);
+        $this->login();
 
         $this->post('/initialize');
 
@@ -129,10 +126,7 @@ class InitializeTest extends TestCase
                 $this->member(['courses' => [ ['bausteinId' => 506, 'id' => 788, 'veranstalter' => 'KJA', 'vstgName' => 'eventname', 'vstgTag' => '2021-11-12 00:00:00'] ]])
             ]);
         });
-        $this->post('/login', [
-            'mglnr' => 123,
-            'password' => 'secret',
-        ]);
+        $this->login();
 
         $this->post('/initialize');
 
@@ -152,10 +146,7 @@ class InitializeTest extends TestCase
         $this->initializeProvider(function($backend) {
             $backend->fakeMembers([$this->member(['eintrittsdatum' => null])]);
         });
-        $this->post('/login', [
-            'mglnr' => 123,
-            'password' => 'secret',
-        ]);
+        $this->login();
 
         $this->post('/initialize');
 
@@ -192,11 +183,7 @@ class InitializeTest extends TestCase
 
             $backend->fakeMembers($members->toArray());
         });
-
-        $this->post('/login', [
-            'mglnr' => 123,
-            'password' => 'secret',
-        ]);
+        $this->login();
 
         $this->post('/initialize');
 
