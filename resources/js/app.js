@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { App as InertiaApp, plugin } from '@inertiajs/inertia-vue'
+import { App as InertiaApp, plugin, Link } from '@inertiajs/inertia-vue'
 import Echo from 'laravel-echo';
 window.io = require('socket.io-client');
 import Sprite from './components/Sprite.js';
@@ -27,6 +27,7 @@ Vue.component('v-bool', VBool);
 const el = document.getElementById('app')
 
 Vue.mixin(hasModule);
+Vue.component(Link);
 
 new Vue({
     render: h => h(InertiaApp, {

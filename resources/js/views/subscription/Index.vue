@@ -13,7 +13,7 @@
                 <div class="py-1 px-6" v-text="sub.amount_human"></div>
                 <div class="py-1 px-6" v-text="sub.fee_name"></div>
                 <div class="py-1 px-6 flex">
-                    <inertia-link :href="`/subscription/${sub.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
+                    <Link :href="`/subscription/${sub.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></Link>
                 </div>
             </div>
 

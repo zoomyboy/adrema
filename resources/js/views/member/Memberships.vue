@@ -22,7 +22,7 @@
                 <td v-text="membership.human_date"></td>
                 <td class="flex">
                     <a href="#" @click.prevent="single = membership; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
-                    <inertia-link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
+                    <Link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
                 </td>
             </tr>
         </table>

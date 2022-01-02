@@ -51,11 +51,11 @@
                 </td>
                 <td v-text="`${member.joined_at_human}`"></td>
                 <td class="flex">
-                    <inertia-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></inertia-link>
+                    <Link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></Link>
                     <a href="#" v-show="hasModule('bill')" @click.prevent="openSidebar(index, 'payment.index')" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></a>
                     <a href="#" v-show="hasModule('courses')" @click.prevent="openSidebar(index, 'courses.index')" class="inline-flex btn btn-info btn-sm"><sprite src="course"></sprite></a>
                     <a href="#" @click.prevent="openSidebar(index, 'membership.index')" class="inline-flex btn btn-info btn-sm"><sprite src="user"></sprite></a>
-                    <inertia-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
+                    <Link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
                 </td>
             </tr>
 

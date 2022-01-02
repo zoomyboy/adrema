@@ -26,7 +26,7 @@
                 <td v-text="course.completed_at_human"></td>
                 <td class="flex">
                     <a href="#" @click.prevent="single = course; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
-                    <inertia-link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
+                    <Link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
                 </td>
             </tr>
         </table>

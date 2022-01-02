@@ -4,9 +4,9 @@
         <div class="-mx-1 flex items-baseline">
             <div class="pl-1 pr-3 text-gray-500 text-sm">Seite:</div>
             <div class="px-1" v-for="(link, index) in links">
-                <inertia-link href="#" @click.prevent="goto(link)" class="rounded text-sm w-8 h-8 text-primary-100 flex items-center justify-center leading-none shadow" :key="index" v-text="link.page"
+                <Link href="#" @click.prevent="goto(link)" class="rounded text-sm w-8 h-8 text-primary-100 flex items-center justify-center leading-none shadow" :key="index" v-text="link.page"
                     :class="{'bg-primary-700': link.current, 'bg-primary-900': !link.current}"
-                ></inertia-link>
+                ></Link>
             </div>
         </div>
     </div>

@@ -23,8 +23,8 @@
                 <td v-text="payment.subscription_name"></td>
                 <td class="flex">
                     <a href="#" @click.prevent="single = payment; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
-                    <inertia-link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><sprite src="check"></sprite></inertia-link>
-                    <inertia-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></inertia-link>
+                    <Link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><sprite src="check"></sprite></Link>
+                    <Link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
                 </td>
             </tr>
         </table>
