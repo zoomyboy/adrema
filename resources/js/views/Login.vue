@@ -20,7 +20,9 @@ export default {
 
     data: function() {
         return {
-            values: {}
+            values: {
+                provider: 'nami',
+            }
         };
     },
     methods: {
