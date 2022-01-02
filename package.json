@@ -18,8 +18,8 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "@inertiajs/inertia": "^0.8.6",
-        "@inertiajs/inertia-vue": "^0.5.10",
+        "@inertiajs/inertia": "^0.10.1",
+        "@inertiajs/inertia-vue": "^0.7.2",
         "agnoster": "file:resources/js/libs/agnoster",
         "js-modules": "file:resources/js/libs/js-modules",
         "laravel-echo": "^1.10.0",
