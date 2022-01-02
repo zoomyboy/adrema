@@ -39,9 +39,9 @@ class PdfGenerator implements Responsable
 
     public function compileView(): string
     {
-        return (string) view()->make($this->repo->getView(), [
+        return view()->make($this->repo->getView(), [
             'data' => $this->repo,
-        ]);
+        ])->render();
     }
 
     public function toResponse($request)
