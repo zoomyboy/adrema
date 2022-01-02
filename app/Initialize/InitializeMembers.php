@@ -12,8 +12,11 @@ use App\Group;
 use App\Member\Member;
 use App\Nationality;
 use App\Region;
+use App\Subactivity;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Zoomyboy\LaravelNami\Member as NamiMember;
+use Zoomyboy\LaravelNami\NamiException;
 
 class InitializeMembers {
 
@@ -80,6 +83,44 @@ class InitializeMembers {
                             'event_name' => $course->event_name,
                             'completed_at' => $course->completed_at,
                             'nami_id' => $course->id,
+                        ]);
+                    }
+
+                    foreach ($this->api->membershipsOf($member->id) as $membership) {
+                        if (Carbon::parse($membership['entries_aktivVon'])->addYears(200)->isPast()) {
+                            continue;
+                        }
+                        if ($membership['entries_aktivBis'] !== '') {
+                            continue;
+                        }
+                        if (preg_match('/\(([0-9]+)\)/', $membership['entries_taetigkeit'], $activityMatches) !== 1) {
+                            throw new NamiException("ID in taetigkeit string not found: {$membership['entries_taetigkeit']}");
+                        }
+                        $group = Group::where('name', $membership['entries_gruppierung'])->first();
+                        if (!$group) {
+                            preg_match('/(.*?) ([0-9]+)$/', $membership['entries_gruppierung'], $groupMatches);
+                            [$groupAll, $groupName, $groupId] = $groupMatches;
+                            $group = Group::create(['name' => $groupName, 'nami_id' => $groupId]);
+                        }
+                        $subactivityId = $membership['entries_untergliederung'] === ''
+                            ? null
+                            : Subactivity::where('name', $membership['entries_untergliederung'])->firstOrFail()->id;
+                        $activity = Activity::where('nami_id', (int) $activityMatches[1])->first();
+                        if (!$activity) {
+                            $singleMembership = $this->api->membership($member->id, $membership['id']);
+                            app(ActivityCreator::class)->createFor($this->api, $singleMembership['gruppierungId']);
+                            $activity = Activity::where('nami_id', $singleMembership['taetigkeitId'])->first();
+                            $group = Group::firstOrCreate(['nami_id' => $singleMembership['gruppierungId']], [
+                                'nami_id' => $singleMembership['gruppierungId'],
+                                'name' => $singleMembership['gruppierung'],
+                            ]);
+                        }
+                        $m->memberships()->create([
+                            'nami_id' => $membership['id'],
+                            'created_at' => $membership['entries_aktivVon'],
+                            'group_id' => $group->id,
+                            'activity_id' => $activity->id,
+                            'subactivity_id' => $subactivityId,
                         ]);
                     }
                 } catch (ModelNotFoundException $e) {

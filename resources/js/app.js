@@ -27,7 +27,7 @@ Vue.component('v-bool', VBool);
 const el = document.getElementById('app')
 
 Vue.mixin(hasModule);
-Vue.component(Link);
+Vue.component('Link', Link);
 
 new Vue({
     render: h => h(InertiaApp, {
