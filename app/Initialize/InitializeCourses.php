@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Initialize;
 
@@ -9,8 +9,8 @@ use Zoomyboy\LaravelNami\NamiUser;
 
 class InitializeCourses {
 
-    private Progress $bar;
     private Api $api;
+    private Progress $bar;
 
     public function __construct(Progress $bar, Api $api) {
         $this->bar = $bar;
@@ -19,8 +19,10 @@ class InitializeCourses {
 
     public function handle(NamiUser $user): void
     {
-        $this->api->courses()->each(function($course) {
-            Course::create(['nami_id' => $course->id, 'name' => $course->name]);
+        $this->bar->task('Synchronisiere Kurse', function() {
+            $this->api->courses()->each(function($course) {
+                Course::create(['nami_id' => $course->id, 'name' => $course->name]);
+            });
         });
     }
 }

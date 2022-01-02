@@ -2,9 +2,9 @@
 
 namespace App\Payment;
 
+use App\Fee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Fee;
 
 class SubscriptionController extends Controller
 {
@@ -23,7 +23,7 @@ class SubscriptionController extends Controller
         session()->put('title', 'Beitrag erstellen');
 
         return \Inertia::render('subscription/Form', [
-            'fees' => Fee::get()->pluck('name', 'id'),
+            'fees' => Fee::pluck('name', 'id'),
             'mode' => 'create',
             'data' => (object) []
         ]);
@@ -44,7 +44,7 @@ class SubscriptionController extends Controller
         session()->put('title', "Beitrag {$subscription->name} bearbeiten");
 
         return \Inertia::render('subscription/Form', [
-            'fees' => Fee::get()->pluck('name', 'id'),
+            'fees' => Fee::pluck('name', 'id'),
             'mode' => 'edit',
             'data' => new SubscriptionResource($subscription),
         ]);

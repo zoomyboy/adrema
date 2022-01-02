@@ -15,7 +15,6 @@ class InertiaShareMiddleware
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param GeneralSettings $settings
      * @return mixed
      */
     public function handle($request, Closure $next)

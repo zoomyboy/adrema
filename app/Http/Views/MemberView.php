@@ -61,8 +61,8 @@ class MemberView {
     private function additional($member, $overwrites = []) {
         return (new MemberResource($member->load('payments')))
             ->additional(array_merge([
-                'subscriptions' => Subscription::get()->pluck('name', 'id'),
-                'statuses' => Status::get()->pluck('name', 'id'),
+                'subscriptions' => Subscription::pluck('name', 'id'),
+                'statuses' => Status::pluck('name', 'id'),
             ], $overwrites));
     }
 

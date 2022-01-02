@@ -2,9 +2,10 @@
 
 namespace App\Payment;
 
+use App\Fee;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Fee;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subscription extends Model
 {
@@ -12,7 +13,7 @@ class Subscription extends Model
 
     public $fillable = ['name', 'amount', 'fee_id'];
 
-    public function fee() {
+    public function fee(): BelongsTo {
         return $this->belongsTo(Fee::class);
     }
 }

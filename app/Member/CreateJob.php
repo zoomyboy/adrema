@@ -37,13 +37,12 @@ class CreateJob implements ShouldQueue
         $this->member = Member::find($this->memberId);
 
         if ($this->member->hasNami) {
-            return false;
+            return;
         }
 
         $response = $this->user->api()->putMember([
             'firstname' => $this->member->firstname,
             'lastname' => $this->member->lastname,
-            'nickname' => $this->member->nickname,
             'joined_at' => $this->member->joined_at,
             'birthday' => $this->member->birthday,
             'send_newspaper' => $this->member->send_newspaper,
@@ -77,10 +76,10 @@ class CreateJob implements ShouldQueue
         $memberships = $this->member->getNamiMemberships($this->user->api());
         foreach ($memberships as $membership) {
             $this->member->memberships()->create([
-                'activity_id' => Activity::nami($membership['activity_id'])->id, 
+                'activity_id' => Activity::nami($membership['activity_id'])->id,
                 'subactivity_id' => $membership['subactivity_id']
                     ? Subactivity::nami($membership['subactivity_id'])->id
-                    : null, 
+                    : null,
                 'group_id' => Group::nami($membership['group_id'])->id,
                 'nami_id' => $membership['id'],
                 'created_at' => $membership['starts_at'],

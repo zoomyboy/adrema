@@ -22,6 +22,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Zoomyboy\LaravelNami\Api;
 
+/**
+ * @property string $subscription_name
+ * @property int $pending_payment
+ * @property bool $is_confirmed
+ * @property string $age_group_icon
+ * @property \Carbon\Carbon $try_created_at
+ */
 class Member extends Model
 {
     use Notifiable;

@@ -10,12 +10,6 @@ class RememberType extends Repository implements PdfRepository
 {
 
     public string $filename;
-    public Collection $pages;
-
-    public function __construct(Collection $pages)
-    {
-        $this->pages = $pages;
-    }
 
     public function getPayments(Member $member): Collection
     {

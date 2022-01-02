@@ -4,6 +4,9 @@ namespace App\Membership;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Member\Membership
+ */
 class MembershipResource extends JsonResource
 {
     /**

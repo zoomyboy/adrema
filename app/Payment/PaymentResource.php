@@ -4,6 +4,9 @@ namespace App\Payment;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Payment
+ */
 class PaymentResource extends JsonResource
 {
     /**

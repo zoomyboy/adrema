@@ -44,6 +44,8 @@ class PaymentSendCommand extends Command
     {
         $this->sendBills();
         $this->sendRemembers();
+
+        return 0;
     }
 
     private function sendBills(): void

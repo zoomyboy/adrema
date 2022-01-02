@@ -5,9 +5,19 @@ namespace App\Pdf;
 use App\Member\Member;
 use Carbon\Carbon;
 use Generator;
+use Illuminate\Support\Collection;
 
 abstract class Repository
 {
+
+    abstract public function getPayments(Member $member): Collection;
+
+    public Collection $pages;
+
+    public function __construct(Collection $pages)
+    {
+        $this->pages = $pages;
+    }
 
     public function number(int $number): string
     {

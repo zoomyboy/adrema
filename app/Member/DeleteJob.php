@@ -2,13 +2,13 @@
 
 namespace App\Member;
 
+use App\Confession;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
-use App\Confession;
 
 class DeleteJob implements ShouldQueue
 {
@@ -34,7 +34,7 @@ class DeleteJob implements ShouldQueue
         $this->member = Member::find($this->memberId);
 
         if (!$this->member->hasNami) {
-            return false;
+            return;
         }
 
         Nami::login($this->user->mglnr)->deleteMember($this->member->nami_id);

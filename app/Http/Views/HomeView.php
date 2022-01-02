@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 
 class HomeView {
     public function index(Request $request) {
-        $amount = Payment::whereNeedsPayment()->selectRaw('sum(subscriptions.amount) AS a')->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')->first()->a;
+        /** @var object{a: string} */
+        $amount = Payment::whereNeedsPayment()->selectRaw('sum(subscriptions.amount) AS a')->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')->first();
         $members = Member::whereHasPendingPayment()->count();
 
         return [
@@ -20,7 +21,7 @@ class HomeView {
                 'payments' => [
                     'users' => $members,
                     'all_users' => Member::count(),
-                    'amount' => number_format($amount / 100, 2, ',', '.').' €'
+                    'amount' => number_format($amount->a / 100, 2, ',', '.').' €'
                 ],
                 'groups' => Member::select('subactivities.slug', 'subactivities.name')->selectRaw('COUNT(members.id) AS count')->join('memberships', 'memberships.member_id', 'members.id')
                     ->join('activities', 'memberships.activity_id', 'activities.id')

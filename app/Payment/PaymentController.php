@@ -14,7 +14,7 @@ class PaymentController extends Controller
         session()->put('menu', 'member');
         session()->put('title', "Zahlungen für Mitglied {$member->fullname}");
 
-        $payload = app(MemberView::class)->index($request);
+        $payload = app(MemberView::class)->index($request, []);
         $payload['single'] = app(MemberView::class)->paymentIndex($member);
 
         return \Inertia::render('member/Index', $payload);
@@ -34,7 +34,7 @@ class PaymentController extends Controller
         session()->put('menu', 'member');
         session()->put('title', "Zahlungen für Mitglied {$member->fullname}");
 
-        $payload = app(MemberView::class)->index($request);
+        $payload = app(MemberView::class)->index($request, []);
         $payload['single'] = app(MemberView::class)->paymentEdit($member, $payment);
 
         return \Inertia::render('member/Index', $payload);

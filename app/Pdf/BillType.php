@@ -10,12 +10,6 @@ class BillType extends Repository implements PdfRepository
 {
 
     public string $filename;
-    public Collection $pages;
-
-    public function __construct(Collection $pages)
-    {
-        $this->pages = $pages;
-    }
 
     public function getPayments(Member $member): Collection
     {
@@ -97,7 +91,7 @@ class BillType extends Repository implements PdfRepository
         return "Mitgliedsbeitrag für {$this->getFamilyName($page)}";
     }
 
-    public function allLabel(): string 
+    public function allLabel(): string
     {
         return 'Rechnungen versenden';
     }
@@ -107,7 +101,7 @@ class BillType extends Repository implements PdfRepository
      *
      * @return array<int, string>
      */
-    public function getDescription(): array 
+    public function getDescription(): array
     {
         return [
             'Diese Funktion erstellt ein PDF mit allen noch nicht versendenden Rechnungen bei den Mitgliedern die Post als Versandweg haben.',

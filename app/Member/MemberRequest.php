@@ -2,13 +2,13 @@
 
 namespace App\Member;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use App\Group;
-use Illuminate\Support\Str;
 use App\Activity;
+use App\Group;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class MemberRequest extends FormRequest
 {
@@ -30,15 +30,15 @@ class MemberRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_activity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'), 
-            'first_subactivity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'), 
+            'first_activity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'),
+            'first_subactivity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'),
             'subscription_id' => Rule::requiredIf(function() {
                 if ($this->method() != 'POST') {
                     return false;
                 }
-               
+
                 if (!$this->input('first_activity_id')) { return true; }
-                
+
                 return Str::contains(Activity::findOrFail($this->input('first_activity_id'))->name, '€');
             }),
             'firstname' => 'required',

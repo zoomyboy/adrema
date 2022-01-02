@@ -5,6 +5,9 @@ namespace App\Http\Views;
 use App\Member\MemberResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Member\Member
+ */
 class MemberTriesResource extends MemberResource
 {
     /**

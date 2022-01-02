@@ -7,6 +7,9 @@ use App\Membership\MembershipResource;
 use App\Payment\PaymentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Member\Member
+ */
 class MemberResource extends JsonResource
 {
     /**

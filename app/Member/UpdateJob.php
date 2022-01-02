@@ -2,13 +2,13 @@
 
 namespace App\Member;
 
+use App\Confession;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
-use App\Confession;
 
 class UpdateJob implements ShouldQueue
 {
@@ -34,13 +34,12 @@ class UpdateJob implements ShouldQueue
         $this->member = Member::find($this->memberId);
 
         if (!$this->member->hasNami) {
-            return false;
+            return;
         }
 
         $response = Nami::login($this->user->mglnr)->putMember([
             'firstname' => $this->member->firstname,
             'lastname' => $this->member->lastname,
-            'nickname' => $this->member->nickname,
             'joined_at' => $this->member->joined_at,
             'birthday' => $this->member->birthday,
             'send_newspaper' => $this->member->send_newspaper,

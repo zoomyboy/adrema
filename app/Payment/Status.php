@@ -21,7 +21,8 @@ class Status extends Model
         return static::where('is_bill', true)->where('is_remember', true)->first()->id;
     }
 
-    public function isAccepted() {
+    public function isAccepted(): bool
+    {
         return $this->is_bill === false && $this->is_remember === false;
     }
 

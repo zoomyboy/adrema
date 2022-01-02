@@ -31,7 +31,7 @@ class MemberController extends Controller
     public function index(Request $request, GeneralSettings $settings): Response {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
-        
+
         $query = [
             'filter' => array_merge(
                 $this->filter,
@@ -46,7 +46,7 @@ class MemberController extends Controller
             ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope', 'show' => $settings->hasModule('bill')],
         ];
         $payload['query'] = $query;
-        $payload['billKinds'] = BillKind::get()->pluck('name', 'id');
+        $payload['billKinds'] = BillKind::pluck('name', 'id');
 
         return \Inertia::render('member/Index', $payload);
     }
@@ -60,15 +60,15 @@ class MemberController extends Controller
         return \Inertia::render('member/Form', [
             'activities' => $activities->pluck('name', 'id'),
             'subactivities' => $activities->map(function(Activity $activity) {
-                return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
+                return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
-            'billKinds' => BillKind::get()->pluck('name', 'id'),
-            'genders' => Gender::get()->pluck('name', 'id'),
-            'countries' => Country::get()->pluck('name', 'id'),
-            'regions' => Region::where('is_null', false)->get()->pluck('name', 'id'),
-            'nationalities' => Nationality::get()->pluck('name', 'id'),
-            'confessions' => Confession::where('is_null', false)->get()->pluck('name', 'id'),
-            'subscriptions' => Subscription::get()->pluck('name', 'id'),
+            'billKinds' => BillKind::pluck('name', 'id'),
+            'genders' => Gender::pluck('name', 'id'),
+            'countries' => Country::pluck('name', 'id'),
+            'regions' => Region::where('is_null', false)->pluck('name', 'id'),
+            'nationalities' => Nationality::pluck('name', 'id'),
+            'confessions' => Confession::where('is_null', false)->pluck('name', 'id'),
+            'subscriptions' => Subscription::pluck('name', 'id'),
             'data' => [
                 'country_id' => Country::default()
             ],
@@ -93,13 +93,13 @@ class MemberController extends Controller
             'subactivities' => $activities->map(function($activity) {
                 return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
-            'billKinds' => BillKind::get()->pluck('name', 'id'),
-            'genders' => Gender::get()->pluck('name', 'id'),
-            'countries' => Country::get()->pluck('name', 'id'),
-            'regions' => Region::where('is_null', false)->get()->pluck('name', 'id'),
-            'nationalities' => Nationality::get()->pluck('name', 'id'),
-            'confessions' => Confession::where('is_null', false)->get()->pluck('name', 'id'),
-            'subscriptions' => Subscription::get()->pluck('name', 'id'),
+            'billKinds' => BillKind::pluck('name', 'id'),
+            'genders' => Gender::pluck('name', 'id'),
+            'countries' => Country::pluck('name', 'id'),
+            'regions' => Region::where('is_null', false)->pluck('name', 'id'),
+            'nationalities' => Nationality::pluck('name', 'id'),
+            'confessions' => Confession::where('is_null', false)->pluck('name', 'id'),
+            'subscriptions' => Subscription::pluck('name', 'id'),
             'data' => new MemberResource($member),
             'mode' => 'edit',
         ]);

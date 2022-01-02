@@ -47,7 +47,6 @@ class InitializeMembers {
                     $m = Member::create([
                         'firstname' => $member->firstname,
                         'lastname' => $member->lastname,
-                        'nickname' => $member->nickname,
                         'joined_at' => $member->joined_at,
                         'birthday' => $member->birthday,
                         'send_newspaper' => $member->send_newspaper,

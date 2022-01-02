@@ -5,6 +5,7 @@ namespace App\Pdf;
 use App\Member\Member;
 use App\Payment\Payment;
 use Carbon\Carbon;
+use Generator;
 use Illuminate\Support\Collection;
 
 interface PdfRepository
@@ -49,5 +50,7 @@ interface PdfRepository
     public function afterSingle(Payment $payment): void;
 
     public function getMailSubject(): string;
+
+    public function allPayments(): Generator;
 
 }

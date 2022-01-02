@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Storage;
 
+/**
+ * @mixin \Zoomyboy\LaravelNami\NamiUser
+ */
 class UserResource extends JsonResource
 {
     /**

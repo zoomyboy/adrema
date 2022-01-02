@@ -30,10 +30,10 @@ class RedirectIfNotInitializedMiddleware
     }
 
     public function shouldRedirect() {
-        return !in_array(request()->route()->getName(), $this->dontRedirect) && auth()->check();
+        return !request()->routeIs($this->dontRedirect) && auth()->check();
     }
 
     public function initialized() {
-        return \App\Fee::get()->count() > 0;
+        return \App\Fee::count() > 0;
     }
 }

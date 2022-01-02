@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Initialize;
 
@@ -35,7 +35,7 @@ class InitializeActivities {
 
 
                 $groups = [];
-                $this->api->subactivitiesOf($activity->nami_id)->each(function($group) use ($activity, &$groups) {
+                $this->api->subactivitiesOf($activity->nami_id)->each(function($group) use (&$groups) {
                     $group = \App\Subactivity::updateOrCreate(['nami_id' => $group->id], [
                         'nami_id' => $group->id,
                         'name' => $group->name,

@@ -5,6 +5,9 @@ namespace App\Course\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Course\Models\CourseMember
+ */
 class CourseResource extends JsonResource
 {
     /**
