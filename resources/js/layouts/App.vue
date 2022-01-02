@@ -41,7 +41,6 @@ import { debounce } from 'lodash';
 import mergesQueryString from '../mixins/mergesQueryString.js';
 import Notification from '../components/Notification.vue';
 
-
 export default {
     components: { Notification, VLink },
     mixins: [ mergesQueryString ],
