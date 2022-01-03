@@ -100,9 +100,24 @@ class InitializeMembers {
                         [$groupAll, $groupName, $groupId] = $groupMatches;
                         $group = Group::create(['name' => $groupName, 'nami_id' => $groupId]);
                     }
-                    $subactivityId = $membership['entries_untergliederung'] === ''
-                        ? null
-                        : Subactivity::where('name', $membership['entries_untergliederung'])->firstOrFail()->id;
+                    if ($membership['entries_untergliederung'] === '') {
+                        $subactivityId = null;
+                    } else if (!Subactivity::where('name', $membership['entries_untergliederung'])->exists()) {
+                        try {
+                            $singleMembership = $this->api->membership($member->id, $membership['id']);
+                        } catch (RightException $e) {
+                            continue;
+                        }
+                        app(ActivityCreator::class)->createFor($this->api, $singleMembership['gruppierungId']);
+                        $subactivity = Subactivity::where('nami_id', $singleMembership['untergliederungId'])->firstOrFail();
+                        $subactivityId = $subactivity->id;
+                        $group = Group::firstOrCreate(['nami_id' => $singleMembership['gruppierungId']], [
+                            'nami_id' => $singleMembership['gruppierungId'],
+                            'name' => $singleMembership['gruppierung'],
+                        ]);
+                    } else {
+                        $subactivityId = Subactivity::where('name', $membership['entries_untergliederung'])->first()->id;
+                    }
                     $activity = Activity::where('nami_id', (int) $activityMatches[1])->first();
                     if (!$activity) {
                         try {

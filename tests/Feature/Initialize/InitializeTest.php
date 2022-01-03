@@ -164,7 +164,47 @@ class InitializeTest extends TestCase
 
     public function membershipDataProvider() {
         return [
-            'fetch_group_from_backend' => [
+            'fetch_subactivity_from_group' => [
+                [
+                    'gruppierung' => '::newgroup:: 22',
+                    'id' => 1077,
+                    'untergliederung' => '::newuntertaetigkeit::',
+                ],
+                function($db) {
+                    $db->assertDatabaseHas('subactivities', ['name' => 'wö2', 'nami_id' => 3007]);
+                    $db->assertDatabaseHas('activity_subactivity', [
+                        'activity_id' => Activity::where('nami_id', 305)->firstOrFail()->id,
+                        'subactivity_id' => Subactivity::where('nami_id', 3007)->firstOrFail()->id,
+                    ]);
+                    $db->assertDatabaseHas('memberships', [
+                        'activity_id' => Activity::where('nami_id', 305)->firstOrFail()->id,
+                        'subactivity_id' => Subactivity::where('nami_id', 3007)->firstOrFail()->id,
+                        'group_id' => Group::where('nami_id', 9056)->firstOrFail()->id,
+                        'nami_id' => 1077,
+                    ]);
+                },
+                function($backend) {
+                    return $backend->fakeSingleMembership(116, 1077, [
+                        'aktivVon' => '2021-08-22 00:00:00',
+                        'aktivBis' => '',
+                        'gruppierungId' => 9056,
+                        'gruppierung' => '::newgroup::',
+                        'id' => 1077,
+                        'taetigkeitId' => 305,  // default
+                        'taetigkeit' => 'wö',
+                        'untergliederung' => '::newuntertaetigkeit::',
+                        'untergliederungId' => 3007,
+                    ])
+                    ->fakeActivities(9056, [['name' => '€ leiter', 'id' => 305]])
+                    ->fakeSubactivities([
+                        305 => [
+                            ['name' => 'wö', 'id' => 306],
+                            ['name' => 'wö2', 'id' => 3007],
+                        ]
+                    ]);
+                }
+            ],
+            'fetch_activity_from_group' => [
                 [
                     'gruppierung' => '::newgroup:: 22',
                     'id' => 1077,
