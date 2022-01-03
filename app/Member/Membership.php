@@ -12,7 +12,7 @@ class Membership extends Model
 {
     use HasFactory;
 
-    public $fillable = ['subactivity_id', 'activity_id', 'group_id', 'member_id', 'nami_id', 'created_at'];
+    public $fillable = ['subactivity_id', 'activity_id', 'group_id', 'member_id', 'nami_id', 'from'];
 
     public function activity(): BelongsTo
     {

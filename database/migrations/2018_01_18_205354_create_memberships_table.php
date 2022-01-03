@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateMembershipsTable extends Migration
 {
@@ -19,6 +19,7 @@ class CreateMembershipsTable extends Migration
             $table->integer('group_id')->nullable();
             $table->integer('member_id');
             $table->integer('nami_id')->nullable();
+            $table->datetime('from');
             $table->timestamps();
             $table->unique(['activity_id', 'group_id', 'member_id', 'nami_id']);
         });

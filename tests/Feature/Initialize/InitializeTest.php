@@ -164,6 +164,49 @@ class InitializeTest extends TestCase
 
     public function membershipDataProvider() {
         return [
+            'dont_fetch_activity_from_group' => [
+                [
+                    'gruppierung' => '::newgroup:: 22',
+                    'id' => 1077,
+                    'taetigkeit' => '::newtaetigkeit:: (9001)',
+                ],
+                function($db) {
+                    $db->assertDatabaseCount('memberships', 0);
+                },
+                function($backend) {
+                    return $backend->fakeSingleMembership(116, 1077, [
+                        'aktivVon' => '2021-08-22 00:00:00',
+                        'aktivBis' => '',
+                        'gruppierungId' => 9056,
+                        'gruppierung' => '::newgroup::',
+                        'id' => 1077,
+                        'taetigkeit' => '::newtaetigkeit::',
+                        'taetigkeitId' => 4000,
+                        'untergliederungId' => 306,
+                    ])
+                    ->fakeActivities(9056, []);
+                }
+            ],
+            'normal' => [
+                [
+                    'aktivVon' => '2021-08-22 00:00:00',
+                    'aktivBis' => '',
+                    'gruppierung' => '::group::',
+                    'id' => 1077,
+                    'taetigkeit' => '€ leiter (305)',
+                    'untergliederung' => 'wö',
+                ],
+                function($db) {
+                    $db->assertDatabaseHas('memberships', [
+                        'member_id' => Member::where('firstname', '::firstname::')->firstOrFail()->id,
+                        'activity_id' => Activity::where('nami_id', 305)->firstOrFail()->id,
+                        'subactivity_id' => Subactivity::where('nami_id', 306)->firstOrFail()->id,
+                        'nami_id' => 1077,
+                        'from' => '2021-08-22 00:00:00',
+                        'group_id' => Group::where('name', '::group::')->firstOrFail()->id,
+                    ]);
+                },
+            ],
             'fetch_subactivity_from_group' => [
                 [
                     'gruppierung' => '::newgroup:: 22',
@@ -240,26 +283,6 @@ class InitializeTest extends TestCase
                     ]);
                 }
             ],
-            'normal' => [
-                [
-                    'aktivVon' => '2021-08-22 00:00:00',
-                    'aktivBis' => '',
-                    'gruppierung' => '::group::',
-                    'id' => 1077,
-                    'taetigkeit' => '€ leiter (305)',
-                    'untergliederung' => 'wö',
-                ],
-                function($db) {
-                    $db->assertDatabaseHas('memberships', [
-                        'member_id' => Member::where('firstname', '::firstname::')->firstOrFail()->id,
-                        'activity_id' => Activity::where('nami_id', 305)->firstOrFail()->id,
-                        'subactivity_id' => Subactivity::where('nami_id', 306)->firstOrFail()->id,
-                        'nami_id' => 1077,
-                        'created_at' => '2021-08-22 00:00:00',
-                        'group_id' => Group::where('name', '::group::')->firstOrFail()->id,
-                    ]);
-                },
-            ],
             'new_group' => [
                 [
                     'gruppierung' => '::new group:: 5555',
@@ -267,6 +290,22 @@ class InitializeTest extends TestCase
                 function($db) {
                     $db->assertDatabaseHas('groups', ['name' => '::new group::', 'nami_id' => 5555]);
                 },
+                function($backend) {
+                    return $backend->fakeSingleMembership(116, 1077, [
+                        'aktivVon' => '2021-08-22 00:00:00',
+                        'aktivBis' => '',
+                        'gruppierungId' => 5555,
+                        'gruppierung' => '::new group::',
+                        'id' => 1077,
+                        'taetigkeitId' => 305,
+                        'untergliederungId' => 306,
+                    ])
+                    ->fakeActivities(5555, [['name' => 'mitglied', 'id' => 310]])
+                    ->fakeSubactivities([
+                        310 => [['name' => 'wö', 'id' => 306]]
+                    ]);
+                                    
+                }
             ],
             'no_subactivity' => [
                 [
@@ -276,12 +315,14 @@ class InitializeTest extends TestCase
                     $db->assertDatabaseHas('memberships', ['subactivity_id' => null]);
                 },
             ],
-            'no_wrong_dates' => [
+            'wrong_dates' => [
                 [
                     'aktivVon' => '1014-04-01 00:00:00',
                 ],
                 function($db) {
-                    $db->assertDatabaseCount('memberships', 0);
+                    $db->assertDatabaseHas('memberships', [
+                        'from' => '1014-04-01 00:00:00',
+                    ]);
                 },
             ],
             'not_inactive' => [
