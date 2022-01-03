@@ -2,22 +2,20 @@
 
 namespace App\Initialize;
 
+use App\Confession;
+
 class InitializeConfessions {
 
-    private $bar;
     private $api;
     public $nullName = 'ohne Konfession';
 
-    public function __construct($bar, $api) {
-        $this->bar = $bar;
+    public function __construct($api) {
         $this->api = $api;
     }
 
     public function handle() {
-        $this->bar->task('Synchronisiere Konfessionen', function() {
-            $this->api->confessions()->each(function($confession) {
-                \App\Confession::create(['nami_id' => $confession->id, 'name' => $confession->name, 'is_null' => $this->nullName === $confession->name]);
-            });
+        $this->api->confessions()->each(function($confession) {
+            Confession::create(['nami_id' => $confession->id, 'name' => $confession->name, 'is_null' => $this->nullName === $confession->name]);
         });
     }
 }

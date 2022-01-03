@@ -1,22 +1,18 @@
-<?php 
+<?php
 
 namespace App\Initialize;
 
 class InitializeCountries {
 
-    private $bar;
     private $api;
 
-    public function __construct($bar, $api) {
-        $this->bar = $bar;
+    public function __construct($api) {
         $this->api = $api;
     }
 
     public function handle() {
-        $this->bar->task('Synchronisiere Länder', function() {
-            $this->api->countries()->each(function($country) {
-                \App\Country::create(['nami_id' => $country->id, 'name' => $country->name]);
-            });
+        $this->api->countries()->each(function($country) {
+            \App\Country::create(['nami_id' => $country->id, 'name' => $country->name]);
         });
     }
 }

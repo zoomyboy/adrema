@@ -21,11 +21,15 @@ abstract class TestCase extends BaseTestCase
         TestResponse::mixin(new InertiaMixin());
     }
 
-    public function login(): self
-    {
+    public function fakeAuthUser() {
         app(FakeBackend::class)
             ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
+    }
+
+    public function login(): self
+    {
+        $this->fakeAuthUser();
         auth()->loginNami([
             'mglnr' => 123,
             'password' => 'secret',

@@ -9,9 +9,11 @@ use App\Gender;
 use App\Group;
 use App\Member\Member;
 use App\Nationality;
+use App\Setting\GeneralSettings;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
@@ -118,6 +120,24 @@ class InitializeTest extends TestCase
         $this->assertEquals([306], Activity::where('nami_id', 305)->firstOrFail()->subactivities()->pluck('nami_id')->toArray());
 
         Http::assertSentCount(16);
+    }
+
+    public function testItInitializesFromCommandLine(): void
+    {
+        $this->withoutExceptionHandling();
+        $this->initializeProvider();
+        GeneralSettings::fake(['allowed_nami_accounts' => [123]]);
+
+        Artisan::call('nami:initialize', [
+            '--mglnr' => 90166,
+            '--password' => 'secret',
+            '--group_id' => 1000,
+        ]);
+
+        $this->assertDatabaseHas('regions', [
+            'name' => 'nrw',
+            'nami_id' => 304
+        ]);
     }
 
     public function testSyncCoursesOfMember(): void

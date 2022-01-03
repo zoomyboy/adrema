@@ -17,18 +17,6 @@ class InitializeJob implements ShouldQueue
 
     public $user;
 
-    public static $initializers = [
-        InitializeNationalities::class,
-        InitializeFees::class,
-        InitializeConfessions::class,
-        InitializeCountries::class,
-        InitializeGenders::class,
-        InitializeRegions::class,
-        InitializeActivities::class,
-        InitializeCourses::class,
-        InitializeMembers::class,
-    ];
-
     public function __construct(NamiUser $user)
     {
         $this->user = $user;
@@ -41,13 +29,6 @@ class InitializeJob implements ShouldQueue
      */
     public function handle()
     {
-        $api = $this->user->api();
-        $bar = $this->createProgressBar('Initialisiere');
-
-        foreach (static::$initializers as $initializer) {
-            (new $initializer($bar, $api))->handle($this->user);
-        }
-
-        $bar->finish('Initialisierung abgeschlossen');
+        app(Initializer::class)->run($this->user);
     }
 }
