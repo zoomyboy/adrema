@@ -74,35 +74,43 @@ class InitializeMembers {
                     'version' => $member->version,
                 ]);
 
-                foreach ($this->api->coursesFor($member->id) as $course) {
-                    $m->courses()->create([
-                        'course_id' => Course::where('nami_id', $course->course_id)->firstOrFail()->id,
-                        'organizer' => $course->organizer,
-                        'event_name' => $course->event_name,
-                        'completed_at' => $course->completed_at,
-                        'nami_id' => $course->id,
-                    ]);
+                try {
+                    foreach ($this->api->coursesFor($member->id) as $course) {
+                        $m->courses()->create([
+                            'course_id' => Course::where('nami_id', $course->course_id)->firstOrFail()->id,
+                            'organizer' => $course->organizer,
+                            'event_name' => $course->event_name,
+                            'completed_at' => $course->completed_at,
+                            'nami_id' => $course->id,
+                        ]);
+                    }
+                } catch (RightException $e) {
+
                 }
 
-                foreach ($this->api->membershipsOf($member->id) as $membership) {
-                    if ($membership['entries_aktivBis'] !== '') {
-                        continue;
+                try {
+                    foreach ($this->api->membershipsOf($member->id) as $membership) {
+                        if ($membership['entries_aktivBis'] !== '') {
+                            continue;
+                        }
+                        try {
+                            [$activityId, $subactivityId, $groupId] = $this->fetchMembership($member, $membership);
+                        } catch (RightException $e) {
+                            continue;
+                        }
+                        if (is_null($activityId)) {
+                            continue;
+                        }
+                        $m->memberships()->create([
+                            'nami_id' => $membership['id'],
+                            'from' => $membership['entries_aktivVon'],
+                            'group_id' => $groupId,
+                            'activity_id' => $activityId,
+                            'subactivity_id' => $subactivityId,
+                        ]);
                     }
-                    try {
-                        [$activityId, $subactivityId, $groupId] = $this->fetchMembership($member, $membership);
-                    } catch (RightException $e) {
-                        continue;
-                    }
-                    if (is_null($activityId)) {
-                        continue;
-                    }
-                    $m->memberships()->create([
-                        'nami_id' => $membership['id'],
-                        'from' => $membership['entries_aktivVon'],
-                        'group_id' => $groupId,
-                        'activity_id' => $activityId,
-                        'subactivity_id' => $subactivityId,
-                    ]);
+                } catch (RightException $e) {
+
                 }
             } catch (ModelNotFoundException $e) {
                 dd($e->getMessage(), $member);
