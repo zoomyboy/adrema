@@ -13,3 +13,5 @@
 [submodule "resources/js/libs/js-modules"]
 	path = resources/js/libs/js-modules
 	url = gl-js-modules:aweos/js-modules.git
+[submodule "git@zoomyboy.de:silva/silvaletter.git"]
+	url = packages/silvaletter
