@@ -49,6 +49,6 @@ class Payment extends Model
     {
         return $q->whereHas('status', function($q) {
             return $q->where('is_remember', true);
-        })->where(fn ($query) => $query->whereNull('last_remembered_at')->orWhere('last_remembered_at', '<=', now()->subMonths(6)));
+        })->where(fn ($query) => $query->whereNull('last_remembered_at')->orWhere('last_remembered_at', '<=', now()->subMonths(3)));
     }
 }
