@@ -10,24 +10,20 @@
         "img": "rm -R public/img && cd resources/img/svg && svg-sprite -s --symbol-dest=sprite *.svg && mv sprite/svg/sprite.symbol.svg ../sprite.svg && rm -R sprite && cd ../../../ && cp -R resources/img public/img"
     },
     "devDependencies": {
-        "autoprefixer": "^10.4.2",
+        "autoprefixer": "latest",
         "laravel-mix": "^6.0.1",
-        "lodash": "^4.17.21",
         "postcss": "^8.4.6",
         "tailwindcss": "^3.0.19",
-        "vue": "^2.6.12",
-        "vue-loader": "^15.9.6",
-        "vue-template-compiler": "^2.6.12"
+        "vue": "^2.6",
+        "vue-loader": "^15.9.8",
+        "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
-        "@inertiajs/inertia": "^0.10.1",
-        "@inertiajs/inertia-vue": "^0.7.2",
-        "agnoster": "file:resources/js/libs/agnoster",
-        "js-modules": "file:resources/js/libs/js-modules",
-        "laravel-echo": "^1.10.0",
+        "@inertiajs/inertia": "^0.11.0",
+        "@inertiajs/inertia-vue": "^0.8.0",
+        "merge": "^2.1.1",
         "postcss-import": "^14.0.1",
         "query-string": "^7.0.0",
-        "socket.io-client": "^4.0.1",
         "v-tooltip": "^2.1.3",
         "wnumb": "^1.2.0"
     }
