@@ -1,5 +1,5 @@
 <template>
-    <form class="flex flex-grow relative" @submit.prevent="submit">
+    <form class="flex grow relative" @submit.prevent="submit">
         <!-- ****************************** menu links ******************************* -->
         <div class="p-6 bg-gray-700 border-r border-gray-600 flex-none w-maxc flex flex-col justify-between">
             <div class="grid gap-1">
@@ -12,7 +12,7 @@
         </div>
 
         <!-- ***************************** Hauptbereich ****************************** -->
-        <div class="flex-grow">
+        <div class="grow">
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Stammdaten'">
                 <f-select id="gender_id" :options="genders" v-model="inner.gender_id" label="Geschlecht"></f-select>
                 <f-text id="firstname" v-model="inner.firstname" label="Vorname" required></f-text>

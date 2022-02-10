@@ -135,7 +135,7 @@
         input[type="checkbox"] {
             @apply invisible absolute;
             & + span {
-                @apply rounded transition-colors duration-300 relative cursor-pointer flex flex-grow h-full;
+                @apply rounded transition-colors duration-300 relative cursor-pointer flex grow h-full;
                 span {
                     @apply absolute flex items-center justify-center;
                 }

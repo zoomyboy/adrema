@@ -38,14 +38,6 @@
     @apply flex flex-col;
 }
 
-.toolbar-title {
-    @apply font-bold text-gray-700 text-lg;
-}
-
-.subtitle {
-    @apply text-xl font-semibold mt-6 font-thin uppercase text-gray-600;
-}
-
 .mainnav > div > a {
     @apply py-2;
 }

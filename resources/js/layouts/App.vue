@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="flex font-sans flex-grow">
+    <div id="app" class="flex font-sans grow">
 
         <notification class="fixed z-40 right-0 bottom-0 mb-3 mr-3"></notification>
 
@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div class="flex-grow ml-56 bg-gray-900 flex flex-col">
+        <div class="grow ml-56 bg-gray-900 flex flex-col">
             <div class="h-16 px-6 flex justify-between items-center border-b border-gray-600">
                 <div class="flex">
                     <span class="text-xl font-semibold text-white leading-none" v-html="$page.props.title"></span>
@@ -27,7 +27,7 @@
                 </label>
             </div>
 
-            <div class="flex-grow flex flex-col">
+            <div class="grow flex flex-col">
                 <slot></slot>
             </div>
         </div>

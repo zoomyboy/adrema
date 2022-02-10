@@ -6,7 +6,7 @@
         }">{{ label }}</span>
         <div class="relative inner-field mt-1" :class="`h-field-${fieldSize}`">
             <input :id="id" type="checkbox" v-model="v" :disabled="disabled" class="invisible absolute" />
-            <span class="relative cursor-pointer flex flex-grow display" :class="{'bg-switch': v === true, 'bg-gray-700': v === false}">
+            <span class="relative cursor-pointer flex grow display" :class="{'bg-switch': v === true, 'bg-gray-700': v === false}">
                 <span><sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === null}" src="check"></sprite></span>
                 <span><sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === null}" src="close"></sprite></span>
                 <var class="absolute overlay bg-gray-400 rounded top-0"></var>

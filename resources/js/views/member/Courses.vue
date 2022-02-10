@@ -10,26 +10,28 @@
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 
-        <table v-else class="custom-table custom-table-light custom-table-sm text-sm flex-grow">
-            <thead>
-                <th>Baustein</th>
-                <th>Veranstaltung</th>
-                <th>Veranstalter</th>
-                <th>Datum</th>
-                <th></th>
-            </thead>
+        <div class="grow" v-else>
+            <table class="custom-table custom-table-light custom-table-sm text-sm grow">
+                <thead>
+                    <th>Baustein</th>
+                    <th>Veranstaltung</th>
+                    <th>Veranstalter</th>
+                    <th>Datum</th>
+                    <th></th>
+                </thead>
 
-            <tr v-for="course, index in value.courses">
-                <td v-text="course.course_name"></td>
-                <td v-text="course.event_name"></td>
-                <td v-text="course.organizer"></td>
-                <td v-text="course.completed_at_human"></td>
-                <td class="flex">
-                    <a href="#" @click.prevent="single = course; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
-                    <Link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
-                </td>
-            </tr>
-        </table>
+                <tr v-for="course, index in value.courses">
+                    <td v-text="course.course_name"></td>
+                    <td v-text="course.event_name"></td>
+                    <td v-text="course.organizer"></td>
+                    <td v-text="course.completed_at_human"></td>
+                    <td class="flex">
+                        <a href="#" @click.prevent="single = course; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
+                        <Link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 

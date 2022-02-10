@@ -9,25 +9,27 @@
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 
-        <table v-else class="custom-table custom-table-light custom-table-sm text-sm flex-grow">
-            <thead>
-                <th>Nr</th>
-                <th>Status</th>
-                <th>Beitrag</th>
-                <th></th>
-            </thead>
+        <div class="grow" v-else>
+            <table class="custom-table custom-table-light custom-table-sm text-sm">
+                <thead>
+                    <th>Nr</th>
+                    <th>Status</th>
+                    <th>Beitrag</th>
+                    <th></th>
+                </thead>
 
-            <tr v-for="payment, index in value.payments">
-                <td v-text="payment.nr"></td>
-                <td v-text="payment.status_name"></td>
-                <td v-text="payment.subscription_name"></td>
-                <td class="flex">
-                    <a href="#" @click.prevent="single = payment; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
-                    <Link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><sprite src="check"></sprite></Link>
-                    <Link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
-                </td>
-            </tr>
-        </table>
+                <tr v-for="payment, index in value.payments">
+                    <td v-text="payment.nr"></td>
+                    <td v-text="payment.status_name"></td>
+                    <td v-text="payment.subscription_name"></td>
+                    <td class="flex">
+                        <a href="#" @click.prevent="single = payment; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
+                        <Link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><sprite src="check"></sprite></Link>
+                        <Link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div class="flex flex-col pb-6 px-6">
             <a href="#" @click.prevent="openLink(link)" :class="{'disabled': link.disabled}" target="_BLANK" v-for="link in value.payment_links" class="mt-1 text-center btn btn-primary" v-text="link.label"></a>
         </div>
