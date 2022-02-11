@@ -22,8 +22,8 @@ class GlobalSettingTest extends TestCase
 
         $response = $this->get('/setting');
                          
-        $response->assertInertiaComponent('setting/Index');
-        $this->assertEquals(['bill'], $response->inertia('general.modules'));
+        $this->assertComponent('setting/Index', $response);
+        $this->assertEquals(['bill'], $this->inertia($response, 'general.modules'));
     }
 
     public function testItGetsOptionsForModels(): void
@@ -33,7 +33,7 @@ class GlobalSettingTest extends TestCase
 
         $response = $this->get('/setting');
                          
-        $this->assertContains('bill', $response->inertia('options.modules'));
+        $this->assertContains('bill', $this->inertia($response, 'options.modules'));
     }
 
 }

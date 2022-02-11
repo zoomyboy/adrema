@@ -7,7 +7,7 @@ class CreateGeneralSettings extends SettingsMigration
 
     /**
      * @param string $mode
-     * @return array<string, string|array>
+     * @return array<string, array<int,string>|bool>
      */
     public function defaults(string $mode): array
     {

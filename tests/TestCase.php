@@ -6,7 +6,7 @@ use App\Member\Member;
 use App\Setting\GeneralSettings;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Testing\TestResponse;
-use Tests\Lib\InertiaMixin;
+use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 use Zoomyboy\LaravelNami\Nami;
 use Zoomyboy\LaravelNami\NamiUser;
@@ -14,12 +14,7 @@ use Zoomyboy\LaravelNami\NamiUser;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-
-    public function setUp(): void {
-        parent::setUp();
-    
-        TestResponse::mixin(new InertiaMixin());
-    }
+    use TestsInertia;
 
     public function fakeAuthUser() {
         app(FakeBackend::class)

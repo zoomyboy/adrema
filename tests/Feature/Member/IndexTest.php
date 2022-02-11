@@ -37,9 +37,12 @@ class IndexTest extends TestCase
             ]);
         $this->withoutExceptionHandling();
         $this->login();
+        Member::factory()->defaults()->has(CourseMember::factory()->for(Course::factory()), 'courses')->create(['firstname' => '::firstname::']);
 
-        Member::factory()->defaults()->has(CourseMember::factory()->for(Course::factory()), 'courses')->create(['firstname' => '::firstname']);
-        $this->get('/member')->assertInertia('member/Index', ['firstname' => '::firstname'], 'data.data.0');
+        $response = $this->get('/member');
+
+        $this->assertComponent('member/Index', $response);
+        $this->assertInertiaHas('::firstname::', $response, 'data.data.0.firstname');
     }
 
 }
