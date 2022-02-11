@@ -13,6 +13,7 @@ use App\Nationality;
 use App\Payment\Subscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
@@ -60,7 +61,9 @@ class UpdateTest extends TestCase
             ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::']));
 
         Http::assertSent(fn ($request) => $request->method() === 'PUT'
-            && $request['missingkey'] === 'missingvalue' && $request['vorname'] === '::firstname::'
+            && $request['kontoverbindung'] === '{"a":"b"}'
+            && $request['missingkey'] === 'missingvalue'
+            && $request['vorname'] === '::firstname::'
         );
     }
 
@@ -92,7 +95,7 @@ class UpdateTest extends TestCase
     {
         Http::fake(function ($request) {
             if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && $request->method() === 'GET') {
-                return Http::response('{ "success": true, "data": {"missingkey": "missingvalue"} }', 200);
+                return Http::response('{ "success": true, "data": {"missingkey": "missingvalue", "kontoverbindung": {"a": "b"} } }', 200);
             }
 
             if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && $request->method() === 'PUT') {
