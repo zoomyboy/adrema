@@ -16,7 +16,10 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nr' => $this->faker->year,
+            'subscription_id' => Subscription::factory()->create()->id,
+            'status_id' => Status::factory()->create()->id,
+            'last_remembered_at' => $this->faker->dateTime,
         ];
     }
 
