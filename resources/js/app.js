@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { App as InertiaApp, plugin, Link } from '@inertiajs/inertia-vue'
+import { App as InertiaApp, plugin, Link } from '@inertiajs/inertia-vue';
 import Sprite from './components/Sprite.js';
 
 import FText from './components/FText.vue';
@@ -9,10 +9,10 @@ import FTextarea from './components/FTextarea.vue';
 import Pages from './components/Pages.vue';
 import VBool from './components/VBool.vue';
 import App from './layouts/App.vue';
-import VTooltip from 'v-tooltip'
+import VTooltip from 'v-tooltip';
 import hasModule from './mixins/hasModule.js';
 
-Vue.use(plugin)
+Vue.use(plugin);
 Vue.use(VTooltip);
 Vue.component('f-text', FText);
 Vue.component('f-switch', FSwitch);
@@ -22,7 +22,7 @@ Vue.component('sprite', Sprite);
 Vue.component('pages', Pages);
 Vue.component('v-bool', VBool);
 
-const el = document.getElementById('app')
+const el = document.getElementById('app');
 
 Vue.mixin(hasModule);
 Vue.component('Link', Link);

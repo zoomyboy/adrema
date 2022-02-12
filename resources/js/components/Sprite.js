@@ -12,6 +12,6 @@ export default {
                     'xlink:href': `/img/sprite.svg#${this.$props.src}`
                 }
             }, '')
-        ] )
+        ] );
     }
 };
