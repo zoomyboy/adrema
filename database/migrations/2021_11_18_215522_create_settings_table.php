@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSettingsTable extends Migration
 {
+    /**
+     * @return void
+     */
     public function up()
     {
         Schema::create('settings', function (Blueprint $table): void {

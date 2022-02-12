@@ -2,6 +2,7 @@
 
 namespace App\Payment;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,8 @@ class Status extends Model
     ];
 
 
-    public static function default() {
+    public static function default(): int
+    {
         return static::where('is_bill', true)->where('is_remember', true)->first()->id;
     }
 
@@ -27,9 +29,10 @@ class Status extends Model
     }
 
     // ---------------------------------- Scopes -----------------------------------
-    public function scopeNeedsPayment($q) {
-        return $q->where(function($q) {
-            $q->where('is_bill', true)->orWhere('is_remember', true);
+    public function scopeNeedsPayment(Builder $query): Builder
+    {
+        return $query->where(function(Builder $query): Builder {
+            return $query->where('is_bill', true)->orWhere('is_remember', true);
         });
     }
 }

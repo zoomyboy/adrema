@@ -16,7 +16,7 @@ class SubscriptionFactory extends Factory
         return [
             'name' => $this->faker->word,
             'amount' => $this->faker->numberBetween(1000, 50000),
-            'fee_id' => Fee::factory()->create()->id,
+            'fee_id' => Fee::factory()->createOne()->id,
         ];
     }
 

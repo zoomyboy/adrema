@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Fee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Fee>
+ */
 class FeeFactory extends Factory
 {
 

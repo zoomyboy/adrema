@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Views\MemberView;
 use App\Member\Member;
 use App\Member\MemberResource;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Response;
 
 class PaymentController extends Controller
 {
-    public function index(Request $request, Member $member) {
+    public function index(Request $request, Member $member): Response
+    {
         session()->put('menu', 'member');
         session()->put('title', "Zahlungen für Mitglied {$member->fullname}");
 
@@ -20,7 +23,8 @@ class PaymentController extends Controller
         return \Inertia::render('member/VIndex', $payload);
     }
 
-    public function store(Request $request, Member $member) {
+    public function store(Request $request, Member $member): RedirectResponse
+    {
         $member->createPayment($request->validate([
             'nr' => 'required|numeric',
             'subscription_id' => 'required|exists:subscriptions,id',
@@ -30,7 +34,8 @@ class PaymentController extends Controller
         return redirect()->back();
     }
 
-    public function edit(Member $member, Request $request, Payment $payment) {
+    public function edit(Member $member, Request $request, Payment $payment): Response
+    {
         session()->put('menu', 'member');
         session()->put('title', "Zahlungen für Mitglied {$member->fullname}");
 
@@ -40,7 +45,8 @@ class PaymentController extends Controller
         return \Inertia::render('member/VIndex', $payload);
     }
 
-    public function update(Request $request, Member $member, Payment $payment) {
+    public function update(Request $request, Member $member, Payment $payment): RedirectResponse
+    {
         $payment->update($request->validate([
             'nr' => 'required|numeric',
             'subscription_id' => 'required|exists:subscriptions,id',
@@ -50,7 +56,8 @@ class PaymentController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Request $request, Member $member, Payment $payment) {
+    public function destroy(Request $request, Member $member, Payment $payment): RedirectResponse
+    {
         $payment->delete();
 
         return redirect()->back();

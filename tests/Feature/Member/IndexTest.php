@@ -41,7 +41,7 @@ class IndexTest extends TestCase
 
         $response = $this->get('/member');
 
-        $this->assertComponent('member/Index', $response);
+        $this->assertComponent('member/VIndex', $response);
         $this->assertInertiaHas('::firstname::', $response, 'data.data.0.firstname');
     }
 

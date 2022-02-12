@@ -16,7 +16,8 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use TestsInertia;
 
-    public function fakeAuthUser() {
+    public function fakeAuthUser(): void
+    {
         app(FakeBackend::class)
             ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000]);
