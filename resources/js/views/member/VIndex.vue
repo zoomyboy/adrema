@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <filt v-model="query.filter" :activities="filterActivities" :subactivities="filterSubactivities" :bill-kinds="billKinds"></filt>
+        <filt :value="query.filter" :activities="filterActivities" :subactivities="filterSubactivities" :bill-kinds="billKinds"></filt>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
@@ -20,7 +20,7 @@
                 <th></th>
             </thead>
 
-            <tr v-for="member, index in data.data">
+            <tr v-for="member, index in data.data" :key="index">
                 <td class="w-3">
                     <sprite class="w-3 h-3" v-if="member.age_group_icon" :class="`text-${member.age_group_icon}`" src="lilie"></sprite>
                 </td>
@@ -66,9 +66,9 @@
         </div>
 
         <transition name="sidebar">
-            <member-payments v-if="single !== null && sidebar === 'payment.index'" @close="closeSidebar" :subscriptions="subscriptions" :statuses="statuses" v-model="data.data[single]"></member-payments>
-            <member-memberships v-if="single !== null && sidebar === 'membership.index'" @close="closeSidebar" :activities="activities" :subactivities="subactivities" v-model="data.data[single]"></member-memberships>
-            <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="courses" v-model="data.data[single]"></member-courses>
+            <member-payments v-if="single !== null && sidebar === 'payment.index'" @close="closeSidebar" :subscriptions="subscriptions" :statuses="statuses" :value="data.data[single]"></member-payments>
+            <member-memberships v-if="single !== null && sidebar === 'membership.index'" @close="closeSidebar" :activities="activities" :subactivities="subactivities" :value="data.data[single]"></member-memberships>
+            <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="courses" :value="data.data[single]"></member-courses>
         </transition>
     </div>
 </template>
