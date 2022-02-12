@@ -7,6 +7,7 @@ use App\Course\Models\Course;
 use App\Member\Member;
 use App\Member\MemberResource;
 use App\Payment\ActionFactory;
+use App\Payment\Payment;
 use App\Payment\PaymentResource;
 use App\Payment\Status;
 use App\Payment\Subscription;
@@ -14,7 +15,8 @@ use App\Subactivity;
 use Illuminate\Http\Request;
 
 class MemberView {
-    public function index(Request $request, array $filter) {
+    public function index(Request $request, array $filter): array
+    {
         $activities = Activity::with('subactivities')->get();
 
         return [
@@ -39,7 +41,8 @@ class MemberView {
         ];
     }
 
-    public function paymentEdit($member, $payment) {
+    public function paymentEdit(Member $member, Payment $payment): MemberResource
+    {
         return $this->additional($member, [
             'model' => new PaymentResource($payment),
             'links' => [ ['label' => 'Zurück', 'href' => route('member.payment.index', ['member' => $member]) ] ],
@@ -47,7 +50,8 @@ class MemberView {
         ]);
     }
 
-    public function paymentIndex($member) {
+    public function paymentIndex(Member $member): MemberResource
+    {
         return $this->additional($member, [
             'model' => null,
             'links' => [
@@ -58,7 +62,8 @@ class MemberView {
         ]);
     }
 
-    private function additional($member, $overwrites = []) {
+    private function additional(Member $member, array $overwrites = []): MemberResource
+    {
         return (new MemberResource($member->load('payments')))
             ->additional(array_merge([
                 'subscriptions' => Subscription::pluck('name', 'id'),

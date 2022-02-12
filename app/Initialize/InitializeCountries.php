@@ -2,15 +2,18 @@
 
 namespace App\Initialize;
 
+use Zoomyboy\LaravelNami\Api;
+
 class InitializeCountries {
 
-    private $api;
+    private Api $api;
 
-    public function __construct($api) {
+    public function __construct(Api $api) {
         $this->api = $api;
     }
 
-    public function handle() {
+    public function handle(): void
+    {
         $this->api->countries()->each(function($country) {
             \App\Country::create(['nami_id' => $country->id, 'name' => $country->name]);
         });

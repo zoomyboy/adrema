@@ -15,7 +15,7 @@ class InitializeJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, HasProgress;
 
-    public $user;
+    public NamiUser $user;
 
     public function __construct(NamiUser $user)
     {

@@ -7,7 +7,7 @@ use Closure;
 class RedirectIfNotInitializedMiddleware
 {
 
-    public $dontRedirect = ['initialize.index', 'initialize.store'];
+    public array $dontRedirect = ['initialize.index', 'initialize.store'];
 
     /**
      * Handle an incoming request.
@@ -29,11 +29,13 @@ class RedirectIfNotInitializedMiddleware
         return $next($request);
     }
 
-    public function shouldRedirect() {
+    public function shouldRedirect(): bool
+    {
         return !request()->routeIs($this->dontRedirect) && auth()->check();
     }
 
-    public function initialized() {
+    public function initialized(): bool
+    {
         return \App\Fee::count() > 0;
     }
 }

@@ -15,13 +15,14 @@ use App\Nationality;
 use App\Payment\Subscription;
 use App\Region;
 use App\Setting\GeneralSettings;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
 class MemberController extends Controller
 {
 
-    public $filter = [
+    public array $filter = [
         'ausstand' => false,
         'bill_kind' => null,
         'activity_id' => null,
@@ -51,7 +52,8 @@ class MemberController extends Controller
         return \Inertia::render('member/VIndex', $payload);
     }
 
-    public function create(): Response {
+    public function create(): Response
+    {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglied erstellen');
 
@@ -76,13 +78,15 @@ class MemberController extends Controller
         ]);
     }
 
-    public function store(MemberRequest $request) {
+    public function store(MemberRequest $request): RedirectResponse
+    {
         $request->persistCreate();
 
         return redirect()->route('member.index');
     }
 
-    public function edit(Member $member, Request $request) {
+    public function edit(Member $member, Request $request): Response
+    {
         session()->put('menu', 'member');
         session()->put('title', "Mitglied {$member->firstname} {$member->lastname} bearbeiten");
 
@@ -105,13 +109,15 @@ class MemberController extends Controller
         ]);
     }
 
-    public function update(Member $member, MemberRequest $request) {
+    public function update(Member $member, MemberRequest $request): RedirectResponse
+    {
         $request->persistUpdate($member);
 
         return redirect()->route('member.index');
     }
 
-    public function destroy(Member $member) {
+    public function destroy(Member $member): RedirectResponse
+    {
         if ($member->has_nami) {
             DeleteJob::dispatch($member, auth()->user());
         }

@@ -2,10 +2,11 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Member\Member;
 use App\Payment\Subscription;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Fee extends Model
 {
@@ -14,8 +15,8 @@ class Fee extends Model
     public $fillable = ['name', 'nami_id'];
     public $timestamps = false;
 
-
-    public function subscriptions() {
+    public function subscriptions(): HasMany
+    {
         return $this->hasMany(Subscription::class);
     }
 }

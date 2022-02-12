@@ -11,7 +11,8 @@ use App\Payment\Subscription;
 use Illuminate\Http\Request;
 
 class HomeView {
-    public function index(Request $request) {
+    public function index(Request $request): array
+    {
         /** @var object{a: string} */
         $amount = Payment::whereNeedsPayment()->selectRaw('sum(subscriptions.amount) AS a')->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')->first();
         $members = Member::whereHasPendingPayment()->count();

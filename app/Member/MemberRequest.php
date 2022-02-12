@@ -66,7 +66,8 @@ class MemberRequest extends FormRequest
         }
     }
 
-    public function persistUpdate(Member $member) {
+    public function persistUpdate(Member $member): void
+    {
         $member->update($this->input());
 
         if($this->input('has_nami') && $member->nami_id === null) {

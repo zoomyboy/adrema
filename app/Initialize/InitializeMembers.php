@@ -15,19 +15,22 @@ use App\Region;
 use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Exceptions\RightException;
 use Zoomyboy\LaravelNami\Member as NamiMember;
+use Zoomyboy\LaravelNami\Membership as NamiMembership;
 use Zoomyboy\LaravelNami\NamiException;
 
 class InitializeMembers {
 
-    private $api;
+    private Api $api;
 
-    public function __construct($api) {
+    public function __construct(Api $api) {
         $this->api = $api;
     }
 
-    public function getSubscriptionId($member) {
+    public function getSubscriptionId(NamiMember $member): ?int
+    {
         $fee = Fee::firstWhere('nami_id', $member->fee_id ?: -1);
         if (is_null($fee)) {
             return null;
@@ -36,10 +39,11 @@ class InitializeMembers {
         return optional($fee->subscriptions()->first())->id;
     }
 
-    public function handle() {
+    public function handle(): void
+    {
         $allMembers = collect([]);
 
-        $this->api->search([])->each(function($member) {
+        $this->api->search([])->each(function(NamiMember $member): void {
             $member = NamiMember::fromNami($this->api->member($member->group_id, $member->id));
             if (!$member->joined_at) {
                 return;
@@ -118,7 +122,8 @@ class InitializeMembers {
         });
     }
 
-    private function fetchMembership($member, $membership) {
+    private function fetchMembership(NamiMember $member, array $membership): array
+    {
         if ($this->shouldSyncMembership($membership)) {
             $singleMembership = $this->api->membership($member->id, $membership['id']);
             app(ActivityCreator::class)->createFor($this->api, $singleMembership['gruppierungId']);
@@ -149,7 +154,8 @@ class InitializeMembers {
         return [$activityId, $subactivityId, $groupId];
     }
 
-    private function shouldSyncMembership($membership) {
+    private function shouldSyncMembership(array $membership): bool
+    {
         if (!Group::where('name', $membership['entries_gruppierung'])->exists()) {
             return true;
         }

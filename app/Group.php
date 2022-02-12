@@ -12,7 +12,8 @@ class Group extends Model
     public $fillable = ['nami_id', 'name'];
     public $timestamps = false;
 
-    public static function nami($id) {
+    public static function nami(int $id): self
+    {
         return static::firstWhere('nami_id', $id);
     }
 }
