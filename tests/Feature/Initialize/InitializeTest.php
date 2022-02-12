@@ -162,7 +162,8 @@ class InitializeTest extends TestCase
         ]);
     }
 
-    public function membershipDataProvider() {
+    public function membershipDataProvider(): array
+    {
         return [
             'dont_fetch_activity_from_group' => [
                 [

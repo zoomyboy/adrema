@@ -9,7 +9,7 @@ parameters:
         - database
 
     # The level 8 is the highest level
-    level: 5
+    level: 6
 
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::api\(\)#'

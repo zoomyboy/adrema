@@ -5,19 +5,22 @@ namespace App\Payment;
 use App\Http\Controllers\Controller;
 use App\Member\Member;
 use App\Payment\Status;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Response;
 
 class AllpaymentController extends Controller
 {
-    public function create() {
+    public function create(): Response
+    {
         session()->put('menu', 'member');
         session()->put('title', 'Rechnungen erstellen');
 
-        return \Inertia::render('allpayment/Form', [
-        ]);
+        return \Inertia::render('allpayment/Form');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request): RedirectResponse
+    {
         $request->validate([
             'year' => 'required|numeric'
         ]);

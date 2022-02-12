@@ -4,11 +4,14 @@ namespace App\Payment;
 
 use App\Fee;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Response;
 
 class SubscriptionController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request): Response
+    {
         session()->put('menu', 'subscription');
         session()->put('title', 'Beiträge');
 
@@ -18,7 +21,8 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function create() {
+    public function create(): Response
+    {
         session()->put('menu', 'subscription');
         session()->put('title', 'Beitrag erstellen');
 
@@ -29,7 +33,8 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request): RedirectResponse
+    {
         Subscription::create($request->validate([
             'name' => 'required|max:255',
             'amount' => 'required|numeric',
@@ -39,7 +44,8 @@ class SubscriptionController extends Controller
         return redirect()->route('subscription.index');
     }
 
-    public function edit(Subscription $subscription, Request $request) {
+    public function edit(Subscription $subscription, Request $request): Response
+    {
         session()->put('menu', 'subscription');
         session()->put('title', "Beitrag {$subscription->name} bearbeiten");
 
@@ -50,7 +56,8 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function update(Subscription $subscription, Request $request) {
+    public function update(Subscription $subscription, Request $request): RedirectResponse
+    {
         $subscription->update($request->validate([
             'name' => 'required|max:255',
             'amount' => 'required|numeric',
