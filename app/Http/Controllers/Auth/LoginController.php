@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Inertia\Response;
 use Zoomyboy\LaravelNami\AuthenticatesNamiUsers;
 
 class LoginController extends Controller
@@ -38,7 +39,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function showLoginForm() {
-        return \Inertia::render('Login');
+    public function showLoginForm(): Response {
+        return \Inertia::render('VLogin');
     }
 }
