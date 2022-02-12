@@ -3,15 +3,19 @@
 namespace App\Initialize;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Response;
 
 class InitializeController extends Controller
 {
-    public function index() {
-        return \Inertia::render('Initialize/Index');
+    public function index(): Response
+    {
+        return \Inertia::render('Initialize/VIndex');
     }
 
-    public function store() {
+    public function store(): RedirectResponse
+    {
         InitializeJob::dispatch(auth()->user());
 
         return redirect()->route('home');
