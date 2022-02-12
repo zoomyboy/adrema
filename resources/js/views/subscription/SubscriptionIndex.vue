@@ -8,7 +8,7 @@
                 <div class="px-6 py-3 border-gray-600 border-b"></div>
             </header>
 
-            <div v-for="sub, index in data" class="text-gray-200 transition-all duration-300 rounded flex items-center hover:bg-gray-800">
+            <div v-for="sub, index in data" class="text-gray-200 transition-all duration-300 rounded flex items-center hover:bg-gray-800" :key="index">
                 <div class="py-1 px-6" v-text="sub.name"></div>
                 <div class="py-1 px-6" v-text="sub.amount_human"></div>
                 <div class="py-1 px-6" v-text="sub.fee_name"></div>

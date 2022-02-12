@@ -15,7 +15,7 @@ class SubscriptionController extends Controller
         session()->put('menu', 'subscription');
         session()->put('title', 'Beiträge');
 
-        return \Inertia::render('subscription/Index', [
+        return \Inertia::render('subscription/SubscriptionIndex', [
             'data' => SubscriptionResource::collection(Subscription::get()),
             'toolbar' => [ ['href' => route('subscription.create'), 'label' => 'Beitrag anlegen', 'color' => 'primary', 'icon' => 'plus'] ],
         ]);
@@ -26,7 +26,7 @@ class SubscriptionController extends Controller
         session()->put('menu', 'subscription');
         session()->put('title', 'Beitrag erstellen');
 
-        return \Inertia::render('subscription/Form', [
+        return \Inertia::render('subscription/SubscriptionForm', [
             'fees' => Fee::pluck('name', 'id'),
             'mode' => 'create',
             'data' => (object) []
@@ -49,7 +49,7 @@ class SubscriptionController extends Controller
         session()->put('menu', 'subscription');
         session()->put('title', "Beitrag {$subscription->name} bearbeiten");
 
-        return \Inertia::render('subscription/Form', [
+        return \Inertia::render('subscription/SubscriptionForm', [
             'fees' => Fee::pluck('name', 'id'),
             'mode' => 'edit',
             'data' => new SubscriptionResource($subscription),
