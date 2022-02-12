@@ -1,7 +1,7 @@
 <template>
     <div id="app" class="flex font-sans grow">
 
-        <notification class="fixed z-40 right-0 bottom-0 mb-3 mr-3"></notification>
+        <v-notification class="fixed z-40 right-0 bottom-0 mb-3 mr-3"></v-notification>
 
         <!-- ******************************** Sidebar ******************************** -->
         <div class="fixed bg-gray-800 p-6 w-56 left-0 top-0 h-screen border-r border-gray-600 border-solid">
@@ -39,10 +39,12 @@
 import VLink from './_VLink.vue';
 import { debounce } from 'lodash';
 import mergesQueryString from '../mixins/mergesQueryString.js';
-import Notification from '../components/Notification.vue';
 
 export default {
-    components: { Notification, VLink },
+    components: {
+        'VNotification': () => import('../components/VNotification.vue'),
+        VLink
+    },
     mixins: [ mergesQueryString ],
 
     computed: {

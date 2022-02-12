@@ -39,8 +39,6 @@ export default {
             }
 
             return i;
-
-            return this.$page.props.errors;
         }
     }
 };
