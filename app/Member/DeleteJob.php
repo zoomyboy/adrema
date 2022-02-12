@@ -9,16 +9,17 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
+use Zoomyboy\LaravelNami\NamiUser;
 
 class DeleteJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $memberId;
-    public $member;
-    public $user;
+    public int $memberId;
+    public Member $member;
+    public NamiUser $user;
 
-    public function __construct(Member $member, $user)
+    public function __construct(Member $member, NamiUser $user)
     {
         $this->memberId = $member->id;
         $this->user = $user;

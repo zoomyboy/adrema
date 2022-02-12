@@ -7,9 +7,7 @@ use Zoomyboy\LaravelNami\NamiUser;
 
 class Initializer {
 
-    public $user;
-
-    public static $initializers = [
+    public static array $initializers = [
         InitializeNationalities::class,
         InitializeFees::class,
         InitializeConfessions::class,
@@ -21,7 +19,7 @@ class Initializer {
         InitializeMembers::class,
     ];
 
-    public function run(NamiUser $namiUser) {
+    public function run(NamiUser $namiUser): void {
         foreach (static::$initializers as $initializer) {
             (new $initializer($namiUser->api()))->handle($namiUser);
         }
