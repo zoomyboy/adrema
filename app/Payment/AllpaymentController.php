@@ -16,7 +16,7 @@ class AllpaymentController extends Controller
         session()->put('menu', 'member');
         session()->put('title', 'Rechnungen erstellen');
 
-        return \Inertia::render('allpayment/Form');
+        return \Inertia::render('allpayment/VForm');
     }
 
     public function store(Request $request): RedirectResponse
