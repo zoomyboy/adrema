@@ -7,14 +7,14 @@
             </div>
         </block>
         <block title="Gruppierungs-Verteilung">
-            <div v-for="group in data.groups" class="flex mt-2 items-center leading-none text-gray-100">
+            <div v-for="group, index in data.groups" :key="index" class="flex mt-2 items-center leading-none text-gray-100">
                 <sprite class="w-4 h-4 mr-2" src="lilie" :class="`text-${group.slug}`"></sprite>
                 <span v-text="group.name" class="grow"></span>
                 <span v-text="group.count"></span>
             </div>
         </block>
         <block title="Endende Schhnupperzeiten">
-            <div v-for="member in data.ending_tries" class="flex mt-2 items-center leading-none text-gray-100">
+            <div v-for="member, index in data.ending_tries" :key="index" class="flex mt-2 items-center leading-none text-gray-100">
                 <span class="grow" v-text="`${member.firstname} ${member.lastname}`"></span>
                 <span class="mr-2 text-sm tex-gray-600" v-text="`${member.try_ends_at}`"></span>
                 <span class="text-xs tex-gray-600" v-text="`${member.try_ends_at_human}`"></span>
