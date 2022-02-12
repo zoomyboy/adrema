@@ -20,7 +20,7 @@
                     <th></th>
                 </thead>
 
-                <tr v-for="course, index in value.courses">
+                <tr v-for="course, index in value.courses" :key="index">
                     <td v-text="course.course_name"></td>
                     <td v-text="course.event_name"></td>
                     <td v-text="course.organizer"></td>

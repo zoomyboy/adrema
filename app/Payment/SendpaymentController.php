@@ -17,7 +17,7 @@ class SendpaymentController extends Controller
         session()->put('menu', 'member');
         session()->put('title', 'Rechnungen versenden');
 
-        return Inertia::render('sendpayment/Form', [
+        return Inertia::render('sendpayment/VForm', [
             'types' => app(ActionFactory::class)->allLinks(),
         ]);
     }

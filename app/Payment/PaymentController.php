@@ -17,7 +17,7 @@ class PaymentController extends Controller
         $payload = app(MemberView::class)->index($request, []);
         $payload['single'] = app(MemberView::class)->paymentIndex($member);
 
-        return \Inertia::render('member/Index', $payload);
+        return \Inertia::render('member/VIndex', $payload);
     }
 
     public function store(Request $request, Member $member) {
@@ -37,7 +37,7 @@ class PaymentController extends Controller
         $payload = app(MemberView::class)->index($request, []);
         $payload['single'] = app(MemberView::class)->paymentEdit($member, $payment);
 
-        return \Inertia::render('member/Index', $payload);
+        return \Inertia::render('member/VIndex', $payload);
     }
 
     public function update(Request $request, Member $member, Payment $payment) {

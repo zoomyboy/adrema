@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-2">
-        <div class="p-6" v-for="type in types">
-            <p class="text-white" v-for="paragraph in type.text" v-text="paragraph"></p>
+        <div class="p-6" v-for="type, index in types" :key="index">
+            <p class="text-white" v-for="paragraph, index in type.text" :key="index" v-text="paragraph"></p>
             <a :href="type.link.href" target="_BLANK" class="btn btn-primary mt-3 inline-block" v-text="type.link.label"></a>
         </div>
     </div>

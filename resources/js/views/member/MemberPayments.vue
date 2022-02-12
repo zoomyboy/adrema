@@ -18,7 +18,7 @@
                     <th></th>
                 </thead>
 
-                <tr v-for="payment, index in value.payments">
+                <tr v-for="payment, index in value.payments" :key="index">
                     <td v-text="payment.nr"></td>
                     <td v-text="payment.status_name"></td>
                     <td v-text="payment.subscription_name"></td>
@@ -31,7 +31,7 @@
             </table>
         </div>
         <div class="flex flex-col pb-6 px-6">
-            <a href="#" @click.prevent="openLink(link)" :class="{'disabled': link.disabled}" target="_BLANK" v-for="link in value.payment_links" class="mt-1 text-center btn btn-primary" v-text="link.label"></a>
+            <a href="#" @click.prevent="openLink(link)" :class="{'disabled': link.disabled}" target="_BLANK" v-for="link, index in value.payment_links" :key="index" class="mt-1 text-center btn btn-primary" v-text="link.label"></a>
         </div>
     </div>
 </template>

@@ -48,7 +48,7 @@ class MemberController extends Controller
         $payload['query'] = $query;
         $payload['billKinds'] = BillKind::pluck('name', 'id');
 
-        return \Inertia::render('member/Index', $payload);
+        return \Inertia::render('member/VIndex', $payload);
     }
 
     public function create(): Response {

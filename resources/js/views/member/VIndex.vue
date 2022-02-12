@@ -66,8 +66,8 @@
         </div>
 
         <transition name="sidebar">
-            <payments v-if="single !== null && sidebar === 'payment.index'" @close="closeSidebar" :subscriptions="subscriptions" :statuses="statuses" v-model="data.data[single]"></payments>
-            <memberships v-if="single !== null && sidebar === 'membership.index'" @close="closeSidebar" :activities="activities" :subactivities="subactivities" v-model="data.data[single]"></memberships>
+            <member-payments v-if="single !== null && sidebar === 'payment.index'" @close="closeSidebar" :subscriptions="subscriptions" :statuses="statuses" v-model="data.data[single]"></member-payments>
+            <member-memberships v-if="single !== null && sidebar === 'membership.index'" @close="closeSidebar" :activities="activities" :subactivities="subactivities" v-model="data.data[single]"></member-memberships>
             <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="courses" v-model="data.data[single]"></member-courses>
         </transition>
     </div>
@@ -75,8 +75,8 @@
 
 <script>
 import App from '../../layouts/App';
-import Payments from './Payments.vue';
-import Memberships from './Memberships.vue';
+import MemberPayments from './MemberPayments.vue';
+import MemberMemberships from './MemberMemberships.vue';
 import MemberCourses from './MemberCourses.vue';
 import Filt from './Filt.vue';
 import mergesQueryString from '../../mixins/mergesQueryString.js';
@@ -94,7 +94,7 @@ export default {
 
     mixins: [mergesQueryString],
 
-    components: { Memberships, Payments, Filt, MemberCourses },
+    components: { MemberMemberships, MemberPayments, Filt, MemberCourses },
 
     methods: {
         remove(member) {
