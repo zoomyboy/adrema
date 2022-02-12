@@ -14,7 +14,7 @@ use App\Pdf\PdfRepositoryFactory;
 use Carbon\Carbon;
 use Database\Factories\Member\MemberFactory;
 use Database\Factories\Payment\PaymentFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
 use Storage;
 use Tests\TestCase;
@@ -22,7 +22,7 @@ use Tests\TestCase;
 class GenerateTest extends TestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function setUp(): void
     {

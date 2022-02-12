@@ -4,7 +4,7 @@ namespace Tests\Feature\Course;
 
 use App\Course\Models\Course;
 use App\Member\Member;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
@@ -13,7 +13,7 @@ use Zoomyboy\LaravelNami\Fakes\CourseFake;
 class StoreTest extends TestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     /**
      * @return array<string, array{payload: array<string, mixed>, errors: array<string, mixed>}>

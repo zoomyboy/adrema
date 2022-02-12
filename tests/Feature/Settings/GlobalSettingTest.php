@@ -3,14 +3,14 @@
 namespace Tests\Feature\Settings;
 
 use App\Setting\GeneralSettings;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class GlobalSettingTest extends TestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function testItLoadsGeneralSettings(): void
     {

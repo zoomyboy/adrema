@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Setting\GeneralSettings;
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +16,7 @@ use Zoomyboy\LaravelNami\Backend\FakeBackend;
 class UserLoginTest extends TestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function setUp(): void
     {

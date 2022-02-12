@@ -5,14 +5,14 @@ namespace Tests\Feature\Member;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Member\Member;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
 class IndexTest extends TestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function testItGetsMembers(): void
     {

@@ -11,7 +11,7 @@ use App\Member\Member;
 use App\Nationality;
 use App\Setting\GeneralSettings;
 use App\Subactivity;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
@@ -21,7 +21,7 @@ use Zoomyboy\LaravelNami\Backend\FakeBackend;
 class InitializeTest extends TestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function initializeProvider(callable $callback = null): void
     {

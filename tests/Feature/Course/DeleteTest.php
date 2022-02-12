@@ -5,7 +5,7 @@ namespace Tests\Feature\Course;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Member\Member;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
@@ -14,7 +14,7 @@ use Zoomyboy\LaravelNami\Fakes\CourseFake;
 class DeleteTest extends TestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function testItDeletesACourse(): void
     {

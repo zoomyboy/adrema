@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Setting\GeneralSettings;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +14,7 @@ use Zoomyboy\LaravelNami\Backend\FakeBackend;
 class NamiLoginTest extends TestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function setUp(): void
     {
