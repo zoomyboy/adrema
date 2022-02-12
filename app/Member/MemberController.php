@@ -57,7 +57,7 @@ class MemberController extends Controller
 
         $activities = Activity::with('subactivities')->get();
 
-        return \Inertia::render('member/Form', [
+        return \Inertia::render('member/VForm', [
             'activities' => $activities->pluck('name', 'id'),
             'subactivities' => $activities->map(function(Activity $activity) {
                 return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
@@ -88,7 +88,7 @@ class MemberController extends Controller
 
         $activities = Activity::with('subactivities')->get();
 
-        return \Inertia::render('member/Form', [
+        return \Inertia::render('member/VForm', [
             'activities' => $activities->pluck('name', 'id'),
             'subactivities' => $activities->map(function($activity) {
                 return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
