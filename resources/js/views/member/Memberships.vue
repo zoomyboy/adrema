@@ -17,7 +17,7 @@
                     <th></th>
                 </thead>
 
-                <tr v-for="membership, index in value.memberships">
+                <tr v-for="membership, index in value.memberships" :key="index">
                     <td v-text="membership.activity_name"></td>
                     <td v-text="membership.subactivity_name"></td>
                     <td v-text="membership.human_date"></td>
