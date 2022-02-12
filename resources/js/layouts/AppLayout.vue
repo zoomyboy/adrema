@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <label for="search">
-                    <input class="shadow-lg bg-gray-800 rounded-lg py-2 px-3 text-gray-300 hover:bg-gray-700 focus:bg-gray-700 placeholder-gray-400" placeholder="Suchen…" name="search" v-model="isearch"></input>
+                    <input class="shadow-lg bg-gray-800 rounded-lg py-2 px-3 text-gray-300 hover:bg-gray-700 focus:bg-gray-700 placeholder-gray-400" placeholder="Suchen…" name="search" v-model="isearch" />
                 </label>
             </div>
 

@@ -6,7 +6,7 @@ import FText from './components/FText.vue';
 import FSwitch from './components/FSwitch.vue';
 import FSelect from './components/FSelect.vue';
 import FTextarea from './components/FTextarea.vue';
-import Pages from './components/Pages.vue';
+import VPages from './components/VPages.vue';
 import VBool from './components/VBool.vue';
 import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
@@ -19,7 +19,7 @@ Vue.component('f-switch', FSwitch);
 Vue.component('f-select', FSelect);
 Vue.component('f-textarea', FTextarea);
 Vue.component('sprite', Sprite);
-Vue.component('pages', Pages);
+Vue.component('VPages', VPages);
 Vue.component('v-bool', VBool);
 
 const el = document.getElementById('app');

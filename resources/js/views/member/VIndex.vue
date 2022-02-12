@@ -62,7 +62,7 @@
         </table>
 
         <div class="px-6">
-            <pages class="mt-4" :value="data.meta" :only="['data']"></pages>
+            <v-pages class="mt-4" :value="data.meta" :only="['data']"></v-pages>
         </div>
 
         <transition name="sidebar">
