@@ -10,14 +10,20 @@ use Illuminate\Support\Str;
 class PdfRepositoryFactory
 {
 
+    /**
+     * @var array<int, class-string<PdfRepository>>
+     */
     private array $types = [
         BillType::class,
         RememberType::class,
     ];
 
+    /**
+     * @return Collection<int, PdfRepository>
+     */
     public function getTypes(): Collection
     {
-        return collect($this->types);
+        return collect(array_map(fn ($classString) => new $classString, $this->types));
     }
 
     public function fromSingleRequest(string $type, Member $member): ?PdfRepository

@@ -60,7 +60,7 @@ class Member extends Model
     }
 
     // ---------------------------------- Actions ----------------------------------
-    public function syncVersion($api): void
+    public function syncVersion(Api $api): void
     {
         $version = $api->group($this->group->nami_id)->member($this->nami_id)->version;
 

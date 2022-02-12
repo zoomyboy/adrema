@@ -4,8 +4,11 @@ namespace App\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Pdf\PdfGenerator;
+use App\Pdf\PdfRepository;
 use App\Pdf\PdfRepositoryFactory;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 
@@ -22,6 +25,9 @@ class SendpaymentController extends Controller
         ]);
     }
 
+    /**
+     * @return Response|Responsable
+     */
     public function send(Request $request)
     {
         $repo = app(PdfRepositoryFactory::class)->forAll($request->type, 'Post');
