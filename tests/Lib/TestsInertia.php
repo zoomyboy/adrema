@@ -7,7 +7,7 @@ use PHPUnit\Framework\Assert as PHPUnit;
 
 trait TestsInertia {
 
-    public function assertInertiaHas(mixed $value, TestResponse $response, ?string $key = null): void
+    public function assertInertiaHas($value, TestResponse $response, ?string $key = null): void
     {
         $bindings = json_decode(json_encode($value), true);
         $viewData = json_decode(json_encode(
@@ -23,7 +23,7 @@ trait TestsInertia {
         PHPUnit::assertEquals($component, $response->viewData('page')['component']);
     }
 
-    public function assertInertiaDeepNest(mixed $should, mixed $is): void
+    public function assertInertiaDeepNest($should, $is): void
     {
         foreach ($should as $key => $value) {
             PHPUnit::assertArrayHasKey($key, $is);
@@ -37,7 +37,10 @@ trait TestsInertia {
         }
     }
 
-    public function inertia(TestResponse $response, string $key): mixed
+    /**
+     * @return mixed
+     */
+    public function inertia(TestResponse $response, string $key)
     {
         return data_get($response->viewData('page')['props'], $key);
     }
