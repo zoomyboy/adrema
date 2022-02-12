@@ -27,7 +27,7 @@
                     <td v-text="course.completed_at_human"></td>
                     <td class="flex">
                         <a href="#" @click.prevent="single = course; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></a>
-                        <Link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></Link>
+                        <i-link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
                     </td>
                 </tr>
             </table>

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { App as InertiaApp, plugin, Link } from '@inertiajs/inertia-vue';
+import { App as InertiaApp, plugin, Link as ILink } from '@inertiajs/inertia-vue';
 
 import SvgSprite from './components/SvgSprite.js';
 import FText from './components/FText.vue';
@@ -25,7 +25,7 @@ Vue.component('v-bool', VBool);
 const el = document.getElementById('app');
 
 Vue.mixin(hasModule);
-Vue.component('Link', Link);
+Vue.component('ILink', ILink);
 
 new Vue({
     render: h => h(InertiaApp, {

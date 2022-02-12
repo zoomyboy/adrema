@@ -17,9 +17,9 @@
                 <div class="flex">
                     <span class="text-xl font-semibold text-white leading-none" v-html="$page.props.title"></span>
                     <div class="flex ml-4">
-                        <Link v-for="link, index in filterMenu" :key="index" :href="link.href" v-text="link.label" class="btn label mr-2" :class="`btn-${link.color}`">
+                        <i-link v-for="link, index in filterMenu" :key="index" :href="link.href" v-text="link.label" class="btn label mr-2" :class="`btn-${link.color}`">
                             <svg-sprite :src="link.icon"></svg-sprite>
-                        </Link>
+                        </i-link>
                     </div>
                 </div>
                 <label for="search">

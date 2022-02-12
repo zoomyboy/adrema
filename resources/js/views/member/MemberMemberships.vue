@@ -23,7 +23,7 @@
                     <td v-text="membership.human_date"></td>
                     <td class="flex">
                         <a href="#" @click.prevent="single = membership; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></a>
-                        <Link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></Link>
+                        <i-link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
                     </td>
                 </tr>
             </table>

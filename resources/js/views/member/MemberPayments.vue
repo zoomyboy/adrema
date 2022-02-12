@@ -24,8 +24,8 @@
                     <td v-text="payment.subscription_name"></td>
                     <td class="flex">
                         <a href="#" @click.prevent="single = payment; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></a>
-                        <Link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><svg-sprite src="check"></svg-sprite></Link>
-                        <Link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></Link>
+                        <i-link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><svg-sprite src="check"></svg-sprite></i-link>
+                        <i-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
                     </td>
                 </tr>
             </table>

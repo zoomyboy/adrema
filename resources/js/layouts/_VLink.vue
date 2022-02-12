@@ -1,10 +1,10 @@
 <template>
-    <Link class="flex text-white py-2 px-3 rounded-lg hover:bg-gray-600" :href="href" :class="{'bg-gray-700': $page.props.menu == menu}">
+    <i-link class="flex text-white py-2 px-3 rounded-lg hover:bg-gray-600" :href="href" :class="{'bg-gray-700': $page.props.menu == menu}">
         <svg-sprite class="text-white w-6 h-6 mr-4" :src="icon"></svg-sprite>
         <span class="font-semibold">
             <slot></slot>
         </span>
-    </Link>
+    </i-link>
 </template>
 
 <script>
