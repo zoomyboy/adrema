@@ -31,8 +31,8 @@ new Vue({
     render: h => h(InertiaApp, {
         props: {
             initialPage: JSON.parse(el.dataset.page),
-            resolveComponent: name => {
-                var page = require(`./views/${name}`).default;
+            resolveComponent: async name => {
+                var page = (await import(`./views/${name}`)).default;
 
                 if (page.layout === undefined) {
                     page.layout = AppLayout;

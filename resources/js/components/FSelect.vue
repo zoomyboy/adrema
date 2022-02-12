@@ -28,8 +28,6 @@
 </template>
 
 <script>
-import mapValues from 'lodash/mapValues';
-import keyBy from 'lodash/keyBy';
 import map from 'lodash/map';
 
 export default {

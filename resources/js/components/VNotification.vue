@@ -1,10 +1,10 @@
 <template>
     <div class="grid gap-2 has-contents">
         <transition-group name="fadeRight" tag="div">
-            <div v-for="(item, index) in items" :key="'i'+index"
+            <div v-for="item, index in items" :key="'i'+index"
                  :class="`${colors[item.type].bg} ${colors[item.type].text} h-12 flex flex-col items-start justify-center shadow-2xl rounded-sm px-6`"
             >
-                <div class="text-sm" v-for="message in item.messages" v-text="message"></div>
+                <div class="text-sm" v-for="message, mindex in item.messages" :key="mindex" v-text="message"></div>
             </div>
         </transition-group>
     </div>

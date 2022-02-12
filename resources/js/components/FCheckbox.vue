@@ -57,10 +57,6 @@ export default {
         },
         items: {
             default: undefined
-        },
-        size: {
-            default: null,
-            type: String
         }
     },
     computed: {
