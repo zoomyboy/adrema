@@ -5,7 +5,7 @@
             <input :id="id" type="checkbox" v-model="v" :disabled="disabled" class="invisible absolute" />
             <span class="display-wrapper flex items-center">
                 <span class="relative cursor-pointer flex flex-none justify-center items-center display" :class="{'bg-terminoto-2': v === true, 'bg-white': v === false}">
-                    <sprite src="check" class="w-4 h-4 check-icon text-white"></sprite>
+                    <svg-sprite src="check" class="w-4 h-4 check-icon text-white"></svg-sprite>
                 </span>
             </span>
             <span v-if="label && !inset" class="text-sm leading-tight ml-3 text-gray-700 checkbox-label flex items-center">

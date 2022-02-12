@@ -8,7 +8,7 @@
         </v-block>
         <v-block title="Gruppierungs-Verteilung">
             <div v-for="group, index in data.groups" :key="index" class="flex mt-2 items-center leading-none text-gray-100">
-                <sprite class="w-4 h-4 mr-2" src="lilie" :class="`text-${group.slug}`"></sprite>
+                <svg-sprite class="w-4 h-4 mr-2" src="lilie" :class="`text-${group.slug}`"></svg-sprite>
                 <span v-text="group.name" class="grow"></span>
                 <span v-text="group.count"></span>
             </div>

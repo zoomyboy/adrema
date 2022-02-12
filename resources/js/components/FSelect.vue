@@ -14,13 +14,13 @@
             </select>
             <div class="info-wrap">
                 <div v-if="hint" v-tooltip="hint">
-                    <sprite src="info-button" class="info-button"></sprite>
+                    <svg-sprite src="info-button" class="info-button"></svg-sprite>
                 </div>
                 <div class="px-1 relative" v-if="size != 'xs'">
-                    <sprite class="chevron w-3 h-3 fill-current" src="chevron-down"></sprite>
+                    <svg-sprite class="chevron w-3 h-3 fill-current" src="chevron-down"></svg-sprite>
                 </div>
                 <div class="px-1 relative" v-if="size == 'xs'">
-                    <sprite class="chevron w-2 h-2 fill-current" src="chevron-down"></sprite>
+                    <svg-sprite class="chevron w-2 h-2 fill-current" src="chevron-down"></svg-sprite>
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@
             <input :name="name" :type="type" :value="transformedValue" @input="onInput" @change="onChange" :disabled="disabled" :placeholder="placeholder" @focus="onFocus" @blur="onBlur">
             <div v-if="hint" class="info-wrap">
                 <div v-tooltip="hint">
-                    <sprite src="info-button" class="info-button"></sprite>
+                    <svg-sprite src="info-button" class="info-button"></svg-sprite>
                 </div>
             </div>
         </div>

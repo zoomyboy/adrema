@@ -13,7 +13,7 @@
                 <div class="py-1 px-6" v-text="sub.amount_human"></div>
                 <div class="py-1 px-6" v-text="sub.fee_name"></div>
                 <div class="py-1 px-6 flex">
-                    <Link :href="`/subscription/${sub.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></Link>
+                    <Link :href="`/subscription/${sub.id}/edit`" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></Link>
                 </div>
             </div>
 

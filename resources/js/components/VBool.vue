@@ -1,6 +1,6 @@
 <template>
     <div class="bool" :class="value ? 'enabled' : 'disabled'">
-        <sprite v-if="!$slots.default" :src="value ? 'check' : 'close'"></sprite>
+        <svg-sprite v-if="!$slots.default" :src="value ? 'check' : 'close'"></svg-sprite>
         <slot></slot>
     </div>
 </template>

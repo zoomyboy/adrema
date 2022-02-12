@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { App as InertiaApp, plugin, Link } from '@inertiajs/inertia-vue';
-import Sprite from './components/Sprite.js';
 
+import SvgSprite from './components/SvgSprite.js';
 import FText from './components/FText.vue';
 import FSwitch from './components/FSwitch.vue';
 import FSelect from './components/FSelect.vue';
@@ -18,7 +18,7 @@ Vue.component('f-text', FText);
 Vue.component('f-switch', FSwitch);
 Vue.component('f-select', FSelect);
 Vue.component('f-textarea', FTextarea);
-Vue.component('sprite', Sprite);
+Vue.component('SvgSprite', SvgSprite);
 Vue.component('VPages', VPages);
 Vue.component('v-bool', VBool);
 

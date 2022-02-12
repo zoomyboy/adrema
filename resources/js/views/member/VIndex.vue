@@ -22,7 +22,7 @@
 
             <tr v-for="member, index in data.data" :key="index">
                 <td class="w-3">
-                    <sprite class="w-3 h-3" v-if="member.age_group_icon" :class="`text-${member.age_group_icon}`" src="lilie"></sprite>
+                    <svg-sprite class="w-3 h-3" v-if="member.age_group_icon" :class="`text-${member.age_group_icon}`" src="lilie"></svg-sprite>
                 </td>
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
@@ -51,11 +51,11 @@
                 </td>
                 <td v-text="`${member.joined_at_human}`"></td>
                 <td class="flex">
-                    <Link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></Link>
-                    <a href="#" v-show="hasModule('bill')" @click.prevent="openSidebar(index, 'payment.index')" class="inline-flex btn btn-info btn-sm"><sprite src="money"></sprite></a>
-                    <a href="#" v-show="hasModule('courses')" @click.prevent="openSidebar(index, 'courses.index')" class="inline-flex btn btn-info btn-sm"><sprite src="course"></sprite></a>
-                    <a href="#" @click.prevent="openSidebar(index, 'membership.index')" class="inline-flex btn btn-info btn-sm"><sprite src="user"></sprite></a>
-                    <Link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
+                    <Link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></Link>
+                    <a href="#" v-show="hasModule('bill')" @click.prevent="openSidebar(index, 'payment.index')" class="inline-flex btn btn-info btn-sm"><svg-sprite src="money"></svg-sprite></a>
+                    <a href="#" v-show="hasModule('courses')" @click.prevent="openSidebar(index, 'courses.index')" class="inline-flex btn btn-info btn-sm"><svg-sprite src="course"></svg-sprite></a>
+                    <a href="#" @click.prevent="openSidebar(index, 'membership.index')" class="inline-flex btn btn-info btn-sm"><svg-sprite src="user"></svg-sprite></a>
+                    <Link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></Link>
                 </td>
             </tr>
 

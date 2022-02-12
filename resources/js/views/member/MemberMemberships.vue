@@ -22,8 +22,8 @@
                     <td v-text="membership.subactivity_name"></td>
                     <td v-text="membership.human_date"></td>
                     <td class="flex">
-                        <a href="#" @click.prevent="single = membership; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><sprite src="pencil"></sprite></a>
-                        <Link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><sprite src="trash"></sprite></Link>
+                        <a href="#" @click.prevent="single = membership; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></a>
+                        <Link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></Link>
                     </td>
                 </tr>
             </table>
