@@ -1,9 +1,9 @@
 <?php
 
+use App\Payment\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Payment\Status;
 
 class CreatePaymentsTable extends Migration
 {
@@ -31,6 +31,7 @@ class CreatePaymentsTable extends Migration
             $table->foreignId('subscription_id')->constrained();
             $table->foreignId('status_id')->constrained();
             $table->foreignId('member_id')->constrained();
+            $table->datetime('last_remembered_at')->nullable();
             $table->timestamps();
         });
     }

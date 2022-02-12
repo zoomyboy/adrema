@@ -13,9 +13,17 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
+        Schema::create('fees', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->unsignedInteger('nami_id');
+        });
+
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedInteger('amount');
+            $table->foreignId('fee_id')->constrained();
             $table->timestamps();
         });
     }
@@ -28,5 +36,6 @@ class CreateSubscriptionsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('fees');
     }
 }

@@ -15,13 +15,15 @@ class CreateMembershipsTable extends Migration
     {
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
-            $table->integer('activity_id');
-            $table->integer('group_id')->nullable();
-            $table->integer('member_id');
-            $table->integer('nami_id')->nullable();
+            $table->foreignId('group_id')->constrained();
+            $table->foreignId('member_id')->constrained();
+            $table->unsignedInteger('nami_id')->nullable();
             $table->datetime('from');
             $table->timestamps();
-            $table->unique(['activity_id', 'group_id', 'member_id', 'nami_id']);
+            $table->foreignId('activity_id')->constrained();
+            $table->foreignId('subactivity_id')->nullable()->constrained();
+            $table->unique(['activity_id', 'subactivity_id', 'group_id', 'member_id', 'nami_id'], 'memberships_unique');
+
         });
     }
 
