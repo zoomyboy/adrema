@@ -68,7 +68,7 @@
         <transition name="sidebar">
             <payments v-if="single !== null && sidebar === 'payment.index'" @close="closeSidebar" :subscriptions="subscriptions" :statuses="statuses" v-model="data.data[single]"></payments>
             <memberships v-if="single !== null && sidebar === 'membership.index'" @close="closeSidebar" :activities="activities" :subactivities="subactivities" v-model="data.data[single]"></memberships>
-            <courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="courses" v-model="data.data[single]"></courses>
+            <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="courses" v-model="data.data[single]"></member-courses>
         </transition>
     </div>
 </template>
@@ -77,7 +77,7 @@
 import App from '../../layouts/App';
 import Payments from './Payments.vue';
 import Memberships from './Memberships.vue';
-import Courses from './Courses.vue';
+import MemberCourses from './MemberCourses.vue';
 import Filt from './Filt.vue';
 import mergesQueryString from '../../mixins/mergesQueryString.js';
 
@@ -94,7 +94,7 @@ export default {
 
     mixins: [mergesQueryString],
 
-    components: { Memberships, Payments, Filt, Courses },
+    components: { Memberships, Payments, Filt, MemberCourses },
 
     methods: {
         remove(member) {
