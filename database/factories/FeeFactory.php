@@ -7,11 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FeeFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = Fee::class;
 
     /**

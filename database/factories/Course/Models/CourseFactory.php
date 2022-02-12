@@ -11,11 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class CourseFactory extends Factory
 {
 
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     public $model = Course::class;
 
     /**

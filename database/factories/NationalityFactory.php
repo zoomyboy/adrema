@@ -7,11 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NationalityFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = Nationality::class;
 
     /**
