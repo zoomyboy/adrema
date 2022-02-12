@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import App from '../../layouts/App';
 import MemberPayments from './MemberPayments.vue';
 import MemberMemberships from './MemberMemberships.vue';
 import MemberCourses from './MemberCourses.vue';
@@ -89,8 +88,6 @@ export default {
             single: null,
         };
     },
-
-    layout: App,
 
     mixins: [mergesQueryString],
 

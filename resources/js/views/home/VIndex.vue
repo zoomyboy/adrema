@@ -24,11 +24,7 @@
 </template>
 
 <script>
-import App from '../../layouts/App';
-
 export default {
-    layout: App,
-
     props: {
         data: {},
         blocks: {}

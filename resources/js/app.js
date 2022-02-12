@@ -8,7 +8,7 @@ import FSelect from './components/FSelect.vue';
 import FTextarea from './components/FTextarea.vue';
 import Pages from './components/Pages.vue';
 import VBool from './components/VBool.vue';
-import App from './layouts/App.vue';
+import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
 import hasModule from './mixins/hasModule.js';
 
@@ -35,7 +35,7 @@ new Vue({
                 var page = require(`./views/${name}`).default;
 
                 if (page.layout === undefined) {
-                    page.layout = App;
+                    page.layout = AppLayout;
                 }
                 return page;
             }

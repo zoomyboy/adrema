@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import Full from '../layouts/Full';
+import FullLayout from '../layouts/FullLayout';
 
 export default {
-    layout: Full,
+    layout: FullLayout,
 
     data: function() {
         return {

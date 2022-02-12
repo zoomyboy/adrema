@@ -1,5 +1,4 @@
 import queryString from 'query-string';
-import merge from 'merge';
 
 export default {
     methods: {
