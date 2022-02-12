@@ -7,10 +7,14 @@
         "hot": "npx mix watch --hot",
         "prod": "npx mix build --production",
         "production": "npm run prod",
-        "img": "rm -R public/img && cd resources/img/svg && svg-sprite -s --symbol-dest=sprite *.svg && mv sprite/svg/sprite.symbol.svg ../sprite.svg && rm -R sprite && cd ../../../ && cp -R resources/img public/img"
+        "img": "rm -R public/img && cd resources/img/svg && svg-sprite -s --symbol-dest=sprite *.svg && mv sprite/svg/sprite.symbol.svg ../sprite.svg && rm -R sprite && cd ../../../ && cp -R resources/img public/img",
+        "lint": "eslint \"resources/js/**/*.{js,vue}\"",
+        "fix": "eslint \"resources/js/**/*.{js,vue}\" --fix"
     },
     "devDependencies": {
         "autoprefixer": "latest",
+        "eslint": "^8.9.0",
+        "eslint-plugin-vue": "^8.4.1",
         "laravel-mix": "^6.0.1",
         "postcss": "^8.4.6",
         "tailwindcss": "^3.0.19",
