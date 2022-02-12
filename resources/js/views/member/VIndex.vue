@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <filt :value="query.filter" :activities="filterActivities" :subactivities="filterSubactivities" :bill-kinds="billKinds"></filt>
+        <member-filter :value="query.filter" :activities="filterActivities" :subactivities="filterSubactivities" :bill-kinds="billKinds"></member-filter>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
@@ -78,7 +78,7 @@ import App from '../../layouts/App';
 import MemberPayments from './MemberPayments.vue';
 import MemberMemberships from './MemberMemberships.vue';
 import MemberCourses from './MemberCourses.vue';
-import Filt from './Filt.vue';
+import MemberFilter from './MemberFilter.vue';
 import mergesQueryString from '../../mixins/mergesQueryString.js';
 
 export default {
@@ -94,7 +94,7 @@ export default {
 
     mixins: [mergesQueryString],
 
-    components: { MemberMemberships, MemberPayments, Filt, MemberCourses },
+    components: { MemberMemberships, MemberPayments, MemberFilter, MemberCourses },
 
     methods: {
         remove(member) {
