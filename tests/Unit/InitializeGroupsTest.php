@@ -75,7 +75,7 @@ class InitializeGroupsTest extends TestCase
             collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')])
         );
         $this->api->method('subgroupsOf')->willReturn(
-                collect([(new Group())->setParentId(150)->setId(200)->setName('subgroup')])
+            collect([(new Group())->setParentId(150)->setId(200)->setName('subgroup')])
         );
 
         (new InitializeGroups($this->api))->handle();
@@ -84,6 +84,26 @@ class InitializeGroupsTest extends TestCase
         $subgroup = GroupModel::where('nami_id', 200)->firstOrFail();
         $this->assertEquals('subgroup', $subgroup->name);
         $this->assertEquals(150, $subgroup->parent->nami_id);
+    }
+
+    public function testItAssignsIdAndParentToAnExistingSubgroup(): void
+    {
+        GroupModel::factory()->create(['nami_id' => 200]);
+        $this->api->method('groups')->willReturn(
+            collect([(new Group())->setParentId(null)->setId(150)->setName('root')])
+        );
+        $this->api->method('subgroupsOf')->willReturn(
+            collect([(new Group())->setParentId(150)->setId(200)->setName('child')])
+        );
+
+        (new InitializeGroups($this->api))->handle();
+
+        $this->assertDatabaseCount('groups', 2);
+        $this->assertDatabaseHas('groups', [
+            'nami_id' => 200,
+            'name' => 'child',
+            'parent_id' => GroupModel::firstWhere('nami_id', 150)->id,
+        ]);
     }
 
 }
