@@ -3,6 +3,7 @@
 namespace Tests\Feature\Initialize;
 
 use App\Activity;
+use App\Console\Commands\NamiInitializeCommand;
 use App\Country;
 use App\Course\Models\Course;
 use App\Gender;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 use Zoomyboy\LaravelNami\Fakes\GroupFake;
+use Zoomyboy\LaravelNami\Fakes\MemberFake;
+use Zoomyboy\LaravelNami\Fakes\SearchFake;
 
 class InitializeTest extends TestCase
 {
@@ -128,7 +131,7 @@ class InitializeTest extends TestCase
         $this->initializeProvider();
         GeneralSettings::fake(['allowed_nami_accounts' => [123]]);
 
-        Artisan::call('nami:initialize');
+        Artisan::call(NamiInitializeCommand::class);
 
         $this->assertDatabaseHas('regions', [
             'name' => 'nrw',
@@ -411,6 +414,21 @@ class InitializeTest extends TestCase
         $this->post('/initialize');
 
         $this->assertDatabaseCount('members', $num);
+    }
+
+    public function testRenderErrorInConsoleWhenUsingArtisan(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $this->initializeProvider(function($backend) {
+            app(SearchFake::class)->fetchFails($page = 1, $start = 0, 'search error');
+        });
+        $this->login();
+
+        $command = $this->artisan(NamiInitializeCommand::class);
+
+        $command->assertFailed();
+        $command->expectsOutput('response: {"success":false,"message":"search error"}');
+        $command->expectsOutput('Search failed');
     }
 
     /**

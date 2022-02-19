@@ -124,7 +124,7 @@ class StoreTest extends TestCase
         $this->login()->loginNami();
         $member = Member::factory()->defaults()->inNami(123)->createOne();
         $course = Course::factory()->inNami(456)->createOne();
-        app(CourseFake::class)->doesntCreateWithError(123);
+        app(CourseFake::class)->createFailed(123);
 
         $response = $this->post("/member/{$member->id}/course", [
             'course_id' => $course->id,

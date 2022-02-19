@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Initialize\Initializer;
 use Illuminate\Console\Command;
 use Zoomyboy\LaravelNami\Nami;
+use Zoomyboy\LaravelNami\NamiException;
 
 class NamiInitializeCommand extends Command
 {
@@ -39,7 +40,12 @@ class NamiInitializeCommand extends Command
      */
     public function handle()
     {
-        app(Initializer::class)->run();
+        try {
+            app(Initializer::class)->run();
+        } catch (NamiException $e) {
+            $e->outputToConsole($this);
+            return 1;
+        }
 
         return 0;
     }
