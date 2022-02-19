@@ -128,11 +128,7 @@ class InitializeTest extends TestCase
         $this->initializeProvider();
         GeneralSettings::fake(['allowed_nami_accounts' => [123]]);
 
-        Artisan::call('nami:initialize', [
-            '--mglnr' => 90166,
-            '--password' => 'secret',
-            '--group_id' => 1000,
-        ]);
+        Artisan::call('nami:initialize');
 
         $this->assertDatabaseHas('regions', [
             'name' => 'nrw',
