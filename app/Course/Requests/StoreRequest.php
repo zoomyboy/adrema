@@ -47,11 +47,7 @@ class StoreRequest extends FormRequest
             'course_id' => $course->nami_id,
         ])->toArray();
 
-        try {
-            $namiId = Nami::login($settings->mglnr, $settings->password)->createCourse($member->nami_id, $payload);
-        } catch(NamiException $e) {
-            throw ValidationException::withMessages(['id' => 'Unbekannter Fehler']);
-        }
+        $namiId = $settings->login()->createCourse($member->nami_id, $payload);
 
         $member->courses()->create($this->safe()->collect()->put('nami_id', $namiId)->toArray());
     }

@@ -5,6 +5,7 @@ namespace App\Course\Requests;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Member\Member;
+use App\Setting\NamiSettings;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -32,13 +33,9 @@ class DestroyRequest extends FormRequest
         return [];
     }
 
-    public function persist(Member $member, CourseMember $course): void
+    public function persist(Member $member, CourseMember $course, NamiSettings $settings): void
     {
-        try {
-            auth()->user()->api()->deleteCourse($member->nami_id, $course->nami_id);
-        } catch(NamiException $e) {
-            throw ValidationException::withMessages(['id' => 'Unbekannter Fehler']);
-        }
+        $settings->login()->deleteCourse($member->nami_id, $course->nami_id);
 
         $course->delete();
     }

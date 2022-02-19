@@ -56,7 +56,7 @@ class UpdateTest extends TestCase
      */
     public function testItValidatesInput(array $payload, array $errors): void
     {
-        $this->login();
+        $this->login()->loginNami();
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->for(Course::factory()), 'courses')->createOne();
         $newCourse = Course::factory()->inNami(789)->create();
 
@@ -67,13 +67,13 @@ class UpdateTest extends TestCase
             'organizer' => '::org::',
         ], $payload));
 
-        $response->assertSessionHasErrors($errors);
+        $this->assertErrors($errors, $response);
     }
 
     public function testItUpdatesACourse(): void
     {
         $this->withoutExceptionHandling();
-        $this->login()->init();
+        $this->login()->loginNami();
         app(CourseFake::class)->updatesSuccessful(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
         $newCourse = Course::factory()->inNami(789)->create();
@@ -101,9 +101,25 @@ class UpdateTest extends TestCase
         ]);
     }
 
+    public function testItThrowsErrorWhenLoginIsWrong(): void
+    {
+        $this->login()->failedNami();
+        $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
+        $newCourse = Course::factory()->inNami(789)->create();
+
+        $response = $this->patch("/member/{$member->id}/course/{$member->courses->first()->id}", array_merge([
+            'course_id' => $newCourse->id,
+            'completed_at' => '1999-02-03',
+            'event_name' => '::newevent::',
+            'organizer' => '::neworg::',
+        ]));
+
+        $this->assertErrors(['nami' => 'NaMi Login fehlgeschlagen.'], $response);
+    }
+
     public function testItReceivesUnknownErrors(): void
     {
-        $this->login()->init();
+        $this->login()->loginNami();
         app(CourseFake::class)->doesntUpdateWithError(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
         $newCourse = Course::factory()->inNami(789)->create();

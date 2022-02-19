@@ -3,7 +3,6 @@
 namespace App\Initialize;
 
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class InitializeActivities {
 
@@ -13,8 +12,9 @@ class InitializeActivities {
         $this->api = $api;
     }
 
-    public function handle(NamiUser $user): void
+    public function handle(): void
     {
-        app(ActivityCreator::class)->createFor($this->api, $user->getNamiGroupId());
+        $groupId = $this->api->groups()->first()->id;
+        app(ActivityCreator::class)->createFor($this->api, $groupId);
     }
 }

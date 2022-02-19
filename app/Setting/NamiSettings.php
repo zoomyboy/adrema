@@ -3,6 +3,8 @@
 namespace App\Setting;
 
 use Spatie\LaravelSettings\Settings;
+use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\Nami;
 
 class NamiSettings extends Settings
 {
@@ -14,6 +16,11 @@ class NamiSettings extends Settings
     public static function group(): string
     {
         return 'nami';
+    }
+
+    public function login(): Api
+    {
+        return Nami::login($this->mglnr, $this->password);
     }
 
 }

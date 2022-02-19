@@ -2,6 +2,7 @@
 
 namespace App\Initialize;
 
+use App\Nationality;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeNationalities {
@@ -12,10 +13,10 @@ class InitializeNationalities {
         $this->api = $api;
     }
 
-    public function handle(): void
+    public function handle(Api $api): void
     {
         $this->api->nationalities()->each(function($nationality) {
-            \App\Nationality::create(['nami_id' => $nationality->id, 'name' => $nationality->name]);
+            Nationality::create(['nami_id' => $nationality->id, 'name' => $nationality->name]);
         });
     }
 }

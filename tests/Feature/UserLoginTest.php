@@ -30,14 +30,10 @@ class UserLoginTest extends TestCase
 
         $this->post('/login', [
             'email' => 'mail@example.com',
-            'provider' => 'database',
             'password' => 'secret'
         ]);
 
-        $key = session()->get('auth_key');
-        $cache = Cache::get("namiauth-{$key}");
-        $this->assertEquals($user->id, data_get($cache, 'id'));
-        $this->assertTrue(auth()->check());
+        $this->assertAuthenticated();
     }
 
     public function testItThrowsExceptionWhenLoginFailed(): void
@@ -47,7 +43,6 @@ class UserLoginTest extends TestCase
 
         $this->post('/login', [
             'email' => 'mail@example.com',
-            'provider' => 'database',
             'password' => 'wrong'
         ])->assertRedirect('/');
 

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Inertia\Response;
-use Zoomyboy\LaravelNami\AuthenticatesNamiUsers;
 
 class LoginController extends Controller
 {
@@ -20,7 +20,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesNamiUsers;
+    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -42,4 +42,5 @@ class LoginController extends Controller
     public function showLoginForm(): Response {
         return \Inertia::render('VLogin');
     }
+
 }

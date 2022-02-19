@@ -9,7 +9,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class DeleteJob implements ShouldQueue
 {
@@ -17,9 +16,8 @@ class DeleteJob implements ShouldQueue
 
     public int $memberId;
     public Member $member;
-    public NamiUser $user;
 
-    public function __construct(Member $member, NamiUser $user)
+    public function __construct(Member $member)
     {
         $this->memberId = $member->id;
         $this->user = $user;
@@ -38,7 +36,7 @@ class DeleteJob implements ShouldQueue
             return;
         }
 
-        Nami::login($this->user->mglnr)->deleteMember($this->member->nami_id);
+        $setting->login()->deleteMember($this->member->nami_id);
 
         Member::withoutEvents(function() {
             $this->member->update(['nami_id' => null]);

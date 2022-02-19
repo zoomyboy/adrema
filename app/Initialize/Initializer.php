@@ -2,12 +2,13 @@
 
 namespace App\Initialize;
 
+use App\Setting\NamiSettings;
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class Initializer {
 
-    public static array $initializers = [
+    public NamiSettings $settings;
+    public array $initializers = [
         InitializeNationalities::class,
         InitializeFees::class,
         InitializeConfessions::class,
@@ -19,9 +20,14 @@ class Initializer {
         InitializeMembers::class,
     ];
 
-    public function run(NamiUser $namiUser): void {
-        foreach (static::$initializers as $initializer) {
-            (new $initializer($namiUser->api()))->handle($namiUser);
+    public function __construct(NamiSettings $settings)
+    {
+        $this->settings = $settings;
+    }
+
+    public function run(): void {
+        foreach ($this->initializers as $initializer) {
+            app($initializer)->handle($this->settings->login());
         }
     }
 

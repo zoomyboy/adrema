@@ -10,7 +10,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class UpdateJob implements ShouldQueue
 {
@@ -18,12 +17,10 @@ class UpdateJob implements ShouldQueue
 
     public int $memberId;
     public Member $member;
-    public NamiUser $user;
 
-    public function __construct(Member $member, NamiUser $user)
+    public function __construct(Member $member)
     {
         $this->memberId = $member->id;
-        $this->user = $user;
     }
 
     /**
@@ -39,7 +36,7 @@ class UpdateJob implements ShouldQueue
             return;
         }
 
-        $response = Nami::login($this->user->mglnr)->putMember([
+        $response = $this->service->login()->putMember([
             'firstname' => $this->member->firstname,
             'lastname' => $this->member->lastname,
             'joined_at' => $this->member->joined_at,

@@ -12,7 +12,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Zoomyboy\LaravelNami\Nami;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class CreateJob implements ShouldQueue
 {
@@ -20,9 +19,8 @@ class CreateJob implements ShouldQueue
 
     public int $memberId;
     public Member $member;
-    public NamiUser $user;
 
-    public function __construct(Member $member, NamiUser $user)
+    public function __construct(Member $member)
     {
         $this->memberId = $member->id;
         $this->user = $user;

@@ -21,16 +21,16 @@ class CourseController extends Controller
         return redirect()->back()->success('Ausbildung erstellt');
     }
 
-    public function update(Member $member, CourseMember $course, UpdateRequest $request): RedirectResponse
+    public function update(Member $member, CourseMember $course, UpdateRequest $request, NamiSettings $settings): RedirectResponse
     {
-        $request->persist($member, $course);
+        $request->persist($member, $course, $settings);
 
         return redirect()->back()->success('Ausbildung aktualisiert');
     }
 
-    public function destroy(Member $member, CourseMember $course, DestroyRequest $request): RedirectResponse
+    public function destroy(Member $member, CourseMember $course, DestroyRequest $request, NamiSettings $settings): RedirectResponse
     {
-        $request->persist($member, $course);
+        $request->persist($member, $course, $settings);
 
         return redirect()->back()->success('Ausbildung gelöscht');
     }

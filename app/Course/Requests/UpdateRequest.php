@@ -5,6 +5,7 @@ namespace App\Course\Requests;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Member\Member;
+use App\Setting\NamiSettings;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -37,13 +38,13 @@ class UpdateRequest extends FormRequest
         ];
     }
 
-    public function persist(Member $member, CourseMember $course): void
+    public function persist(Member $member, CourseMember $course, NamiSettings $settings): void
     {
-        try {
-            auth()->user()->api()->updateCourse($member->nami_id, $course->nami_id, $this->safe()->merge(['course_id' => Course::find($this->input('course_id'))->nami_id])->toArray());
-        } catch(NamiException $e) {
-            throw ValidationException::withMessages(['id' => 'Unbekannter Fehler']);
-        }
+        $settings->login()->updateCourse(
+            $member->nami_id,
+            $course->nami_id,
+            $this->safe()->merge(['course_id' => Course::find($this->input('course_id'))->nami_id])->toArray()
+        );
 
         $course->update($this->safe()->toArray());
     }

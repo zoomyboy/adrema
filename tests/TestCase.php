@@ -13,7 +13,6 @@ use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 use Zoomyboy\LaravelNami\Nami;
-use Zoomyboy\LaravelNami\NamiUser;
 
 abstract class TestCase extends BaseTestCase
 {

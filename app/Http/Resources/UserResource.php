@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Storage;
 
 /**
- * @mixin \Zoomyboy\LaravelNami\NamiUser
+ * @mixin \App\User
  */
 class UserResource extends JsonResource
 {
@@ -19,8 +19,8 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->getFirstname(),
-            'email' => null,
+            'name' => $this->name,
+            'email' => $this->email,
             'avatar' => [
                 'src' => Storage::url('avatar.png')
             ]

@@ -2,8 +2,8 @@
 
 namespace App\Initialize;
 
+use App\Fee;
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class InitializeFees {
 
@@ -13,10 +13,11 @@ class InitializeFees {
         $this->api = $api;
     }
 
-    public function handle(NamiUser $user): void
+    public function handle(): void
     {
-        $this->api->feesOf($user->getNamiGroupId())->each(function($fee) {
-            \App\Fee::create(['nami_id' => $fee->id, 'name' => $fee->name])
+        $group = $this->api->groups()->first()->id;
+        $this->api->feesOf($group)->each(function($fee) {
+            Fee::create(['nami_id' => $fee->id, 'name' => $fee->name])
                 ->subscriptions()->create([
                     'name' => $fee->name,
                     'amount' => 1000,

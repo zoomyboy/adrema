@@ -3,7 +3,6 @@
 namespace App\Initialize;
 
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class InitializeGenders {
 
@@ -13,7 +12,7 @@ class InitializeGenders {
         $this->api = $api;
     }
 
-    public function handle(NamiUser $user): void
+    public function handle(): void
     {
         $this->api->genders()->each(function($gender) {
             \App\Gender::create(['nami_id' => $gender->id, 'name' => $gender->name]);

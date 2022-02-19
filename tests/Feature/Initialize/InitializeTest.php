@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
+use Zoomyboy\LaravelNami\Fakes\GroupFake;
 
 class InitializeTest extends TestCase
 {
@@ -25,8 +26,8 @@ class InitializeTest extends TestCase
 
     public function initializeProvider(callable $callback = null): void
     {
+        app(GroupFake::class)->get([1000 => ['name' => 'testgroup']]);
         $backend = app(FakeBackend::class)
-            ->fakeLogin('123')
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000])
             ->fakeNationalities([['name' => 'deutsch', 'id' => 291]])
             ->fakeFees(1000, [['name' => 'Family', 'id' => 300]])
@@ -67,9 +68,8 @@ class InitializeTest extends TestCase
 
     public function testItInitializesAll(): void
     {
-        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $this->initializeProvider();
-        $this->login();
 
         $this->post('/initialize');
 
@@ -119,12 +119,12 @@ class InitializeTest extends TestCase
         ]);
         $this->assertEquals([306], Activity::where('nami_id', 305)->firstOrFail()->subactivities()->pluck('nami_id')->toArray());
 
-        Http::assertSentCount(16);
+        Http::assertSentCount(15);
     }
 
     public function testItInitializesFromCommandLine(): void
     {
-        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling()->loginNami();
         $this->initializeProvider();
         GeneralSettings::fake(['allowed_nami_accounts' => [123]]);
 
@@ -142,7 +142,7 @@ class InitializeTest extends TestCase
 
     public function testSyncCoursesOfMember(): void
     {
-        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $this->initializeProvider(function($backend) {
             $backend->fakeMembers([
                 $this->member(['courses' => [ ['bausteinId' => 506, 'id' => 788, 'veranstalter' => 'KJA', 'vstgName' => 'eventname', 'vstgTag' => '2021-11-12 00:00:00'] ]])
@@ -345,7 +345,7 @@ class InitializeTest extends TestCase
         if (!$backendCallback) {
             $backendCallback = function($backend) { return $backend; };
         }
-        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $this->initializeProvider(function($backend) use ($membership, $backendCallback) {
             $backend->fakeMembers([
                 $this->member([
@@ -361,7 +361,6 @@ class InitializeTest extends TestCase
             ]);
             $backendCallback($backend);
         });
-        $this->login();
 
         $this->post('/initialize');
 
@@ -370,7 +369,7 @@ class InitializeTest extends TestCase
 
     public function testItDoesntGetMembersWithNoJoinedAtDate(): void
     {
-        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $this->initializeProvider(function($backend) {
             $backend->fakeMembers([$this->member(['eintrittsdatum' => null])]);
         });
@@ -401,7 +400,7 @@ class InitializeTest extends TestCase
      */
     public function testItInitializesPages(int $num): void
     {
-        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $this->initializeProvider(function($backend) use ($num) {
             $members = collect([]);
 

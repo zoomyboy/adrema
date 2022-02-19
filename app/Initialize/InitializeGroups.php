@@ -4,7 +4,6 @@ namespace App\Initialize;
 
 use App\Group;
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\NamiUser;
 
 class InitializeGroups {
 

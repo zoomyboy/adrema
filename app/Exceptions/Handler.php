@@ -39,13 +39,6 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
-        if (is_a($exception, NamiException::class)) {
-            \Log::error($exception->getMessage(), [
-                'request' => $exception->request,
-                'response' => $exception->response
-            ]);
-        }
-
         parent::report($exception);
     }
 

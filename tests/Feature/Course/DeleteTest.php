@@ -18,8 +18,7 @@ class DeleteTest extends TestCase
 
     public function testItDeletesACourse(): void
     {
-        $this->withoutExceptionHandling();
-        $this->login()->init();
+        $this->login()->loginNami();
         app(CourseFake::class)->deleteSuccessful(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
 
@@ -31,14 +30,13 @@ class DeleteTest extends TestCase
 
     public function testItReceivesUnknownErrors(): void
     {
-        $this->login()->init();
+        $this->login()->loginNami();
         app(CourseFake::class)->deleteFailed(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
 
         $response = $this->delete("/member/{$member->id}/course/{$member->courses->first()->id}");
 
         $this->assertDatabaseCount('course_members', 1);
-                         
         $response->assertSessionHasErrors(['id' => 'Unbekannter Fehler']);
     }
 
