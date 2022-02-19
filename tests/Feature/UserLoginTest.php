@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
-use Zoomyboy\LaravelNami\Authentication\NamiGuard;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
 class UserLoginTest extends TestCase

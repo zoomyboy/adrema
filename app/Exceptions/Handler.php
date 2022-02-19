@@ -3,7 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
+use Zoomyboy\LaravelNami\LoginException;
 use Zoomyboy\LaravelNami\NamiException;
 
 class Handler extends ExceptionHandler
@@ -58,6 +60,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof LoginException) {
+            throw ValidationException::withMessages(['nami' => 'NaMi Login fehlgeschlagen.']);
+        }
+
         return parent::render($request, $exception);
     }
 }

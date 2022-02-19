@@ -8,7 +8,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\Telescope;
-use Zoomyboy\LaravelNami\Authentication\NamiGuard;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,10 +37,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        NamiGuard::beforeLogin(function(array $credentials) {
-            return in_array($credentials['mglnr'], app(GeneralSettings::class)->allowed_nami_accounts)
-                ? null
-                : false;
-        });
+        //
     }
 }

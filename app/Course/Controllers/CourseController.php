@@ -8,14 +8,15 @@ use App\Course\Requests\StoreRequest;
 use App\Course\Requests\UpdateRequest;
 use App\Http\Controllers\Controller;
 use App\Member\Member;
+use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    public function store(Member $member, StoreRequest $request): RedirectResponse
+    public function store(Member $member, StoreRequest $request, NamiSettings $settings): RedirectResponse
     {
-        $request->persist($member);
+        $request->persist($member, $settings);
 
         return redirect()->back()->success('Ausbildung erstellt');
     }

@@ -4,13 +4,16 @@ namespace App\Course\Requests;
 
 use App\Course\Models\Course;
 use App\Member\Member;
+use App\Setting\NamiSettings;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
+use Zoomyboy\LaravelNami\Nami;
 use Zoomyboy\LaravelNami\NamiException;
 
 class StoreRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -36,20 +39,21 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function persist(Member $member): void
+    public function persist(Member $member, NamiSettings $settings): void
     {
         $course = Course::where('id', $this->input('course_id'))->firstOrFail();
-        $payload = array_merge(
-            $this->only(['event_name', 'completed_at', 'organizer']),
-            ['course_id' => $course->nami_id],
-        );
+
+        $payload = collect($this->input())->only(['event_name', 'completed_at', 'organizer'])->merge([
+            'course_id' => $course->nami_id,
+        ])->toArray();
 
         try {
-            $namiId = auth()->user()->api()->createCourse($member->nami_id, $payload);
+            $namiId = Nami::login($settings->mglnr, $settings->password)->createCourse($member->nami_id, $payload);
         } catch(NamiException $e) {
             throw ValidationException::withMessages(['id' => 'Unbekannter Fehler']);
         }
 
         $member->courses()->create($this->safe()->collect()->put('nami_id', $namiId)->toArray());
     }
+
 }

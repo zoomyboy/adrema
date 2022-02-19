@@ -55,9 +55,9 @@ class StoreTest extends TestCase
      */
     public function testItValidatesInput(array $payload, array $errors): void
     {
-        $this->login()->init();
-        $member = Member::factory()->defaults()->inNami(123)->createOne();
-        $course = Course::factory()->inNami(456)->createOne();
+        $this->login();
+        $member = Member::factory()->defaults()->createOne();
+        $course = Course::factory()->createOne();
 
         $response = $this->post("/member/{$member->id}/course", array_merge([
             'course_id' => $course->id,
@@ -71,8 +71,7 @@ class StoreTest extends TestCase
 
     public function testItCreatesACourse(): void
     {
-        $this->withoutExceptionHandling();
-        $this->login()->init();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->inNami(123)->createOne();
         $course = Course::factory()->inNami(456)->createOne();
         app(CourseFake::class)->createsSuccessful(123, 999);
@@ -100,9 +99,29 @@ class StoreTest extends TestCase
         ]);
     }
 
+    public function testItThrowsErrorWhenLoginIsWrong(): void
+    {
+        $this->login()->failedNami();
+        $member = Member::factory()->defaults()->inNami(123)->createOne();
+        $course = Course::factory()->inNami(456)->createOne();
+
+        $response = $this->post("/member/{$member->id}/course", [
+            'course_id' => $course->id,
+            'completed_at' => '2021-01-02',
+            'event_name' => '::event::',
+            'organizer' => '::org::',
+        ]);
+
+        $this->assertErrors(['nami' => 'NaMi Login fehlgeschlagen.'], $response);
+
+        $this->assertDatabaseMissing('course_members', [
+            'member_id' => $member->id,
+        ]);
+    }
+
     public function testItReceivesUnknownErrors(): void
     {
-        $this->login()->init();
+        $this->login()->loginNami();
         $member = Member::factory()->defaults()->inNami(123)->createOne();
         $course = Course::factory()->inNami(456)->createOne();
         app(CourseFake::class)->doesntCreateWithError(123);

@@ -39,8 +39,8 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'nami',
-            'other_providers' => ['database'],
+            'driver' => 'session',
+            'provider' => 'database',
         ],
 
         'api' => [

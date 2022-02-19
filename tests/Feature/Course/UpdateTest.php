@@ -56,7 +56,7 @@ class UpdateTest extends TestCase
      */
     public function testItValidatesInput(array $payload, array $errors): void
     {
-        $this->login()->init();
+        $this->login();
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->for(Course::factory()), 'courses')->createOne();
         $newCourse = Course::factory()->inNami(789)->create();
 
