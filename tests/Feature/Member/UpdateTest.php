@@ -24,7 +24,7 @@ class UpdateTest extends TestCase
 
     public function testItRedirectsToMemberOverview(): void
     {
-        $this->withoutExceptionHandling()->login();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $member = $this->member();
         $this->fakeRequest();
 
@@ -37,7 +37,7 @@ class UpdateTest extends TestCase
 
     public function testItHasPutRequest(): void
     {
-        $this->withoutExceptionHandling()->login();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $member = $this->member();
         $this->fakeRequest();
 
@@ -52,7 +52,7 @@ class UpdateTest extends TestCase
 
     public function testItMergesExistingData(): void
     {
-        $this->withoutExceptionHandling()->login();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $member = $this->member();
         $this->fakeRequest();
 
@@ -69,7 +69,7 @@ class UpdateTest extends TestCase
 
     public function testItUpdatesVersion(): void
     {
-        $this->withoutExceptionHandling()->login();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $member = $this->member();
         $this->fakeRequest();
 

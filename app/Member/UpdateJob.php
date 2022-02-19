@@ -3,6 +3,7 @@
 namespace App\Member;
 
 use App\Confession;
+use App\Setting\NamiSettings;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,7 +29,7 @@ class UpdateJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(NamiSettings $settings)
     {
         $this->member = Member::find($this->memberId);
 
@@ -36,7 +37,7 @@ class UpdateJob implements ShouldQueue
             return;
         }
 
-        $response = $this->service->login()->putMember([
+        $response = $settings->login()->putMember([
             'firstname' => $this->member->firstname,
             'lastname' => $this->member->lastname,
             'joined_at' => $this->member->joined_at,
