@@ -1,14 +1,6 @@
 [submodule "packages/silvaletter"]
 	path = packages/silvaletter
 	url = git@zoomyboy.de:silva/silvaletter.git
-[submodule "packages/agnoster-installer"]
-	path = packages/agnoster-installer
-	url = gl-agnoster-installer:philipp/agnoster-installer.git
 [submodule "packages/laravel-nami"]
 	path = packages/laravel-nami
 	url = git@github.com:DPSGKoeln/laravel-nami.git
-[submodule "resources/js/libs/js-modules"]
-	path = resources/js/libs/js-modules
-	url = gl-js-modules:aweos/js-modules.git
-[submodule "git@zoomyboy.de:silva/silvaletter.git"]
-	url = packages/silvaletter
