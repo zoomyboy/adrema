@@ -3,7 +3,6 @@
 namespace App\Initialize;
 
 use App\Member;
-use Aweos\Agnoster\Progress\HasProgress;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 class InitializeJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, HasProgress;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Execute the job.
