@@ -29,7 +29,7 @@ class InitializeTest extends TestCase
 
     public function initializeProvider(callable $callback = null): void
     {
-        app(GroupFake::class)->get([1000 => ['name' => 'testgroup']]);
+        app(GroupFake::class)->fetches(null, [1000 => ['name' => 'testgroup']]);
         $backend = app(FakeBackend::class)
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000])
             ->fakeNationalities([['name' => 'deutsch', 'id' => 291]])
