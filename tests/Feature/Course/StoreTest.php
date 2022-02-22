@@ -74,7 +74,7 @@ class StoreTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->inNami(123)->createOne();
         $course = Course::factory()->inNami(456)->createOne();
-        app(CourseFake::class)->createsSuccessful(123, 999);
+        app(CourseFake::class)->createsSuccessfully(123, 999);
 
         $this->post("/member/{$member->id}/course", [
             'course_id' => $course->id,
@@ -124,7 +124,7 @@ class StoreTest extends TestCase
         $this->login()->loginNami();
         $member = Member::factory()->defaults()->inNami(123)->createOne();
         $course = Course::factory()->inNami(456)->createOne();
-        app(CourseFake::class)->createFailed(123);
+        app(CourseFake::class)->failsCreating(123);
 
         $response = $this->post("/member/{$member->id}/course", [
             'course_id' => $course->id,

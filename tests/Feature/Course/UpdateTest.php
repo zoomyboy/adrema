@@ -74,7 +74,7 @@ class UpdateTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $this->login()->loginNami();
-        app(CourseFake::class)->updatesSuccessful(123, 999);
+        app(CourseFake::class)->updatesSuccessfully(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
         $newCourse = Course::factory()->inNami(789)->create();
 
@@ -120,7 +120,7 @@ class UpdateTest extends TestCase
     public function testItReceivesUnknownErrors(): void
     {
         $this->login()->loginNami();
-        app(CourseFake::class)->doesntUpdateWithError(123, 999);
+        app(CourseFake::class)->failsUpdating(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
         $newCourse = Course::factory()->inNami(789)->create();
 
