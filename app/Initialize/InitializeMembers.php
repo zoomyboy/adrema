@@ -81,10 +81,10 @@ class InitializeMembers {
                 try {
                     foreach ($this->api->coursesFor($member->id) as $course) {
                         $m->courses()->create([
-                            'course_id' => Course::where('nami_id', $course->course_id)->firstOrFail()->id,
+                            'course_id' => Course::where('nami_id', $course->courseId)->firstOrFail()->id,
                             'organizer' => $course->organizer,
-                            'event_name' => $course->event_name,
-                            'completed_at' => $course->completed_at,
+                            'event_name' => $course->eventName,
+                            'completed_at' => $course->completedAt,
                             'nami_id' => $course->id,
                         ]);
                     }
