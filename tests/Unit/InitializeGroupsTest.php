@@ -6,6 +6,7 @@ use App\Group as GroupModel;
 use App\Initialize\InitializeGroups;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Framework\MockObject\Stub;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Group;
@@ -15,7 +16,7 @@ class InitializeGroupsTest extends TestCase
 
     use DatabaseTransactions;
 
-    private Api $api;
+    private Stub $api;
 
     public function setUp(): void
     {
