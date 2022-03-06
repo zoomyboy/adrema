@@ -2,7 +2,8 @@ FROM php:8.1.3-fpm-buster
 
 WORKDIR /app
 
-RUN useradd -d /app -s /bin/bash runner
+RUN groupadd -g 1000 runner
+RUN useradd -u 1000 -g 1000 -d /app -s /bin/bash runner
 
 RUN sed -i 's/user = www-data/user = runner/' /usr/local/etc/php-fpm.d/www.conf
 RUN sed -i 's/group = www-data/group = runner/' /usr/local/etc/php-fpm.d/www.conf
@@ -19,3 +20,4 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN rm composer-setup.php
 
+USER runner
