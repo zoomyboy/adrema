@@ -63,7 +63,9 @@ abstract class TestCase extends BaseTestCase
 
         return $this;
     }
-    public function assertErrors(array $errors, TestResponse $response) {
+
+    public function assertErrors(array $errors, TestResponse $response): self
+    {
         $response->assertSessionHas('errors');
         $this->assertInstanceOf(RedirectResponse::class, $response->baseResponse);
         /** @var RedirectResponse */

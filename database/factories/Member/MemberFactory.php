@@ -10,6 +10,7 @@ use App\Nationality;
 use App\Payment\Payment;
 use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<Member>
@@ -70,7 +71,7 @@ class MemberFactory extends Factory
      */
     public function withPayments(array $payments): self
     {
-        return $this->afterCreating(function (Member $model) use ($payments): void {
+        return $this->afterCreating(function (Model $model) use ($payments): mixed {
             foreach ($payments as $paymentClosure) {
                 $factory = Payment::factory()->for($model);
                 $factory = call_user_func($paymentClosure, $factory);
