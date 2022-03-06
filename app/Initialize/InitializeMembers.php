@@ -16,6 +16,7 @@ use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\Data\MembershipEntry;
 use Zoomyboy\LaravelNami\Exceptions\RightException;
 use Zoomyboy\LaravelNami\Member as NamiMember;
 use Zoomyboy\LaravelNami\Membership as NamiMembership;
@@ -94,7 +95,7 @@ class InitializeMembers {
 
                 try {
                     foreach ($this->api->membershipsOf($member->id) as $membership) {
-                        if ($membership['entries_aktivBis'] !== '') {
+                        if ($membership->endsAt !== null) {
                             continue;
                         }
                         try {
@@ -106,8 +107,8 @@ class InitializeMembers {
                             continue;
                         }
                         $m->memberships()->create([
-                            'nami_id' => $membership['id'],
-                            'from' => $membership['entries_aktivVon'],
+                            'nami_id' => $membership->id,
+                            'from' => $membership->startsAt,
                             'group_id' => $groupId,
                             'activity_id' => $activityId,
                             'subactivity_id' => $subactivityId,
@@ -122,19 +123,19 @@ class InitializeMembers {
         });
     }
 
-    private function fetchMembership(NamiMember $member, array $membership): array
+    private function fetchMembership(NamiMember $member, MembershipEntry $membershipEntry): array
     {
-        if ($this->shouldSyncMembership($membership)) {
-            $singleMembership = $this->api->membership($member->id, $membership['id']);
-            app(ActivityCreator::class)->createFor($this->api, $singleMembership['gruppierungId']);
-            $group = Group::firstOrCreate(['nami_id' => $singleMembership['gruppierungId']], [
-                'nami_id' => $singleMembership['gruppierungId'],
-                'name' => $singleMembership['gruppierung'],
+        if ($this->shouldSyncMembership($membershipEntry)) {
+            $membership = $this->api->membership($member->id, $membershipEntry->id);
+            app(ActivityCreator::class)->createFor($this->api, $membership->groupId);
+            $group = Group::firstOrCreate(['nami_id' => $membership->groupId], [
+                'nami_id' => $membership->groupId,
+                'name' => $membership->group,
             ]);
             try {
-                $activityId = Activity::where('nami_id', $singleMembership['taetigkeitId'])->firstOrFail()->id;
-                $subactivityId = $singleMembership['untergliederungId']
-                    ? Subactivity::where('nami_id', $singleMembership['untergliederungId'])->firstOrFail()->id
+                $activityId = Activity::where('nami_id', $membership->activityId)->firstOrFail()->id;
+                $subactivityId = $membership->subactivityId
+                    ? Subactivity::where('nami_id', $membership->subactivityId)->firstOrFail()->id
                     : null;
                 return [$activityId, $subactivityId, $group->id];
             } catch (ModelNotFoundException $e) {
@@ -142,35 +143,35 @@ class InitializeMembers {
             }
         }
 
-        if ($membership['entries_untergliederung'] === '') {
+        if ($membershipEntry->subactivity === null) {
             $subactivityId = null;
         } else {
-            $subactivityId = Subactivity::where('name', $membership['entries_untergliederung'])->firstOrFail()->id;
+            $subactivityId = Subactivity::where('name', $membershipEntry->subactivity)->firstOrFail()->id;
         }
-        preg_match('/\(([0-9]+)\)$/', $membership['entries_taetigkeit'], $activityMatches);
+        preg_match('/\(([0-9]+)\)$/', $membershipEntry->activity, $activityMatches);
         $activityId = Activity::where('nami_id', $activityMatches[1])->firstOrFail()->id;
-        $groupId = Group::where('name', $membership['entries_gruppierung'])->firstOrFail()->id;
+        $groupId = Group::where('name', $membershipEntry->group)->firstOrFail()->id;
 
         return [$activityId, $subactivityId, $groupId];
     }
 
-    private function shouldSyncMembership(array $membership): bool
+    private function shouldSyncMembership(MembershipEntry $membershipEntry): bool
     {
-        if (!Group::where('name', $membership['entries_gruppierung'])->exists()) {
+        if (!Group::where('name', $membershipEntry->group)->exists()) {
             return true;
         }
-        if (preg_match('/\(([0-9]+)\)/', $membership['entries_taetigkeit'], $activityMatches) !== 1) {
-            throw new NamiException("ID in taetigkeit string not found: {$membership['entries_taetigkeit']}");
+        if (preg_match('/\(([0-9]+)\)/', $membershipEntry->activity, $activityMatches) !== 1) {
+            throw new NamiException("ID in taetigkeit string not found: {$membershipEntry->activity}");
         }
 
         if (!Activity::where('nami_id', (int) $activityMatches[1])->exists()) {
             return true;
         }
 
-        if ($membership['entries_untergliederung'] === '') {
+        if ($membershipEntry->subactivity === null) {
             return false;
         }
 
-        return !Subactivity::where('name', $membership['entries_untergliederung'])->exists();
+        return !Subactivity::where('name', $membershipEntry->subactivity)->exists();
     }
 }

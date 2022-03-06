@@ -12,6 +12,7 @@ use App\Nationality;
 use App\Payment\Payment;
 use App\Payment\Subscription;
 use App\Region;
+use App\Setting\NamiSettings;
 use App\Subactivity;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -60,9 +61,9 @@ class Member extends Model
     }
 
     // ---------------------------------- Actions ----------------------------------
-    public function syncVersion(Api $api): void
+    public function syncVersion(): void
     {
-        $version = $api->group($this->group->nami_id)->member($this->nami_id)->version;
+        $version = app(NamiSettings::class)->login()->member($this->group->nami_id, $this->nami_id)['version'];
 
         $this->update(['version' => $version]);
     }

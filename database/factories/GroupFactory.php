@@ -22,4 +22,9 @@ class GroupFactory extends Factory
             'nami_id' => $this->faker->randomNumber(),
         ];
     }
+
+    public function inNami(int $namiId): self
+    {
+        return $this->state(['nami_id' => $namiId]);
+    }
 }
