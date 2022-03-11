@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MemberFactory extends Factory
 {
-
     protected $model = Member::class;
 
     /**
@@ -71,7 +70,7 @@ class MemberFactory extends Factory
      */
     public function withPayments(array $payments): self
     {
-        return $this->afterCreating(function (Model $model) use ($payments): mixed {
+        return $this->afterCreating(function (Model $model) use ($payments): void {
             foreach ($payments as $paymentClosure) {
                 $factory = Payment::factory()->for($model);
                 $factory = call_user_func($paymentClosure, $factory);
@@ -79,5 +78,4 @@ class MemberFactory extends Factory
             }
         });
     }
-
 }
