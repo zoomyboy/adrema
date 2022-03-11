@@ -24,3 +24,4 @@ tags
 *.swm
 /public/mix-manifest.json
 resources/img/sprite.svg
+/.php-cs-fixer.cache
