@@ -11,6 +11,6 @@ class Region extends Model
     public $fillable = ['name', 'nami_id', 'is_null'];
 
     public $casts = [
-        'is_null' => 'boolean'
+        'is_null' => 'boolean',
     ];
 }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CourseMemberFactory extends Factory
 {
-
     public $model = CourseMember::class;
 
     /**

@@ -18,16 +18,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Zoomyboy\LaravelNami\Api;
 
 /**
- * @property string $subscription_name
- * @property int $pending_payment
- * @property bool $is_confirmed
- * @property string $age_group_icon
+ * @property string         $subscription_name
+ * @property int            $pending_payment
+ * @property bool           $is_confirmed
+ * @property string         $age_group_icon
  * @property \Carbon\Carbon $try_created_at
  */
 class Member extends Model
@@ -51,8 +50,12 @@ class Member extends Model
         'is_confirmed' => 'boolean',
     ];
 
-    public function scopeSearch(Builder $q, ?string $text): Builder {
-        if (is_null($text)) { return $q; }
+    public function scopeSearch(Builder $q, ?string $text): Builder
+    {
+        if (is_null($text)) {
+            return $q;
+        }
+
         return $q->where('firstname', 'LIKE', '%'.$text.'%')
              ->orWhere('lastname', 'LIKE', '%'.$text.'%')
              ->orWhere('address', 'LIKE', '%'.$text.'%')
@@ -76,19 +79,23 @@ class Member extends Model
     }
 
     //----------------------------------- Getters -----------------------------------
-    public function getFullnameAttribute(): string {
+    public function getFullnameAttribute(): string
+    {
         return $this->firstname.' '.$this->lastname;
     }
 
-    public function getHasNamiAttribute(): bool {
-        return $this->nami_id !== null;
+    public function getHasNamiAttribute(): bool
+    {
+        return null !== $this->nami_id;
     }
 
-    public function getNamiMemberships(Api $api): array {
+    public function getNamiMemberships(Api $api): array
+    {
         return $api->group($this->group->nami_id)->member($this->nami_id)->memberships()->toArray();
     }
 
-    public function getNamiFeeId(): ?int {
+    public function getNamiFeeId(): ?int
+    {
         if (!$this->subscription) {
             return null;
         }
@@ -164,70 +171,79 @@ class Member extends Model
 
     public static function booted()
     {
-        static::deleting(function(self $model): void {
+        static::deleting(function (self $model): void {
             $model->payments->each->delete();
         });
     }
 
     // ---------------------------------- Scopes -----------------------------------
-    public function scopeWithIsConfirmed(Builder $q): Builder {
+    public function scopeWithIsConfirmed(Builder $q): Builder
+    {
         return $q->selectSub('DATEDIFF(NOW(), IFNULL(confirmed_at, DATE_SUB(NOW(), INTERVAL 3 YEAR))) < 712', 'is_confirmed');
     }
 
-    public function scopeWithSubscriptionName(Builder $q): Builder {
+    public function scopeWithSubscriptionName(Builder $q): Builder
+    {
         return $q->addSelect([
-            'subscription_name' => Subscription::select('name')->whereColumn('subscriptions.id', 'members.subscription_id')->limit(1)
+            'subscription_name' => Subscription::select('name')->whereColumn('subscriptions.id', 'members.subscription_id')->limit(1),
         ]);
     }
 
-    public function scopeWithPendingPayment(Builder $q): Builder {
+    public function scopeWithPendingPayment(Builder $q): Builder
+    {
         return $q->addSelect([
             'pending_payment' => Payment::selectRaw('SUM(subscriptions.amount)')
                 ->whereColumn('payments.member_id', 'members.id')
                 ->whereNeedsPayment()
-                ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')
+                ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id'),
         ]);
     }
 
-    public function scopeWithAgeGroup(Builder $q): Builder {
+    public function scopeWithAgeGroup(Builder $q): Builder
+    {
         return $q->addSelect([
             'age_group_icon' => Subactivity::select('slug')
                 ->join('memberships', 'memberships.subactivity_id', 'subactivities.id')
                 ->where('subactivities.is_age_group', true)
                 ->whereColumn('memberships.member_id', 'members.id')
-                ->limit(1)
+                ->limit(1),
         ]);
     }
 
-    public function scopeWhereHasPendingPayment(Builder $q): Builder {
-        return $q->whereHas('payments', function(Builder $q): void {
+    public function scopeWhereHasPendingPayment(Builder $q): Builder
+    {
+        return $q->whereHas('payments', function (Builder $q): void {
             $q->whereNeedsPayment();
         });
     }
 
-    public function scopeWhereAusstand(Builder $q): Builder {
-        return $q->whereHas('payments', function($q) {
+    public function scopeWhereAusstand(Builder $q): Builder
+    {
+        return $q->whereHas('payments', function ($q) {
             return $q->whereHas('status', fn ($q) => $q->where('is_remember', true));
         });
     }
 
-    public function scopePayable(Builder $q): Builder {
+    public function scopePayable(Builder $q): Builder
+    {
         return $q->where('bill_kind_id', '!=', null)->where('subscription_id', '!=', null);
     }
 
-    public function scopeWhereNoPayment(Builder $q, int $year): Builder {
-        return $q->whereDoesntHave('payments', function(Builder $q) use ($year) {
+    public function scopeWhereNoPayment(Builder $q, int $year): Builder
+    {
+        return $q->whereDoesntHave('payments', function (Builder $q) use ($year) {
             $q->where('nr', '=', $year);
         });
     }
 
-    public function scopeForDashboard(Builder $q): Builder {
+    public function scopeForDashboard(Builder $q): Builder
+    {
         return $q->selectRaw('SUM(id)');
     }
 
     public function scopeFilter(Builder $q, array $filter): Builder
     {
-        if (data_get($filter, 'ausstand', false) === true) {
+        if (true === data_get($filter, 'ausstand', false)) {
             $q->whereAusstand();
         }
         if (data_get($filter, 'bill_kind', false)) {
@@ -256,8 +272,7 @@ class Member extends Model
                 'try_created_at' => Membership::select('created_at')
                     ->whereColumn('memberships.member_id', 'members.id')
                     ->join('activities', 'activities.id', 'memberships.activity_id')
-                    ->where('activities.is_try', true)
+                    ->where('activities.is_try', true),
             ]);
     }
-
 }

@@ -11,7 +11,6 @@ use Zoomyboy\LaravelNami\Data\Membership;
 
 class StoreRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -30,7 +29,6 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
         ];
     }
 
@@ -51,5 +49,4 @@ class StoreRequest extends FormRequest
 
         $member->syncVersion();
     }
-
 }

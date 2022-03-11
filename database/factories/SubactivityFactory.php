@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SubactivityFactory extends Factory
 {
-
     protected $model = Subactivity::class;
 
     /**
@@ -30,5 +29,4 @@ class SubactivityFactory extends Factory
     {
         return $this->state(['nami_id' => $namiId]);
     }
-
 }

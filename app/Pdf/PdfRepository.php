@@ -10,7 +10,6 @@ use Illuminate\Support\Collection;
 
 interface PdfRepository
 {
-
     public function getSubject(): string;
 
     public function setFilename(string $filename): self;
@@ -52,5 +51,4 @@ interface PdfRepository
     public function getMailSubject(): string;
 
     public function allPayments(): Generator;
-
 }

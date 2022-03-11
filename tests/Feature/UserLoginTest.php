@@ -2,19 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Setting\GeneralSettings;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
-use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
 class UserLoginTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function setUp(): void
@@ -30,7 +24,7 @@ class UserLoginTest extends TestCase
 
         $this->post('/login', [
             'email' => 'mail@example.com',
-            'password' => 'secret'
+            'password' => 'secret',
         ]);
 
         $this->assertAuthenticated();
@@ -43,10 +37,9 @@ class UserLoginTest extends TestCase
 
         $this->post('/login', [
             'email' => 'mail@example.com',
-            'password' => 'wrong'
+            'password' => 'wrong',
         ])->assertRedirect('/');
 
         $this->assertFalse(auth()->check());
     }
-
 }

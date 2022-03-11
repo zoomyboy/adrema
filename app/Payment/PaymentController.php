@@ -5,7 +5,6 @@ namespace App\Payment;
 use App\Http\Controllers\Controller;
 use App\Http\Views\MemberView;
 use App\Member\Member;
-use App\Member\MemberResource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;

@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use App\Member\Member;
 use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {

@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PaymentFactory extends Factory
 {
-
     protected $model = Payment::class;
 
     public function definition(): array
@@ -44,5 +43,4 @@ class PaymentFactory extends Factory
             Subscription::factory()->state(['name' => $name, 'amount' => $amount])->for(Fee::first()),
         );
     }
-
 }

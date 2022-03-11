@@ -8,7 +8,6 @@ use Zoomyboy\LaravelNami\Nami;
 
 class NamiSettings extends Settings
 {
-
     public int $mglnr;
 
     public string $password;
@@ -22,5 +21,4 @@ class NamiSettings extends Settings
     {
         return Nami::login($this->mglnr, $this->password);
     }
-
 }

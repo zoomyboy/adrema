@@ -8,14 +8,12 @@ use App\Member\Member;
 use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Fakes\MemberFake;
 use Zoomyboy\LaravelNami\Fakes\MembershipFake;
 
 class StoreTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function testItCanCreateAMembership(): void
@@ -54,6 +52,4 @@ class StoreTest extends TestCase
             'aktivBis' => null,
         ]);
     }
-
 }
-

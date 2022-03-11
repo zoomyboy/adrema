@@ -4,17 +4,18 @@ namespace App\Member;
 
 use App\Confession;
 use App\Setting\NamiSettings;
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Zoomyboy\LaravelNami\Nami;
 
 class UpdateJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public int $memberId;
     public Member $member;
@@ -65,7 +66,7 @@ class UpdateJob implements ShouldQueue
             'group_id' => $this->member->group->nami_id,
             'version' => $this->member->version,
         ]);
-        Member::withoutEvents(function() use ($response) {
+        Member::withoutEvents(function () use ($response) {
             $this->member->update(['version' => $response['version']]);
         });
     }

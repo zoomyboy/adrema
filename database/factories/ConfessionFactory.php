@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ConfessionFactory extends Factory
 {
-
     protected $model = Confession::class;
 
     /**

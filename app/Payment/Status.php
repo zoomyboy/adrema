@@ -17,7 +17,6 @@ class Status extends Model
         'is_remember' => 'boolean',
     ];
 
-
     public static function default(): int
     {
         return static::where('is_bill', true)->where('is_remember', true)->first()->id;
@@ -25,13 +24,13 @@ class Status extends Model
 
     public function isAccepted(): bool
     {
-        return $this->is_bill === false && $this->is_remember === false;
+        return false === $this->is_bill && false === $this->is_remember;
     }
 
     // ---------------------------------- Scopes -----------------------------------
     public function scopeNeedsPayment(Builder $query): Builder
     {
-        return $query->where(function(Builder $query): Builder {
+        return $query->where(function (Builder $query): Builder {
             return $query->where('is_bill', true)->orWhere('is_remember', true);
         });
     }

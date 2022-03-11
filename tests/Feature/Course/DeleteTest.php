@@ -6,14 +6,11 @@ use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Member\Member;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Zoomyboy\LaravelNami\Backend\FakeBackend;
 use Zoomyboy\LaravelNami\Fakes\CourseFake;
 
 class DeleteTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function testItDeletesACourse(): void
@@ -39,5 +36,4 @@ class DeleteTest extends TestCase
         $this->assertDatabaseCount('course_members', 1);
         $response->assertSessionHasErrors(['id' => 'Unbekannter Fehler']);
     }
-
 }

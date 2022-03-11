@@ -6,19 +6,18 @@ use Closure;
 
 class RedirectIfNotInitializedMiddleware
 {
-
     public array $dontRedirect = ['initialize.index', 'initialize.store'];
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if(!$this->shouldRedirect()) {
+        if (!$this->shouldRedirect()) {
             return $next($request);
         }
 

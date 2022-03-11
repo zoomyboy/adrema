@@ -5,7 +5,6 @@ namespace App\Member;
 use App\Activity;
 use App\Group;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -30,14 +29,16 @@ class MemberRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_activity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'),
-            'first_subactivity_id' => Rule::requiredIf(fn() => $this->method() == 'POST'),
-            'subscription_id' => Rule::requiredIf(function() {
-                if ($this->method() != 'POST') {
+            'first_activity_id' => Rule::requiredIf(fn () => 'POST' == $this->method()),
+            'first_subactivity_id' => Rule::requiredIf(fn () => 'POST' == $this->method()),
+            'subscription_id' => Rule::requiredIf(function () {
+                if ('POST' != $this->method()) {
                     return false;
                 }
 
-                if (!$this->input('first_activity_id')) { return true; }
+                if (!$this->input('first_activity_id')) {
+                    return true;
+                }
 
                 return Str::contains(Activity::findOrFail($this->input('first_activity_id'))->name, '€');
             }),
@@ -58,10 +59,11 @@ class MemberRequest extends FormRequest
         ];
     }
 
-    public function persistCreate(): void {
+    public function persistCreate(): void
+    {
         $this->merge(['group_id' => Group::where('nami_id', Auth::user()->getNamiGroupId())->firstOrFail()->id]);
         $member = Member::create($this->input());
-        if($this->input('has_nami')) {
+        if ($this->input('has_nami')) {
             CreateJob::dispatch($member, auth()->user());
         }
     }
@@ -70,13 +72,13 @@ class MemberRequest extends FormRequest
     {
         $member->update($this->input());
 
-        if($this->input('has_nami') && $member->nami_id === null) {
+        if ($this->input('has_nami') && null === $member->nami_id) {
             CreateJob::dispatch($member, auth()->user());
         }
-        if($this->input('has_nami') && $member->nami_id !== null) {
+        if ($this->input('has_nami') && null !== $member->nami_id) {
             UpdateJob::dispatch($member, auth()->user());
         }
-        if(!$this->input('has_nami') && $member->nami_id !== null) {
+        if (!$this->input('has_nami') && null !== $member->nami_id) {
             DeleteJob::dispatch($member, auth()->user());
         }
     }

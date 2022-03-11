@@ -13,20 +13,19 @@ use App\Member\Member;
 use App\Nationality;
 use App\Region;
 use App\Subactivity;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Data\MembershipEntry;
 use Zoomyboy\LaravelNami\Exceptions\RightException;
 use Zoomyboy\LaravelNami\Member as NamiMember;
-use Zoomyboy\LaravelNami\Membership as NamiMembership;
 use Zoomyboy\LaravelNami\NamiException;
 
-class InitializeMembers {
-
+class InitializeMembers
+{
     private Api $api;
 
-    public function __construct(Api $api) {
+    public function __construct(Api $api)
+    {
         $this->api = $api;
     }
 
@@ -44,7 +43,7 @@ class InitializeMembers {
     {
         $allMembers = collect([]);
 
-        $this->api->search([])->each(function(NamiMember $member): void {
+        $this->api->search([])->each(function (NamiMember $member): void {
             $member = NamiMember::fromNami($this->api->member($member->group_id, $member->id));
             if (!$member->joined_at) {
                 return;
@@ -90,12 +89,11 @@ class InitializeMembers {
                         ]);
                     }
                 } catch (RightException $e) {
-
                 }
 
                 try {
                     foreach ($this->api->membershipsOf($member->id) as $membership) {
-                        if ($membership->endsAt !== null) {
+                        if (null !== $membership->endsAt) {
                             continue;
                         }
                         try {
@@ -115,7 +113,6 @@ class InitializeMembers {
                         ]);
                     }
                 } catch (RightException $e) {
-
                 }
             } catch (ModelNotFoundException $e) {
                 dd($e->getMessage(), $member);
@@ -137,13 +134,14 @@ class InitializeMembers {
                 $subactivityId = $membership->subactivityId
                     ? Subactivity::where('nami_id', $membership->subactivityId)->firstOrFail()->id
                     : null;
+
                 return [$activityId, $subactivityId, $group->id];
             } catch (ModelNotFoundException $e) {
                 return [null, null, null];
             }
         }
 
-        if ($membershipEntry->subactivity === null) {
+        if (null === $membershipEntry->subactivity) {
             $subactivityId = null;
         } else {
             $subactivityId = Subactivity::where('name', $membershipEntry->subactivity)->firstOrFail()->id;
@@ -160,7 +158,7 @@ class InitializeMembers {
         if (!Group::where('name', $membershipEntry->group)->exists()) {
             return true;
         }
-        if (preg_match('/\(([0-9]+)\)/', $membershipEntry->activity, $activityMatches) !== 1) {
+        if (1 !== preg_match('/\(([0-9]+)\)/', $membershipEntry->activity, $activityMatches)) {
             throw new NamiException("ID in taetigkeit string not found: {$membershipEntry->activity}");
         }
 
@@ -168,7 +166,7 @@ class InitializeMembers {
             return true;
         }
 
-        if ($membershipEntry->subactivity === null) {
+        if (null === $membershipEntry->subactivity) {
             return false;
         }
 

@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Setting\GeneralSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\Telescope;
 
@@ -23,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
 
         \Inertia::share('search', request()->query('search', ''));
 
-        RedirectResponse::macro('success', function($flash) {
+        RedirectResponse::macro('success', function ($flash) {
             session()->flash('flash', ['success' => $flash]);
 
             return $this;
@@ -37,6 +35,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
     }
 }

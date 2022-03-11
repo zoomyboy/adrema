@@ -3,7 +3,6 @@
 namespace Tests;
 
 use App\Member\Member;
-use App\Setting\GeneralSettings;
 use App\Setting\NamiSettings;
 use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -11,8 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Testing\TestResponse;
 use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
-use Zoomyboy\LaravelNami\Backend\FakeBackend;
-use Zoomyboy\LaravelNami\Nami;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -80,5 +77,4 @@ abstract class TestCase extends BaseTestCase
 
         return $this;
     }
-
 }

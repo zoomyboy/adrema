@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Subactivity extends Model
 {
-
     use HasFactory;
     use HasNamiField;
     use Sluggable;
@@ -36,5 +35,4 @@ class Subactivity extends Model
     {
         return $this->belongsToMany(Activity::class);
     }
-
 }

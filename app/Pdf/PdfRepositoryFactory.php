@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 class PdfRepositoryFactory
 {
-
     /**
      * @var array<int, class-string<PdfRepository>>
      */
@@ -23,7 +22,7 @@ class PdfRepositoryFactory
      */
     public function getTypes(): Collection
     {
-        return collect(array_map(fn ($classString) => new $classString, $this->types));
+        return collect(array_map(fn ($classString) => new $classString(), $this->types));
     }
 
     public function fromSingleRequest(string $type, Member $member): ?PdfRepository
@@ -108,5 +107,4 @@ class PdfRepositoryFactory
             ),
         );
     }
-
 }

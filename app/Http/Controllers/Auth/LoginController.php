@@ -39,8 +39,8 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function showLoginForm(): Response {
+    public function showLoginForm(): Response
+    {
         return \Inertia::render('VLogin');
     }
-
 }

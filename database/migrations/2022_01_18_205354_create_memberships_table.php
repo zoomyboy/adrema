@@ -23,7 +23,6 @@ class CreateMembershipsTable extends Migration
             $table->foreignId('activity_id')->constrained();
             $table->foreignId('subactivity_id')->nullable()->constrained();
             $table->unique(['activity_id', 'subactivity_id', 'group_id', 'member_id', 'nami_id'], 'memberships_unique');
-
         });
     }
 

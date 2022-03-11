@@ -4,8 +4,8 @@ namespace App\Initialize;
 
 use Zoomyboy\LaravelNami\Api;
 
-class ActivityCreator {
-
+class ActivityCreator
+{
     private array $tries = [
         'Schnuppermitgliedschaft',
     ];
@@ -17,8 +17,8 @@ class ActivityCreator {
 
     public function createFor(Api $api, int $groupId): void
     {
-        $api->activities($groupId)->each(function($activity) use ($api) {
-            $activity =  \App\Activity::updateOrCreate(['nami_id' => $activity->id], [
+        $api->activities($groupId)->each(function ($activity) use ($api) {
+            $activity = \App\Activity::updateOrCreate(['nami_id' => $activity->id], [
                 'nami_id' => $activity->id,
                 'name' => $activity->name,
                 'is_try' => in_array($activity->name, $this->tries),
@@ -26,7 +26,7 @@ class ActivityCreator {
             ]);
 
             $groups = [];
-            $api->subactivitiesOf($activity->nami_id)->each(function($group) use (&$groups) {
+            $api->subactivitiesOf($activity->nami_id)->each(function ($group) use (&$groups) {
                 $group = \App\Subactivity::updateOrCreate(['nami_id' => $group->id], [
                     'nami_id' => $group->id,
                     'name' => $group->name,
@@ -36,6 +36,4 @@ class ActivityCreator {
             $activity->subactivities()->sync($groups);
         });
     }
-
 }
-

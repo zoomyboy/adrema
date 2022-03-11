@@ -5,14 +5,11 @@ namespace Tests\Lib;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-trait TestsInertia {
-
+trait TestsInertia
+{
     /**
-     * @param mixed $value
-     * @param TestResponse $response
+     * @param mixed   $value
      * @param ?string $key
-     *
-     * @return void
      */
     public function assertInertiaHas($value, TestResponse $response, ?string $key = null): void
     {
@@ -33,8 +30,6 @@ trait TestsInertia {
     /**
      * @param mixed $should
      * @param mixed $is
-     *
-     * @return void
      */
     public function assertInertiaDeepNest($should, $is): void
     {
@@ -57,5 +52,4 @@ trait TestsInertia {
     {
         return data_get($response->viewData('page')['props'], $key);
     }
-
 }

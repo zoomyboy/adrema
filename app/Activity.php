@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Activity extends Model
 {
-
     use HasFactory;
     use HasNamiField;
     use Sluggable;
@@ -19,7 +18,7 @@ class Activity extends Model
     public $timestamps = false;
 
     public $casts = [
-        'nami_id' => 'integer'
+        'nami_id' => 'integer',
     ];
 
     public function sluggable(): array
@@ -31,8 +30,8 @@ class Activity extends Model
         ];
     }
 
-    public function subactivities(): BelongsToMany {
+    public function subactivities(): BelongsToMany
+    {
         return $this->belongsToMany(Subactivity::class);
     }
-
 }

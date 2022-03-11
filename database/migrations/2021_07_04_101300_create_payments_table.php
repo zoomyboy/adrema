@@ -14,7 +14,7 @@ class CreatePaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function($table) {
+        Schema::create('statuses', function ($table) {
             $table->id();
             $table->string('name');
             $table->boolean('is_bill');

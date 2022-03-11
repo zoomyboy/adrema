@@ -3,8 +3,6 @@
 namespace App\Tex;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\View\DynamicComponent;
 use Illuminate\View\Engines\CompilerEngine;
 
 class TexServiceProvider extends ServiceProvider
@@ -16,7 +14,7 @@ class TexServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        view()->addExtension('tex', 'tex', function() {
+        view()->addExtension('tex', 'tex', function () {
             $compiler = new TexCompiler(app('files'), config('view.compiled'));
 
             return new CompilerEngine($compiler, app('files'));
@@ -30,6 +28,5 @@ class TexServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
     }
 }

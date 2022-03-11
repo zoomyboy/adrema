@@ -15,7 +15,8 @@ class MemberResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)
@@ -50,7 +51,7 @@ class MemberResource extends JsonResource
             'letter_address' => $this->letter_address,
             'bill_kind_id' => $this->bill_kind_id,
             'bill_kind_name' => optional($this->billKind)->name,
-            'has_nami' => $this->nami_id !== null,
+            'has_nami' => null !== $this->nami_id,
             'is_confirmed' => $this->is_confirmed,
             'children_phone' => $this->children_phone,
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),

@@ -8,7 +8,6 @@ use Storage;
 
 class PdfGenerator implements Responsable
 {
-
     private ?string $filename = null;
     private PdfRepository $repo;
     private string $dir;
@@ -62,5 +61,4 @@ class PdfGenerator implements Responsable
         $templatePath = resource_path("views/tex/templates/{$this->repo->getTemplate()}");
         exec('cp '.$templatePath.'/* '.$destination);
     }
-
 }

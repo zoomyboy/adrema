@@ -15,7 +15,10 @@ use Zoomyboy\LaravelNami\Nami;
 
 class CreateJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public int $memberId;
     public Member $member;
@@ -67,7 +70,7 @@ class CreateJob implements ShouldQueue
             'first_activity_id' => $this->member->firstActivity->nami_id,
             'first_subactivity_id' => $this->member->firstSubactivity->nami_id,
         ]);
-        Member::withoutEvents(function() use ($response) {
+        Member::withoutEvents(function () use ($response) {
             $version = Nami::login($this->user->mglnr)->member($this->member->group->nami_id, $response['id'])['version'];
             $this->member->update(['version' => $version, 'nami_id' => $response['id']]);
         });
@@ -84,6 +87,5 @@ class CreateJob implements ShouldQueue
                 'created_at' => $membership['starts_at'],
             ]);
         }
-
     }
 }

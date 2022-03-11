@@ -5,14 +5,11 @@ namespace Tests\Feature\Course;
 use App\Course\Models\Course;
 use App\Member\Member;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Zoomyboy\LaravelNami\Backend\FakeBackend;
 use Zoomyboy\LaravelNami\Fakes\CourseFake;
 
 class StoreTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     /**
@@ -132,9 +129,8 @@ class StoreTest extends TestCase
             'event_name' => '::event::',
             'organizer' => '::org::',
         ]);
-                         
+
         $response->assertSessionHasErrors(['id' => 'Unbekannter Fehler']);
         $this->assertDatabaseCount('course_members', 0);
     }
-
 }

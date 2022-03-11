@@ -10,7 +10,6 @@ use Illuminate\Http\Response;
 
 class MemberPdfController extends Controller
 {
-
     /**
      * @return Response|Responsable
      */
@@ -18,9 +17,8 @@ class MemberPdfController extends Controller
     {
         $repo = app(PdfRepositoryFactory::class)->fromSingleRequest($request->type, $member);
 
-        return $repo === null
+        return null === $repo
             ? response()->noContent()
             : app(PdfGenerator::class)->setRepository($repo)->render();
     }
-
 }

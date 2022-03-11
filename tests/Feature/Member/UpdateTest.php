@@ -4,8 +4,6 @@ namespace Tests\Feature\Member;
 
 use App\Confession;
 use App\Country;
-use App\Course\Models\Course;
-use App\Course\Models\CourseMember;
 use App\Fee;
 use App\Group;
 use App\Member\Member;
@@ -13,13 +11,11 @@ use App\Nationality;
 use App\Payment\Subscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
 class UpdateTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function testItRedirectsToMemberOverview(): void
@@ -45,8 +41,8 @@ class UpdateTest extends TestCase
             ->from("/member/{$member->id}")
             ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::']));
 
-        Http::assertSent(fn ($request) => $request->method() === 'PUT'
-            && $request['vorname'] === '::firstname::'
+        Http::assertSent(fn ($request) => 'PUT' === $request->method()
+            && '::firstname::' === $request['vorname']
         );
     }
 
@@ -60,10 +56,10 @@ class UpdateTest extends TestCase
             ->from("/member/{$member->id}")
             ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::']));
 
-        Http::assertSent(fn ($request) => $request->method() === 'PUT'
-            && $request['kontoverbindung'] === '{"a":"b"}'
-            && $request['missingkey'] === 'missingvalue'
-            && $request['vorname'] === '::firstname::'
+        Http::assertSent(fn ($request) => 'PUT' === $request->method()
+            && '{"a":"b"}' === $request['kontoverbindung']
+            && 'missingvalue' === $request['missingkey']
+            && '::firstname::' === $request['vorname']
         );
     }
 
@@ -88,20 +84,19 @@ class UpdateTest extends TestCase
             ->for(Nationality::factory())
             ->for(Subscription::factory()->for(Fee::factory()))
             ->for(Country::factory())
-            ->create(['nami_id' => 135]);       
+            ->create(['nami_id' => 135]);
     }
 
     private function fakeRequest(): void
     {
         Http::fake(function ($request) {
-            if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && $request->method() === 'GET') {
+            if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && 'GET' === $request->method()) {
                 return Http::response('{ "success": true, "data": {"missingkey": "missingvalue", "kontoverbindung": {"a": "b"} } }', 200);
             }
 
-            if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && $request->method() === 'PUT') {
+            if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && 'PUT' === $request->method()) {
                 return Http::response('{ "success": true, "data": { "version": 44 } }', 200);
             }
         });
     }
-
 }

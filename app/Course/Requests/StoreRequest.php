@@ -6,14 +6,9 @@ use App\Course\Models\Course;
 use App\Member\Member;
 use App\Setting\NamiSettings;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
-use Illuminate\Validation\ValidationException;
-use Zoomyboy\LaravelNami\Nami;
-use Zoomyboy\LaravelNami\NamiException;
 
 class StoreRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -51,5 +46,4 @@ class StoreRequest extends FormRequest
 
         $member->courses()->create($this->safe()->collect()->put('nami_id', $namiId)->toArray());
     }
-
 }

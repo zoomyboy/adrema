@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 
 abstract class Repository
 {
-
     abstract public function getPayments(Member $member): Collection;
 
     public Collection $pages;
@@ -31,7 +30,7 @@ abstract class Repository
 
     public function createable(Member $member): bool
     {
-        return $this->getPayments($member)->count() !== 0;
+        return 0 !== $this->getPayments($member)->count();
     }
 
     public function allPayments(): Generator
@@ -44,5 +43,4 @@ abstract class Repository
             }
         }
     }
-
 }

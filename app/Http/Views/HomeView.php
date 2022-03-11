@@ -3,14 +3,11 @@
 namespace App\Http\Views;
 
 use App\Member\Member;
-use App\Member\MemberResource;
 use App\Payment\Payment;
-use App\Payment\PaymentResource;
-use App\Payment\Status;
-use App\Payment\Subscription;
 use Illuminate\Http\Request;
 
-class HomeView {
+class HomeView
+{
     public function index(Request $request): array
     {
         /** @var object{a: string} */
@@ -22,7 +19,7 @@ class HomeView {
                 'payments' => [
                     'users' => $members,
                     'all_users' => Member::count(),
-                    'amount' => number_format($amount->a / 100, 2, ',', '.').' €'
+                    'amount' => number_format($amount->a / 100, 2, ',', '.').' €',
                 ],
                 'groups' => Member::select('subactivities.slug', 'subactivities.name')->selectRaw('COUNT(members.id) AS count')->join('memberships', 'memberships.member_id', 'members.id')
                     ->join('activities', 'memberships.activity_id', 'activities.id')
@@ -33,8 +30,7 @@ class HomeView {
                     ->orderBy('subactivities.id')
                     ->get(),
                 'ending_tries' => MemberTriesResource::collection(Member::endingTries()->get()),
-            ]
+            ],
         ];
     }
-
 }

@@ -4,11 +4,12 @@ namespace App\Initialize;
 
 use Zoomyboy\LaravelNami\Api;
 
-class InitializeActivities {
-
+class InitializeActivities
+{
     private Api $api;
 
-    public function __construct(Api $api) {
+    public function __construct(Api $api)
+    {
         $this->api = $api;
     }
 

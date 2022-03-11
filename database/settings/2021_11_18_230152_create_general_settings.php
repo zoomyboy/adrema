@@ -4,9 +4,7 @@ use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
 class CreateGeneralSettings extends SettingsMigration
 {
-
     /**
-     * @param string $mode
      * @return array<string, array<int,string>|bool>
      */
     public function defaults(string $mode): array
@@ -19,7 +17,7 @@ class CreateGeneralSettings extends SettingsMigration
             'stamm' => [
                 'modules' => ['bill', 'courses'],
                 'single_view' => true,
-            ]
+            ],
         ];
 
         return $defaults[$mode];

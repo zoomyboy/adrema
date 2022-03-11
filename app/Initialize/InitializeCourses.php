@@ -5,17 +5,18 @@ namespace App\Initialize;
 use App\Course\Models\Course;
 use Zoomyboy\LaravelNami\Api;
 
-class InitializeCourses {
-
+class InitializeCourses
+{
     private Api $api;
 
-    public function __construct(Api $api) {
+    public function __construct(Api $api)
+    {
         $this->api = $api;
     }
 
     public function handle(): void
     {
-        $this->api->courses()->each(function($course) {
+        $this->api->courses()->each(function ($course) {
             Course::create(['nami_id' => $course->id, 'name' => $course->name]);
         });
     }

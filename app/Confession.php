@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Confession extends Model
 {
-
     use HasFactory;
 
     public $fillable = ['name', 'nami_id', 'is_null'];

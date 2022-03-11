@@ -4,12 +4,10 @@ namespace Tests\Feature\Settings;
 
 use App\Setting\GeneralSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class GlobalSettingTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function testItLoadsGeneralSettings(): void
@@ -21,7 +19,7 @@ class GlobalSettingTest extends TestCase
         $this->login()->init();
 
         $response = $this->get('/setting');
-                         
+
         $this->assertComponent('setting/Index', $response);
         $this->assertEquals(['bill'], $this->inertia($response, 'general.modules'));
     }
@@ -32,8 +30,7 @@ class GlobalSettingTest extends TestCase
         $this->login()->init();
 
         $response = $this->get('/setting');
-                         
+
         $this->assertContains('bill', $this->inertia($response, 'options.modules'));
     }
-
 }

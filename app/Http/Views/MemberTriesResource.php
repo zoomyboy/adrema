@@ -3,7 +3,6 @@
 namespace App\Http\Views;
 
 use App\Member\MemberResource;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin \App\Member\Member
@@ -13,7 +12,8 @@ class MemberTriesResource extends MemberResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)

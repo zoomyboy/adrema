@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 
 class RememberType extends Repository implements PdfRepository
 {
-
     public string $filename;
 
     public function getPayments(Member $member): Collection
@@ -97,11 +96,11 @@ class RememberType extends Repository implements PdfRepository
     }
 
     /**
-     * Get Descriptions for sendpayment page
+     * Get Descriptions for sendpayment page.
      *
      * @return array<int, string>
      */
-    public function getDescription(): array 
+    public function getDescription(): array
     {
         return [
             'Diese Funktion erstellt Erinnerungs-PDFs mit allen versendeten aber noch nich bezahlten Rechnungen bei den Mitgliedern die Post als Versandweg haben.',
@@ -118,5 +117,4 @@ class RememberType extends Repository implements PdfRepository
     {
         return 'Zahlungserinnerung';
     }
-
 }

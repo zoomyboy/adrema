@@ -6,7 +6,5 @@ use Illuminate\View\Compilers\BladeCompiler;
 
 class TexCompiler extends BladeCompiler
 {
-
     protected $contentTags = ['<<<', '>>>'];
-
 }

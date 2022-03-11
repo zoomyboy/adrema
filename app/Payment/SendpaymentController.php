@@ -4,7 +4,6 @@ namespace App\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Pdf\PdfGenerator;
-use App\Pdf\PdfRepository;
 use App\Pdf\PdfRepositoryFactory;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
@@ -14,7 +13,6 @@ use Inertia\Response as InertiaResponse;
 
 class SendpaymentController extends Controller
 {
-
     public function create(): InertiaResponse
     {
         session()->put('menu', 'member');
@@ -35,9 +33,8 @@ class SendpaymentController extends Controller
         $pdfFile = app(PdfGenerator::class)->setRepository($repo)->render();
         app(PdfRepositoryFactory::class)->afterAll($request->type, 'Post');
 
-        return $repo === null
+        return null === $repo
             ? response()->noContent()
             : $pdfFile;
     }
-
 }

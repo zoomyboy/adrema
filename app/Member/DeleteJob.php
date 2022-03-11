@@ -2,17 +2,18 @@
 
 namespace App\Member;
 
-use App\Confession;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Zoomyboy\LaravelNami\Nami;
 
 class DeleteJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public int $memberId;
     public Member $member;
@@ -38,7 +39,7 @@ class DeleteJob implements ShouldQueue
 
         $setting->login()->deleteMember($this->member->nami_id);
 
-        Member::withoutEvents(function() {
+        Member::withoutEvents(function () {
             $this->member->update(['nami_id' => null]);
         });
     }

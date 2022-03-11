@@ -4,7 +4,6 @@ namespace App\Initialize;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Response;
 
 class InitializeController extends Controller

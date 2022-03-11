@@ -2,14 +2,10 @@
 
 namespace App\Course\Requests;
 
-use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Member\Member;
 use App\Setting\NamiSettings;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
-use Illuminate\Validation\ValidationException;
-use Zoomyboy\LaravelNami\NamiException;
 
 class DestroyRequest extends FormRequest
 {

@@ -11,7 +11,6 @@ use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
 class IndexTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function testItGetsMembers(): void
@@ -44,5 +43,4 @@ class IndexTest extends TestCase
         $this->assertComponent('member/VIndex', $response);
         $this->assertInertiaHas('::firstname::', $response, 'data.data.0.firstname');
     }
-
 }

@@ -3,10 +3,9 @@
 namespace App\Initialize;
 
 use App\Setting\NamiSettings;
-use Zoomyboy\LaravelNami\Api;
 
-class Initializer {
-
+class Initializer
+{
     public NamiSettings $settings;
     public array $initializers = [
         InitializeNationalities::class,
@@ -25,10 +24,10 @@ class Initializer {
         $this->settings = $settings;
     }
 
-    public function run(): void {
+    public function run(): void
+    {
         foreach ($this->initializers as $initializer) {
             app($initializer)->handle($this->settings->login());
         }
     }
-
 }

@@ -8,11 +8,9 @@ use App\Member\Membership;
 use App\Membership\Requests\StoreRequest;
 use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class MembershipController extends Controller
 {
-
     public function store(Member $member, StoreRequest $request, NamiSettings $settings): RedirectResponse
     {
         $request->persist($member, $settings);
@@ -30,5 +28,4 @@ class MembershipController extends Controller
 
         return redirect()->back();
     }
-
 }

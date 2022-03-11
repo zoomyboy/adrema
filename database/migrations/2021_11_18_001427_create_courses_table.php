@@ -18,7 +18,7 @@ class CreateCoursesTable extends Migration
             $table->unsignedInteger('nami_id');
             $table->string('name');
         });
-        Schema::create('course_members', function($table) {
+        Schema::create('course_members', function ($table) {
             $table->id();
             $table->foreignId('member_id')->constrained();
             $table->foreignId('course_id')->constrained();

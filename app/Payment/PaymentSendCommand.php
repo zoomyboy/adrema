@@ -77,5 +77,4 @@ class PaymentSendCommand extends Command
             app(PdfRepositoryFactory::class)->afterSingle($repo);
         }
     }
-
 }

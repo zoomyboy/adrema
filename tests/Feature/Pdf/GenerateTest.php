@@ -21,7 +21,6 @@ use Tests\TestCase;
 
 class GenerateTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function setUp(): void
@@ -158,7 +157,7 @@ class GenerateTest extends TestCase
         $member = Member::find($urlId);
         $repo = app(PdfRepositoryFactory::class)->fromSingleRequest($type, $member);
 
-        if ($filename === null) {
+        if (null === $filename) {
             $this->assertNull($repo);
 
             return;
@@ -188,14 +187,14 @@ class GenerateTest extends TestCase
             'type' => $type,
         ]);
 
-        if ($filename === null) {
+        if (null === $filename) {
             $response->assertStatus(204);
 
             return;
         }
 
         $this->assertEquals('application/pdf', $response->headers->get('content-type'));
-        $this->assertEquals('inline; filename="' . $filename . '"', $response->headers->get('content-disposition'));
+        $this->assertEquals('inline; filename="'.$filename.'"', $response->headers->get('content-disposition'));
     }
 
     private function setupMembers(array $members): Collection
@@ -212,5 +211,4 @@ class GenerateTest extends TestCase
             return $memberModel->load('payments');
         });
     }
-
 }

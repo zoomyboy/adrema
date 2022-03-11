@@ -1,21 +1,22 @@
-<?php 
+<?php
 
 namespace App\Initialize;
 
 use App\Group;
 use Zoomyboy\LaravelNami\Api;
 
-class InitializeGroups {
-
+class InitializeGroups
+{
     private Api $api;
 
-    public function __construct(Api $api) {
+    public function __construct(Api $api)
+    {
         $this->api = $api;
     }
 
     public function handle(): void
     {
-        $this->api->groups()->each(function($group) {
+        $this->api->groups()->each(function ($group) {
             $parent = Group::updateOrCreate(['nami_id' => $group->id], ['nami_id' => $group->id, 'name' => $group->name]);
 
             $this->api->subgroupsOf($group->id)->each(function ($subgroup) use ($parent) {

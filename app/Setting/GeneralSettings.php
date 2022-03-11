@@ -6,7 +6,6 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
-
     /** @var array<int, string> */
     public array $modules;
 
@@ -34,5 +33,4 @@ class GeneralSettings extends Settings
     {
         return in_array($module, $this->modules);
     }
-
 }

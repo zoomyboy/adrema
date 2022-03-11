@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\Group as GroupModel;
 use App\Initialize\InitializeGroups;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\MockObject\Stub;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Api;
@@ -13,7 +12,6 @@ use Zoomyboy\LaravelNami\Group;
 
 class InitializeGroupsTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     private Stub $api;
@@ -24,7 +22,7 @@ class InitializeGroupsTest extends TestCase
         $this->api = $this->createStub(Api::class);
     }
 
-    public function test_it_doesnt_initialize_groups_when_nothing_sent(): void
+    public function testItDoesntInitializeGroupsWhenNothingSent(): void
     {
         $this->api->method('groups')->willReturn(collect([]));
 
@@ -34,13 +32,13 @@ class InitializeGroupsTest extends TestCase
         $this->assertDatabaseCount('groups', 0);
     }
 
-    public function test_it_synchs_a_group_with_a_single_node_and_no_children(): void
+    public function testItSynchsAGroupWithASingleNodeAndNoChildren(): void
     {
         $this->api->method('groups')->will($this->returnValueMap([
             [
                 null,
-                collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')])
-            ]
+                collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')]),
+            ],
         ]));
         $this->api->method('subgroupsOf')->willReturn(collect([]));
 
@@ -49,7 +47,7 @@ class InitializeGroupsTest extends TestCase
         $this->assertDatabaseHas('groups', [
             'nami_id' => 150,
             'name' => 'lorem',
-            'parent_id' => null
+            'parent_id' => null,
         ]);
     }
 
@@ -59,8 +57,8 @@ class InitializeGroupsTest extends TestCase
         $this->api->method('groups')->will($this->returnValueMap([
             [
                 null,
-                collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')])
-            ]
+                collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')]),
+            ],
         ]));
         $this->api->method('subgroupsOf')->willReturn(collect([]));
 
@@ -106,5 +104,4 @@ class InitializeGroupsTest extends TestCase
             'parent_id' => GroupModel::firstWhere('nami_id', 150)->id,
         ]);
     }
-
 }

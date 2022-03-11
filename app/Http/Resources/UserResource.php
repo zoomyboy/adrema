@@ -13,7 +13,8 @@ class UserResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)
@@ -22,8 +23,8 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'avatar' => [
-                'src' => Storage::url('avatar.png')
-            ]
+                'src' => Storage::url('avatar.png'),
+            ],
         ];
     }
 }

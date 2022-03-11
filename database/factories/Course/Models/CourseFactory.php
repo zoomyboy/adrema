@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CourseFactory extends Factory
 {
-
     public $model = Course::class;
 
     /**

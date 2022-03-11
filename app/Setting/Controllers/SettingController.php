@@ -4,13 +4,11 @@ namespace App\Setting\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Setting\GeneralSettings;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class SettingController extends Controller
 {
-
     /**
      * @wip
      */
@@ -18,12 +16,11 @@ class SettingController extends Controller
     {
         return Inertia::render('setting/Index', [
             'options' => [
-                'modules' => $generalSettings->moduleOptions()
+                'modules' => $generalSettings->moduleOptions(),
             ],
             'general' => [
-                'modules' => $generalSettings->modules
-            ]
+                'modules' => $generalSettings->modules,
+            ],
         ]);
     }
-
 }

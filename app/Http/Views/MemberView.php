@@ -14,7 +14,8 @@ use App\Payment\Subscription;
 use App\Subactivity;
 use Illuminate\Http\Request;
 
-class MemberView {
+class MemberView
+{
     public function index(Request $request, array $filter): array
     {
         $activities = Activity::with('subactivities')->get();
@@ -29,13 +30,13 @@ class MemberView {
             ),
             'filterActivities' => Activity::where('is_filterable', true)->pluck('name', 'id'),
             'filterSubactivities' => Subactivity::where('is_filterable', true)->pluck('name', 'id'),
-            'toolbar' => [ ['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus'] ],
+            'toolbar' => [['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus']],
             'paymentDefaults' => ['nr' => date('Y')],
             'subscriptions' => Subscription::pluck('name', 'id'),
             'statuses' => Status::pluck('name', 'id'),
             'activities' => $activities->pluck('name', 'id'),
             'courses' => Course::pluck('name', 'id'),
-            'subactivities' => $activities->map(function(Activity $activity) {
+            'subactivities' => $activities->map(function (Activity $activity) {
                 return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
         ];
@@ -45,7 +46,7 @@ class MemberView {
     {
         return $this->additional($member, [
             'model' => new PaymentResource($payment),
-            'links' => [ ['label' => 'Zurück', 'href' => route('member.payment.index', ['member' => $member]) ] ],
+            'links' => [['label' => 'Zurück', 'href' => route('member.payment.index', ['member' => $member])]],
             'mode' => 'edit',
         ]);
     }
@@ -55,7 +56,7 @@ class MemberView {
         return $this->additional($member, [
             'model' => null,
             'links' => [
-                ['icon' => 'plus', 'href' => route('member.payment.create', ['member' => $member]) ],
+                ['icon' => 'plus', 'href' => route('member.payment.create', ['member' => $member])],
             ],
             'payment_links' => app(ActionFactory::class)->forMember($member),
             'mode' => 'index',
@@ -70,5 +71,4 @@ class MemberView {
                 'statuses' => Status::pluck('name', 'id'),
             ], $overwrites));
     }
-
 }

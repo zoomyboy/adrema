@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StatusFactory extends Factory
 {
-
     public $model = Status::class;
 
     /**

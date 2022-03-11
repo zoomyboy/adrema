@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Member\Member;
 use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

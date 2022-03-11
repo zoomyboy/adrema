@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 
 class BillType extends Repository implements PdfRepository
 {
-
     public string $filename;
 
     public function getPayments(Member $member): Collection
@@ -97,7 +96,7 @@ class BillType extends Repository implements PdfRepository
     }
 
     /**
-     * Get Descriptions for sendpayment page
+     * Get Descriptions for sendpayment page.
      *
      * @return array<int, string>
      */
@@ -118,5 +117,4 @@ class BillType extends Repository implements PdfRepository
     {
         return 'Jahresrechnung';
     }
-
 }

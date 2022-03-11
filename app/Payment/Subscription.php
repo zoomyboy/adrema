@@ -13,7 +13,8 @@ class Subscription extends Model
 
     public $fillable = ['name', 'amount', 'fee_id'];
 
-    public function fee(): BelongsTo {
+    public function fee(): BelongsTo
+    {
         return $this->belongsTo(Fee::class);
     }
 }

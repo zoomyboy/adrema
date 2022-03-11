@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ActivityFactory extends Factory
 {
-
     protected $model = Activity::class;
 
     /**
@@ -30,5 +29,4 @@ class ActivityFactory extends Factory
     {
         return $this->state(['nami_id' => $namiId]);
     }
-
 }

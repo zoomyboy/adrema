@@ -11,5 +11,5 @@ class Nationality extends Model
     use HasFactory;
     use HasNamiField;
 
-    public $fillable = ['name','nami_id'];
+    public $fillable = ['name', 'nami_id'];
 }

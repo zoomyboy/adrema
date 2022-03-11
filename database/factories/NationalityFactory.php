@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NationalityFactory extends Factory
 {
-
     protected $model = Nationality::class;
 
     /**

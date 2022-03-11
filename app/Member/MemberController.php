@@ -7,10 +7,8 @@ use App\Bill\BillKind;
 use App\Confession;
 use App\Country;
 use App\Gender;
-use App\Group;
 use App\Http\Controllers\Controller;
 use App\Http\Views\MemberView;
-use App\Member\DeleteJob;
 use App\Nationality;
 use App\Payment\Subscription;
 use App\Region;
@@ -21,7 +19,6 @@ use Inertia\Response;
 
 class MemberController extends Controller
 {
-
     public array $filter = [
         'ausstand' => false,
         'bill_kind' => null,
@@ -29,7 +26,8 @@ class MemberController extends Controller
         'subactivity_id' => null,
     ];
 
-    public function index(Request $request, GeneralSettings $settings): Response {
+    public function index(Request $request, GeneralSettings $settings): Response
+    {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
 
@@ -61,7 +59,7 @@ class MemberController extends Controller
 
         return \Inertia::render('member/VForm', [
             'activities' => $activities->pluck('name', 'id'),
-            'subactivities' => $activities->map(function(Activity $activity) {
+            'subactivities' => $activities->map(function (Activity $activity) {
                 return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
             'billKinds' => BillKind::pluck('name', 'id'),
@@ -72,7 +70,7 @@ class MemberController extends Controller
             'confessions' => Confession::where('is_null', false)->pluck('name', 'id'),
             'subscriptions' => Subscription::pluck('name', 'id'),
             'data' => [
-                'country_id' => Country::default()
+                'country_id' => Country::default(),
             ],
             'mode' => 'create',
         ]);
@@ -94,7 +92,7 @@ class MemberController extends Controller
 
         return \Inertia::render('member/VForm', [
             'activities' => $activities->pluck('name', 'id'),
-            'subactivities' => $activities->map(function($activity) {
+            'subactivities' => $activities->map(function ($activity) {
                 return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
             'billKinds' => BillKind::pluck('name', 'id'),
