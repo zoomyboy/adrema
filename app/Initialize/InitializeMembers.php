@@ -124,6 +124,10 @@ class InitializeMembers
     {
         if ($this->shouldSyncMembership($membershipEntry)) {
             $membership = $this->api->membership($member->id, $membershipEntry->id);
+
+            if (is_null($membership)) {
+                return [null, null, null];
+            }
             app(ActivityCreator::class)->createFor($this->api, $membership->groupId);
             $group = Group::firstOrCreate(['nami_id' => $membership->groupId], [
                 'nami_id' => $membership->groupId,
