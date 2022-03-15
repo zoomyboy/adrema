@@ -34,6 +34,8 @@ services:
         MYSQL_USER: db
       volumes:
           - /opt/mysql-docker/scoutrobot-db:/var/lib/mysql
+      ports:
+        - "3309:3306"
   dbtest:
       image: mariadb:10.6.5
       container_name: dbtest
