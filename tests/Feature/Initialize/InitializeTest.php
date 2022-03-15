@@ -27,7 +27,7 @@ class InitializeTest extends TestCase
     public function initializeProvider(callable $callback = null): void
     {
         app(GroupFake::class)
-            ->fetches(null, [1000 => ['name' => 'testgroup']])
+            ->fetches(null, [1000 => ['name' => '::group::']])
             ->fetches(1000, []);
         $backend = app(FakeBackend::class)
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000])
@@ -107,7 +107,7 @@ class InitializeTest extends TestCase
             'name' => '1a',
             'nami_id' => 506,
         ]);
-        $this->assertDatabaseHas('groups', ['nami_id' => 1000, 'name' => 'testgroup']);
+        $this->assertDatabaseHas('groups', ['nami_id' => 1000, 'name' => '::group::']);
         $this->assertDatabaseHas('members', [
             'nami_id' => 411,
             'gender_id' => Gender::nami(303)->id,
