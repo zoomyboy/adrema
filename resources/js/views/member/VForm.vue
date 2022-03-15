@@ -25,6 +25,7 @@
                 <f-select :options="regions" id="region_id" v-model="inner.region_id" label="Bundesland"></f-select>
                 <f-select :options="countries" id="country_id" v-model="inner.country_id" label="Land" required></f-select>
                 <f-select :options="nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit" required></f-select>
+                <f-text class="col-span-2" id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
 
                 <div class="contents">
                     <h2 class="col-span-full font-semibold text-lg text-white">Erste Gruppierung</h2>
@@ -44,14 +45,16 @@
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'System'">
                 <f-select :options="billKinds" id="bill_kind_id" v-model="inner.bill_kind_id" label="Rechnung versenden über"></f-select>
             </div>
-            <div class="grid grid-cols-4 gap-3 p-4" v-if="menuTitle == 'Sonstiges'">
-                <f-text class="col-span-2" id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
+            <div class="grid grid-cols-4 gap-3 p-4" v-if="menuTitle == 'Verwaltung'">
                 <f-switch id="has_nami" v-model="inner.has_nami" label="In Nami eintragen"></f-switch>
-                <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin"></f-switch>
+                <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin versenden"></f-switch>
                 <f-text class="col-span-2" type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum"></f-text>
-                <f-select class="col-span-2" :options="confessions" id="confession_id" v-model="inner.confession_id" label="Konfession"></f-select>
                 <f-select class="col-span-2" :options="subscriptions" id="subscription_id" v-model="inner.subscription_id" label="Beitrag"></f-select>
                 <f-textarea class="col-span-2" rows="4" id="letter_address" v-model="inner.letter_address" label="Brief-Adresse"></f-textarea>
+                <div class="grid grid-cols-[max-content_1fr] col-span-2 gap-1">
+                    <f-switch id="has_efz" v-model="hasEfz" label="Führungszeugnis eingesehen"></f-switch>
+                    <f-text v-if="inner.efz !== null" type="date" id="efz" v-model="inner.efz" label="Führungszeugnis eingesehen am"></f-text>
+                </div>
             </div>
         </div>
     </form>
@@ -67,7 +70,7 @@ export default {
                 { id: 'stammdaten', title: 'Stammdaten' },
                 { id: 'kontakt', title: 'Kontakt' },
                 { id: 'system', title: 'System' },
-                { id: 'sonstiges', title: 'Sonstiges' },
+                { id: 'verwaltung', title: 'Verwaltung' },
             ]
         };
     },
@@ -103,6 +106,14 @@ export default {
     computed: {
         menuTitle() {
             return this.menu[this.active].title;
+        },
+        hasEfz: {
+            set(v) {
+                this.inner.efz = v ? '' : null;
+            },
+            get() {
+                return this.inner.efz !== null;
+            }
         }
     },
 

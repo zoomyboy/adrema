@@ -61,6 +61,7 @@ class MemberResource extends JsonResource
             'first_subactivity_id' => $this->first_subactivity_id,
             'age_group_icon' => $this->age_group_icon,
             'courses' => CourseResource::collection($this->whenLoaded('courses')),
+            'efz' => $this->efz,
         ];
     }
 }
