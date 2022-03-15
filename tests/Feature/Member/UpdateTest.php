@@ -76,6 +76,19 @@ class UpdateTest extends TestCase
         $this->assertEquals(44, $member->fresh()->version);
     }
 
+    public function testItUpdatesCriminalRecord(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = $this->member();
+        $this->fakeRequest();
+
+        $response = $this
+            ->from("/member/{$member->id}")
+            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['efz' => '2021-02-03', 'has_nami' => true]));
+
+        $this->assertEquals('2021-02-03', $member->fresh()->efz);
+    }
+
     private function member(): Member
     {
         return Member::factory()
