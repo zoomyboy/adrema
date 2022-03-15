@@ -26,7 +26,9 @@ class InitializeTest extends TestCase
 
     public function initializeProvider(callable $callback = null): void
     {
-        app(GroupFake::class)->fetches(null, [1000 => ['name' => 'testgroup']]);
+        app(GroupFake::class)
+            ->fetches(null, [1000 => ['name' => 'testgroup']])
+            ->fetches(1000, []);
         $backend = app(FakeBackend::class)
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000])
             ->fakeNationalities([['name' => 'deutsch', 'id' => 291]])
@@ -105,7 +107,7 @@ class InitializeTest extends TestCase
             'name' => '1a',
             'nami_id' => 506,
         ]);
-        $this->assertDatabaseHas('groups', ['nami_id' => 1000, 'name' => '::group::']);
+        $this->assertDatabaseHas('groups', ['nami_id' => 1000, 'name' => 'testgroup']);
         $this->assertDatabaseHas('members', [
             'nami_id' => 411,
             'gender_id' => Gender::nami(303)->id,
@@ -119,7 +121,7 @@ class InitializeTest extends TestCase
         ]);
         $this->assertEquals([306], Activity::where('nami_id', 305)->firstOrFail()->subactivities()->pluck('nami_id')->toArray());
 
-        Http::assertSentCount(15);
+        Http::assertSentCount(17);
     }
 
     public function testItInitializesFromCommandLine(): void
