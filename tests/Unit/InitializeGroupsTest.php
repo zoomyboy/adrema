@@ -73,9 +73,13 @@ class InitializeGroupsTest extends TestCase
         $this->api->method('groups')->willReturn(
             collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')])
         );
-        $this->api->method('subgroupsOf')->willReturn(
-            collect([(new Group())->setParentId(150)->setId(200)->setName('subgroup')])
-        );
+        $this->api->method('subgroupsOf')->willReturnCallback(function ($groupId) {
+            if (150 === $groupId) {
+                return collect([(new Group())->setParentId(150)->setId(200)->setName('subgroup')]);
+            }
+
+            return collect([]);
+        });
 
         (new InitializeGroups($this->api))->handle();
 
@@ -85,15 +89,41 @@ class InitializeGroupsTest extends TestCase
         $this->assertEquals(150, $subgroup->parent->nami_id);
     }
 
+    public function testItSynchsSubgroupsOfSubgroups(): void
+    {
+        GroupModel::factory()->create(['nami_id' => 150]);
+        $this->api->method('groups')->willReturn(
+            collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')])
+        );
+        $this->api->method('subgroupsOf')->willReturnCallback(function ($groupId) {
+            if (150 === $groupId) {
+                return collect([(new Group())->setParentId(150)->setId(200)->setName('subgroup')]);
+            }
+            if (200 === $groupId) {
+                return collect([(new Group())->setParentId(200)->setId(201)->setName('subsubgroup')]);
+            }
+
+            return collect([]);
+        });
+
+        (new InitializeGroups($this->api))->handle();
+
+        $this->assertDatabaseCount('groups', 3);
+    }
+
     public function testItAssignsIdAndParentToAnExistingSubgroup(): void
     {
         GroupModel::factory()->create(['nami_id' => 200]);
         $this->api->method('groups')->willReturn(
             collect([(new Group())->setParentId(null)->setId(150)->setName('root')])
         );
-        $this->api->method('subgroupsOf')->willReturn(
-            collect([(new Group())->setParentId(150)->setId(200)->setName('child')])
-        );
+        $this->api->method('subgroupsOf')->willReturnCallback(function ($groupId) {
+            if (150 === $groupId) {
+                return collect([(new Group())->setParentId(150)->setId(200)->setName('child')]);
+            }
+
+            return collect([]);
+        });
 
         (new InitializeGroups($this->api))->handle();
 

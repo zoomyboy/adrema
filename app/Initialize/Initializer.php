@@ -8,6 +8,7 @@ class Initializer
 {
     public NamiSettings $settings;
     public array $initializers = [
+        InitializeGroups::class,
         InitializeNationalities::class,
         InitializeFees::class,
         InitializeConfessions::class,
