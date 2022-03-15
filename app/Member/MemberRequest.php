@@ -56,6 +56,7 @@ class MemberRequest extends FormRequest
             'bill_kind_id' => 'nullable|exists:bill_kinds,id',
             'joined_at' => 'date|required',
             'confession_id' => 'nullable|exists:confessions,id',
+            'efz' => 'nullable|date',
         ];
     }
 
