@@ -15,7 +15,7 @@ class InitializeController extends Controller
 
     public function store(): RedirectResponse
     {
-        InitializeJob::dispatch(auth()->user());
+        InitializeJob::dispatch();
 
         return redirect()->route('home');
     }
