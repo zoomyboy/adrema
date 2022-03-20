@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Region extends Model
@@ -13,4 +14,9 @@ class Region extends Model
     public $casts = [
         'is_null' => 'boolean',
     ];
+
+    public static function forSelect(): Collection
+    {
+        return static::select('id', 'name')->get();
+    }
 }

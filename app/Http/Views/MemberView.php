@@ -11,6 +11,7 @@ use App\Payment\Payment;
 use App\Payment\PaymentResource;
 use App\Payment\Status;
 use App\Payment\Subscription;
+use App\Region;
 use App\Subactivity;
 use Illuminate\Http\Request;
 
@@ -34,6 +35,7 @@ class MemberView
             'paymentDefaults' => ['nr' => date('Y')],
             'subscriptions' => Subscription::pluck('name', 'id'),
             'statuses' => Status::pluck('name', 'id'),
+            'regions' => Region::forSelect(),
             'activities' => $activities->pluck('name', 'id'),
             'courses' => Course::pluck('name', 'id'),
             'subactivities' => $activities->map(function (Activity $activity) {
