@@ -62,6 +62,7 @@ class MemberResource extends JsonResource
             'age_group_icon' => $this->age_group_icon,
             'courses' => CourseResource::collection($this->whenLoaded('courses')),
             'efz' => $this->efz,
+            'efz_link' => $this->getEfzLink(),
         ];
     }
 }

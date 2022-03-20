@@ -6,7 +6,7 @@ use App\Member\Member;
 use App\Payment\Payment;
 use Illuminate\Support\Collection;
 
-class BillType extends Repository implements PdfRepository
+class BillType extends Repository implements LetterRepository
 {
     public string $filename;
 
@@ -25,11 +25,16 @@ class BillType extends Repository implements PdfRepository
         return 'Rechnung';
     }
 
-    public function setFilename(string $filename): self
+    public function setFilename(string $filename): static
     {
         $this->filename = $filename;
 
         return $this;
+    }
+
+    public function getScript(): EnvType
+    {
+        return EnvType::XELATEX;
     }
 
     public function getFilename(): string

@@ -2,7 +2,7 @@
 
 namespace App\Payment;
 
-use App\Pdf\PdfRepository;
+use App\Pdf\LetterRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -13,7 +13,7 @@ class PaymentMail extends Mailable
     use Queueable;
     use SerializesModels;
 
-    public PdfRepository $repo;
+    public LetterRepository $repo;
     public string $filename;
 
     /**
@@ -21,7 +21,7 @@ class PaymentMail extends Mailable
      *
      * @return void
      */
-    public function __construct(PdfRepository $repo, string $filename)
+    public function __construct(LetterRepository $repo, string $filename)
     {
         $this->filename = $filename;
         $this->repo = $repo;

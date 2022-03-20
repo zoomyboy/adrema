@@ -6,7 +6,7 @@ use App\Member\Member;
 use App\Payment\Payment;
 use Illuminate\Support\Collection;
 
-class RememberType extends Repository implements PdfRepository
+class RememberType extends Repository implements LetterRepository
 {
     public string $filename;
 
@@ -25,7 +25,7 @@ class RememberType extends Repository implements PdfRepository
         return 'Zahlungserinnerung';
     }
 
-    public function setFilename(string $filename): self
+    public function setFilename(string $filename): static
     {
         $this->filename = $filename;
 
@@ -35,6 +35,11 @@ class RememberType extends Repository implements PdfRepository
     public function getFilename(): string
     {
         return $this->filename;
+    }
+
+    public function getScript(): EnvType
+    {
+        return EnvType::XELATEX;
     }
 
     public function getView(): string

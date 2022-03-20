@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Group;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Group>
+ */
 class GroupFactory extends Factory
 {
     protected $model = Group::class;

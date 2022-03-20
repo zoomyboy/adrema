@@ -22,10 +22,10 @@ class PdfRepositoryFactory
      */
     public function getTypes(): Collection
     {
-        return collect(array_map(fn ($classString) => new $classString(), $this->types));
+        return collect(array_map(fn ($classString) => new $classString(collect()), $this->types));
     }
 
-    public function fromSingleRequest(string $type, Member $member): ?PdfRepository
+    public function fromSingleRequest(string $type, Member $member): ?LetterRepository
     {
         $members = $this->singleMemberCollection($member, $type);
 
@@ -63,7 +63,7 @@ class PdfRepositoryFactory
         });
     }
 
-    public function afterSingle(PdfRepository $repo): void
+    public function afterSingle(LetterRepository $repo): void
     {
         foreach ($repo->allPayments() as $payment) {
             $repo->afterSingle($payment);
@@ -94,7 +94,7 @@ class PdfRepositoryFactory
             ->filter(fn (Member $member) => app($type)->createable($member));
     }
 
-    private function resolve(string $kind, Collection $members): PdfRepository
+    private function resolve(string $kind, Collection $members): LetterRepository
     {
         return new $kind($members);
     }

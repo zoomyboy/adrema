@@ -84,6 +84,13 @@ class Member extends Model
         return $this->firstname.' '.$this->lastname;
     }
 
+    public function getEfzLink(): ?string
+    {
+        return $this->memberships()->whereHas('activity', fn (Builder $query) => $query->where('has_efz', true))->exists()
+            ? route('efz', ['member' => $this])
+            : null;
+    }
+
     public function getHasNamiAttribute(): bool
     {
         return null !== $this->nami_id;

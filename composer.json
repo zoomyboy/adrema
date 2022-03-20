@@ -21,6 +21,7 @@
         "laravel/telescope": "^4.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
+        "spatie/laravel-data": "^1.4",
         "spatie/laravel-medialibrary": "^10.0",
         "spatie/laravel-settings": "^2.2",
         "zoomyboy/laravel-nami": "dev-master"

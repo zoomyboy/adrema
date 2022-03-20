@@ -12,8 +12,8 @@ return new class() extends Migration {
      */
     public function up()
     {
-        Schema::table('members', function (Blueprint $table) {
-            $table->date('efz')->after('subscription_id')->nullable();
+        Schema::table('activities', function (Blueprint $table) {
+            $table->boolean('has_efz')->default(false);
         });
     }
 
@@ -24,8 +24,8 @@ return new class() extends Migration {
      */
     public function down()
     {
-        Schema::table('members', function (Blueprint $table) {
-            $table->dropColumn('efz');
+        Schema::table('activities', function (Blueprint $table) {
+            $table->dropColumn('has_efz');
         });
     }
 };

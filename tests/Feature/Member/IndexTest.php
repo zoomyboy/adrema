@@ -2,9 +2,12 @@
 
 namespace Tests\Feature\Member;
 
+use App\Activity;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Member\Member;
+use App\Member\Membership;
+use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
@@ -42,5 +45,28 @@ class IndexTest extends TestCase
 
         $this->assertComponent('member/VIndex', $response);
         $this->assertInertiaHas('::firstname::', $response, 'data.data.0.firstname');
+    }
+
+    public function testItShowsEfzForEfzMembership(): void
+    {
+        $this->withoutExceptionHandling();
+        $this->login();
+        $member = Member::factory()
+            ->defaults()
+            ->has(Membership::factory()->for(Subactivity::factory())->for(Activity::factory()->state(['has_efz' => true])))
+            ->create(['lastname' => 'A']);
+        Member::factory()
+            ->defaults()
+            ->has(Membership::factory()->for(Subactivity::factory())->for(Activity::factory()->state(['has_efz' => false])))
+            ->create(['lastname' => 'B']);
+        Member::factory()
+            ->defaults()
+            ->create(['lastname' => 'C']);
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas(url("/member/{$member->id}/efz"), $response, 'data.data.0.efz_link');
+        $this->assertInertiaHas(null, $response, 'data.data.1.efz_link');
+        $this->assertInertiaHas(null, $response, 'data.data.2.efz_link');
     }
 }

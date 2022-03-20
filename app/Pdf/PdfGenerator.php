@@ -30,7 +30,8 @@ class PdfGenerator implements Responsable
         $this->copyTemplateTo(Storage::disk('temp')->path($this->dir));
 
         $command = 'cd '.Storage::disk('temp')->path($this->dir);
-        $command .= ' && '.env('XELATEX').' --halt-on-error '.$this->repo->getFilename().'.tex';
+        $command .= ' && '.env($this->repo->getScript()->value).' --halt-on-error '.$this->repo->getFilename().'.tex';
+        $command .= ' && '.env($this->repo->getScript()->value).' --halt-on-error '.$this->repo->getFilename().'.tex';
         exec($command, $output, $returnVar);
 
         return $this;
