@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
@@ -62,8 +63,8 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function gate()
     {
-        Gate::define('viewTelescope', function ($user) {
-            return 90166 == $user->mglnr;
+        Gate::define('viewTelescope', function (User $user) {
+            return 'pille@stamm-silva.de' == $user->email;
         });
     }
 }
