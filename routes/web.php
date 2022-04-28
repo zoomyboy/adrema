@@ -3,6 +3,7 @@
 use App\Course\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
 use App\Initialize\InitializeController;
+use App\Member\Controllers\MemberResyncController;
 use App\Member\MemberConfirmController;
 use App\Member\MemberController;
 use App\Membership\MembershipController;
@@ -34,4 +35,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::resource('setting', SettingController::class);
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', MemberEfzController::class)->name('efz');
+    Route::get('/member/{member}/resync', MemberResyncController::class)->name('member.resync');
 });

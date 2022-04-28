@@ -267,7 +267,9 @@ export default {
                 ? this.$inertia.post(`/member`, this.inner)
                 : this.$inertia.patch(`/member/${this.inner.id}`, this.inner);
         },
-        resync() {},
+        resync() {
+            this.$inertia.get(`/member/${this.inner.id}/resync`);
+        },
         forceWrite() {},
     },
 
