@@ -1,5 +1,21 @@
 <template>
     <form class="flex grow relative" @submit.prevent="submit">
+        <popup heading="Ein Konflikt ist aufgetreten" v-if="conflict === true">
+            <div>
+                <p class="mt-4">
+                    Dieses Mitglied wurde vorher bereits aktualisiert. Daher könnte ein Update zu Datenverlust führen.
+                </p>
+                <p class="mt-2">
+                    Wir empfehlen, die Daten aus NaMi zunächst neu zu synchronisieren und dann die Änderungen hier in
+                    der Adrema erneut vorzunehmen.
+                </p>
+                <div class="grid grid-cols-2 gap-3 mt-6">
+                    <a href="#" @click.prevent="resync" class="text-center btn btn-primary">Neu synchronisieren</a>
+                    <a href="#" @click.prevent="forceWrite" class="text-center btn btn-danger">Änderungen schreiben</a>
+                </div>
+            </div>
+        </popup>
+
         <!-- ****************************** menu links ******************************* -->
         <div class="p-6 bg-gray-700 border-r border-gray-600 flex-none w-maxc flex flex-col justify-between">
             <div class="grid gap-1">
@@ -236,6 +252,7 @@ export default {
         nationalities: {},
         confessions: {},
         billKinds: {},
+        conflict: {},
     },
 
     methods: {
@@ -250,6 +267,12 @@ export default {
                 ? this.$inertia.post(`/member`, this.inner)
                 : this.$inertia.patch(`/member/${this.inner.id}`, this.inner);
         },
+        resync() {},
+        forceWrite() {},
+    },
+
+    components: {
+        popup: () => import('../../components/Popup.vue'),
     },
 
     computed: {

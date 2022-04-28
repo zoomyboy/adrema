@@ -105,6 +105,7 @@ class MemberController extends Controller
             'subscriptions' => Subscription::pluck('name', 'id'),
             'data' => new MemberResource($member),
             'mode' => 'edit',
+            'conflict' => '1' === $request->query('conflict', '0'),
         ]);
     }
 

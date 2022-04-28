@@ -32,10 +32,7 @@
         }
     }
     &.btn-danger {
-        @apply bg-red-700;
-        &:not(.disabled):hover {
-            @apply bg-red-500;
-        }
+        @apply bg-red-400 text-red-100 hover:bg-red-300;
     }
 
     &.label {
