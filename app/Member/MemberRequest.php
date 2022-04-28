@@ -77,7 +77,7 @@ class MemberRequest extends FormRequest
             CreateJob::dispatch($member, auth()->user());
         }
         if ($this->input('has_nami') && null !== $member->nami_id) {
-            UpdateJob::dispatch($member, auth()->user());
+            UpdateJob::dispatch($member->fresh(), auth()->user());
         }
         if (!$this->input('has_nami') && null !== $member->nami_id) {
             DeleteJob::dispatch($member, auth()->user());

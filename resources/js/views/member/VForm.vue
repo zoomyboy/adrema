@@ -3,10 +3,26 @@
         <!-- ****************************** menu links ******************************* -->
         <div class="p-6 bg-gray-700 border-r border-gray-600 flex-none w-maxc flex flex-col justify-between">
             <div class="grid gap-1">
-                <a v-for="item, index in menu" :key="index" href="#" :data-cy="`menu-${item.id}`" @click.prevent="openMenu(index)" class="rounded py-1 px-3 text-gray-400" :class="index == active ? `bg-gray-600` : ''" v-text="item.title"></a>
+                <a
+                    v-for="(item, index) in menu"
+                    :key="index"
+                    href="#"
+                    :data-cy="`menu-${item.id}`"
+                    @click.prevent="openMenu(index)"
+                    class="rounded py-1 px-3 text-gray-400"
+                    :class="index == active ? `bg-gray-600` : ''"
+                    v-text="item.title"
+                ></a>
             </div>
             <div>
-                <button type="button" v-show="mode !== 'create'" @click.prevent="confirm" class="btn block w-full btn-primary">Daten bestätigen</button>
+                <button
+                    type="button"
+                    v-show="mode !== 'create'"
+                    @click.prevent="confirm"
+                    class="btn block w-full btn-primary"
+                >
+                    Daten bestätigen
+                </button>
                 <button type="submit" class="mt-3 btn block w-full btn-primary">Speichern</button>
             </div>
         </div>
@@ -23,14 +39,44 @@
                 <f-text id="location" v-model="inner.location" label="Ort" required></f-text>
                 <f-text type="date" id="birthday" v-model="inner.birthday" label="Geburtsdatum" required></f-text>
                 <f-select :options="regions" id="region_id" v-model="inner.region_id" label="Bundesland"></f-select>
-                <f-select :options="countries" id="country_id" v-model="inner.country_id" label="Land" required></f-select>
-                <f-select :options="nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit" required></f-select>
-                <f-text class="col-span-2" id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit"></f-text>
+                <f-select
+                    :options="countries"
+                    id="country_id"
+                    v-model="inner.country_id"
+                    label="Land"
+                    required
+                ></f-select>
+                <f-select
+                    :options="nationalities"
+                    id="nationality_id"
+                    v-model="inner.nationality_id"
+                    label="Staatsangehörigkeit"
+                    required
+                ></f-select>
+                <f-text
+                    class="col-span-2"
+                    id="other_country"
+                    v-model="inner.other_country"
+                    label="Andere Staatsangehörigkeit"
+                ></f-text>
 
                 <div class="contents">
                     <h2 class="col-span-full font-semibold text-lg text-white">Erste Gruppierung</h2>
-                    <f-select :options="activities" id="first_activity_id" v-model="inner.first_activity_id" label="Erste Tätigkeit" required></f-select>
-                    <f-select v-if="inner.first_activity_id" :options="subactivities[inner.first_activity_id]" id="first_subactivity_id" v-model="inner.first_subactivity_id" label="Erste Untertätigkeit" required></f-select>
+                    <f-select
+                        :options="activities"
+                        id="first_activity_id"
+                        v-model="inner.first_activity_id"
+                        label="Erste Tätigkeit"
+                        required
+                    ></f-select>
+                    <f-select
+                        v-if="inner.first_activity_id"
+                        :options="subactivities[inner.first_activity_id]"
+                        id="first_subactivity_id"
+                        v-model="inner.first_subactivity_id"
+                        label="Erste Untertätigkeit"
+                        required
+                    ></f-select>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Kontakt'">
@@ -43,35 +89,138 @@
                 <f-text id="fax" v-model="inner.fax" label="Fax"></f-text>
             </div>
             <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'System'">
-                <f-select :options="billKinds" id="bill_kind_id" v-model="inner.bill_kind_id" label="Rechnung versenden über"></f-select>
+                <f-select
+                    :options="billKinds"
+                    id="bill_kind_id"
+                    v-model="inner.bill_kind_id"
+                    label="Rechnung versenden über"
+                ></f-select>
+            </div>
+            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Prävention'">
+                <div class="grid grid-cols-[max-content_1fr] col-span-2 gap-3">
+                    <f-switch id="has_efz" v-model="hasEfz" label="Führungszeugnis eingesehen"></f-switch>
+                    <div>
+                        <f-text
+                            v-if="inner.efz !== null"
+                            type="date"
+                            id="efz"
+                            v-model="inner.efz"
+                            label="Führungszeugnis eingesehen am"
+                        ></f-text>
+                    </div>
+                    <f-switch id="has_ps" v-model="hasPs" label="Hat Präventionsschulung"></f-switch>
+                    <div>
+                        <f-text
+                            v-if="inner.ps_at !== null"
+                            type="date"
+                            id="ps_at"
+                            v-model="inner.ps_at"
+                            label="Präventionsschulung am"
+                        ></f-text>
+                    </div>
+                    <f-switch id="has_more_ps" v-model="hasMorePs" label="Hat Vertierungsschulung"></f-switch>
+                    <div>
+                        <f-text
+                            v-if="inner.more_ps_at !== null"
+                            type="date"
+                            id="more_ps_at"
+                            v-model="inner.more_ps_at"
+                            label="Vertiefungsschulung am"
+                        ></f-text>
+                    </div>
+                    <f-switch
+                        id="has_without_education"
+                        v-model="hasWithoutEducation"
+                        label="Einsatz ohne Schulung"
+                    ></f-switch>
+                    <div>
+                        <f-text
+                            v-if="inner.without_education_at !== null"
+                            type="date"
+                            id="without_education_at"
+                            v-model="inner.without_education_at"
+                            label="Einsatz ohne Schulung am"
+                        ></f-text>
+                    </div>
+                    <f-switch id="has_without_efz" v-model="hasWithoutEfz" label="Einsatz ohne EFZ"></f-switch>
+                    <div>
+                        <f-text
+                            v-if="inner.without_efz_at !== null"
+                            type="date"
+                            id="without_efz_at"
+                            v-model="inner.without_efz_at"
+                            label="Einsatz ohne EFZ am"
+                        ></f-text>
+                    </div>
+                </div>
+                <div class="flex col-span-full space-x-3">
+                    <f-switch id="has_svk" v-model="inner.has_svk" label="SVK unterschrieben"></f-switch>
+                    <f-switch id="has_vk" v-model="inner.has_vk" label="Verhaltenskodex unterschrieben"></f-switch>
+                    <f-switch
+                        id="multiply_pv"
+                        v-model="inner.multiply_pv"
+                        label="Multiplikator*in Präventionsschulung"
+                    ></f-switch>
+                    <f-switch
+                        id="multiply_more_pv"
+                        v-model="inner.multiply_more_pv"
+                        label="Multiplikator*in Vertierungsschulung"
+                    ></f-switch>
+                </div>
             </div>
             <div class="grid grid-cols-4 gap-3 p-4" v-if="menuTitle == 'Verwaltung'">
                 <f-switch id="has_nami" v-model="inner.has_nami" label="In Nami eintragen"></f-switch>
                 <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin versenden"></f-switch>
-                <f-text class="col-span-2" type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum"></f-text>
-                <f-select class="col-span-2" :options="subscriptions" id="subscription_id" v-model="inner.subscription_id" label="Beitrag"></f-select>
-                <f-textarea class="col-span-2" rows="4" id="letter_address" v-model="inner.letter_address" label="Brief-Adresse"></f-textarea>
-                <div class="grid grid-cols-[max-content_1fr] col-span-2 gap-1">
-                    <f-switch id="has_efz" v-model="hasEfz" label="Führungszeugnis eingesehen"></f-switch>
-                    <f-text v-if="inner.efz !== null" type="date" id="efz" v-model="inner.efz" label="Führungszeugnis eingesehen am"></f-text>
-                </div>
+                <f-text
+                    class="col-span-2"
+                    type="date"
+                    id="joined_at"
+                    v-model="inner.joined_at"
+                    label="Eintrittsdatum"
+                ></f-text>
+                <f-select
+                    class="col-span-2"
+                    :options="subscriptions"
+                    id="subscription_id"
+                    v-model="inner.subscription_id"
+                    label="Beitrag"
+                ></f-select>
+                <f-textarea
+                    class="col-span-2"
+                    rows="4"
+                    id="letter_address"
+                    v-model="inner.letter_address"
+                    label="Brief-Adresse"
+                ></f-textarea>
             </div>
         </div>
     </form>
 </template>
 
 <script>
+function issetComputed(val) {
+    return {
+        set(v) {
+            this.inner[val] = v ? '' : null;
+        },
+        get() {
+            return this.inner[val] !== null;
+        },
+    };
+}
+
 export default {
-    data: function() {
+    data: function () {
         return {
             inner: {},
             active: 0,
             menu: [
-                { id: 'stammdaten', title: 'Stammdaten' },
-                { id: 'kontakt', title: 'Kontakt' },
-                { id: 'system', title: 'System' },
-                { id: 'verwaltung', title: 'Verwaltung' },
-            ]
+                {id: 'stammdaten', title: 'Stammdaten'},
+                {id: 'kontakt', title: 'Kontakt'},
+                {id: 'praevention', title: 'Prävention'},
+                {id: 'system', title: 'System'},
+                {id: 'verwaltung', title: 'Verwaltung'},
+            ],
         };
     },
 
@@ -100,25 +249,22 @@ export default {
             this.mode === 'create'
                 ? this.$inertia.post(`/member`, this.inner)
                 : this.$inertia.patch(`/member/${this.inner.id}`, this.inner);
-        }
+        },
     },
 
     computed: {
         menuTitle() {
             return this.menu[this.active].title;
         },
-        hasEfz: {
-            set(v) {
-                this.inner.efz = v ? '' : null;
-            },
-            get() {
-                return this.inner.efz !== null;
-            }
-        }
+        hasEfz: issetComputed('efz'),
+        hasPs: issetComputed('ps_at'),
+        hasMorePs: issetComputed('more_ps_at'),
+        hasWithoutEfz: issetComputed('without_efz_at'),
+        hasWithoutEducation: issetComputed('without_education_at'),
     },
 
     created() {
         this.inner = this.data;
-    }
+    },
 };
 </script>

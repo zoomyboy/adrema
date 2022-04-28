@@ -63,6 +63,14 @@ class MemberResource extends JsonResource
             'courses' => CourseResource::collection($this->whenLoaded('courses')),
             'efz' => $this->efz,
             'efz_link' => $this->getEfzLink(),
+            'ps_at' => $this->ps_at,
+            'more_ps_at' => $this->more_ps_at,
+            'has_svk' => $this->has_svk,
+            'has_vk' => $this->has_vk,
+            'without_education_at' => $this->without_education_at,
+            'without_efz_at' => $this->without_efz_at,
+            'multiply_pv' => $this->multiply_pv,
+            'multiply_more_pv' => $this->multiply_more_pv,
         ];
     }
 }
