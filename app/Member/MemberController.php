@@ -16,6 +16,7 @@ use App\Setting\GeneralSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
+use Zoomyboy\LaravelNami\NamiException;
 
 class MemberController extends Controller
 {
@@ -109,7 +110,15 @@ class MemberController extends Controller
 
     public function update(Member $member, MemberRequest $request): RedirectResponse
     {
-        $request->persistUpdate($member);
+        try {
+            $request->persistUpdate($member);
+        } catch (NamiException $e) {
+            if ($e->isConflict()) {
+                return redirect()->route('member.edit', ['member' => $member, 'conflict' => '1']);
+            } else {
+                throw $e;
+            }
+        }
 
         return redirect()->route('member.index');
     }

@@ -62,6 +62,20 @@ class UpdateTest extends TestCase
         );
     }
 
+    public function testItChecksVersion(): void
+    {
+        $this->login()->loginNami();
+        $member = $this->member();
+        $member->update(['version' => 43]);
+        $this->fakeRequest();
+
+        $response = $this
+            ->from("/member/{$member->id}")
+            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::']));
+
+        $response->assertRedirect("/member/{$member->id}/edit?conflict=1");
+    }
+
     public function testItUpdatesVersion(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
@@ -123,6 +137,10 @@ class UpdateTest extends TestCase
         Http::fake(function ($request) {
             if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && 'GET' === $request->method()) {
                 return Http::response('{ "success": true, "data": {"missingkey": "missingvalue", "kontoverbindung": {"a": "b"} } }', 200);
+            }
+
+            if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && 'PUT' === $request->method() && 43 === $request['version']) {
+                return Http::response('{ "success": false, "message": "Update nicht möglich. Der Datensatz wurde zwischenzeitlich verändert." }', 200);
             }
 
             if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && 'PUT' === $request->method()) {
