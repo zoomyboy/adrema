@@ -3,9 +3,8 @@
 namespace App\Member;
 
 use App\Activity;
-use App\Group;
+use App\Setting\NamiSettings;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -60,12 +59,12 @@ class MemberRequest extends FormRequest
         ];
     }
 
-    public function persistCreate(): void
+    public function persistCreate(NamiSettings $settings): void
     {
-        $this->merge(['group_id' => Group::where('nami_id', Auth::user()->getNamiGroupId())->firstOrFail()->id]);
+        $this->merge(['group_id' => $settings->default_group_id]);
         $member = Member::create($this->input());
         if ($this->input('has_nami')) {
-            CreateJob::dispatch($member, auth()->user());
+            CreateJob::dispatch($member);
         }
     }
 

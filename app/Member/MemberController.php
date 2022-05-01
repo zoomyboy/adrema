@@ -13,6 +13,7 @@ use App\Nationality;
 use App\Payment\Subscription;
 use App\Region;
 use App\Setting\GeneralSettings;
+use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -77,9 +78,9 @@ class MemberController extends Controller
         ]);
     }
 
-    public function store(MemberRequest $request): RedirectResponse
+    public function store(MemberRequest $request, NamiSettings $settings): RedirectResponse
     {
-        $request->persistCreate();
+        $request->persistCreate($settings);
 
         return redirect()->route('member.index');
     }

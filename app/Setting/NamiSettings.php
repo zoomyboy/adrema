@@ -12,6 +12,8 @@ class NamiSettings extends Settings
 
     public string $password;
 
+    public int $default_group_id;
+
     public static function group(): string
     {
         return 'nami';
