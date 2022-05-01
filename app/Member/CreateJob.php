@@ -2,11 +2,9 @@
 
 namespace App\Member;
 
-use App\Activity;
+use App\Actions\MemberPullAction;
 use App\Confession;
-use App\Group;
 use App\Setting\NamiSettings;
-use App\Subactivity;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -67,22 +65,9 @@ class CreateJob implements ShouldQueue
             'first_activity_id' => $member->firstActivity->nami_id,
             'first_subactivity_id' => $member->firstSubactivity->nami_id,
         ]);
-        Member::withoutEvents(function () use ($response, $api, $member) {
-            $version = $api->member($member->group->nami_id, $response['id'])['version'];
-            $member->update(['version' => $version, 'nami_id' => $response['id']]);
+        Member::withoutEvents(function () use ($response, $member, $api) {
+            $member->update(['nami_id' => $response['id']]);
+            app(MemberPullAction::class)->member($member->group->nami_id, $member->nami_id)->api($api)->execute();
         });
-
-        $memberships = $member->getNamiMemberships($api);
-        foreach ($memberships as $membership) {
-            $member->memberships()->create([
-                'activity_id' => Activity::nami($membership['activity_id'])->id,
-                'subactivity_id' => $membership['subactivity_id']
-                    ? Subactivity::nami($membership['subactivity_id'])->id
-                    : null,
-                'group_id' => Group::nami($membership['group_id'])->id,
-                'nami_id' => $membership['id'],
-                'created_at' => $membership['starts_at'],
-            ]);
-        }
     }
 }

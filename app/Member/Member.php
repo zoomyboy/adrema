@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\Data\MembershipEntry;
 
 /**
  * @property string         $subscription_name
@@ -100,9 +101,12 @@ class Member extends Model
         return null !== $this->nami_id;
     }
 
+    /**
+     * @return Collection<int, MembershipEntry>
+     */
     public function getNamiMemberships(Api $api): array
     {
-        return $api->group($this->group->nami_id)->member($this->nami_id)->memberships()->toArray();
+        return $api->group($this->group->nami_id)->member($this->nami_id)->memberships();
     }
 
     public function getNamiFeeId(): ?int
