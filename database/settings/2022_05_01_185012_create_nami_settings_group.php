@@ -2,7 +2,7 @@
 
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
-class CreateNamiSettings extends SettingsMigration
+class CreateNamiSettingsGroup extends SettingsMigration
 {
     public function up(): void
     {
