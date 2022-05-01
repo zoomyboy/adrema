@@ -18,13 +18,15 @@ class MembershipController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Member $member, Membership $membership): RedirectResponse
+    public function destroy(Member $member, Membership $membership, NamiSettings $settings): RedirectResponse
     {
-        auth()->user()->api()->group($member->group->nami_id)->member($member->nami_id)
-            ->deleteMembership($membership->nami_id);
-
+        $api = $settings->login();
+        $api->deleteMembership(
+            $member->nami_id,
+            $api->membership($member->nami_id, $membership->nami_id)
+        );
         $membership->delete();
-        $member->syncVersion(auth()->user()->api());
+        $member->syncVersion();
 
         return redirect()->back();
     }
