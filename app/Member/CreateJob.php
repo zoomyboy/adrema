@@ -67,7 +67,7 @@ class CreateJob implements ShouldQueue
         ]);
         Member::withoutEvents(function () use ($response, $member, $api) {
             $member->update(['nami_id' => $response['id']]);
-            app(MemberPullAction::class)->member($member->group->nami_id, $member->nami_id)->api($api)->execute();
+            app(MemberPullAction::class)->api($api)->member($member->group->nami_id, $member->nami_id)->execute();
         });
     }
 }
