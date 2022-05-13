@@ -1,7 +1,11 @@
 <template>
     <div>
-
-        <member-filter :value="query.filter" :activities="filterActivities" :subactivities="filterSubactivities" :bill-kinds="billKinds"></member-filter>
+        <member-filter
+            :value="query.filter"
+            :activities="filterActivities"
+            :subactivities="filterSubactivities"
+            :bill-kinds="billKinds"
+        ></member-filter>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
@@ -20,9 +24,14 @@
                 <th></th>
             </thead>
 
-            <tr v-for="member, index in data.data" :key="index">
+            <tr v-for="(member, index) in data.data" :key="index">
                 <td class="w-3">
-                    <svg-sprite class="w-3 h-3" v-if="member.age_group_icon" :class="`text-${member.age_group_icon}`" src="lilie"></svg-sprite>
+                    <svg-sprite
+                        class="w-3 h-3"
+                        v-if="member.age_group_icon"
+                        :class="`text-${member.age_group_icon}`"
+                        src="lilie"
+                    ></svg-sprite>
                 </td>
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
@@ -37,29 +46,59 @@
                     </div>
                 </td>
                 <td v-text="member.subscription_name"></td>
-                <td v-text="`${member.birthday_human}`"></td>
+                <td v-text="`${member.birthday_human} (${member.age})`"></td>
                 <td v-show="hasModule('bill')">
                     <div class="flex justify-center">
-                        <div class="btn btn-sm label primary" v-text="member.bill_kind_name" v-if="member.bill_kind_name"></div>
+                        <div
+                            class="btn btn-sm label primary"
+                            v-text="member.bill_kind_name"
+                            v-if="member.bill_kind_name"
+                        ></div>
                         <div class="text-xs" v-else>Kein</div>
                     </div>
                 </td>
                 <td v-show="hasModule('bill')">
                     <div class="flex justify-center">
-                        <div class="btn btn-sm label primary" v-show="member.pending_payment" v-text="member.pending_payment"></div>
+                        <div
+                            class="btn btn-sm label primary"
+                            v-show="member.pending_payment"
+                            v-text="member.pending_payment"
+                        ></div>
                     </div>
                 </td>
                 <td v-text="`${member.joined_at_human}`"></td>
                 <td class="flex">
-                    <i-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></i-link>
-                    <a href="#" v-show="hasModule('bill')" @click.prevent="openSidebar(index, 'payment.index')" class="inline-flex btn btn-info btn-sm"><svg-sprite src="money"></svg-sprite></a>
-                    <a href="#" v-show="hasModule('courses')" @click.prevent="openSidebar(index, 'courses.index')" class="inline-flex btn btn-info btn-sm"><svg-sprite src="course"></svg-sprite></a>
-                    <a href="#" @click.prevent="openSidebar(index, 'membership.index')" class="inline-flex btn btn-info btn-sm"><svg-sprite src="user"></svg-sprite></a>
-                    <a :href="member.efz_link" v-show="member.efz_link" class="inline-flex btn btn-info btn-sm"><svg-sprite src="report"></svg-sprite></a>
-                    <i-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
+                    <i-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"
+                        ><svg-sprite src="pencil"></svg-sprite
+                    ></i-link>
+                    <a
+                        href="#"
+                        v-show="hasModule('bill')"
+                        @click.prevent="openSidebar(index, 'payment.index')"
+                        class="inline-flex btn btn-info btn-sm"
+                        ><svg-sprite src="money"></svg-sprite
+                    ></a>
+                    <a
+                        href="#"
+                        v-show="hasModule('courses')"
+                        @click.prevent="openSidebar(index, 'courses.index')"
+                        class="inline-flex btn btn-info btn-sm"
+                        ><svg-sprite src="course"></svg-sprite
+                    ></a>
+                    <a
+                        href="#"
+                        @click.prevent="openSidebar(index, 'membership.index')"
+                        class="inline-flex btn btn-info btn-sm"
+                        ><svg-sprite src="user"></svg-sprite
+                    ></a>
+                    <a :href="member.efz_link" v-show="member.efz_link" class="inline-flex btn btn-info btn-sm"
+                        ><svg-sprite src="report"></svg-sprite
+                    ></a>
+                    <i-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"
+                        ><svg-sprite src="trash"></svg-sprite
+                    ></i-link>
                 </td>
             </tr>
-
         </table>
 
         <div class="px-6">
@@ -67,9 +106,26 @@
         </div>
 
         <transition name="sidebar">
-            <member-payments v-if="single !== null && sidebar === 'payment.index'" @close="closeSidebar" :subscriptions="subscriptions" :statuses="statuses" :value="data.data[single]"></member-payments>
-            <member-memberships v-if="single !== null && sidebar === 'membership.index'" @close="closeSidebar" :activities="activities" :subactivities="subactivities" :value="data.data[single]"></member-memberships>
-            <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="courses" :value="data.data[single]"></member-courses>
+            <member-payments
+                v-if="single !== null && sidebar === 'payment.index'"
+                @close="closeSidebar"
+                :subscriptions="subscriptions"
+                :statuses="statuses"
+                :value="data.data[single]"
+            ></member-payments>
+            <member-memberships
+                v-if="single !== null && sidebar === 'membership.index'"
+                @close="closeSidebar"
+                :activities="activities"
+                :subactivities="subactivities"
+                :value="data.data[single]"
+            ></member-memberships>
+            <member-courses
+                v-if="single !== null && sidebar === 'courses.index'"
+                @close="closeSidebar"
+                :courses="courses"
+                :value="data.data[single]"
+            ></member-courses>
         </transition>
     </div>
 </template>
@@ -82,8 +138,7 @@ import MemberFilter from './MemberFilter.vue';
 import mergesQueryString from '../../mixins/mergesQueryString.js';
 
 export default {
-
-    data: function() {
+    data: function () {
         return {
             sidebar: null,
             single: null,
@@ -92,7 +147,7 @@ export default {
 
     mixins: [mergesQueryString],
 
-    components: { MemberMemberships, MemberPayments, MemberFilter, MemberCourses },
+    components: {MemberMemberships, MemberPayments, MemberFilter, MemberCourses},
 
     methods: {
         remove(member) {
@@ -107,7 +162,7 @@ export default {
         closeSidebar() {
             this.single = null;
             this.sidebar = null;
-        }
+        },
     },
 
     props: {
@@ -122,7 +177,6 @@ export default {
         filterActivities: {},
         filterSubactivities: {},
         courses: {},
-    }
-}
+    },
+};
 </script>
-

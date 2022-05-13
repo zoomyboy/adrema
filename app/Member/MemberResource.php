@@ -71,6 +71,7 @@ class MemberResource extends JsonResource
             'without_efz_at' => $this->without_efz_at,
             'multiply_pv' => $this->multiply_pv,
             'multiply_more_pv' => $this->multiply_more_pv,
+            'age' => $this->birthday->diffInYears(now()),
         ];
     }
 }
