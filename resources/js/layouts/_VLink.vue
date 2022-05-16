@@ -2,6 +2,7 @@
     <i-link
         class="flex text-white py-2 px-3 rounded-lg hover:bg-gray-600"
         :method="method"
+        v-on="$listeners"
         :href="href"
         :class="{'bg-gray-700': $page.props.menu == menu}"
     >

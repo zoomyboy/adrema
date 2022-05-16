@@ -83,7 +83,7 @@ class Member extends Model
         ]));
     }
 
-    //----------------------------------- Getters -----------------------------------
+    // ----------------------------------- Getters -----------------------------------
     public function getFullnameAttribute(): string
     {
         return $this->firstname.' '.$this->lastname;
@@ -118,7 +118,7 @@ class Member extends Model
         return $this->subscription->fee->nami_id;
     }
 
-    //---------------------------------- Relations ----------------------------------
+    // ---------------------------------- Relations ----------------------------------
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);

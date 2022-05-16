@@ -12,9 +12,10 @@
                 <v-link href="/subscription" v-show="hasModule('bill')" menu="subscription" icon="money"
                     >Beiträge</v-link
                 >
+                <v-link href="/contribution" menu="contribution" icon="contribution">Zuschüsse</v-link>
             </div>
             <div class="grid gap-2">
-                <v-link method="POST" icon="logout" href="/logout">Abmelden</v-link>
+                <v-link @click.prevent="$inertia.post('/logout')" icon="logout" href="/logout">Abmelden</v-link>
             </div>
         </div>
 

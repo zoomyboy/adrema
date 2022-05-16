@@ -1,5 +1,6 @@
 <?php
 
+use App\Contribution\ContributionController;
 use App\Course\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
 use App\Initialize\InitializeController;
@@ -36,4 +37,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', MemberEfzController::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncController::class)->name('member.resync');
+    Route::get('/contribution', [ContributionController::class, 'form'])->name('contribution.form');
+    Route::get('/contribution/generate', [ContributionController::class, 'generate'])->name('contribution.generate');
 });

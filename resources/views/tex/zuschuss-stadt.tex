@@ -1,0 +1,124 @@
+\documentclass[a4paper,landscape]{article}
+
+\usepackage[landscape,top=0cm,left=0cm,bottom=0cm,right=0cm]{geometry}
+\usepackage{tikz,ulem}
+\usetikzlibrary{matrix}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{intersections}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\pagestyle{empty}
+\setlength{\parindent}{0cm}
+
+\tikzset{outer/.style={overlay, remember picture}}
+\tikzset{formfill/.style={pos=0.01,anchor=base west,font=\LARGE}}
+\tikzset{
+    table/.style={
+        matrix of nodes,
+        row sep=-\pgflinewidth,
+        column sep=-\pgflinewidth,
+        nodes={
+            rectangle,
+            draw=black,
+            font=\Large,
+        },
+        minimum height=1.5em,
+        text depth=0.5ex,
+        text height=2.5ex,
+        nodes in empty cells,
+        column 1/.style={
+            nodes={
+                align=center,
+                text width=5em,
+            }
+        },
+        column 2/.style={
+            nodes={
+                align=center,
+                text width=17em,
+            }
+        },
+        column 3/.style={
+            nodes={
+                align=center,
+                text width=15em,
+            }
+        },
+        column 4/.style={
+            nodes={
+                align=center,
+                text width=5em,
+            }
+        },
+        column 5/.style={
+            nodes={
+                align=center,
+                text width=9em,
+            }
+        },
+        column 6/.style={
+            nodes={
+                align=center,
+                text width=7em,
+            }
+        },
+        column 7/.style={
+            nodes={
+                align=center,
+                text width=12.5em,
+            }
+        },
+        row 1/.style={
+            nodes={
+                draw=white,
+                align=center,
+            }
+        }
+    }
+}
+
+\newcommand{\checkbox}[1]{\tikz[label distance=0.2cm]{\node[label={east:\large{#1}},draw,very thick,rectangle,text height=0.5cm,text width=0.5cm,inner sep=0cm] at (0,0) {};}}
+\newcommand{\checkedcheckbox}[1]{\tikz[label distance=0.2cm]{\node[label={east:\large{#1}},draw,very thick,rectangle,text height=0.5cm,text width=0.5cm,inner sep=0cm] at (0,0) {}; \draw (--0.25cm,0) -- (-0.25cm,0.5cm) (-0.25cm,0) -- (0.25cm,0.5cm); }}
+\newcommand{\emptycheckbox}{\tikz{\node[text height=0.5cm,text width=0.5cm,inner sep=0cm] at (0,0) {};}}
+
+\begin{document} \sffamily
+@foreach($data->members()->chunk(14) as $chunk)
+\begin{tikzpicture}[outer]
+    \path (current page.north west) ++(1cm,-1cm) coordinate (OL) -- (current page.north east) ++(-1cm,0cm) coordinate (OR) node[midway,below=0.5cm] {\textbf{TEILNEHMER - / INNENLISTE}};
+    \matrix (options) at ($(OL)+(0.5cm,-1cm)$) [matrix of nodes, column sep=0cm,row sep=0.5cm,nodes in empty cells, every node/.style={inner sep=0cm,align=left,text width=6.2cm}, anchor=north west] {
+        <<<!!$data->checkboxes()!!>>>
+    };
+    \node[align=left,inner sep=0cm,anchor=west] at (options-2-4.west) {\tikz{\node[draw,very thick,rectangle,text height=0.5cm,text width=0.5cm,inner sep=0cm] (checkbox) at (0,0) {}; \draw[thick] (checkbox.south east) ++(0.2cm,0) -- (checkbox.south east -| options-2-4.south east);}};
+
+    \node[anchor=north west] (org) at ($(options.south west)+(0cm,-0.5cm)$) {\large{Veranstalter:}};
+    \draw (org.south east -| options-2-2.south west) -- (org.south east -| options-2-4.south east) node[formfill] {DPSG Stamm Silva Solingen Wald};
+
+    \node[anchor=north west] (title) at ($(org.south west)+(0cm,-0.5cm)$) {\large{Titel der Maßnahme:}};
+    \draw (title.south east -| options-2-2.south west) -- (title.south east -| options-2-4.south east) node[formfill] {<<<$data->eventName>>>};
+
+    \node[anchor=north west] (datefrom) at ($(title.south west)+(0cm,-0.5cm)$) {\large{Datum vom:}};
+    \draw (datefrom.south east -| options-2-2.south west) -- ($(datefrom.south east -| options-2-2.south east) - (1,0cm)$) node[formfill] {<<<$data->niceEventFrom()>>>};
+
+    \node[anchor=south west] (dateuntil) at (options-2-3.south west |- datefrom.south west) {\large{bis:}};
+    \draw[label={east:aaa}] (dateuntil.south east) -- (datefrom.south east -| options-2-3.south east) node[formfill] {<<<$data->niceEventTo()>>>};
+
+    \path[fill=yellow] (datefrom.south -| OL) ++(0,-1.0) rectangle ($(datefrom.south -| OR) + (0,-1.5)$);
+
+    \matrix (table) at ($(datefrom.south west) + (0,-2.3cm)$) [table,below right] {
+        \uline{Lfd. Nr.} & \uline{Name / Vorname}  & \uline{Straße} & \uline{PLZ} & \uline{Wohnort} & \uline{Geburtsjahr} & \uline{Unterschrift} \\
+        @foreach($chunk as $i => $member)
+        <<<$i+1>>> & <<<$member->fullname>>> & <<<$member->address>>> & <<<$member->zip>>> & <<<$member->location>>> & <<<$member->birthday->year>>> & \\
+        @endforeach
+    };
+
+    \draw[ultra thick] (OL) rectangle (table.south east -| OR);
+\end{tikzpicture}
+
+\pagebreak[4]
+
+@endforeach
+
+\end{document}
+
+
