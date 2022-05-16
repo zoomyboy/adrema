@@ -8,8 +8,11 @@
             <select :disabled="disabled" :value="value" @change="trigger">
                 <option v-if="placeholder" v-html="placeholder" :value="null"></option>
 
-                <option v-for="option in parsedOptions" :key="option.id"
-                    v-html="option.name" :value="option.id"
+                <option
+                    v-for="option in parsedOptions"
+                    :key="option.id"
+                    v-html="option.name"
+                    :value="option.id"
                 ></option>
             </select>
             <div class="info-wrap">
@@ -34,63 +37,69 @@ export default {
     props: {
         disabled: {
             type: Boolean,
-            default: function() { return false; }
+            default: function () {
+                return false;
+            },
         },
         id: {},
         inset: {
             type: Boolean,
-            default: false
+            default: false,
         },
         size: {
-            default: function() { return 'base'; }
+            default: function () {
+                return 'base';
+            },
         },
         emptyLabel: {
             default: false,
-            type: Boolean
+            type: Boolean,
         },
         value: {
-            default: undefined
+            default: undefined,
         },
         label: {
-            default: null
+            default: null,
         },
         required: {
             type: Boolean,
-            default: false
+            default: false,
         },
         placeholder: {
             default: '--kein--',
-            type: String
+            type: String,
         },
         def: {
             required: false,
             type: Number,
-            default: -1
+            default: -1,
         },
         hint: {},
         options: {
-            default: function() { return []; }
-        }
+            default: function () {
+                return [];
+            },
+        },
     },
     computed: {
         parsedOptions() {
             return Array.isArray(this.options)
                 ? this.options
                 : map(this.options, (value, key) => {
-                    return {'name': value, id: key};
-                });
-        }
+                      return {name: value, id: key};
+                  });
+        },
     },
     methods: {
         trigger(v) {
-            this.$emit('input', isNaN(parseInt(v.target.value))
-                ?  (v.target.value ? v.target.value : null)
-                : parseInt(v.target.value)
+            this.$emit(
+                'input',
+                isNaN(parseInt(v.target.value)) ? (v.target.value ? v.target.value : null) : parseInt(v.target.value)
             );
         },
         clear() {
             this.$emit('input', null);
-        }
+        },
     },
     mounted() {
         if (this.def !== -1 && typeof this.value === 'undefined') {
@@ -101,12 +110,18 @@ export default {
         if (this.placeholder && typeof this.value === 'undefined') {
             this.$emit('input', null);
         }
-    }
+    },
 };
 </script>
 
 <style scope>
 .inset-bg {
-    background: linear-gradient(to bottom, hsl(247.5, 66.7%, 97.6%) 0%, hsl(247.5, 66.7%, 97.6%) 41%, hsl(0deg 0% 100%) 41%, hsl(180deg 0% 100%) 100%);
+    background: linear-gradient(
+        to bottom,
+        hsl(247.5, 66.7%, 97.6%) 0%,
+        hsl(247.5, 66.7%, 97.6%) 41%,
+        hsl(0deg 0% 100%) 41%,
+        hsl(180deg 0% 100%) 100%
+    );
 }
 </style>

@@ -45,7 +45,7 @@
 
         <!-- ***************************** Hauptbereich ****************************** -->
         <div class="grow">
-            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Stammdaten'">
+            <div class="grid grid-cols-2 gap-3 p-4" v-show="menuTitle == 'Stammdaten'">
                 <f-select id="gender_id" :options="genders" v-model="inner.gender_id" label="Geschlecht"></f-select>
                 <f-text id="firstname" v-model="inner.firstname" label="Vorname" required></f-text>
                 <f-text id="lastname" v-model="inner.lastname" label="Nachname" required></f-text>
@@ -95,7 +95,7 @@
                     ></f-select>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Kontakt'">
+            <div class="grid grid-cols-2 gap-3 p-4" v-show="menuTitle == 'Kontakt'">
                 <f-text id="main_phone" v-model="inner.main_phone" label="Telefon (Eltern)"></f-text>
                 <f-text id="mobile_phone" v-model="inner.mobile_phone" label="Handy (Eltern)"></f-text>
                 <f-text id="work_phone" v-model="inner.work_phone" label="Tel geschäftlich (Eltern)"></f-text>
@@ -104,7 +104,7 @@
                 <f-text id="email_parents" v-model="inner.email_parents" label="E-Mail eltern"></f-text>
                 <f-text id="fax" v-model="inner.fax" label="Fax"></f-text>
             </div>
-            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'System'">
+            <div class="grid grid-cols-2 gap-3 p-4" v-show="menuTitle == 'System'">
                 <f-select
                     :options="billKinds"
                     id="bill_kind_id"
@@ -112,7 +112,7 @@
                     label="Rechnung versenden über"
                 ></f-select>
             </div>
-            <div class="grid grid-cols-2 gap-3 p-4" v-if="menuTitle == 'Prävention'">
+            <div class="grid grid-cols-2 gap-3 p-4" v-show="menuTitle == 'Prävention'">
                 <div class="grid grid-cols-[max-content_1fr] col-span-2 gap-3">
                     <f-switch id="has_efz" v-model="hasEfz" label="Führungszeugnis eingesehen"></f-switch>
                     <div>
@@ -184,7 +184,7 @@
                     ></f-switch>
                 </div>
             </div>
-            <div class="grid grid-cols-4 gap-3 p-4" v-if="menuTitle == 'Verwaltung'">
+            <div class="grid grid-cols-4 gap-3 p-4" v-show="menuTitle == 'Verwaltung'">
                 <f-switch id="has_nami" v-model="inner.has_nami" label="In Nami eintragen"></f-switch>
                 <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin versenden"></f-switch>
                 <f-text

@@ -103,7 +103,7 @@ class MemberController extends Controller
             'regions' => Region::where('is_null', false)->pluck('name', 'id'),
             'nationalities' => Nationality::pluck('name', 'id'),
             'confessions' => Confession::where('is_null', false)->pluck('name', 'id'),
-            'subscriptions' => Subscription::pluck('name', 'id'),
+            'subscriptions' => Subscription::select('name', 'id')->get(),
             'data' => new MemberResource($member),
             'mode' => 'edit',
             'conflict' => '1' === $request->query('conflict', '0'),
