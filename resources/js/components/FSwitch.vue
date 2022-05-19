@@ -1,14 +1,42 @@
 <template>
     <label class="flex flex-col relative field-switch cursor-pointer" :for="id" :class="{[`size-${outerSize}`]: true}">
-        <span v-if="label" class="font-semibold leading-none text-gray-400" :class="{
-            'text-xs': size == 'sm',
-            'text-sm': size === null
-        }">{{ label }}</span>
+        <span
+            v-if="label"
+            class="font-semibold leading-none text-gray-400"
+            :class="{
+                'text-xs': size == 'sm',
+                'text-sm': size === null,
+            }"
+            >{{ label }}</span
+        >
         <div class="relative inner-field mt-1" :class="`h-field-${fieldSize}`">
-            <input :id="id" type="checkbox" v-model="v" :disabled="disabled" class="invisible absolute" />
-            <span class="relative cursor-pointer flex grow display" :class="{'bg-switch': v === true, 'bg-gray-700': v === false}">
-                <span><svg-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === null}" src="check"></svg-sprite></span>
-                <span><svg-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === null}" src="close"></svg-sprite></span>
+            <input
+                :id="id"
+                type="checkbox"
+                :name="name"
+                :value="value"
+                v-model="v"
+                :disabled="disabled"
+                class="invisible absolute"
+            />
+            <span
+                class="relative cursor-pointer flex grow display"
+                :class="{'bg-switch': v === true, 'bg-gray-700': v === false}"
+            >
+                <span
+                    ><svg-sprite
+                        class="relative text-gray-400 flex-none"
+                        :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === null}"
+                        src="check"
+                    ></svg-sprite
+                ></span>
+                <span
+                    ><svg-sprite
+                        class="relative text-gray-400 flex-none"
+                        :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === null}"
+                        src="close"
+                    ></svg-sprite
+                ></span>
                 <var class="absolute overlay bg-gray-400 rounded top-0"></var>
             </span>
         </div>
@@ -19,33 +47,36 @@
 export default {
     model: {
         prop: 'items',
-        event: 'input'
+        event: 'input',
     },
     props: {
         inset: {
             type: Boolean,
-            default: false
+            default: false,
         },
         size: {
             default: null,
-            required: false
+            required: false,
         },
         id: {
-            required: true
+            required: true,
+        },
+        name: {
+            default: '',
         },
         disabled: {
             type: Boolean,
-            default: false
+            default: false,
         },
         value: {
-            default: false
+            default: false,
         },
         label: {
-            default: false
+            default: false,
         },
         items: {
-            default: undefined
-        }
+            default: undefined,
+        },
     },
     computed: {
         v: {
@@ -59,7 +90,7 @@ export default {
                     return;
                 }
 
-                var a = this.items.filter(i => i !== this.value);
+                var a = this.items.filter((i) => i !== this.value);
                 if (v) {
                     a.push(this.value);
                 }
@@ -76,21 +107,23 @@ export default {
                 }
 
                 return this.items.indexOf(this.value) !== -1;
-            }
+            },
         },
         fieldSize() {
             var sizes = ['xxs', 'xs', 'sm', 'md', 'lg'];
 
-            var sizeIndex = sizes.findIndex(s => s === this.size);
+            var sizeIndex = sizes.findIndex((s) => s === this.size);
             return sizes[this.inset ? sizeIndex : sizeIndex - 1];
         },
         outerSize() {
             var sizes = ['xxs', 'xs', 'sm', 'md', 'lg'];
 
-            var sizeIndex = sizes.findIndex(s => s === this.size);
-            if (!this.label || this.inset) { sizeIndex--; }
+            var sizeIndex = sizes.findIndex((s) => s === this.size);
+            if (!this.label || this.inset) {
+                sizeIndex--;
+            }
             return sizes[sizeIndex];
-        }
-    }
+        },
+    },
 };
 </script>

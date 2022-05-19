@@ -18,7 +18,7 @@ class ContributionController extends Controller
         session()->put('title', 'Zuschüsse');
 
         return Inertia::render('contribution/VIndex', [
-            'members' => MemberResource::collection(Member::get()),
+            'allMembers' => MemberResource::collection(Member::get()),
         ]);
     }
 

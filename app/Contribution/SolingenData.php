@@ -17,8 +17,9 @@ class SolingenData extends Data implements PdfRepository
         public string $eventName,
         public string $dateFrom,
         public string $dateUntil,
+        public array $members,
         public ?string $filename = '',
-        public $type = 'FK',
+        public $type = 'F',
     ) {
     }
 
@@ -28,6 +29,7 @@ class SolingenData extends Data implements PdfRepository
             eventName: $request->eventName,
             dateFrom: $request->dateFrom,
             dateUntil: $request->dateUntil,
+            members: $request->members,
         );
     }
 
@@ -48,7 +50,7 @@ class SolingenData extends Data implements PdfRepository
 
     public function members(): Collection
     {
-        return Member::orderByRaw('lastname, firstname')->get();
+        return Member::whereIn('id', $this->members)->orderByRaw('lastname, firstname')->get();
     }
 
     public function niceEventFrom(): string

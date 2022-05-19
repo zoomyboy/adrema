@@ -17,6 +17,19 @@
             label="Datum bis"
             required
         ></f-text>
+
+        <div class="col-span-2">
+            <f-switch
+                :id="`members-${member.id}`"
+                :key="member.id"
+                :label="`${member.firstname} ${member.lastname}`"
+                v-for="member in allMembers"
+                name="members[]"
+                :value="member.id"
+                v-model="values.members"
+            ></f-switch>
+        </div>
+
         <button
             target="_BLANK"
             type="submit"
@@ -34,6 +47,7 @@ export default {
     data: function () {
         return {
             values: {
+                members: [],
                 event_name: '',
                 dateFrom: '',
                 dateUntil: '',
@@ -41,7 +55,7 @@ export default {
         };
     },
     props: {
-        members: {},
+        allMembers: {},
     },
 };
 </script>
