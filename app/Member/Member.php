@@ -37,6 +37,8 @@ class Member extends Model
 
     public $guarded = [];
 
+    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id'];
+
     public $dates = ['try_created_at', 'joined_at', 'birthday'];
 
     public $casts = [

@@ -79,12 +79,16 @@ class MemberRequest extends FormRequest
 
     public function persistUpdate(Member $member): void
     {
-        $member->update($this->validated());
+        $member->fill($this->validated());
+
+        $namiSync = $member->isDirty(Member::$namiFields);
+
+        $member->save();
 
         if ($this->input('has_nami') && null === $member->nami_id) {
             CreateJob::dispatch($member);
         }
-        if ($this->input('has_nami') && null !== $member->nami_id) {
+        if ($this->input('has_nami') && null !== $member->nami_id && $namiSync) {
             UpdateJob::dispatch($member->fresh());
         }
         if (!$this->input('has_nami') && null !== $member->nami_id) {
