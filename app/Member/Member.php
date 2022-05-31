@@ -35,7 +35,7 @@ class Member extends Model
     use Notifiable;
     use HasFactory;
 
-    public $fillable = ['firstname', 'lastname', 'nickname', 'other_country', 'birthday', 'joined_at', 'send_newspaper', 'address', 'further_address', 'zip', 'location', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'nami_id', 'group_id', 'letter_address', 'country_id', 'way_id', 'nationality_id', 'subscription_id', 'region_id', 'gender_id', 'confession_id', 'letter_address', 'bill_kind_id', 'version', 'first_subactivity_id', 'first_activity_id', 'confirmed_at', 'children_phone', 'efz', 'ps_at', 'more_ps_at', 'has_svk', 'has_vk', 'without_education_at', 'without_efz_at', 'multiply_pv', 'multiply_more_pv'];
+    public $guarded = [];
 
     public $dates = ['try_created_at', 'joined_at', 'birthday'];
 

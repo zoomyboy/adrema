@@ -56,7 +56,15 @@ class MemberRequest extends FormRequest
             'bill_kind_id' => 'nullable|exists:bill_kinds,id',
             'joined_at' => 'date|required',
             'confession_id' => 'nullable|exists:confessions,id',
-            'efz' => 'nullable|date',
+            'ps_at' => 'nullable|date_format:Y-m-d',
+            'more_ps_at' => 'nullable|date_format:Y-m-d',
+            'has_svk' => 'boolean',
+            'has_vk' => 'boolean',
+            'efz' => 'nullable|date_format:Y-m-d',
+            'without_education_at' => 'nullable|date_format:Y-m-d',
+            'without_efz_at' => 'nullable|date_format:Y-m-d',
+            'multiply_pv' => 'boolean',
+            'multiply_more_pv' => 'boolean',
         ];
     }
 
@@ -71,7 +79,7 @@ class MemberRequest extends FormRequest
 
     public function persistUpdate(Member $member): void
     {
-        $member->update($this->input());
+        $member->update($this->validated());
 
         if ($this->input('has_nami') && null === $member->nami_id) {
             CreateJob::dispatch($member);
