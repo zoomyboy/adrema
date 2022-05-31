@@ -74,13 +74,13 @@ class MemberRequest extends FormRequest
         $member->update($this->input());
 
         if ($this->input('has_nami') && null === $member->nami_id) {
-            CreateJob::dispatch($member, auth()->user());
+            CreateJob::dispatch($member);
         }
         if ($this->input('has_nami') && null !== $member->nami_id) {
-            UpdateJob::dispatch($member->fresh(), auth()->user());
+            UpdateJob::dispatch($member->fresh());
         }
         if (!$this->input('has_nami') && null !== $member->nami_id) {
-            DeleteJob::dispatch($member, auth()->user());
+            DeleteJob::dispatch($member);
         }
     }
 }
