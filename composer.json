@@ -24,6 +24,7 @@
         "spatie/laravel-data": "^1.4",
         "spatie/laravel-medialibrary": "^10.0",
         "spatie/laravel-settings": "^2.2",
+        "nunomaduro/collision": "^6.1",
         "zoomyboy/laravel-nami": "dev-master"
     },
     "require-dev": {
@@ -31,7 +32,6 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
         "orchestra/testbench": "^7.0",
         "nunomaduro/larastan": "^1.0"
