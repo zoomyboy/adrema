@@ -5,7 +5,18 @@
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
         <div class="real-field-wrap" :class="`size-${size}`">
-            <input :name="name" :type="type" :value="transformedValue" @input="onInput" @change="onChange" :disabled="disabled" :placeholder="placeholder" @focus="onFocus" @blur="onBlur">
+            <input
+                @keypress="$emit('keypress', $event)"
+                :name="name"
+                :type="type"
+                :value="transformedValue"
+                @input="onInput"
+                @change="onChange"
+                :disabled="disabled"
+                :placeholder="placeholder"
+                @focus="onFocus"
+                @blur="onBlur"
+            />
             <div v-if="hint" class="info-wrap">
                 <div v-tooltip="hint">
                     <svg-sprite src="info-button" class="info-button"></svg-sprite>
@@ -28,7 +39,7 @@ var numb = {
         },
         encoder(a) {
             return a / 100;
-        }
+        },
     }),
     naturalRaw: wNumb({
         mark: '',
@@ -39,7 +50,7 @@ var numb = {
         },
         encoder(a) {
             return a / 100;
-        }
+        },
     }),
     naturalDetailRaw: wNumb({
         mark: '',
@@ -50,7 +61,7 @@ var numb = {
         },
         encoder(a) {
             return a / 10000;
-        }
+        },
     }),
     area: wNumb({
         mark: ',',
@@ -61,7 +72,7 @@ var numb = {
         },
         encoder(a) {
             return a / 100;
-        }
+        },
     }),
     areaDetail: wNumb({
         mark: ',',
@@ -72,7 +83,7 @@ var numb = {
         },
         encoder(a) {
             return a / 10000;
-        }
+        },
     }),
     twoDecimalRaw: wNumb({
         mark: ',',
@@ -83,7 +94,7 @@ var numb = {
         },
         encoder(a) {
             return a / 100;
-        }
+        },
     }),
     fourDecimalRaw: wNumb({
         mark: ',',
@@ -94,142 +105,198 @@ var numb = {
         },
         encoder(a) {
             return a / 10000;
-        }
-    })
+        },
+    }),
 };
 
 var transformers = {
     none: {
         display: {
-            to(v) { return v; },
-            from(v) { return v; }
+            to(v) {
+                return v;
+            },
+            from(v) {
+                return v;
+            },
         },
         edit: {
-            to(v) { return v; },
-            from(v) { return v; }
-        }
+            to(v) {
+                return v;
+            },
+            from(v) {
+                return v;
+            },
+        },
     },
     natural: {
         display: {
-            to(v) { return isNaN(parseInt(v)) ? '' : numb.natural.to(v); },
-            from(v) { return v === '' ? null : numb.natural.from(v); }
+            to(v) {
+                return isNaN(parseInt(v)) ? '' : numb.natural.to(v);
+            },
+            from(v) {
+                return v === '' ? null : numb.natural.from(v);
+            },
         },
         edit: {
-            to(v) { return isNaN(parseInt(v)) ? '' : numb.naturalRaw.to(v); },
-            from(v) { return v === '' ? null : numb.naturalRaw.from(v); }
-        }
+            to(v) {
+                return isNaN(parseInt(v)) ? '' : numb.naturalRaw.to(v);
+            },
+            from(v) {
+                return v === '' ? null : numb.naturalRaw.from(v);
+            },
+        },
     },
     area: {
         display: {
-            to(v) { return v === null ? '' : numb.area.to(v); },
-            from(v) { return v === '' ? null : numb.area.from(v); }
+            to(v) {
+                return v === null ? '' : numb.area.to(v);
+            },
+            from(v) {
+                return v === '' ? null : numb.area.from(v);
+            },
         },
         edit: {
             to(v) {
-                if (v === null) { return ''; }
-                if (Math.round(v / 100) * 100 === v) { return numb.naturalRaw.to(v); }
+                if (v === null) {
+                    return '';
+                }
+                if (Math.round(v / 100) * 100 === v) {
+                    return numb.naturalRaw.to(v);
+                }
                 return numb.twoDecimalRaw.to(v);
             },
             from(v) {
-                if (v === '') { return null; }
-                if (v.indexOf(',') === -1) { return numb.naturalRaw.from(v); }
+                if (v === '') {
+                    return null;
+                }
+                if (v.indexOf(',') === -1) {
+                    return numb.naturalRaw.from(v);
+                }
 
                 return numb.twoDecimalRaw.from(v);
-            }
-        }
+            },
+        },
     },
     currency: {
         display: {
-            to(v) { return v === null ? '' : numb.area.to(v); },
-            from(v) { return v === '' ? null : numb.area.from(v); }
+            to(v) {
+                return v === null ? '' : numb.area.to(v);
+            },
+            from(v) {
+                return v === '' ? null : numb.area.from(v);
+            },
         },
         edit: {
             to(v) {
-                if (v === null) { return ''; }
-                if (Math.round(v / 100) * 100 === v) { return numb.naturalRaw.to(v); }
+                if (v === null) {
+                    return '';
+                }
+                if (Math.round(v / 100) * 100 === v) {
+                    return numb.naturalRaw.to(v);
+                }
                 return numb.twoDecimalRaw.to(v);
             },
             from(v) {
-                if (v === '') { return null; }
-                if (v.indexOf(',') === -1) { return numb.naturalRaw.from(v); }
+                if (v === '') {
+                    return null;
+                }
+                if (v.indexOf(',') === -1) {
+                    return numb.naturalRaw.from(v);
+                }
 
                 return numb.twoDecimalRaw.from(v);
-            }
-        }
+            },
+        },
     },
     currencyDetail: {
         display: {
-            to(v) { return v === null ? '' : numb.areaDetail.to(v); },
-            from(v) { return v === '' ? null : numb.areaDetail.from(v); }
+            to(v) {
+                return v === null ? '' : numb.areaDetail.to(v);
+            },
+            from(v) {
+                return v === '' ? null : numb.areaDetail.from(v);
+            },
         },
         edit: {
             to(v) {
-                if (v === null) { return ''; }
-                if (Math.round(v / 10000) * 10000 === v) { return numb.naturalDetailRaw.to(v); }
+                if (v === null) {
+                    return '';
+                }
+                if (Math.round(v / 10000) * 10000 === v) {
+                    return numb.naturalDetailRaw.to(v);
+                }
                 return numb.fourDecimalRaw.to(v);
             },
             from(v) {
-                if (v === '') { return null; }
-                if (v.indexOf(',') === -1) { return numb.naturalDetailRaw.from(v); }
+                if (v === '') {
+                    return null;
+                }
+                if (v.indexOf(',') === -1) {
+                    return numb.naturalDetailRaw.from(v);
+                }
 
                 return numb.fourDecimalRaw.from(v);
-            }
-        }
-    }
+            },
+        },
+    },
 };
 
 export default {
-    data: function() {
+    data: function () {
         return {
-            focus: false
+            focus: false,
         };
     },
     props: {
         placeholder: {
-            default: function() {
+            default: function () {
                 return '';
-            }
+            },
         },
         default: {},
         mode: {
-            default: function() { return 'none'; }
+            default: function () {
+                return 'none';
+            },
         },
         required: {
             type: Boolean,
-            default: false
+            default: false,
         },
         inset: {
-            default: function() {
+            default: function () {
                 return null;
-            }
+            },
         },
         size: {
-            default: function() {
+            default: function () {
                 return 'base';
-            }
+            },
         },
         id: {
-            required: true
+            required: true,
         },
         hint: {
-            default: null
+            default: null,
         },
         value: {
-            default: undefined
+            default: undefined,
         },
         mask: {
-            default: undefined
+            default: undefined,
         },
         label: {
-            default: false
+            default: false,
         },
         type: {
             required: false,
-            default: function() { return 'text'; }
+            default: function () {
+                return 'text';
+            },
         },
         disabled: {
             default: false,
-            type: Boolean
+            type: Boolean,
         },
         name: {},
     },
@@ -249,7 +316,7 @@ export default {
             if (this.mode === 'none') {
                 this.transformedValue = v.target.value;
             }
-        }
+        },
     },
     computed: {
         transformedValue: {
@@ -258,25 +325,35 @@ export default {
             },
             set(v) {
                 this.$emit('input', transformers[this.mode][this.focus ? 'edit' : 'display'].from(v));
-            }
+            },
         },
         insetClass() {
-            if (this.inset === '') { return 'bg-inset'; }
-            if (this.inset === undefined) { return null; }
+            if (this.inset === '') {
+                return 'bg-inset';
+            }
+            if (this.inset === undefined) {
+                return null;
+            }
 
             return `bg-${this.inset}`;
-        }
+        },
     },
     created() {
         if (typeof this.value === 'undefined') {
             this.$emit('input', this.default === undefined ? '' : this.default);
         }
-    }
+    },
 };
 </script>
 
 <style scope>
 .bg-inset {
-    background: linear-gradient(to bottom, hsl(247.5, 66.7%, 97.6%) 0%, hsl(247.5, 66.7%, 97.6%) 41%, hsl(0deg 0% 100%) 41%, hsl(180deg 0% 100%) 100%);
+    background: linear-gradient(
+        to bottom,
+        hsl(247.5, 66.7%, 97.6%) 0%,
+        hsl(247.5, 66.7%, 97.6%) 41%,
+        hsl(0deg 0% 100%) 41%,
+        hsl(180deg 0% 100%) 100%
+    );
 }
 </style>

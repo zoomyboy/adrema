@@ -17,10 +17,11 @@
                 :value="value"
                 v-model="v"
                 :disabled="disabled"
-                class="invisible absolute"
+                class="absolute peer"
+                @keypress="$emit('keypress', $event)"
             />
             <span
-                class="relative cursor-pointer flex grow display"
+                class="relative cursor-pointer peer-focus:bg-red-500 flex grow display"
                 :class="{'bg-switch': v === true, 'bg-gray-700': v === false}"
             >
                 <span

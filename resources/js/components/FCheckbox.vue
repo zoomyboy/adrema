@@ -1,14 +1,24 @@
 <template>
     <label class="flex flex-col relative field-checkbox cursor-pointer" :for="id" :class="{[`size-${size}`]: true}">
-        <span v-if="label && inset" class="z-10 absolute top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700">{{ label }}</span>
+        <span
+            v-if="label && inset"
+            class="z-10 absolute top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700"
+            >{{ label }}</span
+        >
         <div class="relative flex items-start">
             <input :id="id" type="checkbox" v-model="v" :disabled="disabled" class="invisible absolute" />
             <span class="display-wrapper flex items-center">
-                <span class="relative cursor-pointer flex flex-none justify-center items-center display" :class="{'bg-terminoto-2': v === true, 'bg-white': v === false}">
+                <span
+                    class="relative cursor-pointer flex flex-none justify-center items-center display"
+                    :class="{'bg-terminoto-2': v === true, 'bg-white': v === false}"
+                >
                     <svg-sprite src="check" class="w-4 h-4 check-icon text-white"></svg-sprite>
                 </span>
             </span>
-            <span v-if="label && !inset" class="text-sm leading-tight ml-3 text-gray-700 checkbox-label flex items-center">
+            <span
+                v-if="label && !inset"
+                class="text-sm leading-tight ml-3 text-gray-700 checkbox-label flex items-center"
+            >
                 <span>
                     <span v-text="label" v-if="!html"></span>
                     <span v-html="label" v-if="html"></span>
@@ -23,41 +33,41 @@
 export default {
     model: {
         prop: 'items',
-        event: 'input'
+        event: 'input',
     },
     props: {
         html: {
             type: Boolean,
-            default: false
+            default: false,
         },
         required: {
             type: Boolean,
-            default: false
+            default: false,
         },
         inset: {
             type: Boolean,
-            default: false
+            default: false,
         },
         size: {
             default: null,
-            required: false
+            required: false,
         },
         id: {
-            required: true
+            required: true,
         },
         disabled: {
             type: Boolean,
-            default: false
+            default: false,
         },
         value: {
-            default: false
+            default: false,
         },
         label: {
-            default: false
+            default: false,
         },
         items: {
-            default: undefined
-        }
+            default: undefined,
+        },
     },
     computed: {
         v: {
@@ -71,7 +81,7 @@ export default {
                     return;
                 }
 
-                var a = this.items.filter(i => i !== this.value);
+                var a = this.items.filter((i) => i !== this.value);
                 if (v) {
                     a.push(this.value);
                 }
@@ -88,15 +98,15 @@ export default {
                 }
 
                 return this.items.indexOf(this.value) !== -1;
-            }
-        }
+            },
+        },
     },
 
     created() {
         if (typeof this.items === 'undefined') {
             this.$emit('input', false);
         }
-    }
+    },
 };
 </script>
 
@@ -111,7 +121,8 @@ export default {
         transition: background 0.2s;
     }
 
-    .display-wrapper, .checkbox-label {
+    .display-wrapper,
+    .checkbox-label {
         min-height: 34px;
     }
 
@@ -119,7 +130,7 @@ export default {
         width: var(--checkbox-width);
         height: var(--checkbox-width);
         border-radius: 0.3rem;
-        border: solid 2px hsl(60.0, 1.8%, 10.8%);
+        border: solid 2px hsl(60, 1.8%, 10.8%);
         .check-icon {
             opacity: 0;
             transition: opacity 0.2s;

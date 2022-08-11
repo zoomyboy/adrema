@@ -194,6 +194,16 @@ class Member extends Model
     }
 
     // ---------------------------------- Scopes -----------------------------------
+    public function scopeOrdered(Builder $q): Builder
+    {
+        return $q->orderByRaw('lastname, firstname');
+    }
+
+    public function scopeSlangOrdered(Builder $q): Builder
+    {
+        return $q->orderByRaw('firstname, lastname');
+    }
+
     public function scopeWithIsConfirmed(Builder $q): Builder
     {
         return $q->selectSub('DATEDIFF(NOW(), IFNULL(confirmed_at, DATE_SUB(NOW(), INTERVAL 3 YEAR))) < 712', 'is_confirmed');
