@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Group;
 use App\Member\Member;
 use App\Setting\NamiSettings;
 use App\User;
@@ -30,7 +31,9 @@ abstract class TestCase extends BaseTestCase
         NamiSettings::fake([
             'mglnr' => $mglnr,
             'password' => $password,
+            'default_group_id' => 55,
         ]);
+        Group::factory()->create(['nami_id' => 55]);
 
         return $this;
     }

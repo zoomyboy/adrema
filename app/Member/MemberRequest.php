@@ -65,13 +65,24 @@ class MemberRequest extends FormRequest
             'without_efz_at' => 'nullable|date_format:Y-m-d',
             'multiply_pv' => 'boolean',
             'multiply_more_pv' => 'boolean',
+            'send_newspaper' => 'boolean',
+            'main_phone' => '',
+            'mobile_phone' => '',
+            'letter_address' => '',
+            'gender_id' => 'nullable|exists:genders,id',
+            'region_id' => 'nullable|exists:regions,id',
+            'nationality_id' => 'nullable|exists:nationalities,id',
+            'children_phone' => '',
+            'fax' => '',
         ];
     }
 
     public function persistCreate(NamiSettings $settings): void
     {
-        $this->merge(['group_id' => Group::where('nami_id', $settings->default_group_id)->firstOrFail()->id]);
-        $member = Member::create($this->input());
+        $member = Member::create([
+            ...$this->validated(),
+            'group_id' => Group::where('nami_id', $settings->default_group_id)->firstOrFail()->id,
+        ]);
         if ($this->input('has_nami')) {
             CreateJob::dispatch($member);
         }
