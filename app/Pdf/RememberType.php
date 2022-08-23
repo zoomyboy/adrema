@@ -47,7 +47,7 @@ class RememberType extends Repository implements LetterRepository
         return 'tex.remember';
     }
 
-    public function getTemplate(): string
+    public function getTemplate(): ?string
     {
         return 'default';
     }

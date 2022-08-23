@@ -91,9 +91,14 @@ class Member extends Model
         return $this->firstname.' '.$this->lastname;
     }
 
+    public function getFullAddressAttribute(): string
+    {
+        return $this->address.', '.$this->zip.' '.$this->location;
+    }
+
     public function getEfzLink(): ?string
     {
-        return $this->memberships()->whereHas('activity', fn (Builder $query) => $query->where('has_efz', true))->exists()
+        return $this->isLeader()
             ? route('efz', ['member' => $this])
             : null;
     }
@@ -118,6 +123,16 @@ class Member extends Model
         }
 
         return $this->subscription->fee->nami_id;
+    }
+
+    public function isLeader(): bool
+    {
+        return $this->memberships()->whereHas('activity', fn (Builder $query) => $query->where('has_efz', true))->exists();
+    }
+
+    public function getAge(): int
+    {
+        return $this->birthday->diffInYears(now());
     }
 
     // ---------------------------------- Relations ----------------------------------

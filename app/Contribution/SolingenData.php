@@ -73,9 +73,9 @@ class SolingenData extends Data implements PdfRepository
         return 'tex.zuschuss-stadt';
     }
 
-    public function getTemplate(): string
+    public function getTemplate(): ?string
     {
-        return 'efz';
+        return null;
     }
 
     public function setFilename(string $filename): static

@@ -10,7 +10,7 @@ interface PdfRepository
 
     public function getView(): string;
 
-    public function getTemplate(): string;
+    public function getTemplate(): ?string;
 
     public function getScript(): EnvType;
 }

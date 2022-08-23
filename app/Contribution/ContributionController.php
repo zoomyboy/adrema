@@ -2,6 +2,7 @@
 
 namespace App\Contribution;
 
+use App\Country;
 use App\Http\Controllers\Controller;
 use App\Member\Member;
 use App\Member\MemberResource;
@@ -19,6 +20,8 @@ class ContributionController extends Controller
 
         return Inertia::render('contribution/VIndex', [
             'allMembers' => MemberResource::collection(Member::slangOrdered()->get()),
+            'countries' => Country::pluck('name', 'id'),
+            'defaultCountry' => Country::firstWhere('name', 'Deutschland')->id,
         ]);
     }
 

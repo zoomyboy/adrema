@@ -49,7 +49,7 @@ class MemberEfzData extends Data implements PdfRepository
         return 'tex.efz';
     }
 
-    public function getTemplate(): string
+    public function getTemplate(): ?string
     {
         return 'efz';
     }

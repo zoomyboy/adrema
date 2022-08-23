@@ -47,7 +47,7 @@ class BillType extends Repository implements LetterRepository
         return 'tex.bill';
     }
 
-    public function getTemplate(): string
+    public function getTemplate(): ?string
     {
         return 'default';
     }

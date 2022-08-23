@@ -1,10 +1,32 @@
 <template>
     <div class="sidebar flex flex-col">
-        <sidebar-header :links="links" @create="mode = 'create'; single = {}" @close="$emit('close')" title="Mitgliedschaften"></sidebar-header>
+        <sidebar-header
+            :links="links"
+            @create="
+                mode = 'create';
+                single = {};
+            "
+            @close="$emit('close')"
+            title="Mitgliedschaften"
+        ></sidebar-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
-            <f-select id="activity_id" :options="activities" v-model="single.activity_id" label="Tätigkeit" required></f-select>
-            <f-select v-if="single.activity_id" :options="subactivities[single.activity_id]" id="subactivity_id" v-model="single.subactivity_id" label="Untertätigkeit"></f-select>
+            <f-select
+                id="activity_id"
+                name="activity_id"
+                :options="activities"
+                v-model="single.activity_id"
+                label="Tätigkeit"
+                required
+            ></f-select>
+            <f-select
+                v-if="single.activity_id"
+                name="subactivity_id"
+                :options="subactivities[single.activity_id]"
+                id="subactivity_id"
+                v-model="single.subactivity_id"
+                label="Untertätigkeit"
+            ></f-select>
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 
@@ -17,13 +39,23 @@
                     <th></th>
                 </thead>
 
-                <tr v-for="membership, index in value.memberships" :key="index">
+                <tr v-for="(membership, index) in value.memberships" :key="index">
                     <td v-text="membership.activity_name"></td>
                     <td v-text="membership.subactivity_name"></td>
                     <td v-text="membership.human_date"></td>
                     <td class="flex">
-                        <a href="#" @click.prevent="single = membership; mode = 'edit'" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></a>
-                        <i-link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
+                        <a
+                            href="#"
+                            @click.prevent="
+                                single = membership;
+                                mode = 'edit';
+                            "
+                            class="inline-flex btn btn-warning btn-sm"
+                            ><svg-sprite src="pencil"></svg-sprite
+                        ></a>
+                        <i-link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"
+                            ><svg-sprite src="trash"></svg-sprite
+                        ></i-link>
                     </td>
                 </tr>
             </table>
@@ -35,17 +67,15 @@
 import SidebarHeader from '../../components/SidebarHeader.vue';
 
 export default {
-    data: function() {
+    data: function () {
         return {
             mode: null,
             single: null,
-            links: [
-                { event: 'create', label: 'Neu' }
-            ]
+            links: [{event: 'create', label: 'Neu'}],
         };
     },
 
-    components: { SidebarHeader },
+    components: {SidebarHeader},
 
     methods: {
         remove(membership) {
@@ -53,7 +83,7 @@ export default {
         },
 
         accept(payment) {
-            this.$inertia.patch(`/member/${this.value.id}/payment/${payment.id}`, { ...payment, status_id: 3 });
+            this.$inertia.patch(`/member/${this.value.id}/payment/${payment.id}`, {...payment, status_id: 3});
         },
 
         openLink(link) {
@@ -71,19 +101,19 @@ export default {
                 onFinish() {
                     _self.single = null;
                     _self.mode = null;
-                }
+                },
             };
 
-            this.mode === 'create' 
+            this.mode === 'create'
                 ? this.$inertia.post(`/member/${this.value.id}/membership`, this.single, options)
                 : this.$inertia.patch(`/member/${this.value.id}/membership/${this.single.id}`, this.single, options);
-        }
+        },
     },
 
     props: {
         value: {},
         activities: {},
         subactivities: {},
-    }
+    },
 };
 </script>

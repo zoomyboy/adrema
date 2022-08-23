@@ -18,6 +18,16 @@
             required
         ></f-text>
 
+        <f-text id="zipLocation" name="zipLocation" v-model="values.zipLocation" label="PLZ / Ort" required></f-text>
+        <f-select
+            id="country"
+            :options="countries"
+            name="country"
+            v-model="values.country"
+            label="Land"
+            required
+        ></f-select>
+
         <div class="border-gray-200 shadow shadow-primary-700 p-3 shadow-[0_0_4px_gray] col-span-2">
             <f-text
                 class="col-span-2"
@@ -52,6 +62,15 @@
         >
             Für Stadt erstellen
         </button>
+        <button
+            target="_BLANK"
+            type="submit"
+            name="type"
+            value="\App\Contribution\DvData"
+            class="btn btn-primary mt-3 inline-block"
+        >
+            Für DV erstellen
+        </button>
     </form>
 </template>
 
@@ -65,10 +84,14 @@ export default {
                 event_name: '',
                 dateFrom: '',
                 dateUntil: '',
+                zipLocation: '',
+                country: null,
             },
         };
     },
     props: {
+        countries: {},
+        defaultCountry: {},
         allMembers: {},
     },
     computed: {
@@ -104,6 +127,10 @@ export default {
 
             this.onSubmitMemberResult(this.memberResults[0]);
         },
+    },
+
+    created() {
+        this.values.country = this.defaultCountry;
     },
 };
 </script>

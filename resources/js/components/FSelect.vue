@@ -5,7 +5,7 @@
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
         <div class="real-field-wrap" :class="`size-${size}`">
-            <select :disabled="disabled" :value="value" @change="trigger">
+            <select :disabled="disabled" :name="name" :value="value" @change="trigger">
                 <option v-if="placeholder" v-html="placeholder" :value="null"></option>
 
                 <option
@@ -73,6 +73,9 @@ export default {
             required: false,
             type: Number,
             default: -1,
+        },
+        name: {
+            required: true,
         },
         hint: {},
         options: {

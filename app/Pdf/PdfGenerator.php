@@ -27,7 +27,9 @@ class PdfGenerator implements Responsable
         Storage::disk('temp')->put($this->dir.'/'.$this->repo->getFilename().'.tex', $this->compileView());
         Storage::disk('temp')->makeDirectory($this->dir);
 
-        $this->copyTemplateTo(Storage::disk('temp')->path($this->dir));
+        if ($this->repo->getTemplate()) {
+            $this->copyTemplateTo(Storage::disk('temp')->path($this->dir));
+        }
 
         $command = 'cd '.Storage::disk('temp')->path($this->dir);
         $command .= ' && '.env($this->repo->getScript()->value).' --halt-on-error '.$this->repo->getFilename().'.tex';

@@ -46,7 +46,13 @@
         <!-- ***************************** Hauptbereich ****************************** -->
         <div class="grow">
             <div class="grid grid-cols-2 gap-3 p-4" v-show="menuTitle == 'Stammdaten'">
-                <f-select id="gender_id" :options="genders" v-model="inner.gender_id" label="Geschlecht"></f-select>
+                <f-select
+                    id="gender_id"
+                    name="gender_id"
+                    :options="genders"
+                    v-model="inner.gender_id"
+                    label="Geschlecht"
+                ></f-select>
                 <f-text id="firstname" v-model="inner.firstname" label="Vorname" required></f-text>
                 <f-text id="lastname" v-model="inner.lastname" label="Nachname" required></f-text>
                 <f-text id="address" v-model="inner.address" label="Adresse" required></f-text>
@@ -54,12 +60,19 @@
                 <f-text id="zip" v-model="inner.zip" label="PLZ" required></f-text>
                 <f-text id="location" v-model="inner.location" label="Ort" required></f-text>
                 <f-text type="date" id="birthday" v-model="inner.birthday" label="Geburtsdatum" required></f-text>
-                <f-select :options="regions" id="region_id" v-model="inner.region_id" label="Bundesland"></f-select>
+                <f-select
+                    :options="regions"
+                    name="region_id"
+                    id="region_id"
+                    v-model="inner.region_id"
+                    label="Bundesland"
+                ></f-select>
                 <f-select
                     :options="countries"
                     id="country_id"
                     v-model="inner.country_id"
                     label="Land"
+                    name="country_id"
                     required
                 ></f-select>
                 <f-select
@@ -67,6 +80,7 @@
                     id="nationality_id"
                     v-model="inner.nationality_id"
                     label="Staatsangehörigkeit"
+                    name="nationality_id"
                     required
                 ></f-select>
                 <f-text
@@ -83,6 +97,7 @@
                         id="first_activity_id"
                         v-model="inner.first_activity_id"
                         label="Erste Tätigkeit"
+                        name="first_activity_id"
                         required
                     ></f-select>
                     <f-select
@@ -91,6 +106,7 @@
                         id="first_subactivity_id"
                         v-model="inner.first_subactivity_id"
                         label="Erste Untertätigkeit"
+                        name="first_subactivity_id"
                         required
                     ></f-select>
                 </div>
@@ -110,6 +126,7 @@
                     id="bill_kind_id"
                     v-model="inner.bill_kind_id"
                     label="Rechnung versenden über"
+                    name="bill_kind_id"
                 ></f-select>
             </div>
             <div class="grid grid-cols-2 gap-3 p-4" v-show="menuTitle == 'Prävention'">
@@ -200,6 +217,7 @@
                     id="subscription_id"
                     v-model="inner.subscription_id"
                     label="Beitrag"
+                    name="subscription_id"
                 ></f-select>
                 <f-textarea
                     class="col-span-2"
