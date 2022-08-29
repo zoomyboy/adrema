@@ -40,9 +40,24 @@
                 <td v-text="`${member.location}`"></td>
                 <td>
                     <div class="bool-row">
-                        <v-bool v-model="member.send_newspaper">M</v-bool>
-                        <v-bool v-model="member.has_nami">N</v-bool>
-                        <v-bool v-model="member.is_confirmed">C</v-bool>
+                        <v-bool
+                            true-comment="Mittendrin abonniert"
+                            false-comment="Mittendrin nicht abonníert"
+                            v-model="member.send_newspaper"
+                            >M</v-bool
+                        >
+                        <v-bool
+                            true-comment="In NaMi eingetragen"
+                            false-comment="Nicht in NaMi eingetragen"
+                            v-model="member.has_nami"
+                            >N</v-bool
+                        >
+                        <v-bool
+                            true-comment="Daten bestätigt"
+                            false-comment="Daten warten auf Bestätigung"
+                            v-model="member.is_confirmed"
+                            >C</v-bool
+                        >
                     </div>
                 </td>
                 <td v-text="member.subscription_name"></td>
