@@ -12,7 +12,7 @@ class EfzTest extends TestCase
 
     public function testItCreatesAEfzPdfFile(): void
     {
-        $this->withoutExceptionHandling()->login();
+        $this->withoutExceptionHandling()->login()->withNamiSettings();
         $member = Member::factory()->defaults()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
 
         $response = $this->get("/member/{$member->id}/efz");
