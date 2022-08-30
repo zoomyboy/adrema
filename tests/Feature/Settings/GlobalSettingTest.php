@@ -10,6 +10,13 @@ class GlobalSettingTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withNamiSettings();
+    }
+
     public function testItLoadsGeneralSettings(): void
     {
         GeneralSettings::fake([
