@@ -7,6 +7,7 @@ use App\Setting\NamiSettings;
 class Initializer
 {
     public NamiSettings $settings;
+
     public array $initializers = [
         InitializeGroups::class,
         InitializeNationalities::class,
