@@ -52,7 +52,7 @@ class StoreTest extends TestCase
      */
     public function testItValidatesInput(array $payload, array $errors): void
     {
-        $this->login();
+        $this->login()->withNamiSettings();
         $member = Member::factory()->defaults()->createOne();
         $course = Course::factory()->createOne();
 
