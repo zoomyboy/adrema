@@ -38,7 +38,7 @@ class IndexTest extends TestCase
                 'version' => 40,
             ]);
         $this->withoutExceptionHandling();
-        $this->login();
+        $this->login()->loginNami();
         Member::factory()->defaults()->has(CourseMember::factory()->for(Course::factory()), 'courses')->create(['firstname' => '::firstname::']);
 
         $response = $this->get('/member');
@@ -50,7 +50,7 @@ class IndexTest extends TestCase
     public function testItShowsEfzForEfzMembership(): void
     {
         $this->withoutExceptionHandling();
-        $this->login();
+        $this->login()->loginNami();
         $member = Member::factory()
             ->defaults()
             ->has(Membership::factory()->for(Subactivity::factory())->for(Activity::factory()->state(['has_efz' => true])))
