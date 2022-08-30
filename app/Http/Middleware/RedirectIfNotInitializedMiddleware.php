@@ -8,7 +8,7 @@ use Closure;
 
 class RedirectIfNotInitializedMiddleware
 {
-    public array $dontRedirect = ['initialize.index', 'initialize.store'];
+    public array $dontRedirect = ['initialize.form', 'initialize.store'];
 
     /**
      * Handle an incoming request.
@@ -28,7 +28,7 @@ class RedirectIfNotInitializedMiddleware
         }
 
         if (!$this->initialized()) {
-            return redirect()->route('initialize.index');
+            return redirect()->route('initialize.form');
         }
 
         return $next($request);

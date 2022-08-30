@@ -6,7 +6,7 @@ class CreateNamiSettings extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('nami.mglnr', (int) env('NAMI_MGLNR'));
-        $this->migrator->add('nami.password', env('NAMI_PASSWORD'));
+        $this->migrator->add('nami.mglnr', 0);
+        $this->migrator->add('nami.password', '');
     }
 }

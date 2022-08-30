@@ -8,13 +8,17 @@ use App\Country;
 use App\Course\Models\Course;
 use App\Gender;
 use App\Group;
+use App\Initialize\Actions\InitializeAction;
+use App\Initialize\InitializeJob;
 use App\Member\Member;
 use App\Nationality;
 use App\Setting\GeneralSettings;
+use App\Setting\NamiSettings;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 use Zoomyboy\LaravelNami\Fakes\GroupFake;
@@ -27,7 +31,7 @@ class InitializeTest extends TestCase
     public function initializeProvider(callable $callback = null): void
     {
         app(GroupFake::class)
-            ->fetches(null, [1000 => ['name' => '::group::']])
+            ->fetches(null, [1000 => ['name' => 'testgroup']])
             ->fetches(1000, []);
         $backend = app(FakeBackend::class)
             ->addSearch(123, ['entries_vorname' => '::firstname::', 'entries_nachname' => '::lastname::', 'entries_gruppierungId' => 1000])
@@ -56,7 +60,7 @@ class InitializeTest extends TestCase
                 'strasse' => '::street',
                 'plz' => '12346',
                 'ort' => '::location::',
-                'gruppierung' => '::group::',
+                'gruppierung' => 'testgroup',
                 'version' => 40,
             ]);
         } else {
@@ -68,12 +72,54 @@ class InitializeTest extends TestCase
         ]);
     }
 
+    public function testItSetsSettingsBeforeRunningInitializer(): void
+    {
+        $this->withoutExceptionHandling()->login();
+        InitializeAction::partialMock()->shouldReceive('handle')->with(12345, 'secret', 185)->once()->andReturn(true);
+
+        $response = $this->post('/initialize', [
+            'group_id' => 185,
+            'password' => 'secret',
+            'mglnr' => 12345,
+        ]);
+
+        $response->assertRedirect('/');
+        $settings = app(NamiSettings::class);
+        $this->assertEquals(12345, $settings->mglnr);
+        $this->assertEquals('secret', $settings->password);
+        $this->assertEquals(185, $settings->default_group_id);
+    }
+
+    public function testItValidatesSetupInfo(): void
+    {
+        $this->login();
+        InitializeAction::partialMock()->shouldReceive('handle')->never();
+
+        $response = $this->post('/initialize', [
+            'group_id' => null,
+            'password' => null,
+            'mglnr' => null,
+        ]);
+
+        $this->assertErrors(['password' => 'Passwort ist erforderlich.'], $response);
+    }
+
+    public function testItFiresJobWhenRunningInitializer(): void
+    {
+        Queue::fake();
+        $this->withoutExceptionHandling()->login();
+
+        app(InitializeAction::class)->handle(12345, 'secret', 185);
+
+        Queue::assertPushed(InitializeJob::class);
+    }
+
     public function testItInitializesAll(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         $this->initializeProvider();
 
-        $this->post('/initialize');
+        InitializeJob::dispatch();
 
         $this->assertDatabaseHas('regions', [
             'name' => 'nrw',
@@ -107,7 +153,7 @@ class InitializeTest extends TestCase
             'name' => '1a',
             'nami_id' => 506,
         ]);
-        $this->assertDatabaseHas('groups', ['nami_id' => 1000, 'name' => '::group::']);
+        $this->assertDatabaseHas('groups', ['nami_id' => 1000, 'name' => 'testgroup']);
         $this->assertDatabaseHas('members', [
             'nami_id' => 411,
             'gender_id' => Gender::nami(303)->id,
@@ -148,7 +194,7 @@ class InitializeTest extends TestCase
         });
         $this->login();
 
-        $this->post('/initialize');
+        InitializeJob::dispatch();
 
         $this->assertDatabaseHas('course_members', [
             'member_id' => Member::where('firstname', '::firstname::')->firstOrFail()->id,
@@ -190,7 +236,7 @@ class InitializeTest extends TestCase
                 [
                     'aktivVon' => '2021-08-22 00:00:00',
                     'aktivBis' => '',
-                    'gruppierung' => '::group::',
+                    'gruppierung' => 'testgroup',
                     'id' => 1077,
                     'taetigkeit' => '€ leiter (305)',
                     'untergliederung' => 'wö',
@@ -202,7 +248,7 @@ class InitializeTest extends TestCase
                         'subactivity_id' => Subactivity::where('nami_id', 306)->firstOrFail()->id,
                         'nami_id' => 1077,
                         'from' => '2021-08-22 00:00:00',
-                        'group_id' => Group::where('name', '::group::')->firstOrFail()->id,
+                        'group_id' => Group::where('name', 'testgroup')->firstOrFail()->id,
                     ]);
                 },
             ],
@@ -349,7 +395,7 @@ class InitializeTest extends TestCase
                     'memberships' => [array_merge([
                         'aktivVon' => '2021-08-22 00:00:00',
                         'aktivBis' => '',
-                        'gruppierung' => '::group::',
+                        'gruppierung' => 'testgroup',
                         'id' => 1077,
                         'taetigkeit' => 'leiter (305)',
                         'untergliederung' => 'wö',
@@ -359,7 +405,7 @@ class InitializeTest extends TestCase
             $backendCallback($backend);
         });
 
-        $this->post('/initialize');
+        InitializeJob::dispatch();
 
         $dbcheck($this);
     }
@@ -372,7 +418,7 @@ class InitializeTest extends TestCase
         });
         $this->login();
 
-        $this->post('/initialize');
+        InitializeJob::dispatch();
 
         $this->assertDatabaseCount('members', 0);
     }
@@ -409,7 +455,7 @@ class InitializeTest extends TestCase
         });
         $this->login();
 
-        $this->post('/initialize');
+        InitializeJob::dispatch();
 
         $this->assertDatabaseCount('members', $num);
     }
@@ -452,7 +498,7 @@ class InitializeTest extends TestCase
             'plz' => '12346',
             'ort' => '::location::',
             'version' => 40,
-            'gruppierung' => '::group::',
+            'gruppierung' => 'testgroup',
         ], $overwrites);
     }
 }

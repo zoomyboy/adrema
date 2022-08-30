@@ -3,7 +3,8 @@
 use App\Contribution\ContributionController;
 use App\Course\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
-use App\Initialize\InitializeController;
+use App\Initialize\Actions\InitializeAction;
+use App\Initialize\Actions\InitializeFormAction;
 use App\Member\Controllers\MemberResyncController;
 use App\Member\MemberConfirmController;
 use App\Member\MemberController;
@@ -22,7 +23,8 @@ Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
 
 Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/', HomeController::class)->name('home');
-    Route::resource('initialize', InitializeController::class);
+    Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
+    Route::post('/initialize', InitializeAction::class)->name('initialize.store');
     Route::resource('member', MemberController::class);
     Route::resource('member.payment', PaymentController::class);
     Route::resource('allpayment', AllpaymentController::class);
