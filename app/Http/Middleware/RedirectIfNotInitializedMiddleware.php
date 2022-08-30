@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Providers\RouteServiceProvider;
+use App\Setting\NamiSettings;
 use Closure;
 
 class RedirectIfNotInitializedMiddleware
@@ -17,6 +19,10 @@ class RedirectIfNotInitializedMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if ($this->initialized() && request()->routeIs(['initialize.form'])) {
+            return redirect()->to(RouteServiceProvider::HOME);
+        }
+
         if (!$this->shouldRedirect()) {
             return $next($request);
         }
@@ -35,6 +41,6 @@ class RedirectIfNotInitializedMiddleware
 
     public function initialized(): bool
     {
-        return \App\Fee::count() > 0;
+        return 0 !== app(NamiSettings::class)->default_group_id;
     }
 }
