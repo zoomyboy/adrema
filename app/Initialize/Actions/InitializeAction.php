@@ -60,6 +60,6 @@ class InitializeAction
             (int) $request->input('group_id', 0)
         );
 
-        return redirect()->route('home');
+        return redirect()->route('home')->success('Initialisierung beauftragt. Wir benachrichtigen dich per Mail wenn alles fertig ist.');
     }
 }

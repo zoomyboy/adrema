@@ -3,6 +3,7 @@
 namespace App\Initialize;
 
 use App\Group;
+use DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeGroups
@@ -29,5 +30,10 @@ class InitializeGroups
             $newParent = Group::updateOrCreate(['nami_id' => $subgroup->id], ['nami_id' => $subgroup->id, 'name' => $subgroup->name, 'parent_id' => $parent->id]);
             $this->syncChildren($subgroup->id, $newParent);
         });
+    }
+
+    public function restore(): void
+    {
+        DB::table('groups')->delete();
     }
 }

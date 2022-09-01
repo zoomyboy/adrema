@@ -3,6 +3,7 @@
 namespace App\Initialize;
 
 use App\Fee;
+use DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeFees
@@ -24,5 +25,11 @@ class InitializeFees
                     'amount' => 1000,
                 ]);
         });
+    }
+
+    public function restore(): void
+    {
+        DB::table('subscriptions')->delete();
+        DB::table('fees')->delete();
     }
 }

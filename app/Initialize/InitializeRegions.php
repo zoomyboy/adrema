@@ -2,6 +2,7 @@
 
 namespace App\Initialize;
 
+use DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeRegions
@@ -19,5 +20,10 @@ class InitializeRegions
         $this->api->regions()->each(function ($region) {
             \App\Region::create(['nami_id' => $region->id, 'name' => $region->name, 'is_null' => $region->name == $this->nullName]);
         });
+    }
+
+    public function restore(): void
+    {
+        DB::table('regions')->delete();
     }
 }

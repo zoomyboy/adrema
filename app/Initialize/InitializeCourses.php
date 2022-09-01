@@ -3,6 +3,7 @@
 namespace App\Initialize;
 
 use App\Course\Models\Course;
+use DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeCourses
@@ -19,5 +20,10 @@ class InitializeCourses
         $this->api->courses()->each(function ($course) {
             Course::create(['nami_id' => $course->id, 'name' => $course->name]);
         });
+    }
+
+    public function restore(): void
+    {
+        DB::table('courses')->delete();
     }
 }

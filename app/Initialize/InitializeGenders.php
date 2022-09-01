@@ -2,6 +2,7 @@
 
 namespace App\Initialize;
 
+use DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeGenders
@@ -18,5 +19,10 @@ class InitializeGenders
         $this->api->genders()->each(function ($gender) {
             \App\Gender::create(['nami_id' => $gender->id, 'name' => $gender->name]);
         });
+    }
+
+    public function restore(): void
+    {
+        DB::table('genders')->delete();
     }
 }

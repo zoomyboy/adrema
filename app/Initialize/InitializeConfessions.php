@@ -3,6 +3,7 @@
 namespace App\Initialize;
 
 use App\Confession;
+use DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeConfessions
@@ -20,5 +21,10 @@ class InitializeConfessions
         $this->api->confessions()->each(function ($confession) {
             Confession::create(['nami_id' => $confession->id, 'name' => $confession->name, 'is_null' => $this->nullName === $confession->name]);
         });
+    }
+
+    public function restore(): void
+    {
+        DB::table('confessions')->delete();
     }
 }

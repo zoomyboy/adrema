@@ -3,6 +3,7 @@
 namespace App\Initialize;
 
 use App\Nationality;
+use DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeNationalities
@@ -19,5 +20,10 @@ class InitializeNationalities
         $this->api->nationalities()->each(function ($nationality) {
             Nationality::create(['nami_id' => $nationality->id, 'name' => $nationality->name]);
         });
+    }
+
+    public function restore(): void
+    {
+        DB::table('nationalities')->delete();
     }
 }

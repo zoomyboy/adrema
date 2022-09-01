@@ -2,6 +2,7 @@
 
 namespace App\Initialize;
 
+use DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeCountries
@@ -18,5 +19,10 @@ class InitializeCountries
         $this->api->countries()->each(function ($country) {
             \App\Country::create(['nami_id' => $country->id, 'name' => $country->name]);
         });
+    }
+
+    public function restore(): void
+    {
+        DB::table('countries')->delete();
     }
 }
