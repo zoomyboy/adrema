@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
+use Zoomyboy\LaravelNami\Authentication\Auth;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 use Zoomyboy\LaravelNami\Fakes\GroupFake;
 use Zoomyboy\LaravelNami\Fakes\SearchFake;
@@ -76,6 +77,8 @@ class InitializeTest extends TestCase
     {
         $this->withoutExceptionHandling()->login();
         InitializeAction::partialMock()->shouldReceive('handle')->with(12345, 'secret', 185)->once()->andReturn(true);
+        Auth::success(12345, 'secret');
+        app(GroupFake::class)->fetches(null, [185 => ['name' => 'testgroup']]);
 
         $response = $this->post('/initialize', [
             'group_id' => 185,
@@ -102,6 +105,39 @@ class InitializeTest extends TestCase
         ]);
 
         $this->assertErrors(['password' => 'Passwort ist erforderlich.'], $response);
+        $this->assertErrors(['mglnr' => 'Mitgliedsnummer ist erforderlich.'], $response);
+        $this->assertErrors(['group_id' => 'Gruppierungsnr ist erforderlich.'], $response);
+    }
+
+    public function testItValidatesLogin(): void
+    {
+        $this->login();
+        Auth::fails(12345, 'secret');
+        InitializeAction::partialMock()->shouldReceive('handle')->never();
+
+        $response = $this->post('/initialize', [
+            'group_id' => 12345,
+            'password' => 'secret',
+            'mglnr' => 100102,
+        ]);
+
+        $this->assertErrors(['nami' => 'NaMi Login fehlgeschlagen.'], $response);
+    }
+
+    public function testItValidatesGroupExistance(): void
+    {
+        $this->login();
+        InitializeAction::partialMock()->shouldReceive('handle')->never();
+        Auth::success(12345, 'secret');
+        app(GroupFake::class)->fetches(null, []);
+
+        $response = $this->post('/initialize', [
+            'group_id' => 185,
+            'password' => 'secret',
+            'mglnr' => 12345,
+        ]);
+
+        $this->assertErrors(['nami' => 'Gruppierung nicht gefunden.'], $response);
     }
 
     public function testItFiresJobWhenRunningInitializer(): void
