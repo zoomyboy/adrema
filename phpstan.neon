@@ -15,5 +15,3 @@ parameters:
         - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::api\(\)#'
         - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::getNamiGroupId\(\)#'
         - '#Illuminate\\Contracts\\Auth\\Authenticatable\|null given#'
-
-    checkMissingIterableValueType: false
