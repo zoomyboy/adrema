@@ -47,7 +47,7 @@ abstract class TestCase extends BaseTestCase
 
     public function failedNami(int $mglnr = 12345, string $password = 'password'): self
     {
-        Auth::failed($mglnr, $password);
+        Auth::fails($mglnr, $password);
         NamiSettings::fake([
             'mglnr' => $mglnr,
             'password' => $password,
