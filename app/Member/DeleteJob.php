@@ -21,7 +21,6 @@ class DeleteJob implements ShouldQueue
     public function __construct(Member $member)
     {
         $this->memberId = $member->id;
-        $this->user = $user;
     }
 
     /**
