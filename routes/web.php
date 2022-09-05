@@ -15,7 +15,8 @@ use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
 use App\Pdf\MemberEfzController;
 use App\Pdf\MemberPdfController;
-use App\Setting\Controllers\SettingController;
+use App\Setting\SettingIndexAction;
+use App\Setting\SettingSaveAction;
 
 Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
     Auth::routes(['register' => false]);
@@ -35,7 +36,8 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
     Route::apiResource('member.membership', MembershipController::class);
-    Route::resource('setting', SettingController::class);
+    Route::get('setting', SettingIndexAction::class);
+    Route::post('setting', SettingSaveAction::class);
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', MemberEfzController::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncController::class)->name('member.resync');

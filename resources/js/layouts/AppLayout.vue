@@ -15,6 +15,7 @@
                 <v-link href="/contribution" menu="contribution" icon="contribution">Zuschüsse</v-link>
             </div>
             <div class="grid gap-2">
+                <v-link href="/setting" menu="setting" icon="setting">Einstellungen</v-link>
                 <v-link @click.prevent="$inertia.post('/logout')" icon="logout" href="/logout">Abmelden</v-link>
             </div>
         </div>

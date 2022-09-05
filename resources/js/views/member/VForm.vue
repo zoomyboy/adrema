@@ -17,20 +17,8 @@
         </popup>
 
         <!-- ****************************** menu links ******************************* -->
-        <div class="p-6 bg-gray-700 border-r border-gray-600 flex-none w-maxc flex flex-col justify-between">
-            <div class="grid gap-1">
-                <a
-                    v-for="(item, index) in menu"
-                    :key="index"
-                    href="#"
-                    :data-cy="`menu-${item.id}`"
-                    @click.prevent="openMenu(index)"
-                    class="rounded py-1 px-3 text-gray-400"
-                    :class="index == active ? `bg-gray-600` : ''"
-                    v-text="item.title"
-                ></a>
-            </div>
-            <div>
+        <v-tabs v-model="active" :entries="menu">
+            <div slot="bottom">
                 <button
                     type="button"
                     v-show="mode !== 'create'"
@@ -41,7 +29,7 @@
                 </button>
                 <button type="submit" class="mt-3 btn block w-full btn-primary">Speichern</button>
             </div>
-        </div>
+        </v-tabs>
 
         <!-- ***************************** Hauptbereich ****************************** -->
         <div class="grow">
@@ -277,9 +265,6 @@ export default {
         confirm() {
             this.$inertia.post(`/member/${this.inner.id}/confirm`);
         },
-        openMenu(index) {
-            this.active = index;
-        },
         submit() {
             this.mode === 'create'
                 ? this.$inertia.post(`/member`, this.inner)
@@ -292,7 +277,8 @@ export default {
     },
 
     components: {
-        popup: () => import('../../components/Popup.vue'),
+        'popup': () => import('../../components/Popup.vue'),
+        'v-tabs': () => import('../../components/VTabs.vue'),
     },
 
     computed: {
