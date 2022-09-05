@@ -2,6 +2,7 @@
 
 namespace App\Member;
 
+use App\Setting\NamiSettings;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -28,7 +29,7 @@ class DeleteJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(NamiSettings $setting)
     {
         $this->member = Member::find($this->memberId);
 
