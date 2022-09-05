@@ -25,9 +25,15 @@
             </thead>
 
             <tr v-for="(member, index) in data.data" :key="index">
-                <td class="w-3">
+                <td class="w-3 flex gap-1">
                     <svg-sprite
-                        class="w-3 h-3"
+                        class="w-3 h-3 flex-none"
+                        v-if="member.is_leader"
+                        :class="ageColors.leiter"
+                        src="lilie"
+                    ></svg-sprite>
+                    <svg-sprite
+                        class="w-3 h-3 flex-none"
                         v-if="member.age_group_icon"
                         :class="ageColors[member.age_group_icon]"
                         src="lilie"

@@ -28,6 +28,7 @@ use Zoomyboy\LaravelNami\Data\MembershipEntry;
  * @property int            $pending_payment
  * @property bool           $is_confirmed
  * @property string         $age_group_icon
+ * @property bool           $is_leader
  * @property \Carbon\Carbon $try_created_at
  */
 class Member extends Model
@@ -55,6 +56,7 @@ class Member extends Model
         'has_vk' => 'boolean',
         'multiply_pv' => 'boolean',
         'multiply_more_pv' => 'boolean',
+        'is_leader' => 'boolean',
     ];
 
     public function scopeSearch(Builder $q, ?string $text): Builder
@@ -250,6 +252,11 @@ class Member extends Model
                 ->whereColumn('memberships.member_id', 'members.id')
                 ->limit(1),
         ]);
+    }
+
+    public function scopeWithIsLeader(Builder $q): Builder
+    {
+        return $q->selectSub('EXISTS(SELECT memberships.id FROM memberships INNER JOIN activities ON activities.id=memberships.activity_id INNER JOIN subactivities ON subactivities.id=memberships.subactivity_id WHERE members.id=memberships.member_id AND subactivities.is_age_group=1 AND activities.has_efz=1)', 'is_leader');
     }
 
     public function scopeWhereHasPendingPayment(Builder $q): Builder

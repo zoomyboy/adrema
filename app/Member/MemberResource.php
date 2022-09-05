@@ -72,6 +72,7 @@ class MemberResource extends JsonResource
             'multiply_pv' => $this->multiply_pv,
             'multiply_more_pv' => $this->multiply_more_pv,
             'age' => $this->getModel()->getAge(),
+            'is_leader' => $this->is_leader,
         ];
     }
 }

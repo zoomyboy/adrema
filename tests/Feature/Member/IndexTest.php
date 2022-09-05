@@ -53,11 +53,11 @@ class IndexTest extends TestCase
         $this->login()->loginNami();
         $member = Member::factory()
             ->defaults()
-            ->has(Membership::factory()->for(Subactivity::factory())->for(Activity::factory()->state(['has_efz' => true])))
+            ->has(Membership::factory()->for(Subactivity::factory()->ageGroup())->for(Activity::factory()->state(['has_efz' => true])))
             ->create(['lastname' => 'A']);
         Member::factory()
             ->defaults()
-            ->has(Membership::factory()->for(Subactivity::factory())->for(Activity::factory()->state(['has_efz' => false])))
+            ->has(Membership::factory()->for(Subactivity::factory()->ageGroup())->for(Activity::factory()->state(['has_efz' => false])))
             ->create(['lastname' => 'B']);
         Member::factory()
             ->defaults()
@@ -68,5 +68,8 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(url("/member/{$member->id}/efz"), $response, 'data.data.0.efz_link');
         $this->assertInertiaHas(null, $response, 'data.data.1.efz_link');
         $this->assertInertiaHas(null, $response, 'data.data.2.efz_link');
+        $this->assertInertiaHas(true, $response, 'data.data.0.is_leader');
+        $this->assertInertiaHas(false, $response, 'data.data.1.is_leader');
+        $this->assertInertiaHas(false, $response, 'data.data.2.is_leader');
     }
 }

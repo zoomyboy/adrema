@@ -29,4 +29,9 @@ class SubactivityFactory extends Factory
     {
         return $this->state(['nami_id' => $namiId]);
     }
+
+    public function ageGroup(): self
+    {
+        return $this->state(['is_age_group' => true]);
+    }
 }
