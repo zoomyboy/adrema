@@ -29,7 +29,7 @@
                     <svg-sprite
                         class="w-3 h-3"
                         v-if="member.age_group_icon"
-                        :class="`text-${member.age_group_icon}`"
+                        :class="ageColors[member.age_group_icon]"
                         src="lilie"
                     ></svg-sprite>
                 </td>
@@ -157,6 +157,14 @@ export default {
         return {
             sidebar: null,
             single: null,
+            ageColors: {
+                biber: 'text-biber',
+                woelfling: 'text-woelfling',
+                jungpfadfinder: 'text-jungpfadfinder',
+                pfadfinder: 'text-pfadfinder',
+                rover: 'text-rover',
+                leiter: 'text-leiter',
+            },
         };
     },
 
