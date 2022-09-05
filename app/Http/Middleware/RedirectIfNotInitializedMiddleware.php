@@ -19,6 +19,10 @@ class RedirectIfNotInitializedMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if (1 === preg_match('/\/telescope/', $request->url())) {
+            return $next($request);
+        }
+
         if ($this->initialized() && request()->routeIs(['initialize.form'])) {
             return redirect()->to(RouteServiceProvider::HOME);
         }
