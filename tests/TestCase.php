@@ -9,6 +9,8 @@ use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Testing\TestResponse;
+use Mockery as M;
+use Mockery\MockInterface;
 use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
 
@@ -85,6 +87,21 @@ abstract class TestCase extends BaseTestCase
             $this->assertTrue($sessionErrors->has($key), "Cannot find key {$key} in errors '".print_r($sessionErrors, true));
             $this->assertEquals($value, $sessionErrors->get($key)[0], "Failed to validate value for session error key {$key}. Actual value: ".print_r($sessionErrors, true));
         }
+
+        return $this;
+    }
+
+    /**
+     * @param <class-string> $class
+     * @param callable(MockInterface $mock): void $mocker
+     */
+    public function stubIo(string $class, callable $mocker): self
+    {
+        $mock = M::mock($class);
+
+        $mocker($mock);
+
+        app()->instance($class, $mock);
 
         return $this;
     }

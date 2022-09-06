@@ -3,27 +3,19 @@
 namespace Tests\Feature\Initialize;
 
 use App\Activity;
-use App\Console\Commands\NamiInitializeCommand;
 use App\Country;
 use App\Course\Models\Course;
 use App\Gender;
 use App\Group;
-use App\Initialize\Actions\InitializeAction;
 use App\Initialize\InitializeJob;
 use App\Member\Member;
 use App\Nationality;
-use App\Setting\GeneralSettings;
-use App\Setting\NamiSettings;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
-use Zoomyboy\LaravelNami\Authentication\Auth;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
 use Zoomyboy\LaravelNami\Fakes\GroupFake;
-use Zoomyboy\LaravelNami\Fakes\SearchFake;
 
 class InitializeTest extends TestCase
 {
@@ -71,83 +63,6 @@ class InitializeTest extends TestCase
         $backend->fakeSubactivities([
             305 => [['name' => 'wö', 'id' => 306]],
         ]);
-    }
-
-    public function testItSetsSettingsBeforeRunningInitializer(): void
-    {
-        $this->withoutExceptionHandling()->login();
-        InitializeAction::partialMock()->shouldReceive('handle')->with(12345, 'secret', 185)->once()->andReturn(true);
-        Auth::success(12345, 'secret');
-        app(GroupFake::class)->fetches(null, [185 => ['name' => 'testgroup']]);
-
-        $response = $this->post('/initialize', [
-            'group_id' => 185,
-            'password' => 'secret',
-            'mglnr' => 12345,
-        ]);
-
-        $response->assertRedirect('/');
-        $settings = app(NamiSettings::class);
-        $this->assertEquals(12345, $settings->mglnr);
-        $this->assertEquals('secret', $settings->password);
-        $this->assertEquals(185, $settings->default_group_id);
-    }
-
-    public function testItValidatesSetupInfo(): void
-    {
-        $this->login();
-        InitializeAction::partialMock()->shouldReceive('handle')->never();
-
-        $response = $this->post('/initialize', [
-            'group_id' => null,
-            'password' => null,
-            'mglnr' => null,
-        ]);
-
-        $this->assertErrors(['password' => 'Passwort ist erforderlich.'], $response);
-        $this->assertErrors(['mglnr' => 'Mitgliedsnummer ist erforderlich.'], $response);
-        $this->assertErrors(['group_id' => 'Gruppierungsnr ist erforderlich.'], $response);
-    }
-
-    public function testItValidatesLogin(): void
-    {
-        $this->login();
-        Auth::fails(12345, 'secret');
-        InitializeAction::partialMock()->shouldReceive('handle')->never();
-
-        $response = $this->post('/initialize', [
-            'group_id' => 12345,
-            'password' => 'secret',
-            'mglnr' => 100102,
-        ]);
-
-        $this->assertErrors(['nami' => 'NaMi Login fehlgeschlagen.'], $response);
-    }
-
-    public function testItValidatesGroupExistance(): void
-    {
-        $this->login();
-        InitializeAction::partialMock()->shouldReceive('handle')->never();
-        Auth::success(12345, 'secret');
-        app(GroupFake::class)->fetches(null, []);
-
-        $response = $this->post('/initialize', [
-            'group_id' => 185,
-            'password' => 'secret',
-            'mglnr' => 12345,
-        ]);
-
-        $this->assertErrors(['nami' => 'Gruppierung nicht gefunden.'], $response);
-    }
-
-    public function testItFiresJobWhenRunningInitializer(): void
-    {
-        Queue::fake();
-        $this->withoutExceptionHandling()->login();
-
-        app(InitializeAction::class)->handle(12345, 'secret', 185);
-
-        Queue::assertPushed(InitializeJob::class);
     }
 
     public function testItInitializesAll(): void
@@ -204,20 +119,6 @@ class InitializeTest extends TestCase
         $this->assertEquals([306], Activity::where('nami_id', 305)->firstOrFail()->subactivities()->pluck('nami_id')->toArray());
 
         Http::assertSentCount(17);
-    }
-
-    public function testItInitializesFromCommandLine(): void
-    {
-        $this->withoutExceptionHandling()->loginNami();
-        $this->initializeProvider();
-        GeneralSettings::fake(['allowed_nami_accounts' => [123]]);
-
-        Artisan::call(NamiInitializeCommand::class);
-
-        $this->assertDatabaseHas('regions', [
-            'name' => 'nrw',
-            'nami_id' => 304,
-        ]);
     }
 
     public function testSyncCoursesOfMember(): void
@@ -494,21 +395,6 @@ class InitializeTest extends TestCase
         InitializeJob::dispatch();
 
         $this->assertDatabaseCount('members', $num);
-    }
-
-    public function testRenderErrorInConsoleWhenUsingArtisan(): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        $this->initializeProvider(function ($backend) {
-            app(SearchFake::class)->fetchFails($page = 1, $start = 0, 'search error');
-        });
-        $this->login();
-
-        $command = $this->artisan(NamiInitializeCommand::class);
-
-        $command->assertFailed();
-        $command->expectsOutput('response: {"success":false,"message":"search error"}');
-        $command->expectsOutput('Search failed');
     }
 
     /**
