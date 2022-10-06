@@ -360,6 +360,7 @@ class Member extends Model
             'TEL' => $this->mobile_phone,
             'N' => [$this->lastname, $this->firstname, '', '', ''],
             'BDAY' => $this->birthday->format('Ymd'),
+            'CATEGORIES' => 'Scoutrobot',
         ]);
 
         if ($this->preferred_phone) {
@@ -374,22 +375,26 @@ class Member extends Model
             $card->add('TEL', $this->work_phone, ['type' => 'work']);
         }
 
-        if ($this->email) {
-            $card->add('EMAIL', $this->email, ['type' => 'pref']);
-        }
-        if ($this->email_parents) {
-            $card->add('EMAIL', $this->email_parents, ['type' => 'internet']);
+        if ($this->children_phone) {
+            $card->add('TEL', $this->children_phone, ['type' => 'Kind']);
         }
 
-        $card->add('ADDR', [
-            $this->fullname,
-            $this->fullAddress,
+        if ($this->email) {
+            $card->add('EMAIL', $this->email, ['type' => 'Kind']);
+        }
+        if ($this->email_parents) {
+            $card->add('EMAIL', $this->email_parents, ['type' => 'Eltern']);
+        }
+
+        $card->add('ADR', [
+            '',
+            '',
             $this->address ?: '',
             $this->location ?: '',
             $this->region?->name ?: '',
             $this->zip ?: '',
             $this->country?->name ?: '',
-        ], ['type' => 'postal']);
+        ]);
 
         return $card;
     }
