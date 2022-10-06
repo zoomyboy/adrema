@@ -151,7 +151,7 @@ class Principal implements PrincipalBackendInterface
      */
     public function getGroupMembership($principal)
     {
-        if (1 !== preg_match('/^\/principals\/(.*)$/', $principal, $matches)) {
+        if (1 !== preg_match('/^\/?principals\/(.*)$/', $principal, $matches)) {
             return null;
         }
 
