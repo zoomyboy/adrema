@@ -14,12 +14,14 @@ use App\Payment\Subscription;
 use App\Region;
 use App\Setting\NamiSettings;
 use App\Subactivity;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use Sabre\VObject\Component\VCard;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Data\MembershipEntry;
 
@@ -35,10 +37,11 @@ class Member extends Model
 {
     use Notifiable;
     use HasFactory;
+    use Sluggable;
 
     public $guarded = [];
 
-    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id'];
+    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug'];
 
     public $dates = ['try_created_at', 'joined_at', 'birthday'];
 
@@ -58,6 +61,13 @@ class Member extends Model
         'multiply_more_pv' => 'boolean',
         'is_leader' => 'boolean',
     ];
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => ['source' => ['firstname', 'lastname']],
+        ];
+    }
 
     public function scopeSearch(Builder $q, ?string $text): Builder
     {
@@ -91,6 +101,24 @@ class Member extends Model
     public function getFullnameAttribute(): string
     {
         return $this->firstname.' '.$this->lastname;
+    }
+
+    public function getPreferredPhoneAttribute(): ?string
+    {
+        if ($this->mobile_phone) {
+            return $this->mobile_phone;
+        }
+
+        if ($this->main_phone) {
+            return $this->main_phone;
+        }
+
+        return null;
+    }
+
+    public function getEtagAttribute(): string
+    {
+        return $this->updated_at->timestamp.'_'.$this->version;
     }
 
     public function getFullAddressAttribute(): string
@@ -323,5 +351,46 @@ class Member extends Model
                     ->join('activities', 'activities.id', 'memberships.activity_id')
                     ->where('activities.is_try', true),
             ]);
+    }
+
+    public function toVcard(): VCard
+    {
+        $card = new VCard([
+            'FN' => $this->fullname,
+            'TEL' => $this->mobile_phone,
+            'N' => [$this->lastname, $this->firstname, '', '', ''],
+            'BDAY' => $this->birthday->format('Ymd'),
+        ]);
+
+        if ($this->preferred_phone) {
+            $card->add('TEL', $this->preferred_phone, ['type' => 'pref,voice']);
+        }
+
+        if ($this->mobile_phone) {
+            $card->add('TEL', $this->mobile_phone, ['type' => 'cell']);
+        }
+
+        if ($this->work_phone) {
+            $card->add('TEL', $this->work_phone, ['type' => 'work']);
+        }
+
+        if ($this->email) {
+            $card->add('EMAIL', $this->email, ['type' => 'pref']);
+        }
+        if ($this->email_parents) {
+            $card->add('EMAIL', $this->email_parents, ['type' => 'internet']);
+        }
+
+        $card->add('ADDR', [
+            $this->fullname,
+            $this->fullAddress,
+            $this->address ?: '',
+            $this->location ?: '',
+            $this->region?->name ?: '',
+            $this->zip ?: '',
+            $this->country?->name ?: '',
+        ], ['type' => 'postal']);
+
+        return $card;
     }
 }
