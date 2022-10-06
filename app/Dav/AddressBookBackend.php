@@ -33,7 +33,7 @@ class AddressBookBackend extends AbstractBackend
      */
     public function getAddressBooksForUser($principalUri)
     {
-        if (1 !== preg_match('/^\/principals\/(.*)$/', $principalUri, $matches)) {
+        if (1 !== preg_match('/^principals\/(.*)$/', $principalUri, $matches)) {
             return [];
         }
 

@@ -151,6 +151,11 @@ class Principal implements PrincipalBackendInterface
      */
     public function getGroupMembership($principal)
     {
+        if (1 !== preg_match('/^\/principals\/(.*)$/', $principal, $matches)) {
+            return null;
+        }
+
+        return ['addressbooks/'.$matches[1]];
     }
 
     /**
@@ -171,7 +176,7 @@ class Principal implements PrincipalBackendInterface
     {
         return [
             '{DAV:}displayname' => $user->name,
-            'uri' => '/principals/'.$user->email,
+            'uri' => 'principals/'.$user->email,
             '{http://sabredav.org/ns}email-address' => $user->email,
         ];
     }
