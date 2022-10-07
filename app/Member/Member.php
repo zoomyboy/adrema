@@ -408,42 +408,30 @@ class Member extends Model
         $card = new VCard([
             'VERSION' => '3.0',
             'FN' => $this->fullname,
-            'TEL' => $this->mobile_phone,
             'N' => [$this->lastname, $this->firstname, '', '', ''],
             'BDAY' => $this->birthday->format('Ymd'),
             'CATEGORIES' => 'Scoutrobot',
             'UID' => $this->slug,
         ]);
 
-        $card->add('child.X-ABLABEL', 'Kind');
-        $card->add('parent.X-ABLABEL', 'Eltern');
-
-        if ($this->preferred_phone) {
-            $card->add('TEL', $this->preferred_phone, ['type' => 'pref']);
-        }
-
-        if ($this->preferred_email) {
-            $card->add('EMAIL', $this->preferred_email, ['type' => 'pref']);
+        if ($this->main_phone) {
+            $card->add('TEL', $this->main_phone, ['type' => 'voice']);
         }
 
         if ($this->mobile_phone) {
-            $card->add('TEL', $this->mobile_phone, ['type' => 'cell']);
-        }
-
-        if ($this->work_phone) {
-            $card->add('TEL', $this->work_phone, ['type' => 'work']);
+            $card->add('TEL', $this->mobile_phone, ['type' => 'work']);
         }
 
         if ($this->children_phone) {
-            $card->add('child.TEL', $this->children_phone);
+            $card->add('TEL', $this->children_phone, ['type' => 'cell']);
         }
 
         if ($this->email) {
-            $card->add('child.EMAIL', $this->email);
+            $card->add('EMAIL', $this->email, ['type' => 'internet']);
         }
 
         if ($this->email_parents) {
-            $card->add('parent.EMAIL', $this->email_parents);
+            $card->add('EMAIL', $this->email_parents, ['type' => 'aol']);
         }
 
         $card->add('ADR', [
