@@ -393,7 +393,7 @@ class Member extends Model
         $card->add('parent.X-ABLABEL', 'Eltern');
 
         if ($this->preferred_phone) {
-            $card->add('parent.TEL', $this->preferred_phone, ['type' => 'pref']);
+            $card->add('TEL', $this->preferred_phone, ['type' => 'pref']);
         }
 
         if ($this->preferred_email) {
