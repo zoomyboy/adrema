@@ -41,10 +41,19 @@ class Member extends Model
 
     public $guarded = [];
 
+    /**
+     * @var array<int, string>
+     */
     public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug'];
 
+    /**
+     * @var array<int, string>
+     */
     public $dates = ['try_created_at', 'joined_at', 'birthday'];
 
+    /**
+     * @var array<string, string>
+     */
     public $casts = [
         'pending_payment' => 'integer',
         'send_newspaper' => 'boolean',
@@ -62,6 +71,9 @@ class Member extends Model
         'is_leader' => 'boolean',
     ];
 
+    /**
+     * @return array<string, array{source: array<int, string>}>
+     */
     public function sluggable(): array
     {
         return [
@@ -111,6 +123,19 @@ class Member extends Model
 
         if ($this->main_phone) {
             return $this->main_phone;
+        }
+
+        return null;
+    }
+
+    public function getPreferredEmailAttribute(): ?string
+    {
+        if ($this->email) {
+            return $this->email;
+        }
+
+        if ($this->email_parents) {
+            return $this->email_parents;
         }
 
         return null;
@@ -356,6 +381,7 @@ class Member extends Model
     public function toVcard(): VCard
     {
         $card = new VCard([
+            'VERSION' => '3.0',
             'FN' => $this->fullname,
             'TEL' => $this->mobile_phone,
             'N' => [$this->lastname, $this->firstname, '', '', ''],
@@ -363,8 +389,15 @@ class Member extends Model
             'CATEGORIES' => 'Scoutrobot',
         ]);
 
+        $card->add('child.X-ABLABEL', 'Kind');
+        $card->add('parent.X-ABLABEL', 'Eltern');
+
         if ($this->preferred_phone) {
-            $card->add('TEL', $this->preferred_phone, ['type' => 'pref,voice']);
+            $card->add('parent.TEL', $this->preferred_phone, ['type' => 'pref']);
+        }
+
+        if ($this->preferred_email) {
+            $card->add('EMAIL', $this->preferred_email, ['type' => 'pref']);
         }
 
         if ($this->mobile_phone) {
@@ -376,14 +409,15 @@ class Member extends Model
         }
 
         if ($this->children_phone) {
-            $card->add('TEL', $this->children_phone, ['type' => 'Kind']);
+            $card->add('child.TEL', $this->children_phone);
         }
 
         if ($this->email) {
-            $card->add('EMAIL', $this->email, ['type' => 'Kind']);
+            $card->add('child.EMAIL', $this->email);
         }
+
         if ($this->email_parents) {
-            $card->add('EMAIL', $this->email_parents, ['type' => 'Eltern']);
+            $card->add('parent.EMAIL', $this->email_parents);
         }
 
         $card->add('ADR', [
