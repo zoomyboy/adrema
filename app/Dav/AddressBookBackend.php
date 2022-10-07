@@ -137,7 +137,11 @@ class AddressBookBackend extends AbstractBackend
      */
     public function getCard($addressBookId, $cardUri)
     {
-        $member = Member::where('slug', $cardUri)->firstOrFail();
+        $member = Member::where('slug', $cardUri)->first();
+
+        if (!$member) {
+            return false;
+        }
 
         return [
             ...$this->cardMeta($member),
@@ -193,7 +197,10 @@ class AddressBookBackend extends AbstractBackend
      */
     public function createCard($addressBookId, $cardUri, $cardData)
     {
-        return null;
+        $member = Member::fromVcard($cardUri, $cardData);
+        $member->save();
+
+        return $member->fresh()->etag;
     }
 
     /**

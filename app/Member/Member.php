@@ -14,6 +14,7 @@ use App\Payment\Subscription;
 use App\Region;
 use App\Setting\NamiSettings;
 use App\Subactivity;
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Sabre\VObject\Component\VCard;
+use Sabre\VObject\Reader;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Data\MembershipEntry;
 
@@ -378,7 +380,30 @@ class Member extends Model
             ]);
     }
 
-    public function toVcard(): VCard
+    public static function fromVcard(string $url, string $data): static
+    {
+        $settings = app(NamiSettings::class);
+        $card = Reader::read($data);
+        [$lastname, $firstname] = $card->N->getParts();
+        [$deprecated1, $deprecated2 , $address, $location, $region, $zip, $country] = $card->ADR->getParts();
+
+        return new static([
+            'joined_at' => now(),
+            'send_newspaper' => false,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'birthday' => Carbon::createFromFormat('Ymd', $card->BDAY->getValue()),
+            'slug' => pathinfo($url, PATHINFO_FILENAME),
+            'address' => $address,
+            'zip' => $zip,
+            'location' => $location,
+            'group_id' => $settings->default_group_id,
+            'nationality_id' => Nationality::firstWhere('name', 'deutsch')->id,
+            'subscription_id' => Subscription::firstWhere('name', 'Voll')->id,
+        ]);
+    }
+
+    public function toVcard(): Vcard
     {
         $card = new VCard([
             'VERSION' => '3.0',
@@ -387,6 +412,7 @@ class Member extends Model
             'N' => [$this->lastname, $this->firstname, '', '', ''],
             'BDAY' => $this->birthday->format('Ymd'),
             'CATEGORIES' => 'Scoutrobot',
+            'UID' => $this->slug,
         ]);
 
         $card->add('child.X-ABLABEL', 'Kind');
