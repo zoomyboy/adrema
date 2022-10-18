@@ -10,6 +10,7 @@ use App\Setting\NamiSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Queue;
+use Phake;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Authentication\Auth;
 use Zoomyboy\LaravelNami\Fakes\GroupFake;
@@ -97,8 +98,10 @@ class RequestTest extends TestCase
 
     public function testItInitializesFromCommandLine(): void
     {
-        $this->stubIo(Initializer::class, fn ($mock) => $mock->shouldReceive('run')->once());
+        $this->stubIo(Initializer::class, fn ($mock) => $mock);
 
         Artisan::call(NamiInitializeCommand::class);
+
+        Phake::verify(app(Initializer::class))->run();
     }
 }

@@ -85,26 +85,6 @@ VCARD;
         $this->assertEquals('19930506', $card->BDAY->getValue());
     }
 
-    public function testItCanSetAndUnsetMobilePhone(): void
-    {
-        $member = Member::factory()->defaults()->create();
-
-        $member->update(['mobile_phone' => '+49 176 555555']);
-
-        $this->assertTrue(count($member->toVcard()->TEL) > 0);
-        foreach ($member->toVcard()->TEL as $t) {
-            if (!$t['TYPE'] || 'cell' !== $t['TYPE']->getValue()) {
-                continue;
-            }
-
-            $this->assertEquals('+49 176 555555', $t->getValue());
-
-            return;
-        }
-
-        $this->assertFalse(true, 'No Phone number found in card');
-    }
-
     public function testItUnsetsMobilePhoneNumber(): void
     {
         $member = Member::factory()->defaults()->create();
