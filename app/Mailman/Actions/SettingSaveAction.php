@@ -29,9 +29,27 @@ class SettingSaveAction
         $settings->save();
     }
 
+    /**
+     * @return array<string, string>
+     */
+    public function rules(): array
+    {
+        return [
+            'base_url' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+        ];
+    }
+
     public function afterValidator(Validator $validator, ActionRequest $request): void
     {
-        if (!app(MailmanService::class)->setCredentials($request->input('base_url'), $request->input('username'), $request->input('password'))->check()) {
+        if (!$request->filled(['base_url', 'username', 'password'])) {
+            return;
+        }
+
+        $result = app(MailmanService::class)->setCredentials($request->input('base_url'), $request->input('username'), $request->input('password'))->check();
+
+        if (!$result) {
             $validator->errors()->add('mailman', 'Verbindung fehlgeschlagen.');
         }
     }

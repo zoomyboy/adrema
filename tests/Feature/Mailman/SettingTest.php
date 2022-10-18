@@ -72,4 +72,19 @@ class SettingTest extends TestCase
         Phake::verify(app(MailmanService::class))->setCredentials('http://mailman.test/api', 'user', 'secret');
         Phake::verify(app(MailmanService::class))->check();
     }
+
+    public function testItValidatesPassword(): void
+    {
+        $this->stubIo(MailmanService::class, fn ($mock) => $mock);
+        $this->login()->loginNami();
+
+        $response = $this->from('/setting/mailman')->post('/setting/mailman', [
+            'base_url' => 'http://mailman.test/api',
+            'username' => 'user',
+            'password' => '',
+        ]);
+
+        $response->assertSessionHasErrors(['password' => 'Passwort ist erforderlich.']);
+        Phake::verifyNoInteraction(app(MailmanService::class));
+    }
 }
