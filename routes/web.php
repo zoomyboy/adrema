@@ -7,6 +7,8 @@ use App\Course\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
+use App\Mailman\Actions\SettingIndexAction as MailmanSettingIndexAction;
+use App\Mailman\Actions\SettingSaveAction as MailmanSettingSaveAction;
 use App\Member\Controllers\MemberResyncController;
 use App\Member\MemberConfirmController;
 use App\Member\MemberController;
@@ -38,6 +40,8 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::apiResource('member.membership', MembershipController::class);
     Route::get('setting/bill', BillSettingIndexAction::class);
     Route::post('setting/bill', BillSettingSaveAction::class);
+    Route::get('setting/mailman', MailmanSettingIndexAction::class);
+    Route::post('setting/mailman', MailmanSettingSaveAction::class);
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', MemberEfzController::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncController::class)->name('member.resync');

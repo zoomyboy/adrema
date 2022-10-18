@@ -25,6 +25,7 @@
         "lorisleiva/laravel-actions": "^2.4",
         "monicahq/laravel-sabre": "^1.6",
         "nunomaduro/collision": "^6.1",
+        "phake/phake": "^4.2",
         "spatie/laravel-data": "^1.4",
         "spatie/laravel-ignition": "^1.0",
         "spatie/laravel-medialibrary": "^10.0",

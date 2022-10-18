@@ -9,8 +9,7 @@ use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Testing\TestResponse;
-use Mockery as M;
-use Mockery\MockInterface;
+use Phake;
 use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
 
@@ -93,11 +92,10 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param <class-string> $class
-     * @param callable(MockInterface $mock): void $mocker
      */
     public function stubIo(string $class, callable $mocker): self
     {
-        $mock = M::mock($class);
+        $mock = Phake::mock($class);
 
         $mocker($mock);
 
