@@ -6,6 +6,7 @@ use App\Mailman\Exceptions\MailmanServiceException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\LazyCollection;
+use Zoomyboy\LaravelNami\Support\Paginator;
 
 class MailmanService
 {
@@ -34,24 +35,20 @@ class MailmanService
      */
     public function members(string $listId): LazyCollection
     {
-        $page = 1;
-
-        return LazyCollection::make(function () use ($listId, $page) {
-            while (!isset($totalEntries) || ($page - 1) * 10 + 1 <= $totalEntries) {
-                $response = $this->http()->get('/lists/'.$listId.'/roster/member?page='.$page.'&count=10');
+        return app(Paginator::class)->result(
+            fn ($page) => $this->http()->get("/lists/{$listId}/roster/member?page={$page}&count=10"),
+            function ($response) use ($listId) {
                 throw_unless($response->ok(), MailmanServiceException::class, 'Fetching members for listId '.$listId.' failed.');
                 /** @var array<int, array{email: string}>|null */
                 $entries = data_get($response->json(), 'entries');
                 throw_if(is_null($entries), MailmanServiceException::class, 'Failed getting member list from response');
-                $totalEntries = data_get($response->json(), 'total_size');
 
                 foreach ($entries as $entry) {
                     yield $entry['email'];
                 }
-
-                ++$page;
-            }
-        });
+            },
+            fn ($response) => data_get($response->json(), 'total_size')
+        );
     }
 
     private function http(): PendingRequest
