@@ -24,18 +24,18 @@ class SettingTest extends TestCase
             'zip' => '12345',
         ]);
 
-        $response = $this->get('/setting');
+        $response = $this->get('/setting/bill');
 
         $response->assertOk();
         $this->assertInertiaHas([
-            'bill_from_long' => 'DPSG Stamm Muster',
-            'bill_from' => 'Stamm Muster',
-            'bill_mobile' => '+49 176 55555',
-            'bill_email' => 'max@muster.de',
-            'bill_website' => 'https://example.com',
-            'bill_address' => 'Musterstr 4',
-            'bill_place' => 'Solingen',
-            'bill_zip' => '12345',
+            'from_long' => 'DPSG Stamm Muster',
+            'from' => 'Stamm Muster',
+            'mobile' => '+49 176 55555',
+            'email' => 'max@muster.de',
+            'website' => 'https://example.com',
+            'address' => 'Musterstr 4',
+            'place' => 'Solingen',
+            'zip' => '12345',
         ], $response, 'data');
     }
 
@@ -43,18 +43,18 @@ class SettingTest extends TestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
 
-        $response = $this->from('/setting')->post('/setting', [
-            'bill_from_long' => 'DPSG Stamm Muster',
-            'bill_from' => 'Stamm Muster',
-            'bill_mobile' => '+49 176 55555',
-            'bill_email' => 'max@muster.de',
-            'bill_website' => 'https://example.com',
-            'bill_address' => 'Musterstr 4',
-            'bill_place' => 'Solingen',
-            'bill_zip' => '12345',
+        $response = $this->from('/setting/bill')->post('/setting/bill', [
+            'from_long' => 'DPSG Stamm Muster',
+            'from' => 'Stamm Muster',
+            'mobile' => '+49 176 55555',
+            'email' => 'max@muster.de',
+            'website' => 'https://example.com',
+            'address' => 'Musterstr 4',
+            'place' => 'Solingen',
+            'zip' => '12345',
         ]);
 
-        $response->assertRedirect('/setting');
+        $response->assertRedirect('/setting/bill');
         $settings = app(BillSettings::class);
         $this->assertEquals('DPSG Stamm Muster', $settings->from_long);
     }
