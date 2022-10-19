@@ -12,6 +12,592 @@ parameters:
     level: 6
 
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::api\(\)#'
-        - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::getNamiGroupId\(\)#'
-        - '#Illuminate\\Contracts\\Auth\\Authenticatable\|null given#'
+        -
+            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$fee_id\\.$#"
+            count: 1
+            path: app/Actions/MemberPullAction.php
+
+        -
+            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$group_name\\.$#"
+            count: 1
+            path: app/Actions/MemberPullAction.php
+
+        -
+            message: "#^Method App\\\\Actions\\\\MemberPullAction\\:\\:fetchMembership\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Actions/MemberPullAction.php
+
+        -
+            message: "#^Method App\\\\Activity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Activity.php
+
+        -
+            message: "#^Property App\\\\Activity\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Activity.php
+
+        -
+            message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Support\\\\LazyCollection\\<int,Zoomyboy\\\\LaravelNami\\\\Member\\>\\:\\:each\\(\\) expects callable\\(int, int\\)\\: mixed, Closure\\(Zoomyboy\\\\LaravelNami\\\\Member\\)\\: void given\\.$#"
+            count: 1
+            path: app/Console/Commands/MemberResyncCommand.php
+
+        -
+            message: "#^Property App\\\\Console\\\\Kernel\\:\\:\\$commands type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Console/Kernel.php
+
+        -
+            message: "#^Method App\\\\Contribution\\\\DvData\\:\\:__construct\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Contribution/DvData.php
+
+        -
+            message: "#^Method App\\\\Contribution\\\\DvData\\:\\:__construct\\(\\) has parameter \\$type with no type specified\\.$#"
+            count: 1
+            path: app/Contribution/DvData.php
+
+        -
+            message: "#^Method App\\\\Contribution\\\\SolingenData\\:\\:__construct\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Contribution/SolingenData.php
+
+        -
+            message: "#^Method App\\\\Contribution\\\\SolingenData\\:\\:__construct\\(\\) has parameter \\$type with no type specified\\.$#"
+            count: 1
+            path: app/Contribution/SolingenData.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: app/Course/Requests/StoreRequest.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: app/Course/Requests/StoreRequest.php
+
+        -
+            message: "#^Method App\\\\Course\\\\Resources\\\\CourseResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Course/Resources/CourseResource.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\AddressBookBackend\\:\\:getCard\\(\\) should return M of array\\{lastmodified\\: int, etag\\: string, uri\\: string, id\\: int, size\\: int\\} but returns false\\.$#"
+            count: 1
+            path: app/Dav/AddressBookBackend.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\AddressBookBackend\\:\\:getMultipleCards\\(\\) has parameter \\$uris with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Dav/AddressBookBackend.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\AddressBookBackend\\:\\:getMultipleCards\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Dav/AddressBookBackend.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\Principal\\:\\:getGroupMemberSet\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Dav/Principal.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\Principal\\:\\:getGroupMemberSet\\(\\) should return array but return statement is missing\\.$#"
+            count: 1
+            path: app/Dav/Principal.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\Principal\\:\\:getGroupMembership\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Dav/Principal.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\Principal\\:\\:getGroupMembership\\(\\) should return array but returns null\\.$#"
+            count: 1
+            path: app/Dav/Principal.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\Principal\\:\\:setGroupMemberSet\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: app/Dav/Principal.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\Principal\\:\\:setGroupMemberSet\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Dav/Principal.php
+
+        -
+            message: "#^Method App\\\\Dav\\\\ServiceProvider\\:\\:plugins\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Dav/ServiceProvider.php
+
+        -
+            message: "#^PHPDoc type array\\<string\\> of property App\\\\Exceptions\\\\Handler\\:\\:\\$dontFlash is not covariant with PHPDoc type array\\<int, string\\> of overridden property Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\\:\\:\\$dontFlash\\.$#"
+            count: 1
+            path: app/Exceptions/Handler.php
+
+        -
+            message: "#^PHPDoc type array\\<string\\> of property App\\\\Exceptions\\\\Handler\\:\\:\\$dontReport is not covariant with PHPDoc type array\\<int, class\\-string\\<Throwable\\>\\> of overridden property Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\\:\\:\\$dontReport\\.$#"
+            count: 1
+            path: app/Exceptions/Handler.php
+
+        -
+            message: "#^Method App\\\\Http\\\\Controllers\\\\Auth\\\\RegisterController\\:\\:create\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Controllers/Auth/RegisterController.php
+
+        -
+            message: "#^Method App\\\\Http\\\\Controllers\\\\Auth\\\\RegisterController\\:\\:validator\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Controllers/Auth/RegisterController.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Kernel\\:\\:\\$middleware type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Kernel.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Kernel\\:\\:\\$middlewareGroups type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Kernel.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Kernel\\:\\:\\$routeMiddleware type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Kernel.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Middleware\\\\CheckForMaintenanceMode\\:\\:\\$except type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Middleware/CheckForMaintenanceMode.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Middleware\\\\EncryptCookies\\:\\:\\$except type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Middleware/EncryptCookies.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Middleware\\\\RedirectIfNotInitializedMiddleware\\:\\:\\$dontRedirect type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Middleware/RedirectIfNotInitializedMiddleware.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Middleware\\\\TrimStrings\\:\\:\\$except type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Middleware/TrimStrings.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Middleware\\\\TrustProxies\\:\\:\\$proxies type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Middleware/TrustProxies.php
+
+        -
+            message: "#^Property App\\\\Http\\\\Middleware\\\\VerifyCsrfToken\\:\\:\\$except type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Middleware/VerifyCsrfToken.php
+
+        -
+            message: "#^Method App\\\\Http\\\\Resources\\\\UserResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Resources/UserResource.php
+
+        -
+            message: "#^Method App\\\\Http\\\\Views\\\\HomeView\\:\\:index\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Views/HomeView.php
+
+        -
+            message: "#^Method App\\\\Http\\\\Views\\\\MemberTriesResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Views/MemberTriesResource.php
+
+        -
+            message: "#^Method App\\\\Http\\\\Views\\\\MemberView\\:\\:additional\\(\\) has parameter \\$overwrites with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Views/MemberView.php
+
+        -
+            message: "#^Method App\\\\Http\\\\Views\\\\MemberView\\:\\:index\\(\\) has parameter \\$filter with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Views/MemberView.php
+
+        -
+            message: "#^Method App\\\\Http\\\\Views\\\\MemberView\\:\\:index\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Http/Views/MemberView.php
+
+        -
+            message: "#^Property App\\\\Initialize\\\\ActivityCreator\\:\\:\\$members type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Initialize/ActivityCreator.php
+
+        -
+            message: "#^Property App\\\\Initialize\\\\ActivityCreator\\:\\:\\$tries type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Initialize/ActivityCreator.php
+
+        -
+            message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Support\\\\LazyCollection\\<int,Zoomyboy\\\\LaravelNami\\\\Member\\>\\:\\:each\\(\\) expects callable\\(int, int\\)\\: mixed, Closure\\(Zoomyboy\\\\LaravelNami\\\\Member\\)\\: void given\\.$#"
+            count: 1
+            path: app/Initialize/InitializeMembers.php
+
+        -
+            message: "#^Access to an undefined property Sabre\\\\VObject\\\\Document\\:\\:\\$ADR\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Access to an undefined property Sabre\\\\VObject\\\\Document\\:\\:\\$BDAY\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Access to an undefined property Sabre\\\\VObject\\\\Document\\:\\:\\$N\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Method App\\\\Member\\\\Member\\:\\:createPayment\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Method App\\\\Member\\\\Member\\:\\:getNamiMemberships\\(\\) has invalid return type App\\\\Member\\\\Collection\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Method App\\\\Member\\\\Member\\:\\:getNamiMemberships\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Method App\\\\Member\\\\Member\\:\\:getNamiMemberships\\(\\) should return array but returns Illuminate\\\\Support\\\\Collection\\<int, Zoomyboy\\\\LaravelNami\\\\Data\\\\MembershipEntry\\>\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Method App\\\\Member\\\\Member\\:\\:scopeFilter\\(\\) has parameter \\$filter with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^PHPDoc tag @return with type App\\\\Member\\\\Collection\\<int, Zoomyboy\\\\LaravelNami\\\\Data\\\\MembershipEntry\\> is incompatible with native type array\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Unsafe usage of new static\\(\\)\\.$#"
+            count: 1
+            path: app/Member/Member.php
+
+        -
+            message: "#^Job class App\\\\Member\\\\DeleteJob constructor invoked with 2 parameters in App\\\\Member\\\\DeleteJob\\:\\:dispatch\\(\\), 1 required\\.$#"
+            count: 1
+            path: app/Member/MemberController.php
+
+        -
+            message: "#^Property App\\\\Member\\\\MemberController\\:\\:\\$filter type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Member/MemberController.php
+
+        -
+            message: "#^Array has 2 duplicate keys with value 'nationality_id' \\('nationality_id', 'nationality_id'\\)\\.$#"
+            count: 1
+            path: app/Member/MemberRequest.php
+
+        -
+            message: "#^Array has 2 duplicate keys with value 'region_id' \\('region_id', 'region_id'\\)\\.$#"
+            count: 1
+            path: app/Member/MemberRequest.php
+
+        -
+            message: "#^Method App\\\\Member\\\\MemberRequest\\:\\:rules\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Member/MemberRequest.php
+
+        -
+            message: "#^Method App\\\\Member\\\\MemberResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Member/MemberResource.php
+
+        -
+            message: "#^Method App\\\\Membership\\\\MembershipResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Membership/MembershipResource.php
+
+        -
+            message: "#^Method App\\\\Membership\\\\Requests\\\\StoreRequest\\:\\:rules\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Membership/Requests/StoreRequest.php
+
+        -
+            message: "#^Call to an undefined method App\\\\Pdf\\\\PdfRepository\\:\\:allLabel\\(\\)\\.$#"
+            count: 1
+            path: app/Payment/ActionFactory.php
+
+        -
+            message: "#^Call to an undefined method App\\\\Pdf\\\\PdfRepository\\:\\:createable\\(\\)\\.$#"
+            count: 1
+            path: app/Payment/ActionFactory.php
+
+        -
+            message: "#^Call to an undefined method App\\\\Pdf\\\\PdfRepository\\:\\:getDescription\\(\\)\\.$#"
+            count: 1
+            path: app/Payment/ActionFactory.php
+
+        -
+            message: "#^Call to an undefined method App\\\\Pdf\\\\PdfRepository\\:\\:linkLabel\\(\\)\\.$#"
+            count: 1
+            path: app/Payment/ActionFactory.php
+
+        -
+            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,App\\\\Pdf\\\\PdfRepository\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
+            count: 2
+            path: app/Payment/ActionFactory.php
+
+        -
+            message: "#^Method App\\\\Payment\\\\PaymentResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Payment/PaymentResource.php
+
+        -
+            message: "#^Property App\\\\Payment\\\\Status\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Payment/Status.php
+
+        -
+            message: "#^Method App\\\\Payment\\\\SubscriptionResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Payment/SubscriptionResource.php
+
+        -
+            message: "#^Method App\\\\Pdf\\\\BillType\\:\\:getPositions\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Pdf/BillType.php
+
+        -
+            message: "#^Method App\\\\Pdf\\\\Data\\\\MemberEfzData\\:\\:__construct\\(\\) has parameter \\$sender with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Pdf/Data/MemberEfzData.php
+
+        -
+            message: "#^Method App\\\\Pdf\\\\LetterRepository\\:\\:getDescription\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Pdf/LetterRepository.php
+
+        -
+            message: "#^Method App\\\\Pdf\\\\LetterRepository\\:\\:getPositions\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Pdf/LetterRepository.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: app/Pdf/PdfRepositoryFactory.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: app/Pdf/PdfRepositoryFactory.php
+
+        -
+            message: "#^Method App\\\\Pdf\\\\RememberType\\:\\:getPositions\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Pdf/RememberType.php
+
+        -
+            message: "#^PHPDoc type array of property App\\\\Providers\\\\AuthServiceProvider\\:\\:\\$policies is not covariant with PHPDoc type array\\<class\\-string, class\\-string\\> of overridden property Illuminate\\\\Foundation\\\\Support\\\\Providers\\\\AuthServiceProvider\\:\\:\\$policies\\.$#"
+            count: 1
+            path: app/Providers/AuthServiceProvider.php
+
+        -
+            message: "#^Property App\\\\Providers\\\\AuthServiceProvider\\:\\:\\$policies type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Providers/AuthServiceProvider.php
+
+        -
+            message: "#^Property App\\\\Providers\\\\EventServiceProvider\\:\\:\\$listen type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Providers/EventServiceProvider.php
+
+        -
+            message: "#^Property App\\\\Region\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Region.php
+
+        -
+            message: "#^Method App\\\\Subactivity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Subactivity.php
+
+        -
+            message: "#^Property App\\\\Subactivity\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: app/Subactivity.php
+
+        -
+            message: "#^Method Database\\\\Factories\\\\ActivityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: database/factories/ActivityFactory.php
+
+        -
+            message: "#^Method Database\\\\Factories\\\\ConfessionFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: database/factories/ConfessionFactory.php
+
+        -
+            message: "#^Method Database\\\\Factories\\\\CountryFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: database/factories/CountryFactory.php
+
+        -
+            message: "#^Method Database\\\\Factories\\\\FeeFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: database/factories/FeeFactory.php
+
+        -
+            message: "#^Method Database\\\\Factories\\\\NationalityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: database/factories/NationalityFactory.php
+
+        -
+            message: "#^Method Database\\\\Factories\\\\Payment\\\\StatusFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: database/factories/Payment/StatusFactory.php
+
+        -
+            message: "#^Method Database\\\\Factories\\\\SubactivityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: database/factories/SubactivityFactory.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Initialize\\\\InitializeTest\\:\\:membershipDataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Initialize/InitializeTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Initialize\\\\InitializeTest\\:\\:testSyncMembershipsOfMember\\(\\) has parameter \\$membership with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Initialize/InitializeTest.php
+
+        -
+            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:never\\(\\)\\.$#"
+            count: 3
+            path: tests/Feature/Initialize/RequestTest.php
+
+        -
+            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:with\\(\\)\\.$#"
+            count: 1
+            path: tests/Feature/Initialize/RequestTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy\\:\\:run\\(\\)\\.$#"
+            count: 1
+            path: tests/Feature/Initialize/RequestTest.php
+
+        -
+            message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Initialize\\\\Initializer given\\.$#"
+            count: 1
+            path: tests/Feature/Initialize/RequestTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:check\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Mailman/SettingTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:setCredentials\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Mailman/SettingTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy\\:\\:check\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Mailman/SettingTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy\\:\\:setCredentials\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Mailman/SettingTest.php
+
+        -
+            message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Mailman\\\\Support\\\\MailmanService given\\.$#"
+            count: 4
+            path: tests/Feature/Mailman/SettingTest.php
+
+        -
+            message: "#^Parameter \\#1 \\.\\.\\.\\$mocks of static method Phake\\:\\:verifyNoInteraction\\(\\) expects Phake\\\\IMock, App\\\\Mailman\\\\Support\\\\MailmanService given\\.$#"
+            count: 1
+            path: tests/Feature/Mailman/SettingTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Member\\\\StoreTest\\:\\:attributes\\(\\) has parameter \\$overwrites with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Member/StoreTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Member\\\\StoreTest\\:\\:attributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Member/StoreTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Member\\\\StoreTest\\:\\:defaults\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Member/StoreTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:generatorProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Pdf/GenerateTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:setupMembers\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Pdf/GenerateTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesAPdf\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Pdf/GenerateTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesAPdf\\(\\) has parameter \\$output with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Pdf/GenerateTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesTheLayout\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Pdf/GenerateTest.php
+
+        -
+            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesTheLayout\\(\\) has parameter \\$output with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Feature/Pdf/GenerateTest.php
+
+        -
+            message: "#^Method Tests\\\\TestCase\\:\\:assertErrors\\(\\) has parameter \\$errors with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/TestCase.php
+
+        -
+            message: "#^PHPDoc tag @param has invalid value \\(\\<class\\-string\\> \\$class\\)\\: Unexpected token \"\\<\", expected type at offset 18$#"
+            count: 1
+            path: tests/TestCase.php
+
+        -
+            message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$nami_id\\.$#"
+            count: 1
+            path: tests/Unit/InitializeGroupsTest.php
+
+        -
+            message: "#^Parameter \\#1 \\$api of class App\\\\Initialize\\\\InitializeGroups constructor expects Zoomyboy\\\\LaravelNami\\\\Api, PHPUnit\\\\Framework\\\\MockObject\\\\Stub given\\.$#"
+            count: 6
+            path: tests/Unit/InitializeGroupsTest.php
+
+        -
+            message: "#^Method Tests\\\\Unit\\\\Mailman\\\\ServiceTest\\:\\:testItReturnsMoreThanOneResult\\(\\) has parameter \\$totals with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: tests/Unit/Mailman/ServiceTest.php
