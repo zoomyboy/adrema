@@ -24,6 +24,10 @@ class SettingSaveAction
             'base_url' => $input['base_url'] ?? null,
             'username' => $input['username'] ?? null,
             'password' => $input['password'] ?? null,
+            'all_list' => $input['all_list'] ?? null,
+            'all_parents_list' => $input['all_parents_list'] ?? null,
+            'active_leaders_list' => $input['active_leaders_list'] ?? null,
+            'passive_leaders_list' => $input['passive_leaders_list'] ?? null,
             'is_active' => $input['is_active'] ?? false,
         ]);
 

@@ -16,6 +16,14 @@ class MailmanSettings extends LocalSettings
 
     public bool $is_active;
 
+    public ?string $all_list;
+
+    public ?string $all_parents_list;
+
+    public ?string $active_leaders_list;
+
+    public ?string $passive_leaders_list;
+
     public static function group(): string
     {
         return 'mailman';

@@ -20,6 +20,34 @@
         <f-text label="URL" hint="URL der Mailman Api" name="base_url" id="base_url" v-model="inner.base_url"></f-text>
         <f-text label="Benutzername" name="username" id="username" v-model="inner.username"></f-text>
         <f-text type="password" label="Passwort" name="password" id="password" v-model="inner.password"></f-text>
+        <f-select
+            label="Liste für alle Mitglieder"
+            name="all_list"
+            id="all_list"
+            v-model="inner.all_list"
+            :options="lists"
+        ></f-select>
+        <f-select
+            label="Liste für Eltern"
+            name="all_parents_list"
+            id="all_parents_list"
+            v-model="inner.all_parents_list"
+            :options="lists"
+        ></f-select>
+        <f-select
+            label="Liste für aktive Leiter"
+            name="active_leaders_list"
+            id="active_leaders_list"
+            v-model="inner.active_leaders_list"
+            :options="lists"
+        ></f-select>
+        <f-select
+            label="Liste für passive Leiter"
+            name="passive_leaders_list"
+            id="passive_leaders_list"
+            v-model="inner.passive_leaders_list"
+            :options="lists"
+        ></f-select>
         <div></div>
         <div>
             <button type="submit" class="mt-3 btn block btn-primary">Speichern</button>
@@ -42,6 +70,7 @@ export default {
     props: {
         data: {},
         state: {},
+        lists: {},
     },
     computed: {
         stateDisplay() {

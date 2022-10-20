@@ -21,6 +21,10 @@ class SettingIndexAction
             'is_active' => $settings->is_active,
             'base_url' => $settings->base_url,
             'username' => $settings->username,
+            'all_list' => $settings->all_list,
+            'all_parents_list' => $settings->all_parents_list,
+            'active_leaders_list' => $settings->active_leaders_list,
+            'passive_leaders_list' => $settings->passive_leaders_list,
             'password' => '',
         ];
     }
@@ -30,13 +34,18 @@ class SettingIndexAction
         session()->put('menu', 'setting');
         session()->put('title', 'Mailman-Einstellungen');
 
-        $state = $settings->base_url && $settings->username && $settings->password && $settings->is_active
-            ? app(MailmanService::class)->fromSettings($settings)->check()
-            : null;
+        if ($settings->is_active) {
+            $state = app(MailmanService::class)->fromSettings($settings)->check();
+            $lists = app(MailmanService::class)->fromSettings($settings)->getLists();
+        } else {
+            $state = null;
+            $lists = [];
+        }
 
         return Inertia::render('setting/Mailman', [
             'data' => $this->handle($settings),
             'state' => $state,
+            'lists' => $lists,
         ]);
     }
 }
