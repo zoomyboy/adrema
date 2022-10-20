@@ -4,6 +4,7 @@ namespace App\Mailman\Support;
 
 use App\Mailman\Data\MailingList;
 use App\Mailman\Exceptions\MailmanServiceException;
+use App\Mailman\MailmanSettings;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
@@ -23,6 +24,11 @@ class MailmanService
         $this->password = $password;
 
         return $this;
+    }
+
+    public function fromSettings(MailmanSettings $settings): self
+    {
+        return $this->setCredentials($settings->base_url, $settings->username, $settings->password);
     }
 
     public function check(): bool

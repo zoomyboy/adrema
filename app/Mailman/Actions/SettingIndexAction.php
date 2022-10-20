@@ -31,7 +31,7 @@ class SettingIndexAction
         session()->put('title', 'Mailman-Einstellungen');
 
         $state = $settings->base_url && $settings->username && $settings->password && $settings->is_active
-            ? app(MailmanService::class)->setCredentials($settings->base_url, $settings->username, $settings->password)->check()
+            ? app(MailmanService::class)->fromSettings($settings)->check()
             : null;
 
         return Inertia::render('setting/Mailman', [
