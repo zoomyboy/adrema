@@ -2,10 +2,12 @@
 
 namespace Tests\Unit\Mailman;
 
+use App\Mailman\Data\MailingList;
 use App\Mailman\Exceptions\MailmanServiceException;
 use App\Mailman\Support\MailmanService;
 use Generator;
 use Illuminate\Support\Facades\Http;
+use Tests\RequestFactories\MailmanListRequestFactory;
 use Tests\TestCase;
 
 class ServiceTest extends TestCase
@@ -65,6 +67,26 @@ class ServiceTest extends TestCase
         ]);
 
         app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members('listid')->first();
+    }
+
+    public function testItCanGetLists(): void
+    {
+        Http::fake([
+            'http://mailman.test/api/lists?page=1&count=10' => Http::sequence()
+                ->push(json_encode([
+                    'entries' => [
+                        MailmanListRequestFactory::new()->create(['display_name' => 'Eltern', 'fqdn_listname' => 'eltern@example.com']),
+                        MailmanListRequestFactory::new()->create(['display_name' => 'Eltern2', 'fqdn_listname' => 'eltern2@example.com']),
+                    ],
+                    'start' => 0,
+                    'total_size' => 2,
+                ]), 200),
+        ]);
+
+        $lists = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->getLists()->all();
+        $this->assertCount(2, $lists);
+        $this->assertInstanceOf(MailingList::class, $lists[0]);
+        $this->assertEquals('Eltern', $lists[0]->displayName);
     }
 
     public function listDataProvider(): Generator

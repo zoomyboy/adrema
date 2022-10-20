@@ -13,7 +13,7 @@ class SettingIndexAction
     use AsAction;
 
     /**
-     * @return array<string, string>
+     * @return array<string, string|bool|null>
      */
     public function handle(MailmanSettings $settings): array
     {

@@ -26,10 +26,11 @@
         "monicahq/laravel-sabre": "^1.6",
         "nunomaduro/collision": "^6.1",
         "phake/phake": "^4.2",
-        "spatie/laravel-data": "^1.4",
+        "spatie/laravel-data": "^2.0",
         "spatie/laravel-ignition": "^1.0",
         "spatie/laravel-medialibrary": "^10.0",
         "spatie/laravel-settings": "^2.2",
+        "worksome/request-factories": "^2.5",
         "zoomyboy/laravel-nami": "dev-master"
     },
     "require-dev": {

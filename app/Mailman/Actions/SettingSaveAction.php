@@ -42,6 +42,9 @@ class SettingSaveAction
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getValidationMessages(): array
     {
         return [

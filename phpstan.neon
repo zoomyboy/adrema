@@ -493,34 +493,15 @@ parameters:
             path: tests/Feature/Initialize/RequestTest.php
 
         -
-            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy\\:\\:run\\(\\)\\.$#"
-            count: 1
-            path: tests/Feature/Initialize/RequestTest.php
-
-        -
             message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Initialize\\\\Initializer given\\.$#"
             count: 1
             path: tests/Feature/Initialize/RequestTest.php
 
         -
-            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:check\\(\\)\\.$#"
-            count: 2
-            path: tests/Feature/Mailman/SettingTest.php
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy.*#"
 
         -
-            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:setCredentials\\(\\)\\.$#"
-            count: 2
-            path: tests/Feature/Mailman/SettingTest.php
-
-        -
-            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy\\:\\:check\\(\\)\\.$#"
-            count: 2
-            path: tests/Feature/Mailman/SettingTest.php
-
-        -
-            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy\\:\\:setCredentials\\(\\)\\.$#"
-            count: 2
-            path: tests/Feature/Mailman/SettingTest.php
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy.*#"
 
         -
             message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Mailman\\\\Support\\\\MailmanService given\\.$#"
@@ -528,9 +509,7 @@ parameters:
             path: tests/Feature/Mailman/SettingTest.php
 
         -
-            message: "#^Parameter \\#1 \\.\\.\\.\\$mocks of static method Phake\\:\\:verifyNoInteraction\\(\\) expects Phake\\\\IMock, App\\\\Mailman\\\\Support\\\\MailmanService given\\.$#"
-            count: 1
-            path: tests/Feature/Mailman/SettingTest.php
+            message: "#verifyNoInteraction\\(\\) expects Phake\\\\IMock#"
 
         -
             message: "#^Method Tests\\\\Feature\\\\Member\\\\StoreTest\\:\\:attributes\\(\\) has parameter \\$overwrites with no value type specified in iterable type array\\.$#"
