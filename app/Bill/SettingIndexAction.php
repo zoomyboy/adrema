@@ -2,7 +2,6 @@
 
 namespace App\Bill;
 
-use App\Setting\BillSettings;
 use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -31,9 +30,9 @@ class SettingIndexAction
     public function asController(BillSettings $settings): Response
     {
         session()->put('menu', 'setting');
-        session()->put('title', 'Einstellungen');
+        session()->put('title', 'Rechnungs-Einstellungen');
 
-        return Inertia::render('setting/Index', [
+        return Inertia::render('setting/Bill', [
             'data' => $this->handle($settings),
         ]);
     }

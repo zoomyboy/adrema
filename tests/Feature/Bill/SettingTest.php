@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Setting;
+namespace Tests\Feature\Bill;
 
-use App\Setting\BillSettings;
+use App\Bill\BillSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -37,6 +37,25 @@ class SettingTest extends TestCase
             'place' => 'Solingen',
             'zip' => '12345',
         ], $response, 'data');
+    }
+
+    public function testItReturnsTabs(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+
+        $response = $this->get('/setting/bill');
+
+        /** @var array<int, array{url: string, is_active: bool}> */
+        $menus = $this->inertia($response, 'setting_menu');
+        $this->assertTrue(
+            collect($menus)
+                ->pluck('url')
+                ->contains('/setting/bill')
+        );
+
+        $settingMenu = collect($menus)->first(fn ($menu) => '/setting/bill' === $menu['url']);
+        $this->assertTrue($settingMenu['is_active']);
+        $this->assertEquals('Rechnung', $settingMenu['title']);
     }
 
     public function testItCanChangeSettings(): void

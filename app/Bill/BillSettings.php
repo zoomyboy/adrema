@@ -1,27 +1,35 @@
 <?php
 
-namespace App\Mailman;
+namespace App\Bill;
 
-use App\Mailman\Actions\SettingIndexAction;
-use App\Mailman\Actions\SettingSaveAction;
 use App\Setting\LocalSettings;
 
-class MailmanSettings extends LocalSettings
+class BillSettings extends LocalSettings
 {
-    public ?string $base_url;
+    public string $from_long;
 
-    public ?string $username;
+    public string $from;
 
-    public ?string $password;
+    public string $mobile;
+
+    public string $email;
+
+    public string $website;
+
+    public string $address;
+
+    public string $place;
+
+    public string $zip;
 
     public static function group(): string
     {
-        return 'mailman';
+        return 'bill';
     }
 
     public static function slug(): string
     {
-        return 'mailman';
+        return 'bill';
     }
 
     public static function indexAction(): string
@@ -36,6 +44,6 @@ class MailmanSettings extends LocalSettings
 
     public static function title(): string
     {
-        return 'Mailman';
+        return 'Rechnung';
     }
 }

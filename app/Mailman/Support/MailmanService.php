@@ -3,6 +3,7 @@
 namespace App\Mailman\Support;
 
 use App\Mailman\Exceptions\MailmanServiceException;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\LazyCollection;
@@ -25,9 +26,13 @@ class MailmanService
 
     public function check(): bool
     {
-        $response = $this->http()->get('/system/versions');
+        try {
+            $response = $this->http()->get('/system/versions');
 
-        return 200 === $response->status();
+            return 200 === $response->status();
+        } catch (ConnectionException $e) {
+            return false;
+        }
     }
 
     /**

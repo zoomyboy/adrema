@@ -2,7 +2,6 @@
 
 namespace App\Bill;
 
-use App\Setting\BillSettings;
 use Illuminate\Http\RedirectResponse;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;

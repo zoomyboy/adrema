@@ -5,10 +5,9 @@
                 v-for="(item, index) in entries"
                 :key="index"
                 href="#"
-                :data-cy="`menu-${item.id}`"
                 @click.prevent="openMenu(index)"
                 class="rounded py-1 px-3 text-gray-400"
-                :class="index == value ? `bg-gray-600` : ''"
+                :class="index === value ? `bg-gray-600` : ''"
                 v-text="item.title"
             ></a>
         </div>

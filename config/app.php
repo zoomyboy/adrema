@@ -187,6 +187,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Tex\TexServiceProvider::class,
         App\Dav\ServiceProvider::class,
+        App\Setting\SettingServiceProvider::class,
     ],
 
     /*

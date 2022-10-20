@@ -28,7 +28,7 @@ class SettingIndexAction
         session()->put('menu', 'setting');
         session()->put('title', 'Mailman-Einstellungen');
 
-        return Inertia::render('setting/Index', [
+        return Inertia::render('setting/Mailman', [
             'data' => $this->handle($settings),
         ]);
     }
