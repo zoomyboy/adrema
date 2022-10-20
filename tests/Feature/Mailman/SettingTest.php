@@ -15,10 +15,15 @@ class SettingTest extends TestCase
     public function testItGetsMailSettings(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
+        $this->stubIo(MailmanService::class, function ($mock) {
+            Phake::when($mock)->setCredentials('http://mailman.test/api', 'user', 'secret')->thenReturn($mock);
+            Phake::when($mock)->check()->thenReturn(true);
+        });
         MailmanSettings::fake([
             'base_url' => 'http://mailman.test/api',
             'username' => 'user',
             'password' => 'secret',
+            'is_active' => true,
         ]);
 
         $response = $this->get('/setting/mailman');
@@ -28,10 +33,53 @@ class SettingTest extends TestCase
             'base_url' => 'http://mailman.test/api',
             'username' => 'user',
             'password' => '',
+            'is_active' => true,
         ], $response, 'data');
+        $this->assertInertiaHas(true, $response, 'state');
     }
 
-    public function testItSaesMailmanSettings(): void
+    public function testItReturnsWrongStateWhenLoginFailed(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $this->stubIo(MailmanService::class, function ($mock) {
+            Phake::when($mock)->setCredentials('http://mailman.test/api', 'user', 'secret')->thenReturn($mock);
+            Phake::when($mock)->check()->thenReturn(false);
+        });
+        MailmanSettings::fake([
+            'base_url' => 'http://mailman.test/api',
+            'username' => 'user',
+            'password' => 'secret',
+            'is_active' => true,
+        ]);
+
+        $response = $this->get('/setting/mailman');
+
+        $response->assertOk();
+        $this->assertInertiaHas(false, $response, 'state');
+    }
+
+    public function testItDoesntReturnAnyStateWhenMailmanIsInactive(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $this->stubIo(MailmanService::class, function ($mock) {
+            Phake::when($mock)->setCredentials('http://mailman.test/api', 'user', 'secret')->thenReturn($mock);
+            Phake::when($mock)->check()->thenReturn(false);
+        });
+        MailmanSettings::fake([
+            'base_url' => 'http://mailman.test/api',
+            'username' => 'user',
+            'password' => 'secret',
+            'is_active' => false,
+        ]);
+
+        $response = $this->get('/setting/mailman');
+
+        $response->assertOk();
+        $this->assertInertiaHas(null, $response, 'state');
+        Phake::verifyNoInteraction(app(MailmanService::class));
+    }
+
+    public function testItSetsMailmanSettings(): void
     {
         $this->stubIo(MailmanService::class, function ($mock) {
             Phake::when($mock)->setCredentials('http://mailman.test/api', 'user', 'secret')->thenReturn($mock);
@@ -43,6 +91,7 @@ class SettingTest extends TestCase
             'base_url' => 'http://mailman.test/api',
             'username' => 'user',
             'password' => 'secret',
+            'is_active' => true,
         ]);
 
         $response->assertRedirect('/setting/mailman');
@@ -66,6 +115,7 @@ class SettingTest extends TestCase
             'base_url' => 'http://mailman.test/api',
             'username' => 'user',
             'password' => 'secret',
+            'is_active' => true,
         ]);
 
         $response->assertSessionHasErrors(['mailman' => 'Verbindung fehlgeschlagen.']);
@@ -82,6 +132,7 @@ class SettingTest extends TestCase
             'base_url' => 'http://mailman.test/api',
             'username' => 'user',
             'password' => '',
+            'is_active' => true,
         ]);
 
         $response->assertSessionHasErrors(['password' => 'Passwort ist erforderlich.']);

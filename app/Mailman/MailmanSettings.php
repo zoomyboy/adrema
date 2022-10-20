@@ -14,6 +14,8 @@ class MailmanSettings extends LocalSettings
 
     public ?string $password;
 
+    public bool $is_active;
+
     public static function group(): string
     {
         return 'mailman';
