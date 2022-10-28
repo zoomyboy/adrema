@@ -2,6 +2,7 @@
 
 use App\Contribution\ContributionController;
 use App\Course\Controllers\CourseController;
+use App\Efz\ShowEfzDocumentAction;
 use App\Http\Controllers\HomeController;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
@@ -13,7 +14,6 @@ use App\Payment\AllpaymentController;
 use App\Payment\PaymentController;
 use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
-use App\Pdf\MemberEfzController;
 use App\Pdf\MemberPdfController;
 
 Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
     Route::apiResource('member.membership', MembershipController::class);
     Route::resource('member.course', CourseController::class);
-    Route::get('/member/{member}/efz', MemberEfzController::class)->name('efz');
+    Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncController::class)->name('member.resync');
     Route::get('/contribution', [ContributionController::class, 'form'])->name('contribution.form');
     Route::get('/contribution/generate', [ContributionController::class, 'generate'])->name('contribution.generate');

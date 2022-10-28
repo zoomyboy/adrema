@@ -7,6 +7,7 @@ parameters:
         - app
         - tests
         - database
+        - packages/tex/src
 
     # The level 8 is the highest level
     level: 6

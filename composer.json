@@ -7,7 +7,8 @@
         "laravel"
     ],
     "repositories": [
-        { "type": "path", "url": "./packages/laravel-nami", "options": {"symlink": true} }
+        { "type": "path", "url": "./packages/laravel-nami", "options": {"symlink": true} },
+        { "type": "path", "url": "./packages/tex", "options": {"symlink": true} }
     ],
     "license": "MIT",
     "require": {
@@ -31,7 +32,8 @@
         "spatie/laravel-medialibrary": "^10.0",
         "spatie/laravel-settings": "^2.2",
         "worksome/request-factories": "^2.5",
-        "zoomyboy/laravel-nami": "dev-master"
+        "zoomyboy/laravel-nami": "dev-master",
+        "zoomyboy/tex": "dev-main as 1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

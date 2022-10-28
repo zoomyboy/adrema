@@ -11,6 +11,7 @@ use App\Group;
 use App\Nationality;
 use App\Payment\Payment;
 use App\Payment\Subscription;
+use App\Pdf\Sender;
 use App\Region;
 use App\Setting\NamiSettings;
 use App\Subactivity;
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
+use Spatie\LaravelData\Lazy;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Data\MembershipEntry;
 
@@ -445,5 +447,15 @@ class Member extends Model
         ]);
 
         return $card;
+    }
+
+    public function toSender(): Sender
+    {
+        return Sender::from([
+            'name' => $this->fullname,
+            'address' => $this->address,
+            'zipLocation' => $this->zip.' '.$this->location,
+            'mglnr' => Lazy::create(fn () => 'Mglnr.: '.$this->nami_id),
+        ]);
     }
 }

@@ -4,3 +4,6 @@
 [submodule "packages/laravel-nami"]
 	path = packages/laravel-nami
 	url = git@github.com:DPSGKoeln/laravel-nami.git
+[submodule "packages/tex"]
+	path = packages/tex
+	url = git@zoomyboy.de:pille/tex.git
