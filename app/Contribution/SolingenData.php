@@ -19,7 +19,7 @@ class SolingenData extends Data implements PdfRepository
         public string $dateUntil,
         public array $members,
         public ?string $filename = '',
-        public $type = 'F',
+        public string $type = 'F',
     ) {
     }
 

@@ -20,7 +20,7 @@ class DvData extends Data implements PdfRepository
         public ?Country $country,
         public array $members,
         public ?string $filename = '',
-        public $type = 'F',
+        public string $type = 'F',
     ) {
     }
 
