@@ -25,4 +25,9 @@ class MembershipFactory extends Factory
             'from' => now()->subMonths(3),
         ];
     }
+
+    public function inNami(int $namiId): self
+    {
+        return $this->state(['nami_id' => $namiId]);
+    }
 }

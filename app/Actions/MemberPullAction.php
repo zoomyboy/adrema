@@ -11,6 +11,7 @@ use App\Gender;
 use App\Group;
 use App\Initialize\ActivityCreator;
 use App\Member\Member;
+use App\Member\Membership;
 use App\Nationality;
 use App\Region;
 use App\Subactivity;
@@ -91,7 +92,12 @@ class MemberPullAction
 
             try {
                 foreach ($this->api->membershipsOf($this->member->id) as $membership) {
-                    if (null !== $membership->endsAt) {
+                    $existingMembership = Membership::where('nami_id', $membership->id)->first();
+                    if (null !== $membership->endsAt && !$existingMembership) {
+                        continue;
+                    }
+                    if (null !== $membership->endsAt && $existingMembership) {
+                        $existingMembership->delete();
                         continue;
                     }
                     try {
