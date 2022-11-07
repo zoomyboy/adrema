@@ -49,26 +49,6 @@ parameters:
             path: app/Console/Kernel.php
 
         -
-            message: "#^Method App\\\\Contribution\\\\DvData\\:\\:__construct\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Contribution/DvData.php
-
-        -
-            message: "#^Method App\\\\Contribution\\\\DvData\\:\\:__construct\\(\\) has parameter \\$type with no type specified\\.$#"
-            count: 1
-            path: app/Contribution/DvData.php
-
-        -
-            message: "#^Method App\\\\Contribution\\\\SolingenData\\:\\:__construct\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Contribution/SolingenData.php
-
-        -
-            message: "#^Method App\\\\Contribution\\\\SolingenData\\:\\:__construct\\(\\) has parameter \\$type with no type specified\\.$#"
-            count: 1
-            path: app/Contribution/SolingenData.php
-
-        -
             message: "#^Unable to resolve the template type TKey in call to function collect$#"
             count: 1
             path: app/Course/Requests/StoreRequest.php
@@ -214,11 +194,6 @@ parameters:
             path: app/Http/Views/MemberTriesResource.php
 
         -
-            message: "#^Method App\\\\Http\\\\Views\\\\MemberView\\:\\:additional\\(\\) has parameter \\$overwrites with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Http/Views/MemberView.php
-
-        -
             message: "#^Method App\\\\Http\\\\Views\\\\MemberView\\:\\:index\\(\\) has parameter \\$filter with no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Http/Views/MemberView.php
@@ -334,31 +309,6 @@ parameters:
             path: app/Membership/Requests/StoreRequest.php
 
         -
-            message: "#^Call to an undefined method App\\\\Pdf\\\\PdfRepository\\:\\:allLabel\\(\\)\\.$#"
-            count: 1
-            path: app/Payment/ActionFactory.php
-
-        -
-            message: "#^Call to an undefined method App\\\\Pdf\\\\PdfRepository\\:\\:createable\\(\\)\\.$#"
-            count: 1
-            path: app/Payment/ActionFactory.php
-
-        -
-            message: "#^Call to an undefined method App\\\\Pdf\\\\PdfRepository\\:\\:getDescription\\(\\)\\.$#"
-            count: 1
-            path: app/Payment/ActionFactory.php
-
-        -
-            message: "#^Call to an undefined method App\\\\Pdf\\\\PdfRepository\\:\\:linkLabel\\(\\)\\.$#"
-            count: 1
-            path: app/Payment/ActionFactory.php
-
-        -
-            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,App\\\\Pdf\\\\PdfRepository\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
-            count: 2
-            path: app/Payment/ActionFactory.php
-
-        -
             message: "#^Method App\\\\Payment\\\\PaymentResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Payment/PaymentResource.php
@@ -372,41 +322,6 @@ parameters:
             message: "#^Method App\\\\Payment\\\\SubscriptionResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Payment/SubscriptionResource.php
-
-        -
-            message: "#^Method App\\\\Pdf\\\\BillType\\:\\:getPositions\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Pdf/BillType.php
-
-        -
-            message: "#^Method App\\\\Pdf\\\\Data\\\\MemberEfzData\\:\\:__construct\\(\\) has parameter \\$sender with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Pdf/Data/MemberEfzData.php
-
-        -
-            message: "#^Method App\\\\Pdf\\\\LetterRepository\\:\\:getDescription\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Pdf/LetterRepository.php
-
-        -
-            message: "#^Method App\\\\Pdf\\\\LetterRepository\\:\\:getPositions\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Pdf/LetterRepository.php
-
-        -
-            message: "#^Unable to resolve the template type TKey in call to function collect$#"
-            count: 1
-            path: app/Pdf/PdfRepositoryFactory.php
-
-        -
-            message: "#^Unable to resolve the template type TValue in call to function collect$#"
-            count: 1
-            path: app/Pdf/PdfRepositoryFactory.php
-
-        -
-            message: "#^Method App\\\\Pdf\\\\RememberType\\:\\:getPositions\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Pdf/RememberType.php
 
         -
             message: "#^PHPDoc type array of property App\\\\Providers\\\\AuthServiceProvider\\:\\:\\$policies is not covariant with PHPDoc type array\\<class\\-string, class\\-string\\> of overridden property Illuminate\\\\Foundation\\\\Support\\\\Providers\\\\AuthServiceProvider\\:\\:\\$policies\\.$#"

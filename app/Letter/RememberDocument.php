@@ -35,6 +35,9 @@ class RememberDocument extends Letter
         return 'tex.remember';
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getPositions(Collection $page): array
     {
         $memberIds = $page->pluck('id')->toArray();
@@ -66,11 +69,6 @@ class RememberDocument extends Letter
     public function getLocation(Collection $page): string
     {
         return $page->first()->location;
-    }
-
-    public function getUsage(Collection $page): string
-    {
-        return "Mitgliedsbeitrag für {$page->familyName}";
     }
 
     public function sendAllLabel(): string
