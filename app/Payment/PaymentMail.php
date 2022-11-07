@@ -6,7 +6,6 @@ use App\Letter\Letter;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 
 class PaymentMail extends Mailable
 {
@@ -36,9 +35,7 @@ class PaymentMail extends Mailable
      */
     public function build()
     {
-        $template = Str::snake(class_basename($this->letter));
-
-        return $this->markdown('mail.payment.'.$template)
+        return $this->markdown($this->letter->mailView())
                     ->attach($this->filename)
                     ->replyTo('kasse@stamm-silva.de')
                     ->subject($this->letter->getSubject().' | DPSG Stamm Silva');

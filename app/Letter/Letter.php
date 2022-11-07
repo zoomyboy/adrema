@@ -105,4 +105,18 @@ abstract class Letter extends Document
             }
         }
     }
+
+    /**
+     * @return view-string
+     */
+    public function mailView(): string
+    {
+        $view = 'mail.payment.'.Str::snake(class_basename($this));
+
+        if (!view()->exists($view)) {
+            throw new Exception('Mail view '.$view.' existiert nicht.');
+        }
+
+        return $view;
+    }
 }

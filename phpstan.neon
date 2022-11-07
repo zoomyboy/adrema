@@ -10,7 +10,7 @@ parameters:
         - packages/tex/src
 
     # The level 8 is the highest level
-    level: 6
+    level: 7
 
     ignoreErrors:
         -
