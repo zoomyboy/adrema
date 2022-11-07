@@ -37,7 +37,7 @@ class LetterSendActionTest extends TestCase
     {
         Mail::fake();
 
-        LetterSendAction::run();
+        app(LetterSendAction::class)->handle();
 
         Mail::assertSent(PaymentMail::class, fn ($mail) => Storage::path('rechnung-fur-mom.pdf') === $mail->filename);
     }

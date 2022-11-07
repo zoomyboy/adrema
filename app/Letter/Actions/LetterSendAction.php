@@ -31,7 +31,7 @@ class LetterSendAction
     /**
      * Execute the console command.
      */
-    private function handle(): int
+    public function handle(): int
     {
         foreach (app(DocumentFactory::class)->types as $type) {
             $letters = app(DocumentFactory::class)->repoCollection($type, 'E-Mail');
