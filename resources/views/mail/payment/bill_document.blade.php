@@ -1,5 +1,5 @@
 @component('mail::message')
-# Liebe Familie {{ $repo->getFamilyName($repo->pages->first()) }},
+# {{ $salutation }},
 
 Im Anhang findet ihr die aktuelle Rechnung des Stammes Silva für das laufende Jahr. Bitte begleicht diese bis zum angegebenen Datum.
 

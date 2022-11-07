@@ -6,10 +6,11 @@ use App\Country;
 use App\Http\Controllers\Controller;
 use App\Member\Member;
 use App\Member\MemberResource;
-use App\Pdf\PdfGenerator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Zoomyboy\Tex\BaseCompiler;
+use Zoomyboy\Tex\Tex;
 
 class ContributionController extends Controller
 {
@@ -25,10 +26,11 @@ class ContributionController extends Controller
         ]);
     }
 
-    public function generate(Request $request): PdfGenerator
+    public function generate(Request $request): BaseCompiler
     {
-        $data = app($request->query('type'));
+        /** @var class-string<SolingenDocument> */
+        $type = $request->query('type');
 
-        return app(PdfGenerator::class)->setRepository($data)->render();
+        return Tex::compile($type::fromRequest($request));
     }
 }

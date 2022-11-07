@@ -2,7 +2,7 @@
 
 namespace App\Payment;
 
-use App\Pdf\LetterRepository;
+use App\Letter\Letter;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -13,18 +13,20 @@ class PaymentMail extends Mailable
     use Queueable;
     use SerializesModels;
 
-    public LetterRepository $repo;
+    public Letter $letter;
     public string $filename;
+    public string $salutation;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(LetterRepository $repo, string $filename)
+    public function __construct(Letter $letter, string $filename)
     {
+        $this->letter = $letter;
         $this->filename = $filename;
-        $this->repo = $repo;
+        $this->salutation = 'Liebe Familie '.$letter->pages->first()->familyName;
     }
 
     /**
@@ -34,11 +36,11 @@ class PaymentMail extends Mailable
      */
     public function build()
     {
-        $template = Str::snake(class_basename($this->repo));
+        $template = Str::snake(class_basename($this->letter));
 
         return $this->markdown('mail.payment.'.$template)
                     ->attach($this->filename)
                     ->replyTo('kasse@stamm-silva.de')
-                    ->subject($this->repo->getMailSubject().' | DPSG Stamm Silva');
+                    ->subject($this->letter->getSubject().' | DPSG Stamm Silva');
     }
 }

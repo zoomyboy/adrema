@@ -1,20 +1,13 @@
 <?php
 
-namespace App\Pdf;
+namespace App\Letter;
 
-use App\Member\Member;
 use App\Payment\Payment;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
-class RememberType extends Repository implements LetterRepository
+class RememberDocument extends Letter
 {
-    public string $filename;
-
-    public function getPayments(Member $member): Collection
-    {
-        return $member->payments()->whereNeedsRemember()->get();
-    }
-
     public function linkLabel(): string
     {
         return 'Erinnerung erstellen';
@@ -37,19 +30,9 @@ class RememberType extends Repository implements LetterRepository
         return $this->filename;
     }
 
-    public function getScript(): EnvType
-    {
-        return EnvType::XELATEX;
-    }
-
-    public function getView(): string
+    public function view(): string
     {
         return 'tex.remember';
-    }
-
-    public function getTemplate(): ?string
-    {
-        return 'default';
     }
 
     public function getPositions(Collection $page): array
@@ -63,11 +46,6 @@ class RememberType extends Repository implements LetterRepository
 
             return [$key => $this->number($payment->subscription->amount)];
         })->toArray();
-    }
-
-    public function getFamilyName(Collection $page): string
-    {
-        return $page->first()->lastname;
     }
 
     public function getAddress(Collection $page): string
@@ -92,10 +70,10 @@ class RememberType extends Repository implements LetterRepository
 
     public function getUsage(Collection $page): string
     {
-        return "Mitgliedsbeitrag für {$this->getFamilyName($page)}";
+        return "Mitgliedsbeitrag für {$page->familyName}";
     }
 
-    public function allLabel(): string
+    public function sendAllLabel(): string
     {
         return 'Erinnerungen versenden';
     }
@@ -121,5 +99,15 @@ class RememberType extends Repository implements LetterRepository
     public function getMailSubject(): string
     {
         return 'Zahlungserinnerung';
+    }
+
+    /**
+     * @param HasMany<Payment> $query
+     *
+     * @return HasMany<Payment>
+     */
+    public static function paymentsQuery(HasMany $query): HasMany
+    {
+        return $query->whereNeedsRemember();
     }
 }

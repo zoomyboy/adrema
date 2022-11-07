@@ -3,13 +3,13 @@
 namespace App\Payment;
 
 use App\Http\Controllers\Controller;
-use App\Pdf\PdfGenerator;
-use App\Pdf\PdfRepositoryFactory;
+use App\Letter\DocumentFactory;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use Zoomyboy\Tex\Tex;
 
 class SendpaymentController extends Controller
 {
@@ -28,13 +28,15 @@ class SendpaymentController extends Controller
      */
     public function send(Request $request)
     {
-        $repo = app(PdfRepositoryFactory::class)->forAll($request->type, 'Post');
+        $repo = app(DocumentFactory::class)->forAll($request->type, 'Post');
 
-        $pdfFile = app(PdfGenerator::class)->setRepository($repo)->render();
-        app(PdfRepositoryFactory::class)->afterAll($request->type, 'Post');
+        if (is_null($repo)) {
+            return response()->noContent();
+        }
 
-        return null === $repo
-            ? response()->noContent()
-            : $pdfFile;
+        $pdfFile = Tex::compile($repo);
+        app(DocumentFactory::class)->afterAll($request->type, 'Post');
+
+        return $pdfFile;
     }
 }

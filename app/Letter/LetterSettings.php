@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Bill;
+namespace App\Letter;
 
 use App\Setting\LocalSettings;
 
-class BillSettings extends LocalSettings
+class LetterSettings extends LocalSettings
 {
     public string $from_long;
 

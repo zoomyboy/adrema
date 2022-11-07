@@ -3,11 +3,11 @@
 namespace App\Member;
 
 use App\Activity;
-use App\Bill\BillKind;
 use App\Confession;
 use App\Country;
 use App\Course\Models\CourseMember;
 use App\Group;
+use App\Letter\BillKind;
 use App\Nationality;
 use App\Payment\Payment;
 use App\Payment\Subscription;

@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');
     Route::resource('member', MemberController::class);
-    Route::resource('member.payment', PaymentController::class);
+    Route::apiResource('member.payment', PaymentController::class);
     Route::resource('allpayment', AllpaymentController::class);
     Route::resource('subscription', SubscriptionController::class);
     Route::post('/member/{member}/confirm', MemberConfirmController::class);

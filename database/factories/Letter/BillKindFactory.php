@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Factories\Bill;
+namespace Database\Factories\Letter;
 
-use App\Bill\BillKind;
+use App\Letter\BillKind;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

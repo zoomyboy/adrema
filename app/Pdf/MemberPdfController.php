@@ -3,10 +3,12 @@
 namespace App\Pdf;
 
 use App\Http\Controllers\Controller;
+use App\Letter\DocumentFactory;
 use App\Member\Member;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Zoomyboy\Tex\Tex;
 
 class MemberPdfController extends Controller
 {
@@ -15,10 +17,10 @@ class MemberPdfController extends Controller
      */
     public function __invoke(Request $request, Member $member)
     {
-        $repo = app(PdfRepositoryFactory::class)->fromSingleRequest($request->type, $member);
+        $document = app(DocumentFactory::class)->fromSingleRequest($request->type, $member);
 
-        return null === $repo
+        return null === $document
             ? response()->noContent()
-            : app(PdfGenerator::class)->setRepository($repo)->render();
+            : Tex::compile($document);
     }
 }

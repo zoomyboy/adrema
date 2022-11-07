@@ -83,11 +83,11 @@
 \newcommand{\emptycheckbox}{\tikz{\node[text height=0.5cm,text width=0.5cm,inner sep=0cm] at (0,0) {};}}
 
 \begin{document} \sffamily
-@foreach($data->members()->chunk(14) as $chunk)
+@foreach($memberModels as $chunk)
 \begin{tikzpicture}[outer]
     \path (current page.north west) ++(1cm,-1cm) coordinate (OL) -- (current page.north east) ++(-1cm,0cm) coordinate (OR) node[midway,below=0.5cm] {\textbf{TEILNEHMER - / INNENLISTE}};
     \matrix (options) at ($(OL)+(0.5cm,-1cm)$) [matrix of nodes, column sep=0cm,row sep=0.5cm,nodes in empty cells, every node/.style={inner sep=0cm,align=left,text width=6.2cm}, anchor=north west] {
-        <<<!!$data->checkboxes()!!>>>
+        <<<!!$checkboxes!!>>>
     };
     \node[align=left,inner sep=0cm,anchor=west] at (options-2-4.west) {\tikz{\node[draw,very thick,rectangle,text height=0.5cm,text width=0.5cm,inner sep=0cm] (checkbox) at (0,0) {}; \draw[thick] (checkbox.south east) ++(0.2cm,0) -- (checkbox.south east -| options-2-4.south east);}};
 
@@ -95,13 +95,13 @@
     \draw (org.south east -| options-2-2.south west) -- (org.south east -| options-2-4.south east) node[formfill] {DPSG Stamm Silva Solingen Wald};
 
     \node[anchor=north west] (title) at ($(org.south west)+(0cm,-0.5cm)$) {\large{Titel der Maßnahme:}};
-    \draw (title.south east -| options-2-2.south west) -- (title.south east -| options-2-4.south east) node[formfill] {<<<$data->eventName>>>};
+    \draw (title.south east -| options-2-2.south west) -- (title.south east -| options-2-4.south east) node[formfill] {<<<$eventName>>>};
 
     \node[anchor=north west] (datefrom) at ($(title.south west)+(0cm,-0.5cm)$) {\large{Datum vom:}};
-    \draw (datefrom.south east -| options-2-2.south west) -- ($(datefrom.south east -| options-2-2.south east) - (1,0cm)$) node[formfill] {<<<$data->niceEventFrom()>>>};
+    \draw (datefrom.south east -| options-2-2.south west) -- ($(datefrom.south east -| options-2-2.south east) - (1,0cm)$) node[formfill] {<<<$niceEventFrom()>>>};
 
     \node[anchor=south west] (dateuntil) at (options-2-3.south west |- datefrom.south west) {\large{bis:}};
-    \draw[label={east:aaa}] (dateuntil.south east) -- (datefrom.south east -| options-2-3.south east) node[formfill] {<<<$data->niceEventTo()>>>};
+    \draw[label={east:aaa}] (dateuntil.south east) -- (datefrom.south east -| options-2-3.south east) node[formfill] {<<<$niceEventUntil()>>>};
 
     \path[fill=yellow] (datefrom.south -| OL) ++(0,-1.0) rectangle ($(datefrom.south -| OR) + (0,-1.5)$);
 

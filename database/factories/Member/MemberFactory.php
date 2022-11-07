@@ -5,6 +5,7 @@ namespace Database\Factories\Member;
 use App\Country;
 use App\Fee;
 use App\Group;
+use App\Letter\BillKind;
 use App\Member\Member;
 use App\Nationality;
 use App\Payment\Payment;
@@ -58,6 +59,20 @@ class MemberFactory extends Factory
             ->for($group)
             ->for($nationality)
             ->for($subscription);
+    }
+
+    public function postBillKind(): self
+    {
+        return $this->state([
+            'bill_kind_id' => BillKind::firstWhere('name', 'Post')->id,
+        ]);
+    }
+
+    public function emailBillKind(): self
+    {
+        return $this->state([
+            'bill_kind_id' => BillKind::firstWhere('name', 'E-Mail')->id,
+        ]);
     }
 
     public function inNami(int $namiId): self

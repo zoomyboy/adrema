@@ -2,7 +2,7 @@
 
 namespace App\Setting;
 
-use App\Bill\BillSettings;
+use App\Letter\LetterSettings;
 use App\Mailman\MailmanSettings;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,7 +25,7 @@ class SettingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        app(SettingFactory::class)->register(BillSettings::class);
+        app(SettingFactory::class)->register(LetterSettings::class);
         app(SettingFactory::class)->register(MailmanSettings::class);
     }
 }

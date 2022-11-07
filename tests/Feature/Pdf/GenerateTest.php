@@ -5,12 +5,11 @@ namespace Tests\Feature\Pdf;
 use App\Country;
 use App\Fee;
 use App\Group;
+use App\Letter\BillDocument;
+use App\Letter\DocumentFactory;
 use App\Member\Member;
 use App\Nationality;
 use App\Payment\Subscription;
-use App\Pdf\BillType;
-use App\Pdf\PdfGenerator;
-use App\Pdf\PdfRepositoryFactory;
 use Carbon\Carbon;
 use Database\Factories\Member\MemberFactory;
 use Database\Factories\Payment\PaymentFactory;
@@ -38,18 +37,18 @@ class GenerateTest extends TestCase
             'no_pdf_when_no_bill' => [
                 'members' => [
                     [
-                        'factory' => fn (MemberFactory $member): MemberFactory => $member,
+                        'factory' => fn (MemberFactory $member) => $member,
                         'payments' => [],
                     ],
                 ],
                 'urlCallable' => fn (Collection $members): int => $members->first()->id,
-                'type' => BillType::class,
+                'type' => BillDocument::class,
                 'filename' => null,
             ],
             'bill_for_single_member_when_no_bill_received_yet' => [
                 'members' => [
                     [
-                        'factory' => fn (MemberFactory $member): MemberFactory => $member
+                        'factory' => fn (MemberFactory $member) => $member
                             ->state([
                                 'firstname' => '::firstname::',
                                 'lastname' => '::lastname::',
@@ -58,7 +57,7 @@ class GenerateTest extends TestCase
                                 'location' => '::location::',
                             ]),
                         'payments' => [
-                            fn (PaymentFactory $payment): PaymentFactory => $payment
+                            fn (PaymentFactory $payment) => $payment
                                 ->notPaid()
                                 ->nr('1995')
                                 ->subscription('::subName::', 1500),
@@ -66,7 +65,7 @@ class GenerateTest extends TestCase
                     ],
                 ],
                 'urlCallable' => fn (Collection $members): int => $members->first()->id,
-                'type' => BillType::class,
+                'type' => BillDocument::class,
                 'filename' => 'rechnung-fur-lastname.pdf',
                 'output' => [
                     'Rechnung',
@@ -79,19 +78,19 @@ class GenerateTest extends TestCase
             'bill_has_deadline' => [
                 'members' => [
                     [
-                        'factory' => fn (MemberFactory $member): MemberFactory => $member
+                        'factory' => fn (MemberFactory $member) => $member
                             ->state([
                                 'firstname' => '::firstname::',
                                 'lastname' => '::lastname::',
                             ]),
                         'payments' => [
-                            fn (PaymentFactory $payment): PaymentFactory => $payment
+                            fn (PaymentFactory $payment) => $payment
                                 ->nr('A')->notPaid()->subscription('::subName::', 1500),
                         ],
                     ],
                 ],
                 'urlCallable' => fn (Collection $members): int => $members->first()->id,
-                'type' => BillType::class,
+                'type' => BillDocument::class,
                 'filename' => 'rechnung-fur-lastname.pdf',
                 'output' => [
                     '29.04.2021',
@@ -100,7 +99,7 @@ class GenerateTest extends TestCase
             'families' => [
                 'members' => [
                     [
-                        'factory' => fn (MemberFactory $member): MemberFactory => $member
+                        'factory' => fn (MemberFactory $member) => $member
                             ->state([
                                 'firstname' => '::firstname1::',
                                 'lastname' => '::lastname::',
@@ -109,12 +108,12 @@ class GenerateTest extends TestCase
                                 'location' => '::location::',
                             ]),
                         'payments' => [
-                            fn (PaymentFactory $payment): PaymentFactory => $payment
+                            fn (PaymentFactory $payment) => $payment
                                 ->nr('::nr::')->notPaid()->subscription('::subName::', 1500),
                         ],
                     ],
                     [
-                        'factory' => fn (MemberFactory $member): MemberFactory => $member
+                        'factory' => fn (MemberFactory $member) => $member
                             ->state([
                                 'firstname' => '::firstname2::',
                                 'lastname' => '::lastname::',
@@ -123,13 +122,13 @@ class GenerateTest extends TestCase
                                 'location' => '::location::',
                             ]),
                         'payments' => [
-                            fn (PaymentFactory $payment): PaymentFactory => $payment
+                            fn (PaymentFactory $payment) => $payment
                                 ->nr('::nr2::')->notPaid()->subscription('::subName2::', 1600),
                         ],
                     ],
                 ],
                 'urlCallable' => fn (Collection $members): int => $members->first()->id,
-                'type' => BillType::class,
+                'type' => BillDocument::class,
                 'filename' => 'rechnung-fur-lastname.pdf',
                 'output' => [
                     '::nr::',
@@ -155,7 +154,7 @@ class GenerateTest extends TestCase
 
         $urlId = call_user_func($urlCallable, $members);
         $member = Member::find($urlId);
-        $repo = app(PdfRepositoryFactory::class)->fromSingleRequest($type, $member);
+        $repo = app(DocumentFactory::class)->fromSingleRequest($type, $member);
 
         if (null === $filename) {
             $this->assertNull($repo);
@@ -163,7 +162,7 @@ class GenerateTest extends TestCase
             return;
         }
 
-        $content = app(PdfGenerator::class)->setRepository($repo)->compileView();
+        $content = $repo->renderBody();
 
         foreach ($output as $out) {
             $this->assertStringContainsString($out, $content);

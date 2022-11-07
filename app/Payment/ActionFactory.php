@@ -2,31 +2,19 @@
 
 namespace App\Payment;
 
-use App\Member\Member;
-use App\Pdf\PdfRepository;
-use App\Pdf\PdfRepositoryFactory;
+use App\Letter\DocumentFactory;
+use App\Letter\Letter;
 use Illuminate\Support\Collection;
 
 class ActionFactory
 {
-    public function forMember(Member $member): Collection
-    {
-        return app(PdfRepositoryFactory::class)->getTypes()->map(function (PdfRepository $repo) use ($member): array {
-            return [
-                'href' => route('member.singlepdf', ['member' => $member, 'type' => get_class($repo)]),
-                'label' => $repo->linkLabel(),
-                'disabled' => !$repo->createable($member),
-            ];
-        });
-    }
-
     public function allLinks(): Collection
     {
-        return app(PdfRepositoryFactory::class)->getTypes()->map(function (PdfRepository $repo) {
+        return app(DocumentFactory::class)->getTypes()->map(function (Letter $repo) {
             return [
                 'link' => [
                     'href' => route('sendpayment.pdf', ['type' => get_class($repo)]),
-                    'label' => $repo->allLabel(),
+                    'label' => $repo->sendAllLabel(),
                 ],
                 'text' => $repo->getDescription(),
             ];

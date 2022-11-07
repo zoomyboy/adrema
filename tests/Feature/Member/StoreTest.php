@@ -3,10 +3,10 @@
 namespace Tests\Feature\Member;
 
 use App\Activity;
-use App\Bill\BillKind;
 use App\Country;
 use App\Fee;
 use App\Gender;
+use App\Letter\BillKind;
 use App\Member\CreateJob;
 use App\Member\Member;
 use App\Nationality;
