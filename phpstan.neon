@@ -8,9 +8,11 @@ parameters:
         - tests
         - database
         - packages/tex/src
+        - packages/laravel-nami/src
+        - packages/laravel-nami/tests
 
     # The level 8 is the highest level
-    level: 7
+    level: 6
 
     ignoreErrors:
         -
@@ -496,3 +498,673 @@ parameters:
             message: "#^Method Tests\\\\Unit\\\\Mailman\\\\ServiceTest\\:\\:testItReturnsMoreThanOneResult\\(\\) has parameter \\$totals with no value type specified in iterable type array\\.$#"
             count: 1
             path: tests/Unit/Mailman/ServiceTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Activity\\:\\:fromNami\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Activity.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Activity\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Activity.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Activity\\:\\:subactivities\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Activity.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Activity.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Activity.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:activities\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:activities\\(\\) has parameter \\$groupId with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:exception\\(\\) has parameter \\$requestData with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:exception\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:fetchData\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:member\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:putMember\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:putMember\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Api\\:\\:singleMemberFallback\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 4
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 4
+            path: packages/laravel-nami/src/Api.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Authentication\\\\FakeCookie\\:\\:\\$authenticated type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Authentication/FakeCookie.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Authentication\\\\FakeCookie\\:\\:\\$invalidAccounts type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Authentication/FakeCookie.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Authentication\\\\FakeCookie\\:\\:\\$validAccounts type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Authentication/FakeCookie.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Backend\\\\FakeBackend\\:\\:fakeSingleMembership\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Backend/FakeBackend.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Backend\\\\FakeBackend\\:\\:fakeSingleMembership\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Backend/FakeBackend.php
+
+        -
+            message: "#^Return type of call to function collect contains unresolvable type\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Backend/FakeBackend.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Backend/FakeBackend.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Backend/FakeBackend.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Confession\\:\\:fromNami\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Confession.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Confession\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Confession.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Confession.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Confession.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Country\\:\\:fromNami\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Country.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Country\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Country.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Data\\\\Membership\\:\\:fromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Data/Membership.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Data\\\\Membership\\:\\:toNami\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Data/Membership.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\BausteinFake\\:\\:fetches\\(\\) has parameter \\$courses with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/BausteinFake.php
+
+        -
+            message: "#^PHPDoc tag @param references unknown parameter\\: \\$memberId$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/BausteinFake.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Fakes\\\\CourseFake\\:\\:\\$defaults type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/CourseFake.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\Fake\\:\\:dataResponse\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/Fake.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\GroupFake\\:\\:fakeResponse\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/GroupFake.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\GroupFake\\:\\:mapToResponse\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/GroupFake.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\GroupFake\\:\\:mapToResponse\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/GroupFake.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\MemberFake\\:\\:shows\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/MemberFake.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\MembershipFake\\:\\:assertCreated\\(\\) has parameter \\$payload with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/MembershipFake.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\MembershipFake\\:\\:assertUpdated\\(\\) has parameter \\$payload with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fakes/MembershipFake.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fee\\:\\:fromNami\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fee.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fee\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Fee.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Gender\\:\\:fromNami\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Gender.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Gender\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Gender.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Gender\\:\\:getIsNullAttribute\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Gender.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Gender\\:\\:getNullValue\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Gender.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Group\\:\\:fees\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Group.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Group\\:\\:fromResponse\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Group.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Group\\:\\:subgroups\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Group.php
+
+        -
+            message: "#^Unreachable statement \\- code above always terminates\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Group.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:__construct\\(\\) has parameter \\$options with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:__construct\\(\\) has parameter \\$response with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:__construct\\(\\) has parameter \\$title with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:__construct\\(\\) has parameter \\$url with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:fromHttp\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:http\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:http\\(\\) has parameter \\$options with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:http\\(\\) has parameter \\$response with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:http\\(\\) has parameter \\$title with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:http\\(\\) has parameter \\$url with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:level\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:\\$errors has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:\\$options has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:\\$response has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:\\$title has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:\\$url has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Unsafe usage of new static\\(\\)\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Logger.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\LoginException\\:\\:setReason\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/LoginException.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\LoginException\\:\\:setReason\\(\\) has parameter \\$reason with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/LoginException.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\LoginException\\:\\:setResponse\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/LoginException.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\LoginException\\:\\:setResponse\\(\\) has parameter \\$response with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/LoginException.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\LoginException\\:\\:\\$reason has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/LoginException.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\LoginException\\:\\:\\$response has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/LoginException.php
+
+        -
+            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$fee_id\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Array has 2 duplicate keys with value 'geburtsDatum' \\('geburtsDatum', 'geburtsDatum'\\)\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:fromAttributes\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:setGeschlechtTextAttribute\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:setGeschlechtTextAttribute\\(\\) has parameter \\$v with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:toNami\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$geschlechtMaps has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$nullable has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$overviewAttributes has no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Call to an undefined static method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:fromOverview\\(\\)\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/MemberCollection.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\MemberCollection\\:\\:fromOverview\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/MemberCollection.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\MemberCollection\\:\\:fromOverview\\(\\) has parameter \\$items with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/MemberCollection.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\NamiException\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/NamiException.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\NamiException\\:\\:request\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/NamiException.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\NamiException\\:\\:response\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/NamiException.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\NamiException\\:\\:setData\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/NamiException.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\NamiException\\:\\:\\$data type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/NamiException.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\NamiException\\:\\:\\$response type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/NamiException.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Nationality\\:\\:fromNami\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Nationality.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Nationality\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Nationality.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Nationality.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Nationality.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Nullable\\:\\:getIsNullAttribute\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Nullable.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Nullable\\:\\:getNullValue\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Nullable.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Providers\\\\NamiServiceProvider\\:\\:boot\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Providers/NamiServiceProvider.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Region\\:\\:fromNami\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Region.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Region\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Region.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Region\\:\\:getIsNullAttribute\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Region.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Region\\:\\:getNullValue\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Region.php
+
+        -
+            message: "#^Call to an undefined static method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:getNullValue\\(\\)\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Subactivity.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:fromNami\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Subactivity.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Subactivity.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:getIsNullAttribute\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Subactivity.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:getNameAttribute\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Subactivity.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Subactivity.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: packages/laravel-nami/src/Subactivity.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Stub\\\\Member\\:\\:findByNamiId\\(\\) has no return type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Stub/Member.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Stub\\\\Member\\:\\:findByNamiId\\(\\) has parameter \\$id with no type specified\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Stub/Member.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\TestCase\\:\\:fakeJson\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/TestCase.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\TestCase\\:\\:getAnnotations\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/TestCase.php
+
+        -
+            message: "#^Parameter \\#2 \\$membershipIds of method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\MembershipFake\\:\\:fetches\\(\\) expects array\\<int, array\\{id\\: int, entries_taetigkeit\\?\\: string, entries_aktivVon\\?\\: string, entries_aktivBis\\?\\: string, entries_untergliederung\\?\\: string, entries_gruppierung\\?\\: string\\}\\|int\\>, array\\{array\\{entries_aktivBis\\: '', entries_untergliederung\\: ''\\}\\} given\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/Api/MembershipIndexTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:dataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:overviewDataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:relationProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetAMemberFromOverviewWithNoRights\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetASingleMember\\(\\) has parameter \\$check with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetASingleMember\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetAttributeOfMemberCollection\\(\\) has parameter \\$check with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetAttributeOfMemberCollection\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetAttributeOfMemberOverview\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testSetRelations\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:dataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PushMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:testPushASingleMember\\(\\) has parameter \\$check with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PushMemberTest.php
+
+        -
+            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:testPushASingleMember\\(\\) has parameter \\$overwrites with no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PushMemberTest.php
+
+        -
+            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:\\$attributes type has no value type specified in iterable type array\\.$#"
+            count: 1
+            path: packages/laravel-nami/tests/Unit/PushMemberTest.php
