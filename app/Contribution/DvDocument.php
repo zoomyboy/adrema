@@ -37,7 +37,7 @@ class DvDocument extends Document
             dateFrom: $request->dateFrom,
             dateUntil: $request->dateUntil,
             zipLocation: $request->zipLocation,
-            country: Country::findOrFail($request->country),
+            country: Country::where('id', $request->country)->firstOrFail(),
             members: Member::whereIn('id', $request->members)->orderByRaw('lastname, firstname')->get()->chunk(17),
         );
     }

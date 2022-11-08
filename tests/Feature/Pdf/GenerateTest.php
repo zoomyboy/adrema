@@ -7,6 +7,7 @@ use App\Fee;
 use App\Group;
 use App\Letter\BillDocument;
 use App\Letter\DocumentFactory;
+use App\Letter\Letter;
 use App\Member\Member;
 use App\Nationality;
 use App\Payment\Subscription;
@@ -140,7 +141,11 @@ class GenerateTest extends TestCase
         ];
     }
 
-    /** @dataProvider generatorProvider */
+    /**
+     * @dataProvider generatorProvider
+     *
+     * @param class-string<Letter> $type
+     */
     public function testItGeneratesTheLayout(
         array $members,
         callable $urlCallable,
