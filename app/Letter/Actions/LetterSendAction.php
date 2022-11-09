@@ -16,10 +16,8 @@ class LetterSendAction
 
     /**
      * The name and signature of the console command.
-     *
-     * @var string
      */
-    protected $signature = 'payment:send';
+    public string $commandSignature = 'letter:send';
 
     /**
      * The console command description.

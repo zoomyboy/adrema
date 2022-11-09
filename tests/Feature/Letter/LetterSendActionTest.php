@@ -8,6 +8,7 @@ use App\Member\Member;
 use App\Payment\Payment;
 use App\Payment\PaymentMail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Mail;
 use Tests\TestCase;
@@ -37,7 +38,7 @@ class LetterSendActionTest extends TestCase
     {
         Mail::fake();
 
-        app(LetterSendAction::class)->handle();
+        Artisan::call('letter:send');
 
         Mail::assertSent(PaymentMail::class, fn ($mail) => Storage::path('rechnung-fur-mom.pdf') === $mail->filename);
     }
