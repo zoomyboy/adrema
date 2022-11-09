@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Mailer
@@ -42,6 +41,8 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
+            'verify_peer' => env('MAIL_VERIFY_PEER', true),
+            'verify_peer_name' => env('MAIL_VERIFY_PEER', true),
         ],
 
         'ses' => [
@@ -105,5 +106,4 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
-
 ];
