@@ -57,7 +57,7 @@
             target="_BLANK"
             type="submit"
             name="type"
-            value="\App\Contribution\SolingenData"
+            value="\App\Contribution\SolingenDocument"
             class="btn btn-primary mt-3 inline-block"
         >
             Für Stadt erstellen
@@ -66,7 +66,7 @@
             target="_BLANK"
             type="submit"
             name="type"
-            value="\App\Contribution\DvData"
+            value="\App\Contribution\DvDocument"
             class="btn btn-primary mt-3 inline-block"
         >
             Für DV erstellen
