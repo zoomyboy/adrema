@@ -7,15 +7,13 @@ use App\Country;
 use App\Fee;
 use App\Gender;
 use App\Letter\BillKind;
-use App\Member\CreateJob;
+use App\Member\Actions\NamiPutMemberAction;
 use App\Member\Member;
 use App\Nationality;
 use App\Payment\Subscription;
 use App\Region;
-use App\Setting\NamiSettings;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Tests\Lib\MergesAttributes;
 use Tests\TestCase;
 
@@ -26,12 +24,7 @@ class StoreTest extends TestCase
 
     public function testItCanStoreAMember(): void
     {
-        Queue::fake();
         Fee::factory()->create();
-        NamiSettings::fake([
-            'default_group_id' => 55,
-            'password' => 'tt',
-        ]);
         $this->withoutExceptionHandling()->login()->loginNami();
         $country = Country::factory()->create();
         $gender = Gender::factory()->create();
@@ -41,6 +34,7 @@ class StoreTest extends TestCase
         $subactivity = Subactivity::factory()->create();
         $subscription = Subscription::factory()->create();
         $billKind = BillKind::factory()->create();
+        NamiPutMemberAction::allowToRun();
 
         $response = $this
             ->from('/member/create')
@@ -58,7 +52,6 @@ class StoreTest extends TestCase
         $response->assertStatus(302)->assertSessionHasNoErrors();
         $response->assertRedirect('/member');
         $member = Member::firstWhere('firstname', 'Joe');
-        Queue::assertPushed(CreateJob::class, fn ($job) => $job->memberId === $member->id);
         $this->assertDatabaseHas('members', [
             'address' => 'Bavert 50',
             'bill_kind_id' => $billKind->id,
@@ -81,6 +74,76 @@ class StoreTest extends TestCase
             'zip' => '42719',
             'fax' => '+49 666',
         ]);
+        NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(fn (Member $memberParam, Activity $activityParam, Subactivity $subactivityParam) => $memberParam->is($member)
+            && $activityParam->is($activity)
+            && $subactivityParam->is($subactivity)
+        )->once();
+    }
+
+    public function testItCanStoreAMemberWithoutNami(): void
+    {
+        Fee::factory()->create();
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $country = Country::factory()->create();
+        $gender = Gender::factory()->create();
+        $region = Region::factory()->create();
+        $nationality = Nationality::factory()->create();
+        $subscription = Subscription::factory()->create();
+        $billKind = BillKind::factory()->create();
+        $activity = Activity::factory()->create();
+        $subactivity = Subactivity::factory()->create();
+        NamiPutMemberAction::allowToRun();
+
+        $response = $this
+            ->from('/member/create')
+            ->post('/member', $this->attributes([
+                'country_id' => $country->id,
+                'gender_id' => $gender->id,
+                'region_id' => $region->id,
+                'nationality_id' => $nationality->id,
+                'first_activity_id' => $activity->id,
+                'first_subactivity_id' => $subactivity->id,
+                'subscription_id' => $subscription->id,
+                'bill_kind_id' => $billKind->id,
+                'has_nami' => false,
+            ]));
+
+        $response->assertStatus(302)->assertSessionHasNoErrors();
+        $response->assertRedirect('/member');
+        $member = Member::firstWhere('firstname', 'Joe');
+        $this->assertDatabaseHas('members', [
+            'nami_id' => null,
+        ]);
+        NamiPutMemberAction::spy()->shouldNotHaveReceived('handle');
+    }
+
+    public function testSubscriptionIsRequiredIfFirstActivityIsPaid(): void
+    {
+        $this->login()->loginNami();
+        Fee::factory()->create();
+        $country = Country::factory()->create();
+        $gender = Gender::factory()->create();
+        $region = Region::factory()->create();
+        $nationality = Nationality::factory()->create();
+        $subscription = Subscription::factory()->create();
+        $billKind = BillKind::factory()->create();
+        $activity = Activity::factory()->create();
+        $subactivity = Subactivity::factory()->create();
+
+        $response = $this
+            ->from('/member/create')
+            ->post('/member', $this->attributes([
+                'country_id' => $country->id,
+                'gender_id' => $gender->id,
+                'region_id' => $region->id,
+                'nationality_id' => $nationality->id,
+                'first_activity_id' => $activity->id,
+                'first_subactivity_id' => $subactivity->id,
+                'subscription_id' => null,
+                'bill_kind_id' => $billKind->id,
+            ]));
+
+        $this->assertErrors(['subscription_id' => 'Beitragsart ist erforderlich.'], $response);
     }
 
     public function defaults(): array

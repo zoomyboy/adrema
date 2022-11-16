@@ -4,8 +4,11 @@ namespace Tests\Feature\Member;
 
 use App\Confession;
 use App\Country;
+use App\Enum\Activity;
+use App\Enum\Subactivity;
 use App\Fee;
 use App\Group;
+use App\Member\Actions\NamiPutMemberAction;
 use App\Member\Member;
 use App\Nationality;
 use App\Payment\Subscription;
@@ -23,43 +26,17 @@ class UpdateTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = $this->member();
         $this->fakeRequest();
+        NamiPutMemberAction::allowToRun();
 
         $response = $this
             ->from("/member/{$member->id}")
             ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true]));
 
         $response->assertRedirect('/member');
-    }
-
-    public function testItHasPutRequest(): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        $member = $this->member();
-        $this->fakeRequest();
-
-        $response = $this
-            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::']));
-
-        Http::assertSent(fn ($request) => 'PUT' === $request->method()
-            && '::firstname::' === $request['vorname']
-        );
-    }
-
-    public function testItMergesExistingData(): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        $member = $this->member();
-        $this->fakeRequest();
-
-        $response = $this
-            ->from("/member/{$member->id}")
-            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::']));
-
-        Http::assertSent(fn ($request) => 'PUT' === $request->method()
-            && '{"a":"b"}' === $request['kontoverbindung']
-            && 'missingvalue' === $request['missingkey']
-            && '::firstname::' === $request['vorname']
-        );
+        NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(fn (Member $memberParam, ?Activity $activityParam, ?Subactivity $subactivityParam) => $memberParam->is($member)
+            && null === $activityParam
+            && null === $subactivityParam
+        )->once();
     }
 
     public function testItChecksVersion(): void
@@ -76,23 +53,10 @@ class UpdateTest extends TestCase
         $response->assertRedirect("/member/{$member->id}/edit?conflict=1");
     }
 
-    public function testItUpdatesVersion(): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        $member = $this->member();
-        $this->fakeRequest();
-
-        $response = $this
-            ->from("/member/{$member->id}")
-            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true]));
-
-        $this->assertEquals(44, $member->fresh()->version);
-    }
-
     public function testItUpdatesCriminalRecord(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $member = $this->member();
+        $member = $this->member(['nami_id' => null]);
         $this->fakeRequest();
 
         $response = $this
@@ -105,7 +69,7 @@ class UpdateTest extends TestCase
                 'efz' => '2021-02-03',
                 'without_education_at' => '2021-02-04',
                 'without_efz_at' => '2021-02-05',
-                'has_nami' => true,
+                'has_nami' => false,
                 'multiply_pv' => true,
                 'multiply_more_pv' => true,
             ]));
@@ -121,7 +85,10 @@ class UpdateTest extends TestCase
         $this->assertEquals('2021-02-05', $member->fresh()->without_efz_at);
     }
 
-    private function member(): Member
+    /**
+     * @param array<string, string|Activity|null> $overwrites
+     */
+    private function member(array $overwrites = []): Member
     {
         return Member::factory()
             ->for(Group::factory()->state(['nami_id' => 10]))
@@ -129,7 +96,7 @@ class UpdateTest extends TestCase
             ->for(Nationality::factory())
             ->for(Subscription::factory()->for(Fee::factory()))
             ->for(Country::factory())
-            ->create(['nami_id' => 135]);
+            ->create(['nami_id' => 135, ...$overwrites]);
     }
 
     private function fakeRequest(): void
