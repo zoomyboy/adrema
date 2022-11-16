@@ -19,7 +19,6 @@ class Initializer
         InitializeCountries::class,
         InitializeGenders::class,
         InitializeRegions::class,
-        InitializeActivities::class,
         InitializeCourses::class,
         InitializeMembers::class,
     ];
