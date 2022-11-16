@@ -73,6 +73,9 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
+    /**
+     * @param array<string, string> $errors
+     */
     public function assertErrors(array $errors, TestResponse $response): self
     {
         $response->assertSessionHas('errors');
