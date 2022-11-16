@@ -192,5 +192,6 @@ return [
         'completed_at' => 'Datum',
         'event_name' => 'Veranstaltung',
         'organizer' => 'Veranstalter',
+        'subscription_id' => 'Beitragsart',
     ],
 ];
