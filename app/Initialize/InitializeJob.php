@@ -16,6 +16,11 @@ class InitializeJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public function __construct()
+    {
+        $this->onQueue('long');
+    }
+
     /**
      * Execute the job.
      *

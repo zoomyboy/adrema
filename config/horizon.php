@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Horizon Domain
@@ -173,6 +172,14 @@ return [
                 'processes' => 10,
                 'tries' => 1,
             ],
+            'supervisor-long-running' => [
+                'connection' => 'redis',
+                'queue' => ['long'],
+                'balance' => 'simple',
+                'processes' => 1,
+                'tries' => 1,
+                'timeout' => 43200,     // 12 hours
+            ],
         ],
 
         'local' => [
@@ -182,6 +189,14 @@ return [
                 'balance' => 'simple',
                 'processes' => 3,
                 'tries' => 1,
+            ],
+            'supervisor-long-running' => [
+                'connection' => 'redis',
+                'queue' => ['long'],
+                'balance' => 'simple',
+                'processes' => 1,
+                'tries' => 1,
+                'timeout' => 43200,     // 12 hours
             ],
         ],
     ],
