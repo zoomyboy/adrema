@@ -21,8 +21,8 @@ class MemberView
         return [
             'data' => MemberResource::collection(Member::select('*')
                 ->filter($filter)->search($request->query('search', null))
-                ->with('billKind')->with('payments')->with('memberships')->with('courses')
-                ->withSubscriptionName()->withIsConfirmed()->withPendingPayment()->withAgeGroup()->withIsLeader()
+                ->with('billKind')->with('payments')->with('memberships')->with('courses')->with('leaderMemberships')->with('ageGroupMemberships')
+                ->withSubscriptionName()->withIsConfirmed()->withPendingPayment()
                 ->orderByRaw('lastname, firstname')
                 ->paginate(15)
             ),
