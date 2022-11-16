@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Member;
 
+use App\Activity;
 use App\Confession;
 use App\Country;
-use App\Enum\Activity;
-use App\Enum\Subactivity;
 use App\Fee;
 use App\Group;
 use App\Member\Actions\NamiPutMemberAction;
 use App\Member\Member;
 use App\Nationality;
 use App\Payment\Subscription;
+use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;

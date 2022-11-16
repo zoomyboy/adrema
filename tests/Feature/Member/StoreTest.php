@@ -127,7 +127,7 @@ class StoreTest extends TestCase
         $nationality = Nationality::factory()->create();
         $subscription = Subscription::factory()->create();
         $billKind = BillKind::factory()->create();
-        $activity = Activity::factory()->create();
+        $activity = Activity::factory()->create(['name' => '€ Mitglied']);
         $subactivity = Subactivity::factory()->create();
 
         $response = $this

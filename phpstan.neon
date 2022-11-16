@@ -261,11 +261,6 @@ parameters:
             path: app/Member/Member.php
 
         -
-            message: "#^Job class App\\\\Member\\\\DeleteJob constructor invoked with 2 parameters in App\\\\Member\\\\DeleteJob\\:\\:dispatch\\(\\), 1 required\\.$#"
-            count: 1
-            path: app/Member/MemberController.php
-
-        -
             message: "#^Property App\\\\Member\\\\MemberController\\:\\:\\$filter type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Member/MemberController.php
@@ -294,11 +289,6 @@ parameters:
             message: "#^Method App\\\\Membership\\\\MembershipResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Membership/MembershipResource.php
-
-        -
-            message: "#^Method App\\\\Membership\\\\Requests\\\\StoreRequest\\:\\:rules\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Membership/Requests/StoreRequest.php
 
         -
             message: "#^Method App\\\\Payment\\\\PaymentResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -463,11 +453,6 @@ parameters:
             message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesTheLayout\\(\\) has parameter \\$output with no value type specified in iterable type array\\.$#"
             count: 1
             path: tests/Feature/Pdf/GenerateTest.php
-
-        -
-            message: "#^Method Tests\\\\TestCase\\:\\:assertErrors\\(\\) has parameter \\$errors with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/TestCase.php
 
         -
             message: "#^PHPDoc tag @param has invalid value \\(\\<class\\-string\\> \\$class\\)\\: Unexpected token \"\\<\", expected type at offset 18$#"
@@ -1153,3 +1138,13 @@ parameters:
             message: "#^Property Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:\\$attributes type has no value type specified in iterable type array\\.$#"
             count: 1
             path: packages/laravel-nami/tests/Unit/PushMemberTest.php
+
+        -
+            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$first_activity_id\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php
+
+        -
+            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$first_subactivity_id\\.$#"
+            count: 1
+            path: packages/laravel-nami/src/Member.php

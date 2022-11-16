@@ -15,6 +15,7 @@ class Initializer
         InitializeGroups::class,
         InitializeNationalities::class,
         InitializeFees::class,
+        InitializeActivities::class,
         InitializeConfessions::class,
         InitializeCountries::class,
         InitializeGenders::class,

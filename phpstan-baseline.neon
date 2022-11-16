@@ -1,0 +1,11 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$first_activity_id\\.$#"
+			count: 1
+			path: packages/laravel-nami/src/Member.php
+
+		-
+			message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$first_subactivity_id\\.$#"
+			count: 1
+			path: packages/laravel-nami/src/Member.php

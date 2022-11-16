@@ -110,8 +110,8 @@ class IndexTest extends TestCase
         $response = $this->get('/member');
 
         $this->assertInertiaHas([
-            'activity' => $member->memberships->first()->activity_id,
-            'subactivity' => $member->memberships->first()->subactivity_id,
+            'activity_id' => $member->memberships->first()->activity_id,
+            'subactivity_id' => $member->memberships->first()->subactivity_id,
             'activity_name' => '€ Mitglied',
             'subactivity_name' => 'Wölfling',
             'human_date' => '02.11.2022',
