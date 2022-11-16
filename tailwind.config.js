@@ -1,11 +1,11 @@
-const { colors } = require('tailwindcss/defaultTheme');
+const {colors} = require('tailwindcss/defaultTheme');
 
 module.exports = {
     content: [
-        "resources/js/views/**/*.vue",
-        "resources/js/components/**/*.vue",
-        "resources/js/layouts/**/*.vue",
-        "resources/views/**/*.blade.php",
+        'resources/js/views/**/*.vue',
+        'resources/js/components/**/*.vue',
+        'resources/js/layouts/**/*.vue',
+        'resources/views/**/*.blade.php',
     ],
     theme: {
         extend: {
@@ -25,9 +25,9 @@ module.exports = {
                     600: 'hsl(181, 75%, 35%)',
                     700: 'hsl(181, 75%, 26%)', // locked
                     800: 'hsl(181, 86%, 16%)',
-                    900: 'hsl(181, 94%, 10%)'
-                }
-            }
-        }
-    }
-}
+                    900: 'hsl(181, 94%, 10%)',
+                },
+            },
+        },
+    },
+};
