@@ -72,4 +72,32 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(false, $response, 'data.data.1.is_leader');
         $this->assertInertiaHas(false, $response, 'data.data.2.is_leader');
     }
+
+    public function testItShowsAgeGroupIcon(): void
+    {
+        $this->withoutExceptionHandling();
+        $this->login()->loginNami();
+        $member = Member::factory()
+            ->defaults()
+            ->has(Membership::factory()->for(Subactivity::factory()->ageGroup()->name('Wölfling'))->for(Activity::factory()->state(['has_efz' => false])))
+            ->create();
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas('woelfling', $response, 'data.data.0.age_group_icon');
+    }
+
+    public function testItShowsActivitiesAndSubactivities(): void
+    {
+        $this->withoutExceptionHandling();
+        $this->login()->loginNami();
+        $activity = Activity::factory()->hasAttached(Subactivity::factory()->name('SG Nahost')->ageGroup()->filterable())->name('Mitglied')->create();
+        $subactivity = $activity->subactivities->first();
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas('SG Nahost', $response, "subactivities.{$activity->id}.{$subactivity->id}");
+        $this->assertInertiaHas('SG Nahost', $response, "filterSubactivities.{$subactivity->id}");
+        $this->assertInertiaHas('Mitglied', $response, "activities.{$activity->id}");
+    }
 }

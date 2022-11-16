@@ -34,4 +34,14 @@ class SubactivityFactory extends Factory
     {
         return $this->state(['is_age_group' => true]);
     }
+
+    public function name(string $name): self
+    {
+        return $this->state(['name' => $name]);
+    }
+
+    public function filterable(): self
+    {
+        return $this->state(['is_filterable' => true]);
+    }
 }
