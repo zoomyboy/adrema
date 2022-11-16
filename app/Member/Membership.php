@@ -4,10 +4,14 @@ namespace App\Member;
 
 use App\Activity;
 use App\Subactivity;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $count
+ */
 class Membership extends Model
 {
     use HasFactory;
@@ -22,5 +26,45 @@ class Membership extends Model
     public function subactivity(): BelongsTo
     {
         return $this->belongsTo(Subactivity::class);
+    }
+
+    /**
+     * @param Builder<Membership> $query
+     *
+     * @return Builder<Membership>
+     */
+    public function scopeIsAgeGroup(Builder $query): Builder
+    {
+        return $query->whereHas('subactivity', fn ($builder) => $builder->where('is_age_group', true));
+    }
+
+    /**
+     * @param Builder<Membership> $query
+     *
+     * @return Builder<Membership>
+     */
+    public function scopeIsMember(Builder $query): Builder
+    {
+        return $query->whereHas('activity', fn ($builder) => $builder->where('is_member', true));
+    }
+
+    /**
+     * @param Builder<Membership> $query
+     *
+     * @return Builder<Membership>
+     */
+    public function scopeIsLeader(Builder $query): Builder
+    {
+        return $query->whereHas('activity', fn ($builder) => $builder->where('has_efz', true));
+    }
+
+    /**
+     * @param Builder<Membership> $query
+     *
+     * @return Builder<Membership>
+     */
+    public function scopeTrying(Builder $query): Builder
+    {
+        return $query->whereHas('activity', fn ($builder) => $builder->where('is_try', true));
     }
 }

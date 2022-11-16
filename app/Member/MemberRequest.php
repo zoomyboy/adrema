@@ -4,7 +4,9 @@ namespace App\Member;
 
 use App\Activity;
 use App\Group;
+use App\Member\Actions\NamiPutMemberAction;
 use App\Setting\NamiSettings;
+use App\Subactivity;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -29,8 +31,10 @@ class MemberRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_activity_id' => Rule::requiredIf(fn () => 'POST' == $this->method()),
-            'first_subactivity_id' => Rule::requiredIf(fn () => 'POST' == $this->method()),
+            ...'POST' === $this->method() ? [
+                'first_activity' => 'exclude|required',
+                'first_subactivity' => 'exclude|required',
+            ] : [],
             'subscription_id' => Rule::requiredIf(function () {
                 if ('POST' != $this->method()) {
                     return false;
@@ -84,7 +88,11 @@ class MemberRequest extends FormRequest
             'group_id' => Group::where('nami_id', $settings->default_group_id)->firstOrFail()->id,
         ]);
         if ($this->input('has_nami')) {
-            CreateJob::dispatch($member);
+            NamiPutMemberAction::run(
+                $member,
+                Activity::findOrFail($this->input('first_activity_id')),
+                Subactivity::find($this->input('first_subactivity_id')),
+            );
         }
     }
 
@@ -97,10 +105,10 @@ class MemberRequest extends FormRequest
         $member->save();
 
         if ($this->input('has_nami') && null === $member->nami_id) {
-            CreateJob::dispatch($member);
+            NamiPutMemberAction::run($member->fresh(), null, null);
         }
         if ($this->input('has_nami') && null !== $member->nami_id && $namiSync) {
-            UpdateJob::dispatch($member->fresh());
+            NamiPutMemberAction::run($member->fresh(), null, null);
         }
         if (!$this->input('has_nami') && null !== $member->nami_id) {
             DeleteJob::dispatch($member->nami_id);

@@ -16,7 +16,7 @@ class CreateMembershipsTable extends Migration
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
             $table->foreignId('group_id')->constrained();
-            $table->foreignId('member_id')->constrained();
+            $table->unsignedBigInteger('member_id');
             $table->unsignedInteger('nami_id')->nullable();
             $table->datetime('from');
             $table->timestamps();

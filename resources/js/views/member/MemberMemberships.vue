@@ -98,7 +98,7 @@ export default {
             var _self = this;
 
             var options = {
-                onFinish() {
+                onSuccess() {
                     _self.single = null;
                     _self.mode = null;
                 },
