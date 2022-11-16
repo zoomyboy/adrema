@@ -78,7 +78,7 @@
                     label="Andere Staatsangehörigkeit"
                 ></f-text>
 
-                <div class="contents">
+                <div class="contents" v-if="mode === 'create'">
                     <h2 class="col-span-full font-semibold text-lg text-white">Erste Gruppierung</h2>
                     <f-select
                         :options="activities"
