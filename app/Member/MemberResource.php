@@ -57,9 +57,7 @@ class MemberResource extends JsonResource
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),
             'memberships' => MembershipResource::collection($this->whenLoaded('memberships')),
             'pending_payment' => $this->pending_payment ? number_format($this->pending_payment / 100, 2, ',', '.').' €' : null,
-            'first_activity_id' => $this->first_activity_id,
-            'first_subactivity_id' => $this->first_subactivity_id,
-            'age_group_icon' => $this->age_group_icon,
+            'age_group_icon' => $this->ageGroupMemberships->first()?->subactivity->slug,
             'courses' => CourseResource::collection($this->whenLoaded('courses')),
             'efz' => $this->efz,
             'efz_link' => $this->getEfzLink(),
@@ -72,7 +70,7 @@ class MemberResource extends JsonResource
             'multiply_pv' => $this->multiply_pv,
             'multiply_more_pv' => $this->multiply_more_pv,
             'age' => $this->getModel()->getAge(),
-            'is_leader' => $this->is_leader,
+            'is_leader' => $this->leaderMemberships->count() > 0,
         ];
     }
 }

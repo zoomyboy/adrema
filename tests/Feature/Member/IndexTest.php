@@ -8,6 +8,7 @@ use App\Course\Models\CourseMember;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Subactivity;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Backend\FakeBackend;
@@ -37,8 +38,7 @@ class IndexTest extends TestCase
                 'gruppierung' => '::group::',
                 'version' => 40,
             ]);
-        $this->withoutExceptionHandling();
-        $this->login()->loginNami();
+        $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()->defaults()->has(CourseMember::factory()->for(Course::factory()), 'courses')->create(['firstname' => '::firstname::']);
 
         $response = $this->get('/member');
@@ -49,15 +49,14 @@ class IndexTest extends TestCase
 
     public function testItShowsEfzForEfzMembership(): void
     {
-        $this->withoutExceptionHandling();
-        $this->login()->loginNami();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()
             ->defaults()
-            ->has(Membership::factory()->for(Subactivity::factory()->ageGroup())->for(Activity::factory()->state(['has_efz' => true])))
+            ->has(Membership::factory()->in('€ LeiterIn', 455, 'Pfadfinder', 15))
             ->create(['lastname' => 'A']);
         Member::factory()
             ->defaults()
-            ->has(Membership::factory()->for(Subactivity::factory()->ageGroup())->for(Activity::factory()->state(['has_efz' => false])))
+            ->has(Membership::factory()->in('€ Mitglied', 456, 'Pfadfinder', 16))
             ->create(['lastname' => 'B']);
         Member::factory()
             ->defaults()
@@ -75,11 +74,10 @@ class IndexTest extends TestCase
 
     public function testItShowsAgeGroupIcon(): void
     {
-        $this->withoutExceptionHandling();
-        $this->login()->loginNami();
+        $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()
             ->defaults()
-            ->has(Membership::factory()->for(Subactivity::factory()->ageGroup()->name('Wölfling'))->for(Activity::factory()->state(['has_efz' => false])))
+            ->has(Membership::factory()->in('€ Mitglied', 123, 'Wölfling', 12))
             ->create();
 
         $response = $this->get('/member');
@@ -89,15 +87,35 @@ class IndexTest extends TestCase
 
     public function testItShowsActivitiesAndSubactivities(): void
     {
-        $this->withoutExceptionHandling();
-        $this->login()->loginNami();
-        $activity = Activity::factory()->hasAttached(Subactivity::factory()->name('SG Nahost')->ageGroup()->filterable())->name('Mitglied')->create();
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $activity = Activity::factory()->hasAttached(Subactivity::factory()->name('Biber'))->name('€ Mitglied')->create();
         $subactivity = $activity->subactivities->first();
 
         $response = $this->get('/member');
 
-        $this->assertInertiaHas('SG Nahost', $response, "subactivities.{$activity->id}.{$subactivity->id}");
-        $this->assertInertiaHas('SG Nahost', $response, "filterSubactivities.{$subactivity->id}");
-        $this->assertInertiaHas('Mitglied', $response, "activities.{$activity->id}");
+        $this->assertInertiaHas('Biber', $response, "subactivities.{$activity->id}.{$subactivity->id}");
+        $this->assertInertiaHas('Biber', $response, "filterSubactivities.{$subactivity->id}");
+        $this->assertInertiaHas('€ Mitglied', $response, "activities.{$activity->id}");
+    }
+
+    public function testItShowsActivityAndSubactivityNamesOfMember(): void
+    {
+        Carbon::setTestNow(Carbon::parse('2022-11-02 03:00:00'));
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()
+            ->defaults()
+            ->has(Membership::factory()->in('€ Mitglied', 122, 'Wölfling', 234))
+            ->create();
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas([
+            'activity' => $member->memberships->first()->activity_id,
+            'subactivity' => $member->memberships->first()->subactivity_id,
+            'activity_name' => '€ Mitglied',
+            'subactivity_name' => 'Wölfling',
+            'human_date' => '02.11.2022',
+            'id' => $member->memberships->first()->id,
+        ], $response, 'data.data.0.memberships.0');
     }
 }
