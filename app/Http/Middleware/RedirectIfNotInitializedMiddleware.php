@@ -23,6 +23,10 @@ class RedirectIfNotInitializedMiddleware
             return $next($request);
         }
 
+        if (1 === preg_match('/\/horizon/', $request->url())) {
+            return $next($request);
+        }
+
         if ($this->initialized() && request()->routeIs(['initialize.form'])) {
             return redirect()->to(RouteServiceProvider::HOME);
         }
