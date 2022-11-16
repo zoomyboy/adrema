@@ -2,7 +2,6 @@
 
 namespace App\Member;
 
-use App\Activity;
 use App\Confession;
 use App\Country;
 use App\Course\Models\CourseMember;
@@ -14,7 +13,6 @@ use App\Payment\Subscription;
 use App\Pdf\Sender;
 use App\Region;
 use App\Setting\NamiSettings;
-use App\Subactivity;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,8 +31,6 @@ use Zoomyboy\LaravelNami\Data\MembershipEntry;
  * @property string         $subscription_name
  * @property int            $pending_payment
  * @property bool           $is_confirmed
- * @property string         $age_group_icon
- * @property bool           $is_leader
  * @property \Carbon\Carbon $try_created_at
  */
 class Member extends Model
@@ -186,7 +182,7 @@ class Member extends Model
 
     public function isLeader(): bool
     {
-        return $this->memberships()->whereHas('activity', fn (Builder $query) => $query->where('has_efz', true))->exists();
+        return $this->memberships()->isLeader()->exists();
     }
 
     public function getAge(): int
@@ -245,25 +241,32 @@ class Member extends Model
         return $this->belongsTo(Group::class);
     }
 
-    public function firstActivity(): BelongsTo
-    {
-        return $this->belongsTo(Activity::class, 'first_activity_id');
-    }
-
-    public function firstSubActivity(): BelongsTo
-    {
-        return $this->belongsTo(Subactivity::class, 'first_subactivity_id');
-    }
-
     public function courses(): HasMany
     {
         return $this->hasMany(CourseMember::class);
+    }
+
+    /**
+     * @return HasMany<Membership>
+     */
+    public function leaderMemberships(): HasMany
+    {
+        return $this->ageGroupMemberships()->isLeader();
+    }
+
+    /**
+     * @return HasMany<Membership>
+     */
+    public function ageGroupMemberships(): HasMany
+    {
+        return $this->memberships()->isAgeGroup();
     }
 
     public static function booted()
     {
         static::deleting(function (self $model): void {
             $model->payments->each->delete();
+            $model->memberships->each->delete();
         });
     }
 
@@ -298,22 +301,6 @@ class Member extends Model
                 ->whereNeedsPayment()
                 ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id'),
         ]);
-    }
-
-    public function scopeWithAgeGroup(Builder $q): Builder
-    {
-        return $q->addSelect([
-            'age_group_icon' => Subactivity::select('slug')
-                ->join('memberships', 'memberships.subactivity_id', 'subactivities.id')
-                ->where('subactivities.is_age_group', true)
-                ->whereColumn('memberships.member_id', 'members.id')
-                ->limit(1),
-        ]);
-    }
-
-    public function scopeWithIsLeader(Builder $q): Builder
-    {
-        return $q->selectSub('EXISTS(SELECT memberships.id FROM memberships INNER JOIN activities ON activities.id=memberships.activity_id INNER JOIN subactivities ON subactivities.id=memberships.subactivity_id WHERE members.id=memberships.member_id AND subactivities.is_age_group=1 AND activities.has_efz=1)', 'is_leader');
     }
 
     public function scopeWhereHasPendingPayment(Builder $q): Builder
@@ -373,13 +360,13 @@ class Member extends Model
     {
         return $q->whereHas('memberships', fn ($q) => $q
             ->where('created_at', '<=', now()->subWeeks(7))
-            ->whereHas('activity', fn ($q) => $q->where('is_try', true)))
-            ->addSelect([
-                'try_created_at' => Membership::select('created_at')
-                    ->whereColumn('memberships.member_id', 'members.id')
-                    ->join('activities', 'activities.id', 'memberships.activity_id')
-                    ->where('activities.is_try', true),
-            ]);
+            ->trying()
+        )
+        ->addSelect([
+            'try_created_at' => Membership::select('created_at')
+                ->whereColumn('memberships.member_id', 'members.id')
+                ->trying(),
+        ]);
     }
 
     public static function fromVcard(string $url, string $data): static
