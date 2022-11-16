@@ -16,12 +16,11 @@ class DeleteJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public int $memberId;
-    public Member $member;
+    public int $namiId;
 
-    public function __construct(Member $member)
+    public function __construct(int $namiId)
     {
-        $this->memberId = $member->id;
+        $this->namiId = $namiId;
     }
 
     /**
@@ -31,16 +30,6 @@ class DeleteJob implements ShouldQueue
      */
     public function handle(NamiSettings $setting)
     {
-        $this->member = Member::find($this->memberId);
-
-        if (!$this->member->hasNami) {
-            return;
-        }
-
-        $setting->login()->deleteMember($this->member->nami_id);
-
-        Member::withoutEvents(function () {
-            $this->member->update(['nami_id' => null]);
-        });
+        $setting->login()->deleteMember($this->namiId);
     }
 }

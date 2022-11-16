@@ -127,8 +127,8 @@ class MemberController extends Controller
 
     public function destroy(Member $member): RedirectResponse
     {
-        if ($member->has_nami) {
-            DeleteJob::dispatch($member, auth()->user());
+        if ($member->nami_id) {
+            DeleteJob::dispatch($member->nami_id);
         }
 
         $member->delete();

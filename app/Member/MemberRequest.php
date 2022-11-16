@@ -103,7 +103,7 @@ class MemberRequest extends FormRequest
             UpdateJob::dispatch($member->fresh());
         }
         if (!$this->input('has_nami') && null !== $member->nami_id) {
-            DeleteJob::dispatch($member);
+            DeleteJob::dispatch($member->nami_id);
         }
     }
 }
