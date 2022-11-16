@@ -14,7 +14,7 @@ class Activity extends Model
     use HasNamiField;
     use Sluggable;
 
-    public $fillable = ['is_try', 'is_member', 'name', 'is_filterable', 'nami_id'];
+    public $fillable = ['is_try', 'has_efz', 'is_member', 'name', 'is_filterable', 'nami_id'];
     public $timestamps = false;
 
     public $casts = [

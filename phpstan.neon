@@ -206,16 +206,6 @@ parameters:
             path: app/Http/Views/MemberView.php
 
         -
-            message: "#^Property App\\\\Initialize\\\\ActivityCreator\\:\\:\\$members type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Initialize/ActivityCreator.php
-
-        -
-            message: "#^Property App\\\\Initialize\\\\ActivityCreator\\:\\:\\$tries type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Initialize/ActivityCreator.php
-
-        -
             message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Support\\\\LazyCollection\\<int,Zoomyboy\\\\LaravelNami\\\\Member\\>\\:\\:each\\(\\) expects callable\\(int, int\\)\\: mixed, Closure\\(Zoomyboy\\\\LaravelNami\\\\Member\\)\\: void given\\.$#"
             count: 1
             path: app/Initialize/InitializeMembers.php
@@ -1093,11 +1083,6 @@ parameters:
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\TestCase\\:\\:getAnnotations\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: packages/laravel-nami/tests/TestCase.php
-
-        -
-            message: "#^Parameter \\#2 \\$membershipIds of method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\MembershipFake\\:\\:fetches\\(\\) expects array\\<int, array\\{id\\: int, entries_taetigkeit\\?\\: string, entries_aktivVon\\?\\: string, entries_aktivBis\\?\\: string, entries_untergliederung\\?\\: string, entries_gruppierung\\?\\: string\\}\\|int\\>, array\\{array\\{entries_aktivBis\\: '', entries_untergliederung\\: ''\\}\\} given\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/Api/MembershipIndexTest.php
 
         -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:dataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
