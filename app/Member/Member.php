@@ -28,10 +28,9 @@ use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Data\MembershipEntry;
 
 /**
- * @property string         $subscription_name
- * @property int            $pending_payment
- * @property bool           $is_confirmed
- * @property \Carbon\Carbon $try_created_at
+ * @property string $subscription_name
+ * @property int    $pending_payment
+ * @property bool   $is_confirmed
  */
 class Member extends Model
 {
@@ -354,19 +353,6 @@ class Member extends Model
         }
 
         return $q;
-    }
-
-    public function scopeEndingTries(Builder $q): Builder
-    {
-        return $q->whereHas('memberships', fn ($q) => $q
-            ->where('created_at', '<=', now()->subWeeks(7))
-            ->trying()
-        )
-        ->addSelect([
-            'try_created_at' => Membership::select('created_at')
-                ->whereColumn('memberships.member_id', 'members.id')
-                ->trying(),
-        ]);
     }
 
     public static function fromVcard(string $url, string $data): static

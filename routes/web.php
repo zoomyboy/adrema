@@ -3,7 +3,7 @@
 use App\Contribution\ContributionController;
 use App\Course\Controllers\CourseController;
 use App\Efz\ShowEfzDocumentAction;
-use App\Http\Controllers\HomeController;
+use App\Home\Actions\IndexAction as HomeIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Member\Controllers\MemberResyncController;
@@ -22,7 +22,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
 });
 
 Route::group(['middleware' => 'auth:web'], function (): void {
-    Route::get('/', HomeController::class)->name('home');
+    Route::get('/', HomeIndexAction::class)->name('home');
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');
     Route::resource('member', MemberController::class);
