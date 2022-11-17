@@ -4,6 +4,7 @@ namespace App\Home;
 
 use App\Efz\EfzPendingBlock;
 use App\Home\Blocks\Block;
+use App\Member\PsPendingBlock;
 use App\Membership\AgeGroupCountBlock;
 use App\Membership\TestersBlock;
 use App\Payment\MemberPaymentBlock;
@@ -18,6 +19,7 @@ class DashboardFactory
         MemberPaymentBlock::class,
         TestersBlock::class,
         EfzPendingBlock::class,
+        PsPendingBlock::class,
     ];
 
     /**

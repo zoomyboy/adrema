@@ -25,6 +25,7 @@ export default {
         'VBlock': () => import('./VBlock'),
         'age-group-count': () => import('./AgeGroupCount.vue'),
         'efz-pending': () => import('./EfzPending.vue'),
+        'ps-pending': () => import('./PsPending.vue'),
         'testers': () => import('./Testers.vue'),
         'member-payment': () => import('./MemberPayment.vue'),
     },
