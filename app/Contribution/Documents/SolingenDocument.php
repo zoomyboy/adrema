@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Contribution;
+namespace App\Contribution\Documents;
 
 use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Zoomyboy\Tex\Document;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
-class SolingenDocument extends Document
+class SolingenDocument extends ContributionDocument
 {
     final private function __construct(
         public string $dateFrom,
@@ -86,5 +85,10 @@ class SolingenDocument extends Document
     public function getEngine(): Engine
     {
         return Engine::PDFLATEX;
+    }
+
+    public static function getName(): string
+    {
+        return 'Für Stadt Solingen erstellen';
     }
 }

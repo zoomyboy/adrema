@@ -54,23 +54,14 @@
         </div>
 
         <button
+            v-for="(compiler, index) in compilers"
             target="_BLANK"
             type="submit"
             name="type"
-            value="\App\Contribution\SolingenDocument"
+            :value="compiler.class"
             class="btn btn-primary mt-3 inline-block"
-        >
-            Für Stadt erstellen
-        </button>
-        <button
-            target="_BLANK"
-            type="submit"
-            name="type"
-            value="\App\Contribution\DvDocument"
-            class="btn btn-primary mt-3 inline-block"
-        >
-            Für DV erstellen
-        </button>
+            v-text="compiler.title"
+        ></button>
     </form>
 </template>
 
@@ -93,6 +84,7 @@ export default {
         countries: {},
         defaultCountry: {},
         allMembers: {},
+        compilers: {},
     },
     computed: {
         memberResults() {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Contribution;
 
 use App\Country;
 use App\Member\Member;
@@ -8,13 +8,13 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
-class ContributionTest extends TestCase
+class StoreTest extends TestCase
 {
     use DatabaseTransactions;
 
     /**
-     * @testWith ["App\\Contribution\\SolingenDocument", ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]]
-     *  ["App\\Contribution\\DvDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]]
+     * @testWith ["App\\Contribution\\Documents\\SolingenDocument", ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]]
+     *  ["App\\Contribution\\Documents\\DvDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]]
      *
      * @param array<int, string> $bodyChecks
      */
