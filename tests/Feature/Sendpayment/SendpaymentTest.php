@@ -3,10 +3,12 @@
 namespace Tests\Feature\Sendpayment;
 
 use App\Letter\BillDocument;
+use App\Letter\LetterSettings;
 use App\Member\Member;
 use App\Payment\Payment;
 use App\Payment\Status;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\LetterSettingsFake;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
@@ -29,6 +31,7 @@ class SendpaymentTest extends TestCase
 
     public function testItCanCreatePdfPayments(): void
     {
+        LetterSettings::fake(LetterSettingsFake::new()->create());
         Tex::spy();
         $this->withoutExceptionHandling();
         $this->login()->loginNami();
