@@ -26,6 +26,8 @@ class SettingSaveAction
             'address' => $input['address'] ?? '',
             'place' => $input['place'] ?? '',
             'zip' => $input['zip'] ?? '',
+            'iban' => $input['iban'] ?? '',
+            'bic' => $input['bic'] ?? '',
         ]);
 
         $settings->save();

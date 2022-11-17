@@ -22,6 +22,10 @@ class LetterSettings extends LocalSettings
 
     public string $zip;
 
+    public string $iban;
+
+    public string $bic;
+
     public static function group(): string
     {
         return 'bill';

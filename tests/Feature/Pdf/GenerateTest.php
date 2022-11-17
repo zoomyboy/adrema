@@ -8,6 +8,8 @@ use App\Group;
 use App\Letter\BillDocument;
 use App\Letter\DocumentFactory;
 use App\Letter\Letter;
+use App\Letter\LetterSettings;
+use App\Letter\Page;
 use App\Member\Member;
 use App\Nationality;
 use App\Payment\Subscription;
@@ -199,6 +201,40 @@ class GenerateTest extends TestCase
 
         $this->assertEquals('application/pdf', $response->headers->get('content-type'));
         $this->assertEquals('inline; filename="'.$filename.'"', $response->headers->get('content-disposition'));
+    }
+
+    /**
+     * @testWith ["App\\Letter\\BillDocument"]
+     *           ["App\\Letter\\RememberDocument"]
+     */
+    public function testTheDocumentHasSettings(string $type): void
+    {
+        LetterSettings::fake([
+            'from_long' => 'langer Stammesname',
+            'from' => 'Stammeskurz',
+            'mobile' => '+49 176 55555',
+            'email' => 'max@muster.de',
+            'website' => 'https://example.com',
+            'address' => 'Musterstr 4',
+            'place' => 'Münster',
+            'zip' => '12345',
+            'iban' => 'DE444',
+            'bic' => 'SOLSSSSS',
+        ]);
+
+        $member = Member::factory()->defaults()->create();
+        $document = new $type(collect([new Page(Member::get())]));
+
+        $document->assertHasContent('langer Stammesname');
+        $document->assertHasContent('Stammeskurz');
+        $document->assertHasContent('+49 176 55555');
+        $document->assertHasContent('max@muster.de');
+        $document->assertHasContent('https://example.com');
+        $document->assertHasContent('Musterstr 4');
+        $document->assertHasContent('Münster');
+        $document->assertHasContent('12345');
+        $document->assertHasContent('DE444');
+        $document->assertHasContent('SOLSSSSS');
     }
 
     private function setupMembers(array $members): Collection

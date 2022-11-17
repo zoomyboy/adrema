@@ -24,6 +24,8 @@ class SettingIndexAction
             'address' => $settings->address,
             'place' => $settings->place,
             'zip' => $settings->zip,
+            'iban' => $settings->iban,
+            'bic' => $settings->bic,
         ];
     }
 

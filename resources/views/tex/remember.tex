@@ -1,6 +1,6 @@
 \documentclass[silvaletter,12pt]{scrlttr2}
 
-\setkomavar{subject}{<<< $subject >>>}
+@include('tex.letter-header')
 
 \begin{document}
 @foreach($pages as $page)
@@ -24,9 +24,9 @@
     Somit bitten wir Sie, den ausstehenden Betrag von \totalttc bis zum \textbf{<<< $until >>>} auf folgendes Konto zu überweisen:
 
     \begin{tabular}{ll}
-        Kontoinhaber: & DPSG Stamm Silva \\
-        IBAN: & DE40 3425 0000 0000 2145 51 \\
-        Bic: & SOLSDE33XXX \\
+        Kontoinhaber: & <<<$settings->from_long>>> \\
+        IBAN: & <<<$settings->iban>>> \\
+        Bic: & <<<$settings->bic>>> \\
         Verwendungszweck: & <<<$page->usage>>>
     \end{tabular}
 

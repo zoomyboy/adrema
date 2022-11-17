@@ -22,6 +22,8 @@ class SettingTest extends TestCase
             'address' => 'Musterstr 4',
             'place' => 'Solingen',
             'zip' => '12345',
+            'iban' => 'DE05',
+            'bic' => 'SOLSDE',
         ]);
 
         $response = $this->get('/setting/bill');
@@ -36,6 +38,8 @@ class SettingTest extends TestCase
             'address' => 'Musterstr 4',
             'place' => 'Solingen',
             'zip' => '12345',
+            'iban' => 'DE05',
+            'bic' => 'SOLSDE',
         ], $response, 'data');
     }
 
@@ -71,10 +75,14 @@ class SettingTest extends TestCase
             'address' => 'Musterstr 4',
             'place' => 'Solingen',
             'zip' => '12345',
+            'iban' => 'DE05',
+            'bic' => 'SOLSDE',
         ]);
 
         $response->assertRedirect('/setting/bill');
         $settings = app(LetterSettings::class);
         $this->assertEquals('DPSG Stamm Muster', $settings->from_long);
+        $this->assertEquals('DE05', $settings->iban);
+        $this->assertEquals('SOLSDE', $settings->bic);
     }
 }

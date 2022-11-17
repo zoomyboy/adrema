@@ -44,6 +44,7 @@ abstract class Letter extends Document
     public string $subject;
     protected string $filename;
     public string $until;
+    public LetterSettings $settings;
 
     /**
      * @param Collection<int, Page> $pages
@@ -54,6 +55,7 @@ abstract class Letter extends Document
         $this->subject = $this->getSubject();
         $this->until = now()->addWeeks(2)->format('d.m.Y');
         $this->setFilename(Str::slug("{$this->getSubject()} für {$pages->first()?->familyName}"));
+        $this->settings = app(LetterSettings::class);
     }
 
     public function number(int $number): string
