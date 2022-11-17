@@ -4,6 +4,7 @@ namespace App\Contribution;
 
 use App\Contribution\Documents\ContributionDocument;
 use App\Contribution\Documents\DvDocument;
+use App\Contribution\Documents\RemscheidDocument;
 use App\Contribution\Documents\SolingenDocument;
 
 class ContributionFactory
@@ -14,6 +15,7 @@ class ContributionFactory
     private array $documents = [
         DvDocument::class,
         SolingenDocument::class,
+        RemscheidDocument::class,
     ];
 
     /**

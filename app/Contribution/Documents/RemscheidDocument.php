@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
-class DvDocument extends ContributionDocument
+class RemscheidDocument extends ContributionDocument
 {
     public function __construct(
         public string $dateFrom,
@@ -18,72 +18,46 @@ class DvDocument extends ContributionDocument
         public string $zipLocation,
         public ?Country $country,
         /* @var Collection<int, Collection<int, Member>> */
-        public Collection $members,
+        public Collection $leaders,
+        /* @var Collection<int, Collection<int, Member>> */
+        public Collection $children,
         public ?string $filename = '',
         public string $type = 'F',
     ) {
     }
 
-    public function dateRange(): string
+    public function niceDateFrom(): string
     {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y')
-            .' - '
-            .Carbon::parse($this->dateUntil)->format('d.m.Y');
+        return Carbon::parse($this->dateFrom)->format('d.m.Y');
+    }
+
+    public function niceDateUntil(): string
+    {
+        return Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
     public static function fromRequest(Request $request): self
     {
+        [$leaders, $children] = Member::whereIn('id', $request->members)->orderByRaw('lastname, firstname')->get()->partition(fn ($member) => $member->isLeader());
+
         return new self(
             dateFrom: $request->dateFrom,
             dateUntil: $request->dateUntil,
             zipLocation: $request->zipLocation,
             country: Country::where('id', $request->country)->firstOrFail(),
-            members: Member::whereIn('id', $request->members)->orderByRaw('lastname, firstname')->get()->chunk(17),
+            leaders: $leaders->values()->chunk(6),
+            children: $children->values()->chunk(20),
         );
-    }
-
-    public function countryName(): string
-    {
-        return $this->country->name;
-    }
-
-    public function memberShort(Member $member): string
-    {
-        return $member->isLeader() ? 'L' : '';
-    }
-
-    public function memberName(Member $member): string
-    {
-        return $member->lastname.', '.$member->firstname;
-    }
-
-    public function memberAddress(Member $member): string
-    {
-        return $member->fullAddress;
-    }
-
-    public function memberGender(Member $member): string
-    {
-        if (!$member->gender) {
-            return '';
-        }
-
-        return strtolower(substr($member->gender->name, 0, 1));
-    }
-
-    public function memberAge(Member $member): string
-    {
-        return (string) $member->getAge();
     }
 
     public function basename(): string
     {
-        return 'zuschuesse-dv';
+        return 'zuschuesse-remscheid';
     }
 
     public function view(): string
     {
-        return 'tex.zuschuss-dv';
+        return 'tex.zuschuss-remscheid';
     }
 
     public function template(): Template
@@ -105,6 +79,6 @@ class DvDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für DV erstellen';
+        return 'Für Remscheid erstellen';
     }
 }
