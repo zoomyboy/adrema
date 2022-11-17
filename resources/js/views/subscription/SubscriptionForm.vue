@@ -9,7 +9,7 @@
             label="Nami-Beitrag"
             required
         ></f-select>
-        <f-text id="amount" v-model="inner.amount" label="Interner Beitrag" required></f-text>
+        <f-text id="amount" v-model="inner.amount" label="Interner Beitrag" mode="area" required></f-text>
 
         <button type="submit" class="btn btn-primary">Absenden</button>
     </form>
