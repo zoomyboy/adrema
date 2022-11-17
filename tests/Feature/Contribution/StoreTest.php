@@ -15,7 +15,7 @@ class StoreTest extends TestCase
     /**
      * @testWith ["App\\Contribution\\Documents\\SolingenDocument", ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]]
      *  ["App\\Contribution\\Documents\\DvDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]]
-     *  ["App\\Contribution\\Documents\\RemscheidDocument", ["Max", "Muster", "Jane", "15.06.1991", "Maxstr 44, 42719 SG"]]
+     *  ["App\\Contribution\\Documents\\RemscheidDocument", ["Max", "Muster", "Jane"]]
      *
      * @param array<int, string> $bodyChecks
      */
