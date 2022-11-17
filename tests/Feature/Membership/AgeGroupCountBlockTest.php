@@ -27,7 +27,7 @@ class AgeGroupCountBlockTest extends TestCase
             ->defaults()
             ->create();
 
-        $data = app(AgeGroupCountBlock::class)->render();
+        $data = app(AgeGroupCountBlock::class)->render()['data'];
 
         $this->assertEquals([
             'groups' => [

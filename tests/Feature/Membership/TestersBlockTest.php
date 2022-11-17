@@ -21,7 +21,7 @@ class TestersBlockTest extends TestCase
             ->has(Membership::factory()->in('Schnuppermitgliedschaft', 7, 'Wölfling', 8)->state(['created_at' => now()->subMonths(10)]))
             ->create(['firstname' => 'Max', 'lastname' => 'Muster']);
 
-        $data = app(TestersBlock::class)->render();
+        $data = app(TestersBlock::class)->render()['data'];
 
         $this->assertEquals([
             'members' => [

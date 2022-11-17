@@ -8,7 +8,7 @@ use App\Payment\Payment;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class TestersBlockTest extends TestCase
+class MemberPaymentsBlockTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -24,7 +24,7 @@ class TestersBlockTest extends TestCase
             ->defaults()
             ->create();
 
-        $data = app(MemberPaymentBlock::class)->render();
+        $data = app(MemberPaymentBlock::class)->render()['data'];
 
         $this->assertEquals([
             'amount' => '34,00 €',
