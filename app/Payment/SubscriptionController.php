@@ -39,6 +39,9 @@ class SubscriptionController extends Controller
             'name' => 'required|max:255',
             'amount' => 'required|numeric',
             'fee_id' => 'required|exists:fees,id',
+        ], [], [
+            'fee_id' => 'Nami-Beitrag',
+            'amount' => 'Interner Beitrag',
         ]));
 
         return redirect()->route('subscription.index');
@@ -62,6 +65,9 @@ class SubscriptionController extends Controller
             'name' => 'required|max:255',
             'amount' => 'required|numeric',
             'fee_id' => 'required|exists:fees,id',
+        ], [], [
+            'fee_id' => 'Nami-Beitrag',
+            'amount' => 'Interner Beitrag',
         ]));
 
         return redirect()->route('subscription.index');
