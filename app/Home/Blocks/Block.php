@@ -4,6 +4,9 @@ namespace App\Home\Blocks;
 
 abstract class Block
 {
+    /**
+     * @return array<array-key, mixed>
+     */
     abstract protected function data(): array;
 
     abstract protected function title(): string;

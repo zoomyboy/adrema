@@ -22,7 +22,7 @@ class EfzPendingBlock extends Block
     }
 
     /**
-     * @return array{member: array<int, string>}
+     * @return array{members: array<int, string>}
      */
     public function data(): array
     {

@@ -18,7 +18,7 @@ class MemberPaymentBlock extends Block
         return [
             'members' => $members,
             'total_members' => Member::count(),
-            'amount' => number_format($amount->nr / 100, 2, ',', '.').' €',
+            'amount' => number_format((int) $amount->nr / 100, 2, ',', '.').' €',
         ];
     }
 
