@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { App as InertiaApp, plugin, Link as ILink } from '@inertiajs/inertia-vue';
+import {App as InertiaApp, plugin, Link as ILink} from '@inertiajs/inertia-vue';
 
 import SvgSprite from './components/SvgSprite.js';
 import FText from './components/FText.vue';
@@ -28,18 +28,18 @@ Vue.mixin(hasModule);
 Vue.component('ILink', ILink);
 
 new Vue({
-    render: h => h(InertiaApp, {
-        props: {
-            initialPage: JSON.parse(el.dataset.page),
-            resolveComponent: async name => {
-                var page = (await import(`./views/${name}`)).default;
+    render: (h) =>
+        h(InertiaApp, {
+            props: {
+                initialPage: JSON.parse(el.dataset.page),
+                resolveComponent: async (name) => {
+                    var page = (await import(`./views/${name}`)).default;
 
-                if (page.layout === undefined) {
-                    page.layout = AppLayout;
-                }
-                return page;
-            }
-        },
-    }),
+                    if (page.layout === undefined) {
+                        page.layout = AppLayout;
+                    }
+                    return page;
+                },
+            },
+        }),
 }).$mount(el);
-
