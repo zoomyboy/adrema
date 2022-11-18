@@ -88,36 +88,41 @@
                     </div>
                 </td>
                 <td v-text="`${member.joined_at_human}`"></td>
-                <td class="flex">
-                    <i-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"
-                        ><svg-sprite src="pencil"></svg-sprite
-                    ></i-link>
-                    <a
-                        href="#"
-                        v-show="hasModule('bill')"
-                        @click.prevent="openSidebar(index, 'payment.index')"
-                        class="inline-flex btn btn-info btn-sm"
-                        ><svg-sprite src="money"></svg-sprite
-                    ></a>
-                    <a
-                        href="#"
-                        v-show="hasModule('courses')"
-                        @click.prevent="openSidebar(index, 'courses.index')"
-                        class="inline-flex btn btn-info btn-sm"
-                        ><svg-sprite src="course"></svg-sprite
-                    ></a>
-                    <a
-                        href="#"
-                        @click.prevent="openSidebar(index, 'membership.index')"
-                        class="inline-flex btn btn-info btn-sm"
-                        ><svg-sprite src="user"></svg-sprite
-                    ></a>
-                    <a :href="member.efz_link" v-show="member.efz_link" class="inline-flex btn btn-info btn-sm"
-                        ><svg-sprite src="report"></svg-sprite
-                    ></a>
-                    <i-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"
-                        ><svg-sprite src="trash"></svg-sprite
-                    ></i-link>
+                <td>
+                    <div class="flex space-x-1">
+                        <i-link :href="member.links.show" class="inline-flex btn btn-primary btn-sm"
+                            ><svg-sprite src="eye"></svg-sprite
+                        ></i-link>
+                        <i-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"
+                            ><svg-sprite src="pencil"></svg-sprite
+                        ></i-link>
+                        <a
+                            href="#"
+                            v-show="hasModule('bill')"
+                            @click.prevent="openSidebar(index, 'payment.index')"
+                            class="inline-flex btn btn-info btn-sm"
+                            ><svg-sprite src="money"></svg-sprite
+                        ></a>
+                        <a
+                            href="#"
+                            v-show="hasModule('courses')"
+                            @click.prevent="openSidebar(index, 'courses.index')"
+                            class="inline-flex btn btn-info btn-sm"
+                            ><svg-sprite src="course"></svg-sprite
+                        ></a>
+                        <a
+                            href="#"
+                            @click.prevent="openSidebar(index, 'membership.index')"
+                            class="inline-flex btn btn-info btn-sm"
+                            ><svg-sprite src="user"></svg-sprite
+                        ></a>
+                        <a :href="member.efz_link" v-show="member.efz_link" class="inline-flex btn btn-info btn-sm"
+                            ><svg-sprite src="report"></svg-sprite
+                        ></a>
+                        <i-link href="#" @click.prevent="remove(member)" class="inline-flex btn btn-danger btn-sm"
+                            ><svg-sprite src="trash"></svg-sprite
+                        ></i-link>
+                    </div>
                 </td>
             </tr>
         </table>

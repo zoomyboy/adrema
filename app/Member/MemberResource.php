@@ -71,6 +71,9 @@ class MemberResource extends JsonResource
             'multiply_more_pv' => $this->multiply_more_pv,
             'age' => $this->getModel()->getAge(),
             'is_leader' => $this->leaderMemberships->count() > 0,
+            'links' => [
+                'show' => route('member.show', ['member' => $this->getModel()]),
+            ],
         ];
     }
 }

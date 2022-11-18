@@ -7,6 +7,7 @@ use App\Efz\ShowEfzDocumentAction;
 use App\Home\Actions\IndexAction as HomeIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
+use App\Member\Actions\MemberShowAction;
 use App\Member\Controllers\MemberResyncController;
 use App\Member\MemberConfirmController;
 use App\Member\MemberController;
@@ -26,7 +27,8 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/', HomeIndexAction::class)->name('home');
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');
-    Route::resource('member', MemberController::class);
+    Route::resource('member', MemberController::class)->except('show');
+    Route::get('/member/{member}', MemberShowAction::class)->name('member.show');
     Route::apiResource('member.payment', PaymentController::class);
     Route::resource('allpayment', AllpaymentController::class);
     Route::resource('subscription', SubscriptionController::class);

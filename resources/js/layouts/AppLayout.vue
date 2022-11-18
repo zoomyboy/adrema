@@ -29,11 +29,11 @@
                             v-for="(link, index) in filterMenu"
                             :key="index"
                             :href="link.href"
-                            v-text="link.label"
                             class="btn label mr-2"
                             :class="`btn-${link.color}`"
                         >
-                            <svg-sprite :src="link.icon"></svg-sprite>
+                            <svg-sprite v-show="link.icon" class="w-3 h-3 mr-2" :src="link.icon"></svg-sprite>
+                            <span v-text="link.label"></span>
                         </i-link>
                     </div>
                 </div>
