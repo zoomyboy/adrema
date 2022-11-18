@@ -5,6 +5,8 @@ namespace Tests\Feature\Member;
 use App\Actions\MemberPullAction;
 use App\Member\Member;
 use App\Member\Membership;
+use App\Nationality;
+use App\Region;
 use App\Setting\NamiSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -61,6 +63,50 @@ class MemberPullActionTest extends TestCase
 
         $this->assertDatabaseMissing('memberships', [
             'member_id' => $member->id,
+        ]);
+    }
+
+    public function testRegionIdIsSetToNull(): void
+    {
+        Nationality::factory()->inNami(1054)->create();
+        Region::factory()->inNami(999)->name('nicht-de')->create(['is_null' => true]);
+        app(MemberFake::class)->shows(55, 123, [
+            'gruppierungId' => 55,
+            'id' => 123,
+            'regionId' => 999,
+        ]);
+        app(MembershipFake::class)->fetches(123, []);
+        app(CourseFake::class)->fetches(123, []);
+        $this->withoutExceptionHandling()->login()->loginNami();
+
+        app(MemberPullAction::class)
+            ->api(app(NamiSettings::class)->login())
+            ->member(55, 123)
+            ->execute();
+
+        $this->assertDatabaseHas('members', [
+            'region_id' => null,
+        ]);
+    }
+
+    public function testItSetsNormalAttributes(): void
+    {
+        Nationality::factory()->inNami(1054)->create();
+        $region = Region::factory()->inNami(999)->name('nicht-de')->create(['is_null' => false]);
+        app(MemberFake::class)->shows(55, 123, [
+            'regionId' => 999,
+        ]);
+        app(MembershipFake::class)->fetches(123, []);
+        app(CourseFake::class)->fetches(123, []);
+        $this->withoutExceptionHandling()->login()->loginNami();
+
+        app(MemberPullAction::class)
+            ->api(app(NamiSettings::class)->login())
+            ->member(55, 123)
+            ->execute();
+
+        $this->assertDatabaseHas('members', [
+            'region_id' => $region->id,
         ]);
     }
 }

@@ -202,7 +202,10 @@ class Member extends Model
 
     public function region(): BelongsTo
     {
-        return $this->belongsTo(Region::class);
+        return $this->belongsTo(Region::class)->withDefault([
+            'name' => '-- kein --',
+            'nami_id' => null,
+        ]);
     }
 
     public function confession(): BelongsTo

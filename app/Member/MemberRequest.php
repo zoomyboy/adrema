@@ -78,6 +78,7 @@ class MemberRequest extends FormRequest
             'nationality_id' => 'nullable|exists:nationalities,id',
             'children_phone' => '',
             'fax' => '',
+            'other_country' => '',
         ];
     }
 

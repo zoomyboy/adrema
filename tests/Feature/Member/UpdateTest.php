@@ -53,6 +53,21 @@ class UpdateTest extends TestCase
         $response->assertRedirect("/member/{$member->id}/edit?conflict=1");
     }
 
+    public function testItUpdatesContact(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = $this->member(['nami_id' => null]);
+        $this->fakeRequest();
+
+        $response = $this
+            ->from("/member/{$member->id}")
+            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), [
+                'other_country' => 'englisch',
+            ]));
+
+        $this->assertEquals('englisch', $member->fresh()->other_country);
+    }
+
     public function testItUpdatesCriminalRecord(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();

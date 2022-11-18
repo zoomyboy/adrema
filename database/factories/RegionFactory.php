@@ -22,4 +22,14 @@ class RegionFactory extends Factory
             'is_null' => false,
         ];
     }
+
+    public function name(string $name): self
+    {
+        return $this->state(['name' => $name]);
+    }
+
+    public function inNami(int $namiId): self
+    {
+        return $this->state(['nami_id' => $namiId]);
+    }
 }

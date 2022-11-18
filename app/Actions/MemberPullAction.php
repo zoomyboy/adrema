@@ -48,6 +48,7 @@ class MemberPullAction
         }
 
         try {
+            $region = Region::firstWhere('nami_id', $this->member->region_id ?: -1);
             $m = Member::updateOrCreate(['nami_id' => $this->member->id], [
                 'firstname' => $this->member->firstname,
                 'lastname' => $this->member->lastname,
@@ -70,7 +71,7 @@ class MemberPullAction
                 'group_id' => Group::firstOrCreate(['nami_id' => $this->member->group_id], ['nami_id' => $this->member->group_id, 'name' => $this->member->group_name])->id,
                 'gender_id' => optional(Gender::firstWhere('nami_id', $this->member->gender_id ?: -1))->id,
                 'confession_id' => optional(Confession::firstWhere('nami_id', $this->member->confession_id ?: -1))->id,
-                'region_id' => optional(Region::firstWhere('nami_id', $this->member->region_id ?: -1))->id,
+                'region_id' => $region && !$region->is_null ? $region->id : null,
                 'country_id' => optional(Country::where('nami_id', $this->member->country_id)->first())->id,
                 'subscription_id' => $this->getSubscriptionId($this->member),
                 'nationality_id' => Nationality::where('nami_id', $this->member->nationality_id)->firstOrFail()->id,

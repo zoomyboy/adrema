@@ -18,7 +18,12 @@ class MemberShowAction
     public function handle(Member $member): array
     {
         return [
-            'data' => new MemberResource($member->load('memberships')->load('payments.subscription')),
+            'data' => new MemberResource($member
+                ->load('memberships')
+                ->load('payments.subscription')
+                ->load('nationality')
+                ->load('region')
+            ),
             'toolbar' => [['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'undo']],
         ];
     }
@@ -28,6 +33,6 @@ class MemberShowAction
         session()->put('menu', 'member');
         session()->put('title', 'Mitglied '.$member->fullname);
 
-        return Inertia::render('member/Show', $this->handle($member));
+        return Inertia::render('member/ShowView', $this->handle($member));
     }
 }

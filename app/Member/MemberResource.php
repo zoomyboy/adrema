@@ -3,6 +3,8 @@
 namespace App\Member;
 
 use App\Course\Resources\CourseResource;
+use App\Member\Resources\NationalityResource;
+use App\Member\Resources\RegionResource;
 use App\Membership\MembershipResource;
 use App\Payment\PaymentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -36,6 +38,7 @@ class MemberResource extends JsonResource
             'subscription_id' => $this->subscription_id,
             'subscription_name' => $this->subscription_name,
             'gender_id' => $this->gender_id,
+            'gender_name' => $this->gender?->name ?: 'keine Angabe',
             'further_address' => $this->further_address,
             'work_phone' => $this->work_phone,
             'mobile_phone' => $this->mobile_phone,
@@ -59,6 +62,9 @@ class MemberResource extends JsonResource
             'pending_payment' => $this->pending_payment ? number_format($this->pending_payment / 100, 2, ',', '.').' €' : null,
             'age_group_icon' => $this->ageGroupMemberships->first()?->subactivity->slug,
             'courses' => CourseResource::collection($this->whenLoaded('courses')),
+            'nationality' => new NationalityResource($this->whenLoaded('nationality')),
+            'region' => new RegionResource($this->whenLoaded('region')),
+            'full_address' => $this->fullAddress,
             'efz' => $this->efz,
             'efz_link' => $this->getEfzLink(),
             'ps_at' => $this->ps_at,
