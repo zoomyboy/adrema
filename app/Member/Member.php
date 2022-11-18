@@ -285,13 +285,6 @@ class Member extends Model
         return $q->selectSub('DATEDIFF(NOW(), IFNULL(confirmed_at, DATE_SUB(NOW(), INTERVAL 3 YEAR))) < 712', 'is_confirmed');
     }
 
-    public function scopeWithSubscriptionName(Builder $q): Builder
-    {
-        return $q->addSelect([
-            'subscription_name' => Subscription::select('name')->whereColumn('subscriptions.id', 'members.subscription_id')->limit(1),
-        ]);
-    }
-
     public function scopeWithPendingPayment(Builder $q): Builder
     {
         return $q->addSelect([

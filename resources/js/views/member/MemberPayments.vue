@@ -43,7 +43,7 @@
                 <tr v-for="(payment, index) in value.payments" :key="index">
                     <td v-text="payment.nr"></td>
                     <td v-text="payment.status_name"></td>
-                    <td v-text="payment.subscription_name"></td>
+                    <td v-text="payment.subscription.name"></td>
                     <td class="flex">
                         <a
                             href="#"

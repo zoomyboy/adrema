@@ -7,6 +7,7 @@ use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Member\Member;
 use App\Member\Membership;
+use App\Payment\Payment;
 use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -117,5 +118,26 @@ class IndexTest extends TestCase
             'human_date' => '02.11.2022',
             'id' => $member->memberships->first()->id,
         ], $response, 'data.data.0.memberships.0');
+    }
+
+    public function testItReturnsPayments(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()
+            ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', 1050))
+            ->defaults()->create();
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas([
+            'subscription' => [
+                'name' => 'Free',
+                'id' => $member->payments->first()->subscription->id,
+                'amount' => 1050,
+            ],
+            'subscription_id' => $member->payments->first()->subscription->id,
+            'status_name' => 'Nicht bezahlt',
+            'nr' => '2019',
+         ], $response, 'data.data.0.payments.0');
     }
 }

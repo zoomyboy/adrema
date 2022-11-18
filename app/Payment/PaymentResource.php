@@ -19,6 +19,7 @@ class PaymentResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'subscription_id' => $this->subscription_id,
             'subscription' => new SubscriptionResource($this->whenLoaded('subscription')),
             'status_name' => $this->status->name,
             'status_id' => $this->status->id,
