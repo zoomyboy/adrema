@@ -18,7 +18,7 @@ class MemberShowAction
     public function handle(Member $member): array
     {
         return [
-            'data' => new MemberResource($member->load('memberships')),
+            'data' => new MemberResource($member->load('memberships')->load('payments.subscription')),
             'toolbar' => [['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'undo']],
         ];
     }

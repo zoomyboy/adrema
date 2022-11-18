@@ -40,7 +40,7 @@ class PaymentFactory extends Factory
     public function subscription(string $name, int $amount): self
     {
         return $this->for(
-            Subscription::factory()->state(['name' => $name, 'amount' => $amount])->for(Fee::first()),
+            Subscription::factory()->state(['name' => $name, 'amount' => $amount])->for(Fee::factory())
         );
     }
 }
