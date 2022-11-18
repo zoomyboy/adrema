@@ -3,10 +3,8 @@
         <!-- ****************************** Stammdaten ******************************* -->
         <div class="bg-gray-800 p-3 grid grid-cols-2 justify-start gap-3 rounded-lg">
             <heading class="col-span-full">Stammdaten</heading>
-            <key-value label="Geschlecht" :value="inner.gender_name"></key-value>
-            <key-value label="Vorname" :value="inner.firstname"></key-value>
-            <key-value label="Nachname" :value="inner.lastname"></key-value>
-            <key-value label="Adresse" :value="inner.full_address"></key-value>
+            <key-value class="col-span-2" label="Name" :value="inner.fullname"></key-value>
+            <key-value class="col-span-2" label="Adresse" :value="inner.full_address"></key-value>
             <key-value label="Geburtsdatum" :value="inner.birthday_human"></key-value>
             <key-value label="Alter" :value="inner.age"></key-value>
             <key-value label="Bundesland" :value="inner.region.name"></key-value>

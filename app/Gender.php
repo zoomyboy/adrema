@@ -12,4 +12,13 @@ class Gender extends Model
     use HasFactory;
 
     public $fillable = ['name', 'nami_id'];
+
+    public function getSalutationAttribute(): string
+    {
+        return match ($this->name) {
+            'Männlich' => 'Herr',
+            'Weiblich' => 'Frau',
+            default => ''
+        };
+    }
 }

@@ -33,7 +33,7 @@ class ShowTest extends TestCase
             ->defaults()
             ->has(Membership::factory()->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->state(['created_at' => '2022-11-19 05:00:00']))
             ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', 1050))
-            ->for(Gender::factory()->name('Herr'))
+            ->for(Gender::factory()->name('Männlich'))
             ->for(Region::factory()->name('NRW'))
             ->create([
                 'birthday' => '1991-04-20',
@@ -41,6 +41,7 @@ class ShowTest extends TestCase
                 'zip' => '42719',
                 'location' => 'Solingen',
                 'firstname' => 'Max',
+                'lastname' => 'Muster',
                 'other_country' => 'other',
                 'main_phone' => '+49 212 1266775',
                 'mobile_phone' => '+49 212 1266776',
@@ -56,8 +57,6 @@ class ShowTest extends TestCase
         $this->assertInertiaHas([
             'birthday_human' => '20.04.1991',
             'age' => 14,
-            'firstname' => 'Max',
-            'gender_name' => 'Herr',
             'full_address' => 'Itterstr 3, 42719 Solingen',
             'region' => ['name' => 'NRW'],
             'other_country' => 'other',
@@ -68,6 +67,7 @@ class ShowTest extends TestCase
             'email' => 'a@b.de',
             'email_parents' => 'b@c.de',
             'fax' => '+49 212 1255674',
+            'fullname' => 'Herr Max Muster',
         ], $response, 'data');
         $this->assertInertiaHas([
             'activity_name' => '€ LeiterIn',
@@ -92,14 +92,14 @@ class ShowTest extends TestCase
             ->for(Group::factory())
             ->for(Nationality::factory()->name('deutsch'))
             ->for(Subscription::factory()->for(Fee::factory()))
-            ->create(['firstname' => 'Max']);
+            ->create(['firstname' => 'Max', 'lastname' => 'Muster']);
 
         $response = $this->get("/member/{$member->id}");
 
         $this->assertInertiaHas([
             'region' => ['name' => '-- kein --'],
             'nationality' => ['name' => '-- kein --'],
-            'gender_name' => 'keine Angabe',
+            'fullname' => 'Max Muster',
             'nationality' => [
                 'name' => 'deutsch',
             ],
