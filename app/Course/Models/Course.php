@@ -11,4 +11,13 @@ class Course extends Model
 
     public $timestamps = false;
     public $fillable = ['name', 'nami_id'];
+
+    public function getShortNameAttribute(): string
+    {
+        return str($this->name)
+            ->trim()
+            ->replaceFirst('Baustein', '')
+            ->trim()
+            ->replaceMatches('/ - .*/', '');
+    }
 }

@@ -48,7 +48,7 @@ class Member extends Model
     /**
      * @var array<int, string>
      */
-    public $dates = ['try_created_at', 'joined_at', 'birthday'];
+    public $dates = ['try_created_at', 'joined_at', 'birthday', 'efz', 'ps_at', 'more_ps_at', 'without_education_at', 'without_efz_at'];
 
     /**
      * @var array<string, string>

@@ -18,4 +18,9 @@ class SubscriptionFactory extends Factory
             'fee_id' => Fee::factory()->createOne()->id,
         ];
     }
+
+    public function name(string $name): self
+    {
+        return $this->state(['name' => $name]);
+    }
 }

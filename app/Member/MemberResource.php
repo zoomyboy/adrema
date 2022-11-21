@@ -2,11 +2,12 @@
 
 namespace App\Member;
 
-use App\Course\Resources\CourseResource;
+use App\Course\Resources\CourseMemberResource;
 use App\Member\Resources\NationalityResource;
 use App\Member\Resources\RegionResource;
 use App\Membership\MembershipResource;
 use App\Payment\PaymentResource;
+use App\Payment\SubscriptionResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -36,7 +37,7 @@ class MemberResource extends JsonResource
             'joined_at_human' => $this->joined_at->format('d.m.Y'),
             'id' => $this->id,
             'subscription_id' => $this->subscription_id,
-            'subscription_name' => $this->subscription_name,
+            'subscription' => new SubscriptionResource($this->whenLoaded('subscription')),
             'gender_id' => $this->gender_id,
             'gender_name' => $this->gender?->name ?: 'keine Angabe',
             'fullname' => ($this->gender ? $this->gender?->salutation.' ' : '').$this->fullname,
@@ -62,18 +63,24 @@ class MemberResource extends JsonResource
             'memberships' => MembershipResource::collection($this->whenLoaded('memberships')),
             'pending_payment' => $this->pending_payment ? number_format($this->pending_payment / 100, 2, ',', '.').' €' : null,
             'age_group_icon' => $this->ageGroupMemberships->first()?->subactivity->slug,
-            'courses' => CourseResource::collection($this->whenLoaded('courses')),
+            'courses' => CourseMemberResource::collection($this->whenLoaded('courses')),
             'nationality' => new NationalityResource($this->whenLoaded('nationality')),
             'region' => new RegionResource($this->whenLoaded('region')),
             'full_address' => $this->fullAddress,
-            'efz' => $this->efz,
+            'efz' => $this->efz?->format('Y-m-d'),
+            'efz_human' => $this->efz?->format('d.m.Y') ?: null,
+            'ps_at_human' => $this->ps_at?->format('d.m.Y') ?: null,
+            'more_ps_at_human' => $this->more_ps_at?->format('d.m.Y') ?: null,
+            'without_education_at_human' => $this->without_education_at?->format('d.m.Y') ?: null,
+            'without_efz_at_human' => $this->without_efz_at?->format('d.m.Y') ?: null,
             'efz_link' => $this->getEfzLink(),
-            'ps_at' => $this->ps_at,
-            'more_ps_at' => $this->more_ps_at,
+            'ps_at' => $this->ps_at?->format('Y-m-d'),
+            'more_ps_at' => $this->more_ps_at?->format('Y-m-d'),
             'has_svk' => $this->has_svk,
+            'nami_id' => $this->nami_id,
             'has_vk' => $this->has_vk,
-            'without_education_at' => $this->without_education_at,
-            'without_efz_at' => $this->without_efz_at,
+            'without_education_at' => $this->without_education_at?->format('Y-m-d'),
+            'without_efz_at' => $this->without_efz_at?->format('Y-m-d'),
             'multiply_pv' => $this->multiply_pv,
             'multiply_more_pv' => $this->multiply_more_pv,
             'age' => $this->getModel()->getAge(),

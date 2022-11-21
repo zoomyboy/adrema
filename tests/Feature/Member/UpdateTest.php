@@ -89,15 +89,15 @@ class UpdateTest extends TestCase
                 'multiply_more_pv' => true,
             ]));
 
-        $this->assertEquals('2021-02-01', $member->fresh()->ps_at);
-        $this->assertEquals('2021-02-02', $member->fresh()->more_ps_at);
+        $this->assertEquals('2021-02-01', $member->fresh()->ps_at->format('Y-m-d'));
+        $this->assertEquals('2021-02-02', $member->fresh()->more_ps_at->format('Y-m-d'));
         $this->assertTrue($member->fresh()->has_svk);
         $this->assertTrue($member->fresh()->has_vk);
         $this->assertTrue($member->fresh()->multiply_pv);
         $this->assertTrue($member->fresh()->multiply_more_pv);
-        $this->assertEquals('2021-02-03', $member->fresh()->efz);
-        $this->assertEquals('2021-02-04', $member->fresh()->without_education_at);
-        $this->assertEquals('2021-02-05', $member->fresh()->without_efz_at);
+        $this->assertEquals('2021-02-03', $member->fresh()->efz->format('Y-m-d'));
+        $this->assertEquals('2021-02-04', $member->fresh()->without_education_at->format('Y-m-d'));
+        $this->assertEquals('2021-02-05', $member->fresh()->without_efz_at->format('Y-m-d'));
     }
 
     /**

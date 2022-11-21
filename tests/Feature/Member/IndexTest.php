@@ -139,5 +139,9 @@ class IndexTest extends TestCase
             'status_name' => 'Nicht bezahlt',
             'nr' => '2019',
          ], $response, 'data.data.0.payments.0');
+        $this->assertInertiaHas([
+            'id' => $member->subscription->id,
+            'name' => $member->subscription->name,
+         ], $response, 'data.data.0.subscription');
     }
 }

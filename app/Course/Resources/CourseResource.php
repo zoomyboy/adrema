@@ -2,11 +2,10 @@
 
 namespace App\Course\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Course\Models\CourseMember
+ * @mixin \App\Course\Models\Course
  */
 class CourseResource extends JsonResource
 {
@@ -20,13 +19,10 @@ class CourseResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'name' => $this->name,
+            'nami_id' => $this->nami_id,
             'id' => $this->id,
-            'organizer' => $this->organizer,
-            'event_name' => $this->event_name,
-            'completed_at_human' => Carbon::parse($this->completed_at)->format('d.m.Y'),
-            'completed_at' => $this->completed_at,
-            'course_name' => $this->course->name,
-            'course_id' => $this->course->id,
+            'short_name' => $this->short_name,
         ];
     }
 }

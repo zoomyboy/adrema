@@ -23,4 +23,9 @@ class BillKindFactory extends Factory
             'name' => $this->faker->words(3, true),
         ];
     }
+
+    public function name(string $name): self
+    {
+        return $this->state(['name' => $name]);
+    }
 }

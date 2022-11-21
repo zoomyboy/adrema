@@ -66,7 +66,7 @@
                         >
                     </div>
                 </td>
-                <td v-text="member.subscription_name"></td>
+                <td v-text="member.subscription ? member.subscription.name : ''"></td>
                 <td v-text="`${member.birthday_human} (${member.age})`"></td>
                 <td v-show="hasModule('bill')">
                     <div class="flex justify-center">

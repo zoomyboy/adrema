@@ -2,9 +2,12 @@
 
 namespace Tests\Feature\Member;
 
+use App\Course\Models\Course;
+use App\Course\Models\CourseMember;
 use App\Fee;
 use App\Gender;
 use App\Group;
+use App\Letter\BillKind;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Nationality;
@@ -35,6 +38,10 @@ class ShowTest extends TestCase
             ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', 1050))
             ->for(Gender::factory()->name('Männlich'))
             ->for(Region::factory()->name('NRW'))
+            ->for(BillKind::factory()->name('Post'))
+            ->inNami(123)
+            ->for(Subscription::factory()->name('Sub')->for(Fee::factory()))
+            ->has(CourseMember::factory()->for(Course::factory()->name('  Baustein 2e - Gewalt gegen Kinder und Jugendliche: Vertiefung, Prävention  '))->state(['organizer' => 'DPSG', 'event_name' => 'Wochenende', 'completed_at' => '2022-03-03']), 'courses')
             ->create([
                 'birthday' => '1991-04-20',
                 'address' => 'Itterstr 3',
@@ -50,6 +57,17 @@ class ShowTest extends TestCase
                 'email' => 'a@b.de',
                 'email_parents' => 'b@c.de',
                 'fax' => '+49 212 1255674',
+                'efz' => '2022-09-20',
+                'ps_at' => '2022-04-20',
+                'more_ps_at' => '2022-06-02',
+                'without_education_at' => '2022-06-03',
+                'without_efz_at' => '2022-06-04',
+                'has_vk' => true,
+                'has_svk' => true,
+                'multiply_pv' => true,
+                'multiply_more_pv' => true,
+                'send_newspaper' => true,
+                'joined_at' => '2022-06-11',
             ]);
 
         $response = $this->get("/member/{$member->id}");
@@ -68,17 +86,45 @@ class ShowTest extends TestCase
             'email_parents' => 'b@c.de',
             'fax' => '+49 212 1255674',
             'fullname' => 'Herr Max Muster',
+            'efz_human' => '20.09.2022',
+            'ps_at_human' => '20.04.2022',
+            'more_ps_at_human' => '02.06.2022',
+            'without_education_at_human' => '03.06.2022',
+            'without_efz_at_human' => '04.06.2022',
+            'has_vk' => true,
+            'has_svk' => true,
+            'multiply_pv' => true,
+            'multiply_more_pv' => true,
+            'has_nami' => true,
+            'nami_id' => 123,
+            'send_newspaper' => true,
+            'joined_at_human' => '11.06.2022',
+            'bill_kind_name' => 'Post',
+            'subscription' => [
+                'name' => 'Sub',
+            ],
         ], $response, 'data');
         $this->assertInertiaHas([
             'activity_name' => '€ LeiterIn',
+            'subactivity_name' => 'Jungpfadfinder',
             'id' => $member->memberships->first()->id,
             'human_date' => '19.11.2022',
          ], $response, 'data.memberships.0');
+        $this->assertInertiaHas([
+            'organizer' => 'DPSG',
+            'event_name' => 'Wochenende',
+            'completed_at_human' => '03.03.2022',
+            'course' => [
+                'name' => '  Baustein 2e - Gewalt gegen Kinder und Jugendliche: Vertiefung, Prävention  ',
+                'short_name' => '2e',
+            ],
+         ], $response, 'data.courses.0');
         $this->assertInertiaHas([
             'subscription' => [
                 'name' => 'Free',
                 'id' => $member->payments->first()->subscription->id,
                 'amount' => 1050,
+                'amount_human' => '10,50 €',
             ],
             'status_name' => 'Nicht bezahlt',
             'nr' => '2019',
@@ -103,6 +149,15 @@ class ShowTest extends TestCase
             'nationality' => [
                 'name' => 'deutsch',
             ],
+            'efz_human' => null,
+            'ps_at_human' => null,
+            'more_ps_at_human' => null,
+            'without_education_at_human' => null,
+            'without_efz_at_human' => null,
+            'has_vk' => false,
+            'has_svk' => false,
+            'multiply_pv' => false,
+            'multiply_more_pv' => false,
         ], $response, 'data');
     }
 }
