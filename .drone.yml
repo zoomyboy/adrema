@@ -43,7 +43,6 @@ steps:
 
     - name: test
       image: docker:dind
-      privileged: true
       commands:
           - docker build -t scoutrobot .
       when:
