@@ -1,7 +1,7 @@
 <template>
     <section class="bg-gray-800 p-3 rounded-lg flex flex-col">
-        <heading class="col-span-full">{{ heading }}</heading>
-        <main :class="containerClass" class="mt-3">
+        <heading class="col-span-full" v-if="heading">{{ heading }}</heading>
+        <main :class="{'mt-3': heading, 'containerClass': true}">
             <slot></slot>
         </main>
     </section>
@@ -11,7 +11,6 @@
 export default {
     props: {
         heading: {
-            required: true,
             type: String,
         },
         containerClass: {

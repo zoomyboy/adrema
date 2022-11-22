@@ -4,7 +4,11 @@
 
         <!-- ******************************** Sidebar ******************************** -->
         <div
-            class="fixed bg-gray-800 p-6 w-56 left-0 top-0 h-screen border-r border-gray-600 border-solid flex flex-col justify-between"
+            class="fixed bg-gray-800 p-6 w-56 left-0 top-0 h-screen border-r border-gray-600 border-solid flex flex-col justify-between transition-all"
+            :class="{
+                '-left-[14rem]': !(menuVisible || (!menuVisible && menuOverflowVisible)),
+                'left-0': menuVisible || (!menuVisible && menuOverflowVisible),
+            }"
         >
             <div class="grid gap-2">
                 <v-link href="/" menu="dashboard" icon="loss">Dashboard</v-link>
@@ -18,12 +22,29 @@
                 <v-link href="/setting" menu="setting" icon="setting">Einstellungen</v-link>
                 <v-link @click.prevent="$inertia.post('/logout')" icon="logout" href="/logout">Abmelden</v-link>
             </div>
+            <a
+                href="#"
+                @click.prevent="menuOverflowVisible = false"
+                v-if="menuOverflowVisible && !menuVisible"
+                class="absolute right-0 top-0 mr-2 mt-2"
+            >
+                <svg-sprite src="close" class="w-5 h-5 text-gray-300"></svg-sprite>
+            </a>
         </div>
 
-        <div class="grow ml-56 bg-gray-900 flex flex-col">
+        <div
+            class="grow bg-gray-900 flex flex-col transition-all"
+            :class="{'ml-56': menuVisible, 'ml-0': !menuVisible}"
+        >
             <div class="h-16 px-6 flex justify-between items-center border-b border-gray-600">
-                <div class="flex">
-                    <span class="text-xl font-semibold text-white leading-none" v-html="$page.props.title"></span>
+                <div class="flex space-x-3 items-center">
+                    <a href="#" @click.prevent="menuOverflowVisible = !menuOverflowVisible" class="lg:hidden">
+                        <svg-sprite src="menu" class="text-gray-100 w-4 h-4"></svg-sprite>
+                    </a>
+                    <span
+                        class="text-sm md:text-xl font-semibold text-white leading-none"
+                        v-html="$page.props.title"
+                    ></span>
                     <div class="flex ml-4">
                         <i-link
                             v-for="(link, index) in filterMenu"
@@ -37,7 +58,7 @@
                         </i-link>
                     </div>
                 </div>
-                <label for="search">
+                <label for="search" class="hidden md:block">
                     <input
                         class="shadow-lg bg-gray-800 rounded-lg py-2 px-3 text-gray-300 hover:bg-gray-700 focus:bg-gray-700 placeholder-gray-400"
                         placeholder="Suchen…"
@@ -60,6 +81,12 @@ import {debounce} from 'lodash';
 import mergesQueryString from '../mixins/mergesQueryString.js';
 
 export default {
+    data: function () {
+        return {
+            menuVisible: true,
+            menuOverflowVisible: false,
+        };
+    },
     components: {
         VNotification: () => import('../components/VNotification.vue'),
         VLink,
@@ -81,6 +108,27 @@ export default {
         filterMenu() {
             return this.$page.props.toolbar ? this.$page.props.toolbar.filter((menu) => menu.show !== false) : [];
         },
+    },
+
+    methods: {
+        menuListener() {
+            var x = window.matchMedia('(min-width: 1024px)');
+
+            if (x.matches && !this.menuVisible) {
+                this.menuVisible = true;
+                this.menuOverflowVisible = false;
+                return;
+            }
+            if (!x.matches && this.menuVisible) {
+                this.menuVisible = false;
+                this.menuOverflowVisible = false;
+                return;
+            }
+        },
+    },
+    created() {
+        window.addEventListener('resize', this.menuListener);
+        this.menuListener();
     },
 };
 </script>
