@@ -42,7 +42,7 @@ steps:
           - git submodule update --init --recursive
 
     - name: test
-      image: docker:latest
+      image: docker:dind
       privileged: true
       commands:
           - docker build -t scoutrobot .
