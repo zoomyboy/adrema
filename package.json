@@ -7,7 +7,7 @@
         "hot": "npx mix watch --hot",
         "prod": "npx mix build --production",
         "production": "npm run prod",
-        "img": "rm -R public/img && cd resources/img/svg && svg-sprite -s --symbol-dest=sprite *.svg && mv sprite/svg/sprite.symbol.svg ../sprite.svg && rm -R sprite && cd ../../../ && cp -R resources/img public/img",
+        "img": "rm -R public/img && cd resources/img/svg && npx svg-sprite -s --symbol-dest=sprite *.svg && mv sprite/svg/sprite.css.svg ../sprite.svg && rm -R sprite && cd ../../../ && cp -R resources/img public/img",
         "lint": "eslint \"resources/js/**/*.{js,vue}\"",
         "fix": "eslint \"resources/js/**/*.{js,vue}\" --fix"
     },
@@ -29,6 +29,7 @@
         "merge": "^2.1.1",
         "postcss-import": "^14.0.1",
         "query-string": "^7.0.0",
+        "svg-sprite": "^2.0.2",
         "v-tooltip": "^2.1.3",
         "wnumb": "^1.2.0"
     }
