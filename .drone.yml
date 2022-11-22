@@ -32,6 +32,7 @@ steps:
           SSH_KEY:
               from_secret: private_key
       commands:
+          - mkdir $HOME/.ssh
           - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
           - chmod 600 $HOME/.ssh/id_rsa
           - git submodule update --init --recursive
