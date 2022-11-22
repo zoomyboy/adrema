@@ -31,10 +31,12 @@ steps:
       environment:
           SSH_KEY:
               from_secret: private_key
+          KNOWN_HOSTS:
+              from_secret: known_hosts
       commands:
           - mkdir $HOME/.ssh
           - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
-          - echo "Host *\\n  StrictHostKeyChecking no" > $HOME/.ssh/config
+          - echo "$KNOWN_HOSTS" > $HOME/.ssh/known_hosts
           - chmod 600 $HOME/.ssh/id_rsa
           - git submodule update --init --recursive
 
