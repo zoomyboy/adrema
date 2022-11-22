@@ -44,15 +44,15 @@ steps:
           - chmod 600 $HOME/.ssh/id_rsa
           - git submodule update --init --recursive
 
-    - name: composer
-      image: composer:2.2.7
-      commands:
-          - composer install --ignore-platform-reqs --no-dev
-
-      # - name: node
-      #   image: node:17.9.0-slim
-      #   commands:
-      #       - npm ci && npm run prod && npm run img && rm -R node_modules
+    #     - name: composer
+    #       image: composer:2.2.7
+    #       commands:
+    #           - composer install --ignore-platform-reqs --no-dev
+    #
+    #     - name: node
+    #       image: node:17.9.0-slim
+    #       commands:
+    #           - npm ci && npm run prod && npm run img && rm -R node_modules
 
     - name: compress
       image: php:7.3
@@ -82,6 +82,8 @@ steps:
           target: ~/namineu
           include: ['app', 'resources', 'public', 'packages']
           recursive: true
+          key:
+              from_secret: private_key
           script:
               - cd ~/namineu
               - echo "copied" > beweis.txt
