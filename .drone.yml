@@ -34,6 +34,7 @@ steps:
       commands:
           - mkdir $HOME/.ssh
           - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
+          - "Host *\n  StrictHostKeyChecking no" > $HOME/.ssh/config
           - chmod 600 $HOME/.ssh/id_rsa
           - git submodule update --init --recursive
 
