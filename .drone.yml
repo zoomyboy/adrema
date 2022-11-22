@@ -49,10 +49,10 @@ steps:
       commands:
           - composer install --ignore-platform-reqs --no-dev
 
-    - name: node
-      image: node:17.9.0-slim
-      commands:
-        - npm ci && npm run prod && npm run img && rm -R node_modules
+      # - name: node
+      #   image: node:17.9.0-slim
+      #   commands:
+      #       - npm ci && npm run prod && npm run img && rm -R node_modules
 
     - name: compress
       image: php:7.3
@@ -73,6 +73,20 @@ steps:
       when:
           event: tag
 
+    - name: deploy
+      image: drillster/drone-rsync
+      settings:
+          hosts: ['zoomyboy.de']
+          user: stammsilva
+          source: ./
+          target: ~/namineu
+          include: ['app', 'resources', 'public', 'packages']
+          recursive: true
+          script:
+              - cd ~/namineu
+              - echo "copied" > beweis.txt
+      when:
+          event: push
 trigger:
     event:
         - push
