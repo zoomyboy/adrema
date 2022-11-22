@@ -25,9 +25,6 @@ kind: pipeline
 type: docker
 name: default
 
-clone:
-    disable: true
-
 steps:
     - name: submodules
       image: alpine/git
