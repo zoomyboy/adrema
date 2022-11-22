@@ -51,16 +51,24 @@ steps:
       commands:
           - npm install && npm run prod && rm -R node_modules
 
+    - name: compress
+      image: php:7.3
+      commands:
+          - apt-get update -yqq
+          - apt-get install -yqq zip tar
+          - tar -czf nami.tar.gz ./
+      when:
+          event: tag
+
     - name: gitea_release
       image: plugins/gitea-release
       settings:
           api_key:
               from_secret: gitea_api_key
           base_url: https://git.zoomyboy.de
-          files: ./
+          files: ./nami.tar.gz
       when:
-          event:
-              - tag
+          event: tag
 
 trigger:
     event:
