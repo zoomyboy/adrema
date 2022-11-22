@@ -48,7 +48,7 @@ steps:
       image: composer:2.2.7
       commands:
           - composer install --ignore-platform-reqs --no-dev
-    
+
     - name: node
       image: node:17.9.0-slim
       commands:
@@ -84,8 +84,8 @@ steps:
           key:
               from_secret: private_key
           script:
-              - cd ~/namineu
-              - echo "copied" > beweis.txt
+              - cd ~/nami
+              - /usr/bin/php8.1 artisan migrate --force
       when:
           event: push
 trigger:
