@@ -29,30 +29,30 @@ workspace:
     path: /drone/nami
 
 steps:
-    #     - name: submodules
-    #       image: alpine/git
-    #       environment:
-    #           SSH_KEY:
-    #               from_secret: private_key
-    #           KNOWN_HOSTS:
-    #               from_secret: known_hosts
-    #       commands:
-    #           - mkdir $HOME/.ssh
-    #           - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
-    #           - echo "$KNOWN_HOSTS" > $HOME/.ssh/known_hosts
-    #           - cat $HOME/.ssh/known_hosts
-    #           - chmod 600 $HOME/.ssh/id_rsa
-    #           - git submodule update --init --recursive
+    - name: submodules
+      image: alpine/git
+      environment:
+          SSH_KEY:
+              from_secret: private_key
+          KNOWN_HOSTS:
+              from_secret: known_hosts
+      commands:
+          - mkdir $HOME/.ssh
+          - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
+          - echo "$KNOWN_HOSTS" > $HOME/.ssh/known_hosts
+          - cat $HOME/.ssh/known_hosts
+          - chmod 600 $HOME/.ssh/id_rsa
+          - git submodule update --init --recursive
 
-    #     - name: composer
-    #       image: composer:2.2.7
-    #       commands:
-    #           - composer install --ignore-platform-reqs --no-dev
-    #
-    #     - name: node
-    #       image: node:17.9.0-slim
-    #       commands:
-    #           - npm ci && npm run prod && npm run img && rm -R node_modules
+    - name: composer
+      image: composer:2.2.7
+      commands:
+          - composer install --ignore-platform-reqs --no-dev
+    
+    - name: node
+      image: node:17.9.0-slim
+      commands:
+          - npm ci && npm run prod && npm run img && rm -R node_modules
 
     - name: compress
       image: php:7.3
