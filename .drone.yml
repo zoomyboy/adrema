@@ -29,20 +29,20 @@ workspace:
     path: /drone/nami
 
 steps:
-    - name: submodules
-      image: alpine/git
-      environment:
-          SSH_KEY:
-              from_secret: private_key
-          KNOWN_HOSTS:
-              from_secret: known_hosts
-      commands:
-          - mkdir $HOME/.ssh
-          - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
-          - echo "$KNOWN_HOSTS" > $HOME/.ssh/known_hosts
-          - cat $HOME/.ssh/known_hosts
-          - chmod 600 $HOME/.ssh/id_rsa
-          - git submodule update --init --recursive
+    #     - name: submodules
+    #       image: alpine/git
+    #       environment:
+    #           SSH_KEY:
+    #               from_secret: private_key
+    #           KNOWN_HOSTS:
+    #               from_secret: known_hosts
+    #       commands:
+    #           - mkdir $HOME/.ssh
+    #           - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
+    #           - echo "$KNOWN_HOSTS" > $HOME/.ssh/known_hosts
+    #           - cat $HOME/.ssh/known_hosts
+    #           - chmod 600 $HOME/.ssh/id_rsa
+    #           - git submodule update --init --recursive
 
     #     - name: composer
     #       image: composer:2.2.7
@@ -79,8 +79,8 @@ steps:
           hosts: ['zoomyboy.de']
           user: stammsilva
           source: ./
-          target: ~/namineu
-          include: ['app/*', 'resources/*', 'public/*', 'packages/*']
+          target: ~/nami
+          exclude: ['.git']
           key:
               from_secret: private_key
           script:
