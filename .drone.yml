@@ -49,10 +49,10 @@ steps:
       commands:
           - composer install --ignore-platform-reqs --no-dev
 
-    - name: node
-      image: node:17.9.0-slim
-      commands:
-          - npm install && npm run prod && rm -R node_modules
+    #     - name: node
+    #       image: node:17.9.0-slim
+    #       commands:
+    #           - npm install && npm run prod && rm -R node_modules
 
     - name: compress
       image: php:7.3
