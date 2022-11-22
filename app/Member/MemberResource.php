@@ -40,7 +40,7 @@ class MemberResource extends JsonResource
             'subscription' => new SubscriptionResource($this->whenLoaded('subscription')),
             'gender_id' => $this->gender_id,
             'gender_name' => $this->gender?->name ?: 'keine Angabe',
-            'fullname' => ($this->gender ? $this->gender?->salutation.' ' : '').$this->fullname,
+            'fullname' => ($this->gender ? $this->gender->salutation.' ' : '').$this->fullname,
             'further_address' => $this->further_address,
             'work_phone' => $this->work_phone,
             'mobile_phone' => $this->mobile_phone,

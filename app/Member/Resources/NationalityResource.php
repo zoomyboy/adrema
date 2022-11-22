@@ -15,7 +15,7 @@ class NationalityResource extends JsonResource
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array<string, int|string>
      */
     public function toArray($request)
     {

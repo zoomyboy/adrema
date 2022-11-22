@@ -144,7 +144,6 @@ class ShowTest extends TestCase
 
         $this->assertInertiaHas([
             'region' => ['name' => '-- kein --'],
-            'nationality' => ['name' => '-- kein --'],
             'fullname' => 'Max Muster',
             'nationality' => [
                 'name' => 'deutsch',
