@@ -40,13 +40,29 @@ steps:
           - cat $HOME/.ssh/known_hosts
           - chmod 600 $HOME/.ssh/id_rsa
           - git submodule update --init --recursive
-
-    - name: test
-      image: docker:dind
-      commands:
-          - docker build -t scoutrobot .
       when:
           branch:
-              - master
+              - dev
           event:
               - push
+
+    - name: composer
+      image: composer:2.2.7
+      commands:
+          - composer install --ignore-platform-reqs --no-dev
+      when:
+          branch:
+              - dev
+          event:
+              - push
+
+    - name: node
+      image: node:17.9.0-slim
+      commands:
+          - npm install && npm run prod && rm -R node_modules
+      when:
+          branch:
+              - dev
+          event:
+              - push
+
