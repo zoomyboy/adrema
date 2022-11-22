@@ -43,6 +43,7 @@ steps:
 
     - name: test
       image: docker:latest
+      privileged: true
       commands:
           - docker build -t scoutrobot .
       when:
