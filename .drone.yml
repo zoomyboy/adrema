@@ -30,7 +30,7 @@ steps:
       image: alpine/git
       environment:
           SSH_KEY:
-              from_secret: private_key
+              from_secret: new_private_key
           KNOWN_HOSTS:
               from_secret: known_hosts
       commands:
