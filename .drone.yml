@@ -73,7 +73,7 @@ steps:
       when:
           event: tag
 
-    - name: deploy
+    - name: deploy silva
       image: drillster/drone-rsync
       settings:
           hosts: ['zoomyboy.de']
@@ -87,6 +87,24 @@ steps:
               - cd ~/nami
               - /usr/bin/php8.1 artisan migrate --force
       when:
+          branch: master
+          event: push
+
+    - name: deploy lennep
+      image: drillster/drone-rsync
+      settings:
+          hosts: ['zoomyboy.de']
+          user: dpsg-lennep
+          source: ./
+          target: ~/nami
+          exclude: ['.git']
+          key:
+              from_secret: private_key
+          script:
+              - cd ~/nami
+              - /usr/bin/php8.1 artisan migrate --force
+      when:
+          branch: master
           event: push
 trigger:
     event:
