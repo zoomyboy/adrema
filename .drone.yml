@@ -80,8 +80,7 @@ steps:
           user: stammsilva
           source: ./
           target: ~/namineu
-          include: ['app', 'resources', 'public', 'packages']
-          recursive: true
+          include: ['app/*', 'resources/*', 'public/*', 'packages/*']
           key:
               from_secret: private_key
           script:
