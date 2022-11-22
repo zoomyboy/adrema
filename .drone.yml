@@ -25,6 +25,9 @@ kind: pipeline
 type: docker
 name: default
 
+workspace:
+    path: /drone/nami
+
 steps:
     - name: submodules
       image: alpine/git
@@ -56,7 +59,7 @@ steps:
       commands:
           - apt-get update -yqq
           - apt-get install -yqq zip tar
-          - tar -czf nami.tar.gz ./
+          - cd .. && tar -cvzf nami.tar.gz ./nami && mv nami.tar.gz nami/ && cd nami
       when:
           event: tag
 
