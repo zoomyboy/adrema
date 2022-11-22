@@ -37,6 +37,7 @@ steps:
           - mkdir $HOME/.ssh
           - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
           - echo "$KNOWN_HOSTS" > $HOME/.ssh/known_hosts
+          - cat $HOME/.ssh/known_hosts
           - chmod 600 $HOME/.ssh/id_rsa
           - git submodule update --init --recursive
 
