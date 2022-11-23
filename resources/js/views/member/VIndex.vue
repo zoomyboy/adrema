@@ -21,22 +21,7 @@
             </thead>
 
             <tr v-for="(member, index) in data.data" :key="index">
-                <td>
-                    <div class="flex gap-1 justify-center items-center">
-                        <svg-sprite
-                            class="w-3 h-3 flex-none"
-                            v-if="member.is_leader"
-                            :class="ageColors.leiter"
-                            src="lilie"
-                        ></svg-sprite>
-                        <svg-sprite
-                            class="w-3 h-3 flex-none"
-                            v-if="member.age_group_icon"
-                            :class="ageColors[member.age_group_icon]"
-                            src="lilie"
-                        ></svg-sprite>
-                    </div>
-                </td>
+                <td><age-groups :member="member"></age-groups></td>
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
                 <td class="hidden 2xl:table-cell" v-text="member.full_address"></td>
@@ -156,20 +141,18 @@ export default {
         return {
             sidebar: null,
             single: null,
-            ageColors: {
-                biber: 'text-biber',
-                woelfling: 'text-woelfling',
-                jungpfadfinder: 'text-jungpfadfinder',
-                pfadfinder: 'text-pfadfinder',
-                rover: 'text-rover',
-                leiter: 'text-leiter',
-            },
         };
     },
 
     mixins: [mergesQueryString],
 
-    components: {MemberMemberships, MemberPayments, MemberFilter, MemberCourses},
+    components: {
+        MemberMemberships,
+        MemberPayments,
+        MemberFilter,
+        MemberCourses,
+        'age-groups': () => import('./AgeGroups'),
+    },
 
     methods: {
         remove(member) {
