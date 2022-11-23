@@ -4,7 +4,7 @@
 
         <!-- ******************************** Sidebar ******************************** -->
         <div
-            class="fixed bg-gray-800 p-6 w-56 left-0 top-0 h-screen border-r border-gray-600 border-solid flex flex-col justify-between transition-all"
+            class="fixed z-40 bg-gray-800 p-6 w-56 left-0 top-0 h-screen border-r border-gray-600 border-solid flex flex-col justify-between transition-all"
             :class="{
                 '-left-[14rem]': !(menuVisible || (!menuVisible && menuOverflowVisible)),
                 'left-0': menuVisible || (!menuVisible && menuOverflowVisible),
@@ -39,7 +39,7 @@
             <div class="h-16 px-6 flex justify-between items-center border-b border-gray-600">
                 <div class="flex space-x-3 items-center">
                     <a href="#" @click.prevent="menuOverflowVisible = !menuOverflowVisible" class="lg:hidden">
-                        <svg-sprite src="menu" class="text-gray-100 w-4 h-4"></svg-sprite>
+                        <svg-sprite src="menu" class="text-gray-100 w-5 h-5"></svg-sprite>
                     </a>
                     <span
                         class="text-sm md:text-xl font-semibold text-white leading-none"
@@ -58,7 +58,11 @@
                         </i-link>
                     </div>
                 </div>
-                <label for="search" class="hidden md:block">
+                <label
+                    for="search"
+                    :class="{'opacity-0 sm:opacity-100': !searchVisible, 'opacity-100': searchVisible}"
+                    class="absolute left-14 sm:static transition-all"
+                >
                     <input
                         class="shadow-lg bg-gray-800 rounded-lg py-2 px-3 text-gray-300 hover:bg-gray-700 focus:bg-gray-700 placeholder-gray-400"
                         placeholder="Suchen…"
@@ -66,6 +70,18 @@
                         v-model="isearch"
                     />
                 </label>
+                <a href="#" @click.prevent="searchVisible = !searchVisible" class="relative sm:hidden w-5 h-5">
+                    <svg-sprite
+                        :class="{'opacity-0': searchVisible, 'opacity-100': !searchVisible}"
+                        class="absolute transition-all text-gray-300 w-5 h-5"
+                        src="search"
+                    ></svg-sprite>
+                    <svg-sprite
+                        :class="{'opacity-0': !searchVisible, 'opacity-100': searchVisible}"
+                        class="absolute transition-all text-gray-300 w-5 h-5"
+                        src="close"
+                    ></svg-sprite>
+                </a>
             </div>
 
             <div class="grow flex flex-col">
@@ -83,6 +99,7 @@ import mergesQueryString from '../mixins/mergesQueryString.js';
 export default {
     data: function () {
         return {
+            searchVisible: true,
             menuVisible: true,
             menuOverflowVisible: false,
         };
@@ -116,11 +133,13 @@ export default {
 
             if (x.matches && !this.menuVisible) {
                 this.menuVisible = true;
+                this.searchVisible = false;
                 this.menuOverflowVisible = false;
                 return;
             }
             if (!x.matches && this.menuVisible) {
                 this.menuVisible = false;
+                this.searchVisible = false;
                 this.menuOverflowVisible = false;
                 return;
             }
