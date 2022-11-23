@@ -7,6 +7,7 @@ import FSwitch from './components/FSwitch.vue';
 import FSelect from './components/FSelect.vue';
 import FTextarea from './components/FTextarea.vue';
 import VPages from './components/VPages.vue';
+import VLabel from './components/VLabel.vue';
 import VBool from './components/VBool.vue';
 import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
@@ -21,6 +22,7 @@ Vue.component('f-textarea', FTextarea);
 Vue.component('SvgSprite', SvgSprite);
 Vue.component('VPages', VPages);
 Vue.component('v-bool', VBool);
+Vue.component('v-label', VLabel);
 
 const el = document.getElementById('app');
 

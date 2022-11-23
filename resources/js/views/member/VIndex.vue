@@ -7,7 +7,7 @@
             :bill-kinds="billKinds"
         ></member-filter>
 
-        <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
+        <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
             <thead>
                 <th></th>
                 <th>Nachname</th>
@@ -28,23 +28,10 @@
                 <td><tags :member="member"></tags></td>
                 <td class="hidden xl:table-cell" v-text="member.age"></td>
                 <td class="hidden xl:table-cell" v-show="hasModule('bill')">
-                    <div class="flex justify-center">
-                        <div
-                            class="btn btn-sm label primary"
-                            v-text="member.bill_kind_name"
-                            v-if="member.bill_kind_name"
-                        ></div>
-                        <div class="text-xs" v-else>Kein</div>
-                    </div>
+                    <v-label :value="member.bill_kind_name" fallback="kein"></v-label>
                 </td>
                 <td v-show="hasModule('bill')">
-                    <div class="flex justify-center">
-                        <div
-                            class="btn btn-sm label primary"
-                            v-show="member.pending_payment"
-                            v-text="member.pending_payment"
-                        ></div>
-                    </div>
+                    <v-label :value="member.pending_payment" fallback="---"></v-label>
                 </td>
                 <td>
                     <div class="flex space-x-1">
@@ -102,6 +89,29 @@
             </tr>
         </table>
 
+        <div class="md:hidden p-3 grid gap-3">
+            <box class="relative" :heading="member.fullname" v-for="(member, index) in data.data" :key="index">
+                <div slot="in-title">
+                    <age-groups class="ml-2" :member="member" icon-class="w-4 h-4"></age-groups>
+                </div>
+                <div class="text-xs text-gray-200" v-text="member.full_address"></div>
+                <div class="flex items-center mt-1 space-x-2">
+                    <tags :member="member"></tags>
+                    <v-label
+                        class="text-gray-100"
+                        v-show="hasModule('bill')"
+                        :value="member.pending_payment"
+                        fallback=""
+                    ></v-label>
+                </div>
+                <div class="absolute right-0 top-0 h-full flex items-center mr-2">
+                    <i-link :href="member.links.show" v-tooltip="`Details`"
+                        ><svg-sprite src="chevron-down" class="w-6 h-6 text-teal-100 -rotate-90"></svg-sprite
+                    ></i-link>
+                </div>
+            </box>
+        </div>
+
         <div class="px-6">
             <v-pages class="mt-4" :value="data.meta" :only="['data']"></v-pages>
         </div>
@@ -155,6 +165,7 @@ export default {
         MemberCourses,
         'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
         'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
+        'box': () => import(/* webpackChunkName: "member" */ './Box'),
     },
 
     methods: {

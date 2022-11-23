@@ -1,15 +1,15 @@
 <template>
     <div class="flex gap-1 justify-center items-center">
         <svg-sprite
-            class="w-3 h-3 flex-none"
+            class="flex-none"
             v-if="member.is_leader"
-            :class="ageColors.leiter"
+            :class="[ageColors.leiter, iconClass]"
             src="lilie"
         ></svg-sprite>
         <svg-sprite
-            class="w-3 h-3 flex-none"
+            class="flex-none"
             v-if="member.age_group_icon"
-            :class="ageColors[member.age_group_icon]"
+            :class="[ageColors[member.age_group_icon], iconClass]"
             src="lilie"
         ></svg-sprite>
     </div>
@@ -30,6 +30,9 @@ export default {
         };
     },
     props: {
+        iconClass: {
+            default: 'w-3 h-3',
+        },
         member: {
             required: true,
         },
