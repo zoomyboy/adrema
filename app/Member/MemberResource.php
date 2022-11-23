@@ -57,7 +57,6 @@ class MemberResource extends JsonResource
             'bill_kind_id' => $this->bill_kind_id,
             'bill_kind_name' => optional($this->billKind)->name,
             'has_nami' => null !== $this->nami_id,
-            'is_confirmed' => $this->is_confirmed,
             'children_phone' => $this->children_phone,
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),
             'memberships' => MembershipResource::collection($this->whenLoaded('memberships')),

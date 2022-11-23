@@ -12,38 +12,34 @@
                 <th></th>
                 <th>Nachname</th>
                 <th>Vorname</th>
-                <th>Straße</th>
-                <th>PLZ</th>
                 <th>Ort</th>
                 <th>Tags</th>
-                <th>Beitrag</th>
-                <th>Geburtstag</th>
+                <th>Alter</th>
                 <th v-show="hasModule('bill')">Rechnung</th>
                 <th v-show="hasModule('bill')">Ausstand</th>
-                <th>Eintritt</th>
                 <th></th>
             </thead>
 
             <tr v-for="(member, index) in data.data" :key="index">
-                <td class="w-6 flex gap-1 items-center">
-                    <svg-sprite
-                        class="w-3 h-3 flex-none"
-                        v-if="member.is_leader"
-                        :class="ageColors.leiter"
-                        src="lilie"
-                    ></svg-sprite>
-                    <svg-sprite
-                        class="w-3 h-3 flex-none"
-                        v-if="member.age_group_icon"
-                        :class="ageColors[member.age_group_icon]"
-                        src="lilie"
-                    ></svg-sprite>
+                <td>
+                    <div class="flex gap-1 items-center">
+                        <svg-sprite
+                            class="w-3 h-3 flex-none"
+                            v-if="member.is_leader"
+                            :class="ageColors.leiter"
+                            src="lilie"
+                        ></svg-sprite>
+                        <svg-sprite
+                            class="w-3 h-3 flex-none"
+                            v-if="member.age_group_icon"
+                            :class="ageColors[member.age_group_icon]"
+                            src="lilie"
+                        ></svg-sprite>
+                    </div>
                 </td>
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
-                <td v-text="`${member.address}`"></td>
-                <td v-text="`${member.zip}`"></td>
-                <td v-text="`${member.location}`"></td>
+                <td v-text="member.full_address"></td>
                 <td>
                     <div class="bool-row">
                         <v-bool
@@ -58,16 +54,9 @@
                             v-model="member.has_nami"
                             >N</v-bool
                         >
-                        <v-bool
-                            true-comment="Daten bestätigt"
-                            false-comment="Daten warten auf Bestätigung"
-                            v-model="member.is_confirmed"
-                            >C</v-bool
-                        >
                     </div>
                 </td>
-                <td v-text="member.subscription ? member.subscription.name : ''"></td>
-                <td v-text="`${member.birthday_human} (${member.age})`"></td>
+                <td v-text="member.age"></td>
                 <td v-show="hasModule('bill')">
                     <div class="flex justify-center">
                         <div
@@ -87,7 +76,6 @@
                         ></div>
                     </div>
                 </td>
-                <td v-text="`${member.joined_at_human}`"></td>
                 <td>
                     <div class="flex space-x-1">
                         <i-link :href="member.links.show" class="inline-flex btn btn-primary btn-sm"

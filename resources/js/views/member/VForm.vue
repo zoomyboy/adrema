@@ -19,14 +19,6 @@
         <!-- ****************************** menu links ******************************* -->
         <v-tabs v-model="active" :entries="menu">
             <div slot="bottom">
-                <button
-                    type="button"
-                    v-show="mode !== 'create'"
-                    @click.prevent="confirm"
-                    class="btn block w-full btn-primary"
-                >
-                    Daten bestätigen
-                </button>
                 <button type="submit" class="mt-3 btn block w-full btn-primary">Speichern</button>
             </div>
         </v-tabs>
@@ -262,9 +254,6 @@ export default {
     },
 
     methods: {
-        confirm() {
-            this.$inertia.post(`/member/${this.inner.id}/confirm`);
-        },
         submit() {
             this.mode === 'create'
                 ? this.$inertia.post(`/member`, this.inner)

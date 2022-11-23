@@ -22,7 +22,7 @@ class MemberView
             'data' => MemberResource::collection(Member::select('*')
                 ->filter($filter)->search($request->query('search', null))
                 ->with('billKind')->with('payments.subscription')->with('memberships')->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
-                ->withIsConfirmed()->withPendingPayment()
+                ->withPendingPayment()
                 ->orderByRaw('lastname, firstname')
                 ->paginate(15)
             ),

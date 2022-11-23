@@ -9,7 +9,6 @@ use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Member\Actions\MemberShowAction;
 use App\Member\Controllers\MemberResyncController;
-use App\Member\MemberConfirmController;
 use App\Member\MemberController;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
@@ -32,7 +31,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::apiResource('member.payment', PaymentController::class);
     Route::resource('allpayment', AllpaymentController::class);
     Route::resource('subscription', SubscriptionController::class);
-    Route::post('/member/{member}/confirm', MemberConfirmController::class);
     Route::get('/member/{member}/pdf', MemberPdfController::class)
         ->name('member.singlepdf');
     Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');

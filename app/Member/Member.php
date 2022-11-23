@@ -30,7 +30,6 @@ use Zoomyboy\LaravelNami\Data\MembershipEntry;
 /**
  * @property string $subscription_name
  * @property int    $pending_payment
- * @property bool   $is_confirmed
  */
 class Member extends Model
 {
@@ -62,7 +61,6 @@ class Member extends Model
         'region_id' => 'integer',
         'confession_id' => 'integer',
         'nami_id' => 'integer',
-        'is_confirmed' => 'boolean',
         'has_svk' => 'boolean',
         'has_vk' => 'boolean',
         'multiply_pv' => 'boolean',
@@ -281,11 +279,6 @@ class Member extends Model
     public function scopeSlangOrdered(Builder $q): Builder
     {
         return $q->orderByRaw('firstname, lastname');
-    }
-
-    public function scopeWithIsConfirmed(Builder $q): Builder
-    {
-        return $q->selectSub('DATEDIFF(NOW(), IFNULL(confirmed_at, DATE_SUB(NOW(), INTERVAL 3 YEAR))) < 712', 'is_confirmed');
     }
 
     public function scopeWithPendingPayment(Builder $q): Builder
