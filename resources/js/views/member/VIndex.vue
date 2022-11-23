@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="pb-6">
         <member-filter
             :value="query.filter"
             :activities="filterActivities"
@@ -12,10 +12,10 @@
                 <th></th>
                 <th>Nachname</th>
                 <th>Vorname</th>
-                <th>Ort</th>
+                <th class="hidden 2xl:table-cell">Ort</th>
                 <th>Tags</th>
-                <th>Alter</th>
-                <th v-show="hasModule('bill')">Rechnung</th>
+                <th class="hidden xl:table-cell">Alter</th>
+                <th class="hidden xl:table-cell" v-show="hasModule('bill')">Rechnung</th>
                 <th v-show="hasModule('bill')">Ausstand</th>
                 <th></th>
             </thead>
@@ -39,7 +39,7 @@
                 </td>
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
-                <td v-text="member.full_address"></td>
+                <td class="hidden 2xl:table-cell" v-text="member.full_address"></td>
                 <td>
                     <div class="bool-row">
                         <v-bool
@@ -56,8 +56,8 @@
                         >
                     </div>
                 </td>
-                <td v-text="member.age"></td>
-                <td v-show="hasModule('bill')">
+                <td class="hidden xl:table-cell" v-text="member.age"></td>
+                <td class="hidden xl:table-cell" v-show="hasModule('bill')">
                     <div class="flex justify-center">
                         <div
                             class="btn btn-sm label primary"
