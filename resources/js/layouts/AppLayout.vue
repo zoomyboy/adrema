@@ -52,9 +52,10 @@
                             :href="link.href"
                             class="btn label mr-2"
                             :class="`btn-${link.color}`"
+                            v-tooltip="tooltipsVisible ? link.label : ''"
                         >
-                            <svg-sprite v-show="link.icon" class="w-3 h-3 mr-2" :src="link.icon"></svg-sprite>
-                            <span v-text="link.label"></span>
+                            <svg-sprite v-show="link.icon" class="w-3 h-3 xl:mr-2" :src="link.icon"></svg-sprite>
+                            <span class="hidden xl:inline" v-text="link.label"></span>
                         </i-link>
                     </div>
                 </div>
@@ -102,6 +103,7 @@ export default {
             searchVisible: true,
             menuVisible: true,
             menuOverflowVisible: false,
+            tooltipsVisible: false,
         };
     },
     components: {
@@ -143,6 +145,8 @@ export default {
                 this.menuOverflowVisible = false;
                 return;
             }
+
+            this.tooltipsVisible = !window.matchMedia('(min-width: 1280px)').matches;
         },
     },
     created() {

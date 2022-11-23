@@ -43,7 +43,7 @@ class MemberController extends Controller
         $payload = app(MemberView::class)->index($request, $query['filter']);
         $payload['toolbar'] = [
             ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'],
-            ['href' => route('allpayment.create'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'plus', 'show' => $settings->hasModule('bill')],
+            ['href' => route('allpayment.create'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'invoice', 'show' => $settings->hasModule('bill')],
             ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope', 'show' => $settings->hasModule('bill')],
         ];
         $payload['query'] = $query;
