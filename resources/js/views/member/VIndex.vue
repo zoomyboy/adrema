@@ -22,7 +22,7 @@
 
             <tr v-for="(member, index) in data.data" :key="index">
                 <td>
-                    <div class="flex gap-1 items-center">
+                    <div class="flex gap-1 justify-center items-center">
                         <svg-sprite
                             class="w-3 h-3 flex-none"
                             v-if="member.is_leader"
