@@ -75,16 +75,16 @@ export default {
     },
 
     components: {
-        box: () => import('./Box'),
-        stamm: () => import('./boxes/Stamm'),
-        kontakt: () => import('./boxes/Kontakt'),
-        prae: () => import('./boxes/Prae'),
-        courses: () => import('./boxes/Courses'),
-        system: () => import('./boxes/System'),
-        payments: () => import('./boxes/Payments'),
-        memberships: () => import('./boxes/Memberships'),
-        vmap: () => import('./boxes/Vmap'),
-        tabs: () => import('./Tabs'),
+        box: () => import(/* webpackChunkName: "member" */ './Box'),
+        stamm: () => import(/* webpackChunkName: "member" */ './boxes/Stamm'),
+        kontakt: () => import(/* webpackChunkName: "member" */ './boxes/Kontakt'),
+        prae: () => import(/* webpackChunkName: "member" */ './boxes/Prae'),
+        courses: () => import(/* webpackChunkName: "member" */ './boxes/Courses'),
+        system: () => import(/* webpackChunkName: "member" */ './boxes/System'),
+        payments: () => import(/* webpackChunkName: "member" */ './boxes/Payments'),
+        memberships: () => import(/* webpackChunkName: "member" */ './boxes/Memberships'),
+        vmap: () => import(/* webpackChunkName: "member" */ './boxes/Vmap'),
+        tabs: () => import(/* webpackChunkName: "member" */ './Tabs'),
     },
 
     created() {

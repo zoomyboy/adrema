@@ -14,8 +14,8 @@ export default {
         inner: {},
     },
     components: {
-        'key-value': () => import('../KeyValue'),
-        'boolean': () => import('../Boolean'),
+        'key-value': () => import(/* webpackChunkName: "member" */ '../KeyValue'),
+        'boolean': () => import(/* webpackChunkName: "member" */ '../Boolean'),
     },
 };
 </script>

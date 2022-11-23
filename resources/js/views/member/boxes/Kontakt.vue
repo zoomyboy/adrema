@@ -31,7 +31,7 @@ export default {
         inner: {},
     },
     components: {
-        'key-value': () => import('../KeyValue'),
+        'key-value': () => import(/* webpackChunkName: "member" */ '../KeyValue'),
     },
 };
 </script>

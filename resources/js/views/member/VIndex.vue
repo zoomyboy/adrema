@@ -25,22 +25,7 @@
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
                 <td class="hidden 2xl:table-cell" v-text="member.full_address"></td>
-                <td>
-                    <div class="bool-row">
-                        <v-bool
-                            true-comment="Mittendrin abonniert"
-                            false-comment="Mittendrin nicht abonníert"
-                            v-model="member.send_newspaper"
-                            >M</v-bool
-                        >
-                        <v-bool
-                            true-comment="In NaMi eingetragen"
-                            false-comment="Nicht in NaMi eingetragen"
-                            v-model="member.has_nami"
-                            >N</v-bool
-                        >
-                    </div>
-                </td>
+                <td><tags :member="member"></tags></td>
                 <td class="hidden xl:table-cell" v-text="member.age"></td>
                 <td class="hidden xl:table-cell" v-show="hasModule('bill')">
                     <div class="flex justify-center">
@@ -168,7 +153,8 @@ export default {
         MemberPayments,
         MemberFilter,
         MemberCourses,
-        'age-groups': () => import('./AgeGroups'),
+        'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
+        'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
     },
 
     methods: {
