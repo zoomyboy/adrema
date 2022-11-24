@@ -40,7 +40,6 @@ steps:
           - mkdir $HOME/.ssh
           - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
           - echo "$KNOWN_HOSTS" > $HOME/.ssh/known_hosts
-          - cat $HOME/.ssh/known_hosts
           - chmod 600 $HOME/.ssh/id_rsa
           - git submodule update --init --recursive
 
@@ -161,7 +160,7 @@ services:
     - name: db
       image: mariadb/server:10.3
       environment:
-          MARIADB_DATABASE: dbtest
+          MARIADB_DATABASE: db
           MARIADB_USER: db
           MARIADB_PASSWORD: db
           MARIADB_ALLOW_EMPTY_PASSWORD: yes
