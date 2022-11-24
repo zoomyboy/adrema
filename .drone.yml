@@ -61,7 +61,7 @@ steps:
     - name: phpunit_tests
       image: php:8.1.6
       commands:
-          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync texlive-base texlive-xetex
+          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync texlive-base texlive-xetex texlive-lang-german
           - docker-php-ext-install pdo_mysql curl gd intl mbstring
           - php artisan migrate
           - vendor/bin/phpunit
