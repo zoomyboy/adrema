@@ -39,9 +39,10 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^9.5.10",
+        "nunomaduro/larastan": "^1.0",
         "orchestra/testbench": "^7.0",
-        "nunomaduro/larastan": "^1.0"
+        "phpstan/phpstan": "^1.8.10",
+        "phpunit/phpunit": "^9.5.10"
     },
     "config": {
         "optimize-autoloader": true,
