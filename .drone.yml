@@ -59,15 +59,15 @@ steps:
           - name: texlive
             path: /usr/local/texlive
       commands:
-          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev texlive
+          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync
           - docker-php-ext-install pdo_mysql curl gd intl mbstring
-          - echo "" > .env
-          - php artisan key:generate
           - php artisan migrate
           - vendor/bin/phpunit
           - rm -f .env
       environment:
           APP_NAME: Scoutrobot
+          APP_KEY:
+              from_secret: app_key
           APP_ENV: local
           APP_DEBUG: true
           APP_URL: http://scoutrobot.test
