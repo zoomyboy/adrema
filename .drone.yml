@@ -133,9 +133,10 @@ services:
     - name: db
       image: mariadb/server:10.3
       environment:
-          MYSQL_DATABASE: db
-          MYSQL_USER: db
-          MYSQL_PASSWORD: db
+          MARIADB_DATABASE: db
+          MARIADB_USER: db
+          MARIADB_PASSWORD: db
+          MARIADB_ALLOW_EMPTY_PASSWORD: yes
 
 trigger:
     event:
