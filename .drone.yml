@@ -49,6 +49,28 @@ steps:
       commands:
           - composer install --ignore-platform-reqs --no-dev
 
+    - name: mysql_healthcheck
+      image: mariadb/server:10.3
+      commands:
+          - while ! mysqladmin ping -h db -u db -pdb --silent; do sleep 1; done
+
+    - name: migrate
+      image: php:8.1.6
+      commands:
+          - cp .env.testing .env
+          - php artisan key:generate
+          - php artisan migrate --database=mysqltest
+
+    - name: phpunit_tests
+      image: php:8.1.6
+      commands:
+          - vendor/bin/phpunit
+
+    - name: phpstan_tests
+      image: php:8.1.6
+      commands:
+          - vendor/bin/phpstan analyse
+
     - name: node
       image: node:17.9.0-slim
       commands:
@@ -106,6 +128,15 @@ steps:
       when:
           branch: master
           event: push
+
+services:
+    - name: db
+      image: mariadb/server:10.3
+      environment:
+          MYSQL_DATABASE: db
+          MYSQL_USER: db
+          MYSQL_PASSWORD: db
+
 trigger:
     event:
         - push
