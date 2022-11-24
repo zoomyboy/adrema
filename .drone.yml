@@ -1,26 +1,3 @@
-# kind: pipeline
-# type: ssh
-# name: scoutrobot
-#
-# server:
-#   host: zoomyboy.de
-#   user: stammsilva
-#   ssh_key:
-#     from_secret: private_key
-#
-# clone:
-#   disable: true
-#
-# steps:
-# - name: master
-#   commands:
-#   - /usr/local/bin/deploy_scoutrobot_master
-#   when:
-#     branch:
-#     - master
-#     event:
-#     - push
-#
 kind: pipeline
 type: docker
 name: default
@@ -63,6 +40,7 @@ steps:
       commands:
           - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync texlive-base texlive-xetex texlive-lang-german
           - docker-php-ext-install pdo_mysql curl gd intl mbstring
+          - cp .docker/fonts/* /usr/share/fonts/
           - php artisan migrate
           - vendor/bin/phpunit
           - rm -f .env
