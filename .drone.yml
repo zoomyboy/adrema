@@ -60,11 +60,8 @@ steps:
 
     - name: phpunit_tests
       image: php:8.1.6
-      volumes:
-          - name: texlive
-            path: /usr/local/texlive
       commands:
-          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync
+          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync texlive-full
           - docker-php-ext-install pdo_mysql curl gd intl mbstring
           - php artisan migrate
           - vendor/bin/phpunit
@@ -90,8 +87,8 @@ steps:
           SESSION_DRIVER: file
           SESSION_LIFETIME: 120
           MAIL_FROM_NAME: '${APP_NAME}'
-          PDFLATEX_BIN: /usr/local/texlive/bin/x86_64-linux/pdflatex
-          XELATEX_BIN: /usr/local/texlive/bin/x86_64-linux/xelatex
+          PDFLATEX_BIN: /usr/bin/pdflatex
+          XELATEX_BIN: /usr/bin/xelatex
 
     - name: composer_no_dev
       image: composer:2.2.7
@@ -164,11 +161,6 @@ services:
           MARIADB_USER: db
           MARIADB_PASSWORD: db
           MARIADB_ALLOW_EMPTY_PASSWORD: yes
-
-volumes:
-    - name: texlive
-      host:
-          path: /usr/local/texlive
 
 trigger:
     event:
