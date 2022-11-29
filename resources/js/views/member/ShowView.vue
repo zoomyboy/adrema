@@ -59,8 +59,8 @@ export default {
                 },
                 praesystem: {
                     children: {
-                        prae: 'Prävention',
                         system: 'System',
+                        prae: 'Prävention',
                     },
                     active: 'system',
                 },
