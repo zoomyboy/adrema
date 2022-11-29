@@ -1,5 +1,8 @@
 <template>
-    <section class="bg-gray-800 p-3 rounded-lg flex flex-col">
+    <section
+        class="p-3 rounded-lg flex flex-col"
+        :class="{'bg-gray-800': second === false, 'bg-gray-700': second === true}"
+    >
         <div class="flex items-center">
             <heading class="col-span-full" v-if="heading">{{ heading }}</heading>
             <slot name="in-title"></slot>
@@ -15,6 +18,10 @@ export default {
     props: {
         heading: {
             type: String,
+        },
+        second: {
+            type: Boolean,
+            default: false,
         },
         containerClass: {
             default: function () {

@@ -26,16 +26,16 @@
             </tabs>
         </box>
 
-        <box heading="Ausbildungen" class="area-courses hidden 2xl:block">
-            <courses :inner="inner"></courses>
+        <box heading="Ausbildungen" class="area-courses">
+            <courses :value="inner.courses"></courses>
         </box>
 
-        <box heading="Mitgliedschaften" class="area-memberships hidden 2xl:block">
-            <memberships :inner="inner"></memberships>
+        <box heading="Mitgliedschaften" class="area-memberships">
+            <memberships :value="inner.memberships"></memberships>
         </box>
 
-        <box heading="Zahlungen" class="area-payments hidden 2xl:block">
-            <payments :inner="inner"></payments>
+        <box heading="Zahlungen" class="area-payments">
+            <payments :value="inner.payments"></payments>
         </box>
 
         <box heading="Karte" container-class="grow" class="area-map hidden 2xl:block">
@@ -97,7 +97,10 @@ export default {
 .this-grid {
     grid-template-areas:
         'stammkontakt'
-        'praesystem';
+        'praesystem'
+        'courses'
+        'memberships'
+        'payments';
     grid-template-columns: 1fr;
 }
 @media screen and (min-width: 1536px) {

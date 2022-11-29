@@ -1,22 +1,48 @@
 <template>
-    <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm text-sm">
-        <thead>
-            <th>Tätigkeit</th>
-            <th>Untertätigkeit</th>
-            <th>Datum</th>
-        </thead>
-        <tr v-for="(membership, index) in inner.memberships" :key="index">
-            <td v-text="membership.activity_name"></td>
-            <td v-text="membership.subactivity_name"></td>
-            <td v-text="membership.human_date"></td>
-        </tr>
-    </table>
+    <div>
+        <table cellspacing="0" cellpadding="0" border="0" class="hidden md:table custom-table custom-table-sm text-sm">
+            <thead>
+                <th>Nr</th>
+                <th>Beitrag</th>
+                <th>Status</th>
+            </thead>
+            <tr v-for="(payment, index) in inner" :key="index">
+                <td v-text="payment.nr"></td>
+                <td v-text="`${payment.subscription.name} (${payment.subscription.amount_human})`"></td>
+                <td v-text="payment.status_name"></td>
+            </tr>
+        </table>
+
+        <div class="md:hidden grid gap-3">
+            <box class="relative" :heading="payment.nr" v-for="(payment, index) in inner" :key="index" second>
+                <div
+                    class="text-xs text-gray-200"
+                    v-text="`${payment.subscription.name} (${payment.subscription.amount_human})`"
+                ></div>
+                <div class="text-xs text-gray-200" v-text="payment.status_name"></div>
+            </box>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
+    data: function () {
+        return {
+            inner: [],
+        };
+    },
+
     props: {
-        inner: {},
+        value: {},
+    },
+
+    components: {
+        box: () => import(/* webpackChunkName: "member" */ '../Box'),
+    },
+
+    created() {
+        this.inner = this.value;
     },
 };
 </script>
