@@ -1,10 +1,10 @@
 <template>
-    <label class="field-wrap" :for="id" :class="`field-wrap-${size}`">
+    <label class="field-wrap field-wrap-sm" :for="id" :class="sizes[size].wrap">
         <span v-if="label" class="field-label">
             {{ label }}
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
-        <div class="real-field-wrap" :class="`size-${size}`">
+        <div class="real-field-wrap size-sm" :class="sizes[size].field">
             <input
                 @keypress="$emit('keypress', $event)"
                 :name="name"
@@ -245,6 +245,20 @@ export default {
     data: function () {
         return {
             focus: false,
+            sizes: {
+                sm: {
+                    wrap: 'field-wrap-sm',
+                    field: 'size-sm',
+                },
+                base: {
+                    wrap: 'field-wrap-base',
+                    field: 'size-base',
+                },
+                lg: {
+                    wrap: 'field-wrap-lg',
+                    field: 'size-lg',
+                },
+            },
         };
     },
     props: {
