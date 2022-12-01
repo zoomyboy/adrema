@@ -1,7 +1,7 @@
 const mix = require('laravel-mix');
 const tailwindcss = require('tailwindcss');
-const atImport = require("postcss-import");
-const nested = require('postcss-nested');
+const atImport = require('postcss-import');
+const nested = require('tailwindcss/nesting');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,11 +15,7 @@ const nested = require('postcss-nested');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-.vue({ version: 2 })
-.postCss('resources/css/app.css', 'public/css', [
-    atImport(),
-    nested(),
-    tailwindcss('./tailwind.config.js'),
-])
-.copy('resources/img', 'public/img')
-.sourceMaps();
+    .vue({version: 2})
+    .postCss('resources/css/app.css', 'public/css', [atImport(), nested(), tailwindcss('./tailwind.config.js')])
+    .copy('resources/img', 'public/img')
+    .sourceMaps();
