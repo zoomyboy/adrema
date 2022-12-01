@@ -44,9 +44,6 @@ export default {
             inner: [],
         };
     },
-    components: {
-        box: () => import(/* webpackChunkName: "member" */ '../Box'),
-    },
     props: {
         value: {},
     },

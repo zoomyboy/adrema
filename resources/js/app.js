@@ -9,6 +9,8 @@ import FTextarea from './components/FTextarea.vue';
 import VPages from './components/VPages.vue';
 import VLabel from './components/VLabel.vue';
 import VBool from './components/VBool.vue';
+import Box from './components/Box.vue';
+import Heading from './components/Heading.vue';
 import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
 import hasModule from './mixins/hasModule.js';
@@ -23,6 +25,8 @@ Vue.component('SvgSprite', SvgSprite);
 Vue.component('VPages', VPages);
 Vue.component('v-bool', VBool);
 Vue.component('v-label', VLabel);
+Vue.component('box', Box);
+Vue.component('heading', Heading);
 
 const el = document.getElementById('app');
 

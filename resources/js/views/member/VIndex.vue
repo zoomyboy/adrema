@@ -165,7 +165,6 @@ export default {
         MemberCourses,
         'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
         'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
-        'box': () => import(/* webpackChunkName: "member" */ './Box'),
     },
 
     methods: {

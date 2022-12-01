@@ -1,36 +1,44 @@
 <template>
-    <div class="p-6 grid gap-6 this-grid grow">
-        <box heading="Stammdaten" class="area-stamm hidden 2xl:block">
+    <div class="p-3 grid gap-3 this-grid grow">
+        <box heading="Stammdaten" class="area-stamm hidden xl:block">
             <stamm :inner="inner"></stamm>
         </box>
-        <box heading="Kontakt" class="area-kontakt hidden 2xl:block">
+        <box heading="Kontakt" class="area-kontakt hidden xl:block">
             <kontakt :inner="inner"></kontakt>
         </box>
-        <box class="area-stammkontakt block 2xl:hidden">
+        <box class="area-stammkontakt block xl:hidden">
             <tabs v-model="tabs.stammkontakt">
                 <stamm v-show="tabs.stammkontakt.active === 'stamm'" :inner="inner"></stamm>
                 <kontakt v-show="tabs.stammkontakt.active === 'kontakt'" :inner="inner"></kontakt>
             </tabs>
         </box>
 
-        <box container-class="" heading="Prävention" class="area-praev hidden 2xl:block">
+        <box container-class="" heading="Prävention" class="area-praev hidden xl:block">
             <prae :inner="inner"></prae>
         </box>
-        <box heading="System" class="area-system hidden 2xl:block">
+        <box heading="System" class="area-system hidden xl:block">
             <system :inner="inner"></system>
         </box>
-        <box class="area-praesystem block 2xl:hidden">
+        <box class="area-praesystem block xl:hidden">
             <tabs v-model="tabs.praesystem">
                 <prae v-show="tabs.praesystem.active === 'prae'" :inner="inner"></prae>
                 <system v-show="tabs.praesystem.active === 'system'" :inner="inner"></system>
             </tabs>
         </box>
 
-        <box heading="Ausbildungen" class="area-courses">
+        <box class="area-membershipcourse hidden xl:block">
+            <tabs v-model="tabs.membershipcourse">
+                <courses v-show="tabs.membershipcourse.active === 'course'" :value="inner.courses"></courses>
+                <memberships
+                    v-show="tabs.membershipcourse.active === 'membership'"
+                    :value="inner.memberships"
+                ></memberships>
+            </tabs>
+        </box>
+        <box heading="Ausbildungen" class="area-courses xl:hidden">
             <courses :value="inner.courses"></courses>
         </box>
-
-        <box heading="Mitgliedschaften" class="area-memberships">
+        <box heading="Mitgliedschaften" class="area-memberships xl:hidden">
             <memberships :value="inner.memberships"></memberships>
         </box>
 
@@ -38,7 +46,7 @@
             <payments :value="inner.payments"></payments>
         </box>
 
-        <box heading="Karte" container-class="grow" class="area-map hidden 2xl:block">
+        <box heading="Karte" container-class="grow" class="area-map hidden xl:block">
             <vmap :inner="inner"></vmap>
         </box>
     </div>
@@ -64,6 +72,13 @@ export default {
                     },
                     active: 'system',
                 },
+                membershipcourse: {
+                    children: {
+                        membership: 'Mitgliedshaften',
+                        course: 'Ausbildungen',
+                    },
+                    active: 'membership',
+                },
             },
         };
     },
@@ -75,7 +90,6 @@ export default {
     },
 
     components: {
-        box: () => import(/* webpackChunkName: "member" */ './Box'),
         stamm: () => import(/* webpackChunkName: "member" */ './boxes/Stamm'),
         kontakt: () => import(/* webpackChunkName: "member" */ './boxes/Kontakt'),
         prae: () => import(/* webpackChunkName: "member" */ './boxes/Prae'),
@@ -103,11 +117,11 @@ export default {
         'payments';
     grid-template-columns: 1fr;
 }
-@media screen and (min-width: 1536px) {
+@media screen and (min-width: 1280px) {
     .this-grid {
         grid-template-areas:
             'stamm kontakt praev system'
-            'courses courses memberships memberships'
+            'membershipcourse membershipcourse membershipcourse membershipcourse'
             'payments payments map map';
         grid-template-columns: max-content max-content max-content 1fr;
     }
@@ -138,5 +152,11 @@ export default {
 }
 .area-stammkontakt {
     grid-area: stammkontakt;
+}
+.area-membershipcourse {
+    grid-area: membershipcourse;
+}
+.area-praesystem {
+    grid-area: praesystem;
 }
 </style>

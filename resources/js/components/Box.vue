@@ -7,7 +7,7 @@
             <heading class="col-span-full" v-if="heading">{{ heading }}</heading>
             <slot name="in-title"></slot>
         </div>
-        <main :class="{'mt-3': heading, 'containerClass': true}">
+        <main :class="{'mt-2': heading, 'containerClass': true}">
             <slot></slot>
         </main>
     </section>
@@ -28,10 +28,6 @@ export default {
                 return '';
             },
         },
-    },
-
-    components: {
-        heading: () => import('./Heading'),
     },
 };
 </script>

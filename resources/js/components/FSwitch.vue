@@ -1,11 +1,11 @@
 <template>
-    <label class="flex flex-col relative field-switch cursor-pointer" :for="id" :class="{[`size-${outerSize}`]: true}">
+    <label class="flex flex-col relative field-switch cursor-pointer" :for="id" :class="sizes[size].wrap">
         <span
             v-if="label"
             class="font-semibold leading-none text-gray-400"
             :class="{
                 'text-xs': size == 'sm',
-                'text-sm': size === null,
+                'text-sm': size === 'base',
             }"
             >{{ label }}</span
         >
@@ -27,14 +27,14 @@
                 <span
                     ><svg-sprite
                         class="relative text-gray-400 flex-none"
-                        :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === null}"
+                        :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}"
                         src="check"
                     ></svg-sprite
                 ></span>
                 <span
                     ><svg-sprite
                         class="relative text-gray-400 flex-none"
-                        :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === null}"
+                        :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}"
                         src="close"
                     ></svg-sprite
                 ></span>
@@ -46,6 +46,24 @@
 
 <script>
 export default {
+    data: function () {
+        return {
+            sizes: {
+                sm: {
+                    wrap: 'field-wrap-sm',
+                    field: 'size-sm',
+                },
+                base: {
+                    wrap: 'field-wrap-base',
+                    field: 'size-base',
+                },
+                lg: {
+                    wrap: 'field-wrap-lg',
+                    field: 'size-lg',
+                },
+            },
+        };
+    },
     model: {
         prop: 'items',
         event: 'input',
@@ -56,7 +74,7 @@ export default {
             default: false,
         },
         size: {
-            default: null,
+            default: 'base',
             required: false,
         },
         id: {

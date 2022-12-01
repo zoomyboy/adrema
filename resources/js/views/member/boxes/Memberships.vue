@@ -44,10 +44,6 @@ export default {
         value: {},
     },
 
-    components: {
-        box: () => import(/* webpackChunkName: "member" */ '../Box'),
-    },
-
     created() {
         this.inner = this.value;
     },
