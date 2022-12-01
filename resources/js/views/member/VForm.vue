@@ -164,6 +164,9 @@
                             required
                         ></f-select>
                     </div>
+                    <div>
+                        <button type="submit" class="mt-3 btn btn-sm inline-block btn-primary">Speichern</button>
+                    </div>
                 </div>
             </box>
             <box heading="Prävention">
@@ -315,8 +318,7 @@ export default {
     },
 
     components: {
-        'popup': () => import('../../components/Popup.vue'),
-        'v-tabs': () => import('../../components/VTabs.vue'),
+        popup: () => import('../../components/Popup.vue'),
     },
 
     computed: {
