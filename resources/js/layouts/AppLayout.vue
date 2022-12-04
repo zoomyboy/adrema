@@ -150,8 +150,15 @@ export default {
         },
     },
     created() {
+        var _self = this;
         window.addEventListener('resize', this.menuListener);
         this.menuListener();
+
+        window.addEventListener('inertiaStart', (e) => {
+            _self.menuVisible = false;
+            _self.searchVisible = false;
+            _self.menuOverflowVisible = false;
+        });
     },
 };
 </script>

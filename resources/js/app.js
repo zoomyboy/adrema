@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {App as InertiaApp, plugin, Link as ILink} from '@inertiajs/inertia-vue';
+import {Inertia} from '@inertiajs/inertia';
 
 import SvgSprite from './components/SvgSprite.js';
 import VPages from './components/VPages.vue';
@@ -31,6 +32,8 @@ const el = document.getElementById('app');
 
 Vue.mixin(hasModule);
 Vue.component('ILink', ILink);
+
+Inertia.on('start', (event) => window.dispatchEvent(new Event('inertiaStart')));
 
 new Vue({
     render: (h) =>
