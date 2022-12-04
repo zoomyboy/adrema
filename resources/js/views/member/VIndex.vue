@@ -53,8 +53,13 @@
                         :value="member.pending_payment"
                         fallback=""
                     ></v-label>
-                    <actions :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)"></actions>
                 </div>
+                <actions
+                    class="mt-2"
+                    :member="member"
+                    @sidebar="openSidebar(index, $event)"
+                    @remove="remove(member)"
+                ></actions>
                 <div class="absolute right-0 top-0 h-full flex items-center mr-2">
                     <i-link :href="member.links.show" v-tooltip="`Details`"
                         ><svg-sprite src="chevron-down" class="w-6 h-6 text-teal-100 -rotate-90"></svg-sprite
