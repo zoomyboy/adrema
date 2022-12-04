@@ -27,6 +27,7 @@
         "@inertiajs/inertia-vue": "^0.8.0",
         "lodash": "^4.17.21",
         "merge": "^2.1.1",
+        "portal-vue": "^2.1.7",
         "postcss-import": "^14.0.1",
         "query-string": "^7.0.0",
         "svg-sprite": "^2.0.2",

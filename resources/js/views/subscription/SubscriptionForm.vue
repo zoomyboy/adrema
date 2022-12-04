@@ -1,5 +1,6 @@
 <template>
-    <form class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
+    <form id="subedit" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
+        <save-button form="subedit"></save-button>
         <f-text id="name" v-model="inner.name" label="Name" required></f-text>
         <f-select
             id="fee_id"
@@ -10,8 +11,6 @@
             required
         ></f-select>
         <f-text id="amount" v-model="inner.amount" label="Interner Beitrag" mode="area" required></f-text>
-
-        <button type="submit" class="btn btn-primary">Absenden</button>
     </form>
 </template>
 

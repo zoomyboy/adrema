@@ -2,10 +2,6 @@ import Vue from 'vue';
 import {App as InertiaApp, plugin, Link as ILink} from '@inertiajs/inertia-vue';
 
 import SvgSprite from './components/SvgSprite.js';
-import FText from './components/FText.vue';
-import FSwitch from './components/FSwitch.vue';
-import FSelect from './components/FSelect.vue';
-import FTextarea from './components/FTextarea.vue';
 import VPages from './components/VPages.vue';
 import VLabel from './components/VLabel.vue';
 import VBool from './components/VBool.vue';
@@ -14,19 +10,22 @@ import Heading from './components/Heading.vue';
 import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
 import hasModule from './mixins/hasModule.js';
+import PortalVue from 'portal-vue';
 
 Vue.use(plugin);
+Vue.use(PortalVue);
 Vue.use(VTooltip);
-Vue.component('f-text', FText);
-Vue.component('f-switch', FSwitch);
-Vue.component('f-select', FSelect);
-Vue.component('f-textarea', FTextarea);
+Vue.component('f-text', () => import(/* webpackChunkName: "form" */ './components/FText'));
+Vue.component('f-switch', () => import(/* webpackChunkName: "form" */ './components/FSwitch'));
+Vue.component('f-select', () => import(/* webpackChunkName: "form" */ './components/FSelect'));
+Vue.component('f-textarea', () => import(/* webpackChunkName: "form" */ './components/FTextarea'));
 Vue.component('SvgSprite', SvgSprite);
 Vue.component('VPages', VPages);
 Vue.component('v-bool', VBool);
 Vue.component('v-label', VLabel);
 Vue.component('box', Box);
 Vue.component('heading', Heading);
+Vue.component('save-button', () => import(/* webpackChunkName: "form" */ './components/SaveButton'));
 
 const el = document.getElementById('app');
 

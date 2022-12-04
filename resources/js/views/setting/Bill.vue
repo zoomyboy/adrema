@@ -1,5 +1,10 @@
 <template>
-    <form class="grow p-6 grid grid-cols-2 gap-3 items-start content-start" @submit.prevent="submit">
+    <form
+        id="billsettingform"
+        class="grow p-6 grid grid-cols-2 gap-3 items-start content-start"
+        @submit.prevent="submit"
+    >
+        <save-button form="billsettingform"></save-button>
         <f-text
             label="Absender"
             hint="Absender-Name in Kurzform, i.d.R. der kurze Stammesname"
@@ -26,10 +31,6 @@
         <f-text label="Webseite" v-model="inner.website" name="website" id="website"></f-text>
         <f-text label="IBAN" v-model="inner.iban" name="iban" id="iban"></f-text>
         <f-text label="BIC" v-model="inner.bic" name="bic" id="bic"></f-text>
-
-        <div>
-            <button type="submit" class="mt-3 btn block btn-primary">Speichern</button>
-        </div>
     </form>
 </template>
 

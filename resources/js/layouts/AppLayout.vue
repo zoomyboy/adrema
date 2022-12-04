@@ -36,36 +36,36 @@
             class="grow bg-gray-900 flex flex-col transition-all"
             :class="{'ml-56': menuVisible, 'ml-0': !menuVisible}"
         >
-            <div class="h-16 px-6 flex justify-between items-center border-b border-gray-600">
-                <div class="flex space-x-3 items-center">
-                    <a href="#" @click.prevent="menuOverflowVisible = !menuOverflowVisible" class="lg:hidden">
-                        <svg-sprite src="menu" class="text-gray-100 w-5 h-5"></svg-sprite>
-                    </a>
-                    <span
-                        class="text-sm md:text-xl font-semibold text-white leading-none"
-                        v-html="$page.props.title"
-                    ></span>
-                    <div class="flex ml-4">
-                        <i-link
-                            v-for="(link, index) in filterMenu"
-                            :key="index"
-                            :href="link.href"
-                            class="btn label mr-2"
-                            :class="`btn-${link.color}`"
-                            v-tooltip="tooltipsVisible ? link.label : ''"
-                        >
-                            <svg-sprite v-show="link.icon" class="w-3 h-3 xl:mr-2" :src="link.icon"></svg-sprite>
-                            <span class="hidden xl:inline" v-text="link.label"></span>
-                        </i-link>
-                    </div>
+            <div class="h-16 px-6 flex items-center space-x-3 border-b border-gray-600">
+                <a href="#" @click.prevent="menuOverflowVisible = !menuOverflowVisible" class="lg:hidden">
+                    <svg-sprite src="menu" class="text-gray-100 w-5 h-5"></svg-sprite>
+                </a>
+                <span
+                    class="text-sm md:text-xl font-semibold text-white leading-none"
+                    v-html="$page.props.title"
+                ></span>
+                <i-link
+                    v-for="(link, index) in filterMenu"
+                    :key="index"
+                    :href="link.href"
+                    class="btn label mr-2"
+                    :class="`btn-${link.color}`"
+                    v-tooltip="tooltipsVisible ? link.label : ''"
+                >
+                    <svg-sprite v-show="link.icon" class="w-3 h-3 xl:mr-2" :src="link.icon"></svg-sprite>
+                    <span class="hidden xl:inline" v-text="link.label"></span>
+                </i-link>
+                <div class="flex grow justify-between">
+                    <portal-target name="toolbar-left"> </portal-target>
+                    <portal-target name="toolbar-right"> </portal-target>
                 </div>
                 <label
                     for="search"
                     :class="{'opacity-0 sm:opacity-100': !searchVisible, 'opacity-100': searchVisible}"
-                    class="absolute left-14 sm:static transition-all"
+                    class="absolute left-10 sm:static transition-all"
                 >
                     <input
-                        class="shadow-lg bg-gray-800 rounded-lg py-2 px-3 text-gray-300 hover:bg-gray-700 focus:bg-gray-700 placeholder-gray-400"
+                        class="shadow-lg bg-gray-800 rounded-lg py-2 px-3 h-10 text-gray-300 hover:bg-gray-700 focus:bg-gray-700 placeholder-gray-400"
                         placeholder="Suchen…"
                         name="search"
                         v-model="isearch"

@@ -1,5 +1,6 @@
 <template>
-    <form class="flex grow relative" @submit.prevent="submit">
+    <form class="flex grow relative" id="memberedit" @submit.prevent="submit">
+        <save-button form="memberedit"></save-button>
         <popup heading="Ein Konflikt ist aufgetreten" v-if="conflict === true">
             <div>
                 <p class="mt-4">
@@ -163,9 +164,6 @@
                             size="sm"
                             required
                         ></f-select>
-                    </div>
-                    <div>
-                        <button type="submit" class="mt-3 btn btn-sm inline-block btn-primary">Speichern</button>
                     </div>
                 </div>
             </box>
