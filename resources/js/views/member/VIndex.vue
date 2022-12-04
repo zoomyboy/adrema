@@ -34,57 +34,7 @@
                     <v-label :value="member.pending_payment" fallback="---"></v-label>
                 </td>
                 <td>
-                    <div class="flex space-x-1">
-                        <i-link
-                            :href="member.links.show"
-                            class="inline-flex btn btn-primary btn-sm"
-                            v-tooltip="`Details`"
-                            ><svg-sprite src="eye"></svg-sprite
-                        ></i-link>
-                        <i-link
-                            :href="`/member/${member.id}/edit`"
-                            class="inline-flex btn btn-warning btn-sm"
-                            v-tooltip="`bearbeiten`"
-                            ><svg-sprite src="pencil"></svg-sprite
-                        ></i-link>
-                        <a
-                            href="#"
-                            v-tooltip="`Zahlungen`"
-                            v-show="hasModule('bill')"
-                            @click.prevent="openSidebar(index, 'payment.index')"
-                            class="inline-flex btn btn-info btn-sm"
-                            ><svg-sprite src="money"></svg-sprite
-                        ></a>
-                        <a
-                            href="#"
-                            v-tooltip="`Ausbildungen`"
-                            v-show="hasModule('courses')"
-                            @click.prevent="openSidebar(index, 'courses.index')"
-                            class="inline-flex btn btn-info btn-sm"
-                            ><svg-sprite src="course"></svg-sprite
-                        ></a>
-                        <a
-                            href="#"
-                            v-tooltip="`Mitgliedschaften`"
-                            @click.prevent="openSidebar(index, 'membership.index')"
-                            class="inline-flex btn btn-info btn-sm"
-                            ><svg-sprite src="user"></svg-sprite
-                        ></a>
-                        <a
-                            :href="member.efz_link"
-                            v-show="member.efz_link"
-                            class="inline-flex btn btn-info btn-sm"
-                            v-tooltip="`EFZ Formular`"
-                            ><svg-sprite src="report"></svg-sprite
-                        ></a>
-                        <i-link
-                            href="#"
-                            @click.prevent="remove(member)"
-                            class="inline-flex btn btn-danger btn-sm"
-                            v-tooltip="`Entfernen`"
-                            ><svg-sprite src="trash"></svg-sprite
-                        ></i-link>
-                    </div>
+                    <actions :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)"></actions>
                 </td>
             </tr>
         </table>
@@ -95,14 +45,15 @@
                     <age-groups class="ml-2" :member="member" icon-class="w-4 h-4"></age-groups>
                 </div>
                 <div class="text-xs text-gray-200" v-text="member.full_address"></div>
-                <div class="flex items-center mt-1 space-x-2">
+                <div class="flex items-center mt-1 space-x-4">
                     <tags :member="member"></tags>
                     <v-label
-                        class="text-gray-100"
+                        class="text-gray-100 block"
                         v-show="hasModule('bill')"
                         :value="member.pending_payment"
                         fallback=""
                     ></v-label>
+                    <actions :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)"></actions>
                 </div>
                 <div class="absolute right-0 top-0 h-full flex items-center mr-2">
                     <i-link :href="member.links.show" v-tooltip="`Details`"
@@ -165,6 +116,7 @@ export default {
         MemberCourses,
         'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
         'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
+        'actions': () => import(/* webpackChunkName: "member" */ './index/Actions'),
     },
 
     methods: {

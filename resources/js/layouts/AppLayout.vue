@@ -154,10 +154,12 @@ export default {
         window.addEventListener('resize', this.menuListener);
         this.menuListener();
 
-        window.addEventListener('inertiaStart', (e) => {
-            _self.menuVisible = false;
-            _self.searchVisible = false;
-            _self.menuOverflowVisible = false;
+        window.addEventListener('inertiaStart', () => {
+            if (!window.matchMedia('(min-width: 1024px)').matches) {
+                _self.menuVisible = false;
+                _self.searchVisible = false;
+                _self.menuOverflowVisible = false;
+            }
         });
     },
 };
