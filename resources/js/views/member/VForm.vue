@@ -18,9 +18,9 @@
         </popup>
 
         <!-- ***************************** Hauptbereich ****************************** -->
-        <div class="grow grid grid-cols-2 gap-3 p-3">
+        <div class="grow grid md:grid-cols-2 gap-3 p-3">
             <box heading="Stammdaten">
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid sm:grid-cols-2 gap-3">
                     <f-select
                         id="gender_id"
                         name="gender_id"
@@ -83,7 +83,7 @@
                 </div>
             </box>
             <box heading="Kontakt">
-                <div class="grid gap-3 grid-cols-2">
+                <div class="grid gap-3 sm:grid-cols-2">
                     <f-text id="main_phone" v-model="inner.main_phone" size="sm" label="Telefon (Eltern)"></f-text>
                     <f-text id="mobile_phone" v-model="inner.mobile_phone" size="sm" label="Handy (Eltern)"></f-text>
                     <f-text
@@ -102,7 +102,7 @@
                     <f-text id="email_parents" v-model="inner.email_parents" size="sm" label="E-Mail eltern"></f-text>
                     <f-text id="fax" v-model="inner.fax" size="sm" label="Fax"></f-text>
                     <f-textarea
-                        class="col-span-2"
+                        class="sm:col-span-2"
                         rows="3"
                         id="letter_address"
                         v-model="inner.letter_address"
@@ -137,7 +137,7 @@
                         size="sm"
                     ></f-switch>
                     <f-text
-                        class="col-span-2"
+                        class="sm:col-span-2"
                         type="date"
                         id="joined_at"
                         v-model="inner.joined_at"
@@ -168,8 +168,8 @@
                 </div>
             </box>
             <box heading="Prävention">
-                <div class="grid grid-cols-[max-content_1fr] gap-2">
-                    <div class="grid grid-cols-[max-content_1fr] gap-1">
+                <div class="grid sm:grid-cols-[max-content_1fr] gap-2">
+                    <div class="grid grid-cols-[max-content_5rem] gap-1">
                         <f-switch id="has_efz" v-model="hasEfz" size="sm" label="Führungszeugnis eingesehen"></f-switch>
                         <div>
                             <f-text
