@@ -61,7 +61,7 @@
                 </div>
                 <label
                     for="search"
-                    :class="{'opacity-0 sm:opacity-100': !searchVisible, 'opacity-100': searchVisible}"
+                    :class="{'hidden sm:block': !searchVisible, 'block': searchVisible}"
                     class="absolute left-10 sm:static transition-all"
                 >
                     <input
