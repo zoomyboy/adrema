@@ -415,36 +415,6 @@ parameters:
             path: tests/Feature/Member/StoreTest.php
 
         -
-            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:generatorProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Pdf/GenerateTest.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:setupMembers\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Pdf/GenerateTest.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesAPdf\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Pdf/GenerateTest.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesAPdf\\(\\) has parameter \\$output with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Pdf/GenerateTest.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesTheLayout\\(\\) has parameter \\$members with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Pdf/GenerateTest.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Pdf\\\\GenerateTest\\:\\:testItGeneratesTheLayout\\(\\) has parameter \\$output with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Pdf/GenerateTest.php
-
-        -
             message: "#^PHPDoc tag @param has invalid value \\(\\<class\\-string\\> \\$class\\)\\: Unexpected token \"\\<\", expected type at offset 18$#"
             count: 1
             path: tests/TestCase.php

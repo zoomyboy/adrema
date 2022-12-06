@@ -34,16 +34,16 @@ class DocumentFactory
      */
     public function fromSingleRequest(string $type, Member $member): ?Letter
     {
-        $members = $this->singleMemberCollection($member, $type);
+        $members = $this->singleMemberPages($member, $type);
 
         if ($members->isEmpty()) {
             return null;
         }
 
-        $repo = $this->resolve($type, $members);
-        $repo->setFilename(Str::slug("{$repo->getSubject()} für {$members->first()->singleName}"));
-
-        return $repo;
+        return tap(
+            $this->resolve($type, $members),
+            fn ($repo) => $repo->setFilename(Str::slug("{$repo->getSubject()} für {$members->first()->singleName}"))
+        );
     }
 
     /**
@@ -51,32 +51,13 @@ class DocumentFactory
      */
     public function forAll(string $type, string $billKind): ?Letter
     {
-        $members = $this->toPages($this->allMemberCollection($type, $billKind));
+        $pages = $this->allMemberPages($type, $billKind);
 
-        if ($members->isEmpty()) {
+        if ($pages->isEmpty()) {
             return null;
         }
 
-        return $this->resolve($type, $members)->setFilename('alle-rechnungen');
-    }
-
-    /**
-     * @param class-string<Letter> $type
-     *
-     * @return Collection<int, Letter>
-     */
-    public function repoCollection(string $type, string $billKind): Collection
-    {
-        $pages = $this->toPages($this->allMemberCollection($type, $billKind));
-
-        return $pages->map(fn ($page) => $this->resolve($type, collect([$page])));
-    }
-
-    public function afterSingle(Letter $repo): void
-    {
-        foreach ($repo->allPayments() as $payment) {
-            $repo->afterSingle($payment);
-        }
+        return tap($this->resolve($type, $pages), fn ($repo) => $repo->setFilename('alle-rechnungen'));
     }
 
     /**
@@ -84,10 +65,27 @@ class DocumentFactory
      */
     public function afterAll(string $type, string $billKind): void
     {
-        $members = $this->allMemberCollection($type, $billKind);
-        $repo = $this->resolve($type, $this->toPages($members));
+        $letter = $this->forAll($type, $billKind);
+        $this->afterSingle($letter);
+    }
 
-        $this->afterSingle($repo);
+    /**
+     * @param class-string<Letter> $type
+     *
+     * @return Collection<int, Letter>
+     */
+    public function letterCollection(string $type, string $billKind): Collection
+    {
+        $pages = $this->allMemberPages($type, $billKind);
+
+        return $pages->map(fn ($page) => $this->resolve($type, collect([$page])));
+    }
+
+    public function afterSingle(Letter $letter): void
+    {
+        foreach ($letter->allPayments() as $payment) {
+            $letter->afterSingle($payment);
+        }
     }
 
     /**
@@ -95,7 +93,7 @@ class DocumentFactory
      *
      * @return Collection<int, Page>
      */
-    public function singleMemberCollection(Member $member, string $type): Collection
+    private function singleMemberPages(Member $member, string $type): Collection
     {
         $members = Member::where($member->only(['lastname', 'address', 'zip', 'location']))
             ->with([
@@ -111,17 +109,19 @@ class DocumentFactory
     /**
      * @param class-string<Letter> $type
      *
-     * @return EloquentCollection<Member>
+     * @return Collection<int, Page>
      */
-    private function allMemberCollection(string $type, string $billKind): Collection
+    private function allMemberPages(string $type, string $billKind): Collection
     {
-        return Member::whereHas('billKind', fn (Builder $q) => $q->where('name', $billKind))
+        $members = Member::whereHas('billKind', fn (Builder $q) => $q->where('name', $billKind))
             ->with([
                 'payments' => fn ($query) => $type::paymentsQuery($query)
                     ->orderByRaw('nr, member_id'),
             ])
             ->get()
             ->filter(fn (Member $member) => $member->payments->count() > 0);
+
+        return $this->toPages($members);
     }
 
     /**
