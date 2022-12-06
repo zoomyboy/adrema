@@ -115,10 +115,10 @@
                 <div class="grid gap-3">
                     <f-select
                         :options="billKinds"
-                        id="bill_kind_id"
-                        v-model="inner.bill_kind_id"
+                        id="bill_kind"
+                        v-model="inner.bill_kind"
                         label="Rechnung versenden über"
-                        name="bill_kind_id"
+                        name="bill_kind"
                         size="sm"
                     ></f-select>
                     <f-select

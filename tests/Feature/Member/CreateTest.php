@@ -24,5 +24,6 @@ class CreateTest extends TestCase
 
         $this->assertInertiaHas('Biber', $response, "subactivities.{$activity->id}.{$subactivity->id}");
         $this->assertInertiaHas('€ Mitglied', $response, "activities.{$activity->id}");
+        $this->assertInertiaHas(['name' => 'E-Mail', 'id' => 'E-Mail'], $response, 'billKinds.0');
     }
 }

@@ -19,9 +19,6 @@ class CreateMembersTable extends Migration
             $table->string('name');
         });
 
-        BillKind::create(['name' => 'E-Mail']);
-        BillKind::create(['name' => 'Post']);
-
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('firstname');

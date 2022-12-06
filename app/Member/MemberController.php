@@ -47,7 +47,7 @@ class MemberController extends Controller
             ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope', 'show' => $settings->hasModule('bill')],
         ];
         $payload['query'] = $query;
-        $payload['billKinds'] = BillKind::pluck('name', 'id');
+        $payload['billKinds'] = BillKind::forSelect();
 
         return \Inertia::render('member/VIndex', $payload);
     }
@@ -64,7 +64,7 @@ class MemberController extends Controller
             'subactivities' => $activities->map(function (Activity $activity) {
                 return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
-            'billKinds' => BillKind::pluck('name', 'id'),
+            'billKinds' => BillKind::forSelect(),
             'genders' => Gender::pluck('name', 'id'),
             'countries' => Country::pluck('name', 'id'),
             'regions' => Region::where('is_null', false)->pluck('name', 'id'),
@@ -97,7 +97,7 @@ class MemberController extends Controller
             'subactivities' => $activities->map(function ($activity) {
                 return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
-            'billKinds' => BillKind::pluck('name', 'id'),
+            'billKinds' => BillKind::forSelect(),
             'genders' => Gender::pluck('name', 'id'),
             'countries' => Country::pluck('name', 'id'),
             'regions' => Region::where('is_null', false)->pluck('name', 'id'),

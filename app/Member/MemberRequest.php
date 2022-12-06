@@ -4,6 +4,7 @@ namespace App\Member;
 
 use App\Activity;
 use App\Group;
+use App\Letter\BillKind;
 use App\Member\Actions\NamiPutMemberAction;
 use App\Setting\NamiSettings;
 use App\Subactivity;
@@ -57,7 +58,7 @@ class MemberRequest extends FormRequest
             'nationality_id' => 'required|exists:nationalities,id',
             'email' => 'nullable|email',
             'email_parents' => 'nullable|email',
-            'bill_kind_id' => 'nullable|exists:bill_kinds,id',
+            'bill_kind' => ['nullable', Rule::in(BillKind::values())],
             'joined_at' => 'date|required',
             'confession_id' => 'nullable|exists:confessions,id',
             'ps_at' => 'nullable|date_format:Y-m-d',

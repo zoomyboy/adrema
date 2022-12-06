@@ -9,7 +9,6 @@ use App\Country;
 use App\Fee;
 use App\Gender;
 use App\Group;
-use App\Letter\BillKind;
 use App\Member\Actions\NamiPutMemberAction;
 use App\Member\Member;
 use App\Nationality;
@@ -33,7 +32,6 @@ class NamiPutMemberActionTest extends TestCase
         $region = Region::factory()->create();
         $nationality = Nationality::factory()->inNami(565)->create();
         $subscription = Subscription::factory()->create();
-        $billKind = BillKind::factory()->create();
         $group = Group::factory()->inNami(55)->create();
         $confession = Confession::factory()->inNami(567)->create(['is_null' => true]);
         app(MemberFake::class)->createsSuccessfully(55, 993);
@@ -46,9 +44,9 @@ class NamiPutMemberActionTest extends TestCase
             ->for($subscription)
             ->for($region)
             ->for($nationality)
-            ->for($billKind)
             ->for($gender)
             ->for($group)
+            ->emailBillKind()
             ->create();
 
         NamiPutMemberAction::run($member, $activity, $subactivity);

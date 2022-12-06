@@ -64,14 +64,14 @@ class MemberFactory extends Factory
     public function postBillKind(): self
     {
         return $this->state([
-            'bill_kind_id' => BillKind::firstWhere('name', 'Post')->id,
+            'bill_kind' => BillKind::POST,
         ]);
     }
 
     public function emailBillKind(): self
     {
         return $this->state([
-            'bill_kind_id' => BillKind::firstWhere('name', 'E-Mail')->id,
+            'bill_kind' => BillKind::EMAIL,
         ]);
     }
 

@@ -6,7 +6,6 @@ use App\Activity;
 use App\Country;
 use App\Fee;
 use App\Gender;
-use App\Letter\BillKind;
 use App\Member\Actions\NamiPutMemberAction;
 use App\Member\Member;
 use App\Nationality;
@@ -33,7 +32,6 @@ class StoreTest extends TestCase
         $activity = Activity::factory()->create();
         $subactivity = Subactivity::factory()->create();
         $subscription = Subscription::factory()->create();
-        $billKind = BillKind::factory()->create();
         NamiPutMemberAction::allowToRun();
 
         $response = $this
@@ -46,7 +44,7 @@ class StoreTest extends TestCase
                 'first_activity_id' => $activity->id,
                 'first_subactivity_id' => $subactivity->id,
                 'subscription_id' => $subscription->id,
-                'bill_kind_id' => $billKind->id,
+                'bill_kind' => 'Post',
             ]));
 
         $response->assertStatus(302)->assertSessionHasNoErrors();
@@ -54,7 +52,7 @@ class StoreTest extends TestCase
         $member = Member::firstWhere('firstname', 'Joe');
         $this->assertDatabaseHas('members', [
             'address' => 'Bavert 50',
-            'bill_kind_id' => $billKind->id,
+            'bill_kind' => 'Post',
             'birthday' => '2013-02-19',
             'children_phone' => '+49 123 44444',
             'country_id' => $country->id,
@@ -89,7 +87,6 @@ class StoreTest extends TestCase
         $region = Region::factory()->create();
         $nationality = Nationality::factory()->create();
         $subscription = Subscription::factory()->create();
-        $billKind = BillKind::factory()->create();
         $activity = Activity::factory()->create();
         $subactivity = Subactivity::factory()->create();
         NamiPutMemberAction::allowToRun();
@@ -104,7 +101,7 @@ class StoreTest extends TestCase
                 'first_activity_id' => $activity->id,
                 'first_subactivity_id' => $subactivity->id,
                 'subscription_id' => $subscription->id,
-                'bill_kind_id' => $billKind->id,
+                'bill_kind' => 'E-Mail',
                 'has_nami' => false,
             ]));
 
@@ -126,7 +123,6 @@ class StoreTest extends TestCase
         $region = Region::factory()->create();
         $nationality = Nationality::factory()->create();
         $subscription = Subscription::factory()->create();
-        $billKind = BillKind::factory()->create();
         $activity = Activity::factory()->create(['name' => '€ Mitglied']);
         $subactivity = Subactivity::factory()->create();
 
@@ -140,7 +136,7 @@ class StoreTest extends TestCase
                 'first_activity_id' => $activity->id,
                 'first_subactivity_id' => $subactivity->id,
                 'subscription_id' => null,
-                'bill_kind_id' => $billKind->id,
+                'bill_kind' => 'E-Mail',
             ]));
 
         $this->assertErrors(['subscription_id' => 'Beitragsart ist erforderlich.'], $response);

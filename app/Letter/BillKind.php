@@ -2,13 +2,30 @@
 
 namespace App\Letter;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class BillKind extends Model
+enum BillKind: string
 {
-    use HasFactory;
+    case EMAIL = 'E-Mail';
+    case POST = 'Post';
+    /**
+     * @return array<string, string>
+     */
+    public static function values(): array
+    {
+        return collect(static::cases())->map(fn ($case) => $case->value)->toArray();
+    }
 
-    public $fillable = ['name'];
-    public $timestamps = false;
+    /**
+     * @return array<int, array{name: string, id: string}>
+     */
+    public static function forSelect(): array
+    {
+        return collect(static::cases())
+            ->map(fn ($case) => ['id' => $case->value, 'name' => $case->value])
+            ->toArray();
+    }
+
+    public static function fromValue(string $value): self
+    {
+        return collect(static::cases())->firstOrFail(fn ($case) => $case->value === $value);
+    }
 }

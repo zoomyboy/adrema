@@ -2,6 +2,7 @@
 
 namespace App\Letter\Actions;
 
+use App\Letter\BillKind;
 use App\Letter\DocumentFactory;
 use App\Payment\PaymentMail;
 use Illuminate\Console\Command;
@@ -32,7 +33,7 @@ class LetterSendAction
     public function handle(): int
     {
         foreach (app(DocumentFactory::class)->types as $type) {
-            $letters = app(DocumentFactory::class)->letterCollection($type, 'E-Mail');
+            $letters = app(DocumentFactory::class)->letterCollection($type, BillKind::EMAIL);
 
             foreach ($letters as $letter) {
                 $letterPath = Storage::path(Tex::compile($letter)->storeIn('/tmp', 'local'));

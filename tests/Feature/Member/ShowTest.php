@@ -7,7 +7,6 @@ use App\Course\Models\CourseMember;
 use App\Fee;
 use App\Gender;
 use App\Group;
-use App\Letter\BillKind;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Nationality;
@@ -38,7 +37,7 @@ class ShowTest extends TestCase
             ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', 1050))
             ->for(Gender::factory()->name('Männlich'))
             ->for(Region::factory()->name('NRW'))
-            ->for(BillKind::factory()->name('Post'))
+            ->postBillKind()
             ->inNami(123)
             ->for(Subscription::factory()->name('Sub')->for(Fee::factory()))
             ->has(CourseMember::factory()->for(Course::factory()->name('  Baustein 2e - Gewalt gegen Kinder und Jugendliche: Vertiefung, Prävention  '))->state(['organizer' => 'DPSG', 'event_name' => 'Wochenende', 'completed_at' => '2022-03-03']), 'courses')

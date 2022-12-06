@@ -66,6 +66,7 @@ class Member extends Model
         'multiply_pv' => 'boolean',
         'multiply_more_pv' => 'boolean',
         'is_leader' => 'boolean',
+        'bill_kind' => BillKind::class,
     ];
 
     /**
@@ -231,11 +232,6 @@ class Member extends Model
         return $this->belongsTo(Subscription::class);
     }
 
-    public function billKind(): BelongsTo
-    {
-        return $this->belongsTo(BillKind::class);
-    }
-
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);
@@ -307,7 +303,7 @@ class Member extends Model
 
     public function scopePayable(Builder $q): Builder
     {
-        return $q->where('bill_kind_id', '!=', null)->where('subscription_id', '!=', null);
+        return $q->where('bill_kind', '!=', null)->where('subscription_id', '!=', null);
     }
 
     public function scopeWhereNoPayment(Builder $q, int $year): Builder
@@ -328,7 +324,7 @@ class Member extends Model
             $q->whereAusstand();
         }
         if (data_get($filter, 'bill_kind', false)) {
-            $q->where('bill_kind_id', $filter['bill_kind']);
+            $q->where('bill_kind', BillKind::fromValue($filter['bill_kind']));
         }
         if (data_get($filter, 'subactivity_id', false) || data_get($filter, 'activity_id', false)) {
             $q->whereHas('memberships', function ($q) use ($filter) {

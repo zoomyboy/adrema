@@ -128,4 +128,17 @@ class IndexTest extends TestCase
             'name' => $member->subscription->name,
          ], $response, 'data.data.0.subscription');
     }
+
+    public function testItCanFilterForBillKinds(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $emailMember = Member::factory()->defaults()->emailBillKind()->create();
+        $postMember = Member::factory()->defaults()->postBillKind()->create();
+
+        $emailResponse = $this->call('GET', '/member', ['filter' => '{"bill_kind": "E-Mail"}']);
+        $postResponse = $this->call('GET', '/member', ['filter' => '{"bill_kind": "Post"}']);
+
+        $this->assertCount(1, $this->inertia($emailResponse, 'data.data'));
+        $this->assertCount(1, $this->inertia($postResponse, 'data.data'));
+    }
 }

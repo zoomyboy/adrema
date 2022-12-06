@@ -3,6 +3,7 @@
 namespace App\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Letter\BillKind;
 use App\Letter\DocumentFactory;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
@@ -28,14 +29,14 @@ class SendpaymentController extends Controller
      */
     public function send(Request $request)
     {
-        $repo = app(DocumentFactory::class)->forAll($request->type, 'Post');
+        $repo = app(DocumentFactory::class)->forAll($request->type, BillKind::POST);
 
         if (is_null($repo)) {
             return response()->noContent();
         }
 
         $pdfFile = Tex::compile($repo);
-        app(DocumentFactory::class)->afterAll($request->type, 'Post');
+        app(DocumentFactory::class)->afterAll($request->type, BillKind::POST);
 
         return $pdfFile;
     }

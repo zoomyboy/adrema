@@ -3,7 +3,6 @@
 namespace App\Letter;
 
 use App\Member\Member;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -49,7 +48,7 @@ class DocumentFactory
     /**
      * @param class-string<Letter> $type
      */
-    public function forAll(string $type, string $billKind): ?Letter
+    public function forAll(string $type, BillKind $billKind): ?Letter
     {
         $pages = $this->allMemberPages($type, $billKind);
 
@@ -63,7 +62,7 @@ class DocumentFactory
     /**
      * @param class-string<Letter> $type
      */
-    public function afterAll(string $type, string $billKind): void
+    public function afterAll(string $type, BillKind $billKind): void
     {
         $letter = $this->forAll($type, $billKind);
         $this->afterSingle($letter);
@@ -74,7 +73,7 @@ class DocumentFactory
      *
      * @return Collection<int, Letter>
      */
-    public function letterCollection(string $type, string $billKind): Collection
+    public function letterCollection(string $type, BillKind $billKind): Collection
     {
         $pages = $this->allMemberPages($type, $billKind);
 
@@ -111,9 +110,9 @@ class DocumentFactory
      *
      * @return Collection<int, Page>
      */
-    private function allMemberPages(string $type, string $billKind): Collection
+    private function allMemberPages(string $type, BillKind $billKind): Collection
     {
-        $members = Member::whereHas('billKind', fn (Builder $q) => $q->where('name', $billKind))
+        $members = Member::where('bill_kind', $billKind)
             ->with([
                 'payments' => fn ($query) => $type::paymentsQuery($query)
                     ->orderByRaw('nr, member_id'),

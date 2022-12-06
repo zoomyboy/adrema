@@ -27,6 +27,7 @@ class EditTest extends TestCase
         $this->assertInertiaHas('Max', $response, 'data.firstname');
         $this->assertInertiaHas('edit', $response, 'mode');
         $this->assertInertiaHas(false, $response, 'conflict');
+        $this->assertInertiaHas(['name' => 'E-Mail', 'id' => 'E-Mail'], $response, 'billKinds.0');
     }
 
     public function testItDisplaysEducation(): void
