@@ -2,6 +2,8 @@
 
 namespace App\Letter;
 
+use App\Letter\Queries\BillKindQuery;
+use App\Letter\Queries\SingleMemberQuery;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
@@ -94,15 +96,7 @@ class DocumentFactory
      */
     private function singleMemberPages(Member $member, string $type): Collection
     {
-        $members = Member::where($member->only(['lastname', 'address', 'zip', 'location']))
-            ->with([
-                'payments' => fn ($query) => $type::paymentsQuery($query)
-                    ->orderByRaw('nr, member_id'),
-            ])
-            ->get()
-            ->filter(fn (Member $member) => $member->payments->count() > 0);
-
-        return $this->toPages($members);
+        return (new SingleMemberQuery($member))->getPages($type);
     }
 
     /**
@@ -112,15 +106,7 @@ class DocumentFactory
      */
     private function allMemberPages(string $type, BillKind $billKind): Collection
     {
-        $members = Member::where('bill_kind', $billKind)
-            ->with([
-                'payments' => fn ($query) => $type::paymentsQuery($query)
-                    ->orderByRaw('nr, member_id'),
-            ])
-            ->get()
-            ->filter(fn (Member $member) => $member->payments->count() > 0);
-
-        return $this->toPages($members);
+        return (new BillKindQuery($billKind))->getPages($type);
     }
 
     /**
