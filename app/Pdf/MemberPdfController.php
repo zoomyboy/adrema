@@ -4,6 +4,7 @@ namespace App\Pdf;
 
 use App\Http\Controllers\Controller;
 use App\Letter\DocumentFactory;
+use App\Letter\Queries\SingleMemberQuery;
 use App\Member\Member;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
@@ -17,10 +18,10 @@ class MemberPdfController extends Controller
      */
     public function __invoke(Request $request, Member $member)
     {
-        $document = app(DocumentFactory::class)->fromSingleRequest($request->type, $member);
+        $letter = app(DocumentFactory::class)->singleLetter($request->type, new SingleMemberQuery($member));
 
-        return null === $document
+        return null === $letter
             ? response()->noContent()
-            : Tex::compile($document);
+            : Tex::compile($letter);
     }
 }

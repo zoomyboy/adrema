@@ -22,22 +22,9 @@ class BillDocument extends Letter
         return 'tex.bill';
     }
 
-    public function sendAllLabel(): string
+    public static function sendAllLabel(): string
     {
         return 'Rechnungen versenden';
-    }
-
-    /**
-     * Get Descriptions for sendpayment page.
-     *
-     * @return array<int, string>
-     */
-    public function getDescription(): array
-    {
-        return [
-            'Diese Funktion erstellt ein PDF mit allen noch nicht versendenden Rechnungen bei den Mitgliedern die Post als Versandweg haben.',
-            'Die Rechnungen werden automatisch auf "Rechnung gestellt" aktualisiert.',
-        ];
     }
 
     public function afterSingle(Payment $payment): void
@@ -58,5 +45,18 @@ class BillDocument extends Letter
     public static function paymentsQuery(HasMany $query): HasMany
     {
         return $query->whereNeedsBill();
+    }
+
+    /**
+     * Get Descriptions for sendpayment page.
+     *
+     * @return array<int, string>
+     */
+    public static function getDescription(): array
+    {
+        return [
+            'Diese Funktion erstellt ein PDF mit allen noch nicht versendenden Rechnungen bei den Mitgliedern die Post als Versandweg haben.',
+            'Die Rechnungen werden automatisch auf "Rechnung gestellt" aktualisiert.',
+        ];
     }
 }

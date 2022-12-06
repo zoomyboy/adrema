@@ -5,6 +5,8 @@ namespace Tests\Feature\Letter;
 use App\Letter\BillDocument;
 use App\Letter\DocumentFactory;
 use App\Letter\LetterSettings;
+use App\Letter\Queries\LetterMemberQuery;
+use App\Letter\Queries\SingleMemberQuery;
 use App\Letter\RememberDocument;
 use App\Member\Member;
 use App\Payment\Payment;
@@ -23,7 +25,7 @@ class DocumentFactoryTest extends TestCase
     public function testItDoesntReturnARepositoryWhenMemberDoesntHavePayments(): void
     {
         $member = Member::factory()->defaults()->create();
-        $letter = app(DocumentFactory::class)->fromSingleRequest(BillDocument::class, $member);
+        $letter = app(DocumentFactory::class)->singleLetter(BillDocument::class, $this->query($member));
         $this->assertNull($letter);
     }
 
@@ -41,7 +43,7 @@ class DocumentFactoryTest extends TestCase
             ->has(Payment::factory()->notPaid()->nr('1995')->subscription('::subName::', 1500))
             ->create();
 
-        $letter = app(DocumentFactory::class)->fromSingleRequest(BillDocument::class, $member);
+        $letter = app(DocumentFactory::class)->singleLetter(BillDocument::class, $this->query($member));
 
         $letter->assertHasAllContent([
             'Rechnung',
@@ -60,7 +62,7 @@ class DocumentFactoryTest extends TestCase
             ->has(Payment::factory()->notPaid()->nr('1995')->subscription('::subName::', 1500))
             ->create();
 
-        $letter = app(DocumentFactory::class)->fromSingleRequest(BillDocument::class, $member);
+        $letter = app(DocumentFactory::class)->singleLetter(BillDocument::class, $this->query($member));
 
         $this->assertEquals('rechnung-fur-lastname.pdf', $letter->compiledFilename());
     }
@@ -73,7 +75,7 @@ class DocumentFactoryTest extends TestCase
             ->has(Payment::factory()->notPaid())
             ->create();
 
-        $letter = app(DocumentFactory::class)->fromSingleRequest(RememberDocument::class, $member);
+        $letter = app(DocumentFactory::class)->singleLetter(RememberDocument::class, $this->query($member));
 
         $this->assertEquals('zahlungserinnerung-fur-lastname.pdf', $letter->compiledFilename());
     }
@@ -91,7 +93,7 @@ class DocumentFactoryTest extends TestCase
             ->has(Payment::factory()->notPaid()->nr('nr2'))
             ->create();
 
-        $letter = app(DocumentFactory::class)->fromSingleRequest(BillDocument::class, $firstMember);
+        $letter = app(DocumentFactory::class)->singleLetter(BillDocument::class, $this->query($firstMember));
 
         $letter->assertHasAllContent(['Max1', 'Max2', 'nr1', 'nr2']);
     }
@@ -119,7 +121,7 @@ class DocumentFactoryTest extends TestCase
             ->has(Payment::factory()->notPaid()->nr('nr2'))
             ->create();
 
-        $letter = app(DocumentFactory::class)->fromSingleRequest($type, $member);
+        $letter = app(DocumentFactory::class)->singleLetter($type, $this->query($member));
 
         $letter->assertHasAllContent([
             'langer Stammesname',
@@ -151,5 +153,10 @@ class DocumentFactoryTest extends TestCase
 
         $this->assertEquals('application/pdf', $response->headers->get('content-type'));
         $this->assertEquals('inline; filename="rechnung-fur-lastname.pdf"', $response->headers->get('content-disposition'));
+    }
+
+    private function query(Member $member): LetterMemberQuery
+    {
+        return new SingleMemberQuery($member);
     }
 }

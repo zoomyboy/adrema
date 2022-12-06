@@ -71,24 +71,6 @@ class RememberDocument extends Letter
         return $page->first()->location;
     }
 
-    public function sendAllLabel(): string
-    {
-        return 'Erinnerungen versenden';
-    }
-
-    /**
-     * Get Descriptions for sendpayment page.
-     *
-     * @return array<int, string>
-     */
-    public function getDescription(): array
-    {
-        return [
-            'Diese Funktion erstellt Erinnerungs-PDFs mit allen versendeten aber noch nich bezahlten Rechnungen bei den Mitgliedern die Post als Versandweg haben.',
-            'Das zuletzt erinnerte Datum wird auf heute gesetzt.',
-        ];
-    }
-
     public function afterSingle(Payment $payment): void
     {
         $payment->update(['last_remembered_at' => now()]);
@@ -107,5 +89,23 @@ class RememberDocument extends Letter
     public static function paymentsQuery(HasMany $query): HasMany
     {
         return $query->whereNeedsRemember();
+    }
+
+    /**
+     * Get Descriptions for sendpayment page.
+     *
+     * @return array<int, string>
+     */
+    public static function getDescription(): array
+    {
+        return [
+            'Diese Funktion erstellt Erinnerungs-PDFs mit allen versendeten aber noch nich bezahlten Rechnungen bei den Mitgliedern die Post als Versandweg haben.',
+            'Das zuletzt erinnerte Datum wird auf heute gesetzt.',
+        ];
+    }
+
+    public static function sendAllLabel(): string
+    {
+        return 'Erinnerungen versenden';
     }
 }

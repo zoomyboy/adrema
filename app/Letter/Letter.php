@@ -21,7 +21,7 @@ abstract class Letter extends Document
 
     abstract public function linkLabel(): string;
 
-    abstract public function sendAllLabel(): string;
+    abstract public static function sendAllLabel(): string;
 
     /**
      * @param HasMany<Payment> $query
@@ -33,7 +33,7 @@ abstract class Letter extends Document
     /**
      * @return array<int, string>
      */
-    abstract public function getDescription(): array;
+    abstract public static function getDescription(): array;
 
     abstract public function afterSingle(Payment $payment): void;
 
