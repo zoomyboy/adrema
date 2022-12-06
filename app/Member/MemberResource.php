@@ -54,6 +54,7 @@ class MemberResource extends JsonResource
             'other_country' => $this->other_country,
             'confession_id' => $this->confession_id,
             'letter_address' => $this->letter_address,
+            'bill_kind' => optional($this->bill_kind)->value,
             'bill_kind_name' => optional($this->bill_kind)->value,
             'has_nami' => null !== $this->nami_id,
             'children_phone' => $this->children_phone,

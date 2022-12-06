@@ -61,4 +61,19 @@ class EditTest extends TestCase
             'multiply_more_pv' => true,
         ], $response, 'data');
     }
+
+    public function testItDisplaysSystem(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()
+            ->defaults()
+            ->emailBillKind()
+            ->create();
+
+        $response = $this->get(route('member.edit', ['member' => $member]));
+
+        $this->assertInertiaHas([
+            'bill_kind' => 'E-Mail',
+        ], $response, 'data');
+    }
 }
