@@ -25,7 +25,7 @@
         <a
             href="#"
             v-tooltip="`Mitgliedschaften`"
-            @click.prevent="$emit('sidebar', 'courses.index')"
+            @click.prevent="$emit('sidebar', 'membership.index')"
             class="inline-flex btn btn-info btn-sm"
             ><svg-sprite src="user"></svg-sprite
         ></a>
