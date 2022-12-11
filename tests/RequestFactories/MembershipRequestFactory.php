@@ -4,13 +4,16 @@ namespace Tests\RequestFactories;
 
 use App\Activity;
 use App\Subactivity;
+use Carbon\Carbon;
 use Worksome\RequestFactories\RequestFactory;
 
 class MembershipRequestFactory extends RequestFactory
 {
     public function definition(): array
     {
-        return [];
+        return [
+            'has_promise' => null,
+        ];
     }
 
     public function in(Activity $activity, ?Subactivity $subactivity = null): self
@@ -42,6 +45,13 @@ class MembershipRequestFactory extends RequestFactory
         return $this->state([
             'activity_id' => Activity::factory()->create()->id,
             'subactivity_id' => Subactivity::factory()->create()->id,
+        ]);
+    }
+
+    public function promise(Carbon $value): self
+    {
+        return $this->state([
+            'promised_at' => $value->format('Y-m-d'),
         ]);
     }
 }

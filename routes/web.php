@@ -12,6 +12,7 @@ use App\Member\Controllers\MemberResyncController;
 use App\Member\MemberController;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
+use App\Membership\Actions\MembershipUpdateAction;
 use App\Payment\AllpaymentController;
 use App\Payment\PaymentController;
 use App\Payment\SendpaymentController;
@@ -36,6 +37,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
     Route::post('/member/{member}/membership', MembershipStoreAction::class)->name('membership.store');
+    Route::patch('/member/{member}/membership/{membership}', MembershipUpdateAction::class)->name('membership.store');
     Route::delete('/member/{member}/membership/{membership}', MembershipDestroyAction::class)->name('membership.destroy');
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');

@@ -6,6 +6,7 @@ use App\Activity;
 use App\Group;
 use App\Member\Membership;
 use App\Subactivity;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,6 +26,7 @@ class MembershipFactory extends Factory
         return [
             'group_id' => Group::factory()->createOne()->id,
             'from' => now()->subMonths(3),
+            'promised_at' => null,
         ];
     }
 
@@ -42,5 +44,12 @@ class MembershipFactory extends Factory
         }
 
         return $instance;
+    }
+
+    public function promise(Carbon $value): self
+    {
+        return $this->state([
+            'promised_at' => $value->format('Y-m-d'),
+        ]);
     }
 }

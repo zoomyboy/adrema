@@ -17,6 +17,7 @@
                 :options="activities"
                 v-model="single.activity_id"
                 label="Tätigkeit"
+                size="sm"
                 required
             ></f-select>
             <f-select
@@ -26,7 +27,23 @@
                 id="subactivity_id"
                 v-model="single.subactivity_id"
                 label="Untertätigkeit"
+                size="sm"
             ></f-select>
+            <f-switch
+                id="has_promise"
+                :items="single.promised_at !== null"
+                @input="single.promised_at = $event ? '2000-02-02' : null"
+                size="sm"
+                label="Hat Versprechen"
+            ></f-switch>
+            <f-text
+                v-show="single.promised_at !== null"
+                type="date"
+                id="promised_at"
+                v-model="single.promised_at"
+                label="Versprechensdatum"
+                size="sm"
+            ></f-text>
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 

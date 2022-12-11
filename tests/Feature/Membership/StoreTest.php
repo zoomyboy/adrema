@@ -42,7 +42,7 @@ class StoreTest extends TestCase
 
         $response = $this->from('/member')->post(
             "/member/{$member->id}/membership",
-            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->create()
+            MembershipRequestFactory::new()->promise(now())->in($activity, $activity->subactivities->first())->create()
         );
 
         $response->assertRedirect('/member');
@@ -52,6 +52,7 @@ class StoreTest extends TestCase
             'activity_id' => $activity->id,
             'subactivity_id' => $activity->subactivities->first()->id,
             'nami_id' => 133,
+            'promised_at' => now()->format('Y-m-d'),
         ]);
         app(MembershipFake::class)->assertCreated(6, [
             'untergliederungId' => 4,

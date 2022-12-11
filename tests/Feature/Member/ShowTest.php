@@ -33,7 +33,7 @@ class ShowTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()
             ->defaults()
-            ->has(Membership::factory()->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->state(['created_at' => '2022-11-19 05:00:00']))
+            ->has(Membership::factory()->promise(now())->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->state(['created_at' => '2022-11-19 05:00:00']))
             ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', 1050))
             ->for(Gender::factory()->name('Männlich'))
             ->for(Region::factory()->name('NRW'))
@@ -108,6 +108,7 @@ class ShowTest extends TestCase
             'subactivity_name' => 'Jungpfadfinder',
             'id' => $member->memberships->first()->id,
             'human_date' => '19.11.2022',
+            'promised_at' => now()->format('Y-m-d'),
          ], $response, 'data.memberships.0');
         $this->assertInertiaHas([
             'organizer' => 'DPSG',

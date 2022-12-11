@@ -25,6 +25,7 @@ class MembershipResource extends JsonResource
             'subactivity_id' => $this->subactivity_id,
             'subactivity_name' => $this->subactivity?->name,
             'human_date' => $this->created_at->format('d.m.Y'),
+            'promised_at' => $this->promised_at,
         ];
     }
 }
