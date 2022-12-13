@@ -20,7 +20,7 @@ class MemberShowAction
         return [
             'data' => new MemberResource($member
                 ->load('memberships')
-                ->load('payments.subscription')
+                ->load('payments.subscription.children')
                 ->load('nationality')
                 ->load('region')
                 ->load('subscription')

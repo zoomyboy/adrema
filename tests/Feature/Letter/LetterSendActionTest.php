@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Mail;
+use Tests\RequestFactories\Child;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
@@ -29,7 +30,9 @@ class LetterSendActionTest extends TestCase
         $this->login()->loginNami();
         $this->member = Member::factory()
             ->defaults()
-            ->has(Payment::factory()->notPaid()->nr('1997')->subscription('tollerbeitrag', 5400))
+            ->has(Payment::factory()->notPaid()->nr('1997')->subscription('tollerbeitrag', [
+                new Child('a', 5400),
+            ]))
             ->emailBillKind()
             ->create(['firstname' => 'Lah', 'lastname' => 'Mom', 'email' => 'peter@example.com']);
     }

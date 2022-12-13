@@ -7,12 +7,15 @@ use Worksome\RequestFactories\RequestFactory;
 
 class SubscriptionRequestFactory extends RequestFactory
 {
+    /**
+     * @return array<string, int|string|array<int, array{amount: int, name: string}>>
+     */
     public function definition(): array
     {
         return [
-            'amount' => $this->faker->numberBetween(100, 2000),
             'fee_id' => Fee::factory()->create()->id,
             'name' => $this->faker->words(5, true),
+            'children' => [],
         ];
     }
 
@@ -34,9 +37,16 @@ class SubscriptionRequestFactory extends RequestFactory
     public function invalid(): self
     {
         return $this->state([
-            'amount' => '',
             'fee_id' => 9999,
             'name' => '',
         ]);
+    }
+
+    /**
+     * @param array<int, Child> $children
+     */
+    public function children(array $children): self
+    {
+        return $this->state(['children' => array_map(fn ($child) => $child->toArray(), $children)]);
     }
 }

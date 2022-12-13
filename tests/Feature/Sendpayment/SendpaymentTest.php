@@ -8,6 +8,7 @@ use App\Member\Member;
 use App\Payment\Payment;
 use App\Payment\Status;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\Child;
 use Tests\RequestFactories\LetterSettingsFake;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
@@ -37,8 +38,8 @@ class SendpaymentTest extends TestCase
         $this->login()->loginNami();
         $member = Member::factory()
             ->defaults()
-            ->has(Payment::factory()->notPaid()->nr('1997')->subscription('tollerbeitrag', 5400))
-            ->has(Payment::factory()->paid()->nr('1998')->subscription('bezahltdesc', 5800))
+            ->has(Payment::factory()->notPaid()->nr('1997')->subscription('tollerbeitrag', [new Child('a', 5400)]))
+            ->has(Payment::factory()->paid()->nr('1998')->subscription('bezahltdesc', [new Child('b', 5800)]))
             ->postBillKind()
             ->create();
 
@@ -59,7 +60,7 @@ class SendpaymentTest extends TestCase
         $this->login()->loginNami();
         $member = Member::factory()
             ->defaults()
-            ->has(Payment::factory()->notPaid()->nr('1997')->subscription('tollerbeitrag', 5400))
+            ->has(Payment::factory()->notPaid()->nr('1997')->subscription('tollerbeitrag', [new Child('u', 5400)]))
             ->emailBillKind()
             ->create();
 

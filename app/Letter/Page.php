@@ -49,7 +49,7 @@ class Page
         return $this->getPayments()->mapWithKeys(function (Payment $payment) {
             $key = "Beitrag {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname} ({$payment->subscription->name})";
 
-            return [$key => $this->number($payment->subscription->amount)];
+            return [$key => $this->number($payment->subscription->getAmount())];
         })->toArray();
     }
 

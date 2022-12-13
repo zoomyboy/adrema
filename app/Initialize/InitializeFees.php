@@ -22,7 +22,6 @@ class InitializeFees
             Fee::create(['nami_id' => $fee->id, 'name' => $fee->name])
                 ->subscriptions()->create([
                     'name' => $fee->name,
-                    'amount' => 1000,
                 ]);
         });
     }

@@ -11,6 +11,7 @@ use App\Letter\RememberDocument;
 use App\Member\Member;
 use App\Payment\Payment;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\Child;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
@@ -40,7 +41,10 @@ class DocumentFactoryTest extends TestCase
                 'zip' => '::zip::',
                 'location' => '::location::',
             ])
-            ->has(Payment::factory()->notPaid()->nr('1995')->subscription('::subName::', 1500))
+            ->has(Payment::factory()->notPaid()->nr('1995')->subscription('::subName::', [
+                new Child('a', 1000),
+                new Child('a', 500),
+            ]))
             ->create();
 
         $letter = app(DocumentFactory::class)->singleLetter(BillDocument::class, $this->query($member));
@@ -59,7 +63,7 @@ class DocumentFactoryTest extends TestCase
         $member = Member::factory()
             ->defaults()
             ->state(['lastname' => '::lastname::'])
-            ->has(Payment::factory()->notPaid()->nr('1995')->subscription('::subName::', 1500))
+            ->has(Payment::factory()->notPaid()->nr('1995'))
             ->create();
 
         $letter = app(DocumentFactory::class)->singleLetter(BillDocument::class, $this->query($member));

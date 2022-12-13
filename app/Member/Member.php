@@ -280,10 +280,11 @@ class Member extends Model
     public function scopeWithPendingPayment(Builder $q): Builder
     {
         return $q->addSelect([
-            'pending_payment' => Payment::selectRaw('SUM(subscriptions.amount)')
+            'pending_payment' => Payment::selectRaw('SUM(subscription_children.amount)')
                 ->whereColumn('payments.member_id', 'members.id')
                 ->whereNeedsPayment()
-                ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id'),
+                ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')
+                ->join('subscription_children', 'subscriptions.id', 'subscription_children.parent_id'),
         ]);
     }
 

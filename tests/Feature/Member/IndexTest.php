@@ -9,6 +9,7 @@ use App\Payment\Payment;
 use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\Child;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
@@ -108,7 +109,10 @@ class IndexTest extends TestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()
-            ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', 1050))
+            ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', [
+                new Child('a', 1000),
+                new Child('b', 50),
+            ]))
             ->defaults()->create();
 
         $response = $this->get('/member');

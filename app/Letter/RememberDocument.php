@@ -4,7 +4,6 @@ namespace App\Letter;
 
 use App\Payment\Payment;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
 
 class RememberDocument extends Letter
 {
@@ -18,57 +17,14 @@ class RememberDocument extends Letter
         return 'Zahlungserinnerung';
     }
 
-    public function setFilename(string $filename): static
-    {
-        $this->filename = $filename;
-
-        return $this;
-    }
-
-    public function getFilename(): string
-    {
-        return $this->filename;
-    }
-
     public function view(): string
     {
         return 'tex.remember';
     }
 
-    /**
-     * @return array<string, string>
-     */
-    public function getPositions(Collection $page): array
+    public static function sendAllLabel(): string
     {
-        $memberIds = $page->pluck('id')->toArray();
-        $payments = Payment::whereIn('member_id', $memberIds)
-            ->orderByRaw('nr, member_id')->whereNeedsRemember()->get();
-
-        return $payments->mapWithKeys(function (Payment $payment) {
-            $key = "Beitrag {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname} ({$payment->subscription->name})";
-
-            return [$key => $this->number($payment->subscription->amount)];
-        })->toArray();
-    }
-
-    public function getAddress(Collection $page): string
-    {
-        return $page->first()->address;
-    }
-
-    public function getZip(Collection $page): string
-    {
-        return $page->first()->zip;
-    }
-
-    public function getEmail(Collection $page): string
-    {
-        return $page->first()->email_parents ?: $page->first()->email;
-    }
-
-    public function getLocation(Collection $page): string
-    {
-        return $page->first()->location;
+        return 'Erinnerungen versenden';
     }
 
     public function afterSingle(Payment $payment): void
@@ -102,10 +58,5 @@ class RememberDocument extends Letter
             'Diese Funktion erstellt Erinnerungs-PDFs mit allen versendeten aber noch nich bezahlten Rechnungen bei den Mitgliedern die Post als Versandweg haben.',
             'Das zuletzt erinnerte Datum wird auf heute gesetzt.',
         ];
-    }
-
-    public static function sendAllLabel(): string
-    {
-        return 'Erinnerungen versenden';
     }
 }

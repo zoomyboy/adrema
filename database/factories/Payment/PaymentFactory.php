@@ -7,6 +7,7 @@ use App\Payment\Payment;
 use App\Payment\Status;
 use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tests\RequestFactories\Child;
 
 class PaymentFactory extends Factory
 {
@@ -37,10 +38,13 @@ class PaymentFactory extends Factory
         return $this->state(['nr' => $nr]);
     }
 
-    public function subscription(string $name, int $amount): self
+    /**
+     * @param array<int, Child> $children
+     */
+    public function subscription(string $name, array $children): self
     {
         return $this->for(
-            Subscription::factory()->state(['name' => $name, 'amount' => $amount])->for(Fee::factory())
+            Subscription::factory()->state(['name' => $name])->for(Fee::factory())->children($children)
         );
     }
 }

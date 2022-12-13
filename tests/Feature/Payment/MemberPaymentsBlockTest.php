@@ -6,6 +6,7 @@ use App\Member\Member;
 use App\Payment\MemberPaymentBlock;
 use App\Payment\Payment;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\Child;
 use Tests\TestCase;
 
 class MemberPaymentsBlockTest extends TestCase
@@ -18,7 +19,10 @@ class MemberPaymentsBlockTest extends TestCase
 
         Member::factory()
             ->defaults()
-            ->has(Payment::factory()->notPaid()->subscription('example', 3400))
+            ->has(Payment::factory()->notPaid()->subscription('example', [
+                new Child('gg', 3400),
+                new Child('gg', 100),
+            ]))
             ->create();
         Member::factory()
             ->defaults()
@@ -27,7 +31,7 @@ class MemberPaymentsBlockTest extends TestCase
         $data = app(MemberPaymentBlock::class)->render()['data'];
 
         $this->assertEquals([
-            'amount' => '34,00 €',
+            'amount' => '35,00 €',
             'members' => 1,
             'total_members' => 2,
         ], $data);

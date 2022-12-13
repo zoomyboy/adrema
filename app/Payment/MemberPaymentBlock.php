@@ -12,7 +12,11 @@ class MemberPaymentBlock extends Block
      */
     public function data(): array
     {
-        $amount = Payment::whereNeedsPayment()->selectRaw('sum(subscriptions.amount) AS nr')->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')->first();
+        $amount = Payment::whereNeedsPayment()
+            ->selectRaw('sum(subscription_children.amount) AS nr')
+            ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')
+            ->join('subscription_children', 'subscriptions.id', 'subscription_children.parent_id')
+            ->first();
         $members = Member::whereHasPendingPayment()->count();
 
         return [

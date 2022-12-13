@@ -4,7 +4,9 @@ namespace Database\Factories\Payment;
 
 use App\Fee;
 use App\Payment\Subscription;
+use App\Payment\SubscriptionChild;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tests\RequestFactories\Child;
 
 class SubscriptionFactory extends Factory
 {
@@ -14,7 +16,6 @@ class SubscriptionFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'amount' => $this->faker->numberBetween(1000, 50000),
             'fee_id' => Fee::factory()->createOne()->id,
         ];
     }
@@ -24,8 +25,17 @@ class SubscriptionFactory extends Factory
         return $this->state(['name' => $name]);
     }
 
-    public function amount(int $amount): self
+    /**
+     * @param array<int, Child> $children
+     */
+    public function children(array $children): self
     {
-        return $this->state(['amount' => $amount]);
+        $instance = $this;
+
+        foreach ($children as $child) {
+            $instance = $instance->has(SubscriptionChild::factory()->state($child->toArray()), 'children');
+        }
+
+        return $instance;
     }
 }

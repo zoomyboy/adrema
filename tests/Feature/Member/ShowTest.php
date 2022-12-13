@@ -15,6 +15,7 @@ use App\Payment\Subscription;
 use App\Region;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\Child;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
@@ -34,7 +35,10 @@ class ShowTest extends TestCase
         $member = Member::factory()
             ->defaults()
             ->has(Membership::factory()->promise(now())->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->state(['created_at' => '2022-11-19 05:00:00']))
-            ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', 1050))
+            ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', [
+                new Child('uu', 1000),
+                new Child('a', 50),
+            ]))
             ->for(Gender::factory()->name('Männlich'))
             ->for(Region::factory()->name('NRW'))
             ->postBillKind()

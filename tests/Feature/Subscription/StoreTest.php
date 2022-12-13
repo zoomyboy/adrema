@@ -3,7 +3,9 @@
 namespace Tests\Feature\Subscription;
 
 use App\Fee;
+use App\Payment\Subscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\Child;
 use Tests\RequestFactories\SubscriptionRequestFactory;
 use Tests\TestCase;
 
@@ -18,14 +20,21 @@ class StoreTest extends TestCase
 
         $response = $this->from('/subscription')->post(
             '/subscription',
-            SubscriptionRequestFactory::new()->amount(2500)->fee($fee)->name('lorem')->create()
+            SubscriptionRequestFactory::new()->fee($fee)->name('lorem')->children([
+                new Child('ch', 2500),
+            ])->create()
         );
 
         $response->assertRedirect('/subscription');
+        $subscription = Subscription::firstWhere('name', 'lorem');
         $this->assertDatabaseHas('subscriptions', [
-            'amount' => 2500,
             'fee_id' => $fee->id,
-            'name' => 'Lorem',
+            'name' => 'lorem',
+        ]);
+        $this->assertDatabaseHas('subscription_children', [
+            'name' => 'ch',
+            'amount' => 2500,
+            'parent_id' => $subscription->id,
         ]);
     }
 
@@ -40,7 +49,6 @@ class StoreTest extends TestCase
         );
 
         $this->assertErrors([
-            'amount' => 'Interner Beitrag ist erforderlich.',
             'fee_id' => 'Nami-Beitrag ist nicht vorhanden.',
             'name' => 'Name ist erforderlich.',
         ], $response);
