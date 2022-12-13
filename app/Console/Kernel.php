@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Letter\Actions\LetterSendAction;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Laravel\Telescope\Console\PruneCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command(PruneCommand::class, ['--hours' => 168])->daily();     // 168h = 7 Tage
     }
 
     /**
