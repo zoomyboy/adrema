@@ -15,6 +15,7 @@ class SubscriptionRequestFactory extends RequestFactory
         return [
             'fee_id' => Fee::factory()->create()->id,
             'name' => $this->faker->words(5, true),
+            'split' => $this->faker->boolean(),
             'children' => [],
         ];
     }

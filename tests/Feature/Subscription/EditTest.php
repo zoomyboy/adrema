@@ -18,7 +18,7 @@ class EditTest extends TestCase
         $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->children([
             new Child('a', 1400),
             new Child('b', 1500),
-        ])->create();
+        ])->create(['split' => true]);
 
         $response = $this->get("/subscription/{$subscription->id}/edit");
 
@@ -29,6 +29,7 @@ class EditTest extends TestCase
             ],
             'name' => 'hi',
             'id' => $subscription->id,
+            'split' => true,
         ], $response, 'data');
     }
 }

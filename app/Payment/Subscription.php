@@ -12,7 +12,17 @@ class Subscription extends Model
 {
     use HasFactory;
 
-    public $fillable = ['name', 'amount', 'fee_id'];
+    /**
+     * @var array<int, string>
+     */
+    public $fillable = ['name', 'fee_id', 'split'];
+
+    /**
+     * @var array<string, string>
+     */
+    public $casts = [
+        'split' => 'boolean',
+    ];
 
     public function getAmount(): int
     {

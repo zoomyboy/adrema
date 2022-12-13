@@ -22,7 +22,7 @@ class StoreTest extends TestCase
             '/subscription',
             SubscriptionRequestFactory::new()->fee($fee)->name('lorem')->children([
                 new Child('ch', 2500),
-            ])->create()
+            ])->create(['split' => true])
         );
 
         $response->assertRedirect('/subscription');
@@ -30,6 +30,7 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas('subscriptions', [
             'fee_id' => $fee->id,
             'name' => 'lorem',
+            'split' => true,
         ]);
         $this->assertDatabaseHas('subscription_children', [
             'name' => 'ch',

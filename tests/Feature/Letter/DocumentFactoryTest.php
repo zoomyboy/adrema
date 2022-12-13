@@ -52,9 +52,35 @@ class DocumentFactoryTest extends TestCase
         $letter->assertHasAllContent([
             'Rechnung',
             '15.00',
-            'Beitrag 1995 für ::firstname:: ::lastname:: (::subName::)',
+            '::subName:: 1995 für ::firstname:: ::lastname::',
             'Mitgliedsbeitrag für ::lastname::',
             'Familie ::lastname::\\\\::street::\\\\::zip:: ::location::',
+        ]);
+    }
+
+    public function testItDisplaysSplitPayments(): void
+    {
+        $member = Member::factory()
+            ->defaults()
+            ->state([
+                'firstname' => '::firstname::',
+                'lastname' => '::lastname::',
+            ])
+            ->has(Payment::factory()->notPaid()->nr('1995')->subscription('::subName::', [
+                new Child('a', 1000),
+                new Child('b', 500),
+            ], ['split' => true]))
+            ->create();
+
+        $letter = app(DocumentFactory::class)->singleLetter(BillDocument::class, $this->query($member));
+
+        $letter->assertHasAllContent([
+            'Rechnung',
+            '10.00',
+            '5.00',
+            '::subName:: (a) 1995 für ::firstname:: ::lastname::',
+            '::subName:: (b) 1995 für ::firstname:: ::lastname::',
+            'Mitgliedsbeitrag für ::lastname::',
         ]);
     }
 

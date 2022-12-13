@@ -16,12 +16,12 @@ class UpdateTest extends TestCase
     public function testItUpdatesASubscription(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->create();
+        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->create(['split' => true]);
         $fee = Fee::factory()->create();
 
         $response = $this->from("/subscription/{$subscription->id}")->patch(
             "/subscription/{$subscription->id}",
-            SubscriptionRequestFactory::new()->amount(2500)->fee($fee)->name('lorem')->create()
+            SubscriptionRequestFactory::new()->amount(2500)->fee($fee)->name('lorem')->create(['split' => false])
         );
 
         $response->assertRedirect('/subscription');
@@ -29,6 +29,7 @@ class UpdateTest extends TestCase
             'id' => $subscription->id,
             'fee_id' => $fee->id,
             'name' => 'Lorem',
+            'split' => false,
         ]);
     }
 

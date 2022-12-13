@@ -46,11 +46,20 @@ class Page
      */
     public function getPositions(): array
     {
-        return $this->getPayments()->mapWithKeys(function (Payment $payment) {
-            $key = "Beitrag {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname} ({$payment->subscription->name})";
+        /** @var array<string, string> */
+        $result = [];
 
-            return [$key => $this->number($payment->subscription->getAmount())];
-        })->toArray();
+        foreach ($this->getPayments() as $payment) {
+            if ($payment->subscription->split) {
+                foreach ($payment->subscription->children as $child) {
+                    $result["{$payment->subscription->name} ({$child->name}) {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname}"] = $this->number($child->amount);
+                }
+            } else {
+                $result["{$payment->subscription->name} {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname}"] = $this->number($payment->subscription->getAmount());
+            }
+        }
+
+        return $result;
     }
 
     /**

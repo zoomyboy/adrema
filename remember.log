@@ -1,55 +1,39 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.29)  29 OCT 2021 21:37
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.14)  14 DEC 2022 00:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **resources/views/tex/remember.tex
 (./resources/views/tex/remember.tex
-LaTeX2e <2020-02-02> patch level 5
-L3 programming layer <2020-09-24>
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/scrlttr2.cls
-Document Class: scrlttr2 2020/09/21 v3.32 KOMA-Script document class (letter)
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/scrkbase.sty
-Package: scrkbase 2020/09/21 v3.32 KOMA-Script package (KOMA-Script-dependent b
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-05-04>
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/scrlttr2.cls
+Document Class: scrlttr2 2022/05/01 v3.36 KOMA-Script document class (letter)
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/scrkbase.sty
+Package: scrkbase 2022/05/01 v3.36 KOMA-Script package (KOMA-Script-dependent b
 asics and keyval usage)
 
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/scrbase.sty
-Package: scrbase 2020/09/21 v3.32 KOMA-Script package (KOMA-Script-independent 
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/scrbase.sty
+Package: scrbase 2022/05/01 v3.36 KOMA-Script package (KOMA-Script-independent 
 basics and keyval usage)
 
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/scrlfile.sty
-Package: scrlfile 2020/09/21 v3.32 KOMA-Script package (file load hooks)
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/scrlfile.sty
+Package: scrlfile 2022/05/01 v3.36 KOMA-Script package (file load hooks)
 
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/scrlfile-patch
-oldlatex.sty
-Package: scrlfile-patcholdlatex 2020/09/21 v3.32 KOMA-Script package (patching 
-old LaTeX kernels)
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
+Package: scrlfile-hook 2022/05/01 v3.36 KOMA-Script package (using LaTeX hooks)
 
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/scrlogo.sty
-Package: scrlogo 2020/09/21 v3.32 KOMA-Script package (logo)
-))
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.s
-ty (/home/pille/.local/lib/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2020-09-24 L3 programming layer (loader) 
 
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex
-.def
-File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
-\l__kernel_color_stack_int=\count168
-\l__pdf_internal_box=\box45
-))
-Package: xparse 2020-05-15 L3 Experimental document command parser
-
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse-g
-eneric.tex
-\l__xparse_current_arg_int=\count169
-\g__xparse_grabber_int=\count170
-\l__xparse_m_args_int=\count171
-\l__xparse_v_nesting_int=\count172
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/scrlogo.sty
+Package: scrlogo 2022/05/01 v3.36 KOMA-Script package (logo)
 )))
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/local/texlive/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks15
-)))
+\KV@toks@=\toks16
+)
+Applying: [2021/05/01] Usage of raw or classic option list on input line 252.
+Already applied: [0000/00/00] Usage of raw or classic option list on input line
+ 368.
+))
 Package scrlttr2 Info: You've used standard option `12pt'.
 (scrlttr2)             This is correct!
 (scrlttr2)             Internally I'm using `fontsize=12pt'.
@@ -57,17 +41,16 @@ Package scrlttr2 Info: You've used standard option `12pt'.
 (scrlttr2)             you'd have to use `fontsize=12pt' there
 (scrlttr2)             instead of `12pt', too.
 Class scrlttr2 Info: File `scrsize12pt.clo' used to setup font sizes on input l
-ine 1898.
+ine 1880.
 
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/scrsize12pt.cl
-o
-File: scrsize12pt.clo 2020/09/21 v3.32 KOMA-Script font size class option (12pt
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/scrsize12pt.clo
+File: scrsize12pt.clo 2022/05/01 v3.36 KOMA-Script font size class option (12pt
 )
 )
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/typearea.sty
-Package: typearea 2020/09/21 v3.32 KOMA-Script package (type area)
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/typearea.sty
+Package: typearea 2022/05/01 v3.36 KOMA-Script package (type area)
 \ta@bcor=\skip47
-\ta@div=\count173
+\ta@div=\count181
 \ta@hblk=\skip48
 \ta@vblk=\skip49
 \ta@temp=\skip50
@@ -88,13 +71,22 @@ Package typearea Info: These are the values describing the layout:
 (typearea)              \topskip        = 12.0pt
 (typearea)              \footskip       = 50.75pt
 (typearea)              \baselineskip   = 14.5pt
-(typearea)              on input line 1740.
+(typearea)              on input line 1744.
 )
-\c@letter=\count174
+\c@letter=\count182
 )
 Class scrlttr2 Info: Letter-Class-Option `DIN' loaded on input line 2.
-(/home/pille/.local/lib/texlive/texmf-dist/tex/latex/koma-script/DIN.lco
-File: DIN.lco 2020/09/21 v3.32 KOMA-Script letter-class-option
+
+(/usr/local/texlive/texmf-dist/tex/latex/koma-script/DIN.lco
+File: DIN.lco 2022/05/01 v3.36 KOMA-Script letter-class-option
+)
+(/usr/local/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
+File: l3backend-xetex.def 2022-04-20 L3 backend support: XeTeX
+\g__graphics_track_int=\count183
+\l__pdf_internal_box=\box50
+\g__pdf_backend_object_int=\count184
+\g__pdf_backend_annotation_int=\count185
+\g__pdf_backend_link_int=\count186
 )
 
 LaTeX Warning: Unused global option(s):
@@ -103,98 +95,105 @@ LaTeX Warning: Unused global option(s):
 (./remember.aux)
 \openout1 = `remember.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-Package scrbase Info: activating english \yourrefname on input line 5.
-Package scrbase Info: activating english \yourmailname on input line 5.
-Package scrbase Info: activating english \myrefname on input line 5.
-Package scrbase Info: activating english \customername on input line 5.
-Package scrbase Info: activating english \invoicename on input line 5.
-Package scrbase Info: activating english \subjectname on input line 5.
-Package scrbase Info: activating english \ccname on input line 5.
-Package scrbase Info: activating english \enclname on input line 5.
-Package scrbase Info: activating english \headtoname on input line 5.
-Package scrbase Info: activating english \headfromname on input line 5.
-Package scrbase Info: activating english \datename on input line 5.
-Package scrbase Info: activating english \pagename on input line 5.
-Package scrbase Info: activating english \phonename on input line 5.
-Package scrbase Info: activating english \mobilephonename on input line 5.
-Package scrbase Info: activating english \faxname on input line 5.
-Package scrbase Info: activating english \emailname on input line 5.
-Package scrbase Info: activating english \wwwname on input line 5.
-Package scrbase Info: activating english \bankname on input line 5.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 13.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 1
+3.
+ (/usr/local/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+Package scrbase Info: activating english \yourrefname on input line 13.
+Package scrbase Info: activating english \yourmailname on input line 13.
+Package scrbase Info: activating english \myrefname on input line 13.
+Package scrbase Info: activating english \customername on input line 13.
+Package scrbase Info: activating english \invoicename on input line 13.
+Package scrbase Info: activating english \subjectname on input line 13.
+Package scrbase Info: activating english \ccname on input line 13.
+Package scrbase Info: activating english \enclname on input line 13.
+Package scrbase Info: activating english \headtoname on input line 13.
+Package scrbase Info: activating english \headfromname on input line 13.
+Package scrbase Info: activating english \datename on input line 13.
+Package scrbase Info: activating english \pagename on input line 13.
+Package scrbase Info: activating english \phonename on input line 13.
+Package scrbase Info: activating english \mobilephonename on input line 13.
+Package scrbase Info: activating english \faxname on input line 13.
+Package scrbase Info: activating english \emailname on input line 13.
+Package scrbase Info: activating english \wwwname on input line 13.
+Package scrbase Info: activating english \bankname on input line 13.
 Class scrlttr2 Info: no date found for language `american'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `australian'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `british'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `canadian'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `newzealand'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `UKenglish'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `ukenglish'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `USenglish'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `usenglish'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `german'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `ngerman'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `austrian'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `naustrian'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `swissgerman'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `nswissgerman'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `acadian'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `canadien'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `francais'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `french'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `italian'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `spanish'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `croatian'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `dutch'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `finnish'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `norsk'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `swedish'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `polish'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `czech'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: no date found for language `slovak'
-(scrlttr2)           --> skipped on input line 5.
+(scrlttr2)           --> skipped on input line 13.
 Class scrlttr2 Info: trying to activate captions and date
-(scrlttr2)           of language `english' on input line 5.
+(scrlttr2)           of language `english' on input line 13.
 Class scrlttr2 Info: used language is `english'.
 (scrlttr2)           Supported languages are: `english', `UKenglish',
 (scrlttr2)           `ukenglish', `british', `american', `USenglish',
@@ -204,46 +203,36 @@ Class scrlttr2 Info: used language is `english'.
 (scrlttr2)           `acadian', `canadien', `francais', `french', 
 (scrlttr2)           `dutch', `italian', `spanish', `polish',
 (scrlttr2)           `croatian', `finnish', `norsk', `swedish',
-(scrlttr2)           `czech', `slovak' on input line 5.
+(scrlttr2)           `czech', `slovak' on input line 13.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 6.
+(Font)              <12> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 6.
+(Font)              <8> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 6.
- [1
+(Font)              <6> on input line 14.
 
-{/home/pille/.local/lib/texlive/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+[1
+
+]
 Foldmarks: yes
 Head of first page
-Foot of first page
-Address (backaddress, addressee)
-Location field: empty
-Title: no
-Subject: before opening
-! Missing $ inserted.
-<inserted text> 
-                $
-l.10 ...ilie <<< $data->getFamilyName($page) >>>,}
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.18 ...{Liebe Familie <<< $page->familyName >>>,}
                                                   
 ? X
  
 Here is how much of TeX's memory you used:
- 2210 strings out of 480875
- 44496 string characters out of 5904128
- 350442 words of memory out of 5000000
- 17872 multiletter control sequences out of 15000+600000
- 538738 words of font info for 41 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 68i,9n,64p,350b,289s stack positions out of 5000i,500n,10000p,200000b,80000s
-</home/pille/.local/lib/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi1
-2.pfb></home/pille/.local/lib/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmr12.pfb></home/pille/.local/lib/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmsy10.pfb>
-Output written on remember.pdf (1 page, 27611 bytes).
-PDF statistics:
- 20 PDF objects out of 1000 (max. 8388607)
- 13 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 2092 strings out of 476133
+ 42463 string characters out of 5810668
+ 441136 words of memory out of 5000000
+ 22930 multiletter control sequences out of 15000+600000
+ 472011 words of font info for 39 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 108i,10n,106p,289b,255s stack positions out of 10000i,1000n,20000p,200000b,200000s
+Output written on remember.pdf (1 page).

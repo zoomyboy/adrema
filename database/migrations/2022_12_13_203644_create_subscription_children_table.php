@@ -17,6 +17,7 @@ return new class() extends Migration {
 
         Schema::table('subscriptions', function (Blueprint $table) {
             $table->dropColumn('amount');
+            $table->boolean('split')->default(false);
         });
 
         Schema::create('subscription_children', function (Blueprint $table) {

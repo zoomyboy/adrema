@@ -39,6 +39,7 @@ class SubscriptionController extends Controller
     {
         $subscriptionParams = $request->validate([
             'name' => 'required|max:255',
+            'split' => 'present|boolean',
             'fee_id' => 'required|exists:fees,id',
         ], [], [
             'fee_id' => 'Nami-Beitrag',
@@ -72,6 +73,7 @@ class SubscriptionController extends Controller
     {
         $subscriptionParams = $request->validate([
             'name' => 'required|max:255',
+            'split' => 'present|boolean',
             'fee_id' => 'required|exists:fees,id',
         ], [], [
             'fee_id' => 'Nami-Beitrag',

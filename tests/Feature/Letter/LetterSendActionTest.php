@@ -54,7 +54,7 @@ class LetterSendActionTest extends TestCase
         LetterSendAction::run();
 
         Tex::assertCompiled(BillDocument::class, fn ($document) => 'Mom' === $document->pages->first()->familyName
-            && $document->pages->first()->getPositions() === ['Beitrag 1997 für Lah Mom (tollerbeitrag)' => '54.00']
+            && $document->pages->first()->getPositions() === ['tollerbeitrag 1997 für Lah Mom' => '54.00']
         );
     }
 }

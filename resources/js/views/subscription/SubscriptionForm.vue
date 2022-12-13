@@ -13,6 +13,7 @@
                     size="sm"
                     required
                 ></f-select>
+                <f-switch id="split" label="Rechnung aufsplitten" v-model="inner.split" size="sm"></f-switch>
             </div>
         </box>
         <box heading="Positionen">

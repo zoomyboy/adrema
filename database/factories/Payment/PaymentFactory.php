@@ -39,12 +39,13 @@ class PaymentFactory extends Factory
     }
 
     /**
-     * @param array<int, Child> $children
+     * @param array<int, Child>    $children
+     * @param array<string, mixed> $state
      */
-    public function subscription(string $name, array $children): self
+    public function subscription(string $name, array $children, array $state = []): self
     {
         return $this->for(
-            Subscription::factory()->state(['name' => $name])->for(Fee::factory())->children($children)
+            Subscription::factory()->state(['name' => $name])->for(Fee::factory())->children($children)->state($state)
         );
     }
 }
