@@ -23,7 +23,10 @@ class AgeGroupCountBlockTest extends TestCase
             ->has(Membership::factory()->in('€ Mitglied', 1, 'Wölfling', 3))
             ->defaults()
             ->create();
-        Member::factory()->has(Membership::factory()->in('€ LeiterIn', 2, 'Wölfling', 3))
+        Member::factory()->count(2)->has(Membership::factory()->in('€ LeiterIn', 2, 'Wölfling', 3))
+            ->defaults()
+            ->create();
+        Member::factory()->count(2)->has(Membership::factory()->in('€ LeiterIn', 2, 'Jungpfadfinder', 3))
             ->defaults()
             ->create();
 
@@ -33,6 +36,7 @@ class AgeGroupCountBlockTest extends TestCase
             'groups' => [
                 ['slug' => 'biber', 'name' => 'Biber', 'count' => 3],
                 ['slug' => 'woelfling', 'name' => 'Wölfling', 'count' => 4],
+                ['slug' => 'leiter', 'name' => 'Leiter', 'count' => 4],
             ],
         ], $data);
     }

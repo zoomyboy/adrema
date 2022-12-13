@@ -11,7 +11,7 @@ class AgeGroupCountBlock extends Block
     /**
      * @return Builder<Membership>
      */
-    public function query(): Builder
+    public function memberQuery(): Builder
     {
         return Membership::select('subactivities.slug', 'subactivities.name')
             ->selectRaw('COUNT(member_id) AS count')
@@ -23,10 +23,24 @@ class AgeGroupCountBlock extends Block
             ->orderBy('subactivity_id');
     }
 
+    /**
+     * @return Builder<Membership>
+     */
+    public function leaderQuery(): Builder
+    {
+        return Membership::selectRaw('"leiter" AS slug, "Leiter" AS name, COUNT(member_id) AS count')
+            ->join('activities', 'memberships.activity_id', 'activities.id')
+            ->join('subactivities', 'memberships.subactivity_id', 'subactivities.id')
+            ->isLeader();
+    }
+
     protected function data(): array
     {
         return [
-            'groups' => $this->query()->get()->toArray(),
+            'groups' => [
+                ...$this->memberQuery()->get()->toArray(),
+                ...$this->leaderQuery()->get()->toArray(),
+            ],
         ];
     }
 
