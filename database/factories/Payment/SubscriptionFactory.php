@@ -23,4 +23,9 @@ class SubscriptionFactory extends Factory
     {
         return $this->state(['name' => $name]);
     }
+
+    public function amount(int $amount): self
+    {
+        return $this->state(['amount' => $amount]);
+    }
 }
