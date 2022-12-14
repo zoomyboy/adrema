@@ -16,12 +16,12 @@ class UpdateTest extends TestCase
     public function testItUpdatesASubscription(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->create(['split' => true]);
+        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->create(['split' => true, 'for_promise' => false]);
         $fee = Fee::factory()->create();
 
         $response = $this->from("/subscription/{$subscription->id}")->patch(
             "/subscription/{$subscription->id}",
-            SubscriptionRequestFactory::new()->amount(2500)->fee($fee)->name('lorem')->create(['split' => false])
+            SubscriptionRequestFactory::new()->amount(2500)->fee($fee)->name('lorem')->create(['split' => false, 'for_promise' => true])
         );
 
         $response->assertRedirect('/subscription');
@@ -30,6 +30,7 @@ class UpdateTest extends TestCase
             'fee_id' => $fee->id,
             'name' => 'Lorem',
             'split' => false,
+            'for_promise' => true,
         ]);
     }
 
@@ -70,6 +71,7 @@ class UpdateTest extends TestCase
         $this->assertErrors([
             'fee_id' => 'Nami-Beitrag ist nicht vorhanden.',
             'name' => 'Name ist erforderlich.',
+            'for_promise' => 'Für Versprechen benutzen muss ein Wahrheitswert sein.',
         ], $response);
     }
 }

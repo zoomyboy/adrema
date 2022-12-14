@@ -22,6 +22,7 @@ class Subscription extends Model
      */
     public $casts = [
         'split' => 'boolean',
+        'for_promise' => 'boolean',
     ];
 
     public function getAmount(): int

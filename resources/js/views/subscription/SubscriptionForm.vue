@@ -14,6 +14,12 @@
                     required
                 ></f-select>
                 <f-switch id="split" label="Rechnung aufsplitten" v-model="inner.split" size="sm"></f-switch>
+                <f-switch
+                    id="for_promise"
+                    label="Für Versprechen benutzen"
+                    v-model="inner.for_promise"
+                    size="sm"
+                ></f-switch>
             </div>
         </box>
         <box heading="Positionen">

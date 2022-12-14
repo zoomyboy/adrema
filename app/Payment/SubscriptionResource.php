@@ -27,6 +27,7 @@ class SubscriptionResource extends JsonResource
             'amount' => $this->getAmount(),
             'split' => $this->split,
             'children' => SubscriptionChildResource::collection($this->whenLoaded('children')),
+            'for_promise' => $this->for_promise,
         ];
     }
 }

@@ -22,7 +22,7 @@ class StoreTest extends TestCase
             '/subscription',
             SubscriptionRequestFactory::new()->fee($fee)->name('lorem')->children([
                 new Child('ch', 2500),
-            ])->create(['split' => true])
+            ])->create(['split' => true, 'for_promise' => true])
         );
 
         $response->assertRedirect('/subscription');
@@ -31,6 +31,7 @@ class StoreTest extends TestCase
             'fee_id' => $fee->id,
             'name' => 'lorem',
             'split' => true,
+            'for_promise' => true,
         ]);
         $this->assertDatabaseHas('subscription_children', [
             'name' => 'ch',
@@ -52,6 +53,7 @@ class StoreTest extends TestCase
         $this->assertErrors([
             'fee_id' => 'Nami-Beitrag ist nicht vorhanden.',
             'name' => 'Name ist erforderlich.',
+            'for_promise' => 'Für Versprechen benutzen muss ein Wahrheitswert sein.',
         ], $response);
     }
 }
