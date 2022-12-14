@@ -8,7 +8,7 @@ use Worksome\RequestFactories\RequestFactory;
 class SubscriptionRequestFactory extends RequestFactory
 {
     /**
-     * @return array<string, int|string|array<int, array{amount: int, name: string}>>
+     * @return array{fee_id: int, name: string, split: bool, children: array<int, array{amount: int, name: string}>}
      */
     public function definition(): array
     {
