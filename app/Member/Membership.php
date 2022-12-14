@@ -18,6 +18,13 @@ class Membership extends Model
 
     public $fillable = ['subactivity_id', 'activity_id', 'group_id', 'member_id', 'nami_id', 'from', 'promised_at'];
 
+    /**
+     * @var array<string, string>
+     */
+    public $casts = [
+        'promised_at' => 'date',
+    ];
+
     public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);

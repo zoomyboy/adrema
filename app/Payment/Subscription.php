@@ -15,7 +15,7 @@ class Subscription extends Model
     /**
      * @var array<int, string>
      */
-    public $fillable = ['name', 'fee_id', 'split'];
+    public $fillable = ['name', 'fee_id', 'split', 'for_promise'];
 
     /**
      * @var array<string, string>

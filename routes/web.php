@@ -13,7 +13,8 @@ use App\Member\MemberController;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
 use App\Membership\Actions\MembershipUpdateAction;
-use App\Payment\AllpaymentController;
+use App\Payment\Actions\AllpaymentPageAction;
+use App\Payment\Actions\AllpaymentStoreAction;
 use App\Payment\PaymentController;
 use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
@@ -30,7 +31,8 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::resource('member', MemberController::class)->except('show');
     Route::get('/member/{member}', MemberShowAction::class)->name('member.show');
     Route::apiResource('member.payment', PaymentController::class);
-    Route::resource('allpayment', AllpaymentController::class);
+    Route::get('allpayment', AllpaymentPageAction::class)->name('allpayment.page');
+    Route::post('allpayment', AllpaymentStoreAction::class)->name('allpayment.store');
     Route::resource('subscription', SubscriptionController::class);
     Route::get('/member/{member}/pdf', MemberPdfController::class)
         ->name('member.singlepdf');

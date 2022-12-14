@@ -17,6 +17,7 @@ class SubscriptionFactory extends Factory
         return [
             'name' => $this->faker->word,
             'fee_id' => Fee::factory()->createOne()->id,
+            'for_promise' => false,
         ];
     }
 
@@ -37,5 +38,10 @@ class SubscriptionFactory extends Factory
         }
 
         return $instance;
+    }
+
+    public function forPromise(): self
+    {
+        return $this->state(['for_promise' => true]);
     }
 }
