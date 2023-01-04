@@ -12,7 +12,7 @@ class PaymentController extends Controller
     public function store(Request $request, Member $member): RedirectResponse
     {
         $member->createPayment($request->validate([
-            'nr' => 'required|numeric',
+            'nr' => 'required',
             'subscription_id' => 'required|exists:subscriptions,id',
             'status_id' => 'required|exists:statuses,id',
         ]));
@@ -23,7 +23,7 @@ class PaymentController extends Controller
     public function update(Request $request, Member $member, Payment $payment): RedirectResponse
     {
         $payment->update($request->validate([
-            'nr' => 'required|numeric',
+            'nr' => 'required',
             'subscription_id' => 'required|exists:subscriptions,id',
             'status_id' => 'required|exists:statuses,id',
         ]));
