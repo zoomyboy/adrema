@@ -100,9 +100,7 @@ abstract class TestCase extends BaseTestCase
     public function stubIo(string $class, callable $mocker): self
     {
         $mock = Phake::mock($class);
-
         $mocker($mock);
-
         app()->instance($class, $mock);
 
         return $this;
