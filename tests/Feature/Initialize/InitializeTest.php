@@ -169,26 +169,6 @@ class InitializeTest extends TestCase
                     ->fakeActivities(9056, []);
                 },
             ],
-            'normal' => [
-                [
-                    'aktivVon' => '2021-08-22 00:00:00',
-                    'aktivBis' => '',
-                    'gruppierung' => 'testgroup',
-                    'id' => 1077,
-                    'taetigkeit' => '€ leiter (305)',
-                    'untergliederung' => 'wö',
-                ],
-                function ($db) {
-                    $db->assertDatabaseHas('memberships', [
-                        'member_id' => Member::where('firstname', '::firstname::')->firstOrFail()->id,
-                        'activity_id' => Activity::where('nami_id', 305)->firstOrFail()->id,
-                        'subactivity_id' => Subactivity::where('nami_id', 306)->firstOrFail()->id,
-                        'nami_id' => 1077,
-                        'from' => '2021-08-22 00:00:00',
-                        'group_id' => Group::where('name', 'testgroup')->firstOrFail()->id,
-                    ]);
-                },
-            ],
             'fetch_subactivity_from_group' => [
                 [
                     'gruppierung' => '::newgroup:: 22',

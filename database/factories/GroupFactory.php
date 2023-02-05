@@ -29,4 +29,9 @@ class GroupFactory extends Factory
     {
         return $this->state(['nami_id' => $namiId]);
     }
+
+    public function name(string $name): self
+    {
+        return $this->state(['name' => $name]);
+    }
 }

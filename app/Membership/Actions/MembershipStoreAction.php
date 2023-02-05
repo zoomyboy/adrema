@@ -26,7 +26,7 @@ class MembershipStoreAction
         $from = now()->startOfDay();
 
         try {
-            $namiId = $settings->login()->putMembership($member->nami_id, NamiMembership::fromArray([
+            $namiId = $settings->login()->putMembership($member->nami_id, NamiMembership::from([
                 'startsAt' => $from,
                 'groupId' => $member->group->nami_id,
                 'activityId' => $activity->nami_id,

@@ -7,6 +7,7 @@ use App\Country;
 use App\Course\Models\CourseMember;
 use App\Group;
 use App\Letter\BillKind;
+use App\Nami\HasNamiField;
 use App\Nationality;
 use App\Payment\Payment;
 use App\Payment\Subscription;
@@ -34,6 +35,7 @@ use Zoomyboy\LaravelNami\Data\MembershipEntry;
 class Member extends Model
 {
     use Notifiable;
+    use HasNamiField;
     use HasFactory;
     use Sluggable;
 
@@ -95,7 +97,7 @@ class Member extends Model
     // ---------------------------------- Actions ----------------------------------
     public function syncVersion(): void
     {
-        $version = app(NamiSettings::class)->login()->member($this->group->nami_id, $this->nami_id)['version'];
+        $version = app(NamiSettings::class)->login()->member($this->group->nami_id, $this->nami_id)->version;
 
         $this->update(['version' => $version]);
     }
@@ -154,11 +156,6 @@ class Member extends Model
         return $this->isLeader()
             ? route('efz', ['member' => $this])
             : null;
-    }
-
-    public function getHasNamiAttribute(): bool
-    {
-        return null !== $this->nami_id;
     }
 
     /**

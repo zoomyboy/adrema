@@ -36,6 +36,7 @@ class MemberFactory extends Factory
             'address' => $this->faker->streetAddress,
             'zip' => $this->faker->postcode,
             'location' => $this->faker->city,
+            'email' => $this->faker->safeEmail(),
         ];
     }
 

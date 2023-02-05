@@ -8,6 +8,7 @@ use App\Setting\NamiSettings;
 use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Phake;
 use Tests\Lib\TestsInertia;
@@ -103,6 +104,13 @@ abstract class TestCase extends BaseTestCase
         $mocker($mock);
 
         app()->instance($class, $mock);
+
+        return $this;
+    }
+
+    public function fakeAllHttp(): self
+    {
+        Http::fake(['*' => Http::response('', 200)]);
 
         return $this;
     }
