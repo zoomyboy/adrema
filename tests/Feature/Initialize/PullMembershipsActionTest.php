@@ -9,6 +9,7 @@ use App\Fee;
 use App\Gender;
 use App\Group;
 use App\Member\Member;
+use App\Member\Membership;
 use App\Nationality;
 use App\Payment\Subscription;
 use App\Subactivity;
@@ -138,5 +139,64 @@ class PullMembershipsActionTest extends TestCase
             'activity_id' => Activity::nami(33)->id,
             'subactivity_id' => Subactivity::nami(55)->id,
         ]);
+    }
+
+    public function testUpdateExistingMembership(): void
+    {
+        $member = Member::factory()
+            ->defaults()
+            ->for(Group::factory()->name('Gruppe')->inNami(90))
+            ->inNami(1001)
+            ->has(Membership::factory()->in('Leiter', 50, 'Rover', 60)->inNami(5060))
+            ->create();
+        app(MembershipFake::class)->fetches(1001, [
+            [
+                'id' => 5060,
+                'entries_aktivBis' => '2021-08-23 00:00:00',
+                'entries_aktivVon' => '2021-08-22 00:00:00',
+                'entries_taetigkeit' => 'Leiter (50)',
+                'entries_gruppierung' => 'Gruppe',
+                'entries_untergliederung' => 'Rover',
+            ],
+        ]);
+
+        app(PullMembershipsAction::class)->handle($member);
+
+        $this->assertDatabaseCount('memberships', 1);
+        $this->assertDatabaseHas('memberships', [
+            'nami_id' => 5060,
+            'from' => '2021-08-22 00:00:00',
+            'to' => '2021-08-23 00:00:00',
+        ]);
+    }
+
+    public function testDeleteExistingMembership(): void
+    {
+        $member = Member::factory()
+            ->defaults()
+            ->for(Group::factory()->name('Gruppe')->inNami(90))
+            ->inNami(1001)
+            ->has(Membership::factory()->in('Leiter', 50, 'Rover', 60)->inNami(5060))
+            ->create();
+        app(MembershipFake::class)->fetches(1001, []);
+
+        app(PullMembershipsAction::class)->handle($member);
+
+        $this->assertDatabaseCount('memberships', 0);
+    }
+
+    public function testDontDeleteLocalMemberships(): void
+    {
+        $member = Member::factory()
+            ->defaults()
+            ->for(Group::factory()->name('Gruppe')->inNami(90))
+            ->inNami(1001)
+            ->has(Membership::factory()->inLocal('Leiter', 'Rover')->local())
+            ->create();
+        app(MembershipFake::class)->fetches(1001, []);
+
+        app(PullMembershipsAction::class)->handle($member);
+
+        $this->assertDatabaseCount('memberships', 1);
     }
 }

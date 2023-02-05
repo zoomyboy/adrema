@@ -35,6 +35,22 @@ class MembershipFactory extends Factory
         return $this->state(['nami_id' => $namiId]);
     }
 
+    public function local(): self
+    {
+        return $this->state(['nami_id' => null]);
+    }
+
+    public function inLocal(string $activity, ?string $subactivity = null): self
+    {
+        $instance = $this->for(Activity::factory()->name($activity));
+
+        if ($subactivity) {
+            $instance = $instance->for(Subactivity::factory()->name($subactivity));
+        }
+
+        return $instance;
+    }
+
     public function in(string $activity, int $activityNamiId, ?string $subactivity = null, ?int $subactivityNamiId = null): self
     {
         $instance = $this->for(Activity::factory()->name($activity)->inNami($activityNamiId));

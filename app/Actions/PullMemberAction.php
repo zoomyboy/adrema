@@ -28,7 +28,7 @@ class PullMemberAction
         }
 
         $region = Region::firstWhere('nami_id', $member->regionId ?: -1);
-        $m = Member::updateOrCreate(['nami_id' => $member->id], [
+        Member::updateOrCreate(['nami_id' => $member->id], [
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
             'joined_at' => $member->joinedAt,

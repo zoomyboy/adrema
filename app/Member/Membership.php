@@ -16,12 +16,14 @@ class Membership extends Model
 {
     use HasFactory;
 
-    public $fillable = ['subactivity_id', 'activity_id', 'group_id', 'member_id', 'nami_id', 'from', 'promised_at'];
+    public $fillable = ['subactivity_id', 'activity_id', 'group_id', 'member_id', 'nami_id', 'from', 'to', 'promised_at'];
 
     /**
      * @var array<string, string>
      */
     public $casts = [
+        'from' => 'date',
+        'to' => 'date',
         'promised_at' => 'date',
     ];
 

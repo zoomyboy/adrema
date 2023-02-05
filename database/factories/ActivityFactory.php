@@ -46,7 +46,6 @@ class ActivityFactory extends Factory
     {
         return [
             'name' => $this->faker->words(5, true),
-            'nami_id' => $this->faker->randomNumber(),
         ];
     }
 

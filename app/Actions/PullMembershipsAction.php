@@ -28,7 +28,7 @@ class PullMembershipsAction
         foreach ($memberships as $membership) {
             $existingMembership = Membership::where('nami_id', $membership->id)->first();
 
-            $group = Group::where('name', $membership->group)->first();
+            $group = Group::where('name', $membership->group)->whereNotNull('nami_id')->first();
             if (!$group) {
                 continue;
             }
@@ -39,6 +39,9 @@ class PullMembershipsAction
 
             $this->singleStrategy($member, $group, $membership);
         }
+
+        $membershipIds = $memberships->map(fn ($membership) => $membership->id)->toArray();
+        $member->memberships()->whereNotIn('nami_id', $membershipIds)->whereNotNull('nami_id')->delete();
     }
 
     private function overviewStrategy(Member $member, Group $group, NamiMembershipEntry $membership): ?Membership
@@ -64,6 +67,7 @@ class PullMembershipsAction
         return $member->memberships()->updateOrCreate(['nami_id' => $membership->id], [
             'nami_id' => $membership->id,
             'from' => $membership->startsAt,
+            'to' => $membership->endsAt,
             'group_id' => $group->id,
             'activity_id' => $activity->id,
             'subactivity_id' => $subactivity?->id,
@@ -93,6 +97,7 @@ class PullMembershipsAction
         return $member->memberships()->updateOrCreate(['nami_id' => $membership->id], [
             'nami_id' => $membership->id,
             'from' => $membership->startsAt,
+            'to' => $membership->endsAt,
             'group_id' => $group->id,
             'activity_id' => $activity->id,
             'subactivity_id' => $subactivity?->id,
