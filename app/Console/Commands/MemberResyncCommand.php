@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Actions\MemberPullAction;
+use App\Actions\PullMemberAction;
 use App\Setting\NamiSettings;
 use Illuminate\Console\Command;
 use Zoomyboy\LaravelNami\Member as NamiMember;
@@ -33,7 +33,7 @@ class MemberResyncCommand extends Command
         $api = $settings->login();
 
         $api->search([])->each(
-            fn (NamiMember $member) => app(MemberPullAction::class)->api($api)->member($member->group_id, $member->id)->execute()
+            fn (NamiMember $member) => app(PullMemberAction::class)->api($api)->member($member->group_id, $member->id)->execute()
         );
 
         return 0;

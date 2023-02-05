@@ -2,7 +2,7 @@
 
 namespace App\Member\Actions;
 
-use App\Actions\MemberPullAction;
+use App\Actions\PullMemberAction;
 use App\Activity;
 use App\Confession;
 use App\Member\Member;
@@ -18,7 +18,7 @@ class NamiPutMemberAction
     public function handle(Member $member, ?Activity $activity = null, ?Subactivity $subactivity = null): void
     {
         $api = app(NamiSettings::class)->login();
-        $response = $api->putMember(NamiMember::from([
+        $namiMember = NamiMember::from([
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
             'joinedAt' => $member->joined_at,
@@ -43,15 +43,14 @@ class NamiPutMemberAction
             'feeId' => $member->getNamiFeeId(),
             'nationalityId' => $member->nationality->nami_id,
             'groupId' => $member->group->nami_id,
-            'first_activity_id' => $activity ? $activity->nami_id : null,
-            'first_subactivity_id' => $subactivity ? $subactivity->nami_id : null,
             'id' => $member->nami_id,
             'version' => $member->version,
             'keepdata' => false,
-        ]));
-        Member::withoutEvents(function () use ($response, $member, $api) {
-            $member->update(['nami_id' => $response['id']]);
-            app(MemberPullAction::class)->api($api)->member($member->group->nami_id, $member->nami_id)->execute();
+        ]);
+        $response = $api->putMember($namiMember, $activity ? $activity->nami_id : null, $subactivity ? $subactivity->nami_id : null);
+        Member::withoutEvents(function () use ($response, $member) {
+            $member->update(['nami_id' => $response]);
+            app(PullMemberAction::class)->handle($member->group->nami_id, $member->nami_id);
         });
     }
 }
