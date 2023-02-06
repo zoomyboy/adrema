@@ -36,7 +36,7 @@ class NamiPutMemberAction
             'workPhone' => $member->work_phone,
             'fax' => $member->fax,
             'email' => $member->email,
-            'email_parents' => $member->email_parents,
+            'emailParents' => $member->email_parents,
             'genderId' => optional($member->gender)->nami_id,
             'confessionId' => $member->confession ? $member->confession->nami_id : Confession::firstWhere('is_null', true)->nami_id,
             'regionId' => optional($member->region)->nami_id,

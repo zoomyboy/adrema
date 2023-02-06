@@ -50,7 +50,7 @@ class NamiPutMemberActionTest extends TestCase
             ->for($gender)
             ->for($group)
             ->emailBillKind()
-            ->create();
+            ->create(['email_parents' => 'a@b.de']);
 
         NamiPutMemberAction::run($member, $activity, $subactivity);
 
@@ -58,6 +58,7 @@ class NamiPutMemberActionTest extends TestCase
             'ersteTaetigkeitId' => 6,
             'ersteUntergliederungId' => 55,
             'konfessionId' => 567,
+            'emailVertretungsberechtigter' => 'a@b.de',
         ]);
         $this->assertDatabaseHas('members', [
             'nami_id' => 993,
