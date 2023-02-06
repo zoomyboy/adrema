@@ -3,6 +3,7 @@
 namespace Tests\Feature\Member;
 
 use App\Actions\PullMemberAction;
+use App\Actions\PullMembershipsAction;
 use App\Activity;
 use App\Confession;
 use App\Country;
@@ -27,6 +28,8 @@ class NamiPutMemberActionTest extends TestCase
     public function testItPutsAMember(): void
     {
         Fee::factory()->create();
+        $this->stubIo(PullMemberAction::class, fn ($mock) => $mock);
+        $this->stubIo(PullMembershipsAction::class, fn ($mock) => $mock);
         $this->withoutExceptionHandling()->login()->loginNami();
         $country = Country::factory()->create();
         $gender = Gender::factory()->create();
@@ -36,7 +39,6 @@ class NamiPutMemberActionTest extends TestCase
         $group = Group::factory()->inNami(55)->create();
         $confession = Confession::factory()->inNami(567)->create(['is_null' => true]);
         app(MemberFake::class)->createsSuccessfully(55, 993);
-        $this->stubIo(PullMemberAction::class, fn ($mock) => $mock);
         $activity = Activity::factory()->hasAttached(Subactivity::factory()->name('Biber')->inNami(55))->name('Leiter')->inNami(6)->create();
         $subactivity = $activity->subactivities->first();
 
@@ -61,5 +63,6 @@ class NamiPutMemberActionTest extends TestCase
             'nami_id' => 993,
         ]);
         Phake::verify(app(PullMemberAction::class))->handle(55, 993);
+        Phake::verify(app(PullMembershipsAction::class))->handle($member);
     }
 }

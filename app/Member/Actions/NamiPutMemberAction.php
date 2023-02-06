@@ -3,6 +3,7 @@
 namespace App\Member\Actions;
 
 use App\Actions\PullMemberAction;
+use App\Actions\PullMembershipsAction;
 use App\Activity;
 use App\Confession;
 use App\Member\Member;
@@ -51,6 +52,7 @@ class NamiPutMemberAction
         Member::withoutEvents(function () use ($response, $member) {
             $member->update(['nami_id' => $response]);
             app(PullMemberAction::class)->handle($member->group->nami_id, $member->nami_id);
+            app(PullMembershipsAction::class)->handle($member);
         });
     }
 }
