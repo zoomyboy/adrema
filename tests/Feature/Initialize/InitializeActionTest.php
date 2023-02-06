@@ -2,22 +2,28 @@
 
 namespace Tests\Feature\Initialize;
 
-use App\Console\Commands\NamiInitializeCommand;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\InitializeJob;
-use App\Initialize\Initializer;
 use App\Setting\NamiSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Queue;
-use Phake;
+use Tests\RequestFactories\InitializeRequestFactory;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Authentication\Auth;
 use Zoomyboy\LaravelNami\Fakes\GroupFake;
 
-class RequestTest extends TestCase
+class InitializeActionTest extends TestCase
 {
     use DatabaseTransactions;
+
+    public function testItCannotInitializeWhenNotLoggedIn(): void
+    {
+        InitializeAction::partialMock()->shouldReceive('handle')->never();
+
+        $response = $this->post('/initialize', $this->factory()->create());
+
+        $response->assertRedirect('/login');
+    }
 
     public function testItSetsSettingsBeforeRunningInitializer(): void
     {
@@ -26,11 +32,7 @@ class RequestTest extends TestCase
         Auth::success(12345, 'secret');
         app(GroupFake::class)->fetches(null, [185 => ['name' => 'testgroup']]);
 
-        $response = $this->post('/initialize', [
-            'group_id' => 185,
-            'password' => 'secret',
-            'mglnr' => 12345,
-        ]);
+        $response = $this->post('/initialize', $this->factory()->withCredentials(12345, 'secret')->withGroup(185)->create());
 
         $response->assertRedirect('/');
         $settings = app(NamiSettings::class);
@@ -42,13 +44,8 @@ class RequestTest extends TestCase
     public function testItValidatesSetupInfo(): void
     {
         $this->login();
-        InitializeAction::partialMock()->shouldReceive('handle')->never();
 
-        $response = $this->post('/initialize', [
-            'group_id' => null,
-            'password' => null,
-            'mglnr' => null,
-        ]);
+        $response = $this->post('/initialize', $this->factory()->invalid()->create());
 
         $this->assertErrors(['password' => 'Passwort ist erforderlich.'], $response);
         $this->assertErrors(['mglnr' => 'Mitgliedsnummer ist erforderlich.'], $response);
@@ -59,13 +56,8 @@ class RequestTest extends TestCase
     {
         $this->login();
         Auth::fails(12345, 'secret');
-        InitializeAction::partialMock()->shouldReceive('handle')->never();
 
-        $response = $this->post('/initialize', [
-            'group_id' => 12345,
-            'password' => 'secret',
-            'mglnr' => 100102,
-        ]);
+        $response = $this->post('/initialize', $this->factory()->withCredentials(12345, 'secret')->create());
 
         $this->assertErrors(['nami' => 'NaMi Login fehlgeschlagen.'], $response);
     }
@@ -73,15 +65,10 @@ class RequestTest extends TestCase
     public function testItValidatesGroupExistance(): void
     {
         $this->login();
-        InitializeAction::partialMock()->shouldReceive('handle')->never();
         Auth::success(12345, 'secret');
         app(GroupFake::class)->fetches(null, []);
 
-        $response = $this->post('/initialize', [
-            'group_id' => 185,
-            'password' => 'secret',
-            'mglnr' => 12345,
-        ]);
+        $response = $this->post('/initialize', $this->factory()->withCredentials(12345, 'secret')->withGroup(185)->create());
 
         $this->assertErrors(['nami' => 'Gruppierung nicht gefunden.'], $response);
     }
@@ -96,12 +83,8 @@ class RequestTest extends TestCase
         Queue::assertPushed(InitializeJob::class);
     }
 
-    public function testItInitializesFromCommandLine(): void
+    private function factory(): InitializeRequestFactory
     {
-        $this->stubIo(Initializer::class, fn ($mock) => $mock);
-
-        Artisan::call(NamiInitializeCommand::class);
-
-        Phake::verify(app(Initializer::class))->run();
+        return InitializeRequestFactory::new();
     }
 }
