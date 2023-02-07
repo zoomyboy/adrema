@@ -1030,56 +1030,6 @@ parameters:
             path: packages/laravel-nami/tests/TestCase.php
 
         -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:dataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:overviewDataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:relationProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetAMemberFromOverviewWithNoRights\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetASingleMember\\(\\) has parameter \\$check with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetASingleMember\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetAttributeOfMemberCollection\\(\\) has parameter \\$check with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetAttributeOfMemberCollection\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testGetAttributeOfMemberOverview\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PullMemberTest\\:\\:testSetRelations\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PullMemberTest.php
-
-        -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:dataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: packages/laravel-nami/tests/Unit/PushMemberTest.php
