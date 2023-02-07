@@ -7,6 +7,7 @@ use App\Actions\PullMemberAction;
 use App\Actions\PullMembershipsAction;
 use DB;
 use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\Exceptions\Skippable;
 
 class InitializeMembers
 {
@@ -22,7 +23,12 @@ class InitializeMembers
         $allMembers = collect([]);
 
         $this->api->search([])->each(function ($member) {
-            $localMember = app(PullMemberAction::class)->handle($member->groupId, $member->id);
+            try {
+                $localMember = app(PullMemberAction::class)->handle($member->groupId, $member->id);
+            } catch (Skippable $e) {
+                return;
+            }
+
             app(PullMembershipsAction::class)->handle($localMember);
             app(PullCoursesAction::class)->handle($localMember);
         });

@@ -11,6 +11,7 @@ use App\Setting\NamiSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Data\MemberEntry;
+use Zoomyboy\LaravelNami\Exceptions\MemberDataCorruptedException;
 use Zoomyboy\LaravelNami\Fakes\SearchFake;
 
 class InitializeMembersTest extends TestCase
@@ -28,6 +29,22 @@ class InitializeMembersTest extends TestCase
         PullMemberAction::shouldRun()->once()->with(100, 20)->andReturn($member);
         PullMembershipsAction::shouldRun()->once()->with($member);
         PullCoursesAction::shouldRun()->once()->with($member);
+
+        app(InitializeMembers::class)->handle($api);
+    }
+
+    public function testFetchesMembersWhenJoinedAtDateIsNull(): void
+    {
+        $this->loginNami();
+        $api = app(NamiSettings::class)->login();
+        app(SearchFake::class)->fetches(1, 0, [
+            MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
+            MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 21]),
+        ]);
+        PullMemberAction::shouldRun()->once()->with(100, 20)->andThrow(MemberDataCorruptedException::class, []);
+        PullMemberAction::shouldRun()->once()->with(100, 21);
+        PullMembershipsAction::shouldRun()->once();
+        PullCoursesAction::shouldRun()->once();
 
         app(InitializeMembers::class)->handle($api);
     }

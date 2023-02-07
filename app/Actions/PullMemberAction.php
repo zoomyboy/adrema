@@ -19,7 +19,7 @@ class PullMemberAction
 {
     use AsAction;
 
-    public function handle(int $groupId, int $memberId): ?Member
+    public function handle(int $groupId, int $memberId): Member
     {
         $member = $this->api()->member($groupId, $memberId);
 
