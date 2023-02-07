@@ -8,7 +8,6 @@ use App\Activity;
 use App\Confession;
 use App\Country;
 use App\Fee;
-use App\Gender;
 use App\Group;
 use App\Member\Actions\NamiPutMemberAction;
 use App\Member\Member;
@@ -32,7 +31,6 @@ class NamiPutMemberActionTest extends TestCase
         $this->stubIo(PullMembershipsAction::class, fn ($mock) => $mock);
         $this->withoutExceptionHandling()->login()->loginNami();
         $country = Country::factory()->create();
-        $gender = Gender::factory()->create();
         $region = Region::factory()->create();
         $nationality = Nationality::factory()->inNami(565)->create();
         $subscription = Subscription::factory()->create();
@@ -47,7 +45,6 @@ class NamiPutMemberActionTest extends TestCase
             ->for($subscription)
             ->for($region)
             ->for($nationality)
-            ->for($gender)
             ->for($group)
             ->emailBillKind()
             ->create(['email_parents' => 'a@b.de']);

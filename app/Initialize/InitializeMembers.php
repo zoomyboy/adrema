@@ -3,9 +3,9 @@
 namespace App\Initialize;
 
 use App\Actions\PullMemberAction;
+use App\Actions\PullMembershipsAction;
 use DB;
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\Member as NamiMember;
 
 class InitializeMembers
 {
@@ -20,9 +20,10 @@ class InitializeMembers
     {
         $allMembers = collect([]);
 
-        $this->api->search([])->each(
-            fn (NamiMember $member) => app(PullMemberAction::class)->api($this->api)->member($member->group_id, $member->id)->execute()
-        );
+        $this->api->search([])->each(function ($member) {
+            $localMember = app(PullMemberAction::class)->handle($member->groupId, $member->id);
+            app(PullMembershipsAction::class)->handle($localMember);
+        });
     }
 
     public function restore(): void

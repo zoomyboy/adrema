@@ -4,6 +4,7 @@ namespace App\Initialize\Actions;
 
 use App\Initialize\InitializeJob;
 use App\Setting\NamiSettings;
+use Illuminate\Console\Command;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
@@ -13,6 +14,8 @@ use Zoomyboy\LaravelNami\Nami;
 class InitializeAction
 {
     use AsAction;
+
+    public $commandSignature = 'initialize {--mglnr=} {--password=} {--group=}';
 
     public function handle(int $mglnr, string $password, int $groupId): void
     {
@@ -61,5 +64,18 @@ class InitializeAction
         );
 
         return redirect()->route('home')->success('Initialisierung beauftragt. Wir benachrichtigen dich per Mail wenn alles fertig ist.');
+    }
+
+    public function asCommand(Command $command, NamiSettings $settings): void
+    {
+        $mglnr = (int) $command->option('mglnr');
+        $password = $command->option('password');
+        $group = (int) $command->option('group');
+        $api = Nami::login($mglnr, $password);
+        $settings->mglnr = $mglnr;
+        $settings->password = $password;
+        $settings->default_group_id = $group;
+        $settings->save();
+        $this->handle((int) $mglnr, (string) $password, (int) $group);
     }
 }

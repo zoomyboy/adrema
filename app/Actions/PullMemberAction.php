@@ -19,16 +19,13 @@ class PullMemberAction
 {
     use AsAction;
 
-    public function handle(int $groupId, int $memberId): void
+    public function handle(int $groupId, int $memberId): Member
     {
         $member = $this->api()->member($groupId, $memberId);
 
-        if (!$member->joinedAt) {
-            return;
-        }
-
         $region = Region::firstWhere('nami_id', $member->regionId ?: -1);
-        Member::updateOrCreate(['nami_id' => $member->id], [
+
+        return Member::updateOrCreate(['nami_id' => $member->id], [
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
             'joined_at' => $member->joinedAt,
