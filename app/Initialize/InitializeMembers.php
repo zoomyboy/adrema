@@ -2,6 +2,7 @@
 
 namespace App\Initialize;
 
+use App\Actions\PullCoursesAction;
 use App\Actions\PullMemberAction;
 use App\Actions\PullMembershipsAction;
 use DB;
@@ -23,6 +24,7 @@ class InitializeMembers
         $this->api->search([])->each(function ($member) {
             $localMember = app(PullMemberAction::class)->handle($member->groupId, $member->id);
             app(PullMembershipsAction::class)->handle($localMember);
+            app(PullCoursesAction::class)->handle($localMember);
         });
     }
 
