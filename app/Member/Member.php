@@ -25,8 +25,6 @@ use Illuminate\Notifications\Notifiable;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
 use Spatie\LaravelData\Lazy;
-use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\Data\MembershipEntry;
 
 /**
  * @property string $subscription_name
@@ -39,6 +37,9 @@ class Member extends Model
     use HasFactory;
     use Sluggable;
 
+    /**
+     * @var array<string, string>
+     */
     public $guarded = [];
 
     /**
@@ -156,14 +157,6 @@ class Member extends Model
         return $this->isLeader()
             ? route('efz', ['member' => $this])
             : null;
-    }
-
-    /**
-     * @return Collection<int, MembershipEntry>
-     */
-    public function getNamiMemberships(Api $api): array
-    {
-        return $api->group($this->group->nami_id)->member($this->nami_id)->memberships();
     }
 
     public function getNamiFeeId(): ?int
