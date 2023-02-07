@@ -28,7 +28,7 @@ class PullMemberAction
         return Member::updateOrCreate(['nami_id' => $member->id], [
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
-            'joined_at' => $member->joinedAt ?: now(),
+            'joined_at' => $member->joinedAt,
             'birthday' => $member->birthday,
             'send_newspaper' => $member->sendNewspaper,
             'address' => $member->address,

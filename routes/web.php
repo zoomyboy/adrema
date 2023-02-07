@@ -7,8 +7,8 @@ use App\Efz\ShowEfzDocumentAction;
 use App\Home\Actions\IndexAction as HomeIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
+use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
-use App\Member\Controllers\MemberResyncController;
 use App\Member\MemberController;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::delete('/member/{member}/membership/{membership}', MembershipDestroyAction::class)->name('membership.destroy');
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');
-    Route::get('/member/{member}/resync', MemberResyncController::class)->name('member.resync');
+    Route::get('/member/{member}/resync', MemberResyncAction::class)->name('member.resync');
     Route::get('/contribution', ContributionFormAction::class)->name('contribution.form');
     Route::get('/contribution/generate', [ContributionController::class, 'generate'])->name('contribution.generate');
 });

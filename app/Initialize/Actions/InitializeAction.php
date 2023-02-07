@@ -15,7 +15,7 @@ class InitializeAction
 {
     use AsAction;
 
-    public $commandSignature = 'initialize {--mglnr=} {--password=} {--group=}';
+    public string $commandSignature = 'initialize {--mglnr=} {--password=} {--group=}';
 
     public function handle(int $mglnr, string $password, int $groupId): void
     {

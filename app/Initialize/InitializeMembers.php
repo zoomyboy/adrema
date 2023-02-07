@@ -16,7 +16,7 @@ class InitializeMembers
 {
     use AsAction;
 
-    public $commandSignature = 'member:pull';
+    public string $commandSignature = 'member:pull';
 
     public function handle(Api $api): void
     {
