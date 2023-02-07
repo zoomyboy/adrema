@@ -91,4 +91,15 @@ class PullMemberActionTest extends TestCase
             'region_id' => null,
         ]);
     }
+
+    public function testFetchesMembersWhenJoinedAtDateIsNull(): void
+    {
+        app(MemberFake::class)->shows(1000, 1001, [
+            'eintrittsdatum' => null,
+        ]);
+
+        app(PullMemberAction::class)->handle(1000, 1001);
+
+        $this->assertDatabaseCount('members', 1);
+    }
 }

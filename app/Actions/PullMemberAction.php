@@ -19,7 +19,7 @@ class PullMemberAction
 {
     use AsAction;
 
-    public function handle(int $groupId, int $memberId): Member
+    public function handle(int $groupId, int $memberId): ?Member
     {
         $member = $this->api()->member($groupId, $memberId);
 
@@ -28,7 +28,7 @@ class PullMemberAction
         return Member::updateOrCreate(['nami_id' => $member->id], [
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
-            'joined_at' => $member->joinedAt,
+            'joined_at' => $member->joinedAt ?: now(),
             'birthday' => $member->birthday,
             'send_newspaper' => $member->sendNewspaper,
             'address' => $member->address,
