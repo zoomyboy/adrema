@@ -9,6 +9,7 @@ use App\Initialize\InitializeMembers;
 use App\Member\Member;
 use App\Setting\NamiSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Data\MemberEntry;
 use Zoomyboy\LaravelNami\Exceptions\MemberDataCorruptedException;
@@ -47,5 +48,20 @@ class InitializeMembersTest extends TestCase
         PullCoursesAction::shouldRun()->once();
 
         app(InitializeMembers::class)->handle($api);
+    }
+
+    public function testFetchesMembersViaCommandLine(): void
+    {
+        $this->loginNami();
+        $api = app(NamiSettings::class)->login();
+
+        app(SearchFake::class)->fetches(1, 0, [
+            MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
+        ]);
+        PullMemberAction::shouldRun()->once()->with(100, 20);
+        PullMembershipsAction::shouldRun()->once();
+        PullCoursesAction::shouldRun()->once();
+
+        Artisan::call('member:pull');
     }
 }

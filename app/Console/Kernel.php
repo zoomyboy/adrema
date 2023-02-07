@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Initialize\Actions\InitializeAction;
+use App\Initialize\InitializeMembers;
 use App\Letter\Actions\LetterSendAction;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -18,6 +19,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         LetterSendAction::class,
         InitializeAction::class,
+        InitializeMembers::class,
     ];
 
     /**

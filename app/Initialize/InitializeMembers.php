@@ -5,24 +5,24 @@ namespace App\Initialize;
 use App\Actions\PullCoursesAction;
 use App\Actions\PullMemberAction;
 use App\Actions\PullMembershipsAction;
+use App\Setting\NamiSettings;
 use DB;
+use Illuminate\Console\Command;
+use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Exceptions\Skippable;
 
 class InitializeMembers
 {
-    private Api $api;
+    use AsAction;
 
-    public function __construct(Api $api)
-    {
-        $this->api = $api;
-    }
+    public $commandSignature = 'member:pull';
 
-    public function handle(): void
+    public function handle(Api $api): void
     {
         $allMembers = collect([]);
 
-        $this->api->search([])->each(function ($member) {
+        $api->search([])->each(function ($member) {
             try {
                 $localMember = app(PullMemberAction::class)->handle($member->groupId, $member->id);
             } catch (Skippable $e) {
@@ -40,5 +40,12 @@ class InitializeMembers
         DB::table('course_members')->delete();
         DB::table('memberships')->delete();
         DB::table('members')->delete();
+    }
+
+    public function asCommand(Command $command): int
+    {
+        $this->handle(app(NamiSettings::class)->login());
+
+        return 0;
     }
 }
