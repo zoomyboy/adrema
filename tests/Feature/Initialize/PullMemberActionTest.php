@@ -50,7 +50,7 @@ class PullMemberActionTest extends TestCase
             'gruppierung' => 'SG Wald',
         ]);
 
-        app(PullMemberAction::class)->handle(1000, 1001);
+        $member = app(PullMemberAction::class)->handle(1000, 1001);
 
         $group = Group::firstWhere('nami_id', 1000);
         $this->assertDatabaseHas('members', [
@@ -75,6 +75,7 @@ class PullMemberActionTest extends TestCase
             'name' => 'SG Wald',
             'nami_id' => 1000,
         ]);
+        $this->assertEquals(1001, $member->nami_id);
     }
 
     public function testRegionIdIsSetToNull(): void
