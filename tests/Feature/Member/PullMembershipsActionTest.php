@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Initialize;
+namespace Tests\Feature\Member;
 
 use App\Actions\PullMembershipsAction;
 use App\Activity;
