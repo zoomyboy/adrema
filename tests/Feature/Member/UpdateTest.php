@@ -41,7 +41,7 @@ class UpdateTest extends TestCase
 
     public function testItChecksVersion(): void
     {
-        $this->login()->loginNami();
+        $this->login()->loginNami()->withoutExceptionHandling();
         $member = $this->member();
         $member->update(['version' => 43]);
         $this->fakeRequest();

@@ -15,7 +15,7 @@ use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\LaravelNami\Data\Membership as NamiMembership;
-use Zoomyboy\LaravelNami\NamiException;
+use Zoomyboy\LaravelNami\Exceptions\HttpException;
 
 class MembershipStoreAction
 {
@@ -32,7 +32,7 @@ class MembershipStoreAction
                 'activityId' => $activity->nami_id,
                 'subactivityId' => $subactivity ? $subactivity->nami_id : null,
             ]));
-        } catch (NamiException $e) {
+        } catch (HttpException $e) {
             throw ValidationException::withMessages(['nami' => htmlspecialchars($e->getMessage())]);
         }
 
