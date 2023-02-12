@@ -10,6 +10,7 @@ use DB;
 use Illuminate\Console\Command;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\Data\MemberEntry as NamiMember;
 use Zoomyboy\LaravelNami\Exceptions\Skippable;
 
 class InitializeMembers
@@ -22,7 +23,7 @@ class InitializeMembers
     {
         $allMembers = collect([]);
 
-        $api->search([])->each(function ($member) {
+        $api->search([])->each(function (NamiMember $member) {
             try {
                 $localMember = app(PullMemberAction::class)->handle($member->groupId, $member->id);
             } catch (Skippable $e) {

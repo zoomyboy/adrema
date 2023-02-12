@@ -6,6 +6,9 @@ use Worksome\RequestFactories\RequestFactory;
 
 class MemberRequestFactory extends RequestFactory
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [

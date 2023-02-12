@@ -16,21 +16,6 @@ parameters:
 
     ignoreErrors:
         -
-            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$fee_id\\.$#"
-            count: 1
-            path: app/Actions/MemberPullAction.php
-
-        -
-            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$group_name\\.$#"
-            count: 1
-            path: app/Actions/MemberPullAction.php
-
-        -
-            message: "#^Method App\\\\Actions\\\\MemberPullAction\\:\\:fetchMembership\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Actions/MemberPullAction.php
-
-        -
             message: "#^Method App\\\\Activity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Activity.php
@@ -39,11 +24,6 @@ parameters:
             message: "#^Property App\\\\Activity\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Activity.php
-
-        -
-            message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Support\\\\LazyCollection\\<int,Zoomyboy\\\\LaravelNami\\\\Member\\>\\:\\:each\\(\\) expects callable\\(int, int\\)\\: mixed, Closure\\(Zoomyboy\\\\LaravelNami\\\\Member\\)\\: void given\\.$#"
-            count: 1
-            path: app/Console/Commands/MemberResyncCommand.php
 
         -
             message: "#^Property App\\\\Console\\\\Kernel\\:\\:\\$commands type has no value type specified in iterable type array\\.$#"
@@ -196,11 +176,6 @@ parameters:
             path: app/Http/Views/MemberView.php
 
         -
-            message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Support\\\\LazyCollection\\<int,Zoomyboy\\\\LaravelNami\\\\Member\\>\\:\\:each\\(\\) expects callable\\(int, int\\)\\: mixed, Closure\\(Zoomyboy\\\\LaravelNami\\\\Member\\)\\: void given\\.$#"
-            count: 1
-            path: app/Initialize/InitializeMembers.php
-
-        -
             message: "#^Access to an undefined property Sabre\\\\VObject\\\\Document\\:\\:\\$ADR\\.$#"
             count: 1
             path: app/Member/Member.php
@@ -221,27 +196,7 @@ parameters:
             path: app/Member/Member.php
 
         -
-            message: "#^Method App\\\\Member\\\\Member\\:\\:getNamiMemberships\\(\\) has invalid return type App\\\\Member\\\\Collection\\.$#"
-            count: 1
-            path: app/Member/Member.php
-
-        -
-            message: "#^Method App\\\\Member\\\\Member\\:\\:getNamiMemberships\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Member/Member.php
-
-        -
-            message: "#^Method App\\\\Member\\\\Member\\:\\:getNamiMemberships\\(\\) should return array but returns Illuminate\\\\Support\\\\Collection\\<int, Zoomyboy\\\\LaravelNami\\\\Data\\\\MembershipEntry\\>\\.$#"
-            count: 1
-            path: app/Member/Member.php
-
-        -
             message: "#^Method App\\\\Member\\\\Member\\:\\:scopeFilter\\(\\) has parameter \\$filter with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Member/Member.php
-
-        -
-            message: "#^PHPDoc tag @return with type App\\\\Member\\\\Collection\\<int, Zoomyboy\\\\LaravelNami\\\\Data\\\\MembershipEntry\\> is incompatible with native type array\\.$#"
             count: 1
             path: app/Member/Member.php
 
@@ -254,16 +209,6 @@ parameters:
             message: "#^Property App\\\\Member\\\\MemberController\\:\\:\\$filter type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Member/MemberController.php
-
-        -
-            message: "#^Array has 2 duplicate keys with value 'nationality_id' \\('nationality_id', 'nationality_id'\\)\\.$#"
-            count: 1
-            path: app/Member/MemberRequest.php
-
-        -
-            message: "#^Array has 2 duplicate keys with value 'region_id' \\('region_id', 'region_id'\\)\\.$#"
-            count: 1
-            path: app/Member/MemberRequest.php
 
         -
             message: "#^Method App\\\\Member\\\\MemberRequest\\:\\:rules\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -359,31 +304,6 @@ parameters:
             message: "#^Method Database\\\\Factories\\\\SubactivityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: database/factories/SubactivityFactory.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Initialize\\\\InitializeTest\\:\\:membershipDataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Initialize/InitializeTest.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Initialize\\\\InitializeTest\\:\\:testSyncMembershipsOfMember\\(\\) has parameter \\$membership with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Initialize/InitializeTest.php
-
-        -
-            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:never\\(\\)\\.$#"
-            count: 3
-            path: tests/Feature/Initialize/RequestTest.php
-
-        -
-            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:with\\(\\)\\.$#"
-            count: 1
-            path: tests/Feature/Initialize/RequestTest.php
-
-        -
-            message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Initialize\\\\Initializer given\\.$#"
-            count: 1
-            path: tests/Feature/Initialize/RequestTest.php
 
         -
             message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy.*#"
@@ -530,16 +450,6 @@ parameters:
             path: packages/laravel-nami/src/Country.php
 
         -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Data\\\\Membership\\:\\:fromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Data/Membership.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Data\\\\Membership\\:\\:toNami\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Data/Membership.php
-
-        -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\BausteinFake\\:\\:fetches\\(\\) has parameter \\$courses with no value type specified in iterable type array\\.$#"
             count: 1
             path: packages/laravel-nami/src/Fakes/BausteinFake.php
@@ -548,11 +458,6 @@ parameters:
             message: "#^PHPDoc tag @param references unknown parameter\\: \\$memberId$#"
             count: 1
             path: packages/laravel-nami/src/Fakes/BausteinFake.php
-
-        -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Fakes\\\\CourseFake\\:\\:\\$defaults type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Fakes/CourseFake.php
 
         -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\Fake\\:\\:dataResponse\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
@@ -631,11 +536,6 @@ parameters:
 
         -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Group\\:\\:subgroups\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Group.php
-
-        -
-            message: "#^Unreachable statement \\- code above always terminates\\.$#"
             count: 1
             path: packages/laravel-nami/src/Group.php
 
@@ -753,86 +653,6 @@ parameters:
             message: "#^Property Zoomyboy\\\\LaravelNami\\\\LoginException\\:\\:\\$response has no type specified\\.$#"
             count: 1
             path: packages/laravel-nami/src/LoginException.php
-
-        -
-            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$fee_id\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Array has 2 duplicate keys with value 'geburtsDatum' \\('geburtsDatum', 'geburtsDatum'\\)\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:fromAttributes\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:setGeschlechtTextAttribute\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:setGeschlechtTextAttribute\\(\\) has parameter \\$v with no type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:toNami\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$geschlechtMaps has no type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$nullable has no type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$overviewAttributes has no type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Unable to resolve the template type TKey in call to function collect$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Unable to resolve the template type TValue in call to function collect$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
-
-        -
-            message: "#^Call to an undefined static method Zoomyboy\\\\LaravelNami\\\\Member\\:\\:fromOverview\\(\\)\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/MemberCollection.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\MemberCollection\\:\\:fromOverview\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/MemberCollection.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\MemberCollection\\:\\:fromOverview\\(\\) has parameter \\$items with no type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/MemberCollection.php
 
         -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\NamiException\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -973,33 +793,43 @@ parameters:
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\TestCase\\:\\:getAnnotations\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: packages/laravel-nami/tests/TestCase.php
+        -
+            message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Support\\\\LazyCollection\\<int,Zoomyboy\\\\LaravelNami\\\\Data\\\\MemberEntry\\>\\:\\:each\\(\\) expects callable\\(int, int\\)\\: mixed, Closure\\(Zoomyboy\\\\LaravelNami\\\\Data\\\\MemberEntry\\)\\: void given\\.$#"
+            count: 1
+            path: app/Initialize/InitializeMembers.php
 
         -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:dataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:never\\(\\)\\.$#"
             count: 1
-            path: packages/laravel-nami/tests/Unit/PushMemberTest.php
+            path: tests/Feature/Initialize/InitializeActionTest.php
 
         -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:testPushASingleMember\\(\\) has parameter \\$check with no value type specified in iterable type array\\.$#"
+            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:with\\(\\)\\.$#"
             count: 1
-            path: packages/laravel-nami/tests/Unit/PushMemberTest.php
+            path: tests/Feature/Initialize/InitializeActionTest.php
 
         -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:testPushASingleMember\\(\\) has parameter \\$overwrites with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/tests/Unit/PushMemberTest.php
+            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+            count: 10
+            path: tests/Feature/Initialize/InitializeMembersTest.php
 
         -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Tests\\\\Unit\\\\PushMemberTest\\:\\:\\$attributes type has no value type specified in iterable type array\\.$#"
+            message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Actions\\\\PullMemberAction given\\.$#"
             count: 1
-            path: packages/laravel-nami/tests/Unit/PushMemberTest.php
+            path: tests/Feature/Member/NamiPutMemberActionTest.php
 
         -
-            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$first_activity_id\\.$#"
+            message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Actions\\\\PullMembershipsAction given\\.$#"
             count: 1
-            path: packages/laravel-nami/src/Member.php
+            path: tests/Feature/Member/NamiPutMemberActionTest.php
 
         -
-            message: "#^Access to an undefined property Zoomyboy\\\\LaravelNami\\\\Member\\:\\:\\$first_subactivity_id\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Member.php
+            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:never\\(\\)\\.$#"
+            count: 4
+            path: tests/Feature/Member/ResyncTest.php
+
+        -
+            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Member/ResyncTest.php
+
