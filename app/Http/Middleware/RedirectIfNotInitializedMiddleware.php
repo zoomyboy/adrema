@@ -8,6 +8,9 @@ use Closure;
 
 class RedirectIfNotInitializedMiddleware
 {
+    /**
+     * @var array<int, string>
+     */
     public array $dontRedirect = ['initialize.form', 'initialize.store'];
 
     /**

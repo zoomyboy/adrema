@@ -3,10 +3,8 @@
 namespace Tests\Feature\Initialize;
 
 use App\Initialize\Actions\InitializeAction;
-use App\Initialize\InitializeJob;
 use App\Setting\NamiSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Tests\RequestFactories\InitializeRequestFactory;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Authentication\Auth;
@@ -71,16 +69,6 @@ class InitializeActionTest extends TestCase
         $response = $this->post('/initialize', $this->factory()->withCredentials(12345, 'secret')->withGroup(185)->create());
 
         $this->assertErrors(['nami' => 'Gruppierung nicht gefunden.'], $response);
-    }
-
-    public function testItFiresJobWhenRunningInitializer(): void
-    {
-        Queue::fake();
-        $this->withoutExceptionHandling()->login();
-
-        app(InitializeAction::class)->handle(12345, 'secret', 185);
-
-        Queue::assertPushed(InitializeJob::class);
     }
 
     private function factory(): InitializeRequestFactory

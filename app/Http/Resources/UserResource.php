@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Storage;
 
 /**
- * @mixin \App\User
+ * @mixin User
  */
 class UserResource extends JsonResource
 {
@@ -15,9 +16,9 @@ class UserResource extends JsonResource
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'name' => $this->name,

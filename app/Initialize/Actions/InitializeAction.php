@@ -2,13 +2,23 @@
 
 namespace App\Initialize\Actions;
 
-use App\Initialize\InitializeJob;
+use App\Initialize\InitializeActivities;
+use App\Initialize\InitializeConfessions;
+use App\Initialize\InitializeCountries;
+use App\Initialize\InitializeCourses;
+use App\Initialize\InitializeFees;
+use App\Initialize\InitializeGenders;
+use App\Initialize\InitializeGroups;
+use App\Initialize\InitializeMembers;
+use App\Initialize\InitializeNationalities;
+use App\Initialize\InitializeRegions;
 use App\Setting\NamiSettings;
 use Illuminate\Console\Command;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Nami;
 
 class InitializeAction
@@ -17,9 +27,29 @@ class InitializeAction
 
     public string $commandSignature = 'initialize {--mglnr=} {--password=} {--group=}';
 
+    /**
+     * @var array<int, class-string>
+     */
+    public array $initializers = [
+        InitializeGroups::class,
+        InitializeNationalities::class,
+        InitializeFees::class,
+        InitializeActivities::class,
+        InitializeConfessions::class,
+        InitializeCountries::class,
+        InitializeGenders::class,
+        InitializeRegions::class,
+        InitializeCourses::class,
+        InitializeMembers::class,
+    ];
+
+    private Api $api;
+
     public function handle(int $mglnr, string $password, int $groupId): void
     {
-        InitializeJob::dispatch();
+        foreach ($this->initializers as $initializer) {
+            app($initializer)->handle($this->api);
+        }
     }
 
     /**
@@ -46,9 +76,9 @@ class InitializeAction
 
     public function asController(ActionRequest $request, NamiSettings $settings): RedirectResponse
     {
-        $api = Nami::login($request->input('mglnr'), $request->input('password'));
+        $this->api = Nami::login($request->input('mglnr'), $request->input('password'));
 
-        if (!$api->hasGroup($request->input('group_id'))) {
+        if (!$this->api->hasGroup($request->input('group_id'))) {
             throw ValidationException::withMessages(['nami' => 'Gruppierung nicht gefunden.']);
         }
 
@@ -71,7 +101,7 @@ class InitializeAction
         $mglnr = (int) $command->option('mglnr');
         $password = $command->option('password');
         $group = (int) $command->option('group');
-        $api = Nami::login($mglnr, $password);
+        $this->api = Nami::login($mglnr, $password);
         $settings->mglnr = $mglnr;
         $settings->password = $password;
         $settings->default_group_id = $group;

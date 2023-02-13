@@ -165,6 +165,13 @@ return [
 
     'environments' => [
         'production' => [
+            'supervisor-single' => [
+                'connection' => 'redis',
+                'queue' => ['single'],
+                'balance' => 'simple',
+                'processes' => 1,
+                'tries' => 1,
+            ],
             'supervisor-1' => [
                 'connection' => 'redis',
                 'queue' => ['default'],
@@ -183,6 +190,13 @@ return [
         ],
 
         'local' => [
+            'supervisor-single' => [
+                'connection' => 'redis',
+                'queue' => ['single'],
+                'balance' => 'simple',
+                'processes' => 1,
+                'tries' => 1,
+            ],
             'supervisor-1' => [
                 'connection' => 'redis',
                 'queue' => ['default'],

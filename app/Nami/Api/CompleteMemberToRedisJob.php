@@ -9,6 +9,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Redis;
+use Log;
 use Zoomyboy\LaravelNami\Api;
 
 class CompleteMemberToRedisJob implements ShouldQueue
@@ -29,6 +30,8 @@ class CompleteMemberToRedisJob implements ShouldQueue
     public function handle(): void
     {
         if ($this->batch()->cancelled()) {
+            Log::debug('Cancelling batch');
+
             return;
         }
 
