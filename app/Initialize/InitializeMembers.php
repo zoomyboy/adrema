@@ -2,9 +2,9 @@
 
 namespace App\Initialize;
 
+use App\Actions\InsertCoursesAction;
 use App\Actions\InsertMemberAction;
-use App\Actions\PullCoursesAction;
-use App\Actions\PullMembershipsAction;
+use App\Actions\InsertMembershipsAction;
 use App\Nami\Api\CompleteMemberToRedisJob;
 use App\Setting\NamiSettings;
 use DB;
@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Redis;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\Data\MemberEntry as NamiMember;
+use Zoomyboy\LaravelNami\Data\Course as NamiCourse;
+use Zoomyboy\LaravelNami\Data\Member as NamiMember;
+use Zoomyboy\LaravelNami\Data\MemberEntry as NamiMemberEntry;
+use Zoomyboy\LaravelNami\Data\MembershipEntry as NamiMembershipEntry;
 
 class InitializeMembers
 {
@@ -27,24 +30,30 @@ class InitializeMembers
         $allMembers = collect([]);
         Redis::delete('members');
 
-        $jobs = $api->search([])->map(function (NamiMember $member) use ($api) {
+        $jobs = $api->search([])->map(function (NamiMemberEntry $member) use ($api) {
             return new CompleteMemberToRedisJob($api, $member->groupId, $member->id);
         })->toArray();
 
         $batch = Bus::batch($jobs)
             ->finally(function (Batch $batch) {
-                dd(Redis::get('members'));
+                foreach (Redis::lrange('members', 0, -1) as $data) {
+                    try {
+                        $data = json_decode($data, true);
+                        $localMember = InsertMemberAction::run(NamiMember::from($data['member']));
+                        InsertMembershipsAction::run(
+                            $localMember,
+                            collect($data['memberships'])->map(fn ($membership) => NamiMembershipEntry::from($membership)),
+                        );
+                        InsertCoursesAction::run(
+                            $localMember,
+                            collect($data['courses'])->map(fn ($course) => NamiCourse::from($course)),
+                        );
+                    } catch (Skippable $e) {
+                        continue;
+                    }
+                }
             })
             ->dispatch();
-        //     $localMember = InsertMemberAction::run();
-            // })->catch(function (Batch $batch, Throwable $e) {
-            //     // First batch job failure detected...
-            // })->finally(function (Batch $batch) {
-            //     // The batch has finished executing...
-            // })
-
-            // app(PullMembershipsAction::class)->handle($localMember);
-            // app(PullCoursesAction::class)->handle($localMember);
     }
 
     public function restore(): void

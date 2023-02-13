@@ -28,6 +28,10 @@ class CompleteMemberToRedisJob implements ShouldQueue
 
     public function handle(): void
     {
+        if ($this->batch()->cancelled()) {
+            return;
+        }
+
         Redis::rpush('members', collect([
             'member' => MemberAction::run($this->api, $this->groupId, $this->memberId),
             'memberships' => MembershipsOfAction::run($this->api, $this->memberId),
