@@ -24,6 +24,7 @@ class InitializeMembers
     use AsAction;
 
     public string $commandSignature = 'member:pull';
+    public string $jobQueue = 'long';
 
     public function handle(Api $api): void
     {
@@ -53,6 +54,7 @@ class InitializeMembers
                     }
                 }
             })
+            ->onQueue('long')
             ->dispatch();
     }
 
