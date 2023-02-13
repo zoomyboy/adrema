@@ -176,7 +176,7 @@ return [
                 'connection' => 'redis',
                 'queue' => ['long'],
                 'balance' => 'simple',
-                'processes' => 1,
+                'processes' => 10,
                 'tries' => 1,
                 'timeout' => 43200,     // 12 hours
             ],
@@ -194,7 +194,7 @@ return [
                 'connection' => 'redis',
                 'queue' => ['long'],
                 'balance' => 'simple',
-                'processes' => 1,
+                'processes' => 10,
                 'tries' => 1,
                 'timeout' => 43200,     // 12 hours
             ],
