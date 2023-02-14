@@ -12,7 +12,7 @@ class IndexTest extends TestCase
 
     public function testItDisplaysLocalActivities(): void
     {
-        $this->login()->withoutExceptionHandling();
+        $this->login()->loginNami()->withoutExceptionHandling();
         $local = Activity::factory()->name('Local')->create();
         $remote = Activity::factory()->name('Remote')->inNami(123)->create();
 
