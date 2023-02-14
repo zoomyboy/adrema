@@ -114,6 +114,20 @@ class StoreTest extends TestCase
         NamiPutMemberAction::spy()->shouldNotHaveReceived('handle');
     }
 
+    public function testItRequiresFields(): void
+    {
+        Fee::factory()->create();
+        $this->login()->loginNami();
+        NamiPutMemberAction::allowToRun();
+
+        $response = $this
+            ->post('/member', $this->attributes([
+                'nationality_id' => null,
+            ]));
+
+        $response->assertSessionHasErrors(['nationality_id']);
+    }
+
     public function testSubscriptionIsRequiredIfFirstActivityIsPaid(): void
     {
         $this->login()->loginNami();

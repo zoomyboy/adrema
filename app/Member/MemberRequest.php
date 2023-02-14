@@ -74,7 +74,7 @@ class MemberRequest extends FormRequest
             'letter_address' => '',
             'gender_id' => 'nullable|exists:genders,id',
             'region_id' => 'nullable|exists:regions,id',
-            'nationality_id' => 'nullable|exists:nationalities,id',
+            'nationality_id' => 'required|exists:nationalities,id',
             'children_phone' => '',
             'fax' => '',
             'other_country' => '',
