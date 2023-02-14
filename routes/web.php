@@ -1,5 +1,6 @@
 <?php
 
+use App\Activity\Actions\IndexAction as ActivityIndexAction;
 use App\Contribution\Actions\FormAction as ContributionFormAction;
 use App\Contribution\ContributionController;
 use App\Course\Controllers\CourseController;
@@ -46,4 +47,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/member/{member}/resync', MemberResyncAction::class)->name('member.resync');
     Route::get('/contribution', ContributionFormAction::class)->name('contribution.form');
     Route::get('/contribution/generate', [ContributionController::class, 'generate'])->name('contribution.generate');
+    Route::get('/activity', ActivityIndexAction::class)->name('activity.index');
 });
