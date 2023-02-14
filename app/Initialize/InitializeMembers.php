@@ -5,7 +5,6 @@ namespace App\Initialize;
 use App\Initialize\Actions\ProcessRedisAction;
 use App\Nami\Api\CompleteMemberToRedisJob;
 use App\Setting\NamiSettings;
-use DB;
 use Illuminate\Bus\Batch;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
@@ -41,14 +40,6 @@ class InitializeMembers
             ->onQueue('long')
             ->allowFailures()
             ->dispatch();
-    }
-
-    public function restore(): void
-    {
-        DB::table('payments')->delete();
-        DB::table('course_members')->delete();
-        DB::table('memberships')->delete();
-        DB::table('members')->delete();
     }
 
     public function asCommand(Command $command): int
