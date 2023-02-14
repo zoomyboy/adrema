@@ -420,11 +420,6 @@ parameters:
             path: packages/laravel-nami/src/Fakes/GroupFake.php
 
         -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\MemberFake\\:\\:shows\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Fakes/MemberFake.php
-
-        -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Fakes\\\\MembershipFake\\:\\:assertCreated\\(\\) has parameter \\$payload with no value type specified in iterable type array\\.$#"
             count: 1
             path: packages/laravel-nami/src/Fakes/MembershipFake.php
@@ -746,7 +741,7 @@ parameters:
 
         -
             message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-            count: 10
+            count: 4
             path: tests/Feature/Initialize/InitializeMembersTest.php
 
         -
