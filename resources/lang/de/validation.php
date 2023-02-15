@@ -193,5 +193,6 @@ return [
         'event_name' => 'Veranstaltung',
         'organizer' => 'Veranstalter',
         'subscription_id' => 'Beitragsart',
+        'subactivities' => 'Untergliederungen',
     ],
 ];
