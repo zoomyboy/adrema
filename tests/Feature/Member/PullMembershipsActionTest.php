@@ -112,11 +112,8 @@ class PullMembershipsActionTest extends TestCase
         ]);
         app(MembershipFake::class)->shows(1001, [
             'id' => 1077,
-            'gruppierung' => 'Gruppe',
             'gruppierungId' => 1005,
-            'taetigkeit' => 'ReferentIn',
             'taetigkeitId' => 33,
-            'untergliederung' => 'Pfadfinder',
             'untergliederungId' => 55,
             'aktivVon' => '2021-08-22 00:00:00',
             'aktivBis' => '',
@@ -138,6 +135,36 @@ class PullMembershipsActionTest extends TestCase
             'group_id' => $group->id,
             'activity_id' => Activity::nami(33)->id,
             'subactivity_id' => Subactivity::nami(55)->id,
+        ]);
+    }
+
+    public function testIgnoreLocalSubactivities(): void
+    {
+        $member = Member::factory()->defaults()->for(Group::factory()->inNami(90))->inNami(1001)->create();
+        $group = Group::factory()->inNami(1005)->name('Gruppe')->create();
+        $activity = Activity::factory()->name('ReferentIn')->inNami(33)->create();
+        $subactivity = Subactivity::factory()->name('sub')->create();
+        $actualSubactivity = Subactivity::factory()->name('sub')->inNami(55)->create();
+        app(MembershipFake::class)->fetches(1001, [
+            [
+                'id' => 1077,
+                'entries_taetigkeit' => 'ReferentIn (33)',
+                'entries_gruppierung' => 'Gruppe',
+                'entries_untergliederung' => 'sub',
+            ],
+        ])->shows(1001, [
+            'id' => 1077,
+            'gruppierungId' => 1005,
+            'taetigkeitId' => 33,
+            'untergliederungId' => 55,
+        ]);
+        app(ActivityFake::class)->fetches(1005, [['descriptor' => 'ReferentIn2', 'id' => 33]]);
+        app(SubactivityFake::class)->fetches(33, [['descriptor' => 'Pfadfinder2', 'id' => 55]]);
+
+        app(PullMembershipsAction::class)->handle($member);
+
+        $this->assertDatabaseHas('memberships', [
+            'subactivity_id' => $actualSubactivity->id,
         ]);
     }
 

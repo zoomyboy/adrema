@@ -25,4 +25,14 @@ trait HasNamiField
     {
         return $query->whereNull('nami_id');
     }
+
+    /**
+     * @param Builder<self> $query
+     *
+     * @return Builder<self>
+     */
+    public static function scopeRemote(Builder $query): Builder
+    {
+        return $query->whereNotNull('nami_id');
+    }
 }

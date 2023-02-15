@@ -57,7 +57,7 @@ class InsertMembershipsAction
         }
 
         if (null !== $membership->subactivity) {
-            $subactivity = Subactivity::where('name', $membership->subactivity)->first();
+            $subactivity = Subactivity::remote()->where('name', $membership->subactivity)->first();
 
             if (!$subactivity) {
                 return null;
