@@ -16,12 +16,19 @@ class MembershipDestroyAction
     public function handle(Member $member, Membership $membership, NamiSettings $settings): void
     {
         $api = $settings->login();
-        $settings->login()->deleteMembership(
-            $member->nami_id,
-            $api->membership($member->nami_id, $membership->nami_id)
-        );
+        
+        if ($membership->hasNami) {
+            $settings->login()->deleteMembership(
+                $member->nami_id,
+                $api->membership($member->nami_id, $membership->nami_id)
+            );
+        }
+
         $membership->delete();
-        $member->syncVersion();
+
+        if ($membership->hasNami) {
+            $member->syncVersion();
+        }
     }
 
     public function asController(Member $member, Membership $membership, ActionRequest $request, NamiSettings $settings): RedirectResponse

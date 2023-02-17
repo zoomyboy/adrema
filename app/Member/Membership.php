@@ -3,6 +3,7 @@
 namespace App\Member;
 
 use App\Activity;
+use App\Nami\HasNamiField;
 use App\Subactivity;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Membership extends Model
 {
     use HasFactory;
+    use HasNamiField;
 
     public $fillable = ['subactivity_id', 'activity_id', 'group_id', 'member_id', 'nami_id', 'from', 'to', 'promised_at'];
 

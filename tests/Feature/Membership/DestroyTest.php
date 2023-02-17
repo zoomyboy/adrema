@@ -54,4 +54,22 @@ class DestroyTest extends TestCase
         ]);
         app(MembershipFake::class)->assertDeleted(6, 1300);
     }
+
+    public function testItDoesntReachNamiWhenMembershipIsLocal(): void
+    {
+        $this->withoutExceptionHandling();
+        $member = Member::factory()
+            ->defaults()
+            ->for(Group::factory()->inNami(1400))
+            ->has(Membership::factory()->in('€ Mitglied', 1, 'Rover', 6))
+            ->inNami(6)
+            ->create();
+
+        $response = $this->from('/member')->delete("/member/{$member->id}/membership/{$member->memberships->first()->id}");
+
+        $response->assertRedirect('/member');
+        $this->assertDatabaseMissing('memberships', [
+            'member_id' => $member->id,
+        ]);
+    }
 }
