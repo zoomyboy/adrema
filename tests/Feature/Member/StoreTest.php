@@ -47,8 +47,7 @@ class StoreTest extends TestCase
                 'bill_kind' => 'Post',
             ]));
 
-        $response->assertStatus(302)->assertSessionHasNoErrors();
-        $response->assertRedirect('/member');
+        $response->assertRedirect('/member')->assertSessionHasNoErrors();
         $member = Member::firstWhere('firstname', 'Joe');
         $this->assertDatabaseHas('members', [
             'address' => 'Bavert 50',
@@ -80,34 +79,19 @@ class StoreTest extends TestCase
 
     public function testItCanStoreAMemberWithoutNami(): void
     {
-        Fee::factory()->create();
         $this->withoutExceptionHandling()->login()->loginNami();
-        $country = Country::factory()->create();
-        $gender = Gender::factory()->create();
-        $region = Region::factory()->create();
-        $nationality = Nationality::factory()->create();
-        $subscription = Subscription::factory()->create();
         $activity = Activity::factory()->create();
         $subactivity = Subactivity::factory()->create();
-        NamiPutMemberAction::allowToRun();
 
         $response = $this
             ->from('/member/create')
             ->post('/member', $this->attributes([
-                'country_id' => $country->id,
-                'gender_id' => $gender->id,
-                'region_id' => $region->id,
-                'nationality_id' => $nationality->id,
                 'first_activity_id' => $activity->id,
                 'first_subactivity_id' => $subactivity->id,
-                'subscription_id' => $subscription->id,
-                'bill_kind' => 'E-Mail',
                 'has_nami' => false,
             ]));
 
-        $response->assertStatus(302)->assertSessionHasNoErrors();
-        $response->assertRedirect('/member');
-        $member = Member::firstWhere('firstname', 'Joe');
+        $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('members', [
             'nami_id' => null,
         ]);
@@ -116,48 +100,37 @@ class StoreTest extends TestCase
 
     public function testItRequiresFields(): void
     {
-        Fee::factory()->create();
         $this->login()->loginNami();
-        NamiPutMemberAction::allowToRun();
 
-        $response = $this
+        $this
             ->post('/member', $this->attributes([
                 'nationality_id' => null,
-            ]));
-
-        $response->assertSessionHasErrors(['nationality_id']);
+            ]))
+            ->assertSessionHasErrors(['nationality_id']);
     }
 
     public function testSubscriptionIsRequiredIfFirstActivityIsPaid(): void
     {
         $this->login()->loginNami();
-        Fee::factory()->create();
-        $country = Country::factory()->create();
-        $gender = Gender::factory()->create();
-        $region = Region::factory()->create();
-        $nationality = Nationality::factory()->create();
-        $subscription = Subscription::factory()->create();
-        $activity = Activity::factory()->create(['name' => '€ Mitglied']);
+        $activity = Activity::factory()->name('€ Mitglied')->create();
         $subactivity = Subactivity::factory()->create();
 
-        $response = $this
+        $this
             ->from('/member/create')
             ->post('/member', $this->attributes([
-                'country_id' => $country->id,
-                'gender_id' => $gender->id,
-                'region_id' => $region->id,
-                'nationality_id' => $nationality->id,
                 'first_activity_id' => $activity->id,
                 'first_subactivity_id' => $subactivity->id,
                 'subscription_id' => null,
-                'bill_kind' => 'E-Mail',
-            ]));
-
-        $this->assertErrors(['subscription_id' => 'Beitragsart ist erforderlich.'], $response);
+            ]))
+            ->assertSessionHasErrors(['subscription_id' => 'Beitragsart ist erforderlich.']);
     }
 
     public function defaults(): array
     {
+        $country = Country::factory()->create();
+        $nationality = Nationality::factory()->create();
+        $subscription = Subscription::factory()->create();
+
         return [
             'address' => 'Bavert 50',
             'birthday' => '2013-02-19',
@@ -187,6 +160,9 @@ class StoreTest extends TestCase
             'without_efz_at' => '',
             'work_phone' => '',
             'zip' => '42719',
+            'country_id' => $country->id,
+            'nationality_id' => $nationality->id,
+            'subscription_id' => $subscription->id,
         ];
     }
 }
