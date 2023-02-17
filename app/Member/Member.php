@@ -5,6 +5,7 @@ namespace App\Member;
 use App\Confession;
 use App\Country;
 use App\Course\Models\CourseMember;
+use App\Gender;
 use App\Group;
 use App\Letter\BillKind;
 use App\Nami\HasNamiField;
@@ -82,13 +83,17 @@ class Member extends Model
         ];
     }
 
-    public function scopeSearch(Builder $q, ?string $text): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeSearch(Builder $query, ?string $text): Builder
     {
         if (is_null($text)) {
-            return $q;
+            return $query;
         }
 
-        return $q->where('firstname', 'LIKE', '%'.$text.'%')
+        return $query->where('firstname', 'LIKE', '%'.$text.'%')
              ->orWhere('lastname', 'LIKE', '%'.$text.'%')
              ->orWhere('address', 'LIKE', '%'.$text.'%')
              ->orWhere('zip', 'LIKE', '%'.$text.'%')
@@ -179,16 +184,25 @@ class Member extends Model
     }
 
     // ---------------------------------- Relations ----------------------------------
+    /**
+     * @return BelongsTo<Country, self>
+     */
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
     }
 
+    /**
+     * @return BelongsTo<Gender, self>
+     */
     public function gender(): BelongsTo
     {
-        return $this->belongsTo(\App\Gender::class);
+        return $this->belongsTo(Gender::class);
     }
 
+    /**
+     * @return BelongsTo<Region, self>
+     */
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class)->withDefault([
@@ -197,39 +211,60 @@ class Member extends Model
         ]);
     }
 
+    /**
+     * @return BelongsTo<Confession, self>
+     */
     public function confession(): BelongsTo
     {
         return $this->belongsTo(Confession::class);
     }
 
-    public function payments(): HasMany
-    {
-        return $this->hasMany(Payment::class)->orderBy('nr');
-    }
-
+    /**
+     * @return BelongsTo<Nationality, self>
+     */
     public function nationality(): BelongsTo
     {
         return $this->belongsTo(Nationality::class);
     }
 
-    public function memberships(): HasMany
-    {
-        return $this->hasMany(Membership::class);
-    }
-
+    /**
+     * @return BelongsTo<Subscription, self>
+     */
     public function subscription(): BelongsTo
     {
         return $this->belongsTo(Subscription::class);
     }
 
+    /**
+     * @return BelongsTo<Group, self>
+     */
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);
     }
 
+    /**
+     * @return HasMany<CourseMember>
+     */
     public function courses(): HasMany
     {
         return $this->hasMany(CourseMember::class);
+    }
+
+    /**
+     * @return HasMany<Membership>
+     */
+    public function memberships(): HasMany
+    {
+        return $this->hasMany(Membership::class);
+    }
+
+    /**
+     * @return HasMany<Payment>
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class)->orderBy('nr');
     }
 
     /**
@@ -257,19 +292,31 @@ class Member extends Model
     }
 
     // ---------------------------------- Scopes -----------------------------------
-    public function scopeOrdered(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeOrdered(Builder $query): Builder
     {
-        return $q->orderByRaw('lastname, firstname');
+        return $query->orderByRaw('lastname, firstname');
     }
 
-    public function scopeSlangOrdered(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeSlangOrdered(Builder $query): Builder
     {
-        return $q->orderByRaw('firstname, lastname');
+        return $query->orderByRaw('firstname, lastname');
     }
 
-    public function scopeWithPendingPayment(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeWithPendingPayment(Builder $query): Builder
     {
-        return $q->addSelect([
+        return $query->addSelect([
             'pending_payment' => Payment::selectRaw('SUM(subscription_children.amount)')
                 ->whereColumn('payments.member_id', 'members.id')
                 ->whereNeedsPayment()
@@ -278,47 +325,73 @@ class Member extends Model
         ]);
     }
 
-    public function scopeWhereHasPendingPayment(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeWhereHasPendingPayment(Builder $query): Builder
     {
-        return $q->whereHas('payments', function (Builder $q): void {
+        return $query->whereHas('payments', function (Builder $q): void {
             $q->whereNeedsPayment();
         });
     }
 
-    public function scopeWhereAusstand(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeWhereAusstand(Builder $query): Builder
     {
-        return $q->whereHas('payments', function ($q) {
+        return $query->whereHas('payments', function ($q) {
             return $q->whereHas('status', fn ($q) => $q->where('is_remember', true));
         });
     }
 
-    public function scopePayable(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopePayable(Builder $query): Builder
     {
-        return $q->where('bill_kind', '!=', null)->where('subscription_id', '!=', null);
+        return $query->where('bill_kind', '!=', null)->where('subscription_id', '!=', null);
     }
 
-    public function scopeWhereNoPayment(Builder $q, int $year): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeWhereNoPayment(Builder $query, int $year): Builder
     {
-        return $q->whereDoesntHave('payments', function (Builder $q) use ($year) {
+        return $query->whereDoesntHave('payments', function (Builder $q) use ($year) {
             $q->where('nr', '=', $year);
         });
     }
 
-    public function scopeForDashboard(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeForDashboard(Builder $query): Builder
     {
-        return $q->selectRaw('SUM(id)');
+        return $query->selectRaw('SUM(id)');
     }
 
-    public function scopeFilter(Builder $q, array $filter): Builder
+    /**
+     * @todo refactor this to an actual filter model
+     * @param Builder<self> $query
+     * @param array<string, mixed> $filter
+     * @return Builder<self>
+     */
+    public function scopeFilter(Builder $query, array $filter): Builder
     {
         if (true === data_get($filter, 'ausstand', false)) {
-            $q->whereAusstand();
+            $query->whereAusstand();
         }
         if (data_get($filter, 'bill_kind', false)) {
-            $q->where('bill_kind', BillKind::fromValue($filter['bill_kind']));
+            $query->where('bill_kind', BillKind::fromValue($filter['bill_kind']));
         }
         if (data_get($filter, 'subactivity_id', false) || data_get($filter, 'activity_id', false)) {
-            $q->whereHas('memberships', function ($q) use ($filter) {
+            $query->whereHas('memberships', function ($q) use ($filter) {
                 if (data_get($filter, 'subactivity_id', false)) {
                     $q->where('subactivity_id', $filter['subactivity_id']);
                 }
@@ -328,7 +401,7 @@ class Member extends Model
             });
         }
 
-        return $q;
+        return $query;
     }
 
     public static function fromVcard(string $url, string $data): static

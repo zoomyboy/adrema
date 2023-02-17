@@ -5,6 +5,9 @@ namespace Database\Factories\Payment;
 use App\Payment\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Status>
+ */
 class StatusFactory extends Factory
 {
     public $model = Status::class;

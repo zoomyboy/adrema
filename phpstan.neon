@@ -21,11 +21,6 @@ parameters:
             path: app/Activity.php
 
         -
-            message: "#^Property App\\\\Activity\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Activity.php
-
-        -
             message: "#^Unable to resolve the template type TKey in call to function collect$#"
             count: 1
             path: app/Course/Requests/StoreRequest.php
@@ -34,11 +29,6 @@ parameters:
             message: "#^Unable to resolve the template type TValue in call to function collect$#"
             count: 1
             path: app/Course/Requests/StoreRequest.php
-
-        -
-            message: "#^Method App\\\\Course\\\\Resources\\\\CourseResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Course/Resources/CourseResource.php
 
         -
             message: "#^Method App\\\\Dav\\\\AddressBookBackend\\:\\:getCard\\(\\) should return M of array\\{lastmodified\\: int, etag\\: string, uri\\: string, id\\: int, size\\: int\\} but returns false\\.$#"
@@ -140,12 +130,7 @@ parameters:
             count: 1
             path: app/Member/Member.php
 
-        -
-            message: "#^Method App\\\\Member\\\\Member\\:\\:scopeFilter\\(\\) has parameter \\$filter with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Member/Member.php
-
-        -
+        - 
             message: "#^Unsafe usage of new static\\(\\)\\.$#"
             count: 1
             path: app/Member/Member.php
@@ -161,11 +146,6 @@ parameters:
             path: app/Member/MemberRequest.php
 
         -
-            message: "#^Method App\\\\Member\\\\MemberResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Member/MemberResource.php
-
-        -
             message: "#^Method App\\\\Membership\\\\MembershipResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Membership/MembershipResource.php
@@ -174,11 +154,6 @@ parameters:
             message: "#^Method App\\\\Payment\\\\PaymentResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Payment/PaymentResource.php
-
-        -
-            message: "#^Property App\\\\Payment\\\\Status\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Payment/Status.php
 
         -
             message: "#^Method App\\\\Payment\\\\SubscriptionResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -196,17 +171,7 @@ parameters:
             path: app/Providers/AuthServiceProvider.php
 
         -
-            message: "#^Property App\\\\Region\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Region.php
-
-        -
             message: "#^Method App\\\\Subactivity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Subactivity.php
-
-        -
-            message: "#^Property App\\\\Subactivity\\:\\:\\$casts type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Subactivity.php
 
@@ -280,11 +245,6 @@ parameters:
             path: tests/TestCase.php
 
         -
-            message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$nami_id\\.$#"
-            count: 1
-            path: tests/Unit/InitializeGroupsTest.php
-
-        -
             message: "#^Parameter \\#1 \\$api of class App\\\\Initialize\\\\InitializeGroups constructor expects Zoomyboy\\\\LaravelNami\\\\Api, PHPUnit\\\\Framework\\\\MockObject\\\\Stub given\\.$#"
             count: 6
             path: tests/Unit/InitializeGroupsTest.php
@@ -293,46 +253,6 @@ parameters:
             message: "#^Method Tests\\\\Unit\\\\Mailman\\\\ServiceTest\\:\\:testItReturnsMoreThanOneResult\\(\\) has parameter \\$totals with no value type specified in iterable type array\\.$#"
             count: 1
             path: tests/Unit/Mailman/ServiceTest.php
-
-        -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Authentication\\\\FakeCookie\\:\\:\\$authenticated type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Authentication/FakeCookie.php
-
-        -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Authentication\\\\FakeCookie\\:\\:\\$invalidAccounts type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Authentication/FakeCookie.php
-
-        -
-            message: "#^Property Zoomyboy\\\\LaravelNami\\\\Authentication\\\\FakeCookie\\:\\:\\$validAccounts type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Authentication/FakeCookie.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Backend\\\\FakeBackend\\:\\:fakeSingleMembership\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Backend/FakeBackend.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Backend\\\\FakeBackend\\:\\:fakeSingleMembership\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Backend/FakeBackend.php
-
-        -
-            message: "#^Return type of call to function collect contains unresolvable type\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Backend/FakeBackend.php
-
-        -
-            message: "#^Unable to resolve the template type TKey in call to function collect$#"
-            count: 1
-            path: packages/laravel-nami/src/Backend/FakeBackend.php
-
-        -
-            message: "#^Unable to resolve the template type TValue in call to function collect$#"
-            count: 1
-            path: packages/laravel-nami/src/Backend/FakeBackend.php
 
         -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Confession\\:\\:fromNami\\(\\) has no return type specified\\.$#"

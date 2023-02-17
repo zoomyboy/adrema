@@ -67,7 +67,7 @@ class AllpaymentStoreAction
     }
 
     /**
-     * @return Collection<Membership>
+     * @return Collection<int, Membership>
      */
     public function promisedMemberships(Member $member, int $year): Collection
     {

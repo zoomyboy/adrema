@@ -4,13 +4,12 @@ namespace App\Letter;
 
 use App\Member\Member;
 use App\Payment\Payment;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Collection;
 
 class Page
 {
     /**
-     * @var Collection<Member>
+     * @var Collection<int, Member>
      */
     private Collection $members;
     public string $familyName;
@@ -26,7 +25,7 @@ class Page
     public array $positions;
 
     /**
-     * @param Collection<Member> $members
+     * @param Collection<int, Member> $members
      */
     public function __construct(Collection $members)
     {
@@ -63,9 +62,9 @@ class Page
     }
 
     /**
-     * @return BaseCollection<int, Payment>
+     * @return Collection<int, Payment>
      */
-    public function getPayments(): BaseCollection
+    public function getPayments(): Collection
     {
         return $this->members->pluck('payments')->flatten(1);
     }

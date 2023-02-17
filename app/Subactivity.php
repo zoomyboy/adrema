@@ -31,6 +31,9 @@ class Subactivity extends Model
         ];
     }
 
+    /**
+     * @return BelongsToMany<Activity>
+     */
     public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class);

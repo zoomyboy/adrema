@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Confession;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Confession>
+ */
 class ConfessionFactory extends Factory
 {
     protected $model = Confession::class;

@@ -11,9 +11,15 @@ class Fee extends Model
 {
     use HasFactory;
 
+    /** @var array<int, string> */
     public $fillable = ['name', 'nami_id'];
+
+    /** @var bool */
     public $timestamps = false;
 
+    /**
+     * @return HasMany<Subscription>
+     */
     public function subscriptions(): HasMany
     {
         return $this->hasMany(Subscription::class);

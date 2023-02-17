@@ -8,6 +8,9 @@ use App\Payment\SubscriptionChild;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Tests\RequestFactories\Child;
 
+/**
+ * @extends Factory<Subscription>
+ */
 class SubscriptionFactory extends Factory
 {
     protected $model = Subscription::class;

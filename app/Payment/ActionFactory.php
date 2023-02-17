@@ -7,6 +7,9 @@ use Illuminate\Support\Collection;
 
 class ActionFactory
 {
+    /**
+     * @return Collection<int, array{link: array{href: string, label: mixed}, text: mixed}>
+     */
     public function allLinks(): Collection
     {
         return app(DocumentFactory::class)->getTypes()->map(function ($repo) {

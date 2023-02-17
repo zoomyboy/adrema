@@ -68,6 +68,9 @@ class MailmanService
         return Http::withBasicAuth($this->username, $this->password)->withOptions(['base_uri' => $this->baseUrl]);
     }
 
+    /**
+     * @return LazyCollection<int, MailingList>
+     */
     public function getLists(): LazyCollection
     {
         return app(Paginator::class)->result(

@@ -28,6 +28,10 @@ class Status extends Model
     }
 
     // ---------------------------------- Scopes -----------------------------------
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
     public function scopeNeedsPayment(Builder $query): Builder
     {
         return $query->where(function (Builder $query): Builder {

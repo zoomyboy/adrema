@@ -39,7 +39,7 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/larastan": "^1.0",
+        "nunomaduro/larastan": "*",
         "orchestra/testbench": "^7.0",
         "phpstan/phpstan": "^1.8.10",
         "phpunit/phpunit": "^9.5.10"

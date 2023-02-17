@@ -47,18 +47,6 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
-    public function failedNami(int $mglnr = 12345, string $password = 'password'): self
-    {
-        Auth::fails($mglnr, $password);
-        NamiSettings::fake([
-            'mglnr' => $mglnr,
-            'password' => $password,
-            'default_group_id' => 55,
-        ]);
-
-        return $this;
-    }
-
     public function login(): self
     {
         $this->be($user = User::factory()->create());

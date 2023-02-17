@@ -4,7 +4,7 @@ namespace App\Contribution\Documents;
 
 use App\Member\Member;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Zoomyboy\Tex\Engine;
@@ -12,11 +12,13 @@ use Zoomyboy\Tex\Template;
 
 class SolingenDocument extends ContributionDocument
 {
+    /**
+     * @param array<int, int> $members
+     */
     final private function __construct(
         public string $dateFrom,
         public string $dateUntil,
         public string $zipLocation,
-        /** @var array<int, int> */
         public array $members,
         public string $eventName,
         public string $type = 'F',
@@ -35,11 +37,11 @@ class SolingenDocument extends ContributionDocument
     }
 
     /**
-     * @return Collection<Collection<Member>>
+     * @return Collection<int, Collection<int, Member>>
      */
     public function memberModels(): Collection
     {
-        return Member::whereIn('id', $this->members)->orderByRaw('lastname, firstname')->get()->chunk(14);
+        return Member::whereIn('id', $this->members)->orderByRaw('lastname, firstname')->get()->toBase()->chunk(14);
     }
 
     public function niceEventFrom(): string

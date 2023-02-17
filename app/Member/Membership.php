@@ -18,22 +18,27 @@ class Membership extends Model
     use HasFactory;
     use HasNamiField;
 
+    /** @var array<int, string> */
     public $fillable = ['subactivity_id', 'activity_id', 'group_id', 'member_id', 'nami_id', 'from', 'to', 'promised_at'];
 
-    /**
-     * @var array<string, string>
-     */
+    /** @var array<string, string> */
     public $casts = [
         'from' => 'date',
         'to' => 'date',
         'promised_at' => 'date',
     ];
 
+    /**
+     * @return BelongsTo<Activity, self>
+     */
     public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);
     }
 
+    /**
+     * @return BelongsTo<Subactivity, self>
+     */
     public function subactivity(): BelongsTo
     {
         return $this->belongsTo(Subactivity::class);

@@ -53,7 +53,6 @@ class InitializeActionTest extends TestCase
     public function testItValidatesLogin(): void
     {
         $this->login();
-        Auth::fails(12345, 'secret');
 
         $response = $this->post('/initialize', $this->factory()->withCredentials(12345, 'secret')->create());
 

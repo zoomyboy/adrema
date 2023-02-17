@@ -5,6 +5,9 @@ namespace Database\Factories\Course\Models;
 use App\Course\Models\CourseMember;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<CourseMember>
+ */
 class CourseMemberFactory extends Factory
 {
     public $model = CourseMember::class;

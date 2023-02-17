@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Gender;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Gender>
+ * @extends Factory<Gender>
  */
 class GenderFactory extends Factory
 {

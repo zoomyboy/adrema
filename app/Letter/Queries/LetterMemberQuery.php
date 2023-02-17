@@ -34,7 +34,7 @@ abstract class LetterMemberQuery
     /**
      * @param class-string<Letter> $type
      *
-     * @return EloquentCollection<Member>
+     * @return EloquentCollection<int, Member>
      */
     private function get(string $type): EloquentCollection
     {

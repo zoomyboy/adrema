@@ -14,38 +14,62 @@ class Payment extends Model
 
     public $fillable = ['member_id', 'subscription_id', 'nr', 'status_id', 'last_remembered_at'];
 
+    /**
+     * @return BelongsTo<Member, self>
+     */
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
     }
 
+    /**
+     * @return BelongsTo<Subscription, self>
+     */
     public function subscription(): BelongsTo
     {
         return $this->belongsTo(Subscription::class);
     }
 
+    /**
+     * @return BelongsTo<Status, self>
+     */
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
     }
 
-    public function scopeWhereNeedsPayment(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     *
+     * @return Builder<self>
+     */
+    public function scopeWhereNeedsPayment(Builder $query): Builder
     {
-        return $q->whereHas('status', function ($q) {
+        return $query->whereHas('status', function ($q) {
             return $q->needsPayment();
         });
     }
 
-    public function scopeWhereNeedsBill(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     *
+     * @return Builder<self>
+     */
+    public function scopeWhereNeedsBill(Builder $query): Builder
     {
-        return $q->whereHas('status', function ($q) {
+        return $query->whereHas('status', function ($q) {
             return $q->where('is_bill', true);
         });
     }
 
-    public function scopeWhereNeedsRemember(Builder $q): Builder
+    /**
+     * @param Builder<self> $query
+     *
+     * @return Builder<self>
+     */
+    public function scopeWhereNeedsRemember(Builder $query): Builder
     {
-        return $q->whereHas('status', function ($q) {
+        return $query->whereHas('status', function ($q) {
             return $q->where('is_remember', true);
         })->where(fn ($query) => $query->whereNull('last_remembered_at')->orWhere('last_remembered_at', '<=', now()->subMonths(3)));
     }

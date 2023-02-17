@@ -100,7 +100,7 @@ class UpdateTest extends TestCase
 
     public function testItThrowsErrorWhenLoginIsWrong(): void
     {
-        $this->login()->failedNami();
+        $this->login()->withNamiSettings();
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
         $newCourse = Course::factory()->inNami(789)->create();
 

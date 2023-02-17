@@ -5,21 +5,23 @@ namespace App\Contribution\Documents;
 use App\Country;
 use App\Member\Member;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
 class RemscheidDocument extends ContributionDocument
 {
+    /**
+     * @param Collection<int, Collection<int, Member>> $leaders
+     * @param Collection<int, Collection<int, Member>> $children
+     */
     public function __construct(
         public string $dateFrom,
         public string $dateUntil,
         public string $zipLocation,
         public ?Country $country,
-        /* @var Collection<int, Collection<int, Member>> */
         public Collection $leaders,
-        /* @var Collection<int, Collection<int, Member>> */
         public Collection $children,
         public ?string $filename = '',
         public string $type = 'F',
@@ -45,8 +47,8 @@ class RemscheidDocument extends ContributionDocument
             dateUntil: $request->dateUntil,
             zipLocation: $request->zipLocation,
             country: Country::where('id', $request->country)->firstOrFail(),
-            leaders: $leaders->values()->chunk(6),
-            children: $children->values()->chunk(20),
+            leaders: $leaders->values()->toBase()->chunk(6),
+            children: $children->values()->toBase()->chunk(20),
         );
     }
 

@@ -49,7 +49,7 @@ class SettingTest extends TestCase
 
         $response = $this->get('/setting/bill');
 
-        /** @var array<int, array{url: string, is_active: bool}> */
+        /** @var array<int, array{url: string, title: string, is_active: bool}> */
         $menus = $this->inertia($response, 'setting_menu');
         $this->assertTrue(
             collect($menus)

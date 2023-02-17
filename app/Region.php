@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +17,9 @@ class Region extends Model
         'is_null' => 'boolean',
     ];
 
+    /**
+     * @return Collection<int, array{id: int, name: string}>
+     */
     public static function forSelect(): Collection
     {
         return static::select('id', 'name')->get();

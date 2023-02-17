@@ -30,11 +30,17 @@ class Subscription extends Model
         return $this->children->sum('amount');
     }
 
+    /**
+     * @return BelongsTo<Fee, self>
+     */
     public function fee(): BelongsTo
     {
         return $this->belongsTo(Fee::class);
     }
 
+    /**
+     * @return HasMany<SubscriptionChild>
+     */
     public function children(): HasMany
     {
         return $this->hasMany(SubscriptionChild::class, 'parent_id');

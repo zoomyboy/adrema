@@ -98,7 +98,7 @@ class StoreTest extends TestCase
 
     public function testItThrowsErrorWhenLoginIsWrong(): void
     {
-        $this->login()->failedNami();
+        $this->login()->withNamiSettings();
         $member = Member::factory()->defaults()->inNami(123)->createOne();
         $course = Course::factory()->inNami(456)->createOne();
 

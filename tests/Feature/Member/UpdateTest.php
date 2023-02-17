@@ -117,17 +117,22 @@ class UpdateTest extends TestCase
     private function fakeRequest(): void
     {
         Http::fake(function ($request) {
-            if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && 'GET' === $request->method()) {
+            if ($request->url() === $this->singleMemberUrl(10, 135) && 'GET' === $request->method()) {
                 return Http::response('{ "success": true, "data": {"missingkey": "missingvalue", "kontoverbindung": {"a": "b"} } }', 200);
             }
 
-            if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && 'PUT' === $request->method() && 43 === $request['version']) {
+            if ($request->url() === $this->singleMemberUrl(10, 135) && 'PUT' === $request->method() && 43 === $request['version']) {
                 return Http::response('{ "success": false, "message": "Update nicht möglich. Der Datensatz wurde zwischenzeitlich verändert." }', 200);
             }
 
-            if ($request->url() === app(FakeBackend::class)->singleMemberUrl(10, 135) && 'PUT' === $request->method()) {
+            if ($request->url() === $this->singleMemberUrl(10, 135) && 'PUT' === $request->method()) {
                 return Http::response('{ "success": true, "data": { "version": 44 } }', 200);
             }
         });
+    }
+
+    private function singleMemberUrl(int $gruppierungId, int $memberId): string
+    {
+        return "https://nami.dpsg.de/ica/rest/nami/mitglied/filtered-for-navigation/gruppierung/gruppierung/{$gruppierungId}/{$memberId}";
     }
 }

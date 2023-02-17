@@ -15,6 +15,9 @@ class Group extends Model
     public $fillable = ['nami_id', 'name', 'parent_id'];
     public $timestamps = false;
 
+    /**
+     * @return BelongsTo<static, self>
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(static::class, 'parent_id');

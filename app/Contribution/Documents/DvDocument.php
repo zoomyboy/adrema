@@ -5,19 +5,21 @@ namespace App\Contribution\Documents;
 use App\Country;
 use App\Member\Member;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
 class DvDocument extends ContributionDocument
 {
+    /**
+     * @param Collection<int, Collection<int, Member>> $members
+     */
     public function __construct(
         public string $dateFrom,
         public string $dateUntil,
         public string $zipLocation,
         public ?Country $country,
-        /* @var Collection<int, Collection<int, Member>> */
         public Collection $members,
         public ?string $filename = '',
         public string $type = 'F',
@@ -38,7 +40,7 @@ class DvDocument extends ContributionDocument
             dateUntil: $request->dateUntil,
             zipLocation: $request->zipLocation,
             country: Country::where('id', $request->country)->firstOrFail(),
-            members: Member::whereIn('id', $request->members)->orderByRaw('lastname, firstname')->get()->chunk(17),
+            members: Member::whereIn('id', $request->members)->orderByRaw('lastname, firstname')->get()->toBase()->chunk(17),
         );
     }
 

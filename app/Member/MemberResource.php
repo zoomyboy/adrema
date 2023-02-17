@@ -20,7 +20,7 @@ class MemberResource extends JsonResource
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function toArray($request)
     {
