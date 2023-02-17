@@ -5,6 +5,7 @@ namespace App\Initialize;
 use App\Group;
 use DB;
 use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\Data\Group as NamiGroup;
 
 class InitializeGroups
 {
@@ -17,18 +18,18 @@ class InitializeGroups
 
     public function handle(): void
     {
-        $this->api->groups()->each(function ($group) {
+        $this->api->groups(null)->each(function ($group) {
             $parent = Group::updateOrCreate(['nami_id' => $group->id], ['nami_id' => $group->id, 'name' => $group->name]);
 
-            $this->syncChildren($group->id, $parent);
+            $this->syncChildren($group, $parent);
         });
     }
 
-    private function syncChildren(int $groupId, Group $parent): void
+    private function syncChildren(NamiGroup $namiParent, Group $parent): void
     {
-        $this->api->subgroupsOf($groupId)->each(function ($subgroup) use ($parent) {
+        $this->api->groups($namiParent)->each(function ($subgroup) use ($parent) {
             $newParent = Group::updateOrCreate(['nami_id' => $subgroup->id], ['nami_id' => $subgroup->id, 'name' => $subgroup->name, 'parent_id' => $parent->id]);
-            $this->syncChildren($subgroup->id, $newParent);
+            $this->syncChildren($subgroup, $newParent);
         });
     }
 

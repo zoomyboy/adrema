@@ -295,31 +295,6 @@ parameters:
             path: tests/Unit/Mailman/ServiceTest.php
 
         -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Activity\\:\\:fromNami\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Activity.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Activity\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Activity.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Activity\\:\\:subactivities\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Activity.php
-
-        -
-            message: "#^Unable to resolve the template type TKey in call to function collect$#"
-            count: 1
-            path: packages/laravel-nami/src/Activity.php
-
-        -
-            message: "#^Unable to resolve the template type TValue in call to function collect$#"
-            count: 1
-            path: packages/laravel-nami/src/Activity.php
-
-        -
             message: "#^Property Zoomyboy\\\\LaravelNami\\\\Authentication\\\\FakeCookie\\:\\:\\$authenticated type has no value type specified in iterable type array\\.$#"
             count: 1
             path: packages/laravel-nami/src/Authentication/FakeCookie.php
@@ -458,21 +433,6 @@ parameters:
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Gender\\:\\:getNullValue\\(\\) has no return type specified\\.$#"
             count: 1
             path: packages/laravel-nami/src/Gender.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Group\\:\\:fees\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Group.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Group\\:\\:fromResponse\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Group.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Group\\:\\:subgroups\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Group.php
 
         -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Logger\\:\\:__construct\\(\\) has parameter \\$options with no type specified\\.$#"
@@ -673,41 +633,6 @@ parameters:
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Region\\:\\:getNullValue\\(\\) has no return type specified\\.$#"
             count: 1
             path: packages/laravel-nami/src/Region.php
-
-        -
-            message: "#^Call to an undefined static method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:getNullValue\\(\\)\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Subactivity.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:fromNami\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Subactivity.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:fromNami\\(\\) has parameter \\$item with no type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Subactivity.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:getIsNullAttribute\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Subactivity.php
-
-        -
-            message: "#^Method Zoomyboy\\\\LaravelNami\\\\Subactivity\\:\\:getNameAttribute\\(\\) has no return type specified\\.$#"
-            count: 1
-            path: packages/laravel-nami/src/Subactivity.php
-
-        -
-            message: "#^Unable to resolve the template type TKey in call to function collect$#"
-            count: 1
-            path: packages/laravel-nami/src/Subactivity.php
-
-        -
-            message: "#^Unable to resolve the template type TValue in call to function collect$#"
-            count: 1
-            path: packages/laravel-nami/src/Subactivity.php
 
         -
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\Stub\\\\Member\\:\\:findByNamiId\\(\\) has no return type specified\\.$#"

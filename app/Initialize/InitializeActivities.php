@@ -2,7 +2,7 @@
 
 namespace App\Initialize;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Zoomyboy\LaravelNami\Api;
 
 class InitializeActivities
@@ -16,8 +16,7 @@ class InitializeActivities
 
     public function handle(): void
     {
-        $groupId = $this->api->groups()->first()->id;
-        app(ActivityCreator::class)->createFor($this->api, $groupId);
+        app(ActivityCreator::class)->createFor($this->api, $this->api->groups()->first());
     }
 
     public function restore(): void

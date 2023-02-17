@@ -79,7 +79,7 @@ class InsertMembershipsAction
     private function singleStrategy(Member $member, Group $group, NamiMembershipEntry $membershipEntry): ?Membership
     {
         $membership = $this->api()->membership($member->nami_id, $membershipEntry->id);
-        app(ActivityCreator::class)->createFor($this->api(), $membership->groupId);
+        app(ActivityCreator::class)->createFor($this->api(), $membership->group());
 
         $activity = Activity::nami($membership->activityId);
         if (!$activity) {

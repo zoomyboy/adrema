@@ -3,6 +3,7 @@
 namespace App\Initialize;
 
 use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\Data\Group;
 
 class ActivityCreator
 {
@@ -50,10 +51,10 @@ class ActivityCreator
         '€ LeiterIn',
     ];
 
-    public function createFor(Api $api, int $groupId): void
+    public function createFor(Api $api, Group $groupId): void
     {
-        $api->activities($groupId)->each(function ($activity) use ($api) {
-            $activity = \App\Activity::updateOrCreate(['nami_id' => $activity->id], [
+        $api->activities($groupId)->each(function ($activity) {
+            $localActivity = \App\Activity::updateOrCreate(['nami_id' => $activity->id], [
                 'nami_id' => $activity->id,
                 'name' => $activity->name,
                 'is_try' => in_array($activity->name, $this->tries),
@@ -63,7 +64,7 @@ class ActivityCreator
             ]);
 
             $groups = [];
-            $api->subactivitiesOf($activity->nami_id)->each(function ($group) use (&$groups) {
+            $activity->subactivities()->each(function ($group) use (&$groups) {
                 $group = \App\Subactivity::updateOrCreate(['nami_id' => $group->id], [
                     'nami_id' => $group->id,
                     'name' => $group->name,
@@ -72,7 +73,7 @@ class ActivityCreator
                 ]);
                 $groups[] = $group->id;
             });
-            $activity->subactivities()->sync($groups);
+            $localActivity->subactivities()->sync($groups);
         });
     }
 }

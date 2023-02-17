@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\MockObject\Stub;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Api;
-use Zoomyboy\LaravelNami\Group;
+use Zoomyboy\LaravelNami\Data\Group;
 
 class InitializeGroupsTest extends TestCase
 {
@@ -34,13 +34,12 @@ class InitializeGroupsTest extends TestCase
 
     public function testItSynchsAGroupWithASingleNodeAndNoChildren(): void
     {
+        $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
         $this->api->method('groups')->will($this->returnValueMap([
-            [
-                null,
-                collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')]),
-            ],
+            [null, collect([$parentGroup])],
+            [$parentGroup, collect([])],
         ]));
-        $this->api->method('subgroupsOf')->willReturn(collect([]));
+        $this->api->method('groups')->willReturn(collect([]));
 
         (new InitializeGroups($this->api))->handle();
 
@@ -54,13 +53,11 @@ class InitializeGroupsTest extends TestCase
     public function testItDoesntCreateAGroupTwiceWithTheSameNamiId(): void
     {
         GroupModel::factory()->create(['nami_id' => 150]);
+        $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
         $this->api->method('groups')->will($this->returnValueMap([
-            [
-                null,
-                collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')]),
-            ],
+            [null, collect([$parentGroup])],
+            [$parentGroup, collect([])],
         ]));
-        $this->api->method('subgroupsOf')->willReturn(collect([]));
 
         (new InitializeGroups($this->api))->handle();
 
@@ -69,17 +66,13 @@ class InitializeGroupsTest extends TestCase
 
     public function testItSynchsSubgroups(): void
     {
-        GroupModel::factory()->create(['nami_id' => 150]);
-        $this->api->method('groups')->willReturn(
-            collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')])
-        );
-        $this->api->method('subgroupsOf')->willReturnCallback(function ($groupId) {
-            if (150 === $groupId) {
-                return collect([(new Group())->setParentId(150)->setId(200)->setName('subgroup')]);
-            }
-
-            return collect([]);
-        });
+        $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
+        $subgroup = Group::from(['id' => 200, 'name' => 'subgroup', 'parentId' => 150]);
+        $this->api->method('groups')->will($this->returnValueMap([
+            [null, collect([$parentGroup])],
+            [$parentGroup, collect([$subgroup])],
+            [$subgroup, collect([])],
+        ]));
 
         (new InitializeGroups($this->api))->handle();
 
@@ -91,20 +84,15 @@ class InitializeGroupsTest extends TestCase
 
     public function testItSynchsSubgroupsOfSubgroups(): void
     {
-        GroupModel::factory()->create(['nami_id' => 150]);
-        $this->api->method('groups')->willReturn(
-            collect([(new Group())->setParentId(null)->setId(150)->setName('lorem')])
-        );
-        $this->api->method('subgroupsOf')->willReturnCallback(function ($groupId) {
-            if (150 === $groupId) {
-                return collect([(new Group())->setParentId(150)->setId(200)->setName('subgroup')]);
-            }
-            if (200 === $groupId) {
-                return collect([(new Group())->setParentId(200)->setId(201)->setName('subsubgroup')]);
-            }
-
-            return collect([]);
-        });
+        $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
+        $subgroup = Group::from(['id' => 200, 'name' => 'subgroup', 'parentId' => 150]);
+        $subsubgroup = Group::from(['id' => 250, 'name' => 'subsubgroup', 'parentId' => 200]);
+        $this->api->method('groups')->will($this->returnValueMap([
+            [null, collect([$parentGroup])],
+            [$parentGroup, collect([$subgroup])],
+            [$subgroup, collect([$subsubgroup])],
+            [$subsubgroup, collect([])],
+        ]));
 
         (new InitializeGroups($this->api))->handle();
 
@@ -114,16 +102,13 @@ class InitializeGroupsTest extends TestCase
     public function testItAssignsIdAndParentToAnExistingSubgroup(): void
     {
         GroupModel::factory()->create(['nami_id' => 200]);
-        $this->api->method('groups')->willReturn(
-            collect([(new Group())->setParentId(null)->setId(150)->setName('root')])
-        );
-        $this->api->method('subgroupsOf')->willReturnCallback(function ($groupId) {
-            if (150 === $groupId) {
-                return collect([(new Group())->setParentId(150)->setId(200)->setName('child')]);
-            }
-
-            return collect([]);
-        });
+        $parentGroup = Group::from(['id' => 150, 'name' => 'root', 'parentId' => null]);
+        $subgroup = Group::from(['id' => 200, 'name' => 'child', 'parentId' => 150]);
+        $this->api->method('groups')->will($this->returnValueMap([
+            [null, collect([$parentGroup])],
+            [$parentGroup, collect([$subgroup])],
+            [$subgroup, collect([])],
+        ]));
 
         (new InitializeGroups($this->api))->handle();
 

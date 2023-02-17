@@ -10,10 +10,16 @@ use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
+/**
+ * @template Payload of array{name: string, subactivities: array<int, int>}
+ */
 class ActivityUpdateAction
 {
     use AsAction;
 
+    /**
+     * @param Payload $payload
+     */
     public function handle(Activity $activity, array $payload): void
     {
         DB::transaction(function() use ($activity, $payload) {
@@ -22,6 +28,9 @@ class ActivityUpdateAction
         });
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function rules(): array
     {
         return [
@@ -43,20 +52,21 @@ class ActivityUpdateAction
 
     /**
      * @todo handle this with a model event on the pivot model
+     * @param Payload $payload
      */
     private function validateNami(Activity $activity, array $payload): void
     {
-        if ($activity->name !== data_get($payload, 'name', '')) {
+        if ($activity->name !== $payload['name']) {
             throw ValidationException::withMessages(['nami_id' => 'Aktivität ist in NaMi. Update des Namens nicht möglich.']);
         }
 
-        $removingSubactivities = $activity->subactivities()->whereNotIn('id', data_get($payload, 'subactivities'))->pluck('id');
+        $removingSubactivities = $activity->subactivities()->whereNotIn('id', $payload['subactivities'])->pluck('id');
 
         if ($removingSubactivities->first(fn ($subactivity) => Subactivity::find($subactivity)->hasNami)) {
             throw ValidationException::withMessages(['nami_id' => 'Untertätigkeit kann nicht entfernt werden.']);
         }
 
-        $addingSubactivities = collect(data_get($payload, 'subactivities'))->filter(fn ($subactivityId) => $activity->subactivities->doesntContain($subactivityId));
+        $addingSubactivities = collect($payload['subactivities'])->filter(fn ($subactivityId) => $activity->subactivities->doesntContain($subactivityId));
 
         if ($addingSubactivities->first(fn ($subactivity) => Subactivity::find($subactivity)->hasNami)) {
             throw ValidationException::withMessages(['nami_id' => 'Untertätigkeit kann nicht hinzugefügt werden.']);
