@@ -1,6 +1,7 @@
 <?php
 
 use App\Activity\Actions\ActivityStoreAction;
+use App\Activity\Actions\ActivityUpdateAction;
 use App\Activity\Actions\IndexAction as ActivityIndexAction;
 use App\Contribution\Actions\FormAction as ContributionFormAction;
 use App\Contribution\ContributionController;
@@ -50,4 +51,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/contribution/generate', [ContributionController::class, 'generate'])->name('contribution.generate');
     Route::get('/activity', ActivityIndexAction::class)->name('activity.index');
     Route::post('/activity', ActivityStoreAction::class)->name('activity.store');
+    Route::patch('/activity/{activity}', ActivityUpdateAction::class)->name('activity.update');
 });
