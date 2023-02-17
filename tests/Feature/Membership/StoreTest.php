@@ -63,6 +63,52 @@ class StoreTest extends TestCase
         ]);
     }
 
+    public function testItDoesntFireNamiWhenMembershipIsLocal(): void
+    {
+        $this->withoutExceptionHandling();
+        $member = Member::factory()
+            ->defaults()
+            ->for(Group::factory()->inNami(1400))
+            ->inNami(6)
+            ->create();
+        $activity = Activity::factory()->hasAttached(Subactivity::factory())->create();
+
+        $this->from('/member')->post(
+            "/member/{$member->id}/membership",
+            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->create()
+        );
+
+        $this->assertDatabaseHas('memberships', [
+            'member_id' => $member->id,
+            'activity_id' => $activity->id,
+            'subactivity_id' => $activity->subactivities->first()->id,
+            'nami_id' => null,
+        ]);
+    }
+
+    public function testItDoesntFireNamiWhenSubactivityIsLocal(): void
+    {
+        $this->withoutExceptionHandling();
+        $member = Member::factory()
+            ->defaults()
+            ->for(Group::factory()->inNami(1400))
+            ->inNami(6)
+            ->create();
+        $activity = Activity::factory()->inNami(666)->hasAttached(Subactivity::factory())->create();
+
+        $this->from('/member')->post(
+            "/member/{$member->id}/membership",
+            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->create()
+        );
+
+        $this->assertDatabaseHas('memberships', [
+            'member_id' => $member->id,
+            'activity_id' => $activity->id,
+            'subactivity_id' => $activity->subactivities->first()->id,
+            'nami_id' => null,
+        ]);
+    }
+
     public function testActivityIsRequired(): void
     {
         $member = Member::factory()

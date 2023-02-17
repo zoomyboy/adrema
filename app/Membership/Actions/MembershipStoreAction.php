@@ -25,25 +25,31 @@ class MembershipStoreAction
     {
         $from = now()->startOfDay();
 
-        try {
-            $namiId = $settings->login()->putMembership($member->nami_id, NamiMembership::from([
-                'startsAt' => $from,
-                'groupId' => $member->group->nami_id,
-                'activityId' => $activity->nami_id,
-                'subactivityId' => $subactivity ? $subactivity->nami_id : null,
-            ]));
-        } catch (HttpException $e) {
-            throw ValidationException::withMessages(['nami' => htmlspecialchars($e->getMessage())]);
+        $subactivity = $subactivity ?: new Subactivity(['nami_id' => null, 'id' => null]);
+
+        if ($activity->hasNami && ($subactivity->id === null || $subactivity->hasNami)) {
+            try {
+                $namiId = $settings->login()->putMembership($member->nami_id, NamiMembership::from([
+                    'startsAt' => $from,
+                    'groupId' => $member->group->nami_id,
+                    'activityId' => $activity->nami_id,
+                    'subactivityId' => $subactivity->nami_id,
+                ]));
+            } catch (HttpException $e) {
+                throw ValidationException::withMessages(['nami' => htmlspecialchars($e->getMessage())]);
+            }
         }
 
         $membership = $member->memberships()->create([
             'activity_id' => $activity->id,
-            'subactivity_id' => $subactivity ? $subactivity->id : null,
+            'subactivity_id' => $subactivity->id,
             'promised_at' => $promisedAt,
-            ...['nami_id' => $namiId, 'group_id' => $member->group->id, 'from' => $from],
+            ...['nami_id' => $namiId ?? null, 'group_id' => $member->group->id, 'from' => $from],
         ]);
 
-        $member->syncVersion();
+        if ($activity->hasNami && ($subactivity->id === null || $subactivity->hasNami)) {
+            $member->syncVersion();
+        }
 
         return $membership;
     }
