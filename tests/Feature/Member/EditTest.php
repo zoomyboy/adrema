@@ -17,7 +17,7 @@ class EditTest extends TestCase
         $this->withoutExceptionHandling();
         $this->login()->loginNami();
         $member = Member::factory()->defaults()->create(['firstname' => 'Max']);
-        $activity = Activity::factory()->hasAttached(Subactivity::factory()->name('Biber'))->name('€ Mitglied')->create();
+        $activity = Activity::factory()->inNami(66)->hasAttached(Subactivity::factory()->inNami(56)->name('Biber'))->name('€ Mitglied')->create();
         $subactivity = $activity->subactivities->first();
 
         $response = $this->get(route('member.edit', ['member' => $member]));

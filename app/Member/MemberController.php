@@ -57,7 +57,7 @@ class MemberController extends Controller
         session()->put('menu', 'member');
         session()->put('title', 'Mitglied erstellen');
 
-        $activities = Activity::with('subactivities')->get();
+        $activities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
 
         return \Inertia::render('member/VForm', [
             'activities' => $activities->pluck('name', 'id'),
@@ -90,7 +90,7 @@ class MemberController extends Controller
         session()->put('menu', 'member');
         session()->put('title', "Mitglied {$member->firstname} {$member->lastname} bearbeiten");
 
-        $activities = Activity::with('subactivities')->get();
+        $activities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
 
         return \Inertia::render('member/VForm', [
             'activities' => $activities->pluck('name', 'id'),
