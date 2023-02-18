@@ -6,10 +6,9 @@ use App\Letter\BillKind;
 use App\Letter\DocumentFactory;
 use App\Letter\Queries\BillKindQuery;
 use App\Payment\PaymentMail;
-use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Mail;
 use Zoomyboy\Tex\Tex;
 
 class LetterSendAction
@@ -37,7 +36,7 @@ class LetterSendAction
             $letters = app(DocumentFactory::class)->letterCollection($type, new BillKindQuery(BillKind::EMAIL));
 
             foreach ($letters as $letter) {
-                $letterPath = Storage::path(Tex::compile($letter)->storeIn('/tmp', 'local'));
+                $letterPath = Storage::disk('temp')->path(Tex::compile($letter)->storeIn('', 'temp'));
                 Mail::to($letter->getRecipient())
                     ->send(new PaymentMail($letter, $letterPath));
                 app(DocumentFactory::class)->afterSingle($letter);

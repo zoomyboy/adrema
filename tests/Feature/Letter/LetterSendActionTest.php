@@ -9,8 +9,8 @@ use App\Payment\Payment;
 use App\Payment\PaymentMail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Mail;
 use Tests\RequestFactories\Child;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
@@ -25,7 +25,7 @@ class LetterSendActionTest extends TestCase
     {
         parent::setUp();
 
-        Storage::fake('local');
+        Storage::fake('temp');
         $this->withoutExceptionHandling();
         $this->login()->loginNami();
         $this->member = Member::factory()
@@ -43,7 +43,7 @@ class LetterSendActionTest extends TestCase
 
         Artisan::call('letter:send');
 
-        Mail::assertSent(PaymentMail::class, fn ($mail) => Storage::path('rechnung-fur-mom.pdf') === $mail->filename);
+        Mail::assertSent(PaymentMail::class, fn ($mail) => Storage::disk('temp')->path('rechnung-fur-mom.pdf') === $mail->filename && Storage::disk('temp')->exists('rechnung-fur-mom.pdf'));
     }
 
     public function testItCanCompileAttachment(): void
