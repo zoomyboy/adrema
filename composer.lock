@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88b1ba728ae191dbe5c7e953f0726aa7",
+    "content-hash": "f2b0fb9ab98b447279992ca9d1dd0220",
     "packages": [
         {
             "name": "amphp/amp",
@@ -9564,7 +9564,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/tex",
-                "reference": "48251272de62e3fea044a7ad31e1a411c15eb4c6"
+                "reference": "6f162102ef7ceca41822d18c3e694abd926f550b"
             },
             "type": "library",
             "extra": {
@@ -12246,7 +12246,14 @@
             "time": "2023-01-11T23:22:44+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "zoomyboy/tex",
+            "version": "dev-main",
+            "alias": "1.0",
+            "alias_normalized": "1.0.0.0"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "zoomyboy/laravel-nami": 20,
