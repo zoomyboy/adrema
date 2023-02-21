@@ -3,6 +3,7 @@
 namespace Tests\RequestFactories;
 
 use App\Activity;
+use App\Group;
 use App\Subactivity;
 use Carbon\Carbon;
 use Worksome\RequestFactories\RequestFactory;
@@ -53,5 +54,10 @@ class MembershipRequestFactory extends RequestFactory
         return $this->state([
             'promised_at' => $value->format('Y-m-d'),
         ]);
+    }
+
+    public function group(Group $group): self
+    {
+        return $this->state(['group_id' => $group->id]);
     }
 }

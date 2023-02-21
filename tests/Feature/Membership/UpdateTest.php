@@ -24,7 +24,7 @@ class UpdateTest extends TestCase
         $this->login()->loginNami();
     }
 
-    public function testItCreatesAMembership(): void
+    public function testItUpdatesAMembership(): void
     {
         $this->withoutExceptionHandling();
         $activity = Activity::factory()->hasAttached(Subactivity::factory())->create();

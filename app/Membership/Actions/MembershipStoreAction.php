@@ -3,6 +3,7 @@
 namespace App\Membership\Actions;
 
 use App\Activity;
+use App\Group;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Setting\NamiSettings;
@@ -21,7 +22,7 @@ class MembershipStoreAction
 {
     use AsAction;
 
-    public function handle(Member $member, Activity $activity, ?Subactivity $subactivity, ?Carbon $promisedAt, NamiSettings $settings): Membership
+    public function handle(Member $member, Activity $activity, ?Subactivity $subactivity, Group $group, ?Carbon $promisedAt, NamiSettings $settings): Membership
     {
         $from = now()->startOfDay();
 
@@ -31,7 +32,7 @@ class MembershipStoreAction
             try {
                 $namiId = $settings->login()->putMembership($member->nami_id, NamiMembership::from([
                     'startsAt' => $from,
-                    'groupId' => $member->group->nami_id,
+                    'groupId' => $group->nami_id,
                     'activityId' => $activity->nami_id,
                     'subactivityId' => $subactivity->nami_id,
                 ]));
@@ -44,7 +45,9 @@ class MembershipStoreAction
             'activity_id' => $activity->id,
             'subactivity_id' => $subactivity->id,
             'promised_at' => $promisedAt,
-            ...['nami_id' => $namiId ?? null, 'group_id' => $member->group->id, 'from' => $from],
+            'group_id' => $group->id,
+            'from' => $from,
+            'nami_id' => $namiId ?? null,
         ]);
 
         if ($activity->hasNami && ($subactivity->id === null || $subactivity->hasNami)) {
@@ -85,6 +88,7 @@ class MembershipStoreAction
             $member,
             Activity::find($request->activity_id),
             $request->subactivity_id ? Subactivity::find($request->subactivity_id) : null,
+            Group::findOrFail($request->input('group_id', -1)),
             $request->promised_at ? Carbon::parse($request->promised_at) : null,
             $settings,
         );

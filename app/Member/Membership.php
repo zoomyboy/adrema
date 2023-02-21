@@ -19,7 +19,7 @@ class Membership extends Model
     use HasNamiField;
 
     /** @var array<int, string> */
-    public $fillable = ['subactivity_id', 'activity_id', 'group_id', 'member_id', 'nami_id', 'from', 'to', 'promised_at'];
+    public $guarded = [];
 
     /** @var array<string, string> */
     public $casts = [

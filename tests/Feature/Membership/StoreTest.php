@@ -42,7 +42,7 @@ class StoreTest extends TestCase
 
         $response = $this->from('/member')->post(
             "/member/{$member->id}/membership",
-            MembershipRequestFactory::new()->promise(now())->in($activity, $activity->subactivities->first())->create()
+            MembershipRequestFactory::new()->promise(now())->in($activity, $activity->subactivities->first())->group($member->group)->create()
         );
 
         $response->assertRedirect('/member');
@@ -53,6 +53,7 @@ class StoreTest extends TestCase
             'subactivity_id' => $activity->subactivities->first()->id,
             'nami_id' => 133,
             'promised_at' => now()->format('Y-m-d'),
+            'group_id' => $member->group->id,
         ]);
         app(MembershipFake::class)->assertCreated(6, [
             'untergliederungId' => 4,
@@ -75,7 +76,7 @@ class StoreTest extends TestCase
 
         $this->from('/member')->post(
             "/member/{$member->id}/membership",
-            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->create()
+            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->group($member->group)->create()
         );
 
         $this->assertDatabaseHas('memberships', [
@@ -98,7 +99,7 @@ class StoreTest extends TestCase
 
         $this->from('/member')->post(
             "/member/{$member->id}/membership",
-            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->create()
+            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->group($member->group)->create()
         );
 
         $this->assertDatabaseHas('memberships', [
@@ -157,6 +158,27 @@ class StoreTest extends TestCase
         $this->assertErrors(['subactivity_id' => 'Untertätigkeit ist nicht vorhanden.'], $response);
     }
 
+    public function testItCanAddAnotherGroup(): void
+    {
+        app(MembershipFake::class)->createsSuccessfully(6, 133);
+        app(MemberFake::class)->shows(1400, 6, ['version' => 1506]);
+        $member = Member::factory()->defaults()->for(Group::factory()->inNami(1400))->inNami(6)->create();
+        $group = Group::factory()->inNami(1401)->create();
+        $activity = Activity::factory()->inNami(7)->hasAttached(Subactivity::factory()->inNami(8))->create();
+
+        $this->post(
+            "/member/{$member->id}/membership",
+            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->group($group)->create()
+        );
+
+        $this->assertDatabaseHas('memberships', [
+            'group_id' => $group->id,
+        ]);
+        app(MembershipFake::class)->assertCreated(6, [
+            'gruppierungId' => 1401,
+        ]);
+    }
+
     public function testSubactivityCanBeEmpty(): void
     {
         $this->withoutExceptionHandling();
@@ -173,7 +195,7 @@ class StoreTest extends TestCase
 
         $this->post(
             "/member/{$member->id}/membership",
-            MembershipRequestFactory::new()->in($activity, null)->create()
+            MembershipRequestFactory::new()->in($activity, null)->group($member->group)->create()
         );
 
         $this->assertEquals(1506, $member->fresh()->version);
@@ -211,7 +233,7 @@ class StoreTest extends TestCase
 
         $response = $this->post(
             "/member/{$member->id}/membership",
-            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->create()
+            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->group($member->group)->create()
         );
 
         $this->assertErrors(['nami' => $validationError], $response);
