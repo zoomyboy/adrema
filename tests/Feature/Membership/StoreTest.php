@@ -179,6 +179,18 @@ class StoreTest extends TestCase
         ]);
     }
 
+    public function testGroupIsRequired(): void
+    {
+        $member = Member::factory()->defaults()->for(Group::factory()->inNami(1400))->inNami(6)->create();
+
+        $response = $this->post(
+            "/member/{$member->id}/membership",
+            [],
+        );
+
+        $response->assertSessionHasErrors(['group_id' => 'Gruppierung ist erforderlich.']);
+    }
+
     public function testSubactivityCanBeEmpty(): void
     {
         $this->withoutExceptionHandling();

@@ -68,6 +68,7 @@ class MembershipStoreAction
             'activity_id' => ['bail', 'required', 'exists:activities,id'],
             'subactivity_id' => $subactivityRule,
             'promised_at' => ['nullable', 'date'],
+            'group_id' => ['required', 'exists:groups,id'],
         ];
     }
 
@@ -79,6 +80,7 @@ class MembershipStoreAction
         return [
             'activity_id' => 'Tätigkeit',
             'subactivity_id' => 'Untertätigkeit',
+            'group_id' => 'Gruppierung',
         ];
     }
 
