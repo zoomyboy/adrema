@@ -600,12 +600,37 @@ parameters:
             path: tests/Feature/Member/NamiPutMemberActionTest.php
 
         -
-            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:never\\(\\)\\.$#"
-            count: 4
-            path: tests/Feature/Member/ResyncTest.php
-
-        -
             message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
             count: 2
             path: tests/Feature/Member/ResyncTest.php
+
+        -
+            message: "#^Method App\\\\Region\\:\\:forSelect\\(\\) should return Illuminate\\\\Support\\\\Collection\\<int, array\\{id\\: int, name\\: string\\}\\> but returns Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, App\\\\Region\\>\\.$#"
+            count: 1
+            path: app/Region.php
+
+        -
+            message: "#^Access to an undefined property Sabre\\\\VObject\\\\Component\\\\VCard\\:\\:\\$BDAY\\.$#"
+            count: 1
+            path: tests/Feature/Member/DavTest.php
+
+        -
+            message: "#^Access to an undefined property Sabre\\\\VObject\\\\Component\\\\VCard\\:\\:\\$FN\\.$#"
+            count: 1
+            path: tests/Feature/Member/DavTest.php
+
+        -
+            message: "#^Access to an undefined property Sabre\\\\VObject\\\\Component\\\\VCard\\:\\:\\$N\\.$#"
+            count: 1
+            path: tests/Feature/Member/DavTest.php
+
+        -
+            message: "#^Access to an undefined property Sabre\\\\VObject\\\\Component\\\\VCard\\:\\:\\$TEL\\.$#"
+            count: 1
+            path: tests/Feature/Member/DavTest.php
+
+        -
+            message: "#^Access to an undefined property Sabre\\\\VObject\\\\Component\\\\VCard\\:\\:\\$UID\\.$#"
+            count: 1
+            path: tests/Feature/Member/DavTest.php
 

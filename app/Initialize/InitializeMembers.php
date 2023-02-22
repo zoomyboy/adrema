@@ -2,8 +2,9 @@
 
 namespace App\Initialize;
 
-use App\Initialize\Actions\ProcessRedisAction;
-use App\Nami\Api\CompleteMemberToRedisJob;
+use App\Member\Actions\InsertFullMemberAction;
+use App\Member\Data\FullMember;
+use App\Nami\Api\FullMemberAction;
 use App\Setting\NamiSettings;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Redis;
@@ -23,13 +24,16 @@ class InitializeMembers
         Redis::delete('members');
 
         $jobs = $api->search([])->map(function (NamiMemberEntry $member) use ($api) {
-            return new CompleteMemberToRedisJob($api, $member->groupId, $member->id);
+            return FullMemberAction::makeJob($api, $member->groupId, $member->id, 'members');
         })->toArray();
 
         Bus::batch($jobs)
             ->finally(function () {
-                foreach (Redis::lrange('members', 0, -1) as $data) {
-                    ProcessRedisAction::dispatch(json_decode($data, true));
+                /** @var array<int, FullMember> */
+                $members = array_map(fn ($member) => FullMember::from(json_decode($member, true)), Redis::lrange('members', 0, -1));
+
+                foreach ($members as $data) {
+                    InsertFullMemberAction::dispatch($data);
                 }
             })
             ->onQueue('long')

@@ -2,15 +2,13 @@
 
 namespace App\Member\Actions;
 
-use App\Actions\PullMemberAction;
-use App\Actions\PullMembershipsAction;
 use App\Member\Member;
+use App\Nami\Api\FullMemberAction;
 use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Zoomyboy\LaravelNami\Exceptions\Skippable;
 
 class MemberResyncAction
 {
@@ -24,13 +22,9 @@ class MemberResyncAction
             return;
         }
 
-        try {
-            $localMember = app(PullMemberAction::class)->handle($member->group->nami_id, $member->nami_id);
-        } catch (Skippable $e) {
-            return;
-        }
+        $fullMember = FullMemberAction::run($api, $member->group->nami_id, $member->nami_id);
 
-        app(PullMembershipsAction::class)->handle($localMember);
+        InsertFullMemberAction::dispatch($fullMember);
     }
 
     public function asController(ActionRequest $request, Member $member): RedirectResponse|Response
