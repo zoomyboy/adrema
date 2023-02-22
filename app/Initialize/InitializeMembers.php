@@ -32,7 +32,6 @@ class InitializeMembers
 
         $batch = Bus::batch($jobs)
             ->finally(function (Batch $batch) {
-                Log::debug('Complete Member count: '.count(Redis::lrange('members', 0, -1)));
                 foreach (Redis::lrange('members', 0, -1) as $data) {
                     ProcessRedisAction::dispatch(json_decode($data, true));
                 }
