@@ -49,6 +49,16 @@ class Membership extends Model
      *
      * @return Builder<Membership>
      */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->whereNull('to');
+    }
+
+    /**
+     * @param Builder<Membership> $query
+     *
+     * @return Builder<Membership>
+     */
     public function scopeIsAgeGroup(Builder $query): Builder
     {
         return $query->whereHas('subactivity', fn ($builder) => $builder->where('is_age_group', true));

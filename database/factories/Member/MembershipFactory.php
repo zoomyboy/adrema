@@ -51,6 +51,11 @@ class MembershipFactory extends Factory
         return $instance;
     }
 
+    public function ended(): self
+    {
+        return $this->state(['to' => now()->subDays(2)]);
+    }
+
     public function in(string $activity, int $activityNamiId, ?string $subactivity = null, ?int $subactivityNamiId = null): self
     {
         $instance = $this->for(Activity::factory()->name($activity)->inNami($activityNamiId));

@@ -19,6 +19,7 @@ class AgeGroupCountBlock extends Block
             ->join('subactivities', 'memberships.subactivity_id', 'subactivities.id')
             ->isAgeGroup()
             ->isMember()
+            ->active()
             ->groupBy('subactivities.slug', 'subactivities.name')
             ->orderBy('subactivity_id');
     }
@@ -31,6 +32,7 @@ class AgeGroupCountBlock extends Block
         return Membership::selectRaw('"leiter" AS slug, "Leiter" AS name, COUNT(member_id) AS count')
             ->join('activities', 'memberships.activity_id', 'activities.id')
             ->join('subactivities', 'memberships.subactivity_id', 'subactivities.id')
+            ->active()
             ->isLeader();
     }
 
