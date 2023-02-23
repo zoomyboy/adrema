@@ -17,7 +17,6 @@
                     >Beiträge</v-link
                 >
                 <v-link href="/contribution" menu="contribution" icon="contribution">Zuschüsse</v-link>
-                <v-link href="/activity" menu="activity" icon="activity">Tätigkeiten</v-link>
             </div>
             <div class="grid gap-2">
                 <v-link href="/setting" menu="setting" icon="setting">Einstellungen</v-link>
