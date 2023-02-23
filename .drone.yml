@@ -73,6 +73,8 @@ steps:
     - name: phpstan_tests
       image: php:8.1.6
       commands:
+          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync
+          - pecl install redis && docker-php-ext-enable redis
           - vendor/bin/phpstan analyse --memory-limit=2G
 
     - name: composer_no_dev
