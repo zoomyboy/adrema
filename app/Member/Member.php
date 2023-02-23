@@ -392,6 +392,7 @@ class Member extends Model
         }
         if (data_get($filter, 'subactivity_id', false) || data_get($filter, 'activity_id', false)) {
             $query->whereHas('memberships', function ($q) use ($filter) {
+                $q->active();
                 if (data_get($filter, 'subactivity_id', false)) {
                     $q->where('subactivity_id', $filter['subactivity_id']);
                 }
