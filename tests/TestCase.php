@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Phake;
+use Tests\Lib\MakesHttpCalls;
 use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
 
@@ -18,6 +19,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use TestsInertia;
+    use MakesHttpCalls;
 
     protected User $me;
 

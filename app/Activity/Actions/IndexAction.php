@@ -4,6 +4,7 @@ namespace App\Activity\Actions;
 
 use App\Activity;
 use App\Activity\Resources\ActivityResource;
+use App\Http\Views\ActivityFilterScope;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,15 +15,17 @@ class IndexAction
 {
     use AsAction;
 
-    public function handle(): AnonymousResourceCollection
+    public function handle(ActivityFilterScope $filter): AnonymousResourceCollection
     {
-        return ActivityResource::collection(Activity::local()->paginate(20));
+        return ActivityResource::collection(Activity::local()->withFilter($filter)->paginate(20));
     }
 
     public function asController(ActionRequest $request): Response
     {
-        return Inertia::render('activity/Index', [
-            'data' => $this->handle(),
+        $filter = ActivityFilterScope::fromRequest($request->input('filter'));
+
+        return Inertia::render('activity/VIndex', [
+            'data' => $this->handle($filter),
         ]);
     }
 }

@@ -3,6 +3,9 @@
 namespace App\Activity\Resources;
 
 use App\Activity;
+use App\Http\Views\ActivityFilterScope;
+use App\Lib\HasMeta;
+use App\Subactivity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -10,6 +13,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class ActivityResource extends JsonResource
 {
+    use HasMeta;
+
     /**
      * Transform the resource into an array.
      *
@@ -22,6 +27,17 @@ class ActivityResource extends JsonResource
         return [
             'name' => $this->name,
             'id' => $this->id,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function meta(): array
+    {
+        return [
+            'subactivities' => Subactivity::pluck('name', 'id'),
+            'filter' => ActivityFilterScope::fromRequest(request()->input('filter')),
         ];
     }
 }
