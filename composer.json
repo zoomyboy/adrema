@@ -7,8 +7,20 @@
         "laravel"
     ],
     "repositories": [
-        { "type": "path", "url": "./packages/laravel-nami", "options": {"symlink": true} },
-        { "type": "path", "url": "./packages/tex", "options": {"symlink": true} }
+        {
+            "type": "path",
+            "url": "./packages/laravel-nami",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "./packages/tex",
+            "options": {
+                "symlink": true
+            }
+        }
     ],
     "license": "MIT",
     "require": {
@@ -39,9 +51,8 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/larastan": "*",
+        "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^7.0",
-        "phpstan/phpstan": "^1.8.10",
         "phpunit/phpunit": "^9.5.10"
     },
     "config": {
