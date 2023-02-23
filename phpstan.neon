@@ -634,3 +634,17 @@ parameters:
             count: 1
             path: tests/Feature/Member/DavTest.php
 
+        -
+            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,class\\-string\\<App\\\\Contribution\\\\Documents\\\\ContributionDocument\\>\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
+            count: 1
+            path: app/Contribution/ContributionFactory.php
+
+        -
+            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,class\\-string\\<App\\\\Letter\\\\Letter\\>\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
+            count: 1
+            path: app/Payment/ActionFactory.php
+
+        -
+            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,class\\-string\\<App\\\\Setting\\\\LocalSettings\\>\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
+            count: 1
+            path: app/Setting/SettingFactory.php
