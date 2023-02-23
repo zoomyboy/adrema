@@ -586,7 +586,7 @@ parameters:
 
         -
             message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-            count: 4
+            count: 2
             path: tests/Feature/Initialize/InitializeMembersTest.php
 
         -
