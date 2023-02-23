@@ -73,7 +73,7 @@ steps:
     - name: phpstan_tests
       image: php:8.1.6
       commands:
-          - vendor/bin/phpstan analyse --memory-limit=1G
+          - vendor/bin/phpstan analyse --memory-limit=2G
 
     - name: composer_no_dev
       image: composer:2.2.7
