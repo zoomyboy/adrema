@@ -15,7 +15,7 @@ class StoreTest extends TestCase
     {
         $this->login()->loginNami()->withoutExceptionHandling();
 
-        $response = $this->from('/activity')->post(route('activity.store'), [
+        $response = $this->post(route('activity.store'), [
             'name' => 'Lorem',
             'subactivities' => [],
         ]);

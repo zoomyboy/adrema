@@ -14,6 +14,7 @@ export default {
     data: function () {
         return {
             inner: {...this.data},
+            mode: this.data.name === '' ? 'create' : 'edit',
         };
     },
 
@@ -28,7 +29,9 @@ export default {
 
     methods: {
         submit() {
-            this.$inertia.patch(`/activity/${this.inner.id}`, this.inner);
+            this.mode === 'create'
+            ? this.$inertia.post('/activity', this.inner)
+            : this.$inertia.patch(`/activity/${this.inner.id}`, this.inner);
         },
     }
 

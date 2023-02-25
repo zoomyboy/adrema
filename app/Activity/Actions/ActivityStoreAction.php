@@ -38,6 +38,6 @@ class ActivityStoreAction
     {
         $this->handle($request->validated());
 
-        return redirect()->back();
+        return redirect()->route('activity.index');
     }
 }

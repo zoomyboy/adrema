@@ -28,6 +28,9 @@ class IndexAction
 
         return Inertia::render('activity/VIndex', [
             'data' => $this->handle($filter),
+            'toolbar' => [
+                ['href' => route('activity.create'), 'label' => 'Tätigkeit erstellen', 'color' => 'primary', 'icon' => 'plus'],
+            ]
         ]);
     }
 }
