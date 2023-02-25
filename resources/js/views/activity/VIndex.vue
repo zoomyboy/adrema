@@ -1,5 +1,16 @@
 <template>
     <div class="pb-6">
+        <popup heading="Bitte bestätigen" v-if="deleting !== null">
+            <div>
+                <p class="mt-4">
+                    Diese Aktivität löschen?
+                </p>
+                <div class="grid grid-cols-2 gap-3 mt-6">
+                    <a href="#" @click.prevent="remove" class="text-center btn btn-danger">Löschen</a>
+                    <a href="#" @click.prevent="deleting = null" class="text-center btn btn-primary">Abbrechen</a>
+                </div>
+            </div>
+        </popup>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm table">
             <thead>
                 <th>Name</th>
@@ -13,7 +24,7 @@
                         <i-link :href="activity.links.edit" class="inline-flex btn btn-warning btn-sm" v-tooltip="`bearbeiten`"><svg-sprite src="pencil"></svg-sprite></i-link>
                         <i-link
                             href="#"
-                            @click.prevent="$emit('remove')"
+                            @click.prevent="deleting = activity"
                             class="inline-flex btn btn-danger btn-sm"
                             v-tooltip="`Entfernen`"
                             ><svg-sprite src="trash"></svg-sprite
@@ -35,8 +46,30 @@ import indexHelpers from '../../mixins/indexHelpers';
 
 export default {
 
-    mixins: [indexHelpers],
+    data: function() {
+        return {
+            deleting: null,
+        };
+    },
 
+    methods: {
+        remove() {
+            var _self = this;
+            this.$inertia.delete(this.deleting.links.destroy, {
+                preserveState: true,
+                onSuccess(page) {
+                    _self.inner = page.props.data;
+                    _self.deleting = null;
+                }
+            });
+        }
+    },
+
+    components: {
+        popup: () => import('../../components/Popup.vue'),
+    },
+
+    mixins: [indexHelpers],
 
 };
 </script>
