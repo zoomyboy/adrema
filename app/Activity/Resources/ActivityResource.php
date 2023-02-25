@@ -27,6 +27,12 @@ class ActivityResource extends JsonResource
         return [
             'name' => $this->name,
             'id' => $this->id,
+            'subactivities' => $this->subactivities->pluck('id')->toArray(),
+            'links' => [
+                'edit' => route('activity.edit', ['activity' => $this->getModel()]),
+                'update' => route('activity.update', ['activity' => $this->getModel()]),
+                'destroy' => route('activity.destroy', ['activity' => $this->getModel()]),
+            ]
         ];
     }
 
@@ -36,7 +42,7 @@ class ActivityResource extends JsonResource
     public static function meta(): array
     {
         return [
-            'subactivities' => Subactivity::pluck('name', 'id'),
+            'subactivities' => Subactivity::select('name', 'id')->get(),
             'filter' => ActivityFilterScope::fromRequest(request()->input('filter')),
         ];
     }

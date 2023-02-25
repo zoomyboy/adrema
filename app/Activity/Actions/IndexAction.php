@@ -22,6 +22,8 @@ class IndexAction
 
     public function asController(ActionRequest $request): Response
     {
+        session()->put('menu', 'activity');
+        session()->put('title', 'Tätigkeiten');
         $filter = ActivityFilterScope::fromRequest($request->input('filter'));
 
         return Inertia::render('activity/VIndex', [

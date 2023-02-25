@@ -14,12 +14,14 @@ class IndexTest extends TestCase
     public function testItDisplaysLocalActivities(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        Activity::factory()->name('Local')->create();
+        $first = Activity::factory()->name('Local')->create();
         Activity::factory()->name('Remote')->inNami(123)->create();
 
         $response = $this->get('/activity');
 
         $this->assertInertiaHas('Local', $response, 'data.data.0.name');
+        $this->assertInertiaHas(route('activity.update', ['activity' => $first]), $response, 'data.data.0.links.update');
+        $this->assertInertiaHas(route('activity.destroy', ['activity' => $first]), $response, 'data.data.0.links.destroy');
         $this->assertCount(1, $this->inertia($response, 'data.data'));
     }
 

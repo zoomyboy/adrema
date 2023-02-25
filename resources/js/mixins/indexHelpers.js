@@ -1,0 +1,53 @@
+export default {
+    data: function () {
+        return {
+            inner: {...this.data},
+        };
+    },
+    props: {
+        data: {},
+    },
+    methods: {
+        reload(resetPage = true) {
+            var _self = this;
+            var data = {
+                filter: btoa(JSON.stringify(this.inner.meta.filter)),
+                page: 1,
+            };
+
+            data['page'] = resetPage ? 1 : this.inner.meta.current_page;
+
+            this.$inertia.visit(window.location.pathname, {
+                data,
+                preserveState: true,
+                onSuccess(page) {
+                    _self.inner = page.props.data;
+                },
+            });
+        },
+        can(permission) {
+            return this.inner.meta.can[permission];
+        },
+        getFilter(value) {
+            return this.inner.meta.filter[value];
+        },
+        setFilter(key, value) {
+            this.inner.meta.filter[key] = value;
+            this.reload();
+        },
+        requestCallback(successMessage, failureMessage) {
+            return {
+                onSuccess: () => {
+                    this.$success(successMessage);
+                    this.reload(false);
+                },
+                onFailure: () => {
+                    this.$error(failureMessage);
+                    this.reload(false);
+                },
+                preserveState: true,
+            };
+        },
+    },
+};
+

@@ -1,5 +1,9 @@
 <template>
-    <label class="flex flex-col relative field-switch cursor-pointer" :for="id" :class="sizes[size].wrap">
+    <label class="flex relative field-switch cursor-pointer" :for="id" :class="{
+        'items-center flex-row-reverse space-x-3 space-x-reverse justify-end': inline,
+        'flex-col': !inline,
+        [sizes[size].wrap]: true,
+    }">
         <span
             v-if="label"
             class="font-semibold leading-none text-gray-400"
@@ -69,9 +73,9 @@ export default {
         event: 'input',
     },
     props: {
-        inset: {
-            type: Boolean,
+        inline: {
             default: false,
+            type: Boolean,
         },
         size: {
             default: 'base',
@@ -132,16 +136,7 @@ export default {
             var sizes = ['xxs', 'xs', 'sm', 'md', 'lg'];
 
             var sizeIndex = sizes.findIndex((s) => s === this.size);
-            return sizes[this.inset ? sizeIndex : sizeIndex - 1];
-        },
-        outerSize() {
-            var sizes = ['xxs', 'xs', 'sm', 'md', 'lg'];
-
-            var sizeIndex = sizes.findIndex((s) => s === this.size);
-            if (!this.label || this.inset) {
-                sizeIndex--;
-            }
-            return sizes[sizeIndex];
+            return sizes[sizeIndex - 1];
         },
     },
 };
