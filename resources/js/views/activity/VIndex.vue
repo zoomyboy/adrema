@@ -1,6 +1,6 @@
 <template>
     <div class="pb-6">
-        <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
+        <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm table">
             <thead>
                 <th>Name</th>
                 <th></th>
