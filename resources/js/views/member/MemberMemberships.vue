@@ -4,13 +4,22 @@
             :links="links"
             @create="
                 mode = 'create';
-                single = {};
+                single = {...def};
             "
             @close="$emit('close')"
             title="Mitgliedschaften"
         ></sidebar-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
+            <f-select
+                id="group_id"
+                name="group_id"
+                :options="groups"
+                v-model="single.group_id"
+                label="Gruppierung"
+                size="sm"
+                required
+            ></f-select>
             <f-select
                 id="activity_id"
                 name="activity_id"
@@ -94,6 +103,17 @@ export default {
 
     components: {SidebarHeader},
 
+    computed: {
+        def() {
+            return {
+                group_id: this.value.group_id,
+                activity_id: null,
+                subactivity_id: null,
+                promised_at: null
+            };
+        }
+    },
+
     methods: {
         remove(membership) {
             this.$inertia.delete(`/member/${this.value.id}/membership/${membership.id}`);
@@ -131,6 +151,7 @@ export default {
         value: {},
         activities: {},
         subactivities: {},
+        groups: {},
     },
 };
 </script>

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Member;
 
 use App\Activity;
+use App\Group;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Payment\Payment;
@@ -19,7 +20,8 @@ class IndexTest extends TestCase
     public function testItGetsMembers(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        Member::factory()->defaults()->create([
+        $group = Group::factory()->create();
+        Member::factory()->defaults()->for($group)->create([
             'firstname' => '::firstname::',
             'address' => 'Kölner Str 3',
             'zip' => 33333,
@@ -31,6 +33,7 @@ class IndexTest extends TestCase
         $this->assertComponent('member/VIndex', $response);
         $this->assertInertiaHas('::firstname::', $response, 'data.data.0.firstname');
         $this->assertInertiaHas('Kölner Str 3, 33333 Hilden', $response, 'data.data.0.full_address');
+        $this->assertInertiaHas($group->id, $response, 'data.data.0.group_id');
     }
 
     public function testItShowsEfzForEfzMembership(): void
@@ -88,9 +91,10 @@ class IndexTest extends TestCase
     {
         Carbon::setTestNow(Carbon::parse('2022-11-02 03:00:00'));
         $this->withoutExceptionHandling()->login()->loginNami();
+        $group = Group::factory()->create();
         $member = Member::factory()
             ->defaults()
-            ->has(Membership::factory()->in('€ Mitglied', 122, 'Wölfling', 234))
+            ->has(Membership::factory()->for($group)->in('€ Mitglied', 122, 'Wölfling', 234))
             ->create();
 
         $response = $this->get('/member');
@@ -101,6 +105,7 @@ class IndexTest extends TestCase
             'activity_name' => '€ Mitglied',
             'subactivity_name' => 'Wölfling',
             'human_date' => '02.11.2022',
+            'group_id' => $group->id,
             'id' => $member->memberships->first()->id,
         ], $response, 'data.data.0.memberships.0');
     }
@@ -144,6 +149,16 @@ class IndexTest extends TestCase
 
         $this->assertCount(1, $this->inertia($emailResponse, 'data.data'));
         $this->assertCount(1, $this->inertia($postResponse, 'data.data'));
+    }
+
+    public function testItLoadsGroups(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        Group::factory()->name('UUI')->create();
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas('UUI', $response, 'data.meta.groups.1.name');
     }
 
 }

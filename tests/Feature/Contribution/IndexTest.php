@@ -15,13 +15,13 @@ class IndexTest extends TestCase
     public function testItHasContributionIndex(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $country = Country::factory()->create(['name' => 'Deutschland']);
-        $member1 = Member::factory()->defaults()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
-        $member2 = Member::factory()->defaults()->create(['firstname' => 'Jane', 'lastname' => 'Muster']);
+        Country::factory()->create(['name' => 'Deutschland']);
+        Member::factory()->defaults()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
+        Member::factory()->defaults()->create(['firstname' => 'Jane', 'lastname' => 'Muster']);
 
         $response = $this->get('/contribution');
 
-        $this->assertInertiaHas('Jane', $response, 'allMembers.0.firstname');
+        $this->assertInertiaHas('Jane', $response, 'allMembers.data.0.firstname');
         $this->assertInertiaHas([
             'class' => DvDocument::class,
             'title' => 'Für DV erstellen',

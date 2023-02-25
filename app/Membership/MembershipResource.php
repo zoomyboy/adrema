@@ -20,6 +20,7 @@ class MembershipResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'group_id' => $this->group_id,
             'activity_id' => $this->activity_id,
             'activity_name' => $this->activity->name,
             'subactivity_id' => $this->subactivity_id,

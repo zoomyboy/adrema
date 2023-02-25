@@ -3,6 +3,7 @@
 namespace App\Member;
 
 use App\Activity;
+use App\Group;
 use App\Nami\HasNamiField;
 use App\Subactivity;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,6 +35,14 @@ class Membership extends Model
     public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);
+    }
+
+    /**
+     * @return BelongsTo<Group, self>
+     */
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class);
     }
 
     /**

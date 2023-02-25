@@ -3,6 +3,8 @@
 namespace App\Member;
 
 use App\Course\Resources\CourseMemberResource;
+use App\Group;
+use App\Lib\HasMeta;
 use App\Member\Resources\NationalityResource;
 use App\Member\Resources\RegionResource;
 use App\Membership\MembershipResource;
@@ -15,6 +17,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class MemberResource extends JsonResource
 {
+    use HasMeta;
+
     /**
      * Transform the resource into an array.
      *
@@ -84,9 +88,20 @@ class MemberResource extends JsonResource
             'multiply_more_pv' => $this->multiply_more_pv,
             'age' => $this->getModel()->getAge(),
             'is_leader' => $this->leaderMemberships->count() > 0,
+            'group_id' => $this->group_id,
             'links' => [
                 'show' => route('member.show', ['member' => $this->getModel()]),
             ],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */ 
+    public static function meta(): array
+    {
+        return [
+            'groups' => Group::select('name', 'id')->get(),
         ];
     }
 }

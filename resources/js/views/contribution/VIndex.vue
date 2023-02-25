@@ -89,10 +89,10 @@ export default {
     computed: {
         memberResults() {
             if (this.membersearch.length === 0) {
-                return this.allMembers;
+                return this.allMembers.data;
             }
 
-            return this.allMembers.filter(
+            return this.allMembers.data.filter(
                 (member) =>
                     (member.firstname + ' ' + member.lastname)
                         .toLowerCase()

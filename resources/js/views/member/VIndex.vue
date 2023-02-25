@@ -83,6 +83,7 @@
             <member-memberships
                 v-if="single !== null && sidebar === 'membership.index'"
                 @close="closeSidebar"
+                :groups="data.meta.groups"
                 :activities="activities"
                 :subactivities="subactivities"
                 :value="data.data[single]"
