@@ -135,6 +135,23 @@ steps:
           branch: master
           event: push
 
+    - name: deploy dpsgkoeln
+      image: drillster/drone-rsync
+      settings:
+          hosts: ['dpsg-koeln.de']
+          user: dpsg-koeln
+          source: ./
+          target: ~/adrema
+          exclude: ['.git']
+          key:
+              from_secret: private_key
+          script:
+              - cd ~/adrema
+              - /usr/bin/php8.1 artisan migrate --force
+      when:
+          branch: master
+          event: push
+
 services:
     - name: db
       image: mariadb/server:10.3
