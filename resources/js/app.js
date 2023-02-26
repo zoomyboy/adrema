@@ -12,10 +12,13 @@ import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
 import hasModule from './mixins/hasModule.js';
 import PortalVue from 'portal-vue';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 
 Vue.use(plugin);
 Vue.use(PortalVue);
 Vue.use(VTooltip);
+Vue.use(VueAxios, axios);
 Vue.component('f-text', () => import(/* webpackChunkName: "form" */ './components/FText'));
 Vue.component('f-switch', () => import(/* webpackChunkName: "form" */ './components/FSwitch'));
 Vue.component('f-select', () => import(/* webpackChunkName: "form" */ './components/FSelect'));

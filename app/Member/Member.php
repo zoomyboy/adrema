@@ -23,9 +23,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Scout\Attributes\SearchUsingFullText;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
 use Spatie\LaravelData\Lazy;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $subscription_name
@@ -37,6 +39,7 @@ class Member extends Model
     use HasNamiField;
     use HasFactory;
     use Sluggable;
+    use Searchable;
 
     /**
      * @var array<string, string>
@@ -46,7 +49,7 @@ class Member extends Model
     /**
      * @var array<int, string>
      */
-    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug'];
+    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug', 'search'];
 
     /**
      * @var array<int, string>
@@ -81,23 +84,6 @@ class Member extends Model
         return [
             'slug' => ['source' => ['firstname', 'lastname']],
         ];
-    }
-
-    /**
-     * @param Builder<self> $query
-     * @return Builder<self>
-     */
-    public function scopeSearch(Builder $query, ?string $text): Builder
-    {
-        if (is_null($text)) {
-            return $query;
-        }
-
-        return $query->where('firstname', 'LIKE', '%'.$text.'%')
-             ->orWhere('lastname', 'LIKE', '%'.$text.'%')
-             ->orWhere('address', 'LIKE', '%'.$text.'%')
-             ->orWhere('zip', 'LIKE', '%'.$text.'%')
-             ->orWhere('location', 'LIKE', '%'.$text.'%');
     }
 
     // ---------------------------------- Actions ----------------------------------
@@ -289,6 +275,8 @@ class Member extends Model
             $model->payments->each->delete();
             $model->memberships->each->delete();
         });
+
+        static::saving(fn ($model) => $model->updateSearch());
     }
 
     // ---------------------------------- Scopes -----------------------------------
@@ -299,15 +287,6 @@ class Member extends Model
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderByRaw('lastname, firstname');
-    }
-
-    /**
-     * @param Builder<self> $query
-     * @return Builder<self>
-     */
-    public function scopeSlangOrdered(Builder $query): Builder
-    {
-        return $query->orderByRaw('firstname, lastname');
     }
 
     /**
@@ -495,5 +474,24 @@ class Member extends Model
             'zipLocation' => $this->zip.' '.$this->location,
             'mglnr' => Lazy::create(fn () => 'Mglnr.: '.$this->nami_id),
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    #[SearchUsingFullText(['search_text'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'search_text' => $this->search_text ?: '',
+        ];
+    }
+
+    public function updateSearch(): void
+    {
+        $this->attributes['search_text'] = collect([
+            $this->fullname,
+            $this->fullAddress,
+        ])->implode(' ');
     }
 }

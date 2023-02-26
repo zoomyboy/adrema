@@ -15,6 +15,7 @@ use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
+use App\Member\Actions\SearchAction;
 use App\Member\MemberController;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
@@ -32,6 +33,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
 
 Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/', HomeIndexAction::class)->name('home');
+    Route::post('/api/member/search', SearchAction::class)->name('member.search');
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');
     Route::resource('member', MemberController::class)->except('show');

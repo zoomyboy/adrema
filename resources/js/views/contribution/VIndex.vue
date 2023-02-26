@@ -1,5 +1,5 @@
 <template>
-    <form action="/contribution/generate" target="_BLANK" class="max-w-2xl w-full mx-auto gap-6 grid-cols-2 grid p-6">
+    <form action="/contribution/generate" target="_BLANK" class="max-w-4xl w-full mx-auto gap-6 grid-cols-2 grid p-6">
         <f-text
             id="eventName"
             name="eventName"
@@ -31,24 +31,26 @@
         <div class="border-gray-200 shadow shadow-primary-700 p-3 shadow-[0_0_4px_gray] col-span-2">
             <f-text
                 class="col-span-2"
-                id="membersearch"
-                name="membersearch"
-                v-model="membersearch"
+                id="search_text"
+                name="search_text"
+                v-model="searchText"
                 label="Suchen …"
                 size="sm"
-                ref="membersearchfield"
+                ref="search_text_field"
                 @keypress.enter.prevent="onSubmitFirstMemberResult"
             ></f-text>
-            <div class="mt-2 grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2 col-span-2">
+            <div class="mt-2 grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2 col-span-2">
                 <f-switch
                     :id="`members-${member.id}`"
                     :key="member.id"
                     :label="`${member.firstname} ${member.lastname}`"
-                    v-for="member in memberResults"
+                    v-for="member in search.results"
                     name="members[]"
                     :value="member.id"
                     v-model="values.members"
+                    size="sm"
                     @keypress.enter.prevent="onSubmitMemberResult(member)"
+                    inline
                 ></f-switch>
             </div>
         </div>
@@ -66,10 +68,15 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce';
+
 export default {
     data: function () {
         return {
-            membersearch: '',
+            search: {
+                s: '',
+                results: [],
+            },
             values: {
                 members: [],
                 event_name: '',
@@ -77,27 +84,27 @@ export default {
                 dateUntil: '',
                 zipLocation: '',
                 country: null,
+                ...this.data,
             },
         };
     },
     props: {
+        data: {},
         countries: {},
-        defaultCountry: {},
-        allMembers: {},
         compilers: {},
     },
     computed: {
-        memberResults() {
-            if (this.membersearch.length === 0) {
-                return this.allMembers.data;
-            }
+        searchText: {
+            get() {
+                return this.search.s;
+            },
+            set: debounce(async function(event) {
+                this.search.s = event;
 
-            return this.allMembers.data.filter(
-                (member) =>
-                    (member.firstname + ' ' + member.lastname)
-                        .toLowerCase()
-                        .indexOf(this.membersearch.toLowerCase()) !== -1
-            );
+                var response = await this.axios.post('/api/member/search', {search: event, minLength: 3});
+
+                this.search.results = response.data.data;
+            }, 300),
         },
     },
     methods: {
@@ -108,21 +115,18 @@ export default {
                 this.values.members.push(selected.id);
             }
 
-            this.membersearch = '';
-            this.$refs.membersearchfield.$el.querySelector('input').focus();
+            this.searchText = '';
+            this.$refs.search_text_field.$el.querySelector('input').focus();
         },
         onSubmitFirstMemberResult() {
-            if (this.memberResults.length === 0) {
-                this.membersearch = '';
+            if (this.search.results.length === 0) {
+                this.searchText = '';
                 return;
             }
 
-            this.onSubmitMemberResult(this.memberResults[0]);
+            this.onSubmitMemberResult(this.search.results[0]);
         },
     },
 
-    created() {
-        this.values.country = this.defaultCountry;
-    },
 };
 </script>

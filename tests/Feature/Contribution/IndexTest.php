@@ -15,16 +15,22 @@ class IndexTest extends TestCase
     public function testItHasContributionIndex(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        Country::factory()->create(['name' => 'Deutschland']);
+        $country = Country::factory()->create(['name' => 'Deutschland']);
         Member::factory()->defaults()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
         Member::factory()->defaults()->create(['firstname' => 'Jane', 'lastname' => 'Muster']);
 
         $response = $this->get('/contribution');
 
-        $this->assertInertiaHas('Jane', $response, 'allMembers.data.0.firstname');
         $this->assertInertiaHas([
             'class' => DvDocument::class,
             'title' => 'Für DV erstellen',
         ], $response, 'compilers.0');
+        $this->assertInertiaHas([
+            'id' => $country->id,
+            'name' => $country->name,
+        ], $response, 'countries.0');
+        $this->assertInertiaHas([
+            'country' => $country->id,
+        ], $response, 'data');
     }
 }

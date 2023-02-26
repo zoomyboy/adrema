@@ -4,8 +4,6 @@ namespace App\Contribution\Actions;
 
 use App\Contribution\ContributionFactory;
 use App\Country;
-use App\Member\Member;
-use App\Member\MemberResource;
 use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -20,9 +18,10 @@ class FormAction
     public function handle(): array
     {
         return [
-            'allMembers' => MemberResource::collection(Member::slangOrdered()->get()),
-            'countries' => Country::pluck('name', 'id'),
-            'defaultCountry' => Country::firstWhere('name', 'Deutschland')->id,
+            'countries' => Country::select('name', 'id')->get(),
+            'data' => [
+                'country' => Country::firstWhere('name', 'Deutschland')->id,
+            ],
             'compilers' => app(ContributionFactory::class)->compilerSelect(),
         ];
     }

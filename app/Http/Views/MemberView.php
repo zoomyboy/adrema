@@ -19,13 +19,12 @@ class MemberView
         $activities = Activity::with('subactivities')->get();
 
         return [
-            'data' => MemberResource::collection(Member::select('*')
-                ->filter($filter)->search($request->query('search', null))
+            'data' => MemberResource::collection(Member::search($request->search)->query(fn ($q) => $q->select('*')
+                ->filter($filter)
                 ->with('payments.subscription')->with('memberships')->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
                 ->withPendingPayment()
-                ->orderByRaw('lastname, firstname')
-                ->paginate(15)
-            ),
+                ->ordered()
+            )->paginate(15)),
             'filterActivities' => Activity::where('is_filterable', true)->pluck('name', 'id'),
             'filterSubactivities' => Subactivity::where('is_filterable', true)->pluck('name', 'id'),
             'toolbar' => [['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus']],
