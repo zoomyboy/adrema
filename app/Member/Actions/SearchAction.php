@@ -14,7 +14,7 @@ class SearchAction
     use AsAction;
 
     /**
-     * @return Collection<Member>
+     * @return Collection<int, Member>
      */
     public function handle(string $search): Collection
     {
@@ -31,7 +31,7 @@ class SearchAction
     }
 
     /**
-     * @return Collection<Member>
+     * @return Collection<int, Member>
      */
     private function empty(): Collection
     {
