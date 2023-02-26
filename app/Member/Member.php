@@ -405,6 +405,21 @@ class Member extends Model
         return $query;
     }
 
+    /**
+     * @param Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeWhereCurrentGroup(Builder $query): Builder
+    {
+        $group = app(NamiSettings::class)->localGroup();
+
+        if (!$group) {
+            return $query;
+        }
+
+        return $query->where('group_id', $group->id);
+    }
+
     public static function fromVcard(string $url, string $data): static
     {
         $settings = app(NamiSettings::class);

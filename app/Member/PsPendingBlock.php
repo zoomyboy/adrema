@@ -21,6 +21,7 @@ class PsPendingBlock extends Block
                 ->orWhere(fn ($query) => $query->where('ps_at', '<=', $time)->whereNull('more_ps_at'))
                 ->orWhere(fn ($query) => $query->where('ps_at', '>=', $time)->where('more_ps_at', '<=', $time));
         })
+            ->whereCurrentGroup()
             ->orderByRaw('lastname, firstname')
             ->whereHas('memberships', fn ($builder) => $builder->isLeader());
     }

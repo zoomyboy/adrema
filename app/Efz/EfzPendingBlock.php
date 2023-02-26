@@ -17,6 +17,7 @@ class EfzPendingBlock extends Block
             return $query->where('efz', '<=', now()->subYears(5)->endOfYear())
                 ->orWhereNull('efz');
         })
+            ->whereCurrentGroup()
             ->orderByRaw('lastname, firstname')
             ->whereHas('memberships', fn ($builder) => $builder->isLeader());
     }

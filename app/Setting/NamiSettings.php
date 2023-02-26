@@ -2,6 +2,7 @@
 
 namespace App\Setting;
 
+use App\Group;
 use Spatie\LaravelSettings\Settings;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Nami;
@@ -22,5 +23,10 @@ class NamiSettings extends Settings
     public function login(): Api
     {
         return Nami::login($this->mglnr, $this->password);
+    }
+
+    public function localGroup(): ?Group
+    {
+        return Group::firstWhere('nami_id', $this->default_group_id);
     }
 }
