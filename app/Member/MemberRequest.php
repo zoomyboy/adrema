@@ -79,6 +79,7 @@ class MemberRequest extends FormRequest
             'fax' => '',
             'other_country' => '',
             'salutation' => '',
+            'comment' => '',
         ];
     }
 
