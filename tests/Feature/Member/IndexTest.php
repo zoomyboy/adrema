@@ -89,12 +89,11 @@ class IndexTest extends TestCase
 
     public function testItShowsActivityAndSubactivityNamesOfMember(): void
     {
-        Carbon::setTestNow(Carbon::parse('2022-11-02 03:00:00'));
         $this->withoutExceptionHandling()->login()->loginNami();
         $group = Group::factory()->create();
         $member = Member::factory()
             ->defaults()
-            ->has(Membership::factory()->for($group)->in('€ Mitglied', 122, 'Wölfling', 234))
+            ->has(Membership::factory()->for($group)->in('€ Mitglied', 122, 'Wölfling', 234)->from('2022-11-02'))
             ->create();
 
         $response = $this->get('/member');

@@ -40,6 +40,11 @@ class MembershipFactory extends Factory
         return $this->state(['nami_id' => null]);
     }
 
+    public function from(string $from): self
+    {
+        return $this->state(['from' => Carbon::parse($from)]);
+    }
+
     public function inLocal(string $activity, ?string $subactivity = null): self
     {
         $instance = $this->for(Activity::factory()->name($activity));
