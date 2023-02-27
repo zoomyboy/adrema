@@ -45,6 +45,7 @@ class StoreTest extends TestCase
                 'first_subactivity_id' => $subactivity->id,
                 'subscription_id' => $subscription->id,
                 'bill_kind' => 'Post',
+                'salutation' => 'Doktor',
             ]));
 
         $response->assertRedirect('/member')->assertSessionHasNoErrors();
@@ -70,6 +71,7 @@ class StoreTest extends TestCase
             'subscription_id' => $subscription->id,
             'zip' => '42719',
             'fax' => '+49 666',
+            'salutation' => 'Doktor',
         ]);
         NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(fn (Member $memberParam, Activity $activityParam, Subactivity $subactivityParam) => $memberParam->is($member)
             && $activityParam->is($activity)

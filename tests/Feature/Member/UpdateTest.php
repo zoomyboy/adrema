@@ -87,6 +87,7 @@ class UpdateTest extends TestCase
                 'has_nami' => false,
                 'multiply_pv' => true,
                 'multiply_more_pv' => true,
+                'salutation' => 'Doktor',
             ]));
 
         $this->assertEquals('2021-02-01', $member->fresh()->ps_at->format('Y-m-d'));
@@ -98,6 +99,7 @@ class UpdateTest extends TestCase
         $this->assertEquals('2021-02-03', $member->fresh()->efz->format('Y-m-d'));
         $this->assertEquals('2021-02-04', $member->fresh()->without_education_at->format('Y-m-d'));
         $this->assertEquals('2021-02-05', $member->fresh()->without_efz_at->format('Y-m-d'));
+        $this->assertEquals('Doktor', $member->fresh()->salutation);
     }
 
     /**

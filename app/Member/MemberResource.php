@@ -89,6 +89,7 @@ class MemberResource extends JsonResource
             'age' => $this->getModel()->getAge(),
             'is_leader' => $this->leaderMemberships->count() > 0,
             'group_id' => $this->group_id,
+            'salutation' => $this->salutation,
             'links' => [
                 'show' => route('member.show', ['member' => $this->getModel()]),
             ],

@@ -21,14 +21,17 @@
         <div class="grow grid md:grid-cols-2 gap-3 p-3">
             <box heading="Stammdaten">
                 <div class="grid sm:grid-cols-2 gap-3">
-                    <f-select
-                        id="gender_id"
-                        name="gender_id"
-                        :options="genders"
-                        v-model="inner.gender_id"
-                        label="Geschlecht"
-                        size="sm"
-                    ></f-select>
+                    <div class="grid grid-cols-2 gap-3">
+                        <f-select
+                            id="gender_id"
+                            name="gender_id"
+                            :options="genders"
+                            v-model="inner.gender_id"
+                            label="Geschlecht"
+                            size="sm"
+                        ></f-select>
+                        <f-text id="salutation" v-model="inner.salutation" size="sm" label="Anrede"></f-text>
+                    </div>
                     <f-select
                         :options="nationalities"
                         id="nationality_id"

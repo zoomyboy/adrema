@@ -16,7 +16,7 @@ class EditTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $this->login()->loginNami();
-        $member = Member::factory()->defaults()->create(['firstname' => 'Max']);
+        $member = Member::factory()->defaults()->create(['salutation' => 'Doktor', 'firstname' => 'Max']);
         $activity = Activity::factory()->inNami(66)->hasAttached(Subactivity::factory()->inNami(56)->name('Biber'))->name('€ Mitglied')->create();
         $subactivity = $activity->subactivities->first();
 
@@ -25,6 +25,7 @@ class EditTest extends TestCase
         $this->assertInertiaHas('Biber', $response, "subactivities.{$activity->id}.{$subactivity->id}");
         $this->assertInertiaHas('€ Mitglied', $response, "activities.{$activity->id}");
         $this->assertInertiaHas('Max', $response, 'data.firstname');
+        $this->assertInertiaHas('Doktor', $response, 'data.salutation');
         $this->assertInertiaHas('edit', $response, 'mode');
         $this->assertInertiaHas(false, $response, 'conflict');
         $this->assertInertiaHas(['name' => 'E-Mail', 'id' => 'E-Mail'], $response, 'billKinds.0');

@@ -78,6 +78,7 @@ class MemberRequest extends FormRequest
             'children_phone' => '',
             'fax' => '',
             'other_country' => '',
+            'salutation' => '',
         ];
     }
 
