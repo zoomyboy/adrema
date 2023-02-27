@@ -34,7 +34,7 @@ class ShowTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()
             ->defaults()
-            ->has(Membership::factory()->promise(now())->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->state(['created_at' => '2022-11-19 05:00:00']))
+            ->has(Membership::factory()->promise(now())->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->from('2022-11-19'))
             ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', [
                 new Child('uu', 1000),
                 new Child('a', 50),
