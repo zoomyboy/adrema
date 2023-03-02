@@ -24,10 +24,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Searchable;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
 use Spatie\LaravelData\Lazy;
-use Laravel\Scout\Searchable;
+use Zoomyboy\Phone\HasPhoneNumbers;
 
 /**
  * @property string $subscription_name
@@ -40,6 +41,7 @@ class Member extends Model
     use HasFactory;
     use Sluggable;
     use Searchable;
+    use HasPhoneNumbers;
 
     /**
      * @var array<string, string>
@@ -76,6 +78,14 @@ class Member extends Model
         'bill_kind' => BillKind::class,
         'mitgliedsnr' => 'integer',
     ];
+
+    /**
+     * @return array<int, string>
+     */
+    public function phoneNumbers(): array
+    {
+        return ['main_phone', 'mobile_phone', 'work_phone', 'children_phone', 'fax'];
+    }
 
     /**
      * @return array<string, array{source: array<int, string>}>
@@ -283,6 +293,7 @@ class Member extends Model
     // ---------------------------------- Scopes -----------------------------------
     /**
      * @param Builder<self> $query
+     *
      * @return Builder<self>
      */
     public function scopeOrdered(Builder $query): Builder
@@ -292,6 +303,7 @@ class Member extends Model
 
     /**
      * @param Builder<self> $query
+     *
      * @return Builder<self>
      */
     public function scopeWithPendingPayment(Builder $query): Builder
@@ -307,6 +319,7 @@ class Member extends Model
 
     /**
      * @param Builder<self> $query
+     *
      * @return Builder<self>
      */
     public function scopeWhereHasPendingPayment(Builder $query): Builder
@@ -318,6 +331,7 @@ class Member extends Model
 
     /**
      * @param Builder<self> $query
+     *
      * @return Builder<self>
      */
     public function scopeWhereAusstand(Builder $query): Builder
@@ -329,6 +343,7 @@ class Member extends Model
 
     /**
      * @param Builder<self> $query
+     *
      * @return Builder<self>
      */
     public function scopePayable(Builder $query): Builder
@@ -338,6 +353,7 @@ class Member extends Model
 
     /**
      * @param Builder<self> $query
+     *
      * @return Builder<self>
      */
     public function scopeWhereNoPayment(Builder $query, int $year): Builder
@@ -349,6 +365,7 @@ class Member extends Model
 
     /**
      * @param Builder<self> $query
+     *
      * @return Builder<self>
      */
     public function scopeForDashboard(Builder $query): Builder
@@ -358,8 +375,10 @@ class Member extends Model
 
     /**
      * @todo refactor this to an actual filter model
-     * @param Builder<self> $query
+     *
+     * @param Builder<self>        $query
      * @param array<string, mixed> $filter
+     *
      * @return Builder<self>
      */
     public function scopeFilter(Builder $query, array $filter): Builder
@@ -387,6 +406,7 @@ class Member extends Model
 
     /**
      * @param Builder<self> $query
+     *
      * @return Builder<self>
      */
     public function scopeWhereCurrentGroup(Builder $query): Builder

@@ -55,7 +55,7 @@ class StoreTest extends TestCase
             'address' => 'Bavert 50',
             'bill_kind' => 'Post',
             'birthday' => '2013-02-19',
-            'children_phone' => '+49 123 44444',
+            'children_phone' => '+49 176 8574112',
             'country_id' => $country->id,
             'email_parents' => 'osloot@aol.com',
             'firstname' => 'Joe',
@@ -65,13 +65,13 @@ class StoreTest extends TestCase
             'letter_address' => null,
             'location' => 'Solingen',
             'main_phone' => '+49 212 2334322',
-            'mobile_phone' => '+49 157 53180451',
+            'mobile_phone' => '+49 176 3033053',
             'nationality_id' => $nationality->id,
             'region_id' => $region->id,
             'send_newspaper' => '1',
             'subscription_id' => $subscription->id,
             'zip' => '42719',
-            'fax' => '+49 666',
+            'fax' => '+49 212 4732223',
             'salutation' => 'Doktor',
             'comment' => 'Lorem bla',
         ]);
@@ -100,6 +100,44 @@ class StoreTest extends TestCase
             'nami_id' => null,
         ]);
         NamiPutMemberAction::spy()->shouldNotHaveReceived('handle');
+    }
+
+    public function testItUpdatesPhoneNumber(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+
+        $this->post('/member', $this->attributes([
+            'has_nami' => false,
+            'main_phone' => '02103 4455129',
+            'fax' => '02103 4455130',
+            'children_phone' => '02103 4455130',
+        ]));
+
+        $this->assertDatabaseHas('members', [
+            'main_phone' => '+49 2103 4455129',
+            'fax' => '+49 2103 4455130',
+            'children_phone' => '+49 2103 4455130',
+        ]);
+    }
+
+    public function testItHasErrorWhenPhoneNumberIsInvalid(): void
+    {
+        $this->login()->loginNami();
+
+        $response = $this->post('/member', $this->attributes([
+            'has_nami' => false,
+            'main_phone' => '1111111111111111',
+            'mobile_phone' => '1111111111111111',
+            'fax' => '1111111111111111',
+            'children_phone' => '1111111111111111',
+        ]));
+
+        $response->assertSessionHasErrors([
+            'main_phone' => 'Telefon (Eltern) ist keine valide Nummer.',
+            'mobile_phone' => 'Handy (Eltern) ist keine valide Nummer.',
+            'children_phone' => 'Telefon (Kind) ist keine valide Nummer.',
+            'fax' => 'Fax ist keine valide Nummer.',
+        ]);
     }
 
     public function testItRequiresFields(): void
@@ -138,11 +176,11 @@ class StoreTest extends TestCase
         return [
             'address' => 'Bavert 50',
             'birthday' => '2013-02-19',
-            'children_phone' => '+49 123 44444',
+            'children_phone' => '+49 176 8574112',
             'efz' => '',
             'email' => '',
             'email_parents' => 'osloot@aol.com',
-            'fax' => '+49 666',
+            'fax' => '+49 212 4732223',
             'firstname' => 'Joe',
             'further_address' => '',
             'has_nami' => true,
@@ -153,7 +191,7 @@ class StoreTest extends TestCase
             'letter_address' => '',
             'location' => 'Solingen',
             'main_phone' => '+49 212 2334322',
-            'mobile_phone' => '+49 157 53180451',
+            'mobile_phone' => '+49 176 3033053',
             'more_ps_at' => '',
             'multiply_more_pv' => false,
             'multiply_pv' => false,

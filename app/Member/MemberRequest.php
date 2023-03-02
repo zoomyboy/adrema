@@ -11,6 +11,7 @@ use App\Subactivity;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Zoomyboy\Phone\ValidPhoneRule;
 
 class MemberRequest extends FormRequest
 {
@@ -69,14 +70,14 @@ class MemberRequest extends FormRequest
             'multiply_pv' => 'boolean',
             'multiply_more_pv' => 'boolean',
             'send_newspaper' => 'boolean',
-            'main_phone' => '',
-            'mobile_phone' => '',
+            'main_phone' => ['nullable', new ValidPhoneRule('Telefon (Eltern)')],
+            'mobile_phone' => ['nullable', new ValidPhoneRule('Handy (Eltern)')],
             'letter_address' => '',
             'gender_id' => 'nullable|exists:genders,id',
             'region_id' => 'nullable|exists:regions,id',
             'nationality_id' => 'required|exists:nationalities,id',
-            'children_phone' => '',
-            'fax' => '',
+            'children_phone' => ['nullable', new ValidPhoneRule('Telefon (Kind)')],
+            'fax' => ['nullable', new ValidPhoneRule('Fax')],
             'other_country' => '',
             'salutation' => '',
             'comment' => '',
@@ -85,10 +86,12 @@ class MemberRequest extends FormRequest
 
     public function persistCreate(NamiSettings $settings): void
     {
-        $member = Member::create([
+        $member = new Member([
             ...$this->validated(),
             'group_id' => Group::where('nami_id', $settings->default_group_id)->firstOrFail()->id,
         ]);
+        $member->updatePhoneNumbers()->save();
+
         if ($this->input('has_nami')) {
             NamiPutMemberAction::run(
                 $member,
@@ -100,7 +103,7 @@ class MemberRequest extends FormRequest
 
     public function persistUpdate(Member $member): void
     {
-        $member->fill($this->validated());
+        $member->fill($this->validated())->updatePhoneNumbers();
 
         $namiSync = $member->isDirty(Member::$namiFields);
 

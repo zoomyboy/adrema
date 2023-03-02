@@ -116,6 +116,7 @@ return [
     'uploaded' => ':attribute konnte nicht hochgeladen werden.',
     'url' => ':attribute muss eine URL sein.',
     'uuid' => ':attribute muss ein UUID sein.',
+    'phone_number' => ':attribute ist keine valide Nummer.',
 
     /*
     |--------------------------------------------------------------------------

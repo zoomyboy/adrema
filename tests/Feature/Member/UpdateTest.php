@@ -15,7 +15,6 @@ use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
-use Zoomyboy\LaravelNami\Backend\FakeBackend;
 
 class UpdateTest extends TestCase
 {
@@ -51,6 +50,27 @@ class UpdateTest extends TestCase
             ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::']));
 
         $response->assertRedirect("/member/{$member->id}/edit?conflict=1");
+    }
+
+    public function testItUpdatesPhoneNumber(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = $this->member();
+        $this->fakeRequest();
+        NamiPutMemberAction::allowToRun();
+
+        $this->patch("/member/{$member->id}", array_merge($member->getAttributes(), [
+            'main_phone' => '02103 4455129',
+            'fax' => '02103 4455130',
+            'children_phone' => '02103 4455130',
+            'has_nami' => true,
+        ]));
+
+        $this->assertDatabaseHas('members', [
+            'main_phone' => '+49 2103 4455129',
+            'fax' => '+49 2103 4455130',
+            'children_phone' => '+49 2103 4455130',
+        ]);
     }
 
     public function testItUpdatesContact(): void
