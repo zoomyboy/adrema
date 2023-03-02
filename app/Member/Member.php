@@ -74,6 +74,7 @@ class Member extends Model
         'multiply_more_pv' => 'boolean',
         'is_leader' => 'boolean',
         'bill_kind' => BillKind::class,
+        'mitgliedsnr' => 'integer',
     ];
 
     /**

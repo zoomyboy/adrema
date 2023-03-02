@@ -90,6 +90,7 @@ class MemberResource extends JsonResource
             'is_leader' => $this->leaderMemberships->count() > 0,
             'group_id' => $this->group_id,
             'salutation' => $this->salutation,
+            'mitgliedsnr' => $this->mitgliedsnr,
             'comment' => $this->comment,
             'links' => [
                 'show' => route('member.show', ['member' => $this->getModel()]),

@@ -71,6 +71,7 @@ class ShowTest extends TestCase
                 'multiply_more_pv' => true,
                 'send_newspaper' => true,
                 'joined_at' => '2022-06-11',
+                'mitgliedsnr' => 998,
             ]);
 
         $response = $this->get("/member/{$member->id}");
@@ -103,6 +104,7 @@ class ShowTest extends TestCase
             'send_newspaper' => true,
             'joined_at_human' => '11.06.2022',
             'bill_kind_name' => 'Post',
+            'mitgliedsnr' => 998,
             'subscription' => [
                 'name' => 'Sub',
             ],

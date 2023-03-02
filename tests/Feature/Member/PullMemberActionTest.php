@@ -48,11 +48,12 @@ class PullMemberActionTest extends TestCase
             'ort' => '::location::',
             'version' => 40,
             'gruppierung' => 'SG Wald',
+            'mitgliedsNummer' => 53,
         ]);
 
         $member = app(PullMemberAction::class)->handle(1000, 1001);
 
-        $group = Group::firstWhere('nami_id', 1000);
+        Group::firstWhere('nami_id', 1000);
         $this->assertDatabaseHas('members', [
             'firstname' => '::firstname::',
             'lastname' => '::lastname::',
@@ -69,6 +70,7 @@ class PullMemberActionTest extends TestCase
             'zip' => '12346',
             'location' => '::location::',
             'version' => '40',
+            'mitgliedsnr' => 53,
         ]);
 
         $this->assertDatabaseHas('groups', [

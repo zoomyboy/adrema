@@ -47,6 +47,7 @@ class InsertMemberAction
             'country_id' => optional(Country::where('nami_id', $member->countryId)->first())->id,
             'subscription_id' => $this->getSubscriptionId($member),
             'nationality_id' => Nationality::where('nami_id', $member->nationalityId)->firstOrFail()->id,
+            'mitgliedsnr' => $member->memberId,
             'version' => $member->version,
         ]);
     }
