@@ -147,6 +147,14 @@
                         label="Eintrittsdatum"
                         size="sm"
                     ></f-text>
+                    <f-textarea
+                        rows="3"
+                        id="comment"
+                        class="col-span-2"
+                        v-model="inner.comment"
+                        label="Kommentar"
+                        size="sm"
+                    ></f-textarea>
                     <div class="contents" v-if="mode === 'create'">
                         <f-select
                             :options="activities"
@@ -167,14 +175,6 @@
                             size="sm"
                             required
                         ></f-select>
-                        <f-textarea
-                            rows="3"
-                            id="comment"
-                            class="col-span-2"
-                            v-model="inner.comment"
-                            label="Kommentar"
-                            size="sm"
-                        ></f-textarea>
                     </div>
                 </div>
             </box>
