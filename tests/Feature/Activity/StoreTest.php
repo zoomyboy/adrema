@@ -17,12 +17,14 @@ class StoreTest extends TestCase
 
         $response = $this->post(route('activity.store'), [
             'name' => 'Lorem',
+            'is_filterable' => true,
             'subactivities' => [],
         ]);
 
         $response->assertRedirect('/activity');
         $this->assertDatabaseHas('activities', [
             'name' => 'Lorem',
+            'is_filterable' => 1,
             'nami_id' => null,
         ]);
         $this->assertDatabaseCount('activity_subactivity', 0);
@@ -47,6 +49,7 @@ class StoreTest extends TestCase
         $response = $this->post(route('activity.store'), [
             'name' => 'Lorem',
             'nami_id' => 556,
+            'is_filterable' => true,
             'subactivities' => [],
         ]);
 
@@ -62,6 +65,7 @@ class StoreTest extends TestCase
 
         $response = $this->from('/activity')->post(route('activity.store'), [
             'name' => 'Lorem',
+            'is_filterable' => true,
             'subactivities' => [$subactivity->id],
         ]);
 
