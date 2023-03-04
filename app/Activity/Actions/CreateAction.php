@@ -2,7 +2,6 @@
 
 namespace App\Activity\Actions;
 
-use App\Activity;
 use App\Activity\Resources\ActivityResource;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,8 +17,9 @@ class CreateAction
             'meta' => ActivityResource::meta(),
             'data' => [
                 'name' => '',
+                'is_filterable' => false,
                 'subactivities' => [],
-            ]
+            ],
         ]);
     }
 }

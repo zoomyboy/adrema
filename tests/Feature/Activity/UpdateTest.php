@@ -18,6 +18,7 @@ class UpdateTest extends TestCase
 
         $response = $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'Lorem',
+            'is_filterable' => false,
             'subactivities' => [],
         ]);
 
@@ -32,6 +33,7 @@ class UpdateTest extends TestCase
 
         $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'abc',
+            'is_filterable' => false,
             'subactivities' => [$subactivity->id],
         ]);
 
@@ -45,6 +47,7 @@ class UpdateTest extends TestCase
 
         $response = $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'abc',
+            'is_filterable' => false,
             'subactivities' => [],
         ]);
 
@@ -59,6 +62,7 @@ class UpdateTest extends TestCase
 
         $response = $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'abc',
+            'is_filterable' => false,
             'subactivities' => [$subactivity->id],
         ]);
 
@@ -73,6 +77,7 @@ class UpdateTest extends TestCase
 
         $response = $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'abc',
+            'is_filterable' => false,
             'subactivities' => [$otherSubactivity->id],
         ]);
 
@@ -86,6 +91,7 @@ class UpdateTest extends TestCase
 
         $response = $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => '',
+            'is_filterable' => true,
         ]);
 
         $response->assertSessionHasErrors(['name' => 'Name ist erforderlich.']);
@@ -99,11 +105,12 @@ class UpdateTest extends TestCase
 
         $response = $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'Lorem',
+            'is_filterable' => true,
             'subactivities' => [],
         ]);
 
         $response->assertRedirect('/activity');
-        $this->assertDatabaseHas('activities', ['name' => 'Lorem']);
+        $this->assertDatabaseHas('activities', ['name' => 'Lorem', 'is_filterable' => true]);
     }
 
     public function testItSetsSubactivities(): void
@@ -114,6 +121,7 @@ class UpdateTest extends TestCase
 
         $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'Lorem',
+            'is_filterable' => false,
             'subactivities' => [$subactivity->id],
         ]);
 
@@ -128,6 +136,7 @@ class UpdateTest extends TestCase
         $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'Lorem',
             'nami_id' => 66,
+            'is_filterable' => false,
             'subactivities' => [],
         ]);
 
@@ -143,10 +152,10 @@ class UpdateTest extends TestCase
 
         $this->patch(route('activity.update', ['activity' => $activity]), [
             'name' => 'Lorem',
+            'is_filterable' => false,
             'subactivities' => [],
         ]);
 
         $this->assertDatabaseEmpty('activity_subactivity');
     }
-
 }

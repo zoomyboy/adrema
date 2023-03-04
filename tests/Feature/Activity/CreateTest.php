@@ -19,6 +19,7 @@ class CreateTest extends TestCase
 
         $this->assertInertiaHas([
             'name' => '',
+            'is_filterable' => false,
             'subactivities' => [],
         ], $response, 'data');
         $this->assertInertiaHas([
@@ -26,5 +27,4 @@ class CreateTest extends TestCase
             'name' => 'Pupu',
         ], $response, 'meta.subactivities.0');
     }
-
 }

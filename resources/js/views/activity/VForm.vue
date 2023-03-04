@@ -1,6 +1,9 @@
 <template>
     <form id="actionform" class="grow p-3" @submit.prevent="submit">
-        <f-text id="name" v-model="inner.name" label="Name" required></f-text>
+        <div class="flex space-x-3">
+            <f-text id="name" v-model="inner.name" label="Name" required></f-text>
+            <f-switch v-model="inner.is_filterable" name="is_filterable" id="is_filterable" label="Filterbar"></f-switch>
+        </div>
         <checkboxes-label class="mt-6">Untertätigkeiten</checkboxes-label>
         <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
             <f-switch
@@ -17,7 +20,7 @@
         </div>
         <save-button form="actionform"></save-button>
 
-        <new-subactivity @stored="reloadSubactivities" :activity-id="inner.id"></new-subactivity>
+        <new-subactivity v-if="mode === 'edit'" @stored="reloadSubactivities" :activity-id="inner.id"></new-subactivity>
     </form>
 </template>
 

@@ -28,11 +28,12 @@ class ActivityResource extends JsonResource
             'name' => $this->name,
             'id' => $this->id,
             'subactivities' => $this->subactivities->pluck('id')->toArray(),
+            'is_filterable' => $this->is_filterable,
             'links' => [
                 'edit' => route('activity.edit', ['activity' => $this->getModel()]),
                 'update' => route('activity.update', ['activity' => $this->getModel()]),
                 'destroy' => route('activity.destroy', ['activity' => $this->getModel()]),
-            ]
+            ],
         ];
     }
 

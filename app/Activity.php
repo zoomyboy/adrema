@@ -21,6 +21,7 @@ class Activity extends Model
 
     public $casts = [
         'nami_id' => 'integer',
+        'is_filterable' => 'boolean',
     ];
 
     public function sluggable(): array
@@ -49,5 +50,4 @@ class Activity extends Model
     {
         return $this->belongsToMany(Subactivity::class);
     }
-
 }

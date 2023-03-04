@@ -22,7 +22,7 @@ class ActivityUpdateAction
      */
     public function handle(Activity $activity, array $payload): void
     {
-        DB::transaction(function() use ($activity, $payload) {
+        DB::transaction(function () use ($activity, $payload) {
             $activity->update($payload);
             $activity->subactivities()->sync($payload['subactivities']);
         });
@@ -35,7 +35,8 @@ class ActivityUpdateAction
     {
         return [
             'name' => 'required|max:255',
-            'subactivities' => 'present|array'
+            'is_filterable' => 'present|boolean',
+            'subactivities' => 'present|array',
         ];
     }
 
@@ -52,6 +53,7 @@ class ActivityUpdateAction
 
     /**
      * @todo handle this with a model event on the pivot model
+     *
      * @param Payload $payload
      */
     private function validateNami(Activity $activity, array $payload): void
