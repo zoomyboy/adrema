@@ -148,6 +148,7 @@ steps:
           script:
               - cd ~/adrema
               - /usr/bin/php8.1 artisan migrate --force
+              - sudo systemctl restart adrema-horizon
       when:
           branch: master
           event: push
