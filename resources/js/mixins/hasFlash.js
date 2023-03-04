@@ -14,5 +14,18 @@ export default {
                 type: 'error',
             });
         },
+        errorsFromException(e) {
+            if (e.response?.status !== 422 || !e.response?.data?.errors) {
+                throw e;
+            }
+
+            var errors = e.response.data.errors;
+
+            Object.keys(errors).forEach((field) => {
+                errors[field].forEach((message) => {
+                    this.$error(message);
+                });
+            });
+        },
     },
 };

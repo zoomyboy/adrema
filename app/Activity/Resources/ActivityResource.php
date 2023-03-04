@@ -34,6 +34,12 @@ class ActivityResource extends JsonResource
                 'update' => route('activity.update', ['activity' => $this->getModel()]),
                 'destroy' => route('activity.destroy', ['activity' => $this->getModel()]),
             ],
+            'subactivity_model' => [
+                'activities' => [$this->id],
+                'is_age_group' => false,
+                'is_filterable' => false,
+                'name' => '',
+            ],
         ];
     }
 

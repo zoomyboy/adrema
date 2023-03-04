@@ -22,6 +22,12 @@ class EditTest extends TestCase
             'name' => 'Asas',
             'is_filterable' => false,
             'subactivities' => [$activity->subactivities->first()->id],
+            'subactivity_model' => [
+                'activities' => [$activity->id],
+                'is_age_group' => false,
+                'is_filterable' => false,
+                'name' => '',
+            ],
         ], $response, 'data');
         $this->assertInertiaHas([
             'id' => $activity->subactivities->first()->id,
