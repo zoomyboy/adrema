@@ -11,7 +11,7 @@ class IndexTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testItDisplaysLocalActivities(): void
+    public function testItDisplaysActivities(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
         $first = Activity::factory()->name('Local')->create();
@@ -22,7 +22,7 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('Local', $response, 'data.data.0.name');
         $this->assertInertiaHas(route('activity.update', ['activity' => $first]), $response, 'data.data.0.links.update');
         $this->assertInertiaHas(route('activity.destroy', ['activity' => $first]), $response, 'data.data.0.links.destroy');
-        $this->assertCount(1, $this->inertia($response, 'data.data'));
+        $this->assertCount(2, $this->inertia($response, 'data.data'));
     }
 
     public function testItDisplaysDefaultFilter(): void

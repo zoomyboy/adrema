@@ -17,7 +17,7 @@ class IndexAction
 
     public function handle(ActivityFilterScope $filter): AnonymousResourceCollection
     {
-        return ActivityResource::collection(Activity::local()->withFilter($filter)->paginate(20));
+        return ActivityResource::collection(Activity::withFilter($filter)->paginate(20));
     }
 
     public function asController(ActionRequest $request): Response
@@ -30,7 +30,7 @@ class IndexAction
             'data' => $this->handle($filter),
             'toolbar' => [
                 ['href' => route('activity.create'), 'label' => 'Tätigkeit erstellen', 'color' => 'primary', 'icon' => 'plus'],
-            ]
+            ],
         ]);
     }
 }
