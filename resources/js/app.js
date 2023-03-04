@@ -8,16 +8,20 @@ import VLabel from './components/VLabel.vue';
 import VBool from './components/VBool.vue';
 import Box from './components/Box.vue';
 import Heading from './components/Heading.vue';
+import IconButton from './components/Ui/IconButton.vue';
 import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
 import hasModule from './mixins/hasModule.js';
+import hasFlash from './mixins/hasFlash.js';
 import PortalVue from 'portal-vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import Toasted from 'vue-toasted';
 
 Vue.use(plugin);
 Vue.use(PortalVue);
 Vue.use(VTooltip);
+Vue.use(Toasted);
 Vue.use(VueAxios, axios);
 Vue.component('f-text', () => import(/* webpackChunkName: "form" */ './components/FText'));
 Vue.component('f-switch', () => import(/* webpackChunkName: "form" */ './components/FSwitch'));
@@ -29,11 +33,13 @@ Vue.component('v-bool', VBool);
 Vue.component('v-label', VLabel);
 Vue.component('box', Box);
 Vue.component('heading', Heading);
+Vue.component('icon-button', IconButton);
 Vue.component('save-button', () => import(/* webpackChunkName: "form" */ './components/SaveButton'));
 
 const el = document.getElementById('app');
 
 Vue.mixin(hasModule);
+Vue.mixin(hasFlash);
 Vue.component('ILink', ILink);
 
 Inertia.on('start', (event) => window.dispatchEvent(new Event('inertiaStart')));
