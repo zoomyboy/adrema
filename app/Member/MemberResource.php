@@ -35,8 +35,8 @@ class MemberResource extends JsonResource
             'zip' => $this->zip,
             'location' => $this->location,
             'send_newspaper' => $this->send_newspaper,
-            'birthday' => $this->birthday->format('Y-m-d'),
-            'birthday_human' => $this->birthday->format('d.m.Y'),
+            'birthday' => $this->birthday?->format('Y-m-d'),
+            'birthday_human' => $this->birthday?->format('d.m.Y'),
             'joined_at' => $this->joined_at->format('Y-m-d'),
             'joined_at_human' => $this->joined_at->format('d.m.Y'),
             'id' => $this->id,
@@ -100,7 +100,7 @@ class MemberResource extends JsonResource
 
     /**
      * @return array<string, mixed>
-     */ 
+     */
     public static function meta(): array
     {
         return [

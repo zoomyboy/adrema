@@ -8,7 +8,6 @@ use App\Member\Member;
 use App\Member\Membership;
 use App\Payment\Payment;
 use App\Subactivity;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\Child;
 use Tests\TestCase;
@@ -34,6 +33,25 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('::firstname::', $response, 'data.data.0.firstname');
         $this->assertInertiaHas('Kölner Str 3, 33333 Hilden', $response, 'data.data.0.full_address');
         $this->assertInertiaHas($group->id, $response, 'data.data.0.group_id');
+    }
+
+    public function testFieldsCanBeNull(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $group = Group::factory()->create();
+        Member::factory()->defaults()->for($group)->create([
+            'birthday' => null,
+            'address' => null,
+            'zip' => null,
+            'location' => null,
+        ]);
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas(null, $response, 'data.data.0.birthday');
+        $this->assertInertiaHas(null, $response, 'data.data.0.address');
+        $this->assertInertiaHas(null, $response, 'data.data.0.zip');
+        $this->assertInertiaHas(null, $response, 'data.data.0.location');
     }
 
     public function testItShowsEfzForEfzMembership(): void
@@ -159,5 +177,4 @@ class IndexTest extends TestCase
 
         $this->assertInertiaHas('UUI', $response, 'data.meta.groups.1.name');
     }
-
 }

@@ -175,9 +175,9 @@ class Member extends Model
         return $this->memberships()->isLeader()->exists();
     }
 
-    public function getAge(): int
+    public function getAge(): ?int
     {
-        return $this->birthday->diffInYears(now());
+        return $this->birthday?->diffInYears(now());
     }
 
     // ---------------------------------- Relations ----------------------------------
