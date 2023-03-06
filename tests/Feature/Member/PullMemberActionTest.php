@@ -134,5 +134,8 @@ class PullMemberActionTest extends TestCase
             'amount' => 1000,
             'parent_id' => $subscription->id,
         ]);
+        $this->assertDatabaseHas('members', [
+            'subscription_id' => $subscription->id,
+        ]);
     }
 }
