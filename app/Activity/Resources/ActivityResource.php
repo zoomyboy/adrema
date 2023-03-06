@@ -49,7 +49,7 @@ class ActivityResource extends JsonResource
     public static function meta(): array
     {
         return [
-            'subactivities' => Subactivity::select('name', 'id')->get(),
+            'subactivities' => Subactivity::select('name', 'id', 'is_filterable')->get(),
             'filter' => ActivityFilterScope::fromRequest(request()->input('filter')),
         ];
     }

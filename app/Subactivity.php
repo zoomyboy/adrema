@@ -20,6 +20,7 @@ class Subactivity extends Model
 
     public $casts = [
         'is_age_group' => 'boolean',
+        'is_filterable' => 'boolean',
     ];
 
     public function sluggable(): array

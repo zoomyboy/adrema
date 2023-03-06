@@ -14,7 +14,7 @@ class EditTest extends TestCase
     public function testItEditsAnActivity(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $activity = Activity::factory()->name('Asas')->hasAttached(Subactivity::factory()->name('Pupu'))->create();
+        $activity = Activity::factory()->name('Asas')->hasAttached(Subactivity::factory()->name('Pupu')->filterable())->create();
 
         $response = $this->get(route('activity.edit', ['activity' => $activity]));
 
@@ -32,6 +32,7 @@ class EditTest extends TestCase
         $this->assertInertiaHas([
             'id' => $activity->subactivities->first()->id,
             'name' => 'Pupu',
+            'is_filterable' => true,
         ], $response, 'meta.subactivities.0');
     }
 }
