@@ -5,6 +5,7 @@ namespace App\Activity\Api;
 use App\Activity;
 use App\Member\Membership;
 use App\Subactivity;
+use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
@@ -21,17 +22,19 @@ class SubactivityUpdateAction
      */
     public function handle(Subactivity $subactivity, array $payload): Subactivity
     {
-        $subactivity->update(Arr::except($payload, 'activities'));
+        return DB::transaction(function () use ($subactivity, $payload) {
+            $subactivity->update(Arr::except($payload, 'activities'));
 
-        if (null !== data_get($payload, 'activities')) {
-            $subactivity->activities()->sync($payload['activities']);
-        }
+            if (null !== data_get($payload, 'activities')) {
+                $subactivity->activities()->sync($payload['activities']);
+            }
 
-        return $subactivity;
+            return $subactivity;
+        });
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, string|array<int, mixed>>
      */
     public function rules(): array
     {

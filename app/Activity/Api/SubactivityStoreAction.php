@@ -3,6 +3,7 @@
 namespace App\Activity\Api;
 
 use App\Subactivity;
+use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\ActionRequest;
@@ -17,10 +18,12 @@ class SubactivityStoreAction
      */
     public function handle(array $payload): Subactivity
     {
-        $subactivity = Subactivity::create(Arr::except($payload, 'activities'));
-        $subactivity->activities()->sync($payload['activities']);
+        return DB::transaction(function () use ($payload) {
+            $subactivity = Subactivity::create(Arr::except($payload, 'activities'));
+            $subactivity->activities()->sync($payload['activities']);
 
-        return $subactivity;
+            return $subactivity;
+        });
     }
 
     /**
