@@ -3,6 +3,8 @@
 namespace Tests\Feature\Activity;
 
 use App\Activity;
+use App\Member\Member;
+use App\Member\Membership;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -157,5 +159,22 @@ class UpdateTest extends TestCase
         ]);
 
         $this->assertDatabaseEmpty('activity_subactivity');
+    }
+
+    public function testItCannotSetSubactivityIfItStillHasMembers(): void
+    {
+        $this->login()->loginNami();
+        $activity = Activity::factory()->create();
+        $subactivity = Subactivity::factory()->hasAttached($activity)->create();
+        $newSubactivity = Subactivity::factory()->create();
+        Member::factory()->defaults()->has(Membership::factory()->for($activity)->for($subactivity))->create();
+
+        $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+            'name' => 'abc',
+            'is_filterable' => false,
+            'subactivities' => [$newSubactivity->id],
+        ]);
+
+        $response->assertSessionHasErrors(['subactivities' => 'Untergliederung hat noch Mitglieder.']);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Activity\Actions;
 
 use App\Activity;
+use App\Member\Membership;
 use App\Subactivity;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,12 @@ class ActivityUpdateAction
     {
         if ($activity->hasNami) {
             $this->validateNami($activity, $request->validated());
+        }
+
+        $removingSubactivities = $activity->subactivities()->whereNotIn('id', $request->validated('subactivities'))->pluck('id');
+
+        if ($removingSubactivities->first(fn ($subactivity) => Membership::firstWhere(['activity_id' => $activity->id, 'subactivity_id' => $subactivity]))) {
+            throw ValidationException::withMessages(['subactivities' => 'Untergliederung hat noch Mitglieder.']);
         }
 
         $this->handle($activity, $request->validated());

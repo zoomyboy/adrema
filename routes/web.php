@@ -7,6 +7,7 @@ use App\Activity\Actions\DestroyAction as ActivityDestroyAction;
 use App\Activity\Actions\EditAction as ActivityEditAction;
 use App\Activity\Actions\IndexAction as ActivityIndexAction;
 use App\Activity\Api\SubactivityStoreAction;
+use App\Activity\Api\SubactivityUpdateAction;
 use App\Contribution\Actions\FormAction as ContributionFormAction;
 use App\Contribution\ContributionController;
 use App\Course\Controllers\CourseController;
@@ -62,4 +63,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::patch('/activity/{activity}', ActivityUpdateAction::class)->name('activity.update');
     Route::delete('/activity/{activity}', ActivityDestroyAction::class)->name('activity.destroy');
     Route::post('/subactivity', SubactivityStoreAction::class)->name('api.subactivity.store');
+    Route::patch('/subactivity/{subactivity}', SubactivityUpdateAction::class)->name('api.subactivity.update');
 });
