@@ -58,9 +58,10 @@ class InsertMemberAction
         $fee = Fee::nami($member->feeId ?: -1);
 
         if (is_null($fee)) {
-            $fee = Fee::create(['name' => $member->feeName, 'nami_id' => $member->feeId]);
-            $subscription = $fee->subscriptions()->create(['name' => $member->feeName]);
-            $subscription->children()->create(['name' => $member->feeName, 'amount' => 1000]);
+            $feeName = $member->feeName ?: 'Default';
+            $fee = Fee::create(['name' => $feeName, 'nami_id' => $member->feeId]);
+            $subscription = $fee->subscriptions()->create(['name' => $feeName]);
+            $subscription->children()->create(['name' => $feeName, 'amount' => 1000]);
         }
 
         return $fee->subscriptions()->first();
