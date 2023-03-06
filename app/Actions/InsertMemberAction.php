@@ -9,6 +9,7 @@ use App\Gender;
 use App\Group;
 use App\Member\Member;
 use App\Nationality;
+use App\Payment\Subscription;
 use App\Region;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\LaravelNami\Data\Member as NamiMember;
@@ -45,20 +46,23 @@ class InsertMemberAction
             'confession_id' => optional(Confession::firstWhere('nami_id', $member->confessionId ?: -1))->id,
             'region_id' => $region && !$region->is_null ? $region->id : null,
             'country_id' => optional(Country::where('nami_id', $member->countryId)->first())->id,
-            'subscription_id' => $this->getSubscriptionId($member),
+            'subscription_id' => $this->getSubscription($member)?->id,
             'nationality_id' => Nationality::where('nami_id', $member->nationalityId)->firstOrFail()->id,
             'mitgliedsnr' => $member->memberId,
             'version' => $member->version,
         ]);
     }
 
-    public function getSubscriptionId(NamiMember $member): ?int
+    public function getSubscription(NamiMember $member): ?Subscription
     {
-        $fee = Fee::firstWhere('nami_id', $member->feeId ?: -1);
+        $fee = Fee::nami($member->feeId ?: -1);
+
         if (is_null($fee)) {
-            return null;
+            $fee = Fee::create(['name' => $member->feeName, 'nami_id' => $member->feeId]);
+            $subscription = $fee->subscriptions()->create(['name' => $member->feeName]);
+            $subscription->children()->create(['name' => $member->feeName, 'amount' => 1000]);
         }
 
-        return optional($fee->subscriptions()->first())->id;
+        return $fee->subscriptions()->first();
     }
 }

@@ -93,4 +93,46 @@ class PullMemberActionTest extends TestCase
             'region_id' => null,
         ]);
     }
+
+    public function testItSetsFirstSubscriptionFromFee(): void
+    {
+        Region::factory()->inNami(999)->name('nicht-de')->create(['is_null' => true]);
+        Subscription::factory()->for(Fee::factory()->inNami(54))->create();
+        $should = Subscription::factory()->for(Fee::factory()->inNami(55))->create();
+        Subscription::factory()->for(Fee::factory()->inNami(56))->create();
+        app(MemberFake::class)->shows(1000, 1001, [
+            'beitragsartId' => 55,
+        ]);
+
+        app(PullMemberAction::class)->handle(1000, 1001);
+
+        $this->assertDatabaseHas('members', [
+            'subscription_id' => $should->id,
+        ]);
+    }
+
+    public function testItCreatesSubscriptionOnTheFly(): void
+    {
+        Region::factory()->inNami(999)->name('nicht-de')->create(['is_null' => true]);
+        app(MemberFake::class)->shows(1000, 1001, [
+            'beitragsartId' => 55,
+            'beitragsart' => 'Lala',
+        ]);
+
+        app(PullMemberAction::class)->handle(1000, 1001);
+
+        $fee = Fee::where('nami_id', 55)->firstOrFail();
+        $subscription = Subscription::where('fee_id', $fee->id)->firstOrFail();
+        $this->assertDatabaseHas('subscriptions', [
+            'fee_id' => $fee->id,
+            'name' => 'Lala',
+            'split' => false,
+            'for_promise' => false,
+        ]);
+        $this->assertDatabaseHas('subscription_children', [
+            'name' => 'Lala',
+            'amount' => 1000,
+            'parent_id' => $subscription->id,
+        ]);
+    }
 }
