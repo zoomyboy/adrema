@@ -138,4 +138,19 @@ class PullMemberActionTest extends TestCase
             'subscription_id' => $subscription->id,
         ]);
     }
+
+    public function testItPullsMemberWithNoSubscription(): void
+    {
+        Region::factory()->inNami(999)->name('nicht-de')->create(['is_null' => true]);
+        app(MemberFake::class)->shows(1000, 1001, [
+            'beitragsartId' => null,
+            'beitragsart' => null,
+        ]);
+
+        app(PullMemberAction::class)->handle(1000, 1001);
+
+        $this->assertDatabaseHas('members', [
+            'subscription_id' => null,
+        ]);
+    }
 }

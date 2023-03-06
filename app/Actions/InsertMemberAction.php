@@ -55,7 +55,11 @@ class InsertMemberAction
 
     public function getSubscription(NamiMember $member): ?Subscription
     {
-        $fee = Fee::nami($member->feeId ?: -1);
+        if (is_null($member->feeId)) {
+            return null;
+        }
+
+        $fee = Fee::nami($member->feeId);
 
         if (is_null($fee)) {
             $feeName = $member->feeName ?: 'Default';
