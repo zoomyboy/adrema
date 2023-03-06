@@ -1,18 +1,32 @@
 <template>
     <label class="flex flex-col relative">
-        <span v-if="label && !inset" class="font-semibold text-gray-400" :class="{
-            'text-xs': size == 'sm',
-            'text-sm': size === null
-        }">{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span>
-        <span v-if="label && inset" class="absolute top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700" :class="{
-            'text-xs': size == 'sm',
-            'text-sm': size === null
-        }">{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span>
-        <textarea v-text="value" @input="trigger" :placeholder="placeholder"
-            class="h-full outline-none bg-gray-700 border-gray-600 border-solid" :rows="rows"
+        <span
+            v-if="label && !inset"
+            class="font-semibold text-gray-400"
+            :class="{
+                'text-xs': size == 'sm',
+                'text-sm': size === null,
+            }"
+            >{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span
+        >
+        <span
+            v-if="label && inset"
+            class="absolute top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700"
+            :class="{
+                'text-xs': size == 'sm',
+                'text-sm': size === null,
+            }"
+            >{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span
+        >
+        <textarea
+            v-text="value"
+            @input="trigger"
+            :placeholder="placeholder"
+            class="h-full outline-none bg-gray-700 border-gray-600 border-solid"
+            :rows="rows"
             :class="{
                 'rounded-lg text-sm border-2 p-2 text-gray-300': size === null,
-                'rounded-lg py-2 px-2 text-xs border-2 text-gray-800': size == 'sm'
+                'rounded-lg py-2 px-2 text-xs border-2 text-gray-300': size == 'sm',
             }"
         ></textarea>
         <div v-if="hint" v-tooltip="hint" class="absolute right-0 top-0 mr-2 mt-2">
@@ -23,61 +37,63 @@
 
 <script>
 export default {
-    data: function() {
+    data: function () {
         return {
-            focus: false
+            focus: false,
         };
     },
     props: {
         required: {
             type: Boolean,
-            default: false
+            default: false,
         },
         inset: {
             default: false,
-            type: Boolean
+            type: Boolean,
         },
         size: {
-            default: null
+            default: null,
         },
         rows: {
-            default: function() {
+            default: function () {
                 return 4;
-            }
+            },
         },
         id: {
-            required: true
+            required: true,
         },
         hint: {
-            default: null
+            default: null,
         },
         value: {
-            default: undefined
+            default: undefined,
         },
         mask: {
-            default: undefined
+            default: undefined,
         },
         label: {
-            default: false
+            default: false,
         },
         type: {
             required: false,
-            default: function() { return 'text'; }
+            default: function () {
+                return 'text';
+            },
         },
         placeholder: {
-            default: ''
-        }
+            default: '',
+        },
     },
     methods: {
         trigger(v) {
             this.$emit('input', v.target.value);
-        }
+        },
     },
     created() {
         if (typeof this.value === 'undefined') {
             this.$emit('input', '');
         }
-    }
+    },
 };
 </script>
 
