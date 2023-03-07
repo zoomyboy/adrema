@@ -38,8 +38,11 @@ class SubactivityUpdateAction
      */
     public function rules(): array
     {
+        /** @var Subactivity */
+        $subactivity = request()->route('subactivity');
+
         return [
-            'name' => ['required', 'string', 'max:255', Rule::unique('subactivities', 'name')->ignore(request()->route('subactivity')->id)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('subactivities', 'name')->ignore($subactivity->id)],
             'activities' => ['present', 'array', 'min:1'],
             'activities.*' => 'integer',
             'is_filterable' => 'present|boolean',
@@ -64,7 +67,7 @@ class SubactivityUpdateAction
 
         $removingActivities = $subactivity->activities()->whereNotIn('id', $request->validated('activities'))->pluck('id');
 
-        if ($removingActivities->first(fn ($activity) => Membership::firstWhere(['activity_id' => $activity, 'subactivity_id' => $subactivity->id]))) {
+        if ($removingActivities->first(fn ($activity) => Membership::where(['activity_id' => $activity, 'subactivity_id' => $subactivity->id])->exists())) {
             throw ValidationException::withMessages(['activities' => 'Tätigkeit hat noch Mitglieder.']);
         }
 
@@ -74,7 +77,7 @@ class SubactivityUpdateAction
     /**
      * @todo handle this with a model event on the pivot model
      *
-     * @param Payload $payload
+     * @param array{name: string, activities: array<int, int>} $payload
      */
     private function validateNami(Subactivity $subactivity, array $payload): void
     {

@@ -25,6 +25,13 @@ trait HasMeta
         ]);
     }
 
+    /**
+     * Create a new anonymous resource collection without meta.
+     *
+     * @param mixed $resource
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public static function collectionWithoutMeta($resource)
     {
         return parent::collection($resource);

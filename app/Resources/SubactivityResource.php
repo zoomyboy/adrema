@@ -5,6 +5,7 @@ namespace App\Resources;
 use App\Activity;
 use App\Activity\Resources\ActivityResource;
 use App\Lib\HasMeta;
+use App\Subactivity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -19,7 +20,7 @@ class SubactivityResource extends JsonResource
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array<string, mixed>
      */
     public function toArray($request)
     {
@@ -35,6 +36,9 @@ class SubactivityResource extends JsonResource
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function meta(): array
     {
         return [
