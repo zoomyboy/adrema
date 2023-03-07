@@ -73,6 +73,11 @@ class MemberController extends Controller
             'subscriptions' => Subscription::pluck('name', 'id'),
             'data' => [
                 'country_id' => Country::default(),
+                'efz' => null,
+                'ps_at' => null,
+                'without_education_at' => null,
+                'without_efz_at' => null,
+                'more_ps_at' => null,
             ],
             'mode' => 'create',
         ]);

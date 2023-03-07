@@ -31,8 +31,9 @@ class CreateTest extends TestCase
         $this->assertInertiaHas('Biber', $response, "subactivities.{$activity->id}.{$subactivity->id}");
         $this->assertInertiaHas('€ Mitglied', $response, "activities.{$activity->id}");
         $this->assertInertiaHas(['name' => 'E-Mail', 'id' => 'E-Mail'], $response, 'billKinds.0');
-    }
 
+        $this->assertInertiaHas(['efz' => null, 'ps_at' => null, 'more_ps_at' => null, 'without_education_at' => null, 'without_efz_at' => null], $response, 'data');
+    }
 
     public function testItDoesntDisplayActivitiesAndSubactivitiesNotInNami(): void
     {
