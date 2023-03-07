@@ -50,7 +50,7 @@ class ActivityUpdateAction
 
         $removingSubactivities = $activity->subactivities()->whereNotIn('id', $request->validated('subactivities'))->pluck('id');
 
-        if ($removingSubactivities->first(fn ($subactivity) => Membership::firstWhere(['activity_id' => $activity->id, 'subactivity_id' => $subactivity]))) {
+        if ($removingSubactivities->first(fn ($subactivity) => Membership::where(['activity_id' => $activity->id, 'subactivity_id' => $subactivity])->exists())) {
             throw ValidationException::withMessages(['subactivities' => 'Untergliederung hat noch Mitglieder.']);
         }
 

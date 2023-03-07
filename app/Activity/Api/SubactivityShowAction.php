@@ -11,9 +11,9 @@ class SubactivityShowAction
 {
     use AsAction;
 
-    public function handle()
+    public function handle(): void
     {
-        // ...
+        return;
     }
 
     public function asController(Subactivity $subactivity): JsonResponse
