@@ -5,6 +5,7 @@ namespace App\Activity\Resources;
 use App\Activity;
 use App\Http\Views\ActivityFilterScope;
 use App\Lib\HasMeta;
+use App\Resources\SubactivityResource;
 use App\Subactivity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -49,7 +50,7 @@ class ActivityResource extends JsonResource
     public static function meta(): array
     {
         return [
-            'subactivities' => Subactivity::select('name', 'id', 'is_filterable')->get(),
+            'subactivities' => SubactivityResource::collectionWithoutMeta(Subactivity::get()),
             'filter' => ActivityFilterScope::fromRequest(request()->input('filter')),
         ];
     }

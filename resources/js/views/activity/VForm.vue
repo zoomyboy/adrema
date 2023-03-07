@@ -1,7 +1,7 @@
 <template>
     <form id="actionform" class="grow p-3" @submit.prevent="submit">
-        <popup heading="Neue Untertätigkeit" v-if="mode === 'edit' && addingSubactivity === true" @close="addingSubactivity = false">
-            <subactivity-form class="mt-4" :value="inner.subactivity_model" @stored="reloadSubactivities"></subactivity-form>
+        <popup heading="Neue Untertätigkeit" v-if="mode === 'edit' && currentSubactivity !== null" @close="currentSubactivity = null">
+            <subactivity-form class="mt-4" v-if="currentSubactivity" :value="currentSubactivity" @stored="reloadSubactivities" @updated="mergeSubactivity"></subactivity-form>
         </popup>
         <div class="flex space-x-3">
             <f-text id="name" v-model="inner.name" label="Name" required></f-text>
@@ -9,20 +9,15 @@
         </div>
         <div class="flex space-x-3 items-center mt-6 mb-2">
             <checkboxes-label>Untertätigkeiten</checkboxes-label>
-            <icon-button icon="plus" v-if="mode === 'edit'" @click.prevent="addingSubactivity = true">Neu</icon-button>
+            <icon-button icon="plus" v-if="mode === 'edit'" @click.prevent="currentSubactivity = inner.subactivity_model">Neu</icon-button>
         </div>
         <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-            <f-switch
-                inline
-                size="sm"
-                :key="option.id"
-                v-model="inner.subactivities"
-                name="subactivities[]"
-                :id="`subactivities-${option.id}`"
-                :value="option.id"
-                :label="option.name"
-                v-for="option in subactivities"
-            ></f-switch>
+            <div v-for="option in subactivities" class="flex items-center space-x-2">
+                <a href="#" @click.prevent="currentSubactivity = option" class="transition hover:bg-yellow-600 group w-5 h-5 rounded-full flex items-center justify-center flex-none">
+                    <svg-sprite src="pencil" class="text-yellow-800 w-3 h-3 group-hover:text-yellow-200 transition"></svg-sprite>
+                </a>
+                <f-switch inline size="sm" :key="option.id" v-model="inner.subactivities" name="subactivities[]" :id="`subactivities-${option.id}`" :value="option.id" :label="option.name"></f-switch>
+            </div>
         </div>
         <save-button form="actionform"></save-button>
     </form>
@@ -32,7 +27,7 @@
 export default {
     data: function () {
         return {
-            addingSubactivity: false,
+            currentSubactivity: null,
             subactivities: [...this.meta.subactivities],
             inner: {...this.data},
             mode: this.data.name === '' ? 'create' : 'edit',
@@ -63,7 +58,20 @@ export default {
                     _self.subactivities = page.props.meta.subactivities;
                     _self.inner.subactivities.push(model.id);
                     _self.$success('Untertätigkeit gespeichert.');
-                    _self.addingSubactivity = false;
+                    _self.currentSubactivity = null;
+                },
+            });
+        },
+
+        mergeSubactivity(model) {
+            var _self = this;
+
+            this.$inertia.reload({
+                onSuccess(page) {
+                    _self.subactivities = page.props.meta.subactivities;
+                    _self.inner.subactivities = _self.inner.subactivities.map((s) => (s.id === model.id ? model : s));
+                    _self.$success('Untertätigkeit aktualisiert.');
+                    _self.currentSubactivity = null;
                 },
             });
         },

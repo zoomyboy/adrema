@@ -38,6 +38,7 @@ class ActivityUpdateAction
             'name' => 'required|max:255',
             'is_filterable' => 'present|boolean',
             'subactivities' => 'present|array',
+            'subactivities.*' => 'integer',
         ];
     }
 

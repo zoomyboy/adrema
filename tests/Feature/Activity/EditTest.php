@@ -34,5 +34,14 @@ class EditTest extends TestCase
             'name' => 'Pupu',
             'is_filterable' => true,
         ], $response, 'meta.subactivities.0');
+        $this->assertInertiaHas([
+            'id' => $activity->subactivities->first()->id,
+            'name' => 'Pupu',
+            'is_filterable' => true,
+            'links' => [
+                'show' => route('api.subactivity.show', ['subactivity' => $activity->subactivities->first()->id]),
+                'update' => route('api.subactivity.update', ['subactivity' => $activity->subactivities->first()->id]),
+            ],
+        ], $response, 'meta.subactivities.0');
     }
 }

@@ -41,6 +41,7 @@ class SubactivityUpdateAction
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('subactivities', 'name')->ignore(request()->route('subactivity')->id)],
             'activities' => ['present', 'array', 'min:1'],
+            'activities.*' => 'integer',
             'is_filterable' => 'present|boolean',
         ];
     }

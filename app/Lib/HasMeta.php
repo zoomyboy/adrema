@@ -25,9 +25,13 @@ trait HasMeta
         ]);
     }
 
+    public static function collectionWithoutMeta($resource)
+    {
+        return parent::collection($resource);
+    }
+
     public static function meta(): array
     {
         return [];
     }
 }
-

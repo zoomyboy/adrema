@@ -34,6 +34,7 @@ class SubactivityStoreAction
         return [
             'name' => 'required|unique:subactivities,name',
             'activities' => 'present|array|min:1',
+            'activities.*' => 'integer',
             'is_filterable' => 'present|boolean',
         ];
     }
