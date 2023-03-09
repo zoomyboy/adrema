@@ -1,32 +1,11 @@
 <template>
-    <form action="/contribution/generate" target="_BLANK" class="max-w-4xl w-full mx-auto gap-6 grid-cols-2 grid p-6">
-        <f-text
-            id="eventName"
-            name="eventName"
-            class="col-span-2"
-            v-model="values.eventName"
-            label="Veranstaltungs-Name"
-            required
-        ></f-text>
+    <form target="_BLANK" class="max-w-4xl w-full mx-auto gap-6 grid-cols-2 grid p-6">
+        <f-text id="eventName" name="eventName" class="col-span-2" v-model="values.eventName" label="Veranstaltungs-Name" required></f-text>
         <f-text id="dateFrom" name="dateFrom" type="date" v-model="values.dateFrom" label="Datum von" required></f-text>
-        <f-text
-            id="dateUntil"
-            name="dateUntil"
-            type="date"
-            v-model="values.dateUntil"
-            label="Datum bis"
-            required
-        ></f-text>
+        <f-text id="dateUntil" name="dateUntil" type="date" v-model="values.dateUntil" label="Datum bis" required></f-text>
 
         <f-text id="zipLocation" name="zipLocation" v-model="values.zipLocation" label="PLZ / Ort" required></f-text>
-        <f-select
-            id="country"
-            :options="countries"
-            name="country"
-            v-model="values.country"
-            label="Land"
-            required
-        ></f-select>
+        <f-select id="country" :options="countries" name="country" v-model="values.country" label="Land" required></f-select>
 
         <div class="border-gray-200 shadow shadow-primary-700 p-3 shadow-[0_0_4px_gray] col-span-2">
             <f-text
@@ -57,10 +36,10 @@
 
         <button
             v-for="(compiler, index) in compilers"
-            target="_BLANK"
-            type="submit"
-            name="type"
-            :value="compiler.class"
+            @click.prevent="
+                values.type = compiler.class;
+                submit();
+            "
             class="btn btn-primary mt-3 inline-block"
             v-text="compiler.title"
         ></button>
@@ -78,6 +57,7 @@ export default {
                 results: [],
             },
             values: {
+                type: null,
                 members: [],
                 event_name: '',
                 dateFrom: '',
@@ -98,7 +78,7 @@ export default {
             get() {
                 return this.search.s;
             },
-            set: debounce(async function(event) {
+            set: debounce(async function (event) {
                 this.search.s = event;
 
                 var response = await this.axios.post('/api/member/search', {search: event, minLength: 3});
@@ -108,6 +88,10 @@ export default {
         },
     },
     methods: {
+        submit() {
+            var payload = btoa(JSON.stringify(this.values));
+            window.open(`/contribution/generate?payload=${payload}`);
+        },
         onSubmitMemberResult(selected) {
             if (this.values.members.find((m) => m === selected.id) !== undefined) {
                 this.values.members = this.values.members.filter((m) => m === selected.id);
@@ -127,6 +111,5 @@ export default {
             this.onSubmitMemberResult(this.search.results[0]);
         },
     },
-
 };
 </script>

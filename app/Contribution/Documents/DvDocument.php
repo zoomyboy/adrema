@@ -6,7 +6,6 @@ use App\Country;
 use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Http\Request;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
@@ -33,14 +32,17 @@ class DvDocument extends ContributionDocument
             .Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
-    public static function fromRequest(Request $request): self
+    /**
+     * @param array<string, string|int> $request
+     */
+    public static function fromRequest(array $request): self
     {
         return new self(
-            dateFrom: $request->dateFrom,
-            dateUntil: $request->dateUntil,
-            zipLocation: $request->zipLocation,
-            country: Country::where('id', $request->country)->firstOrFail(),
-            members: Member::whereIn('id', $request->members)->orderByRaw('lastname, firstname')->get()->toBase()->chunk(17),
+            dateFrom: $request['dateFrom'],
+            dateUntil: $request['dateUntil'],
+            zipLocation: $request['zipLocation'],
+            country: Country::where('id', $request['country'])->firstOrFail(),
+            members: Member::whereIn('id', $request['members'])->orderByRaw('lastname, firstname')->get()->toBase()->chunk(17),
         );
     }
 

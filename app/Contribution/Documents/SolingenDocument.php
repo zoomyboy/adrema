@@ -5,7 +5,6 @@ namespace App\Contribution\Documents;
 use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
@@ -25,14 +24,17 @@ class SolingenDocument extends ContributionDocument
     ) {
     }
 
-    public static function fromRequest(Request $request): static
+    /**
+     * @param array<string, mixed|int> $request
+     */
+    public static function fromRequest(array $request): static
     {
         return new static(
-            dateFrom: $request->dateFrom,
-            dateUntil: $request->dateUntil,
-            zipLocation: $request->zipLocation,
-            members: $request->members,
-            eventName: $request->eventName,
+            dateFrom: $request['dateFrom'],
+            dateUntil: $request['dateUntil'],
+            zipLocation: $request['zipLocation'],
+            members: $request['members'],
+            eventName: $request['eventName'],
         );
     }
 

@@ -6,7 +6,6 @@ use App\Country;
 use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Http\Request;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
@@ -38,15 +37,18 @@ class RemscheidDocument extends ContributionDocument
         return Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
-    public static function fromRequest(Request $request): self
+    /**
+     * @param array<string, string|int> $request
+     */
+    public static function fromRequest(array $request): self
     {
-        [$leaders, $children] = Member::whereIn('id', $request->members)->orderByRaw('lastname, firstname')->get()->partition(fn ($member) => $member->isLeader());
+        [$leaders, $children] = Member::whereIn('id', $request['members'])->orderByRaw('lastname, firstname')->get()->partition(fn ($member) => $member->isLeader());
 
         return new self(
-            dateFrom: $request->dateFrom,
-            dateUntil: $request->dateUntil,
-            zipLocation: $request->zipLocation,
-            country: Country::where('id', $request->country)->firstOrFail(),
+            dateFrom: $request['dateFrom'],
+            dateUntil: $request['dateUntil'],
+            zipLocation: $request['zipLocation'],
+            country: Country::where('id', $request['country'])->firstOrFail(),
             leaders: $leaders->values()->toBase()->chunk(6),
             children: $children->values()->toBase()->chunk(20),
         );
