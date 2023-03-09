@@ -23,7 +23,7 @@ class SearchAction
 
     public function asController(ActionRequest $request): AnonymousResourceCollection
     {
-        if ($request->input('minLength') !== null && strlen($request->input('search')) < $request->input('minLength')) {
+        if (null !== $request->input('minLength') && strlen($request->input('search', '')) < $request->input('minLength')) {
             return MemberResource::collection($this->empty());
         }
 
