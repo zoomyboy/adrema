@@ -17,6 +17,7 @@ use App\Efz\ShowEfzDocumentAction;
 use App\Home\Actions\IndexAction as HomeIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
+use App\Member\Actions\ExportAction;
 use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
 use App\Member\Actions\SearchAction;
@@ -56,6 +57,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncAction::class)->name('member.resync');
+    Route::get('member-export', ExportAction::class)->name('member-export');
     Route::get('/activity', ActivityIndexAction::class)->name('activity.index');
     Route::get('/activity/{activity}/edit', ActivityEditAction::class)->name('activity.edit');
     Route::get('/activity/create', ActivityCreateAction::class)->name('activity.create');

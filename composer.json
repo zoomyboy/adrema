@@ -36,6 +36,7 @@
         "laravel/telescope": "^4.13",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
+        "league/csv": "^9.9",
         "lorisleiva/laravel-actions": "^2.4",
         "monicahq/laravel-sabre": "^1.6",
         "nunomaduro/collision": "^6.1",
