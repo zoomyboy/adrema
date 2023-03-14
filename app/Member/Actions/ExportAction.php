@@ -44,7 +44,7 @@ class ExportAction
     {
         $filter = FilterScope::fromRequest($request->input('filter'));
 
-        $contents = $this->handle(Member::withFilter($filter)->get());
+        $contents = $this->handle(Member::ordered()->withFilter($filter)->get());
 
         Storage::disk('temp')->put('mitglieder.csv', $contents);
 
