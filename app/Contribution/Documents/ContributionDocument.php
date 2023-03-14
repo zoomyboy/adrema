@@ -9,7 +9,7 @@ abstract class ContributionDocument extends Document
     abstract public static function getName(): string;
 
     /**
-     * @param array<string, mixed> $payload
+     * @param array<string, mixed> $request
      */
     abstract public static function fromRequest(array $request): self;
 
