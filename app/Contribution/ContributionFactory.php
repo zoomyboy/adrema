@@ -6,6 +6,8 @@ use App\Contribution\Documents\ContributionDocument;
 use App\Contribution\Documents\DvDocument;
 use App\Contribution\Documents\RemscheidDocument;
 use App\Contribution\Documents\SolingenDocument;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class ContributionFactory
 {
@@ -19,13 +21,36 @@ class ContributionFactory
     ];
 
     /**
-     * @return array<int, array{id: string, name: string}>
+     * @return Collection<int, array{title: mixed, class: mixed}>
      */
-    public function compilerSelect(): array
+    public function compilerSelect(): Collection
     {
         return collect($this->documents)->map(fn ($document) => [
             'title' => $document::getName(),
             'class' => $document,
-        ])->toArray();
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function typeRule(): array
+    {
+        return [
+            'type' => ['required', Rule::in($this->documents)],
+        ];
+    }
+
+    /**
+     * @param class-string<ContributionDocument> $type
+     *
+     * @return array<string, mixed>
+     */
+    public function rules(string $type): array
+    {
+        return [
+            ...$type::globalRules(),
+            ...$type::rules(),
+        ];
     }
 }

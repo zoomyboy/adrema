@@ -88,9 +88,14 @@ export default {
         },
     },
     methods: {
-        submit() {
-            var payload = btoa(JSON.stringify(this.values));
-            window.open(`/contribution/generate?payload=${payload}`);
+        async submit() {
+            try {
+                await this.axios.post('/contribution-validate', this.values);
+                var payload = btoa(JSON.stringify(this.values));
+                window.open(`/contribution-generate?payload=${payload}`);
+            } catch (e) {
+                this.errorsFromException(e);
+            }
         },
         onSubmitMemberResult(selected) {
             if (this.values.members.find((m) => m === selected.id) !== undefined) {

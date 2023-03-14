@@ -95,4 +95,17 @@ class SolingenDocument extends ContributionDocument
     {
         return 'Für Stadt Solingen erstellen';
     }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function rules(): array
+    {
+        return [
+            'dateFrom' => 'required|string|date_format:Y-m-d',
+            'dateUntil' => 'required|string|date_format:Y-m-d',
+            'zipLocation' => 'required|string',
+            'eventName' => 'required|string',
+        ];
+    }
 }

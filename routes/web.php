@@ -10,7 +10,8 @@ use App\Activity\Api\SubactivityShowAction;
 use App\Activity\Api\SubactivityStoreAction;
 use App\Activity\Api\SubactivityUpdateAction;
 use App\Contribution\Actions\FormAction as ContributionFormAction;
-use App\Contribution\ContributionController;
+use App\Contribution\Actions\GenerateAction as ContributionGenerateAction;
+use App\Contribution\Actions\ValidateAction as ContributionValidateAction;
 use App\Course\Controllers\CourseController;
 use App\Efz\ShowEfzDocumentAction;
 use App\Home\Actions\IndexAction as HomeIndexAction;
@@ -55,8 +56,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncAction::class)->name('member.resync');
-    Route::get('/contribution', ContributionFormAction::class)->name('contribution.form');
-    Route::get('/contribution/generate', [ContributionController::class, 'generate'])->name('contribution.generate');
     Route::get('/activity', ActivityIndexAction::class)->name('activity.index');
     Route::get('/activity/{activity}/edit', ActivityEditAction::class)->name('activity.edit');
     Route::get('/activity/create', ActivityCreateAction::class)->name('activity.create');
@@ -66,4 +65,9 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/subactivity', SubactivityStoreAction::class)->name('api.subactivity.store');
     Route::patch('/subactivity/{subactivity}', SubactivityUpdateAction::class)->name('api.subactivity.update');
     Route::get('/subactivity/{subactivity}', SubactivityShowAction::class)->name('api.subactivity.show');
+
+    // ------------------------------- Contributions -------------------------------
+    Route::get('/contribution', ContributionFormAction::class)->name('contribution.form');
+    Route::get('/contribution-generate', ContributionGenerateAction::class)->name('contribution.generate');
+    Route::post('/contribution-validate', ContributionValidateAction::class)->name('contribution.validate');
 });
