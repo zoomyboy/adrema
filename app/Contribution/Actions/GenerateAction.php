@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\Tex\BaseCompiler;
-use Zoomyboy\Tex\Compiler;
 use Zoomyboy\Tex\Tex;
 
 class GenerateAction
@@ -25,7 +24,7 @@ class GenerateAction
         return Tex::compile($document::fromRequest($payload));
     }
 
-    public function asController(ActionRequest $request): Compiler
+    public function asController(ActionRequest $request): BaseCompiler
     {
         $payload = $this->payload($request);
         $type = data_get($payload, 'type');

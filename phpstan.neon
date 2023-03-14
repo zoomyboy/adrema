@@ -101,11 +101,6 @@ parameters:
             path: app/Http/Controllers/Auth/RegisterController.php
 
         -
-            message: "#^Method App\\\\Http\\\\Views\\\\MemberView\\:\\:index\\(\\) has parameter \\$filter with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Http/Views/MemberView.php
-
-        -
             message: "#^Method App\\\\Http\\\\Views\\\\MemberView\\:\\:index\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Http/Views/MemberView.php
@@ -134,11 +129,6 @@ parameters:
             message: "#^Unsafe usage of new static\\(\\)\\.$#"
             count: 1
             path: app/Member/Member.php
-
-        -
-            message: "#^Property App\\\\Member\\\\MemberController\\:\\:\\$filter type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Member/MemberController.php
 
         -
             message: "#^Method App\\\\Member\\\\MemberRequest\\:\\:rules\\(\\) return type has no value type specified in iterable type array\\.$#"

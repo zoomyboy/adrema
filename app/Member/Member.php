@@ -376,8 +376,7 @@ class Member extends Model
     /**
      * @todo refactor this to an actual filter model
      *
-     * @param Builder<self>        $query
-     * @param array<string, mixed> $filter
+     * @param Builder<self> $query
      *
      * @return Builder<self>
      */
