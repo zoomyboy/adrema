@@ -3,10 +3,12 @@
 namespace App\Contribution\Actions;
 
 use App\Contribution\ContributionFactory;
+use App\Contribution\Documents\DvDocument;
 use App\Rules\JsonBase64Rule;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Zoomyboy\Tex\BaseCompiler;
 use Zoomyboy\Tex\Compiler;
 use Zoomyboy\Tex\Tex;
 
@@ -18,7 +20,7 @@ class GenerateAction
      * @param class-string<DvDocument> $document
      * @param array<string, mixed>     $payload
      */
-    public function handle(string $document, array $payload): Compiler
+    public function handle(string $document, array $payload): BaseCompiler
     {
         return Tex::compile($document::fromRequest($payload));
     }
@@ -34,7 +36,7 @@ class GenerateAction
     }
 
     /**
-     * @return array<stirng, mixed>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {

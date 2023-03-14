@@ -25,6 +25,11 @@ class DvDocument extends ContributionDocument
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
+    abstract public static function fromRequest(array $payload): self;
+
     public function dateRange(): string
     {
         return Carbon::parse($this->dateFrom)->format('d.m.Y')
