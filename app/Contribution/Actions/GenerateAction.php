@@ -3,7 +3,7 @@
 namespace App\Contribution\Actions;
 
 use App\Contribution\ContributionFactory;
-use App\Contribution\Documents\DvDocument;
+use App\Contribution\Documents\ContributionDocument;
 use App\Rules\JsonBase64Rule;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\ActionRequest;
@@ -17,8 +17,8 @@ class GenerateAction
     use AsAction;
 
     /**
-     * @param class-string<DvDocument> $document
-     * @param array<string, mixed>     $payload
+     * @param class-string<ContributionDocument> $document
+     * @param array<string, mixed>               $payload
      */
     public function handle(string $document, array $payload): BaseCompiler
     {
