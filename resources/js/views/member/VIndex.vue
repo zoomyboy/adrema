@@ -1,6 +1,6 @@
 <template>
     <div class="pb-6">
-        <div class="px-6 py-2 flex border-b border-gray-600 space-x-3">
+        <div class="px-6 py-2 flex border-b border-gray-600 items-center space-x-3">
             <f-switch v-show="hasModule('bill')" id="ausstand" @input="setFilter('ausstand', $event)" :items="getFilter('ausstand')" label="Nur Ausstände" size="sm"></f-switch>
             <f-select
                 v-show="hasModule('bill')"
@@ -30,6 +30,10 @@
                 size="sm"
                 name="subactivity_id"
             ></f-select>
+            <button class="btn btn-primary label mr-2" @click.prevent="exportMembers">
+                <svg-sprite class="w-3 h-3 xl:mr-2" src="save"></svg-sprite>
+                <span class="hidden xl:inline">Exportieren</span>
+            </button>
         </div>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
@@ -132,6 +136,9 @@ export default {
     },
 
     methods: {
+        exportMembers() {
+            window.open(`/member-export?filter=${this.filterString}`);
+        },
         remove(member) {
             if (window.confirm('Mitglied löschen?')) {
                 this.$inertia.delete(`/member/${member.id}`);

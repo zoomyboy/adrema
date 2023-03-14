@@ -7,11 +7,16 @@ export default {
     props: {
         data: {},
     },
+    computed: {
+        filterString() {
+            return btoa(JSON.stringify(this.inner.meta.filter));
+        },
+    },
     methods: {
         reload(resetPage = true) {
             var _self = this;
             var data = {
-                filter: btoa(JSON.stringify(this.inner.meta.filter)),
+                filter: this.filterString,
                 page: 1,
             };
 
@@ -50,4 +55,3 @@ export default {
         },
     },
 };
-

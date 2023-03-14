@@ -16,7 +16,7 @@ class ExportAction
     use AsAction;
 
     /**
-     * @param Collection<int, Member>
+     * @param Collection<int, Member> $members
      */
     public function handle(Collection $members): string
     {
@@ -31,9 +31,9 @@ class ExportAction
                 $member->address,
                 $member->zip,
                 $member->location,
-                $member->mainPhone,
-                $member->mobilePhone,
-                $member->workPhone,
+                $member->main_phone,
+                $member->mobile_phone,
+                $member->work_phone,
             ]);
         }
 
