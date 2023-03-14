@@ -160,12 +160,32 @@ class IndexTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()->defaults()->emailBillKind()->create();
         Member::factory()->defaults()->postBillKind()->create();
+        Member::factory()->defaults()->postBillKind()->create();
 
-        $emailResponse = $this->call('GET', '/member', ['filter' => '{"bill_kind": "E-Mail"}']);
-        $postResponse = $this->call('GET', '/member', ['filter' => '{"bill_kind": "Post"}']);
+        $emailResponse = $this->callFilter('member.index', ['bill_kind' => 'E-Mail']);
+        $postResponse = $this->callFilter('member.index', ['bill_kind' => 'Post']);
 
         $this->assertCount(1, $this->inertia($emailResponse, 'data.data'));
-        $this->assertCount(1, $this->inertia($postResponse, 'data.data'));
+        $this->assertCount(2, $this->inertia($postResponse, 'data.data'));
+        $this->assertInertiaHas('E-Mail', $emailResponse, 'data.meta.filter.bill_kind');
+    }
+
+    public function testItFiltersForAusstand(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        Member::factory()
+            ->has(Payment::factory()->notPaid()->subscription('Free', [new Child('b', 50)]))
+            ->defaults()->create();
+        Member::factory()->defaults()->create();
+        Member::factory()->defaults()->create();
+
+        $defaultResponse = $this->callFilter('member.index', []);
+        $ausstandResponse = $this->callFilter('member.index', ['ausstand' => true]);
+
+        $this->assertCount(3, $this->inertia($defaultResponse, 'data.data'));
+        $this->assertCount(1, $this->inertia($ausstandResponse, 'data.data'));
+        $this->assertInertiaHas(true, $ausstandResponse, 'data.meta.filter.ausstand');
+        $this->assertInertiaHas(false, $defaultResponse, 'data.meta.filter.ausstand');
     }
 
     public function testItLoadsGroups(): void

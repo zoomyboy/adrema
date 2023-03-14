@@ -105,6 +105,7 @@ class MemberResource extends JsonResource
     {
         return [
             'groups' => Group::select('name', 'id')->get(),
+            'filter' => FilterScope::fromRequest(request()->input('filter', '')),
         ];
     }
 }

@@ -381,27 +381,9 @@ class Member extends Model
      *
      * @return Builder<self>
      */
-    public function scopeFilter(Builder $query, array $filter): Builder
+    public function scopeWithFilter(Builder $query, FilterScope $filter): Builder
     {
-        if (true === data_get($filter, 'ausstand', false)) {
-            $query->whereAusstand();
-        }
-        if (data_get($filter, 'bill_kind', false)) {
-            $query->where('bill_kind', BillKind::fromValue($filter['bill_kind']));
-        }
-        if (data_get($filter, 'subactivity_id', false) || data_get($filter, 'activity_id', false)) {
-            $query->whereHas('memberships', function ($q) use ($filter) {
-                $q->active();
-                if (data_get($filter, 'subactivity_id', false)) {
-                    $q->where('subactivity_id', $filter['subactivity_id']);
-                }
-                if (data_get($filter, 'activity_id', false)) {
-                    $q->where('activity_id', $filter['activity_id']);
-                }
-            });
-        }
-
-        return $query;
+        return $filter->apply($query);
     }
 
     /**

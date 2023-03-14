@@ -1,11 +1,36 @@
 <template>
     <div class="pb-6">
-        <member-filter
-            :value="query.filter"
-            :activities="filterActivities"
-            :subactivities="filterSubactivities"
-            :bill-kinds="billKinds"
-        ></member-filter>
+        <div class="px-6 py-2 flex border-b border-gray-600 space-x-3">
+            <f-switch v-show="hasModule('bill')" id="ausstand" @input="setFilter('ausstand', $event)" :items="getFilter('ausstand')" label="Nur Ausstände" size="sm"></f-switch>
+            <f-select
+                v-show="hasModule('bill')"
+                name="billKinds"
+                id="billKinds"
+                @input="setFilter('bill_kind', $event)"
+                :options="billKinds"
+                :value="getFilter('bill_kind')"
+                label="Rechnung"
+                size="sm"
+            ></f-select>
+            <f-select
+                id="activity_id"
+                @input="setFilter('activity_id', $event)"
+                :options="filterActivities"
+                :value="getFilter('activity_id')"
+                label="Tätigkeit"
+                size="sm"
+                name="activity_id"
+            ></f-select>
+            <f-select
+                id="subactivity_id"
+                @input="setFilter('subactivity_id', $event)"
+                :options="filterSubactivities"
+                :value="getFilter('subactivity_id')"
+                label="Untertätigkeit"
+                size="sm"
+                name="subactivity_id"
+            ></f-select>
+        </div>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
             <thead>
@@ -20,7 +45,7 @@
                 <th></th>
             </thead>
 
-            <tr v-for="(member, index) in data.data" :key="index">
+            <tr v-for="(member, index) in inner.data" :key="index">
                 <td><age-groups :member="member"></age-groups></td>
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
@@ -47,23 +72,11 @@
                 <div class="text-xs text-gray-200" v-text="member.full_address"></div>
                 <div class="flex items-center mt-1 space-x-4">
                     <tags :member="member"></tags>
-                    <v-label
-                        class="text-gray-100 block"
-                        v-show="hasModule('bill')"
-                        :value="member.pending_payment"
-                        fallback=""
-                    ></v-label>
+                    <v-label class="text-gray-100 block" v-show="hasModule('bill')" :value="member.pending_payment" fallback=""></v-label>
                 </div>
-                <actions
-                    class="mt-2"
-                    :member="member"
-                    @sidebar="openSidebar(index, $event)"
-                    @remove="remove(member)"
-                ></actions>
+                <actions class="mt-2" :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)"></actions>
                 <div class="absolute right-0 top-0 h-full flex items-center mr-2">
-                    <i-link :href="member.links.show" v-tooltip="`Details`"
-                        ><svg-sprite src="chevron-down" class="w-6 h-6 text-teal-100 -rotate-90"></svg-sprite
-                    ></i-link>
+                    <i-link :href="member.links.show" v-tooltip="`Details`"><svg-sprite src="chevron-down" class="w-6 h-6 text-teal-100 -rotate-90"></svg-sprite></i-link>
                 </div>
             </box>
         </div>
@@ -88,12 +101,7 @@
                 :subactivities="subactivities"
                 :value="data.data[single]"
             ></member-memberships>
-            <member-courses
-                v-if="single !== null && sidebar === 'courses.index'"
-                @close="closeSidebar"
-                :courses="courses"
-                :value="data.data[single]"
-            ></member-courses>
+            <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="courses" :value="data.data[single]"></member-courses>
         </transition>
     </div>
 </template>
@@ -102,8 +110,7 @@
 import MemberPayments from './MemberPayments.vue';
 import MemberMemberships from './MemberMemberships.vue';
 import MemberCourses from './MemberCourses.vue';
-import MemberFilter from './MemberFilter.vue';
-import mergesQueryString from '../../mixins/mergesQueryString.js';
+import indexHelpers from '../../mixins/indexHelpers.js';
 
 export default {
     data: function () {
@@ -113,12 +120,11 @@ export default {
         };
     },
 
-    mixins: [mergesQueryString],
+    mixins: [indexHelpers],
 
     components: {
         MemberMemberships,
         MemberPayments,
-        MemberFilter,
         MemberCourses,
         'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
         'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
@@ -142,7 +148,6 @@ export default {
     },
 
     props: {
-        data: {},
         subscriptions: {},
         statuses: {},
         paymentDefaults: {},

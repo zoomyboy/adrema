@@ -4,6 +4,7 @@ namespace App\Http\Views;
 
 use App\Activity;
 use App\Course\Models\Course;
+use App\Member\FilterScope;
 use App\Member\Member;
 use App\Member\MemberResource;
 use App\Payment\Status;
@@ -14,13 +15,14 @@ use Illuminate\Http\Request;
 
 class MemberView
 {
-    public function index(Request $request, array $filter): array
+    public function index(Request $request): array
     {
         $activities = Activity::with('subactivities')->get();
+        $filter = FilterScope::fromRequest($request->input('filter', ''));
 
         return [
             'data' => MemberResource::collection(Member::search($request->search)->query(fn ($q) => $q->select('*')
-                ->filter($filter)
+                ->withFilter($filter)
                 ->with('payments.subscription')->with('memberships')->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
                 ->withPendingPayment()
                 ->ordered()

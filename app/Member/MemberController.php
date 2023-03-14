@@ -21,32 +21,17 @@ use Zoomyboy\LaravelNami\Exceptions\ConflictException;
 
 class MemberController extends Controller
 {
-    public array $filter = [
-        'ausstand' => false,
-        'bill_kind' => null,
-        'activity_id' => null,
-        'subactivity_id' => null,
-    ];
-
     public function index(Request $request, GeneralSettings $settings): Response
     {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
 
-        $query = [
-            'filter' => array_merge(
-                $this->filter,
-                json_decode($request->query('filter', '{}'), true)
-            ),
-        ];
-
-        $payload = app(MemberView::class)->index($request, $query['filter']);
+        $payload = app(MemberView::class)->index($request);
         $payload['toolbar'] = [
             ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'],
             ['href' => route('allpayment.page'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'invoice', 'show' => $settings->hasModule('bill')],
             ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope', 'show' => $settings->hasModule('bill')],
         ];
-        $payload['query'] = $query;
         $payload['billKinds'] = BillKind::forSelect();
 
         return \Inertia::render('member/VIndex', $payload);
