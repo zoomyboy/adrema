@@ -21,7 +21,7 @@ class MemberView
         $filter = FilterScope::fromRequest($request->input('filter', ''));
 
         return [
-            'data' => MemberResource::collection(Member::search($request->search)->query(fn ($q) => $q->select('*')
+            'data' => MemberResource::collection(Member::search($filter->search)->query(fn ($q) => $q->select('*')
                 ->withFilter($filter)
                 ->with('payments.subscription')->with('memberships')->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
                 ->withPendingPayment()

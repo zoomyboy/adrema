@@ -40,18 +40,6 @@
                     <portal-target name="toolbar-left"> </portal-target>
                     <portal-target name="toolbar-right"> </portal-target>
                 </div>
-                <label for="search" :class="{'hidden sm:block': !searchVisible, 'block': searchVisible}" class="absolute left-10 sm:static transition-all">
-                    <input
-                        class="shadow-lg bg-gray-800 rounded-lg py-2 px-3 h-10 text-gray-300 hover:bg-gray-700 focus:bg-gray-700 placeholder-gray-400"
-                        placeholder="Suchen…"
-                        name="search"
-                        v-model="isearch"
-                    />
-                </label>
-                <a href="#" @click.prevent="searchVisible = !searchVisible" class="relative sm:hidden w-5 h-5">
-                    <svg-sprite :class="{'opacity-0': searchVisible, 'opacity-100': !searchVisible}" class="absolute transition-all text-gray-300 w-5 h-5" src="search"></svg-sprite>
-                    <svg-sprite :class="{'opacity-0': !searchVisible, 'opacity-100': searchVisible}" class="absolute transition-all text-gray-300 w-5 h-5" src="close"></svg-sprite>
-                </a>
             </div>
 
             <div class="grow flex flex-col">
@@ -69,7 +57,6 @@ import mergesQueryString from '../mixins/mergesQueryString.js';
 export default {
     data: function () {
         return {
-            searchVisible: true,
             menuVisible: true,
             menuOverflowVisible: false,
             tooltipsVisible: false,
@@ -82,17 +69,6 @@ export default {
     mixins: [mergesQueryString],
 
     computed: {
-        isearch: {
-            set: debounce(function (v) {
-                this.$inertia.visit(this.qs({page: 1, search: v}), {
-                    only: ['page', 'search', 'data'],
-                    preserveState: true,
-                });
-            }, 500),
-            get() {
-                return this.$page.props.search;
-            },
-        },
         filterMenu() {
             return this.$page.props.toolbar ? this.$page.props.toolbar.filter((menu) => menu.show !== false) : [];
         },
@@ -105,13 +81,11 @@ export default {
             if (x.matches && !this.menuVisible) {
                 console.log('A');
                 this.menuVisible = true;
-                this.searchVisible = false;
                 this.menuOverflowVisible = false;
                 return;
             }
             if (!x.matches && this.menuVisible) {
                 this.menuVisible = false;
-                this.searchVisible = false;
                 this.menuOverflowVisible = false;
                 return;
             }
@@ -127,7 +101,6 @@ export default {
         window.addEventListener('inertiaStart', () => {
             if (!window.matchMedia('(min-width: 1024px)').matches) {
                 _self.menuVisible = false;
-                _self.searchVisible = false;
                 _self.menuOverflowVisible = false;
             }
         });

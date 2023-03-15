@@ -21,6 +21,7 @@ class FilterScope extends Filter
         public ?string $billKind = null,
         public ?int $activityId = null,
         public ?int $subactivityId = null,
+        public string $search = '',
     ) {
     }
 
