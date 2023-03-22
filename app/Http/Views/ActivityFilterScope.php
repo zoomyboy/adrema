@@ -3,6 +3,7 @@
 namespace App\Http\Views;
 
 use App\Activity;
+use App\Lib\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapOutputName;
@@ -42,4 +43,3 @@ class ActivityFilterScope extends Filter
         return $query;
     }
 }
-
