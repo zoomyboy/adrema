@@ -20,7 +20,7 @@ trait MakesHttpCalls
     public function filterUrl(string $routeName, array $filter): string
     {
         $params = [
-            'filter' => base64_encode(json_encode($filter)),
+            'filter' => base64_encode(rawurlencode(json_encode($filter))),
         ];
 
         return route($routeName, $params);

@@ -24,7 +24,7 @@ abstract class Filter extends Data
     public static function fromRequest(array|string|null $request = null): static
     {
         $payload = is_string($request)
-            ? json_decode(base64_decode($request), true)
+            ? json_decode(rawurldecode(base64_decode($request)), true)
             : $request;
 
         return static::fromPost($payload);

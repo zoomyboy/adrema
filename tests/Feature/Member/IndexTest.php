@@ -192,9 +192,9 @@ class IndexTest extends TestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
 
-        $searchResponse = $this->callFilter('member.index', ['search' => 'Max']);
+        $searchResponse = $this->callFilter('member.index', ['search' => 'Maxö']);
 
-        $this->assertInertiaHas('Max', $searchResponse, 'data.meta.filter.search');
+        $this->assertInertiaHas('Maxö', $searchResponse, 'data.meta.filter.search');
     }
 
     public function testItLoadsGroups(): void

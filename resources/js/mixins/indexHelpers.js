@@ -9,7 +9,7 @@ export default {
     },
     computed: {
         filterString() {
-            return btoa(JSON.stringify(this.inner.meta.filter));
+            return btoa(encodeURIComponent(JSON.stringify(this.inner.meta.filter)));
         },
     },
     methods: {
