@@ -23,7 +23,7 @@ class MemberView
         return [
             'data' => MemberResource::collection(Member::search($filter->search)->query(fn ($q) => $q->select('*')
                 ->withFilter($filter)
-                ->with('payments.subscription')->with('memberships')->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
+                ->with('payments.subscription')->with(['memberships' => fn ($query) => $query->active()])->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
                 ->withPendingPayment()
                 ->ordered()
             )->paginate(15)),

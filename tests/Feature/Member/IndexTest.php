@@ -127,6 +127,20 @@ class IndexTest extends TestCase
         ], $response, 'data.data.0.memberships.0');
     }
 
+    public function testItDoesntShowEndedMemberships(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $group = Group::factory()->create();
+        $member = Member::factory()
+            ->defaults()
+            ->has(Membership::factory()->for($group)->in('€ Mitglied', 122, 'Wölfling', 234)->ended())
+            ->create();
+
+        $response = $this->get('/member');
+
+        $this->assertCount(0, $this->inertia($response, 'data.data.0.memberships'));
+    }
+
     public function testItReturnsPayments(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
