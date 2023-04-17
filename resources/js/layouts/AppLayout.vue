@@ -52,7 +52,6 @@
 <script>
 import VLink from './_VLink.vue';
 import {debounce} from 'lodash';
-import mergesQueryString from '../mixins/mergesQueryString.js';
 
 export default {
     data: function () {
@@ -66,7 +65,6 @@ export default {
         VNotification: () => import('../components/VNotification.vue'),
         VLink,
     },
-    mixins: [mergesQueryString],
 
     computed: {
         filterMenu() {

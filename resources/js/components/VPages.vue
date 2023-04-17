@@ -18,11 +18,7 @@
 </template>
 
 <script>
-import mergesQueryString from '../mixins/mergesQueryString.js';
-
 export default {
-    mixins: [mergesQueryString],
-
     props: {
         only: {
             required: true,
@@ -37,7 +33,7 @@ export default {
     },
     methods: {
         goto(page) {
-            this.$inertia.visit(this.qs({page: page.page}), {
+            this.$inertia.visit(window.location.pathname + '?page=' + page.page, {
                 only: this.only,
                 preserveState: this.preserve,
             });
