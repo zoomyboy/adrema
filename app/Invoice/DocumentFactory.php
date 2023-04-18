@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Letter;
+namespace App\Invoice;
 
-use App\Letter\Queries\LetterMemberQuery;
+use App\Invoice\Queries\InvoiceMemberQuery;
 use Illuminate\Support\Collection;
 
 class DocumentFactory
 {
     /**
-     * @var array<int, class-string<Letter>>
+     * @var array<int, class-string<Invoice>>
      */
     private array $types = [
         BillDocument::class,
@@ -16,7 +16,7 @@ class DocumentFactory
     ];
 
     /**
-     * @return Collection<int, class-string<Letter>>
+     * @return Collection<int, class-string<Invoice>>
      */
     public function getTypes(): Collection
     {
@@ -24,9 +24,9 @@ class DocumentFactory
     }
 
     /**
-     * @param class-string<Letter> $type
+     * @param class-string<Invoice> $type
      */
-    public function singleLetter(string $type, LetterMemberQuery $query): ?Letter
+    public function singleInvoice(string $type, InvoiceMemberQuery $query): ?Invoice
     {
         $pages = $query->getPages($type);
 
@@ -38,29 +38,29 @@ class DocumentFactory
     }
 
     /**
-     * @param class-string<Letter> $type
+     * @param class-string<Invoice> $type
      *
-     * @return Collection<int, Letter>
+     * @return Collection<int, Invoice>
      */
-    public function letterCollection(string $type, LetterMemberQuery $query): Collection
+    public function invoiceCollection(string $type, InvoiceMemberQuery $query): Collection
     {
         return $query
             ->getPages($type)
             ->map(fn ($page) => $this->resolve($type, collect([$page])));
     }
 
-    public function afterSingle(Letter $letter): void
+    public function afterSingle(Invoice $invoice): void
     {
-        foreach ($letter->allPayments() as $payment) {
-            $letter->afterSingle($payment);
+        foreach ($invoice->allPayments() as $payment) {
+            $invoice->afterSingle($payment);
         }
     }
 
     /**
-     * @param class-string<Letter>  $type
+     * @param class-string<Invoice> $type
      * @param Collection<int, Page> $pages
      */
-    private function resolve(string $type, Collection $pages): Letter
+    private function resolve(string $type, Collection $pages): Invoice
     {
         return new $type($pages);
     }

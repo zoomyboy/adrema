@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature\Letter;
+namespace Tests\Feature\Invoice;
 
-use App\Letter\Actions\LetterSendAction;
-use App\Letter\BillDocument;
+use App\Invoice\Actions\InvoiceSendAction;
+use App\Invoice\BillDocument;
 use App\Member\Member;
 use App\Payment\Payment;
 use App\Payment\PaymentMail;
@@ -15,7 +15,7 @@ use Tests\RequestFactories\Child;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
-class LetterSendActionTest extends TestCase
+class InvoiceSendActionTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -41,7 +41,7 @@ class LetterSendActionTest extends TestCase
     {
         Mail::fake();
 
-        Artisan::call('letter:send');
+        Artisan::call('invoice:send');
 
         Mail::assertSent(PaymentMail::class, fn ($mail) => Storage::disk('temp')->path('rechnung-fur-mom.pdf') === $mail->filename && Storage::disk('temp')->exists('rechnung-fur-mom.pdf'));
     }
@@ -51,7 +51,7 @@ class LetterSendActionTest extends TestCase
         Mail::fake();
         Tex::spy();
 
-        LetterSendAction::run();
+        InvoiceSendAction::run();
 
         Tex::assertCompiled(BillDocument::class, fn ($document) => 'Mom' === $document->pages->first()->familyName
             && $document->pages->first()->getPositions() === ['tollerbeitrag 1997 für Lah Mom' => '54.00']

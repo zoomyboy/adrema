@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Letter;
+namespace App\Invoice;
 
 use App\Payment\Payment;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class RememberDocument extends Letter
+class RememberDocument extends Invoice
 {
     public function linkLabel(): string
     {

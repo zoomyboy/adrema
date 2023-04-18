@@ -4,7 +4,7 @@ namespace App\Console;
 
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\InitializeMembers;
-use App\Letter\Actions\LetterSendAction;
+use App\Invoice\Actions\InvoiceSendAction;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Laravel\Telescope\Console\PruneCommand;
@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      * @var array<int, class-string>
      */
     protected $commands = [
-        LetterSendAction::class,
+        InvoiceSendAction::class,
         InitializeAction::class,
         InitializeMembers::class,
     ];

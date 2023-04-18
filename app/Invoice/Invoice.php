@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Letter;
+namespace App\Invoice;
 
 use App\Payment\Payment;
 use Carbon\Carbon;
@@ -13,7 +13,7 @@ use Zoomyboy\Tex\Document;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
-abstract class Letter extends Document
+abstract class Invoice extends Document
 {
     abstract public function getSubject(): string;
 
@@ -44,7 +44,7 @@ abstract class Letter extends Document
     public string $subject;
     protected string $filename;
     public string $until;
-    public LetterSettings $settings;
+    public InvoiceSettings $settings;
 
     /**
      * @param Collection<int, Page> $pages
@@ -55,7 +55,7 @@ abstract class Letter extends Document
         $this->subject = $this->getSubject();
         $this->until = now()->addWeeks(2)->format('d.m.Y');
         $this->setFilename(Str::slug("{$this->getSubject()} für {$pages->first()?->familyName}"));
-        $this->settings = app(LetterSettings::class);
+        $this->settings = app(InvoiceSettings::class);
     }
 
     public function number(int $number): string

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Letter;
+namespace App\Invoice;
 
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,7 +13,7 @@ class SettingIndexAction
     /**
      * @return array<string, string>
      */
-    public function handle(LetterSettings $settings): array
+    public function handle(InvoiceSettings $settings): array
     {
         return [
             'from_long' => $settings->from_long,
@@ -29,7 +29,7 @@ class SettingIndexAction
         ];
     }
 
-    public function asController(LetterSettings $settings): Response
+    public function asController(InvoiceSettings $settings): Response
     {
         session()->put('menu', 'setting');
         session()->put('title', 'Rechnungs-Einstellungen');

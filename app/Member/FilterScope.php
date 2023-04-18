@@ -2,7 +2,7 @@
 
 namespace App\Member;
 
-use App\Letter\BillKind;
+use App\Invoice\BillKind;
 use App\Lib\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;

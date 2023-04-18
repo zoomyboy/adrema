@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Bill;
 
-use App\Letter\LetterSettings;
+use App\Invoice\InvoiceSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -13,7 +13,7 @@ class SettingTest extends TestCase
     public function testSettingIndex(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        LetterSettings::fake([
+        InvoiceSettings::fake([
             'from_long' => 'DPSG Stamm Muster',
             'from' => 'Stamm Muster',
             'mobile' => '+49 176 55555',
@@ -80,7 +80,7 @@ class SettingTest extends TestCase
         ]);
 
         $response->assertRedirect('/setting/bill');
-        $settings = app(LetterSettings::class);
+        $settings = app(InvoiceSettings::class);
         $this->assertEquals('DPSG Stamm Muster', $settings->from_long);
         $this->assertEquals('DE05', $settings->iban);
         $this->assertEquals('SOLSDE', $settings->bic);

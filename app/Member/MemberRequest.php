@@ -4,7 +4,7 @@ namespace App\Member;
 
 use App\Activity;
 use App\Group;
-use App\Letter\BillKind;
+use App\Invoice\BillKind;
 use App\Member\Actions\NamiPutMemberAction;
 use App\Setting\NamiSettings;
 use App\Subactivity;
@@ -72,7 +72,7 @@ class MemberRequest extends FormRequest
             'send_newspaper' => 'boolean',
             'main_phone' => ['nullable', new ValidPhoneRule('Telefon (Eltern)')],
             'mobile_phone' => ['nullable', new ValidPhoneRule('Handy (Eltern)')],
-            'letter_address' => '',
+            'invoice_address' => '',
             'gender_id' => 'nullable|exists:genders,id',
             'region_id' => 'nullable|exists:regions,id',
             'nationality_id' => 'required|exists:nationalities,id',

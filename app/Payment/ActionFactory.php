@@ -2,7 +2,7 @@
 
 namespace App\Payment;
 
-use App\Letter\DocumentFactory;
+use App\Invoice\DocumentFactory;
 use Illuminate\Support\Collection;
 
 class ActionFactory

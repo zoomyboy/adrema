@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Sendpayment;
 
-use App\Letter\BillDocument;
-use App\Letter\LetterSettings;
+use App\Invoice\BillDocument;
+use App\Invoice\InvoiceSettings;
 use App\Member\Member;
 use App\Payment\Payment;
 use App\Payment\Status;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\Child;
-use Tests\RequestFactories\LetterSettingsFake;
+use Tests\RequestFactories\InvoiceSettingsFake;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
@@ -32,7 +32,7 @@ class SendpaymentTest extends TestCase
 
     public function testItCanCreatePdfPayments(): void
     {
-        LetterSettings::fake(LetterSettingsFake::new()->create());
+        InvoiceSettings::fake(InvoiceSettingsFake::new()->create());
         Tex::spy();
         $this->withoutExceptionHandling();
         $this->login()->loginNami();
@@ -43,7 +43,7 @@ class SendpaymentTest extends TestCase
             ->postBillKind()
             ->create();
 
-        $response = $this->call('GET', route('sendpayment.pdf'), ['type' => 'App\\Letter\\BillDocument']);
+        $response = $this->call('GET', route('sendpayment.pdf'), ['type' => 'App\\Invoice\\BillDocument']);
 
         $response->assertOk();
         $this->assertEquals(Status::firstWhere('name', 'Rechnung gestellt')->id, $member->payments->firstWhere('nr', '1997')->status_id);
@@ -64,7 +64,7 @@ class SendpaymentTest extends TestCase
             ->emailBillKind()
             ->create();
 
-        $response = $this->call('GET', route('sendpayment.pdf'), ['type' => 'App\\Letter\\BillDocument']);
+        $response = $this->call('GET', route('sendpayment.pdf'), ['type' => 'App\\Invoice\\BillDocument']);
 
         $response->assertStatus(204);
         Tex::assertNotCompiled(BillDocument::class);

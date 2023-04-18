@@ -8,7 +8,7 @@ use App\Country;
 use App\Gender;
 use App\Http\Controllers\Controller;
 use App\Http\Views\MemberView;
-use App\Letter\BillKind;
+use App\Invoice\BillKind;
 use App\Nationality;
 use App\Payment\Subscription;
 use App\Region;

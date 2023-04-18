@@ -7,7 +7,7 @@ use App\Country;
 use App\Course\Models\CourseMember;
 use App\Gender;
 use App\Group;
-use App\Letter\BillKind;
+use App\Invoice\BillKind;
 use App\Nami\HasNamiField;
 use App\Nationality;
 use App\Payment\Payment;

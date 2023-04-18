@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Letter\Queries;
+namespace App\Invoice\Queries;
 
-use App\Letter\Letter;
-use App\Letter\Page;
+use App\Invoice\Invoice;
+use App\Invoice\Page;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-abstract class LetterMemberQuery
+abstract class InvoiceMemberQuery
 {
     /**
      * @return Builder<Member>
@@ -18,7 +18,7 @@ abstract class LetterMemberQuery
     abstract protected function getQuery(): Builder;
 
     /**
-     * @param class-string<Letter> $type
+     * @param class-string<Invoice> $type
      *
      * @return Collection<int, Page>
      */
@@ -32,7 +32,7 @@ abstract class LetterMemberQuery
     }
 
     /**
-     * @param class-string<Letter> $type
+     * @param class-string<Invoice> $type
      *
      * @return EloquentCollection<int, Member>
      */

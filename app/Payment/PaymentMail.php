@@ -2,7 +2,7 @@
 
 namespace App\Payment;
 
-use App\Letter\Letter;
+use App\Invoice\Invoice;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -12,7 +12,7 @@ class PaymentMail extends Mailable
     use Queueable;
     use SerializesModels;
 
-    public Letter $letter;
+    public Invoice $invoice;
     public string $filename;
     public string $salutation;
 
@@ -21,11 +21,11 @@ class PaymentMail extends Mailable
      *
      * @return void
      */
-    public function __construct(Letter $letter, string $filename)
+    public function __construct(Invoice $invoice, string $filename)
     {
-        $this->letter = $letter;
+        $this->invoice = $invoice;
         $this->filename = $filename;
-        $this->salutation = 'Liebe Familie '.$letter->pages->first()->familyName;
+        $this->salutation = 'Liebe Familie '.$invoice->pages->first()->familyName;
     }
 
     /**
@@ -35,9 +35,9 @@ class PaymentMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown($this->letter->mailView())
+        return $this->markdown($this->invoice->mailView())
                     ->attach($this->filename)
                     ->replyTo('kasse@stamm-silva.de')
-                    ->subject($this->letter->getSubject().' | DPSG Stamm Silva');
+                    ->subject($this->invoice->getSubject().' | DPSG Stamm Silva');
     }
 }

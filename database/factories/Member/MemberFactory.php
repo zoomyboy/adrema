@@ -5,7 +5,7 @@ namespace Database\Factories\Member;
 use App\Country;
 use App\Fee;
 use App\Group;
-use App\Letter\BillKind;
+use App\Invoice\BillKind;
 use App\Member\Member;
 use App\Nationality;
 use App\Payment\Payment;

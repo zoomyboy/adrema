@@ -630,7 +630,7 @@ parameters:
             path: app/Contribution/ContributionFactory.php
 
         -
-            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,class\\-string\\<App\\\\Letter\\\\Letter\\>\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
+            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,class\\-string\\<App\\\\Invoice\\\\Invoice\\>\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
             count: 1
             path: app/Payment/ActionFactory.php
 

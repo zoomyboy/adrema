@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Letter;
+namespace App\Invoice;
 
 use App\Member\Member;
 use App\Payment\Payment;

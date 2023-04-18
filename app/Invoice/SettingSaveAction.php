@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Letter;
+namespace App\Invoice;
 
 use Illuminate\Http\RedirectResponse;
 use Lorisleiva\Actions\ActionRequest;
@@ -15,7 +15,7 @@ class SettingSaveAction
      */
     public function handle(array $input): void
     {
-        $settings = app(LetterSettings::class);
+        $settings = app(InvoiceSettings::class);
 
         $settings->fill([
             'from_long' => $input['from_long'] ?? '',

@@ -4,7 +4,7 @@ namespace Tests\RequestFactories;
 
 use Worksome\RequestFactories\RequestFactory;
 
-class LetterSettingsFake extends RequestFactory
+class InvoiceSettingsFake extends RequestFactory
 {
     public function definition(): array
     {

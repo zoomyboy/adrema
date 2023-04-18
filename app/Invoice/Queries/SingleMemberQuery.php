@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Letter\Queries;
+namespace App\Invoice\Queries;
 
-use App\Letter\BillKind;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Builder;
 
-class BillKindQuery extends LetterMemberQuery
+class SingleMemberQuery extends InvoiceMemberQuery
 {
     public function __construct(
-        private BillKind $billKind
+        private Member $member
     ) {
     }
 
@@ -18,6 +17,6 @@ class BillKindQuery extends LetterMemberQuery
      */
     protected function getQuery(): Builder
     {
-        return Member::where('bill_kind', $this->billKind);
+        return Member::where($this->member->only(['lastname', 'address', 'zip', 'location']));
     }
 }
