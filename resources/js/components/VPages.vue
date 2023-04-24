@@ -33,7 +33,10 @@ export default {
     },
     methods: {
         goto(page) {
-            this.$inertia.visit(window.location.pathname + '?page=' + page.page, {
+            var params = new URLSearchParams(window.location.search);
+            params.set('page', page.page);
+
+            this.$inertia.visit(window.location.pathname + '?' + params.toString(), {
                 only: this.only,
                 preserveState: this.preserve,
             });
