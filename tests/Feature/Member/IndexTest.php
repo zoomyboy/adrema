@@ -184,6 +184,23 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('E-Mail', $emailResponse, 'data.meta.filter.bill_kind');
     }
 
+    public function testItCanFilterForGroups(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $group1 = Group::factory()->create();
+        $group2 = Group::factory()->create();
+        Member::factory()->defaults()->for($group1)->create();
+        Member::factory()->defaults()->for($group1)->create();
+        Member::factory()->defaults()->for($group1)->create();
+
+        $oneResponse = $this->callFilter('member.index', ['group_id' => $group1->id]);
+        $twoResponse = $this->callFilter('member.index', ['group_id' => $group2->id]);
+
+        $this->assertCount(3, $this->inertia($oneResponse, 'data.data'));
+        $this->assertCount(0, $this->inertia($twoResponse, 'data.data'));
+        $this->assertInertiaHas($group1->id, $oneResponse, 'data.meta.filter.group_id');
+    }
+
     public function testItFiltersForAusstand(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
@@ -213,11 +230,17 @@ class IndexTest extends TestCase
 
     public function testItLoadsGroups(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        Group::factory()->name('UUI')->create();
+        $parent1 = Group::factory()->name('par1')->create();
+        $child1 = Group::factory()->name('ch1')->for($parent1, 'parent')->create();
+        $child2 = Group::factory()->name('ch2')->for($parent1, 'parent')->create();
+        $parent2 = Group::factory()->name('par2')->create();
+        $this->withoutExceptionHandling()->login()->loginNami(12345, 'password', $parent1);
 
         $response = $this->get('/member');
 
-        $this->assertInertiaHas('UUI', $response, 'data.meta.groups.1.name');
+        $this->assertInertiaHas('par1', $response, 'data.meta.groups.0.name');
+        $this->assertInertiaHas('- ch1', $response, 'data.meta.groups.1.name');
+        $this->assertInertiaHas('- ch2', $response, 'data.meta.groups.2.name');
+        $this->assertInertiaHas('par2', $response, 'data.meta.groups.3.name');
     }
 }

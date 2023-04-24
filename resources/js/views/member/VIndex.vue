@@ -3,6 +3,7 @@
         <div class="px-6 py-2 flex border-b border-gray-600 items-center space-x-3">
             <f-text :value="getFilter('search')" @input="setFilter('search', $event)" id="search" name="search" label="Suchen …" size="sm"></f-text>
             <f-switch v-show="hasModule('bill')" id="ausstand" @input="setFilter('ausstand', $event)" :items="getFilter('ausstand')" label="Nur Ausstände" size="sm"></f-switch>
+            <f-select id="group_id" @input="setFilter('group_id', $event)" :options="data.meta.groups" :value="getFilter('group_id')" label="Gruppierung" size="sm" name="group_id"></f-select>
             <f-select
                 v-show="hasModule('bill')"
                 name="billKinds"

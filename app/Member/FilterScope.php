@@ -22,6 +22,7 @@ class FilterScope extends Filter
         public ?int $activityId = null,
         public ?int $subactivityId = null,
         public string $search = '',
+        public ?int $groupId = null,
     ) {
     }
 
@@ -47,6 +48,11 @@ class FilterScope extends Filter
         if ($this->billKind) {
             $query->where('bill_kind', BillKind::fromValue($this->billKind));
         }
+
+        if ($this->groupId) {
+            $query->where('group_id', $this->groupId);
+        }
+
         if ($this->subactivityId || $this->activityId) {
             $query->whereHas('memberships', function ($q) {
                 $q->active();

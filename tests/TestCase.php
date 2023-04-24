@@ -29,11 +29,14 @@ abstract class TestCase extends BaseTestCase
         Auth::fake();
     }
 
-    public function loginNami(int $mglnr = 12345, string $password = 'password', int $groupId = 55): self
+    public function loginNami(int $mglnr = 12345, string $password = 'password', int|Group $groupId = 55): self
     {
         Auth::success($mglnr, $password);
-        $this->withNamiSettings($mglnr, $password, $groupId);
-        Group::factory()->create(['nami_id' => $groupId]);
+        $group = is_int($groupId)
+            ? Group::factory()->create(['nami_id' => $groupId])
+            : $groupId;
+
+        $this->withNamiSettings($mglnr, $password, $group->id);
 
         return $this;
     }

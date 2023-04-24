@@ -3,8 +3,8 @@
 namespace App\Member;
 
 use App\Course\Resources\CourseMemberResource;
-use App\Group;
 use App\Lib\HasMeta;
+use App\Member\Data\NestedGroup;
 use App\Member\Resources\NationalityResource;
 use App\Member\Resources\RegionResource;
 use App\Membership\MembershipResource;
@@ -104,7 +104,7 @@ class MemberResource extends JsonResource
     public static function meta(): array
     {
         return [
-            'groups' => Group::select('name', 'id')->get(),
+            'groups' => NestedGroup::cacheForSelect(),
             'filter' => FilterScope::fromRequest(request()->input('filter', '')),
         ];
     }
