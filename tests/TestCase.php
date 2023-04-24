@@ -36,7 +36,7 @@ abstract class TestCase extends BaseTestCase
             ? Group::factory()->create(['nami_id' => $groupId])
             : $groupId;
 
-        $this->withNamiSettings($mglnr, $password, $group->id);
+        $this->withNamiSettings($mglnr, $password, $group->nami_id);
 
         return $this;
     }
