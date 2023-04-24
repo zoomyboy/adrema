@@ -285,6 +285,7 @@ class Member extends Model
         static::deleting(function (self $model): void {
             $model->payments->each->delete();
             $model->memberships->each->delete();
+            $model->courses->each->delete();
         });
 
         static::saving(fn ($model) => $model->updateSearch());

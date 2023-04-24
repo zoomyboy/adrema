@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Member;
 
+use App\Course\Models\Course;
+use App\Course\Models\CourseMember;
 use App\Member\DeleteJob;
 use App\Member\Member;
 use Carbon\Carbon;
@@ -55,5 +57,15 @@ class DeleteTest extends TestCase
         dispatch(new DeleteJob(123));
 
         app(MemberFake::class)->assertDeleted(123, Carbon::parse('yesterday'));
+    }
+
+    public function testItDeletesMembersWithCourses(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()->defaults()->has(CourseMember::factory()->for(Course::factory()), 'courses')->create();
+
+        $member->delete();
+
+        $this->assertDatabaseCount('members', 0);
     }
 }
