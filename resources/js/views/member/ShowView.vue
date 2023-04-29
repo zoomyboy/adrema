@@ -1,55 +1,54 @@
 <template>
-    <div class="p-3 grid gap-3 this-grid grow">
-        <box heading="Stammdaten" class="area-stamm hidden xl:block">
-            <stamm :inner="inner"></stamm>
-        </box>
-        <box heading="Kontakt" class="area-kontakt hidden xl:block">
-            <kontakt :inner="inner"></kontakt>
-        </box>
-        <box class="area-stammkontakt block xl:hidden">
-            <tabs v-model="tabs.stammkontakt">
-                <stamm v-show="tabs.stammkontakt.active === 'stamm'" :inner="inner"></stamm>
-                <kontakt v-show="tabs.stammkontakt.active === 'kontakt'" :inner="inner"></kontakt>
-            </tabs>
-        </box>
+    <page-layout>
+        <div class="p-3 grid gap-3 this-grid grow">
+            <box heading="Stammdaten" class="area-stamm hidden xl:block">
+                <stamm :inner="inner"></stamm>
+            </box>
+            <box heading="Kontakt" class="area-kontakt hidden xl:block">
+                <kontakt :inner="inner"></kontakt>
+            </box>
+            <box class="area-stammkontakt block xl:hidden">
+                <tabs v-model="tabs.stammkontakt">
+                    <stamm v-show="tabs.stammkontakt.active === 'stamm'" :inner="inner"></stamm>
+                    <kontakt v-show="tabs.stammkontakt.active === 'kontakt'" :inner="inner"></kontakt>
+                </tabs>
+            </box>
 
-        <box container-class="" heading="Prävention" class="area-praev hidden xl:block">
-            <prae :inner="inner"></prae>
-        </box>
-        <box heading="System" class="area-system hidden xl:block">
-            <system :inner="inner"></system>
-        </box>
-        <box class="area-praesystem block xl:hidden">
-            <tabs v-model="tabs.praesystem">
-                <prae v-show="tabs.praesystem.active === 'prae'" :inner="inner"></prae>
-                <system v-show="tabs.praesystem.active === 'system'" :inner="inner"></system>
-            </tabs>
-        </box>
+            <box container-class="" heading="Prävention" class="area-praev hidden xl:block">
+                <prae :inner="inner"></prae>
+            </box>
+            <box heading="System" class="area-system hidden xl:block">
+                <system :inner="inner"></system>
+            </box>
+            <box class="area-praesystem block xl:hidden">
+                <tabs v-model="tabs.praesystem">
+                    <prae v-show="tabs.praesystem.active === 'prae'" :inner="inner"></prae>
+                    <system v-show="tabs.praesystem.active === 'system'" :inner="inner"></system>
+                </tabs>
+            </box>
 
-        <box class="area-membershipcourse hidden xl:block">
-            <tabs v-model="tabs.membershipcourse">
-                <courses v-show="tabs.membershipcourse.active === 'course'" :value="inner.courses"></courses>
-                <memberships
-                    v-show="tabs.membershipcourse.active === 'membership'"
-                    :value="inner.memberships"
-                ></memberships>
-            </tabs>
-        </box>
-        <box heading="Ausbildungen" class="area-courses xl:hidden">
-            <courses :value="inner.courses"></courses>
-        </box>
-        <box heading="Mitgliedschaften" class="area-memberships xl:hidden">
-            <memberships :value="inner.memberships"></memberships>
-        </box>
+            <box class="area-membershipcourse hidden xl:block">
+                <tabs v-model="tabs.membershipcourse">
+                    <courses v-show="tabs.membershipcourse.active === 'course'" :value="inner.courses"></courses>
+                    <memberships v-show="tabs.membershipcourse.active === 'membership'" :value="inner.memberships"></memberships>
+                </tabs>
+            </box>
+            <box heading="Ausbildungen" class="area-courses xl:hidden">
+                <courses :value="inner.courses"></courses>
+            </box>
+            <box heading="Mitgliedschaften" class="area-memberships xl:hidden">
+                <memberships :value="inner.memberships"></memberships>
+            </box>
 
-        <box heading="Zahlungen" class="area-payments">
-            <payments :value="inner.payments"></payments>
-        </box>
+            <box heading="Zahlungen" class="area-payments">
+                <payments :value="inner.payments"></payments>
+            </box>
 
-        <box heading="Karte" container-class="grow" class="area-map hidden xl:block">
-            <vmap :inner="inner"></vmap>
-        </box>
-    </div>
+            <box heading="Karte" container-class="grow" class="area-map hidden xl:block">
+                <vmap :inner="inner"></vmap>
+            </box>
+        </div>
+    </page-layout>
 </template>
 
 <script>

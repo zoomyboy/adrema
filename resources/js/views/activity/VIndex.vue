@@ -1,10 +1,8 @@
 <template>
-    <div class="pb-6">
+    <page-layout page-class="pb-6">
         <popup heading="Bitte bestätigen" v-if="deleting !== null">
             <div>
-                <p class="mt-4">
-                    Diese Aktivität löschen?
-                </p>
+                <p class="mt-4">Diese Aktivität löschen?</p>
                 <div class="grid grid-cols-2 gap-3 mt-6">
                     <a href="#" @click.prevent="remove" class="text-center btn btn-danger">Löschen</a>
                     <a href="#" @click.prevent="deleting = null" class="text-center btn btn-primary">Abbrechen</a>
@@ -22,13 +20,7 @@
                 <td>
                     <div class="flex space-x-1">
                         <i-link :href="activity.links.edit" class="inline-flex btn btn-warning btn-sm" v-tooltip="`bearbeiten`"><svg-sprite src="pencil"></svg-sprite></i-link>
-                        <i-link
-                            href="#"
-                            @click.prevent="deleting = activity"
-                            class="inline-flex btn btn-danger btn-sm"
-                            v-tooltip="`Entfernen`"
-                            ><svg-sprite src="trash"></svg-sprite
-                        ></i-link>
+                        <i-link href="#" @click.prevent="deleting = activity" class="inline-flex btn btn-danger btn-sm" v-tooltip="`Entfernen`"><svg-sprite src="trash"></svg-sprite></i-link>
                     </div>
                 </td>
             </tr>
@@ -37,16 +29,14 @@
         <div class="px-6">
             <v-pages class="mt-4" :value="data.meta" :only="['data']"></v-pages>
         </div>
-
-    </div>
+    </page-layout>
 </template>
 
 <script>
 import indexHelpers from '../../mixins/indexHelpers';
 
 export default {
-
-    data: function() {
+    data: function () {
         return {
             deleting: null,
         };
@@ -60,9 +50,9 @@ export default {
                 onSuccess(page) {
                     _self.inner = page.props.data;
                     _self.deleting = null;
-                }
+                },
             });
-        }
+        },
     },
 
     components: {
@@ -70,6 +60,5 @@ export default {
     },
 
     mixins: [indexHelpers],
-
 };
 </script>

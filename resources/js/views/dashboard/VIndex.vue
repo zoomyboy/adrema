@@ -1,5 +1,5 @@
 <template>
-    <page-layout title="Dashboard">
+    <page-layout>
         <div class="gap-6 md:grid-cols-2 xl:grid-cols-4 grid p-6">
             <v-block v-for="(block, index) in blocks" :key="index" :title="block.title">
                 <v-component :data="block.data" :is="block.component"></v-component>

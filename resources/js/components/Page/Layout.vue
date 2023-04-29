@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <div class="grow flex flex-col">
+        <div :class="pageClass" class="grow flex flex-col">
             <slot></slot>
         </div>
     </div>
@@ -27,6 +27,14 @@
 import {menuStore} from '../../stores/menuStore.js';
 
 export default {
+    inheritAttrs: false,
+    props: {
+        pageClass: {
+            default: () => '',
+            required: false,
+            type: String,
+        },
+    },
     data: function () {
         return {
             menuStore: menuStore(),

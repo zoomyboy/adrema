@@ -1,8 +1,10 @@
 <template>
-    <div class="flex grow relative">
-        <v-tabs v-model="active" :entries="$page.props.setting_menu"></v-tabs>
-        <slot></slot>
-    </div>
+    <page-layout>
+        <div class="flex grow relative">
+            <v-tabs v-model="active" :entries="$page.props.setting_menu"></v-tabs>
+            <slot></slot>
+        </div>
+    </page-layout>
 </template>
 
 <script>

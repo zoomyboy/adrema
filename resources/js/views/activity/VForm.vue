@@ -1,26 +1,37 @@
 <template>
-    <form id="actionform" class="grow p-3" @submit.prevent="submit">
-        <popup heading="Neue Untertätigkeit" v-if="mode === 'edit' && currentSubactivity !== null" @close="currentSubactivity = null">
-            <subactivity-form class="mt-4" v-if="currentSubactivity" :value="currentSubactivity" @stored="reloadSubactivities" @updated="mergeSubactivity"></subactivity-form>
-        </popup>
-        <div class="flex space-x-3">
-            <f-text id="name" v-model="inner.name" label="Name" required></f-text>
-            <f-switch v-model="inner.is_filterable" name="is_filterable" id="is_filterable" label="Filterbar"></f-switch>
-        </div>
-        <div class="flex space-x-3 items-center mt-6 mb-2">
-            <checkboxes-label>Untertätigkeiten</checkboxes-label>
-            <icon-button icon="plus" v-if="mode === 'edit'" @click.prevent="currentSubactivity = inner.subactivity_model">Neu</icon-button>
-        </div>
-        <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-            <div v-for="option in subactivities" class="flex items-center space-x-2">
-                <a href="#" @click.prevent="currentSubactivity = option" class="transition hover:bg-yellow-600 group w-5 h-5 rounded-full flex items-center justify-center flex-none">
-                    <svg-sprite src="pencil" class="text-yellow-800 w-3 h-3 group-hover:text-yellow-200 transition"></svg-sprite>
-                </a>
-                <f-switch inline size="sm" :key="option.id" v-model="inner.subactivities" name="subactivities[]" :id="`subactivities-${option.id}`" :value="option.id" :label="option.name"></f-switch>
+    <page-layout>
+        <form id="actionform" class="grow p-3" @submit.prevent="submit">
+            <popup heading="Neue Untertätigkeit" v-if="mode === 'edit' && currentSubactivity !== null" @close="currentSubactivity = null">
+                <subactivity-form class="mt-4" v-if="currentSubactivity" :value="currentSubactivity" @stored="reloadSubactivities" @updated="mergeSubactivity"></subactivity-form>
+            </popup>
+            <div class="flex space-x-3">
+                <f-text id="name" v-model="inner.name" label="Name" required></f-text>
+                <f-switch v-model="inner.is_filterable" name="is_filterable" id="is_filterable" label="Filterbar"></f-switch>
             </div>
-        </div>
-        <save-button form="actionform"></save-button>
-    </form>
+            <div class="flex space-x-3 items-center mt-6 mb-2">
+                <checkboxes-label>Untertätigkeiten</checkboxes-label>
+                <icon-button icon="plus" v-if="mode === 'edit'" @click.prevent="currentSubactivity = inner.subactivity_model">Neu</icon-button>
+            </div>
+            <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+                <div v-for="option in subactivities" class="flex items-center space-x-2">
+                    <a href="#" @click.prevent="currentSubactivity = option" class="transition hover:bg-yellow-600 group w-5 h-5 rounded-full flex items-center justify-center flex-none">
+                        <svg-sprite src="pencil" class="text-yellow-800 w-3 h-3 group-hover:text-yellow-200 transition"></svg-sprite>
+                    </a>
+                    <f-switch
+                        inline
+                        size="sm"
+                        :key="option.id"
+                        v-model="inner.subactivities"
+                        name="subactivities[]"
+                        :id="`subactivities-${option.id}`"
+                        :value="option.id"
+                        :label="option.name"
+                    ></f-switch>
+                </div>
+            </div>
+            <save-button form="actionform"></save-button>
+        </form>
+    </page-layout>
 </template>
 
 <script>

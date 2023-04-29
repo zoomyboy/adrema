@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <page-layout>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
                 <th>Name</th>
@@ -19,13 +19,11 @@
                     <div v-text="subscription.fee_name"></div>
                 </td>
                 <td>
-                    <i-link :href="`/subscription/${subscription.id}/edit`" class="inline-flex btn btn-warning btn-sm"
-                        ><svg-sprite src="pencil"></svg-sprite
-                    ></i-link>
+                    <i-link :href="`/subscription/${subscription.id}/edit`" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></i-link>
                 </td>
             </tr>
         </table>
-    </div>
+    </page-layout>
 </template>
 
 <script>
