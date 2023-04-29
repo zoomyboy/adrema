@@ -100,6 +100,6 @@ class Membership extends Model
      */
     public function scopeTrying(Builder $query): Builder
     {
-        return $query->whereHas('activity', fn ($builder) => $builder->where('is_try', true));
+        return $query->active()->whereHas('activity', fn ($builder) => $builder->where('is_try', true));
     }
 }
