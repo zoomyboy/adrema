@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Home\Blocks\Block;
-use App\Home\DashboardFactory;
+use App\Dashboard\Blocks\Block;
+use App\Dashboard\DashboardFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class HomeTest extends TestCase
+class DashboardTest extends TestCase
 {
     use DatabaseTransactions;
 

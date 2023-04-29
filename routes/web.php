@@ -13,8 +13,8 @@ use App\Contribution\Actions\FormAction as ContributionFormAction;
 use App\Contribution\Actions\GenerateAction as ContributionGenerateAction;
 use App\Contribution\Actions\ValidateAction as ContributionValidateAction;
 use App\Course\Controllers\CourseController;
+use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
-use App\Home\Actions\IndexAction as HomeIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Member\Actions\ExportAction;
@@ -37,7 +37,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
 });
 
 Route::group(['middleware' => 'auth:web'], function (): void {
-    Route::get('/', HomeIndexAction::class)->name('home');
+    Route::get('/', DashboardIndexAction::class)->name('home');
     Route::post('/api/member/search', SearchAction::class)->name('member.search');
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');

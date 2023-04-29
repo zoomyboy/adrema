@@ -2,7 +2,7 @@
 
 namespace App\Payment;
 
-use App\Home\Blocks\Block;
+use App\Dashboard\Blocks\Block;
 use App\Member\Member;
 
 class MemberPaymentBlock extends Block

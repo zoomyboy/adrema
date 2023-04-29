@@ -188,7 +188,7 @@ return [
         App\Tex\TexServiceProvider::class,
         App\Dav\ServiceProvider::class,
         App\Setting\SettingServiceProvider::class,
-        App\Home\HomeServiceProvider::class,
+        App\Dashboard\DashboardServiceProvider::class,
     ],
 
     /*

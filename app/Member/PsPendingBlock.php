@@ -2,7 +2,7 @@
 
 namespace App\Member;
 
-use App\Home\Blocks\Block;
+use App\Dashboard\Blocks\Block;
 use Illuminate\Database\Eloquent\Builder;
 
 class PsPendingBlock extends Block

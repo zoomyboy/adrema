@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Home;
+namespace App\Dashboard;
 
 use Illuminate\Support\ServiceProvider;
 
-class HomeServiceProvider extends ServiceProvider
+class DashboardServiceProvider extends ServiceProvider
 {
     /**
      * Register services.

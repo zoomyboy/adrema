@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Home\Actions;
+namespace App\Dashboard\Actions;
 
-use App\Home\DashboardFactory;
+use App\Dashboard\DashboardFactory;
 use Illuminate\Http\Request;
 use Inertia;
 use Inertia\Response;
@@ -27,6 +27,6 @@ class IndexAction
         session()->put('menu', 'dashboard');
         session()->put('title', 'Dashboard');
 
-        return Inertia::render('home/VIndex', $this->handle());
+        return Inertia::render('dashboard/VIndex', $this->handle());
     }
 }

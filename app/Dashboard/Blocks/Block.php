@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Home\Blocks;
+namespace App\Dashboard\Blocks;
 
 abstract class Block
 {

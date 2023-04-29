@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Home;
+namespace App\Dashboard;
 
+use App\Dashboard\Blocks\Block;
 use App\Efz\EfzPendingBlock;
-use App\Home\Blocks\Block;
 use App\Member\PsPendingBlock;
 use App\Membership\AgeGroupCountBlock;
 use App\Membership\TestersBlock;

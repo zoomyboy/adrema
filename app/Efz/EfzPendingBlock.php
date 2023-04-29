@@ -2,7 +2,7 @@
 
 namespace App\Efz;
 
-use App\Home\Blocks\Block;
+use App\Dashboard\Blocks\Block;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Builder;
 

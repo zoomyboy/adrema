@@ -2,7 +2,7 @@
 
 namespace App\Membership;
 
-use App\Home\Blocks\Block;
+use App\Dashboard\Blocks\Block;
 use App\Member\Membership;
 use Illuminate\Database\Eloquent\Builder;
 
