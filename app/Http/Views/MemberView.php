@@ -29,7 +29,6 @@ class MemberView
             )->paginate(15)),
             'filterActivities' => Activity::where('is_filterable', true)->pluck('name', 'id'),
             'filterSubactivities' => Subactivity::where('is_filterable', true)->pluck('name', 'id'),
-            'toolbar' => [['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'plus']],
             'paymentDefaults' => ['nr' => date('Y')],
             'subscriptions' => Subscription::pluck('name', 'id'),
             'statuses' => Status::pluck('name', 'id'),

@@ -1,5 +1,8 @@
 <template>
     <page-layout>
+        <div class="flex" slot="toolbar">
+            <toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</toolbar-button>
+        </div>
         <form id="subedit" class="p-3 grid gap-3" @submit.prevent="submit">
             <save-button form="subedit"></save-button>
             <box heading="Beitrag">
@@ -33,7 +36,7 @@
 export default {
     data: function () {
         return {
-            inner: {},
+            inner: {...this.data},
         };
     },
 
@@ -41,16 +44,13 @@ export default {
         data: {},
         fees: {},
         mode: {},
+        meta: {},
     },
 
     methods: {
         submit() {
             this.mode === 'create' ? this.$inertia.post(`/subscription`, this.inner) : this.$inertia.patch(`/subscription/${this.inner.id}`, this.inner);
         },
-    },
-
-    created() {
-        this.inner = this.data;
     },
 };
 </script>

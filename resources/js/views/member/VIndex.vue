@@ -1,5 +1,10 @@
 <template>
     <page-layout page-class="pb-6">
+        <div class="flex" slot="toolbar">
+            <toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Mitglied anlegen</toolbar-button>
+            <toolbar-button :href="data.meta.links.allpayment" color="primary" icon="invoice" v-if="hasModule('bill')">Rechnungen erstellen</toolbar-button>
+            <toolbar-button :href="data.meta.links.sendpayment" color="info" icon="envelope" v-if="hasModule('bill')">Rechnungen versenden</toolbar-button>
+        </div>
         <div class="px-6 py-2 flex border-b border-gray-600 items-center space-x-3">
             <f-text :value="getFilter('search')" @input="setFilter('search', $event)" id="search" name="search" label="Suchen …" size="sm"></f-text>
             <f-switch v-show="hasModule('bill')" id="ausstand" @input="setFilter('ausstand', $event)" :items="getFilter('ausstand')" label="Nur Ausstände" size="sm"></f-switch>
@@ -117,6 +122,7 @@ import MemberPayments from './MemberPayments.vue';
 import MemberMemberships from './MemberMemberships.vue';
 import MemberCourses from './MemberCourses.vue';
 import indexHelpers from '../../mixins/indexHelpers.js';
+import hasModule from '../../mixins/hasModule.js';
 
 export default {
     data: function () {
@@ -126,7 +132,7 @@ export default {
         };
     },
 
-    mixins: [indexHelpers],
+    mixins: [indexHelpers, hasModule],
 
     components: {
         MemberMemberships,

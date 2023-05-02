@@ -2,6 +2,7 @@
 
 namespace App\Payment;
 
+use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -9,6 +10,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class SubscriptionResource extends JsonResource
 {
+    use HasMeta;
+
     /**
      * Transform the resource into an array.
      *
@@ -28,6 +31,19 @@ class SubscriptionResource extends JsonResource
             'split' => $this->split,
             'children' => SubscriptionChildResource::collection($this->whenLoaded('children')),
             'for_promise' => $this->for_promise,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function meta(): array
+    {
+        return [
+            'links' => [
+                'index' => route('subscription.index'),
+                'create' => route('subscription.create'),
+            ],
         ];
     }
 }

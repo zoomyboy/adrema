@@ -106,6 +106,12 @@ class MemberResource extends JsonResource
         return [
             'groups' => NestedGroup::cacheForSelect(),
             'filter' => FilterScope::fromRequest(request()->input('filter', '')),
+            'links' => [
+                'index' => route('member.index'),
+                'create' => route('member.create'),
+                'allpayment' => route('allpayment.page'),
+                'sendpayment' => route('sendpayment.create'),
+            ],
         ];
     }
 }

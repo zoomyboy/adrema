@@ -26,7 +26,7 @@ class MemberShowAction
                 ->load('subscription')
                 ->load('courses.course')
             ),
-            'toolbar' => [['href' => route('member.index'), 'label' => 'Zurück', 'color' => 'primary', 'icon' => 'undo']],
+            'meta' => MemberResource::meta(),
         ];
     }
 

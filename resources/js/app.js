@@ -9,6 +9,7 @@ import VBool from './components/VBool.vue';
 import Box from './components/Box.vue';
 import Heading from './components/Heading.vue';
 import IconButton from './components/Ui/IconButton.vue';
+import ToolbarButton from './components/Ui/ToolbarButton.vue';
 import PageLayout from './components/Page/Layout.vue';
 import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
@@ -37,6 +38,7 @@ Vue.component('v-label', VLabel);
 Vue.component('box', Box);
 Vue.component('heading', Heading);
 Vue.component('icon-button', IconButton);
+Vue.component('toolbar-button', ToolbarButton);
 Vue.component('page-layout', PageLayout);
 Vue.component('save-button', () => import(/* webpackChunkName: "form" */ './components/SaveButton'));
 

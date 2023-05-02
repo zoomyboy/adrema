@@ -5,12 +5,7 @@
                 <svg-sprite src="menu" class="text-gray-100 w-5 h-5"></svg-sprite>
             </a>
             <span class="text-sm md:text-xl font-semibold text-white leading-none" v-html="$page.props.title"></span>
-            <!--
-            <i-link v-for="(link, index) in filterMenu" :key="index" :href="link.href" class="btn label mr-2" :class="`btn-${link.color}`" v-tooltip="tooltipsVisible ? link.label : ''">
-                <svg-sprite v-show="link.icon" class="w-3 h-3 xl:mr-2" :src="link.icon"></svg-sprite>
-                <span class="hidden xl:inline" v-text="link.label"></span>
-            </i-link>
-            -->
+            <slot name="toolbar"></slot>
             <div class="flex grow justify-between">
                 <portal-target name="toolbar-left"> </portal-target>
                 <portal-target name="toolbar-right"> </portal-target>

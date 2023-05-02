@@ -13,6 +13,9 @@ class CreateAction
 
     public function handle(): Response
     {
+        session()->put('menu', 'activity');
+        session()->put('title', 'Tätigkeit erstellen');
+
         return Inertia::render('activity/VForm', [
             'meta' => ActivityResource::meta(),
             'data' => [

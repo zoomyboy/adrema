@@ -1,5 +1,8 @@
 <template>
     <page-layout>
+        <div class="flex" slot="toolbar">
+            <toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</toolbar-button>
+        </div>
         <form class="flex grow relative" id="memberedit" @submit.prevent="submit">
             <save-button form="memberedit"></save-button>
             <popup heading="Ein Konflikt ist aufgetreten" v-if="conflict === true">
@@ -139,6 +142,7 @@ export default {
         confessions: {},
         billKinds: {},
         conflict: {},
+        meta: {},
     },
 
     methods: {

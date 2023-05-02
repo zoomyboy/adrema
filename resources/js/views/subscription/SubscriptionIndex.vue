@@ -1,5 +1,8 @@
 <template>
     <page-layout>
+        <div class="flex" slot="toolbar">
+            <toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Beitrag hinzufügen</toolbar-button>
+        </div>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
                 <th>Name</th>
@@ -8,7 +11,7 @@
                 <th></th>
             </thead>
 
-            <tr v-for="(subscription, index) in data" :key="index">
+            <tr v-for="(subscription, index) in data.data" :key="index">
                 <td>
                     <div v-text="subscription.name"></div>
                 </td>

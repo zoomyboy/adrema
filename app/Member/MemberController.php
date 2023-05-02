@@ -27,11 +27,6 @@ class MemberController extends Controller
         session()->put('title', 'Mitglieder');
 
         $payload = app(MemberView::class)->index($request);
-        $payload['toolbar'] = [
-            ['href' => route('member.create'), 'label' => 'Mitglied anlegen', 'color' => 'primary', 'icon' => 'plus'],
-            ['href' => route('allpayment.page'), 'label' => 'Rechnungen erstellen', 'color' => 'primary', 'icon' => 'invoice', 'show' => $settings->hasModule('bill')],
-            ['href' => route('sendpayment.create'), 'label' => 'Rechnungen versenden', 'color' => 'info', 'icon' => 'envelope', 'show' => $settings->hasModule('bill')],
-        ];
         $payload['billKinds'] = BillKind::forSelect();
 
         return \Inertia::render('member/VIndex', $payload);
@@ -65,6 +60,7 @@ class MemberController extends Controller
                 'more_ps_at' => null,
             ],
             'mode' => 'create',
+            'meta' => MemberResource::meta(),
         ]);
     }
 
@@ -97,6 +93,7 @@ class MemberController extends Controller
             'data' => new MemberResource($member),
             'mode' => 'edit',
             'conflict' => '1' === $request->query('conflict', '0'),
+            'meta' => MemberResource::meta(),
         ]);
     }
 

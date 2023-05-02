@@ -17,7 +17,6 @@ class SubscriptionController extends Controller
 
         return \Inertia::render('subscription/SubscriptionIndex', [
             'data' => SubscriptionResource::collection(Subscription::get()),
-            'toolbar' => [['href' => route('subscription.create'), 'label' => 'Beitrag anlegen', 'color' => 'primary', 'icon' => 'plus']],
         ]);
     }
 
@@ -32,6 +31,7 @@ class SubscriptionController extends Controller
             'data' => [
                 'children' => [],
             ],
+            'meta' => SubscriptionResource::meta(),
         ]);
     }
 
@@ -68,6 +68,7 @@ class SubscriptionController extends Controller
             'fees' => Fee::pluck('name', 'id'),
             'mode' => 'edit',
             'data' => new SubscriptionResource($subscription),
+            'meta' => SubscriptionResource::meta(),
         ]);
     }
 
