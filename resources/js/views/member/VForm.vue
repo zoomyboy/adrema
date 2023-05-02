@@ -21,10 +21,10 @@
                 <box heading="Stammdaten">
                     <div class="grid sm:grid-cols-2 gap-3">
                         <div class="grid grid-cols-2 gap-3">
-                            <f-select id="gender_id" name="gender_id" :options="genders" v-model="inner.gender_id" label="Geschlecht" size="sm"></f-select>
+                            <f-select id="gender_id" name="gender_id" :options="meta.genders" v-model="inner.gender_id" label="Geschlecht" size="sm"></f-select>
                             <f-text id="salutation" v-model="inner.salutation" size="sm" label="Anrede"></f-text>
                         </div>
-                        <f-select :options="nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit" name="nationality_id" size="sm" required></f-select>
+                        <f-select :options="meta.nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit" name="nationality_id" size="sm" required></f-select>
                         <f-text id="firstname" v-model="inner.firstname" size="sm" label="Vorname" required></f-text>
                         <f-text id="lastname" v-model="inner.lastname" size="sm" label="Nachname" required></f-text>
                         <f-text id="address" v-model="inner.address" size="sm" label="Adresse" required></f-text>
@@ -32,8 +32,8 @@
                         <f-text id="zip" v-model="inner.zip" size="sm" label="PLZ" required></f-text>
                         <f-text id="location" v-model="inner.location" size="sm" label="Ort" required></f-text>
                         <f-text type="date" id="birthday" v-model="inner.birthday" size="sm" label="Geburtsdatum" required></f-text>
-                        <f-select :options="regions" name="region_id" id="region_id" v-model="inner.region_id" label="Bundesland" size="sm"></f-select>
-                        <f-select :options="countries" id="country_id" v-model="inner.country_id" label="Land" name="country_id" size="sm" required></f-select>
+                        <f-select :options="meta.regions" name="region_id" id="region_id" v-model="inner.region_id" label="Bundesland" size="sm"></f-select>
+                        <f-select :options="meta.countries" id="country_id" v-model="inner.country_id" label="Land" name="country_id" size="sm" required></f-select>
                         <f-text id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit" size="sm"></f-text>
                     </div>
                 </box>
@@ -51,17 +51,25 @@
                 </box>
                 <box heading="System">
                     <div class="grid gap-3">
-                        <f-select :options="billKinds" id="bill_kind" v-model="inner.bill_kind" label="Rechnung versenden über" name="bill_kind" size="sm"></f-select>
-                        <f-select :options="subscriptions" id="subscription_id" v-model="inner.subscription_id" label="Beitrag" name="subscription_id" size="sm"></f-select>
+                        <f-select :options="meta.billKinds" id="bill_kind" v-model="inner.bill_kind" label="Rechnung versenden über" name="bill_kind" size="sm"></f-select>
+                        <f-select :options="meta.subscriptions" id="subscription_id" v-model="inner.subscription_id" label="Beitrag" name="subscription_id" size="sm"></f-select>
                         <f-switch id="has_nami" size="sm" v-model="inner.has_nami" label="In Nami eintragen"></f-switch>
                         <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin versenden" size="sm"></f-switch>
                         <f-text class="sm:col-span-2" type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum" size="sm"></f-text>
                         <f-textarea rows="3" id="comment" class="col-span-2" v-model="inner.comment" label="Kommentar" size="sm"></f-textarea>
                         <div class="contents" v-if="mode === 'create'">
-                            <f-select :options="activities" id="first_activity_id" v-model="inner.first_activity_id" label="Erste Tätigkeit" name="first_activity_id" size="sm" required></f-select>
+                            <f-select
+                                :options="meta.formActivities"
+                                id="first_activity_id"
+                                v-model="inner.first_activity_id"
+                                label="Erste Tätigkeit"
+                                name="first_activity_id"
+                                size="sm"
+                                required
+                            ></f-select>
                             <f-select
                                 v-if="inner.first_activity_id"
-                                :options="subactivities[inner.first_activity_id]"
+                                :options="meta.formSubactivities[inner.first_activity_id]"
                                 id="first_subactivity_id"
                                 v-model="inner.first_subactivity_id"
                                 label="Erste Untertätigkeit"
@@ -130,17 +138,8 @@ export default {
     },
 
     props: {
-        subactivities: {},
-        activities: {},
         mode: {},
-        genders: {},
-        subscriptions: {},
         data: {},
-        regions: {},
-        countries: {},
-        nationalities: {},
-        confessions: {},
-        billKinds: {},
         conflict: {},
         meta: {},
     },

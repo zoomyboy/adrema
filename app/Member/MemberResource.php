@@ -2,14 +2,24 @@
 
 namespace App\Member;
 
+use App\Activity;
+use App\Country;
+use App\Course\Models\Course;
 use App\Course\Resources\CourseMemberResource;
+use App\Gender;
+use App\Invoice\BillKind;
 use App\Lib\HasMeta;
 use App\Member\Data\NestedGroup;
 use App\Member\Resources\NationalityResource;
 use App\Member\Resources\RegionResource;
 use App\Membership\MembershipResource;
+use App\Nationality;
 use App\Payment\PaymentResource;
+use App\Payment\Status;
+use App\Payment\Subscription;
 use App\Payment\SubscriptionResource;
+use App\Region;
+use App\Subactivity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -103,9 +113,25 @@ class MemberResource extends JsonResource
      */
     public static function meta(): array
     {
+        $activities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
+
         return [
+            'filterActivities' => Activity::where('is_filterable', true)->pluck('name', 'id'),
+            'filterSubactivities' => Subactivity::where('is_filterable', true)->pluck('name', 'id'),
+            'formActivities' => $activities->pluck('name', 'id'),
+            'formSubactivities' => $activities->map(function (Activity $activity) {
+                return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
+            })->pluck('subactivities', 'id'),
             'groups' => NestedGroup::cacheForSelect(),
             'filter' => FilterScope::fromRequest(request()->input('filter', '')),
+            'courses' => Course::pluck('name', 'id'),
+            'regions' => Region::forSelect(),
+            'statuses' => Status::pluck('name', 'id'),
+            'subscriptions' => Subscription::pluck('name', 'id'),
+            'countries' => Country::pluck('name', 'id'),
+            'genders' => Gender::pluck('name', 'id'),
+            'billKinds' => BillKind::forSelect(),
+            'nationalities' => Nationality::pluck('name', 'id'),
             'links' => [
                 'index' => route('member.index'),
                 'create' => route('member.create'),

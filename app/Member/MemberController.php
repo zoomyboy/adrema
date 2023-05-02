@@ -2,16 +2,8 @@
 
 namespace App\Member;
 
-use App\Activity;
-use App\Confession;
 use App\Country;
-use App\Gender;
 use App\Http\Controllers\Controller;
-use App\Http\Views\MemberView;
-use App\Invoice\BillKind;
-use App\Nationality;
-use App\Payment\Subscription;
-use App\Region;
 use App\Setting\GeneralSettings;
 use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
@@ -25,11 +17,16 @@ class MemberController extends Controller
     {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
+        $filter = FilterScope::fromRequest($request->input('filter', ''));
 
-        $payload = app(MemberView::class)->index($request);
-        $payload['billKinds'] = BillKind::forSelect();
-
-        return \Inertia::render('member/VIndex', $payload);
+        return \Inertia::render('member/VIndex', [
+            'data' => MemberResource::collection(Member::search($filter->search)->query(fn ($q) => $q->select('*')
+                ->withFilter($filter)
+                ->with('payments.subscription')->with(['memberships' => fn ($query) => $query->active()])->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
+                ->withPendingPayment()
+                ->ordered()
+            )->paginate(15)),
+        ]);
     }
 
     public function create(): Response
@@ -37,20 +34,7 @@ class MemberController extends Controller
         session()->put('menu', 'member');
         session()->put('title', 'Mitglied erstellen');
 
-        $activities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
-
         return \Inertia::render('member/VForm', [
-            'activities' => $activities->pluck('name', 'id'),
-            'subactivities' => $activities->map(function (Activity $activity) {
-                return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
-            })->pluck('subactivities', 'id'),
-            'billKinds' => BillKind::forSelect(),
-            'genders' => Gender::pluck('name', 'id'),
-            'countries' => Country::pluck('name', 'id'),
-            'regions' => Region::where('is_null', false)->pluck('name', 'id'),
-            'nationalities' => Nationality::pluck('name', 'id'),
-            'confessions' => Confession::where('is_null', false)->pluck('name', 'id'),
-            'subscriptions' => Subscription::pluck('name', 'id'),
             'data' => [
                 'country_id' => Country::default(),
                 'efz' => null,
@@ -76,20 +60,7 @@ class MemberController extends Controller
         session()->put('menu', 'member');
         session()->put('title', "Mitglied {$member->firstname} {$member->lastname} bearbeiten");
 
-        $activities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
-
         return \Inertia::render('member/VForm', [
-            'activities' => $activities->pluck('name', 'id'),
-            'subactivities' => $activities->map(function ($activity) {
-                return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
-            })->pluck('subactivities', 'id'),
-            'billKinds' => BillKind::forSelect(),
-            'genders' => Gender::pluck('name', 'id'),
-            'countries' => Country::pluck('name', 'id'),
-            'regions' => Region::where('is_null', false)->pluck('name', 'id'),
-            'nationalities' => Nationality::pluck('name', 'id'),
-            'confessions' => Confession::where('is_null', false)->pluck('name', 'id'),
-            'subscriptions' => Subscription::select('name', 'id')->get(),
             'data' => new MemberResource($member),
             'mode' => 'edit',
             'conflict' => '1' === $request->query('conflict', '0'),

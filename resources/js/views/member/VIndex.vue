@@ -14,7 +14,7 @@
                 name="billKinds"
                 id="billKinds"
                 @input="setFilter('bill_kind', $event)"
-                :options="billKinds"
+                :options="data.meta.billKinds"
                 :value="getFilter('bill_kind')"
                 label="Rechnung"
                 size="sm"
@@ -22,7 +22,7 @@
             <f-select
                 id="activity_id"
                 @input="setFilter('activity_id', $event)"
-                :options="filterActivities"
+                :options="data.meta.filterActivities"
                 :value="getFilter('activity_id')"
                 label="Tätigkeit"
                 size="sm"
@@ -31,7 +31,7 @@
             <f-select
                 id="subactivity_id"
                 @input="setFilter('subactivity_id', $event)"
-                :options="filterSubactivities"
+                :options="data.meta.filterSubactivities"
                 :value="getFilter('subactivity_id')"
                 label="Untertätigkeit"
                 size="sm"
@@ -100,19 +100,19 @@
             <member-payments
                 v-if="single !== null && sidebar === 'payment.index'"
                 @close="closeSidebar"
-                :subscriptions="subscriptions"
-                :statuses="statuses"
+                :subscriptions="data.meta.subscriptions"
+                :statuses="data.meta.statuses"
                 :value="data.data[single]"
             ></member-payments>
             <member-memberships
                 v-if="single !== null && sidebar === 'membership.index'"
                 @close="closeSidebar"
                 :groups="data.meta.groups"
-                :activities="activities"
-                :subactivities="subactivities"
+                :activities="data.meta.formActivities"
+                :subactivities="data.meta.formSubactivities"
                 :value="data.data[single]"
             ></member-memberships>
-            <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="courses" :value="data.data[single]"></member-courses>
+            <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="data.meta.courses" :value="data.data[single]"></member-courses>
         </transition>
     </page-layout>
 </template>
@@ -163,16 +163,7 @@ export default {
     },
 
     props: {
-        subscriptions: {},
-        statuses: {},
-        paymentDefaults: {},
         query: {},
-        billKinds: {},
-        activities: {},
-        subactivities: {},
-        filterActivities: {},
-        filterSubactivities: {},
-        courses: {},
     },
 };
 </script>
