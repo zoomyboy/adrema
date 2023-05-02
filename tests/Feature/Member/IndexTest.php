@@ -100,9 +100,9 @@ class IndexTest extends TestCase
 
         $response = $this->get('/member');
 
-        $this->assertInertiaHas('Biber', $response, "subactivities.{$activity->id}.{$subactivity->id}");
-        $this->assertInertiaHas('Biber', $response, "filterSubactivities.{$subactivity->id}");
-        $this->assertInertiaHas('€ Mitglied', $response, "activities.{$activity->id}");
+        $this->assertInertiaHas('Biber', $response, "data.meta.formSubactivities.{$activity->id}.{$subactivity->id}");
+        $this->assertInertiaHas('Biber', $response, "data.meta.filterSubactivities.{$subactivity->id}");
+        $this->assertInertiaHas('€ Mitglied', $response, "data.meta.formActivities.{$activity->id}");
     }
 
     public function testItShowsActivityAndSubactivityNamesOfMember(): void

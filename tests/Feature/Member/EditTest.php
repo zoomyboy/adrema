@@ -22,14 +22,14 @@ class EditTest extends TestCase
 
         $response = $this->get(route('member.edit', ['member' => $member]));
 
-        $this->assertInertiaHas('Biber', $response, "subactivities.{$activity->id}.{$subactivity->id}");
-        $this->assertInertiaHas('€ Mitglied', $response, "activities.{$activity->id}");
+        $this->assertInertiaHas('Biber', $response, "meta.formSubactivities.{$activity->id}.{$subactivity->id}");
+        $this->assertInertiaHas('€ Mitglied', $response, "meta.formActivities.{$activity->id}");
         $this->assertInertiaHas('Max', $response, 'data.firstname');
         $this->assertInertiaHas('Doktor', $response, 'data.salutation');
         $this->assertInertiaHas('Lorem bla', $response, 'data.comment');
         $this->assertInertiaHas('edit', $response, 'mode');
         $this->assertInertiaHas(false, $response, 'conflict');
-        $this->assertInertiaHas(['name' => 'E-Mail', 'id' => 'E-Mail'], $response, 'billKinds.0');
+        $this->assertInertiaHas(['name' => 'E-Mail', 'id' => 'E-Mail'], $response, 'meta.billKinds.0');
     }
 
     public function testItDisplaysEducation(): void

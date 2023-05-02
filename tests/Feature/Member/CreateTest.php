@@ -28,9 +28,9 @@ class CreateTest extends TestCase
 
         $response = $this->get(route('member.create'));
 
-        $this->assertInertiaHas('Biber', $response, "subactivities.{$activity->id}.{$subactivity->id}");
-        $this->assertInertiaHas('€ Mitglied', $response, "activities.{$activity->id}");
-        $this->assertInertiaHas(['name' => 'E-Mail', 'id' => 'E-Mail'], $response, 'billKinds.0');
+        $this->assertInertiaHas('Biber', $response, "meta.formSubactivities.{$activity->id}.{$subactivity->id}");
+        $this->assertInertiaHas('€ Mitglied', $response, "meta.formActivities.{$activity->id}");
+        $this->assertInertiaHas(['name' => 'E-Mail', 'id' => 'E-Mail'], $response, 'meta.billKinds.0');
 
         $this->assertInertiaHas(['efz' => null, 'ps_at' => null, 'more_ps_at' => null, 'without_education_at' => null, 'without_efz_at' => null], $response, 'data');
     }
@@ -41,7 +41,7 @@ class CreateTest extends TestCase
 
         $response = $this->get(route('member.create'));
 
-        $this->assertCount(0, $this->inertia($response, 'subactivities'));
-        $this->assertCount(0, $this->inertia($response, 'activities'));
+        $this->assertCount(0, $this->inertia($response, 'meta.formCreateSubactivities'));
+        $this->assertCount(0, $this->inertia($response, 'meta.formCreateActivities'));
     }
 }

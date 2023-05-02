@@ -114,13 +114,18 @@ class MemberResource extends JsonResource
      */
     public static function meta(): array
     {
-        $activities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
+        $activities = Activity::with('subactivities')->get();
+        $createActivities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
 
         return [
             'filterActivities' => Activity::where('is_filterable', true)->pluck('name', 'id'),
             'filterSubactivities' => Subactivity::where('is_filterable', true)->pluck('name', 'id'),
             'formActivities' => $activities->pluck('name', 'id'),
             'formSubactivities' => $activities->map(function (Activity $activity) {
+                return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
+            })->pluck('subactivities', 'id'),
+            'formCreateActivities' => $createActivities->pluck('name', 'id'),
+            'formCreateSubactivities' => $createActivities->map(function (Activity $activity) {
                 return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
             'groups' => NestedGroup::cacheForSelect(),

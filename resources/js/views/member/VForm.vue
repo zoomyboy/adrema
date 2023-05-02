@@ -2,7 +2,7 @@
     <page-layout>
         <div class="flex" slot="toolbar">
             <toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</toolbar-button>
-            <toolbar-button :href="data.links.show" color="primary" icon="eye">anschauen</toolbar-button>
+            <toolbar-button v-if="mode === 'edit'" :href="data.links.show" color="primary" icon="eye">anschauen</toolbar-button>
         </div>
         <form class="flex grow relative" id="memberedit" @submit.prevent="submit">
             <save-button form="memberedit"></save-button>
@@ -60,7 +60,7 @@
                         <f-textarea rows="3" id="comment" class="col-span-2" v-model="inner.comment" label="Kommentar" size="sm"></f-textarea>
                         <div class="contents" v-if="mode === 'create'">
                             <f-select
-                                :options="meta.formActivities"
+                                :options="meta.formCreateActivities"
                                 id="first_activity_id"
                                 v-model="inner.first_activity_id"
                                 label="Erste Tätigkeit"
@@ -70,7 +70,7 @@
                             ></f-select>
                             <f-select
                                 v-if="inner.first_activity_id"
-                                :options="meta.formSubactivities[inner.first_activity_id]"
+                                :options="meta.formCreateSubactivities[inner.first_activity_id]"
                                 id="first_subactivity_id"
                                 v-model="inner.first_subactivity_id"
                                 label="Erste Untertätigkeit"
