@@ -2,6 +2,7 @@
     <page-layout>
         <div class="flex" slot="toolbar">
             <toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</toolbar-button>
+            <toolbar-button :href="data.links.edit" color="warning" icon="pencil">bearbeiten</toolbar-button>
         </div>
         <div class="p-3 grid gap-3 this-grid grow">
             <box heading="Stammdaten" class="area-stamm hidden xl:block">

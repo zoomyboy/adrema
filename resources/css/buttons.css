@@ -20,9 +20,9 @@
         }
     }
     &.btn-warning {
-        @apply bg-yellow-700;
+        @apply bg-yellow-700 text-yellow-300;
         &:not(.disabled):hover {
-            @apply bg-yellow-500;
+            @apply bg-yellow-500 text-yellow-100;
         }
     }
     &.btn-info {

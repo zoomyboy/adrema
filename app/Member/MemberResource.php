@@ -104,6 +104,7 @@ class MemberResource extends JsonResource
             'comment' => $this->comment,
             'links' => [
                 'show' => route('member.show', ['member' => $this->getModel()]),
+                'edit' => route('member.edit', ['member' => $this->getModel()]),
             ],
         ];
     }
