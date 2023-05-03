@@ -22,7 +22,7 @@ class InitializeMembersTest extends TestCase
         app(SearchFake::class)->fetches(1, 0, [
             MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
         ]);
-        FullMemberAction::shouldRun()->once();
+        FullMemberAction::shouldRun()->once()->shouldReceive('configureJob');
 
         app(InitializeMembers::class)->handle($api);
     }
@@ -33,7 +33,7 @@ class InitializeMembersTest extends TestCase
         app(SearchFake::class)->fetches(1, 0, [
             MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
         ]);
-        FullMemberAction::shouldRun()->once();
+        FullMemberAction::shouldRun()->once()->shouldReceive('configureJob');
 
         Artisan::call('member:pull');
     }
