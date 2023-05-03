@@ -3,7 +3,6 @@
 use App\User;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -40,11 +39,11 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'database',
+            'provider' => 'users',
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -68,7 +67,7 @@ return [
     */
 
     'providers' => [
-        'database' => [
+        'users' => [
             'driver' => 'eloquent',
             'model' => User::class,
         ],
@@ -110,5 +109,4 @@ return [
     */
 
     'password_timeout' => 10800,
-
 ];
