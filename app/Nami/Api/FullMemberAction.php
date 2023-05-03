@@ -19,11 +19,9 @@ class FullMemberAction
             'courses' => CoursesOfAction::run($api, $memberId),
         ]);
 
-        if (!$redisKey) {
-            return $fullMember;
+        if ($redisKey) {
+            Redis::rpush($redisKey, $fullMember->toJson());
         }
-
-        Redis::rpush($redisKey, $fullMember->toJson());
 
         return $fullMember;
     }
