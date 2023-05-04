@@ -1,4 +1,4 @@
-# DPSG Köln Adrema
+# Adrema
 
 ## Installation
 
