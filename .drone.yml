@@ -35,6 +35,48 @@ steps:
       commands:
           - npm ci && npm run prod && npm run img && rm -R node_modules
 
+    - name: phpunit_tests
+      image: php:8.1.6
+      commands:
+          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync texlive-base texlive-xetex texlive-lang-german texlive-fonts-extra
+          - docker-php-ext-install pdo_mysql curl gd intl mbstring
+          - pecl install redis && docker-php-ext-enable redis
+          - cp .docker/fonts/* /usr/share/fonts/
+          - php artisan migrate
+          - php artisan test
+          - rm -f .env
+      environment:
+          APP_NAME: Scoutrobot
+          APP_KEY:
+              from_secret: app_key
+          APP_ENV: local
+          APP_DEBUG: true
+          APP_URL: http://scoutrobot.test
+          APP_MODE: stamm
+          LOG_CHANNEL: stack
+          DB_CONNECTION: mysql
+          DB_HOST: db
+          REDIS_HOST: redis
+          DB_PORT: 3306
+          DB_DATABASE: db
+          DB_USERNAME: db
+          DB_PASSWORD: db
+          BROADCAST_DRIVER: log
+          CACHE_DRIVER: file
+          QUEUE_CONNECTION: sync
+          SESSION_DRIVER: file
+          SESSION_LIFETIME: 120
+          MAIL_FROM_NAME: '${APP_NAME}'
+          PDFLATEX_BIN: /usr/bin/pdflatex
+          XELATEX_BIN: /usr/bin/xelatex
+
+    - name: phpstan_tests
+      image: php:8.1.6
+      commands:
+          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync
+          - pecl install redis && docker-php-ext-enable redis
+          - vendor/bin/phpstan analyse --memory-limit=2G
+
     - name: composer_no_dev
       image: composer:2.2.7
       commands:
