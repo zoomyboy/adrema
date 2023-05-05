@@ -1,6 +1,6 @@
 [submodule "packages/silvaletter"]
 	path = packages/silvaletter
-	url = https://git.zoomyboy.de/pille/tex
+	url = https://git.zoomyboy.de/silva/silvaletter.git
 [submodule "packages/laravel-nami"]
 	path = packages/laravel-nami
 	url = https://git.zoomyboy.de/silva/nami-api
