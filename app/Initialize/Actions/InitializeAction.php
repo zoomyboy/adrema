@@ -45,7 +45,7 @@ class InitializeAction
 
     private Api $api;
 
-    public function handle(int $mglnr, string $password, int $groupId): void
+    public function handle(): void
     {
         foreach ($this->initializers as $initializer) {
             app($initializer)->handle($this->api);
@@ -74,38 +74,33 @@ class InitializeAction
         ];
     }
 
-    public function asController(ActionRequest $request, NamiSettings $settings): RedirectResponse
+    public function asController(ActionRequest $request): RedirectResponse
     {
-        $this->api = Nami::login($request->input('mglnr'), $request->input('password'));
+        $api = Nami::freshLogin($request->input('mglnr'), $request->input('password'));
 
-        if (!$this->api->hasGroup($request->input('group_id'))) {
+        if (!$api->hasGroup($request->input('group_id'))) {
             throw ValidationException::withMessages(['nami' => 'Gruppierung nicht gefunden.']);
         }
 
-        $settings->mglnr = $request->input('mglnr');
-        $settings->password = $request->input('password');
-        $settings->default_group_id = $request->input('group_id');
-        $settings->save();
-
-        $this->handle(
-            (int) $request->input('mglnr', 0),
-            (string) $request->input('password', ''),
-            (int) $request->input('group_id', 0)
-        );
+        $this->setApi((int) $request->input('mglnr'), $request->input('password'), (int) $request->input('group_id'));
+        $this->handle();
 
         return redirect()->route('home')->success('Initialisierung beauftragt. Wir benachrichtigen dich per Mail wenn alles fertig ist.');
     }
 
-    public function asCommand(Command $command, NamiSettings $settings): void
+    public function asCommand(Command $command): void
     {
-        $mglnr = (int) $command->option('mglnr');
-        $password = $command->option('password');
-        $group = (int) $command->option('group');
-        $this->api = Nami::login($mglnr, $password);
+        $this->setApi((int) $command->option('mglnr'), $command->option('password'), (int) $command->option('group'));
+        $this->handle();
+    }
+
+    private function setApi(int $mglnr, string $password, int $groupId): void
+    {
+        $settings = app(NamiSettings::class);
         $settings->mglnr = $mglnr;
         $settings->password = $password;
-        $settings->default_group_id = $group;
+        $settings->default_group_id = $groupId;
         $settings->save();
-        $this->handle((int) $mglnr, (string) $password, (int) $group);
+        $this->api = $settings->login();
     }
 }

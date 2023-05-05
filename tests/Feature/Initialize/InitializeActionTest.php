@@ -26,7 +26,7 @@ class InitializeActionTest extends TestCase
     public function testItSetsSettingsBeforeRunningInitializer(): void
     {
         $this->withoutExceptionHandling()->login();
-        InitializeAction::partialMock()->shouldReceive('handle')->with(12345, 'secret', 185)->once()->andReturn(true);
+        InitializeAction::partialMock()->shouldReceive('handle')->andReturn(true);
         Auth::success(12345, 'secret');
         app(GroupFake::class)->fetches(null, [185 => ['name' => 'testgroup']]);
 
