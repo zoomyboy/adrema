@@ -18,7 +18,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Nami;
 
 class InitializeAction
@@ -43,12 +42,12 @@ class InitializeAction
         InitializeMembers::class,
     ];
 
-    private Api $api;
-
     public function handle(): void
     {
+        $api = app(NamiSettings::class)->login();
+
         foreach ($this->initializers as $initializer) {
-            app($initializer)->handle($this->api);
+            app($initializer)->handle($api);
         }
     }
 
@@ -83,7 +82,7 @@ class InitializeAction
         }
 
         $this->setApi((int) $request->input('mglnr'), $request->input('password'), (int) $request->input('group_id'));
-        $this->handle();
+        self::dispatch();
 
         return redirect()->route('home')->success('Initialisierung beauftragt. Wir benachrichtigen dich per Mail wenn alles fertig ist.');
     }
@@ -91,7 +90,7 @@ class InitializeAction
     public function asCommand(Command $command): void
     {
         $this->setApi((int) $command->option('mglnr'), $command->option('password'), (int) $command->option('group'));
-        $this->handle();
+        self::dispatch();
     }
 
     private function setApi(int $mglnr, string $password, int $groupId): void
@@ -101,6 +100,5 @@ class InitializeAction
         $settings->password = $password;
         $settings->default_group_id = $groupId;
         $settings->save();
-        $this->api = $settings->login();
     }
 }
