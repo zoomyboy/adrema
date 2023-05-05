@@ -17,6 +17,7 @@ use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
+use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Member\Actions\ExportAction;
 use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
@@ -38,6 +39,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
 
 Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/', DashboardIndexAction::class)->name('home');
+    Route::post('/nami-login-check', NamiLoginCheckAction::class)->name('nami-login-check');
     Route::post('/api/member/search', SearchAction::class)->name('member.search');
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');
