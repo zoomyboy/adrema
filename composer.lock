@@ -9247,7 +9247,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/tex",
-                "reference": "6f162102ef7ceca41822d18c3e694abd926f550b"
+                "reference": "48251272de62e3fea044a7ad31e1a411c15eb4c6"
             },
             "type": "library",
             "extra": {
