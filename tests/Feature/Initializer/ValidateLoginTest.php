@@ -21,7 +21,7 @@ class ValidateLoginTest extends TestCase
     {
         Auth::success(333, 'secret');
 
-        $this->postJson('/nami-login-check', [
+        $this->postJson('/nami/login-check', [
             'mglnr' => 333,
             'password' => 'secret',
         ])->assertStatus(204);
@@ -29,7 +29,7 @@ class ValidateLoginTest extends TestCase
 
     public function testItNeedsPasswordAndMglnr(): void
     {
-        $this->postJson('/nami-login-check', [
+        $this->postJson('/nami/login-check', [
             'mglnr' => '',
             'password' => '',
         ])->assertJsonValidationErrors(['mglnr', 'password']);
@@ -37,7 +37,7 @@ class ValidateLoginTest extends TestCase
 
     public function testMglnrShouldBeNumeric(): void
     {
-        $this->postJson('/nami-login-check', [
+        $this->postJson('/nami/login-check', [
             'mglnr' => 'aaa',
             'password' => 'secret',
         ])->assertJsonValidationErrors(['mglnr']);
@@ -45,7 +45,7 @@ class ValidateLoginTest extends TestCase
 
     public function testLoginCanFail(): void
     {
-        $this->postJson('/nami-login-check', [
+        $this->postJson('/nami/login-check', [
             'mglnr' => '111',
             'password' => 'secret',
         ])->assertJsonValidationErrors(['nami' => 'NaMi Login fehlgeschlagen.']);

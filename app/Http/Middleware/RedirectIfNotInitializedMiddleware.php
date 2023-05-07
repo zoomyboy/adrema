@@ -11,7 +11,7 @@ class RedirectIfNotInitializedMiddleware
     /**
      * @var array<int, string>
      */
-    public array $dontRedirect = ['initialize.form', 'initialize.store', 'nami.search'];
+    public array $dontRedirect = ['initialize.form', 'initialize.store', 'nami.login-check', 'nami.search'];
 
     /**
      * Handle an incoming request.
