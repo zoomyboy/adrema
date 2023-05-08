@@ -158,6 +158,7 @@ steps:
           - git remote add gh git@github.com:zoomyboy/adrema.git
           - git push -f gh HEAD:master
       when:
+          branch: master
           event: push
 
 services:
