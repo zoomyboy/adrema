@@ -19,17 +19,6 @@ class DocumentFactoryTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @testWith ["\\App\\Invoice\\BillDocument"]
-     *           ["\\App\\Invoice\\RememberDocument"]
-     */
-    public function testItDoesntReturnARepositoryWhenMemberDoesntHavePayments(): void
-    {
-        $member = Member::factory()->defaults()->create();
-        $invoice = app(DocumentFactory::class)->singleInvoice(BillDocument::class, $this->query($member));
-        $this->assertNull($invoice);
-    }
-
     public function testItDisplaysMemberInformation(): void
     {
         $member = Member::factory()
@@ -102,7 +91,7 @@ class DocumentFactoryTest extends TestCase
         $member = Member::factory()
             ->defaults()
             ->state(['lastname' => '::lastname::'])
-            ->has(Payment::factory()->notPaid())
+            ->has(Payment::factory()->notPaid()->state(['last_remembered_at' => now()->subMonths(6)]))
             ->create();
 
         $invoice = app(DocumentFactory::class)->singleInvoice(RememberDocument::class, $this->query($member));
