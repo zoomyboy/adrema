@@ -1,9 +1,13 @@
 <template>
-    <label class="flex relative field-switch cursor-pointer" :for="id" :class="{
-        'items-center flex-row-reverse space-x-3 space-x-reverse justify-end': inline,
-        'flex-col': !inline,
-        [sizes[size].wrap]: true,
-    }">
+    <label
+        class="flex relative field-switch cursor-pointer"
+        :for="id"
+        :class="{
+            'items-center flex-row-reverse space-x-3 space-x-reverse justify-end': inline,
+            'flex-col': !inline,
+            [sizes[size].wrap]: true,
+        }"
+    >
         <span
             v-if="label"
             class="font-semibold leading-none text-gray-400"
@@ -13,37 +17,20 @@
             }"
             >{{ label }}</span
         >
-        <div class="relative inner-field mt-1" :class="`h-field-${fieldSize}`">
-            <input
-                :id="id"
-                type="checkbox"
-                :name="name"
-                :value="value"
-                v-model="v"
-                :disabled="disabled"
-                class="absolute peer"
-                @keypress="$emit('keypress', $event)"
-            />
-            <span
-                class="relative cursor-pointer peer-focus:bg-red-500 flex grow display"
-                :class="{'bg-switch': v === true, 'bg-gray-700': v === false}"
-            >
-                <span
-                    ><svg-sprite
-                        class="relative text-gray-400 flex-none"
-                        :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}"
-                        src="check"
-                    ></svg-sprite
-                ></span>
-                <span
-                    ><svg-sprite
-                        class="relative text-gray-400 flex-none"
-                        :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}"
-                        src="close"
-                    ></svg-sprite
-                ></span>
-                <var class="absolute overlay bg-gray-400 rounded top-0"></var>
+        <div class="relative flex items-center inner-field mt-1" :class="`h-field-${fieldSize}`">
+            <span>
+                <input :id="id" type="checkbox" :name="name" :value="value" v-model="v" :disabled="disabled" class="absolute peer" @keypress="$emit('keypress', $event)" />
+                <span class="relative cursor-pointer peer-focus:bg-red-500 flex grow display" :class="{'bg-switch': v === true, 'bg-gray-700': v === false}">
+                    <span><svg-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="check"></svg-sprite></span>
+                    <span><svg-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="close"></svg-sprite></span>
+                    <var class="absolute overlay bg-gray-400 rounded top-0"></var>
+                </span>
             </span>
+            <div v-if="hint" class="ml-2 info-wrap">
+                <div v-tooltip="hint">
+                    <svg-sprite src="info-button" class="info-button w-4 h-4 text-primary-700"></svg-sprite>
+                </div>
+            </div>
         </div>
     </label>
 </template>
@@ -73,6 +60,9 @@ export default {
         event: 'input',
     },
     props: {
+        hint: {
+            default: null,
+        },
         inline: {
             default: false,
             type: Boolean,

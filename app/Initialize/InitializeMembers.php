@@ -21,9 +21,10 @@ class InitializeMembers
 
     public function handle(Api $api): void
     {
+        $settings = app(NamiSettings::class);
         Redis::delete('members');
 
-        $jobs = $api->search([])->map(function (NamiMemberEntry $member) use ($api) {
+        $jobs = $api->search($settings->search_params)->map(function (NamiMemberEntry $member) use ($api) {
             return FullMemberAction::makeJob($api, $member->groupId, $member->id, 'members');
         })->toArray();
 

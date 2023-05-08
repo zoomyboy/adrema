@@ -362,12 +362,6 @@ export default {
 
 <style scope>
 .bg-inset {
-    background: linear-gradient(
-        to bottom,
-        hsl(247.5, 66.7%, 97.6%) 0%,
-        hsl(247.5, 66.7%, 97.6%) 41%,
-        hsl(0deg 0% 100%) 41%,
-        hsl(180deg 0% 100%) 100%
-    );
+    background: linear-gradient(to bottom, hsl(247.5, 66.7%, 97.6%) 0%, hsl(247.5, 66.7%, 97.6%) 41%, hsl(0deg 0% 100%) 41%, hsl(180deg 0% 100%) 100%);
 }
 </style>

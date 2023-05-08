@@ -2,21 +2,30 @@
 
 namespace App\Initialize\Actions;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\LaravelNami\Api;
+use Zoomyboy\LaravelNami\Data\MemberEntry;
 use Zoomyboy\LaravelNami\Nami;
 
 class NamiSearchAction
 {
     use AsAction;
 
-    public function handle(Api $api, int $page, array $params)
+    /**
+     * @param array<string, mixed> $params
+     *
+     * @return LengthAwarePaginator<MemberEntry>
+     */
+    public function handle(Api $api, int $page, array $params): LengthAwarePaginator
     {
-        return $api->pageSearch($params, $page, 10)->toArray();
+        return $api->pageSearch($params, $page, 10);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function rules(): array
     {
         return [
@@ -26,10 +35,13 @@ class NamiSearchAction
         ];
     }
 
-    public function asController(ActionRequest $request): JsonResponse
+    /**
+     * @return LengthAwarePaginator<MemberEntry>
+     */
+    public function asController(ActionRequest $request): LengthAwarePaginator
     {
         $api = Nami::login($request->input('mglnr'), $request->input('password'));
 
-        return response()->json($this->handle($api, $request->input('page', 1), $request->input('params')));
+        return $this->handle($api, $request->input('page', 1), $request->input('params'));
     }
 }

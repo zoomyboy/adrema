@@ -9,9 +9,16 @@ class InitializeRequestFactory extends RequestFactory
     public function definition(): array
     {
         return [
-            'group_id' => $this->faker->numberBetween(100, 200),
+            'group_id' => (string) $this->faker->numberBetween(100, 200),
             'password' => $this->faker->word(),
-            'mglnr' => $this->faker->numberBetween(100, 200),
+            'mglnr' => (string) $this->faker->numberBetween(100, 200),
+            'params' => [
+                'gruppierung1Id' => $this->faker->numberBetween(100000, 200000),
+                'gruppierung2Id' => $this->faker->numberBetween(100000, 200000),
+                'gruppierung3Id' => $this->faker->numberBetween(100000, 200000),
+                'inGrp' => $this->faker->boolean(),
+                'unterhalbGrp' => $this->faker->boolean(),
+            ],
         ];
     }
 
@@ -29,6 +36,16 @@ class InitializeRequestFactory extends RequestFactory
         return $this->state([
             'mglnr' => $mglnr,
             'password' => $password,
+        ]);
+    }
+
+    /**
+     * @param array<string, string|int|bool> $params
+     */
+    public function withParams(array $params): self
+    {
+        return $this->state([
+            'params' => $params,
         ]);
     }
 

@@ -21,7 +21,8 @@
 export default {
     props: {
         only: {
-            required: true,
+            default: null,
+            required: false,
         },
         value: {
             required: true,
@@ -33,6 +34,11 @@ export default {
     },
     methods: {
         goto(page) {
+            if (this.$listeners.reload) {
+                this.$emit('reload', page.page);
+                return;
+            }
+
             var params = new URLSearchParams(window.location.search);
             params.set('page', page.page);
 

@@ -3,11 +3,12 @@
 namespace Tests\Feature\Initialize;
 
 use App\Initialize\Actions\InitializeAction;
+use App\Setting\NamiSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
 use Tests\RequestFactories\InitializeRequestFactory;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Authentication\Auth;
-use Zoomyboy\LaravelNami\Fakes\GroupFake;
 
 class InitializeActionTest extends TestCase
 {
@@ -42,15 +43,20 @@ class InitializeActionTest extends TestCase
         $this->assertErrors(['nami' => 'NaMi Login fehlgeschlagen.'], $response);
     }
 
-    public function testItValidatesGroupExistance(): void
+    public function testItSetsSettings(): void
     {
+        Queue::fake();
+        Auth::success(100222, 'secret');
         $this->login();
-        Auth::success(12345, 'secret');
-        app(GroupFake::class)->fetches(null, []);
 
-        $response = $this->post('/initialize', $this->factory()->withCredentials(12345, 'secret')->withGroup(185)->create());
+        $response = $this->post('/initialize', $this->factory()->withCredentials(100222, 'secret')->withGroup(77)->withParams(['gruppierung1Id' => '66777'])->create());
 
-        $this->assertErrors(['nami' => 'Gruppierung nicht gefunden.'], $response);
+        $response->assertRedirect('/');
+        $settings = app(NamiSettings::class);
+        $this->assertEquals(100222, $settings->mglnr);
+        $this->assertEquals('secret', $settings->password);
+        $this->assertEquals(77, $settings->default_group_id);
+        $this->assertEquals('66777', $settings->search_params['gruppierung1Id']);
     }
 
     private function factory(): InitializeRequestFactory

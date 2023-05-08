@@ -15,6 +15,9 @@ class NamiSettings extends Settings
 
     public int $default_group_id;
 
+    /** @var array<string, string> */
+    public array $search_params;
+
     public static function group(): string
     {
         return 'nami';

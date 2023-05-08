@@ -19,7 +19,7 @@ class InitializeMembersTest extends TestCase
     {
         $this->loginNami();
         $api = app(NamiSettings::class)->login();
-        app(SearchFake::class)->fetches(1, 0, [
+        app(SearchFake::class)->fetches(1, 0, 100, [
             MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
         ]);
         FullMemberAction::shouldRun()->once()->shouldReceive('configureJob');
@@ -30,7 +30,7 @@ class InitializeMembersTest extends TestCase
     public function testFetchesMembersViaCommandLine(): void
     {
         $this->loginNami();
-        app(SearchFake::class)->fetches(1, 0, [
+        app(SearchFake::class)->fetches(1, 0, 100, [
             MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
         ]);
         FullMemberAction::shouldRun()->once()->shouldReceive('configureJob');

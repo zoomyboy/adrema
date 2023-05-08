@@ -5,6 +5,7 @@ namespace Tests\Feature\Initializer;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Authentication\Auth;
+use Zoomyboy\LaravelNami\Data\MemberEntry;
 use Zoomyboy\LaravelNami\Fakes\SearchFake;
 
 class SearchTest extends TestCase
@@ -22,8 +23,8 @@ class SearchTest extends TestCase
     {
         $this->withoutExceptionHandling();
         app(SearchFake::class)->fetches(1, 0, 10, [
-            ['id' => 2, 'entries_gruppierungId' => 100, 'entries_vorname' => 'Max', 'entries_nachname' => 'Muster', 'entries_stufe' => 'Wölfling', 'entries_geburtsDatum' => '2013-07-04 00:00:00'],
-            ['id' => 2, 'entries_gruppierungId' => 150, 'entries_vorname' => 'Jane', 'entries_nachname' => 'Muster', 'entries_stufe' => 'Wölfling', 'entries_geburtsDatum' => '2013-07-04 00:00:00'],
+            MemberEntry::factory()->state(['id' => 2, 'groupId' => 100, 'firstname' => 'Max', 'lastname' => 'Muster', 'birthday' => '2013-07-04 00:00:00'])->toMember(),
+            MemberEntry::factory()->state(['id' => 2, 'groupId' => 150, 'firstname' => 'Jane', 'lastname' => 'Muster', 'birthday' => '2013-07-04 00:00:00'])->toMember(),
         ]);
         Auth::success(333, 'secret');
 
@@ -42,7 +43,6 @@ class SearchTest extends TestCase
         $repsonse->assertJsonPath('data.0.lastname', 'Muster');
         $repsonse->assertJsonPath('data.0.id', 2);
         $repsonse->assertJsonPath('data.0.groupId', 100);
-        $repsonse->assertJsonPath('data.0.agegroup', 'Wölfling');
         app(SearchFake::class)->assertFetched(1, 0, 10, [
             'gruppierung1Id' => 100,
             'gruppierung2Id' => 101,
@@ -53,7 +53,7 @@ class SearchTest extends TestCase
     {
         $this->withoutExceptionHandling();
         app(SearchFake::class)->fetches(1, 0, 10, [
-            ['id' => 2, 'entries_gruppierungId' => 100, 'entries_vorname' => null, 'entries_nachname' => 'Muster', 'entries_stufe' => null, 'entries_geburtsDatum' => 'lalala'],
+            MemberEntry::factory()->noFirstname()->toMember(),
         ]);
         Auth::success(333, 'secret');
 
@@ -70,8 +70,8 @@ class SearchTest extends TestCase
     {
         $this->withoutExceptionHandling();
         app(SearchFake::class)->fetches(2, 10, 10, [
-            ['id' => 2, 'entries_gruppierungId' => 100, 'entries_vorname' => 'Max', 'entries_nachname' => 'Muster'],
-            ['id' => 2, 'entries_gruppierungId' => 100, 'entries_vorname' => 'Max', 'entries_nachname' => 'Muster'],
+            MemberEntry::factory()->toMember(),
+            MemberEntry::factory()->toMember(),
         ]);
         Auth::success(333, 'secret');
 

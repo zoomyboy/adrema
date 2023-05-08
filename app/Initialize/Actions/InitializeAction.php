@@ -13,9 +13,7 @@ use App\Initialize\InitializeMembers;
 use App\Initialize\InitializeNationalities;
 use App\Initialize\InitializeRegions;
 use App\Setting\NamiSettings;
-use Illuminate\Console\Command;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\LaravelNami\Nami;
@@ -60,6 +58,7 @@ class InitializeAction
             'mglnr' => 'required|numeric',
             'password' => 'required|string',
             'group_id' => 'required|numeric',
+            'params' => 'required|array',
         ];
     }
 
@@ -73,32 +72,17 @@ class InitializeAction
         ];
     }
 
-    public function asController(ActionRequest $request): RedirectResponse
+    public function asController(ActionRequest $request, NamiSettings $settings): RedirectResponse
     {
         $api = Nami::freshLogin($request->input('mglnr'), $request->input('password'));
 
-        if (!$api->hasGroup($request->input('group_id'))) {
-            throw ValidationException::withMessages(['nami' => 'Gruppierung nicht gefunden.']);
-        }
-
-        $this->setApi((int) $request->input('mglnr'), $request->input('password'), (int) $request->input('group_id'));
-        self::dispatch();
-
-        return redirect()->route('home')->success('Initialisierung beauftragt. Wir benachrichtigen dich per Mail wenn alles fertig ist.');
-    }
-
-    public function asCommand(Command $command): void
-    {
-        $this->setApi((int) $command->option('mglnr'), $command->option('password'), (int) $command->option('group'));
-        self::dispatch();
-    }
-
-    private function setApi(int $mglnr, string $password, int $groupId): void
-    {
-        $settings = app(NamiSettings::class);
-        $settings->mglnr = $mglnr;
-        $settings->password = $password;
-        $settings->default_group_id = $groupId;
+        $settings->mglnr = (int) $request->input('mglnr');
+        $settings->password = $request->input('password');
+        $settings->default_group_id = (int) $request->input('group_id');
+        $settings->search_params = $request->input('params');
         $settings->save();
+        self::dispatch();
+
+        return redirect()->route('home');
     }
 }
