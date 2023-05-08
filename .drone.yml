@@ -101,7 +101,7 @@ steps:
           target: ~/nami
           exclude: ['.git']
           key:
-              from_secret: private_key
+              from_secret: deploy_private_key
           script:
               - cd ~/nami
               - /usr/bin/php8.1 artisan migrate --force
@@ -118,7 +118,7 @@ steps:
           target: ~/nami
           exclude: ['.git']
           key:
-              from_secret: private_key
+              from_secret: deploy_private_key
           script:
               - cd ~/nami
               - /usr/bin/php8.1 artisan migrate --force
@@ -135,7 +135,7 @@ steps:
           target: ~/adrema
           exclude: ['.git']
           key:
-              from_secret: private_key
+              from_secret: deploy_private_key
           script:
               - cd ~/adrema
               - /usr/bin/php8.1 artisan migrate --force
