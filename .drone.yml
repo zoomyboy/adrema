@@ -144,15 +144,19 @@ steps:
           branch: master
           event: push
 
-    - name: github-push
-      image: appleboy/drone-git-push
-      settings:
-          branch: master
-          remote: ssh://git@github.com:zoomyboy/adrema.git
-          force: true
-          commit: false
-          ssh_key:
+    - name: github push
+      image: alpine/git
+      environment:
+          SSH_KEY:
               from_secret: github_private_key
+      commands:
+          - mkdir $HOME/.ssh
+          - git config core.sshCommand "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+          - echo "$SSH_KEY"
+          - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
+          - chmod 600 $HOME/.ssh/id_rsa
+          - git remote add gh git@github.com:zoomyboy/adrema.git
+          - git push -f gh HEAD:master
       when:
           event: push
 
