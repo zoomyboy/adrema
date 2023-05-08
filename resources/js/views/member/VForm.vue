@@ -156,7 +156,7 @@ export default {
     },
 
     components: {
-        popup: () => import('../../components/Popup.vue'),
+        popup: () => import(/* webpackChunkName: "ui" */ '../../components/Ui/Popup.vue'),
     },
 
     computed: {

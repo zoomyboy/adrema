@@ -31,6 +31,7 @@ class IndexTest extends TestCase
 
         $this->assertComponent('member/VIndex', $response);
         $this->assertInertiaHas('::firstname::', $response, 'data.data.0.firstname');
+        $this->assertInertiaHas(false, $response, 'data.data.0.has_nami');
         $this->assertInertiaHas('Kölner Str 3, 33333 Hilden', $response, 'data.data.0.full_address');
         $this->assertInertiaHas($group->id, $response, 'data.data.0.group_id');
     }

@@ -5,6 +5,20 @@
             <toolbar-button :href="data.meta.links.allpayment" color="primary" icon="invoice" v-if="hasModule('bill')">Rechnungen erstellen</toolbar-button>
             <toolbar-button :href="data.meta.links.sendpayment" color="info" icon="envelope" v-if="hasModule('bill')">Rechnungen versenden</toolbar-button>
         </div>
+        <popup heading="Mitglied löschen?" v-if="deleting !== null" @close="deleting.reject()">
+            <div>
+                <p class="mt-4">Das Mitglied "{{ deleting.member.fullname }}" löschen?</p>
+                <p class="mt-2">Alle Zuordnungen (Ausbildungen, Rechnungen, Zahlungen, Tätigkeiten) werden ebenfalls entfernt.</p>
+                <note class="mt-5" type="warning" v-if="!deleting.member.has_nami"> Dieses Mitglied ist nicht in NaMi vorhanden und wird daher nur in der AdReMa gelöscht werden. </note>
+                <note class="mt-5" type="danger" v-if="deleting.member.has_nami">
+                    Dieses Mitglied ist in NaMi vorhanden und wird daher in NaMi abgemeldet werden. Sofern "Datenweiterverwendung" eingeschaltet ist, wird das Mitglied auf inaktiv gesetzt.
+                </note>
+                <div class="grid grid-cols-2 gap-3 mt-6">
+                    <a href="#" @click.prevent="deleting.resolve()" class="text-center btn btn-danger">Mitglied loschen</a>
+                    <a href="#" @click.prevent="deleting.reject()" class="text-center btn btn-primary">Abbrechen</a>
+                </div>
+            </div>
+        </popup>
         <div class="px-6 py-2 flex border-b border-gray-600 items-center space-x-3">
             <f-text :value="getFilter('search')" @input="setFilter('search', $event)" id="search" name="search" label="Suchen …" size="sm"></f-text>
             <f-switch v-show="hasModule('bill')" id="ausstand" @input="setFilter('ausstand', $event)" :items="getFilter('ausstand')" label="Nur Ausstände" size="sm"></f-switch>
@@ -129,6 +143,7 @@ export default {
         return {
             sidebar: null,
             single: null,
+            deleting: null,
         };
     },
 
@@ -141,16 +156,25 @@ export default {
         'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
         'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
         'actions': () => import(/* webpackChunkName: "member" */ './index/Actions'),
+        'popup': () => import(/* webpackChunkName: "ui" */ '../../components/Ui/Popup.vue'),
+        'note': () => import(/* webpackChunkName: "ui" */ '../../components/Ui/Note.vue'),
     },
 
     methods: {
         exportMembers() {
             window.open(`/member-export?filter=${this.filterString}`);
         },
-        remove(member) {
-            if (window.confirm('Mitglied löschen?')) {
-                this.$inertia.delete(`/member/${member.id}`);
-            }
+        async remove(member) {
+            new Promise((resolve, reject) => {
+                this.deleting = {resolve, reject, member};
+            })
+                .then(() => {
+                    this.$inertia.delete(`/member/${member.id}`);
+                    this.deleting = null;
+                })
+                .catch(() => {
+                    this.deleting = null;
+                });
         },
         openSidebar(index, name) {
             this.single = index;

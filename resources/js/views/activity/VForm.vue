@@ -56,7 +56,7 @@ export default {
     components: {
         'checkboxes-label': () => import('../../components/Form/CheckboxesLabel'),
         'subactivity-form': () => import('./SubactivityForm.vue'),
-        'popup': () => import('../../components/Popup.vue'),
+        'popup': () => import(/* webpackChunkName: "ui" */ '../../components/Ui/Popup.vue'),
     },
 
     methods: {
