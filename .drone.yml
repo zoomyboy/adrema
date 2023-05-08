@@ -8,16 +8,7 @@ workspace:
 steps:
     - name: submodules
       image: alpine/git
-      environment:
-          SSH_KEY:
-              from_secret: private_key
-          KNOWN_HOSTS:
-              from_secret: known_hosts
       commands:
-          - mkdir $HOME/.ssh
-          - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
-          - echo "$KNOWN_HOSTS" > $HOME/.ssh/known_hosts
-          - chmod 600 $HOME/.ssh/id_rsa
           - git submodule update --init --recursive
 
     - name: composer_dev
@@ -151,6 +142,18 @@ steps:
               - sudo systemctl restart adrema-horizon
       when:
           branch: master
+          event: push
+
+    - name: github-push
+      image: appleboy/drone-git-push
+      settings:
+          branch: master
+          remote: git@github.com:zoomyboy/adrema.git
+          force: true
+          commit: false
+          ssh_key:
+              from_secret: github_private_key
+      when:
           event: push
 
 services:
