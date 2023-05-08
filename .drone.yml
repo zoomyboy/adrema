@@ -148,7 +148,7 @@ steps:
       image: appleboy/drone-git-push
       settings:
           branch: master
-          remote: git@github.com:zoomyboy/adrema.git
+          remote: ssh://git@github.com:zoomyboy/adrema.git
           force: true
           commit: false
           ssh_key:
