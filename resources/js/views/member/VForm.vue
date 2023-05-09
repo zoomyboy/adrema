@@ -82,8 +82,8 @@
                     </div>
                 </box>
                 <box heading="Prävention">
-                    <div class="grid sm:grid-cols-[max-content_1fr] gap-2">
-                        <div class="grid grid-cols-[max-content_5rem] gap-1">
+                    <div class="grid sm:grid-cols-[minmax(min-content,max-content)_minmax(min-content,max-content)] gap-2">
+                        <div class="grid grid-cols-[minmax(min-content,max-content)_8rem] gap-1">
                             <f-switch id="has_efz" v-model="hasEfz" size="sm" label="Führungszeugnis eingesehen"></f-switch>
                             <div>
                                 <f-text v-if="inner.efz !== null" type="date" id="efz" v-model="inner.efz" label="am" size="sm"></f-text>
