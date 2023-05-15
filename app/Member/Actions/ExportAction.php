@@ -22,7 +22,7 @@ class ExportAction
     {
         $csv = Writer::createFromString();
 
-        $csv->insertOne(['Nachname', 'Vorname', 'Adresse', 'PLZ', 'Ort', 'Haupt-Telefon', 'Mobiltelefon', 'Arbeits-Telefon']);
+        $csv->insertOne(['Nachname', 'Vorname', 'Adresse', 'PLZ', 'Ort', 'Haupt-Telefon', 'Mobiltelefon', 'Arbeits-Telefon', 'E-Mail-Adresse']);
 
         foreach ($members as $member) {
             $csv->insertOne([
@@ -34,6 +34,7 @@ class ExportAction
                 $member->main_phone,
                 $member->mobile_phone,
                 $member->work_phone,
+                $member->email,
             ]);
         }
 
