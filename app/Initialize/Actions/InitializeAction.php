@@ -16,13 +16,10 @@ use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Zoomyboy\LaravelNami\Nami;
 
 class InitializeAction
 {
     use AsAction;
-
-    public string $commandSignature = 'initialize {--mglnr=} {--password=} {--group=}';
 
     /**
      * @var array<int, class-string>
@@ -74,8 +71,6 @@ class InitializeAction
 
     public function asController(ActionRequest $request, NamiSettings $settings): RedirectResponse
     {
-        $api = Nami::freshLogin($request->input('mglnr'), $request->input('password'));
-
         $settings->mglnr = (int) $request->input('mglnr');
         $settings->password = $request->input('password');
         $settings->default_group_id = (int) $request->input('group_id');
