@@ -26,3 +26,5 @@ tags
 /public/mix-manifest.json
 resources/img/sprite.svg
 /.php-cs-fixer.cache
+/data
+.app.env

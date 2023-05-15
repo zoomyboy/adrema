@@ -31,3 +31,59 @@ Ziel dieses Projektes ist es, viele Dinge, die man normalerweise manuell zu tun 
 Außerdem ist AdReMa auch problemlos auf Handys und Tablets bedienbar ("mobiles Design")
 
 ![Mobile Ansicht](https://git.zoomyboy.de/silva/adrema/raw/branch/master/doc/assets/member-mobile.jpg)
+# Installation
+
+Submodules updaten:
+
+```
+git submodule update --init
+```
+
+Example env erstellen:
+
+```
+cp .app.env.example .app.env
+```
+
+Container bauen
+
+```
+docker-compose build
+```
+
+Key generieren
+
+```
+docker-compose run php php artisan key:generate --show
+```
+
+Ersetze nun "YOUR_APP_KEY" in .app.env mit dem generierten Key (base64:qzX....).
+
+Führe nun den DB Container aus, um eine erste Version der Datenbank zu erstellen. 
+
+```
+docker-compose up db -d
+```
+
+Migrations ausführen
+
+```
+docker-compose run php php artisan migrate --seed
+```
+
+Alles stoppen, dann alles neu starten
+
+```
+docker-compose stop
+docker-compose up -d
+```
+
+Nun kannst du auf localhost:8000 die App öffnen, einen LB verwenden, den Port mit CLI Optionen ändern, etc.
+
+## Standard Login
+
+Wenn du die Seeder ausführst ("--seed", siehe oben), wird ein Benutzer mit folgenden Zugangsdaten erstellt:
+
+* E-Mail-Adresse: admin@example.com
+* Passwort: admin
+
