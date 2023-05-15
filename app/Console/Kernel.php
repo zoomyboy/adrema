@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Initialize\Actions\InitializeAction;
 use App\Initialize\InitializeMembers;
 use App\Invoice\Actions\InvoiceSendAction;
 use Illuminate\Console\Scheduling\Schedule;
@@ -18,7 +17,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         InvoiceSendAction::class,
-        InitializeAction::class,
         InitializeMembers::class,
     ];
 
