@@ -8,6 +8,7 @@ parameters:
         - tests
         - database
         - packages/tex/src
+        - packages/osm/src
         - packages/laravel-nami/src
         - packages/laravel-nami/tests
 

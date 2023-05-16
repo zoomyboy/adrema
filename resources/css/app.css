@@ -1,15 +1,16 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @layer components {
-    @import "base";
-    @import "switch";
-    @import "layout";
-    @import "buttons";
-    @import "table";
-    @import "sidebar";
-    @import "bool";
-    @import "form";
-    @import "tooltip";
+    @import 'base';
+    @import 'switch';
+    @import 'layout';
+    @import 'buttons';
+    @import 'table';
+    @import 'sidebar';
+    @import 'bool';
+    @import 'form';
+    @import 'tooltip';
+    @import 'leaflet';
 }

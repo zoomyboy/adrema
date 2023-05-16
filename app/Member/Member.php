@@ -28,13 +28,17 @@ use Laravel\Scout\Searchable;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
 use Spatie\LaravelData\Lazy;
+use Zoomyboy\Osm\Address;
+use Zoomyboy\Osm\Coordinate;
+use Zoomyboy\Osm\Geolocatable;
+use Zoomyboy\Osm\HasGeolocation;
 use Zoomyboy\Phone\HasPhoneNumbers;
 
 /**
  * @property string $subscription_name
  * @property int    $pending_payment
  */
-class Member extends Model
+class Member extends Model implements Geolocatable
 {
     use Notifiable;
     use HasNamiField;
@@ -42,6 +46,7 @@ class Member extends Model
     use Sluggable;
     use Searchable;
     use HasPhoneNumbers;
+    use HasGeolocation;
 
     /**
      * @var array<string, string>
@@ -51,7 +56,7 @@ class Member extends Model
     /**
      * @var array<int, string>
      */
-    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug'];
+    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug', 'lat', 'lon'];
 
     /**
      * @var array<int, string>
@@ -496,5 +501,25 @@ class Member extends Model
             $this->fullname,
             $this->fullAddress,
         ])->implode(' ');
+    }
+
+    // -------------------------------- Geolocation --------------------------------
+    // *****************************************************************************
+    public function fillCoordinate(Coordinate $coordinate): void
+    {
+        $this->updateQuietly(['lat' => $coordinate->lat, 'lon' => $coordinate->lon]);
+    }
+
+    public function getAddressForGeolocation(): ?Address
+    {
+        return new Address($this->address, $this->zip, $this->location);
+    }
+
+    public function destroyCoordinate(): void
+    {
+        $this->updateQuietly([
+            'lat' => null,
+            'lon' => null,
+        ]);
     }
 }

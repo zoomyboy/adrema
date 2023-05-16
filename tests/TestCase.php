@@ -27,6 +27,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         Auth::fake();
+        Member::disableGeolocation();
     }
 
     public function loginNami(int $mglnr = 12345, string $password = 'password', int|Group $groupId = 55): self

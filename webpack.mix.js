@@ -3,6 +3,8 @@ const tailwindcss = require('tailwindcss');
 const atImport = require('postcss-import');
 const nested = require('tailwindcss/nesting');
 
+mix.setResourceRoot('/');
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -17,5 +19,4 @@ const nested = require('tailwindcss/nesting');
 mix.js('resources/js/app.js', 'public/js')
     .vue({version: 2})
     .postCss('resources/css/app.css', 'public/css', [atImport(), nested(), tailwindcss('./tailwind.config.js')])
-    .copy('resources/img', 'public/img')
-    .sourceMaps();
+    .copy('resources/img', 'public/img');

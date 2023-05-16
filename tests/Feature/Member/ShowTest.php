@@ -72,6 +72,8 @@ class ShowTest extends TestCase
                 'send_newspaper' => true,
                 'joined_at' => '2022-06-11',
                 'mitgliedsnr' => 998,
+                'lon' => 19.05,
+                'lat' => 14.053,
             ]);
 
         $response = $this->get("/member/{$member->id}");
@@ -105,6 +107,8 @@ class ShowTest extends TestCase
             'joined_at_human' => '11.06.2022',
             'bill_kind_name' => 'Post',
             'mitgliedsnr' => 998,
+            'lon' => 19.05,
+            'lat' => 14.053,
             'subscription' => [
                 'name' => 'Sub',
             ],

@@ -102,6 +102,8 @@ class MemberResource extends JsonResource
             'salutation' => $this->salutation,
             'mitgliedsnr' => $this->mitgliedsnr,
             'comment' => $this->comment,
+            'lat' => $this->lat,
+            'lon' => $this->lon,
             'links' => [
                 'show' => route('member.show', ['member' => $this->getModel()]),
                 'edit' => route('member.edit', ['member' => $this->getModel()]),

@@ -1,21 +1,43 @@
 <template>
-    <iframe
-        class="grow"
-        width="100%"
-        height="100%"
-        frameborder="0"
-        scrolling="no"
-        marginheight="0"
-        marginwidth="0"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=9.699318408966066%2C47.484177893725764%2C9.729595184326174%2C47.49977861091604&amp;layer=mapnik&amp;marker=47.49197883161885%2C9.714467525482178"
-    >
-    </iframe>
+    <l-map style="height: 100%" :zoom="zoom" :center="center">
+        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+        <l-marker :lat-lng="markerLatLng"></l-marker>
+    </l-map>
 </template>
 
 <script>
+import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+
+import {Icon} from 'leaflet';
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
+
 export default {
     props: {
-        inner: {},
+        value: {
+            required: true,
+            validator(f) {
+                return f.length === 2;
+            },
+        },
+    },
+    components: {
+        LMap,
+        LTileLayer,
+        LMarker,
+    },
+    data() {
+        return {
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            zoom: 15,
+            center: [...this.value],
+            markerLatLng: [...this.value],
+        };
     },
 };
 </script>

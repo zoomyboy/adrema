@@ -48,8 +48,9 @@
                 <payments :value="inner.payments"></payments>
             </box>
 
-            <box heading="Karte" container-class="grow" class="area-map hidden xl:block">
-                <vmap :inner="inner"></vmap>
+            <box heading="Karte" container-class="grow" class="area-map hidden xl:flex">
+                <vmap v-if="inner.lat && inner.lon" :value="[inner.lat, inner.lon]"></vmap>
+                <div class="h-full flex items-center justify-center text-gray-400 text-center" v-else>Keine Karte vorhanden</div>
             </box>
         </div>
     </page-layout>
