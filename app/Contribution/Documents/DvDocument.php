@@ -2,8 +2,8 @@
 
 namespace App\Contribution\Documents;
 
+use App\Contribution\Data\MemberData;
 use App\Country;
-use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Zoomyboy\Tex\Engine;
@@ -12,7 +12,7 @@ use Zoomyboy\Tex\Template;
 class DvDocument extends ContributionDocument
 {
     /**
-     * @param Collection<int, Collection<int, Member>> $members
+     * @param Collection<int, Collection<int, MemberData>> $members
      */
     public function __construct(
         public string $dateFrom,
@@ -33,7 +33,7 @@ class DvDocument extends ContributionDocument
     }
 
     /**
-     * @param array<string, string|int> $request
+     * {@inheritdoc}
      */
     public static function fromRequest(array $request): self
     {
@@ -42,7 +42,21 @@ class DvDocument extends ContributionDocument
             dateUntil: $request['dateUntil'],
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
-            members: Member::whereIn('id', $request['members'])->orderByRaw('lastname, firstname')->get()->toBase()->chunk(17),
+            members: MemberData::fromModels($request['members'])->chunk(17),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromApiRequest(array $request): self
+    {
+        return new self(
+            dateFrom: $request['dateFrom'],
+            dateUntil: $request['dateUntil'],
+            zipLocation: $request['zipLocation'],
+            country: Country::where('id', $request['country'])->firstOrFail(),
+            members: MemberData::fromApi($request['member_data'])->chunk(17),
         );
     }
 
@@ -51,22 +65,22 @@ class DvDocument extends ContributionDocument
         return $this->country->name;
     }
 
-    public function memberShort(Member $member): string
+    public function memberShort(MemberData $member): string
     {
-        return $member->isLeader() ? 'L' : '';
+        return $member->isLeader ? 'L' : '';
     }
 
-    public function memberName(Member $member): string
+    public function memberName(MemberData $member): string
     {
-        return $member->lastname.', '.$member->firstname;
+        return $member->separatedName();
     }
 
-    public function memberAddress(Member $member): string
+    public function memberAddress(MemberData $member): string
     {
-        return $member->fullAddress;
+        return $member->fullAddress();
     }
 
-    public function memberGender(Member $member): string
+    public function memberGender(MemberData $member): string
     {
         if (!$member->gender) {
             return '';
@@ -75,9 +89,9 @@ class DvDocument extends ContributionDocument
         return strtolower(substr($member->gender->name, 0, 1));
     }
 
-    public function memberAge(Member $member): string
+    public function memberAge(MemberData $member): string
     {
-        return (string) $member->getAge();
+        return $member->age();
     }
 
     public function basename(): string

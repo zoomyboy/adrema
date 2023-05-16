@@ -14,6 +14,11 @@ parameters:
     # The level 8 is the highest level
     level: 6
 
+    typeAliases:
+        ContributionMemberData: 'array<string, mixed>'
+        ContributionRequestArray: 'array{dateFrom: string, dateUntil: string, zipLocation: string, country: int, eventName: string, members: array<int, int>}'
+        ContributionApiRequestArray: 'array{dateFrom: string, dateUntil: string, zipLocation: string, country: int, eventName: string, member_data: array<int, ContributionMemberData>}'
+
     ignoreErrors:
         -
             message: "#^Method App\\\\Activity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"

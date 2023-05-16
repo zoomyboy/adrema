@@ -21,4 +21,9 @@ class Gender extends Model
             default => ''
         };
     }
+
+    public static function fromString(string $title): self
+    {
+        return self::firstWhere('name', $title);
+    }
 }

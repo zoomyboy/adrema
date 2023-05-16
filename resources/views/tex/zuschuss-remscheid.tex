@@ -22,7 +22,7 @@
             \node[anchor=base, text width=7.75mm, align=center] at ($(18.35mm, 61.3mm + 5.91mm * <<<$i % 20>>>)$) {<<<$i+1>>>};
             \node[anchor=base, text width=29mm, align=center] at ($(43.7mm, 61.3mm + 5.91mm * <<<$i % 20>>>)$) {<<<$member->lastname>>>};
             \node[anchor=base, text width=29mm, align=center] at ($(76.2mm, 61.3mm + 5.91mm * <<<$i % 20>>>)$) {<<<$member->firstname>>>};
-            \node[anchor=base, text width=84mm, align=center] at ($(136.2mm, 61.3mm + 5.91mm * <<<$i % 20>>>)$) {<<<$member->fullAddress>>>};
+            \node[anchor=base, text width=84mm, align=center] at ($(136.2mm, 61.3mm + 5.91mm * <<<$i % 20>>>)$) {<<<$member->fullAddress()>>>};
             \node[anchor=base, text width=19mm, align=center] at ($(191.2mm, 61.3mm + 5.91mm * <<<$i % 20>>>)$) {<<<$member->birthday->format('d.m.Y')>>>};
         @endforeach
     \end{tikzpicture}
@@ -41,7 +41,7 @@
             \node[anchor=base, text width=7.75mm, align=center] at ($(18.35mm, 78.3mm + 5.91mm * <<<$i % 6>>>)$) {<<<$i+1>>>};
             \node[anchor=base, text width=29mm, align=center] at ($(43.7mm, 78.3mm + 5.91mm * <<<$i % 6>>>)$) {<<<$member->lastname>>>};
             \node[anchor=base, text width=29mm, align=center] at ($(76.2mm, 78.3mm + 5.91mm * <<<$i % 6>>>)$) {<<<$member->firstname>>>};
-            \node[anchor=base, text width=84mm, align=center] at ($(136.2mm, 78.3mm + 5.91mm * <<<$i % 6>>>)$) {<<<$member->fullAddress>>>};
+            \node[anchor=base, text width=84mm, align=center] at ($(136.2mm, 78.3mm + 5.91mm * <<<$i % 6>>>)$) {<<<$member->fullAddress()>>>};
             \node[anchor=base, text width=19mm, align=center] at ($(190.2mm, 78.3mm + 5.91mm * <<<$i % 6>>>)$) {<<<$member->birthday->format('d.m.Y')>>>};
         @endforeach
     \end{tikzpicture}

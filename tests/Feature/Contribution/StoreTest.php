@@ -6,9 +6,13 @@ use App\Contribution\Documents\ContributionDocument;
 use App\Contribution\Documents\DvDocument;
 use App\Contribution\Documents\SolingenDocument;
 use App\Country;
+use App\Gender;
 use App\Member\Member;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Laravel\Passport\Client;
+use Laravel\Passport\Passport;
+use Tests\RequestFactories\ContributionMemberApiRequestFactory;
 use Tests\RequestFactories\ContributionRequestFactory;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
@@ -24,14 +28,14 @@ class StoreTest extends TestCase
      *
      * @param array<int, string> $bodyChecks
      */
-    public function testItCompilesContributionDocuments(string $type, array $bodyChecks): void
+    public function testItCompilesContributionDocumentsViaRequest(string $type, array $bodyChecks): void
     {
         $this->withoutExceptionHandling();
         Tex::spy();
         $this->login()->loginNami();
         $country = Country::factory()->create();
-        $member1 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
-        $member2 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
+        $member1 = Member::factory()->defaults()->for(Gender::factory())->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
+        $member2 = Member::factory()->defaults()->for(Gender::factory())->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
 
         $response = $this->call('GET', '/contribution-generate', [
             'payload' => base64_encode(json_encode([
@@ -48,6 +52,35 @@ class StoreTest extends TestCase
         $response->assertSessionDoesntHaveErrors();
         $response->assertOk();
         Tex::assertCompiled($type, fn ($document) => $document->hasAllContent($bodyChecks));
+    }
+
+    public function testItCompilesContributionDocumentsViaApi(): void
+    {
+        $this->withoutExceptionHandling();
+        Tex::spy();
+        Gender::factory()->create(['name' => 'Weiblich']);
+        Gender::factory()->create(['name' => 'Männlich']);
+        Passport::actingAsClient(Client::factory()->create(), ['contribution-generate']);
+        $country = Country::factory()->create();
+        $member1 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
+        $member2 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
+
+        $response = $this->postJson('/api/contribution-generate', [
+            'country' => $country->id,
+            'dateFrom' => '1991-06-15',
+            'dateUntil' => '1991-06-16',
+            'eventName' => 'Super tolles Lager',
+            'type' => SolingenDocument::class,
+            'zipLocation' => '42777 SG',
+            'member_data' => [
+                ContributionMemberApiRequestFactory::new()->create(),
+                ContributionMemberApiRequestFactory::new()->create(),
+            ],
+        ]);
+
+        $response->assertSessionDoesntHaveErrors();
+        $response->assertOk();
+        Tex::assertCompiled(SolingenDocument::class, fn ($document) => $document->hasAllContent(['Super']));
     }
 
     /**

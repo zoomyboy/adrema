@@ -2,7 +2,7 @@
 
 namespace App\Contribution\Documents;
 
-use App\Member\Member;
+use App\Contribution\Data\MemberData;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -12,20 +12,20 @@ use Zoomyboy\Tex\Template;
 class SolingenDocument extends ContributionDocument
 {
     /**
-     * @param array<int, int> $members
+     * @param Collection<int, MemberData> $members
      */
     final private function __construct(
         public string $dateFrom,
         public string $dateUntil,
         public string $zipLocation,
-        public array $members,
+        public Collection $members,
         public string $eventName,
         public string $type = 'F',
     ) {
     }
 
     /**
-     * @param array<string, mixed|int> $request
+     * {@inheritdoc}
      */
     public static function fromRequest(array $request): static
     {
@@ -33,17 +33,31 @@ class SolingenDocument extends ContributionDocument
             dateFrom: $request['dateFrom'],
             dateUntil: $request['dateUntil'],
             zipLocation: $request['zipLocation'],
-            members: $request['members'],
+            members: MemberData::fromModels($request['members']),
             eventName: $request['eventName'],
         );
     }
 
     /**
-     * @return Collection<int, Collection<int, Member>>
+     * {@inheritdoc}
+     */
+    public static function fromApiRequest(array $request): static
+    {
+        return new static(
+            dateFrom: $request['dateFrom'],
+            dateUntil: $request['dateUntil'],
+            zipLocation: $request['zipLocation'],
+            members: MemberData::fromApi($request['member_data']),
+            eventName: $request['eventName'],
+        );
+    }
+
+    /**
+     * @return Collection<int, Collection<int, MemberData>>
      */
     public function memberModels(): Collection
     {
-        return Member::whereIn('id', $this->members)->orderByRaw('lastname, firstname')->get()->toBase()->chunk(14);
+        return $this->members->chunk(14);
     }
 
     public function niceEventFrom(): string

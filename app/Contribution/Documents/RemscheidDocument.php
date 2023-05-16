@@ -2,6 +2,7 @@
 
 namespace App\Contribution\Documents;
 
+use App\Contribution\Data\MemberData;
 use App\Country;
 use App\Member\Member;
 use Carbon\Carbon;
@@ -38,11 +39,29 @@ class RemscheidDocument extends ContributionDocument
     }
 
     /**
-     * @param array<string, string|int> $request
+     * {@inheritdoc}
      */
     public static function fromRequest(array $request): self
     {
-        [$leaders, $children] = Member::whereIn('id', $request['members'])->orderByRaw('lastname, firstname')->get()->partition(fn ($member) => $member->isLeader());
+        [$leaders, $children] = MemberData::fromModels($request['members'])->partition(fn ($member) => $member->isLeader);
+
+        return new self(
+            dateFrom: $request['dateFrom'],
+            dateUntil: $request['dateUntil'],
+            zipLocation: $request['zipLocation'],
+            country: Country::where('id', $request['country'])->firstOrFail(),
+            leaders: $leaders->values()->toBase()->chunk(6),
+            children: $children->values()->toBase()->chunk(20),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromApiRequest(array $request): self
+    {
+        $members = MemberData::fromApi($request['member_data']);
+        [$leaders, $children] = $members->partition(fn ($member) => $member->isLeader);
 
         return new self(
             dateFrom: $request['dateFrom'],

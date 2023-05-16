@@ -108,7 +108,7 @@
     \matrix (table) at ($(datefrom.south west) + (0,-2.3cm)$) [table,below right] {
         \uline{Lfd. Nr.} & \uline{Name / Vorname}  & \uline{Straße} & \uline{PLZ} & \uline{Wohnort} & \uline{Geburtsjahr} & \uline{Unterschrift} \\
         @foreach($chunk as $i => $member)
-        <<<$i+1>>> & <<<$member->fullname>>> & <<<$member->address>>> & <<<$member->zip>>> & <<<$member->location>>> & <<<$member->birthday->year>>> & \\
+        <<<$i+1>>> & <<<$member->fullname()>>> & <<<$member->address>>> & <<<$member->zip>>> & <<<$member->location>>> & <<<$member->birthday->year>>> & \\
         @endforeach
     };
 
