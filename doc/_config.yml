@@ -27,6 +27,7 @@ baseurl: '' # the subpath of your site, e.g. /blog
 url: '' # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username:
 github_username: zoomyboy
+source: page
 
 # Aux links for the upper right navigation
 aux_links:
@@ -41,9 +42,19 @@ color_scheme: dark
 plugins:
     - jekyll-feed
 callouts:
-    para:
-        title: Info
+    block:
         color: grey-lt
+    warning:
+        color: yellow
+        title: Warnung
+    info:
+        color: blue
+        title: Info
+defaults:
+    - scope:
+          path: 'assets/img'
+      values:
+          image: true
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

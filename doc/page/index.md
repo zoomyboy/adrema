@@ -1,10 +1,13 @@
 ---
 layout: home
+nav_order: 0
 ---
 
 # Willkommen bei Adrema
 
 Adrema ist eine Applikation, die die Verwaltung von Mitgliedern in der DPSG vereinfachen soll. 
+
+{% include imgcap.html img='member' caption="Mitglieder-Übersicht" %}
 
 Insbesondere soll dabei möglichst auf eine direkte Interaktion mit NaMi verzichtet werden.
 
