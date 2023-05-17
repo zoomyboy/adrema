@@ -42,6 +42,14 @@ Vue.component('toolbar-button', ToolbarButton);
 Vue.component('page-layout', PageLayout);
 Vue.component('save-button', () => import(/* webpackChunkName: "form" */ './components/SaveButton'));
 
+// ------------------------------ Full components ------------------------------
+Vue.component('full-page-heading', () => import(/* webpackChunkName: "full" */ './components/Full/PageHeading.vue'));
+
+// ------------------------------- UI Components -------------------------------
+Vue.component('ui-button', () => import(/* webpackChunkName: "ui" */ './components/Ui/Button.vue'));
+Vue.component('ui-spinner', () => import(/* webpackChunkName: "ui" */ './components/Ui/Spinner.vue'));
+
+// ----------------------------------- init ------------------------------------
 const el = document.getElementById('app');
 const pinia = createPinia();
 

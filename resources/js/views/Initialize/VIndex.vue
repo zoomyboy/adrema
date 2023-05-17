@@ -1,63 +1,57 @@
 <template>
     <div>
         <div v-if="step === 0">
+            <full-page-heading>Willkommen im Adrema-Setup.<br /></full-page-heading>
             <div class="prose prose-invert">
-                <p>Willkommen im Adrema-Setup.<br /></p>
-                <p>
-                    Bitte gib deine NaMi-Zugangsdaten ein,<br />
-                    um eine erste Synchronisation durchzuführen.
-                </p>
+                <p>Bitte gib deine NaMi-Zugangsdaten ein,<br />um eine erste Synchronisation durchzuführen.</p>
             </div>
             <form @submit.prevent="check" class="grid gap-3 mt-5">
                 <f-text v-model="values.mglnr" label="Mitgliedsnummer" name="mglnr" id="mglnr" type="tel" required></f-text>
                 <f-text v-model="values.password" type="password" label="Passwort" name="password" id="password" required></f-text>
-                <button type="submit" class="btn w-full btn-primary mt-6 inline-block">Weiter</button>
+                <ui-button class="mt-6" :is-loading="loading" type="submit">Weiter</ui-button>
             </form>
         </div>
-        <div v-if="step === 1" class="flex flex-col" style="width: 90vw; height: 90vh">
-            <form @submit.prevent="storeSearch" class="border-2 border-primary-700 border-solid p-3 rounded-lg grid grid-cols-3 gap-3 flex-none">
+        <div v-if="step === 1" class="grid grid-cols-5 w-full gap-3">
+            <full-page-heading class="col-span-full !mb-0">Suchkriterien festlegen</full-page-heading>
+            <form @submit.prevent="storeSearch" class="border-2 border-primary-800 border-solid p-3 rounded-lg grid gap-3 col-span-2">
                 <div class="prose prose-invert max-w-none col-span-full">
                     <p>
                         Lege hier die Suchkriterien für den Abruf der Mitglieder-Daten fest. Mit diesen Suchkriterien wird im Anschluss eine Mitgliedersuche in NaMi durchgeführt. Alle Mitglieder, die
                         dann dort auftauchen werden in die Adrema übernommen. Dir wird hier eine Vorschau eingeblendet, damit du sicherstellen kannst, dass die Suchkriterien die richtigen sind.
                     </p>
-                    <p>
-                        Außerdem werden diese Suchkriterien bei jedem neuen Abgleich (der automatisch täglich erfolgt) angewendet. Du kannst die Suchkriterien in den globalen Einstellungen jederzeit
-                        ändern.
-                    </p>
                 </div>
-                <f-text
+                <f-select
                     v-model="values.params.gruppierung1Id"
                     label="Diözesan-Gruppierung"
                     name="gruppierung1Id"
                     id="gruppierung1Id"
-                    type="tel"
                     size="sm"
-                    @input="search"
+                    :options="searchLayerOptions[0]"
+                    @input="loadSearchLayer(1, $event, search)"
                     hint="Gruppierungs-Nummer einer Diözese, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deiner Diözese. Entspricht dem Feld '1. Ebene' in der NaMi Suche."
-                ></f-text>
-                <f-text
+                ></f-select>
+                <f-select
                     v-model="values.params.gruppierung2Id"
                     label="Bezirks-Gruppierung"
                     name="gruppierung2Id"
                     id="gruppierung2Id"
-                    type="tel"
                     hint="Gruppierungs-Nummer eines Bezirks, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deines Bezirks. Entspricht dem Feld '2. Ebene' in der NaMi Suche. Fülle dieses Feld aus, um Mitglieder auf einen bestimmten Bezirk zu begrenzen."
                     :disabled="!values.params.gruppierung1Id"
-                    @input="search"
+                    @input="loadSearchLayer(2, $event, search)"
                     size="sm"
-                ></f-text>
-                <f-text
+                    :options="searchLayerOptions[1]"
+                ></f-select>
+                <f-select
                     v-model="values.params.gruppierung3Id"
                     label="Stammes-Gruppierung"
                     name="gruppierung3Id"
                     id="gruppierung3Id"
-                    type="tel"
                     size="sm"
                     @input="search"
                     hint="Gruppierungs-Nummer deines Stammes, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deines Stammes. Entspricht dem Feld '3. Ebene' in der NaMi Suche. Fülle dieses Feld aus, um Mitglieder auf einen bestimmten Stamm zu beschränken."
                     :disabled="!values.params.gruppierung1Id || !values.params.gruppierung2Id"
-                ></f-text>
+                    :options="searchLayerOptions[2]"
+                ></f-select>
                 <f-select
                     v-model="values.params.mglStatusId"
                     label="Mitglieds-Status"
@@ -86,12 +80,12 @@
                     hint="Mitglieder finden, die direktes Mitglied in einer Untergruppe der kleinsten befüllten Gruppierung sind."
                     size="sm"
                 ></f-switch>
-                <div class="col-span-full">
-                    <button type="submit" class="btn btn-primary btn-sm">Weiter</button>
+                <div class="col-span-full flex justify-center">
+                    <ui-button :is-loading="loading" class="px-10" type="submit">Weiter</ui-button>
                 </div>
             </form>
 
-            <section class="grow border-2 border-primary-700 border-solid p-3 rounded-lg mt-4" v-if="preview !== null && preview.data.length">
+            <section class="col-span-3 text-sm col-span-3" v-if="preview !== null && preview.data.length">
                 <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
                     <thead>
                         <th>GruppierungsNr</th>
@@ -114,9 +108,10 @@
                     <v-pages class="mt-4" :value="preview" @reload="reloadPage"></v-pages>
                 </div>
             </section>
-            <section class="grow items-center justify-center flex text-xl text-gray-200 border-2 border-primary-700 border-solid p-3 rounded-lg mt-4" v-else>Keine Mitglieder gefunden</section>
+            <section class="col-span-3 items-center justify-center flex text-xl text-gray-200 border-2 border-primary-800 border-solid p-3 rounded-lg mt-4" v-else>Keine Mitglieder gefunden</section>
         </div>
         <div v-if="step === 2">
+            <full-page-heading>Standard-Gruppierung</full-page-heading>
             <div class="prose prose-invert">
                 <p>Bitte gib hier deine Standard-Gruppierungsnummer ein.</p>
                 <p>Dieser Gruppierung werden Mitglieder automatisch zugeordnet,<br />falls nichts anderes angegeben wurde.</p>
@@ -128,6 +123,7 @@
             </form>
         </div>
         <div v-if="step === 3">
+            <full-page-heading>Einrichtung abgeschlossen</full-page-heading>
             <div class="prose prose-invert">
                 <p>Wir werden nun die Mitgliederdaten anhand deiner festgelegten Kriterien abrufen.</p>
                 <p>Per Klick auf "Abschließen" gelangst du zum Dashboard</p>
@@ -150,6 +146,8 @@ export default {
 
     data: function () {
         return {
+            searchLayerOptions: [[], [], []],
+            loading: false,
             preview: null,
             states: [
                 {id: 'INAKTIV', name: 'Inaktiv'},
@@ -188,23 +186,57 @@ export default {
             await this.loadSearchResult(page);
         },
         async check() {
+            this.loading = true;
             try {
                 await this.axios.post('/nami/login-check', this.values);
-                this.step = 1;
                 await this.loadSearchResult(1);
+                await this.loadSearchLayer(0, null, () => '');
+                this.step = 1;
             } catch (e) {
                 this.errorsFromException(e);
+            } finally {
+                this.loading = false;
             }
         },
         search: debounce(async function () {
             await this.loadSearchResult(1);
         }, 500),
+        async loadSearchLayer(parentLayer, parent, after) {
+            this.loading = true;
+            try {
+                var result = await this.axios.post('/nami/get-search-layer', {...this.values, layer: parentLayer, parent});
+
+                this.searchLayerOptions = this.searchLayerOptions.map((layers, index) => {
+                    if (index < parentLayer) {
+                        return layers;
+                    }
+
+                    var groupIndex = index + 1;
+                    this.values.params[`gruppierung${groupIndex}Id`] = null;
+
+                    if (index === parentLayer) {
+                        return result.data;
+                    }
+
+                    return [];
+                });
+
+                after();
+            } catch (e) {
+                this.errorsFromException(e);
+            } finally {
+                this.loading = false;
+            }
+        },
         async loadSearchResult(page) {
+            this.loading = true;
             try {
                 var result = await this.axios.post('/nami/search', {...this.values, page: page});
                 this.preview = result.data;
             } catch (e) {
                 this.errorsFromException(e);
+            } finally {
+                this.loading = false;
             }
         },
     },
