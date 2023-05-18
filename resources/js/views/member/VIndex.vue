@@ -156,8 +156,8 @@ export default {
         'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
         'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
         'actions': () => import(/* webpackChunkName: "member" */ './index/Actions'),
-        'popup': () => import(/* webpackChunkName: "ui" */ '../../components/Ui/Popup.vue'),
-        'note': () => import(/* webpackChunkName: "ui" */ '../../components/Ui/Note.vue'),
+        'popup': () => import(/* webpackChunkName: "ui" */ '../../components/ui/Popup.vue'),
+        'note': () => import(/* webpackChunkName: "ui" */ '../../components/ui/Note.vue'),
     },
 
     methods: {

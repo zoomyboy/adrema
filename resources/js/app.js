@@ -8,9 +8,9 @@ import VLabel from './components/VLabel.vue';
 import VBool from './components/VBool.vue';
 import Box from './components/Box.vue';
 import Heading from './components/Heading.vue';
-import IconButton from './components/Ui/IconButton.vue';
-import ToolbarButton from './components/Ui/ToolbarButton.vue';
-import PageLayout from './components/Page/Layout.vue';
+import IconButton from './components/ui/IconButton.vue';
+import ToolbarButton from './components/ui/ToolbarButton.vue';
+import PageLayout from './components/page/Layout.vue';
 import AppLayout from './layouts/AppLayout.vue';
 import VTooltip from 'v-tooltip';
 import hasModule from './mixins/hasModule.js';
@@ -28,7 +28,6 @@ Vue.use(Toasted);
 Vue.use(VueAxios, axios);
 Vue.use(PiniaVuePlugin);
 Vue.component('f-text', () => import(/* webpackChunkName: "form" */ './components/FText'));
-Vue.component('f-switch', () => import(/* webpackChunkName: "form" */ './components/FSwitch'));
 Vue.component('f-select', () => import(/* webpackChunkName: "form" */ './components/FSelect'));
 Vue.component('f-textarea', () => import(/* webpackChunkName: "form" */ './components/FTextarea'));
 Vue.component('SvgSprite', SvgSprite);
@@ -43,11 +42,14 @@ Vue.component('page-layout', PageLayout);
 Vue.component('save-button', () => import(/* webpackChunkName: "form" */ './components/SaveButton'));
 
 // ------------------------------ Full components ------------------------------
-Vue.component('full-page-heading', () => import(/* webpackChunkName: "full" */ './components/Full/PageHeading.vue'));
+Vue.component('full-page-heading', () => import(/* webpackChunkName: "full" */ './components/full/PageHeading.vue'));
 
 // ------------------------------- UI Components -------------------------------
-Vue.component('ui-button', () => import(/* webpackChunkName: "ui" */ './components/Ui/Button.vue'));
-Vue.component('ui-spinner', () => import(/* webpackChunkName: "ui" */ './components/Ui/Spinner.vue'));
+Vue.component('ui-button', () => import(/* webpackChunkName: "ui" */ './components/ui/Button.vue'));
+Vue.component('ui-spinner', () => import(/* webpackChunkName: "ui" */ './components/ui/Spinner.vue'));
+
+// ------------------------------ Form components ------------------------------
+Vue.component('f-switch', () => import(/* webpackChunkName: "form" */ './components/form/Switch.vue'));
 
 // ----------------------------------- init ------------------------------------
 const el = document.getElementById('app');
