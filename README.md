@@ -6,7 +6,7 @@ Da du diese Seite besuchst, gehörst du sicherlich zu den Leuten, die möglichst
 
 Die AdReMa (= "AddRessManagement") macht das auch, nur einfacher, schöner und intuitiver als es NaMi tut.
 
-![Mitglieder-Übersicht](https://git.zoomyboy.de/silva/adrema/raw/branch/master/doc/assets/member.jpg)
+![Mitglieder-Übersicht](https://git.zoomyboy.de/silva/adrema/raw/branch/master/doc/page/assets/img/member.jpg)
 
 AdReMa kann von jedem und jeder genutzt werden, die einen NaMi-Account besitzt und Schreibrechte hat (i.d.R. sind das Stammesvorstände, e.V.-Mitglieder und andere, die Mitgliederdaten und deren Abrechungen und Beiträge pflegen müssen).
 
@@ -30,7 +30,6 @@ Ziel dieses Projektes ist es, viele Dinge, die man normalerweise manuell zu tun 
 
 Außerdem ist AdReMa auch problemlos auf Handys und Tablets bedienbar ("mobiles Design")
 
-![Mobile Ansicht](https://git.zoomyboy.de/silva/adrema/raw/branch/master/doc/assets/member-mobile.jpg)
 # Installation
 
 Submodules updaten:
