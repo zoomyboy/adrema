@@ -1,19 +1,19 @@
 <template>
     <page-layout>
         <div class="flex" slot="toolbar">
-            <toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</toolbar-button>
+            <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
         </div>
         <form id="subedit" class="p-3 grid gap-3" @submit.prevent="submit">
-            <save-button form="subedit"></save-button>
-            <box heading="Beitrag">
+            <f-save-button form="subedit"></f-save-button>
+            <ui-box heading="Beitrag">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <f-text id="name" v-model="inner.name" label="Name" size="sm" required></f-text>
                     <f-select id="fee_id" name="fee_id" :options="fees" v-model="inner.fee_id" label="Nami-Beitrag" size="sm" required></f-select>
                     <f-switch id="split" label="Rechnung aufsplitten" v-model="inner.split" size="sm"></f-switch>
                     <f-switch id="for_promise" label="Für Versprechen benutzen" v-model="inner.for_promise" size="sm"></f-switch>
                 </div>
-            </box>
-            <box heading="Positionen">
+            </ui-box>
+            <ui-box heading="Positionen">
                 <div class="flex flex-col space-y-4">
                     <div v-for="(pos, index) in inner.children" :key="index" class="flex space-x-2 items-end">
                         <f-text :id="`name-${index}`" v-model="pos.name" label="Name" size="sm" required></f-text>
@@ -27,7 +27,7 @@
                         Position hinzufügen
                     </a>
                 </div>
-            </box>
+            </ui-box>
         </form>
     </page-layout>
 </template>

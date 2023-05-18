@@ -1,11 +1,6 @@
 <template>
     <div>
-        <table
-            cellspacing="0"
-            cellpadding="0"
-            border="0"
-            class="hidden md:table custom-table overflow-auto custom-table-sm text-sm"
-        >
+        <table cellspacing="0" cellpadding="0" border="0" class="hidden md:table custom-table overflow-auto custom-table-sm text-sm">
             <thead>
                 <th>Tätigkeit</th>
                 <th>Untertätigkeit</th>
@@ -19,16 +14,10 @@
         </table>
 
         <div class="md:hidden grid gap-3">
-            <box
-                class="relative"
-                :heading="membership.activity_name"
-                v-for="(membership, index) in inner"
-                :key="index"
-                second
-            >
+            <ui-box class="relative" :heading="membership.activity_name" v-for="(membership, index) in inner" :key="index" second>
                 <div class="text-xs text-gray-200" v-text="membership.subactivity_name"></div>
                 <div class="text-xs text-gray-200" v-text="membership.human_date"></div>
-            </box>
+            </ui-box>
         </div>
     </div>
 </template>

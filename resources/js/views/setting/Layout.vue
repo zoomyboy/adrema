@@ -1,7 +1,7 @@
 <template>
     <page-layout>
         <div class="flex grow relative">
-            <v-tabs v-model="active" :entries="$page.props.setting_menu"></v-tabs>
+            <ui-tabs v-model="active" :entries="$page.props.setting_menu"></ui-tabs>
             <slot></slot>
         </div>
     </page-layout>
@@ -13,9 +13,6 @@ export default {
         return {
             innerActive: 0,
         };
-    },
-    components: {
-        'v-tabs': () => import('../../components/VTabs.vue'),
     },
     computed: {
         active: {

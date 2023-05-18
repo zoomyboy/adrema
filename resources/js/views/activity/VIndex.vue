@@ -1,9 +1,9 @@
 <template>
     <page-layout page-class="pb-6">
         <div class="flex" slot="toolbar">
-            <toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Tätigkeit erstellen</toolbar-button>
+            <page-toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Tätigkeit erstellen</page-toolbar-button>
         </div>
-        <popup heading="Bitte bestätigen" v-if="deleting !== null">
+        <ui-popup heading="Bitte bestätigen" v-if="deleting !== null">
             <div>
                 <p class="mt-4">Diese Aktivität löschen?</p>
                 <div class="grid grid-cols-2 gap-3 mt-6">
@@ -11,7 +11,7 @@
                     <a href="#" @click.prevent="deleting = null" class="text-center btn btn-primary">Abbrechen</a>
                 </div>
             </div>
-        </popup>
+        </ui-popup>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm table">
             <thead>
                 <th>Name</th>
@@ -30,7 +30,7 @@
         </table>
 
         <div class="px-6">
-            <v-pages class="mt-4" :value="data.meta" :only="['data']"></v-pages>
+            <ui-pagination class="mt-4" :value="data.meta" :only="['data']"></ui-pagination>
         </div>
     </page-layout>
 </template>
@@ -56,10 +56,6 @@ export default {
                 },
             });
         },
-    },
-
-    components: {
-        popup: () => import(/* webpackChunkName: "ui" */ '../../components/ui/Popup.vue'),
     },
 
     mixins: [indexHelpers],

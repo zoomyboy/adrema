@@ -1,12 +1,12 @@
 <template>
     <page-layout>
         <div class="flex" slot="toolbar">
-            <toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</toolbar-button>
-            <toolbar-button v-if="mode === 'edit'" :href="data.links.show" color="primary" icon="eye">anschauen</toolbar-button>
+            <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
+            <page-toolbar-button v-if="mode === 'edit'" :href="data.links.show" color="primary" icon="eye">anschauen</page-toolbar-button>
         </div>
         <form class="flex grow relative" id="memberedit" @submit.prevent="submit">
-            <save-button form="memberedit"></save-button>
-            <popup heading="Ein Konflikt ist aufgetreten" v-if="conflict === true">
+            <f-save-button form="memberedit"></f-save-button>
+            <ui-popup heading="Ein Konflikt ist aufgetreten" v-if="conflict === true">
                 <div>
                     <p class="mt-4">Dieses Mitglied wurde vorher bereits aktualisiert. Daher könnte ein Update zu Datenverlust führen.</p>
                     <p class="mt-2">Wir empfehlen, die Daten aus NaMi zunächst neu zu synchronisieren und dann die Änderungen hier in der Adrema erneut vorzunehmen.</p>
@@ -15,11 +15,11 @@
                         <a href="#" @click.prevent="forceWrite" class="text-center btn btn-danger">Änderungen schreiben</a>
                     </div>
                 </div>
-            </popup>
+            </ui-popup>
 
             <!-- ***************************** Hauptbereich ****************************** -->
             <div class="grow grid md:grid-cols-2 gap-3 p-3">
-                <box heading="Stammdaten">
+                <ui-box heading="Stammdaten">
                     <div class="grid sm:grid-cols-2 gap-3">
                         <div class="grid grid-cols-2 gap-3">
                             <f-select id="gender_id" name="gender_id" :options="meta.genders" v-model="inner.gender_id" label="Geschlecht" size="sm"></f-select>
@@ -37,8 +37,8 @@
                         <f-select :options="meta.countries" id="country_id" v-model="inner.country_id" label="Land" name="country_id" size="sm" required></f-select>
                         <f-text id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit" size="sm"></f-text>
                     </div>
-                </box>
-                <box heading="Kontakt">
+                </ui-box>
+                <ui-box heading="Kontakt">
                     <div class="grid gap-3 sm:grid-cols-2">
                         <f-text id="main_phone" v-model="inner.main_phone" size="sm" label="Telefon (Eltern)"></f-text>
                         <f-text id="mobile_phone" v-model="inner.mobile_phone" size="sm" label="Handy (Eltern)"></f-text>
@@ -49,8 +49,8 @@
                         <f-text id="fax" v-model="inner.fax" size="sm" label="Fax"></f-text>
                         <f-textarea class="sm:col-span-2" rows="3" id="letter_address" v-model="inner.letter_address" label="Brief-Adresse" size="sm"></f-textarea>
                     </div>
-                </box>
-                <box heading="System">
+                </ui-box>
+                <ui-box heading="System">
                     <div class="grid gap-3">
                         <f-select :options="meta.billKinds" id="bill_kind" v-model="inner.bill_kind" label="Rechnung versenden über" name="bill_kind" size="sm"></f-select>
                         <f-select :options="meta.subscriptions" id="subscription_id" v-model="inner.subscription_id" label="Beitrag" name="subscription_id" size="sm"></f-select>
@@ -80,8 +80,8 @@
                             ></f-select>
                         </div>
                     </div>
-                </box>
-                <box heading="Prävention">
+                </ui-box>
+                <ui-box heading="Prävention">
                     <div class="grid sm:grid-cols-[minmax(min-content,max-content)_minmax(min-content,max-content)] gap-2">
                         <div class="grid grid-cols-[minmax(min-content,max-content)_8rem] gap-1">
                             <f-switch id="has_efz" v-model="hasEfz" size="sm" label="Führungszeugnis eingesehen"></f-switch>
@@ -112,7 +112,7 @@
                             <f-switch id="multiply_more_pv" v-model="inner.multiply_more_pv" label="Multiplikator*in Vertierungsschulung" size="sm"></f-switch>
                         </div>
                     </div>
-                </box>
+                </ui-box>
             </div>
         </form>
     </page-layout>
@@ -153,10 +153,6 @@ export default {
             this.$inertia.get(`/member/${this.inner.id}/resync`);
         },
         forceWrite() {},
-    },
-
-    components: {
-        popup: () => import(/* webpackChunkName: "ui" */ '../../components/ui/Popup.vue'),
     },
 
     computed: {

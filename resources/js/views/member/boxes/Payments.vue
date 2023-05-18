@@ -14,13 +14,10 @@
         </table>
 
         <div class="md:hidden grid gap-3">
-            <box class="relative" :heading="payment.nr" v-for="(payment, index) in inner" :key="index" second>
-                <div
-                    class="text-xs text-gray-200"
-                    v-text="`${payment.subscription.name} (${payment.subscription.amount_human})`"
-                ></div>
+            <ui-box class="relative" :heading="payment.nr" v-for="(payment, index) in inner" :key="index" second>
+                <div class="text-xs text-gray-200" v-text="`${payment.subscription.name} (${payment.subscription.amount_human})`"></div>
                 <div class="text-xs text-gray-200" v-text="payment.status_name"></div>
-            </box>
+            </ui-box>
         </div>
     </div>
 </template>

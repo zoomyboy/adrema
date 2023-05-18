@@ -4,7 +4,7 @@
             <f-text size="sm" id="name" v-model="model.name" label="Name" required></f-text>
             <f-switch size="sm" v-model="model.is_filterable" name="subactivity_is_filterable" id="subactivity_is_filterable" label="Filterbar"></f-switch>
         </div>
-        <icon-button class="mt-3" icon="save" @click.prevent="store">Speichern</icon-button>
+        <ui-icon-button class="mt-3" icon="save" @click.prevent="store">Speichern</ui-icon-button>
     </div>
 </template>
 

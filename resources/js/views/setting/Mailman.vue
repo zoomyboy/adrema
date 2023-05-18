@@ -1,6 +1,6 @@
 <template>
     <form id="mailmansettingform" class="grow p-6 grid grid-cols-2 gap-3 items-start content-start" @submit.prevent="submit">
-        <save-button form="mailmansettingform"></save-button>
+        <f-save-button form="mailmansettingform"></f-save-button>
         <div class="col-span-full text-gray-100 mb-3">
             <p class="text-sm">
                 Scoutrobot kann automatisch Mailinglisten erstellen, wenn es mit einem existierenden

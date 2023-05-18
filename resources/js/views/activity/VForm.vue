@@ -1,19 +1,19 @@
 <template>
     <page-layout>
         <div class="flex" slot="toolbar">
-            <toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</toolbar-button>
+            <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
         </div>
         <form id="actionform" class="grow p-3" @submit.prevent="submit">
-            <popup heading="Neue Untertätigkeit" v-if="mode === 'edit' && currentSubactivity !== null" @close="currentSubactivity = null">
+            <ui-popup heading="Neue Untertätigkeit" v-if="mode === 'edit' && currentSubactivity !== null" @close="currentSubactivity = null">
                 <subactivity-form class="mt-4" v-if="currentSubactivity" :value="currentSubactivity" @stored="reloadSubactivities" @updated="mergeSubactivity"></subactivity-form>
-            </popup>
+            </ui-popup>
             <div class="flex space-x-3">
                 <f-text id="name" v-model="inner.name" label="Name" required></f-text>
                 <f-switch v-model="inner.is_filterable" name="is_filterable" id="is_filterable" label="Filterbar"></f-switch>
             </div>
             <div class="flex space-x-3 items-center mt-6 mb-2">
-                <checkboxes-label>Untertätigkeiten</checkboxes-label>
-                <icon-button icon="plus" v-if="mode === 'edit'" @click.prevent="currentSubactivity = inner.subactivity_model">Neu</icon-button>
+                <f-checkboxes-label>Untertätigkeiten</f-checkboxes-label>
+                <ui-icon-button icon="plus" v-if="mode === 'edit'" @click.prevent="currentSubactivity = inner.subactivity_model">Neu</ui-icon-button>
             </div>
             <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
                 <div v-for="option in subactivities" class="flex items-center space-x-2">
@@ -32,7 +32,7 @@
                     ></f-switch>
                 </div>
             </div>
-            <save-button form="actionform"></save-button>
+            <f-save-button form="actionform"></f-save-button>
         </form>
     </page-layout>
 </template>
@@ -54,9 +54,7 @@ export default {
     },
 
     components: {
-        'checkboxes-label': () => import('../../components/form/CheckboxesLabel'),
         'subactivity-form': () => import('./SubactivityForm.vue'),
-        'popup': () => import(/* webpackChunkName: "ui" */ '../../components/ui/Popup.vue'),
     },
 
     methods: {

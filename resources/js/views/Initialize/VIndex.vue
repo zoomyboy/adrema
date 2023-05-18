@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="step === 0">
-            <full-page-heading>Willkommen im Adrema-Setup.<br /></full-page-heading>
+            <page-full-heading>Willkommen im Adrema-Setup.<br /></page-full-heading>
             <div class="prose prose-invert">
                 <p>Bitte gib deine NaMi-Zugangsdaten ein,<br />um eine erste Synchronisation durchzuführen.</p>
             </div>
@@ -12,7 +12,7 @@
             </form>
         </div>
         <div v-if="step === 1" class="grid grid-cols-5 w-full gap-3">
-            <full-page-heading class="col-span-full !mb-0">Suchkriterien festlegen</full-page-heading>
+            <page-full-heading class="col-span-full !mb-0">Suchkriterien festlegen</page-full-heading>
             <form @submit.prevent="storeSearch" class="border-2 border-primary-800 border-solid p-3 rounded-lg grid gap-3 col-span-2">
                 <div class="prose prose-invert max-w-none col-span-full">
                     <p>
@@ -105,13 +105,13 @@
                 </table>
 
                 <div v-if="preview !== null" class="px-6">
-                    <v-pages class="mt-4" :value="preview" @reload="reloadPage"></v-pages>
+                    <ui-pagination class="mt-4" :value="preview" @reload="reloadPage"></ui-pagination>
                 </div>
             </section>
             <section class="col-span-3 items-center justify-center flex text-xl text-gray-200 border-2 border-primary-800 border-solid p-3 rounded-lg mt-4" v-else>Keine Mitglieder gefunden</section>
         </div>
         <div v-if="step === 2">
-            <full-page-heading>Standard-Gruppierung</full-page-heading>
+            <page-full-heading>Standard-Gruppierung</page-full-heading>
             <div class="prose prose-invert">
                 <p>Bitte gib hier deine Standard-Gruppierungsnummer ein.</p>
                 <p>Dieser Gruppierung werden Mitglieder automatisch zugeordnet,<br />falls nichts anderes angegeben wurde.</p>
@@ -123,7 +123,7 @@
             </form>
         </div>
         <div v-if="step === 3">
-            <full-page-heading>Einrichtung abgeschlossen</full-page-heading>
+            <page-full-heading>Einrichtung abgeschlossen</page-full-heading>
             <div class="prose prose-invert">
                 <p>Wir werden nun die Mitgliederdaten anhand deiner festgelegten Kriterien abrufen.</p>
                 <p>Per Klick auf "Abschließen" gelangst du zum Dashboard</p>

@@ -1,7 +1,7 @@
 <template>
     <page-layout>
         <div class="flex" slot="toolbar">
-            <toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Beitrag hinzufügen</toolbar-button>
+            <page-toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Beitrag hinzufügen</page-toolbar-button>
         </div>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>

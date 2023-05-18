@@ -1,12 +1,6 @@
 <template>
     <div>
-        <table
-            cellspacing="0"
-            cellpadding="0"
-            border="0"
-            class="hidden md:table custom-table overflow-auto custom-table-sm text-sm"
-            v-if="inner.length"
-        >
+        <table cellspacing="0" cellpadding="0" border="0" class="hidden md:table custom-table overflow-auto custom-table-sm text-sm" v-if="inner.length">
             <thead>
                 <th>Datum</th>
                 <th>Baustein</th>
@@ -22,17 +16,11 @@
         </table>
         <div class="py-3 text-gray-400 text-center" v-else>Keine Ausbildungen vorhanden</div>
         <div class="md:hidden grid gap-3">
-            <box
-                class="relative"
-                :heading="course.course.short_name"
-                v-for="(course, index) in inner"
-                :key="index"
-                second
-            >
+            <ui-box class="relative" :heading="course.course.short_name" v-for="(course, index) in inner" :key="index" second>
                 <div class="text-xs text-gray-200" v-text="course.event_name"></div>
                 <div class="text-xs text-gray-200" v-text="course.completed_at_human"></div>
                 <div class="text-xs text-gray-200" v-text="course.organizer"></div>
-            </box>
+            </ui-box>
         </div>
     </div>
 </template>

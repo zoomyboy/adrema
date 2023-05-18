@@ -1,57 +1,57 @@
 <template>
     <page-layout>
         <div class="flex" slot="toolbar">
-            <toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</toolbar-button>
-            <toolbar-button :href="data.links.edit" color="warning" icon="pencil">bearbeiten</toolbar-button>
+            <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
+            <page-toolbar-button :href="data.links.edit" color="warning" icon="pencil">bearbeiten</page-toolbar-button>
         </div>
         <div class="p-3 grid gap-3 this-grid grow">
-            <box heading="Stammdaten" class="area-stamm hidden xl:block">
+            <ui-box heading="Stammdaten" class="area-stamm hidden xl:block">
                 <stamm :inner="inner"></stamm>
-            </box>
-            <box heading="Kontakt" class="area-kontakt hidden xl:block">
+            </ui-box>
+            <ui-box heading="Kontakt" class="area-kontakt hidden xl:block">
                 <kontakt :inner="inner"></kontakt>
-            </box>
-            <box class="area-stammkontakt block xl:hidden">
+            </ui-box>
+            <ui-box class="area-stammkontakt block xl:hidden">
                 <tabs v-model="tabs.stammkontakt">
                     <stamm v-show="tabs.stammkontakt.active === 'stamm'" :inner="inner"></stamm>
                     <kontakt v-show="tabs.stammkontakt.active === 'kontakt'" :inner="inner"></kontakt>
                 </tabs>
-            </box>
+            </ui-box>
 
-            <box container-class="" heading="Prävention" class="area-praev hidden xl:block">
+            <ui-box container-class="" heading="Prävention" class="area-praev hidden xl:block">
                 <prae :inner="inner"></prae>
-            </box>
-            <box heading="System" class="area-system hidden xl:block">
+            </ui-box>
+            <ui-box heading="System" class="area-system hidden xl:block">
                 <system :inner="inner"></system>
-            </box>
-            <box class="area-praesystem block xl:hidden">
+            </ui-box>
+            <ui-box class="area-praesystem block xl:hidden">
                 <tabs v-model="tabs.praesystem">
                     <prae v-show="tabs.praesystem.active === 'prae'" :inner="inner"></prae>
                     <system v-show="tabs.praesystem.active === 'system'" :inner="inner"></system>
                 </tabs>
-            </box>
+            </ui-box>
 
-            <box class="area-membershipcourse hidden xl:block">
+            <ui-box class="area-membershipcourse hidden xl:block">
                 <tabs v-model="tabs.membershipcourse">
                     <courses v-show="tabs.membershipcourse.active === 'course'" :value="inner.courses"></courses>
                     <memberships v-show="tabs.membershipcourse.active === 'membership'" :value="inner.memberships"></memberships>
                 </tabs>
-            </box>
-            <box heading="Ausbildungen" class="area-courses xl:hidden">
+            </ui-box>
+            <ui-box heading="Ausbildungen" class="area-courses xl:hidden">
                 <courses :value="inner.courses"></courses>
-            </box>
-            <box heading="Mitgliedschaften" class="area-memberships xl:hidden">
+            </ui-box>
+            <ui-box heading="Mitgliedschaften" class="area-memberships xl:hidden">
                 <memberships :value="inner.memberships"></memberships>
-            </box>
+            </ui-box>
 
-            <box heading="Zahlungen" class="area-payments">
+            <ui-box heading="Zahlungen" class="area-payments">
                 <payments :value="inner.payments"></payments>
-            </box>
+            </ui-box>
 
-            <box heading="Karte" container-class="grow" class="area-map hidden xl:flex">
+            <ui-box heading="Karte" container-class="grow" class="area-map hidden xl:flex">
                 <vmap v-if="inner.lat && inner.lon" :value="[inner.lat, inner.lon]"></vmap>
                 <div class="h-full flex items-center justify-center text-gray-400 text-center" v-else>Keine Karte vorhanden</div>
-            </box>
+            </ui-box>
         </div>
     </page-layout>
 </template>

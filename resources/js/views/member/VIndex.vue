@@ -1,24 +1,24 @@
 <template>
     <page-layout page-class="pb-6">
         <div class="flex" slot="toolbar">
-            <toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Mitglied anlegen</toolbar-button>
-            <toolbar-button :href="data.meta.links.allpayment" color="primary" icon="invoice" v-if="hasModule('bill')">Rechnungen erstellen</toolbar-button>
-            <toolbar-button :href="data.meta.links.sendpayment" color="info" icon="envelope" v-if="hasModule('bill')">Rechnungen versenden</toolbar-button>
+            <page-toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Mitglied anlegen</page-toolbar-button>
+            <page-toolbar-button :href="data.meta.links.allpayment" color="primary" icon="invoice" v-if="hasModule('bill')">Rechnungen erstellen</page-toolbar-button>
+            <page-toolbar-button :href="data.meta.links.sendpayment" color="info" icon="envelope" v-if="hasModule('bill')">Rechnungen versenden</page-toolbar-button>
         </div>
-        <popup heading="Mitglied löschen?" v-if="deleting !== null" @close="deleting.reject()">
+        <ui-popup heading="Mitglied löschen?" v-if="deleting !== null" @close="deleting.reject()">
             <div>
                 <p class="mt-4">Das Mitglied "{{ deleting.member.fullname }}" löschen?</p>
                 <p class="mt-2">Alle Zuordnungen (Ausbildungen, Rechnungen, Zahlungen, Tätigkeiten) werden ebenfalls entfernt.</p>
-                <note class="mt-5" type="warning" v-if="!deleting.member.has_nami"> Dieses Mitglied ist nicht in NaMi vorhanden und wird daher nur in der AdReMa gelöscht werden. </note>
-                <note class="mt-5" type="danger" v-if="deleting.member.has_nami">
+                <ui-note class="mt-5" type="warning" v-if="!deleting.member.has_nami"> Dieses Mitglied ist nicht in NaMi vorhanden und wird daher nur in der AdReMa gelöscht werden. </ui-note>
+                <ui-note class="mt-5" type="danger" v-if="deleting.member.has_nami">
                     Dieses Mitglied ist in NaMi vorhanden und wird daher in NaMi abgemeldet werden. Sofern "Datenweiterverwendung" eingeschaltet ist, wird das Mitglied auf inaktiv gesetzt.
-                </note>
+                </ui-note>
                 <div class="grid grid-cols-2 gap-3 mt-6">
                     <a href="#" @click.prevent="deleting.resolve()" class="text-center btn btn-danger">Mitglied loschen</a>
                     <a href="#" @click.prevent="deleting.reject()" class="text-center btn btn-primary">Abbrechen</a>
                 </div>
             </div>
-        </popup>
+        </ui-popup>
         <div class="px-6 py-2 flex border-b border-gray-600 items-center space-x-3">
             <f-text :value="getFilter('search')" @input="setFilter('search', $event)" id="search" name="search" label="Suchen …" size="sm"></f-text>
             <f-switch v-show="hasModule('bill')" id="ausstand" @input="setFilter('ausstand', $event)" :items="getFilter('ausstand')" label="Nur Ausstände" size="sm"></f-switch>
@@ -78,10 +78,10 @@
                 <td><tags :member="member"></tags></td>
                 <td class="hidden xl:table-cell" v-text="member.age"></td>
                 <td class="hidden xl:table-cell" v-show="hasModule('bill')">
-                    <v-label :value="member.bill_kind_name" fallback="kein"></v-label>
+                    <ui-label :value="member.bill_kind_name" fallback="kein"></ui-label>
                 </td>
                 <td v-show="hasModule('bill')">
-                    <v-label :value="member.pending_payment" fallback="---"></v-label>
+                    <ui-label :value="member.pending_payment" fallback="---"></ui-label>
                 </td>
                 <td>
                     <actions :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)"></actions>
@@ -90,24 +90,24 @@
         </table>
 
         <div class="md:hidden p-3 grid gap-3">
-            <box class="relative" :heading="member.fullname" v-for="(member, index) in data.data" :key="index">
+            <ui-box class="relative" :heading="member.fullname" v-for="(member, index) in data.data" :key="index">
                 <div slot="in-title">
                     <age-groups class="ml-2" :member="member" icon-class="w-4 h-4"></age-groups>
                 </div>
                 <div class="text-xs text-gray-200" v-text="member.full_address"></div>
                 <div class="flex items-center mt-1 space-x-4">
                     <tags :member="member"></tags>
-                    <v-label class="text-gray-100 block" v-show="hasModule('bill')" :value="member.pending_payment" fallback=""></v-label>
+                    <ui-label class="text-gray-100 block" v-show="hasModule('bill')" :value="member.pending_payment" fallback=""></ui-label>
                 </div>
                 <actions class="mt-2" :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)"></actions>
                 <div class="absolute right-0 top-0 h-full flex items-center mr-2">
                     <i-link :href="member.links.show" v-tooltip="`Details`"><svg-sprite src="chevron-down" class="w-6 h-6 text-teal-100 -rotate-90"></svg-sprite></i-link>
                 </div>
-            </box>
+            </ui-box>
         </div>
 
         <div class="px-6">
-            <v-pages class="mt-4" :value="data.meta" :only="['data']"></v-pages>
+            <ui-pagination class="mt-4" :value="data.meta" :only="['data']"></ui-pagination>
         </div>
 
         <transition name="sidebar">
@@ -156,8 +156,6 @@ export default {
         'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
         'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
         'actions': () => import(/* webpackChunkName: "member" */ './index/Actions'),
-        'popup': () => import(/* webpackChunkName: "ui" */ '../../components/ui/Popup.vue'),
-        'note': () => import(/* webpackChunkName: "ui" */ '../../components/ui/Note.vue'),
     },
 
     methods: {
