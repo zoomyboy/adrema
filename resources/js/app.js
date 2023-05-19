@@ -24,14 +24,14 @@ Vue.use(PiniaVuePlugin);
 Vue.component('SvgSprite', () => import('./components/SvgSprite.js'));
 Vue.component('ILink', ILink);
 
-// ---------------------------------- mixins -----------------------------------
-Vue.mixin(hasModule);
-Vue.mixin(hasFlash);
-
 // -------------------------------- Components ---------------------------------
 requireModules(require.context('./components/form', false, /\.vue$/, 'lazy'), Vue, 'f');
 requireModules(require.context('./components/ui', false, /\.vue$/, 'lazy'), Vue, 'ui');
-requireModules(require.context('./components/page', false, /\.vue$/, 'lazy'), Vue, 'page');
+requireModules(require.context('./components/page', false, /\.vue$/), Vue, 'page');
+
+// ---------------------------------- mixins -----------------------------------
+Vue.mixin(hasModule);
+Vue.mixin(hasFlash);
 
 // ----------------------------------- init ------------------------------------
 const el = document.getElementById('app');
