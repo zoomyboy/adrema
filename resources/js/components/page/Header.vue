@@ -1,7 +1,7 @@
 <template>
-    <div class="h-16 px-6 flex justify-between items-center border-b border-solid border-gray-600 group-[.is-bright]:border-gray-500">
+    <div class="h-16 px-6 flex items-center border-b border-solid border-gray-600 group-[.is-bright]:border-gray-500">
         <slot name="before-title"></slot>
-        <div class="flex items-center">
+        <div class="flex items-center grow">
             <page-title class="mr-2">{{ title }}</page-title>
             <slot name="toolbar"></slot>
         </div>
