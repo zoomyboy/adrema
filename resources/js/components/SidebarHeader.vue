@@ -2,25 +2,7 @@
     <div class="h-16 px-6 flex justify-between items-center border-b border-solid border-gray-500">
         <div class="flex items-center">
             <span class="mr-1 text-xl font-semibold leading-none text-white" v-html="title"></span>
-            <a
-                v-for="(link, index) in links.filter((link) => link.icon === undefined)"
-                :key="index"
-                @click.prevent="$emit(link.event)"
-                href="#"
-                class="btn label btn-primary-light"
-            >
-                <span v-if="link.label" v-text="link.label"></span>
-                <svg-sprite v-if="link.icon" :src="link.icon"></svg-sprite>
-            </a>
-            <a
-                v-for="(link, index) in links.filter((link) => link.icon !== undefined)"
-                :key="index"
-                :href="link.href"
-                class="btn label icon btn-primary-light ml-1"
-            >
-                <span v-if="link.label" v-text="link.label"></span>
-                <svg-sprite v-if="link.icon" :src="link.icon"></svg-sprite>
-            </a>
+            <slot name="toolbar"></slot>
         </div>
         <div class="flex ml-4">
             <a href="#" @click.prevent="$emit('close')" class="btn label btn-primary-light icon">
@@ -33,11 +15,6 @@
 <script>
 export default {
     props: {
-        links: {
-            default: function () {
-                return [];
-            },
-        },
         title: {
             default: function () {
                 return '';

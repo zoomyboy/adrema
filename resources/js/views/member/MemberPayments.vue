@@ -1,33 +1,16 @@
 <template>
     <div class="sidebar flex flex-col">
-        <sidebar-header
-            :links="indexLinks"
-            @close="$emit('close')"
-            @create="
-                mode = 'create';
-                single = {};
-            "
-            title="Zahlungen"
-        ></sidebar-header>
+        <sidebar-header @close="$emit('close')" title="Zahlungen">
+            <div class="flex" slot="toolbar">
+                <page-toolbar-button @click.prevent="create" color="primary" icon="plus" v-if="single === null">Neue Zahlung</page-toolbar-button>
+                <page-toolbar-button @click.prevent="cancel" color="primary" icon="undo" v-if="single !== null">Zurück</page-toolbar-button>
+            </div>
+        </sidebar-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
             <f-text id="nr" v-model="single.nr" label="Jahr" required></f-text>
-            <f-select
-                id="subscription_id"
-                name="subscription_id"
-                :options="subscriptions"
-                v-model="single.subscription_id"
-                label="Beitrag"
-                required
-            ></f-select>
-            <f-select
-                id="status_id"
-                name="status_id"
-                :options="statuses"
-                v-model="single.status_id"
-                label="Status"
-                required
-            ></f-select>
+            <f-select id="subscription_id" name="subscription_id" :options="subscriptions" v-model="single.subscription_id" label="Beitrag" required></f-select>
+            <f-select id="status_id" name="status_id" :options="statuses" v-model="single.status_id" label="Status" required></f-select>
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 
@@ -54,16 +37,8 @@
                             class="inline-flex btn btn-warning btn-sm"
                             ><svg-sprite src="pencil"></svg-sprite
                         ></a>
-                        <i-link
-                            v-show="!payment.is_accepted"
-                            href="#"
-                            @click.prevent="accept(payment)"
-                            class="inline-flex btn btn-success btn-sm"
-                            ><svg-sprite src="check"></svg-sprite
-                        ></i-link>
-                        <i-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"
-                            ><svg-sprite src="trash"></svg-sprite
-                        ></i-link>
+                        <i-link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><svg-sprite src="check"></svg-sprite></i-link>
+                        <i-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
                     </td>
                 </tr>
             </table>
@@ -91,13 +66,19 @@ export default {
         return {
             mode: null,
             single: null,
-            indexLinks: [{event: 'create', label: 'Neue Zahlung'}],
         };
     },
 
     components: {SidebarHeader},
 
     methods: {
+        create() {
+            this.mode = 'create';
+            this.single = {};
+        },
+        cancel() {
+            this.mode = this.single = null;
+        },
         remove(payment) {
             this.$inertia.delete(`/member/${this.value.id}/payment/${payment.id}`);
         },

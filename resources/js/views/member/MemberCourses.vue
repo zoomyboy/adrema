@@ -1,25 +1,15 @@
 <template>
     <div class="sidebar flex flex-col">
-        <sidebar-header
-            :links="indexLinks"
-            @close="$emit('close')"
-            @create="
-                mode = 'create';
-                single = {};
-            "
-            title="Ausbildungen"
-        ></sidebar-header>
+        <sidebar-header :links="indexLinks" @close="$emit('close')" title="Ausbildungen">
+            <div class="flex" slot="toolbar">
+                <page-toolbar-button @click.prevent="create" color="primary" icon="plus" v-if="single === null">Neue Ausbildung</page-toolbar-button>
+                <page-toolbar-button @click.prevent="cancel" color="primary" icon="undo" v-if="single !== null">Zurück</page-toolbar-button>
+            </div>
+        </sidebar-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
             <f-text id="completed_at" type="date" v-model="single.completed_at" label="Datum" required></f-text>
-            <f-select
-                id="course_id"
-                name="course_id"
-                :options="courses"
-                v-model="single.course_id"
-                label="Baustein"
-                required
-            ></f-select>
+            <f-select id="course_id" name="course_id" :options="courses" v-model="single.course_id" label="Baustein" required></f-select>
             <f-text id="event_name" v-model="single.event_name" label="Veranstaltung" required></f-text>
             <f-text id="organizer" v-model="single.organizer" label="Veranstalter" required></f-text>
             <button type="submit" class="btn btn-primary">Absenden</button>
@@ -50,9 +40,7 @@
                             class="inline-flex btn btn-warning btn-sm"
                             ><svg-sprite src="pencil"></svg-sprite
                         ></a>
-                        <i-link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"
-                            ><svg-sprite src="trash"></svg-sprite
-                        ></i-link>
+                        <i-link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
                     </td>
                 </tr>
             </table>
@@ -80,6 +68,13 @@ export default {
     components: {SidebarHeader},
 
     methods: {
+        create() {
+            this.mode = 'create';
+            this.single = {};
+        },
+        cancel() {
+            this.mode = this.single = null;
+        },
         remove(payment) {
             this.$inertia.delete(`/member/${this.value.id}/course/${payment.id}`);
         },
