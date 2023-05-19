@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar flex flex-col group is-bright">
-        <page-header :links="links" @close="$emit('close')" title="Mitgliedschaften">
+        <page-header @close="$emit('close')" title="Mitgliedschaften">
             <div class="flex" slot="toolbar">
                 <page-toolbar-button @click.prevent="create" color="primary" icon="plus" v-if="single === null">Neue Mitgliedschaft</page-toolbar-button>
                 <page-toolbar-button @click.prevent="cancel" color="primary" icon="undo" v-if="single !== null">Zurück</page-toolbar-button>
@@ -61,7 +61,6 @@ export default {
         return {
             mode: null,
             single: null,
-            links: [{event: 'create', label: 'Neu'}],
         };
     },
 
