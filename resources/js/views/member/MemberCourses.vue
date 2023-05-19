@@ -1,11 +1,11 @@
 <template>
-    <div class="sidebar flex flex-col">
-        <sidebar-header :links="indexLinks" @close="$emit('close')" title="Ausbildungen">
+    <div class="sidebar flex flex-col group is-bright">
+        <page-header :links="indexLinks" @close="$emit('close')" title="Ausbildungen">
             <div class="flex" slot="toolbar">
                 <page-toolbar-button @click.prevent="create" color="primary" icon="plus" v-if="single === null">Neue Ausbildung</page-toolbar-button>
                 <page-toolbar-button @click.prevent="cancel" color="primary" icon="undo" v-if="single !== null">Zurück</page-toolbar-button>
             </div>
-        </sidebar-header>
+        </page-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
             <f-text id="completed_at" type="date" v-model="single.completed_at" label="Datum" required></f-text>
@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import SidebarHeader from '../../components/SidebarHeader.vue';
-
 export default {
     data: function () {
         return {
@@ -64,8 +62,6 @@ export default {
         courses: {},
         value: {},
     },
-
-    components: {SidebarHeader},
 
     methods: {
         create() {

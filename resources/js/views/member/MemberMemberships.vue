@@ -1,11 +1,11 @@
 <template>
-    <div class="sidebar flex flex-col">
-        <sidebar-header :links="links" @close="$emit('close')" title="Mitgliedschaften">
+    <div class="sidebar flex flex-col group is-bright">
+        <page-header :links="links" @close="$emit('close')" title="Mitgliedschaften">
             <div class="flex" slot="toolbar">
                 <page-toolbar-button @click.prevent="create" color="primary" icon="plus" v-if="single === null">Neue Mitgliedschaft</page-toolbar-button>
                 <page-toolbar-button @click.prevent="cancel" color="primary" icon="undo" v-if="single !== null">Zurück</page-toolbar-button>
             </div>
-        </sidebar-header>
+        </page-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
             <f-select id="group_id" name="group_id" :options="groups" v-model="single.group_id" label="Gruppierung" size="sm" required></f-select>
@@ -56,8 +56,6 @@
 </template>
 
 <script>
-import SidebarHeader from '../../components/SidebarHeader.vue';
-
 export default {
     data: function () {
         return {
@@ -66,8 +64,6 @@ export default {
             links: [{event: 'create', label: 'Neu'}],
         };
     },
-
-    components: {SidebarHeader},
 
     computed: {
         def() {
