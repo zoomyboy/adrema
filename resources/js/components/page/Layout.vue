@@ -1,17 +1,17 @@
 <template>
     <div class="grow bg-gray-900 flex flex-col transition-all" :class="{'ml-56': menuStore.visible, 'ml-0': !menuStore.visible}">
         <page-header :title="$page.props.title">
-            <div slot="before-title" class="flex items-center">
-                <a href="#" @click.prevent="menuStore.toggle()" class="lg:hidden mr-2">
+            <template #before-title>
+                <a href="#" @click.prevent="menuStore.toggle()" class="mr-2 lg:hidden">
                     <svg-sprite src="menu" class="text-gray-100 w-5 h-5"></svg-sprite>
                 </a>
-            </div>
-            <div class="flex" slot="toolbar">
+            </template>
+            <template #toolbar>
                 <slot name="toolbar"></slot>
-            </div>
-            <div slot="right">
+            </template>
+            <template #right>
                 <portal-target name="toolbar-right"> </portal-target>
-            </div>
+            </template>
         </page-header>
 
         <div :class="pageClass" class="grow flex flex-col">

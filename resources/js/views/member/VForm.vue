@@ -1,9 +1,9 @@
 <template>
     <page-layout>
-        <div class="flex" slot="toolbar">
+        <template #toolbar>
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
             <page-toolbar-button v-if="mode === 'edit'" :href="data.links.show" color="primary" icon="eye">anschauen</page-toolbar-button>
-        </div>
+        </template>
         <form class="flex grow relative" id="memberedit" @submit.prevent="submit">
             <f-save-button form="memberedit"></f-save-button>
             <ui-popup heading="Ein Konflikt ist aufgetreten" v-if="conflict === true">

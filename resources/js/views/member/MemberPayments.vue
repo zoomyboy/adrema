@@ -1,10 +1,10 @@
 <template>
     <div class="sidebar flex flex-col group is-bright">
         <page-header @close="$emit('close')" title="Zahlungen">
-            <div class="flex" slot="toolbar">
+            <template #toolbar>
                 <page-toolbar-button @click.prevent="create" color="primary" icon="plus" v-if="single === null">Neue Zahlung</page-toolbar-button>
                 <page-toolbar-button @click.prevent="cancel" color="primary" icon="undo" v-if="single !== null">Zurück</page-toolbar-button>
-            </div>
+            </template>
         </page-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">

@@ -1,8 +1,8 @@
 <template>
     <page-layout>
-        <div class="flex" slot="toolbar">
+        <template #toolbar>
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
-        </div>
+        </template>
         <form id="actionform" class="grow p-3" @submit.prevent="submit">
             <ui-popup heading="Neue Untertätigkeit" v-if="mode === 'edit' && currentSubactivity !== null" @close="currentSubactivity = null">
                 <subactivity-form class="mt-4" v-if="currentSubactivity" :value="currentSubactivity" @stored="reloadSubactivities" @updated="mergeSubactivity"></subactivity-form>

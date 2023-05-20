@@ -1,9 +1,9 @@
 <template>
     <page-layout>
-        <div class="flex" slot="toolbar">
+        <template #toolbar>
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
             <page-toolbar-button :href="data.links.edit" color="warning" icon="pencil">bearbeiten</page-toolbar-button>
-        </div>
+        </template>
         <div class="p-3 grid gap-3 this-grid grow">
             <ui-box heading="Stammdaten" class="area-stamm hidden xl:block">
                 <stamm :inner="inner"></stamm>

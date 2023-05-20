@@ -1,10 +1,10 @@
 <template>
     <page-layout page-class="pb-6">
-        <div class="flex" slot="toolbar">
+        <template #toolbar>
             <page-toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Mitglied anlegen</page-toolbar-button>
             <page-toolbar-button :href="data.meta.links.allpayment" color="primary" icon="invoice" v-if="hasModule('bill')">Rechnungen erstellen</page-toolbar-button>
             <page-toolbar-button :href="data.meta.links.sendpayment" color="info" icon="envelope" v-if="hasModule('bill')">Rechnungen versenden</page-toolbar-button>
-        </div>
+        </template>
         <ui-popup heading="Mitglied löschen?" v-if="deleting !== null" @close="deleting.reject()">
             <div>
                 <p class="mt-4">Das Mitglied "{{ deleting.member.fullname }}" löschen?</p>

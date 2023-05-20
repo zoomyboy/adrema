@@ -1,8 +1,8 @@
 <template>
     <page-layout page-class="pb-6">
-        <div class="flex" slot="toolbar">
+        <template #toolbar>
             <page-toolbar-button :href="data.meta.links.create" color="primary" icon="plus">Tätigkeit erstellen</page-toolbar-button>
-        </div>
+        </template>
         <ui-popup heading="Bitte bestätigen" v-if="deleting !== null">
             <div>
                 <p class="mt-4">Diese Aktivität löschen?</p>

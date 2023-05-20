@@ -1,11 +1,11 @@
 <template>
-    <div class="h-16 px-6 flex items-center border-b border-solid border-gray-600 group-[.is-bright]:border-gray-500">
-        <slot name="before-title"></slot>
-        <div class="flex items-center grow">
-            <page-title class="mr-2">{{ title }}</page-title>
+    <div class="h-16 px-6 flex items-center justify-between border-b border-solid border-gray-600 group-[.is-bright]:border-gray-500">
+        <div class="flex items-center space-x-2">
+            <slot name="before-title"></slot>
+            <page-title>{{ title }}</page-title>
             <slot name="toolbar"></slot>
         </div>
-        <div class="flex items-center ml-4">
+        <div class="flex items-center space-x-2 ml-2">
             <a href="#" v-if="$listeners.close" @click.prevent="$emit('close')" class="btn label btn-primary-light icon">
                 <svg-sprite class="w-3 h-3" src="close"></svg-sprite>
             </a>

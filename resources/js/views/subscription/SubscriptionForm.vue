@@ -1,8 +1,8 @@
 <template>
     <page-layout>
-        <div class="flex" slot="toolbar">
+        <template #toolbar>
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
-        </div>
+        </template>
         <form id="subedit" class="p-3 grid gap-3" @submit.prevent="submit">
             <f-save-button form="subedit"></f-save-button>
             <ui-box heading="Beitrag">
