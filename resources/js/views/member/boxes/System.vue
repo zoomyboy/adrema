@@ -5,7 +5,7 @@
         <key-value label="Beitrag" :value="inner.subscription ? inner.subscription.name : 'kein'"></key-value>
         <key-value v-if="inner.joined_at_human" label="Eintrittsdatum" :value="inner.joined_at_human"></key-value>
         <key-value v-if="inner.bill_kind_name" label="Rechnung" :value="inner.bill_kind_name"></key-value>
-        <boolean :value="inner.send_newspaper" label="Mittendrin versenden"></boolean>
+        <ui-boolean-display :value="inner.send_newspaper" label="Mittendrin versenden"></ui-boolean-display>
     </div>
 </template>
 
@@ -16,7 +16,6 @@ export default {
     },
     components: {
         'key-value': () => import(/* webpackChunkName: "member" */ '../KeyValue'),
-        'boolean': () => import(/* webpackChunkName: "member" */ '../Boolean'),
     },
 };
 </script>
