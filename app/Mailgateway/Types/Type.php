@@ -16,4 +16,11 @@ abstract class Type
             $field['name'] => $field['default'],
         ])->toArray();
     }
+
+    public static function rules(string $validator): array
+    {
+        return collect(static::fields())->mapWithKeys(fn ($field) => [
+            $field['name'] => $field[$validator],
+        ])->toArray();
+    }
 }

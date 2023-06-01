@@ -2,8 +2,21 @@
 
 namespace App\Mailgateway\Types;
 
+use App\Mailman\Support\MailmanService;
+
 class MailmanType extends Type
 {
+    public string $url;
+    public string $user;
+    public string $password;
+
+    public function __construct($params)
+    {
+        $this->url = data_get($params, 'url');
+        $this->user = data_get($params, 'user');
+        $this->password = data_get($params, 'password');
+    }
+
     public static function name(): string
     {
         return 'Mailman';
@@ -11,7 +24,7 @@ class MailmanType extends Type
 
     public function works(): bool
     {
-        return true;
+        return app(MailmanService::class)->setCredentials($this->url, $this->user, $this->password)->check();
     }
 
     public static function fields(): array
