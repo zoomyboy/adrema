@@ -1,11 +1,5 @@
 /node_modules
-/public/hot
-/public/storage
-/public/js
-/public/css
-/public/fonts
-/public/img
-/public/images
+/public/build
 /storage/*.key
 /vendor
 .env
@@ -17,16 +11,13 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 tags
-/public/vendor
 /storage/temp
 
 # Temporary files
 *.swp
 *.swo
 *.swm
-/public/mix-manifest.json
 resources/img/sprite.svg
 /.php-cs-fixer.cache
 /data
 .app.env
-/public/build
