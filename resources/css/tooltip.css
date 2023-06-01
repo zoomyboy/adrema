@@ -82,10 +82,8 @@
     }
 
     &.popover {
-        $color: #f9f9f9;
-
         .popover-inner {
-            background: $color;
+            background: #f9f9f9;
             color: black;
             padding: 24px;
             border-radius: 5px;
@@ -93,7 +91,7 @@
         }
 
         .popover-arrow {
-            border-color: $color;
+            border-color: #f9f9f9;
         }
     }
 

@@ -7,7 +7,6 @@
     @apply mb-4;
 }
 
-
 .form-control-font {
     @apply leading-tight text-gray-600 text-sm;
 }
@@ -18,7 +17,8 @@
     top: 34px;
     transition: color 02s, padding-bottom 02s, font-size 02s, top 02s;
 }
-.field-wrapperfocused label-placeholder, label-placeholder-focused {
+.field-wrapperfocused label-placeholder,
+label-placeholder-focused {
     top: 0;
     @apply text-sm text-gray-600;
     padding-bottom: 10px;
@@ -42,24 +42,25 @@
     @apply py-2;
 }
 
-input, select {
+input,
+select {
     outline: none;
 }
 
-input[type="date"],
-input[type="datetime-local"],
-input[type="time"],
-input[type="month"],
+input[type='date'],
+input[type='datetime-local'],
+input[type='time'],
+input[type='month'],
 select,
-input[type="week"] {
+input[type='week'] {
     height: 37px;
     &::-webkit-inner-spin-button {
         display: none;
     }
 }
 
-input[type="date"]::-webkit-inner-spin-button,
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type='date']::-webkit-inner-spin-button,
+input[type='date']::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }
