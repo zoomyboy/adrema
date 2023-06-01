@@ -23,7 +23,7 @@ class MailgatewayFactory extends Factory
         return [
             'name' => $this->faker->words(5, true),
             'type' => [
-                'class' => app('mail-gateways')->random(),
+                'cls' => app('mail-gateways')->random(),
                 'params' => [],
             ],
             'domain' => $this->faker->safeEmailDomain(),
@@ -37,7 +37,7 @@ class MailgatewayFactory extends Factory
     public function type(string $type, array $params): self
     {
         return $this->state(['type' => [
-            'class' => $type,
+            'cls' => $type,
             'params' => $params,
         ]]);
     }

@@ -13,4 +13,9 @@ class LocalType extends Type
     {
         return true;
     }
+
+    public static function fields(): array
+    {
+        return [];
+    }
 }

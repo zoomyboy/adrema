@@ -1,14 +1,30 @@
 <template>
     <page-layout>
         <template #toolbar>
-            <page-toolbar-button @click.prevent="model = data.meta.default" color="primary" icon="plus">Neue Verbindung</page-toolbar-button>
+            <page-toolbar-button @click.prevent="model = {...data.meta.default}" color="primary" icon="plus">Neue Verbindung</page-toolbar-button>
         </template>
         <ui-popup heading="Neue Verbindung" v-if="model !== null && !model.id" @close="model = null">
             <div>
                 <div class="grid grid-cols-2 gap-3 mt-6">
                     <f-text v-model="model.name" name="name" id="name" label="Bezeichnung" required></f-text>
                     <f-text v-model="model.domain" name="domain" id="domain" label="Domain" required></f-text>
-                    <f-select :value="model.type.class" @input="model.type.class = $event" label="Typ" name="type" id="type" :options="data.meta.types"></f-select>
+                    <f-select
+                        :value="model.type.cls"
+                        @input="
+                            model.type = {
+                                cls: $event,
+                                params: {...getType($event).defaults},
+                            }
+                        "
+                        label="Typ"
+                        name="type"
+                        id="type"
+                        :options="data.meta.types"
+                        :placeholder="''"
+                    ></f-select>
+                    <template v-for="(field, index) in getType(model.type.cls).fields">
+                        <f-text :key="index" v-if="field.type === 'text'" :label="field.label" :name="field.name" :id="field.name" v-model="model.type.params[field.name]"></f-text>
+                    </template>
                 </div>
                 <div class="flex mt-4 space-x-2">
                     <a href="#" @click.prevent="submit" class="text-center btn btn-danger">Speichern</a>
@@ -68,6 +84,9 @@ export default {
     },
 
     methods: {
+        getType(type) {
+            return this.data.meta.types.find((t) => t.id === type);
+        },
         async submit() {
             try {
                 await this.axios.post(this.data.meta.links.store, this.model);

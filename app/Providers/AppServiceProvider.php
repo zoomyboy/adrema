@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Mailgateway\Types\LocalType;
+use App\Mailgateway\Types\MailmanType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         app()->bind('mail-gateways', fn () => collect([
             LocalType::class,
+            MailmanType::class,
         ]));
     }
 

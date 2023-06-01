@@ -18,7 +18,7 @@ class TypeCast implements CastsAttributes
     {
         $value = json_decode($value);
 
-        return new $value->class($value->params);
+        return new $value->cls($value->params);
     }
 
     /**

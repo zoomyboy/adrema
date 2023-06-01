@@ -21,7 +21,7 @@ class StoreAction
         return [
             'name' => 'required|string|max:255',
             'domain' => 'required|string|max:255',
-            'type.class' => ['required', 'string', 'max:255', Rule::in(app('mail-gateways'))],
+            'type.cls' => ['required', 'string', 'max:255', Rule::in(app('mail-gateways'))],
             'type.params' => 'present',
         ];
     }
