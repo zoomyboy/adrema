@@ -36,6 +36,18 @@ class MailgatewayResource extends JsonResource
             'links' => [
                 'store' => route('api.mailgateway.store'),
             ],
+            'types' => app('mail-gateways')->map(fn ($gateway) => [
+                'id' => $gateway,
+                'name' => $gateway::name(),
+            ]),
+            'default' => [
+                'domain' => '',
+                'name' => '',
+                'type' => [
+                    'params' => [],
+                    'class' => null,
+                ],
+            ],
         ];
     }
 }

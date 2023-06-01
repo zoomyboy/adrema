@@ -1,21 +1,18 @@
 <template>
     <page-layout>
         <template #toolbar>
-            <page-toolbar-button @click.prevent="popup = true" color="primary" icon="plus">Neue Verbindung</page-toolbar-button>
+            <page-toolbar-button @click.prevent="model = data.meta.default" color="primary" icon="plus">Neue Verbindung</page-toolbar-button>
         </template>
-        <ui-popup heading="Neue Verbindung" v-if="popup === true" @close="popup = false">
+        <ui-popup heading="Neue Verbindung" v-if="model !== null && !model.id" @close="model = null">
             <div>
                 <div class="grid grid-cols-2 gap-3 mt-6">
+                    <f-text v-model="model.name" name="name" id="name" label="Bezeichnung" required></f-text>
+                    <f-text v-model="model.domain" name="domain" id="domain" label="Domain" required></f-text>
+                    <f-select :value="model.type.class" @input="model.type.class = $event" label="Typ" name="type" id="type" :options="data.meta.types"></f-select>
+                </div>
+                <div class="flex mt-4 space-x-2">
                     <a href="#" @click.prevent="submit" class="text-center btn btn-danger">Speichern</a>
-                    <a
-                        href="#"
-                        @click.prevent="
-                            value = {};
-                            popup = false;
-                        "
-                        class="text-center btn btn-primary"
-                        >Abbrechen</a
-                    >
+                    <a href="#" @click.prevent="model = null" class="text-center btn btn-primary">Abbrechen</a>
                 </div>
             </div>
         </ui-popup>
@@ -23,14 +20,14 @@
             <div class="w-full h-full pb-6">
                 <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
                     <thead>
-                        <th>Name</th>
+                        <th>Bezeichnung</th>
                         <th>Domain</th>
                         <th>Typ</th>
                         <th>Prüfung</th>
                         <th>Aktion</th>
                     </thead>
 
-                    <tr v-for="(gateway, index) in inner" :key="index">
+                    <tr v-for="(gateway, index) in inner.data" :key="index">
                         <td v-text="gateway.name"></td>
                         <td v-text="gateway.domain"></td>
                         <td v-text="gateway.type_human"></td>
@@ -55,17 +52,32 @@
 
 <script>
 import SettingLayout from '../setting/Layout.vue';
+import indexHelpers from '../../mixins/indexHelpers.js';
 
 export default {
+    mixins: [indexHelpers],
+
     data: function () {
         return {
-            popup: false,
-            inner: [...this.data.data],
-            meta: {...this.data.meta},
+            model: null,
+            inner: {...this.data},
         };
     },
     props: {
         data: {},
+    },
+
+    methods: {
+        async submit() {
+            try {
+                await this.axios.post(this.data.meta.links.store, this.model);
+
+                this.reload();
+                this.model = null;
+            } catch (e) {
+                this.errorsFromException(e);
+            }
+        },
     },
     components: {
         SettingLayout,

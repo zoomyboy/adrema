@@ -20,6 +20,7 @@ use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
 use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Initialize\Actions\NamiSearchAction;
+use App\Mailgateway\Actions\StoreAction;
 use App\Member\Actions\ExportAction;
 use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
@@ -80,5 +81,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/contribution-validate', ContributionValidateAction::class)->name('contribution.validate');
 
     // -------------------------------- Mailgateway --------------------------------
-    Route::post('/api/mailgateway', fn () => '')->name('api.mailgateway.store');
+    Route::post('/api/mailgateway', StoreAction::class)->name('api.mailgateway.store');
 });
