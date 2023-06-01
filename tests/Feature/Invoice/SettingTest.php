@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Bill;
+namespace Tests\Feature\Invoice;
 
 use App\Invoice\InvoiceSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

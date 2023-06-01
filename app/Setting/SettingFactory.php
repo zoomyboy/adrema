@@ -2,6 +2,8 @@
 
 namespace App\Setting;
 
+use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Storeable;
 use Illuminate\Routing\Router;
 
 class SettingFactory
@@ -12,14 +14,19 @@ class SettingFactory
     private array $settings = [];
 
     /**
-     * @param class-string<LocalSettings> $setting
+     * @param class-string $setting
      */
     public function register(string $setting): void
     {
         $this->settings[] = $setting;
 
-        app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->get($setting::url(), $setting::indexAction());
-        app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->post($setting::url(), $setting::saveAction());
+        if (new $setting() instanceof Indexable) {
+            app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->get($setting::url(), $setting::indexAction());
+        }
+
+        if (new $setting() instanceof Storeable) {
+            app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->post($setting::url(), $setting::storeAction());
+        }
 
         if (1 === count($this->settings)) {
             app(Router::class)->redirect('/setting', '/setting/'.$setting::slug());

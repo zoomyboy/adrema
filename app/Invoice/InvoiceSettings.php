@@ -2,9 +2,11 @@
 
 namespace App\Invoice;
 
+use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 
-class InvoiceSettings extends LocalSettings
+class InvoiceSettings extends LocalSettings implements Indexable, Storeable
 {
     public string $from_long;
 
@@ -41,7 +43,7 @@ class InvoiceSettings extends LocalSettings
         return SettingIndexAction::class;
     }
 
-    public static function saveAction(): string
+    public static function storeAction(): string
     {
         return SettingSaveAction::class;
     }

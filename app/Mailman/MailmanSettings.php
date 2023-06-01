@@ -4,9 +4,11 @@ namespace App\Mailman;
 
 use App\Mailman\Actions\SettingIndexAction;
 use App\Mailman\Actions\SettingSaveAction;
+use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 
-class MailmanSettings extends LocalSettings
+class MailmanSettings extends LocalSettings implements Storeable, Indexable
 {
     public ?string $base_url;
 
@@ -39,7 +41,7 @@ class MailmanSettings extends LocalSettings
         return SettingIndexAction::class;
     }
 
-    public static function saveAction(): string
+    public static function storeAction(): string
     {
         return SettingSaveAction::class;
     }

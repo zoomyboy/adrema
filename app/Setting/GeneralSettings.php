@@ -14,16 +14,6 @@ class GeneralSettings extends Settings
     /** @var array<int, int> */
     public array $allowed_nami_accounts;
 
-    /**
-     * @return array<int, string>
-     */
-    public function moduleOptions(): array
-    {
-        return [
-            'bill',
-        ];
-    }
-
     public static function group(): string
     {
         return 'general';
