@@ -2,12 +2,12 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
-        "development": "npx mix build",
-        "watch": "npx mix watch",
-        "hot": "npx mix watch --hot",
-        "prod": "npx mix build --production",
+        "development": "npx vite",
+        "watch": "npx vite",
+        "hot": "npx vite",
+        "prod": "npx vite build",
         "production": "npm run prod",
-        "img": "rm -R public/img && cd resources/img/svg && npx svg-sprite -s --symbol-dest=sprite *.svg && mv sprite/svg/sprite.css.svg ../sprite.svg && rm -R sprite && cd ../../../ && cp -R resources/img public/img",
+        "img": "cd resources/img/svg && npx svg-sprite -s --symbol-dest=sprite *.svg && mv sprite/svg/sprite.css.svg ../../../public/sprite.svg && rm -R sprite",
         "lint": "eslint \"resources/js/**/*.{js,vue}\"",
         "fix": "eslint \"resources/js/**/*.{js,vue}\" --fix"
     },

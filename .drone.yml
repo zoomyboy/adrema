@@ -24,7 +24,7 @@ steps:
     - name: node
       image: node:17.9.0-slim
       commands:
-          - npm ci && npm run prod && npm run img && rm -R node_modules
+          - npm ci && npm run img && npm run prod && rm -R node_modules
 
     - name: phpunit_tests
       image: php:8.1.6

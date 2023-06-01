@@ -1,5 +1,7 @@
 /node_modules
 /public/build
+/public/sprite.svg
+/public/hot
 /storage/*.key
 /vendor
 .env
