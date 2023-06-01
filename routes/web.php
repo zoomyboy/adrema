@@ -78,4 +78,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/contribution', ContributionFormAction::class)->name('contribution.form');
     Route::get('/contribution-generate', ContributionGenerateAction::class)->name('contribution.generate');
     Route::post('/contribution-validate', ContributionValidateAction::class)->name('contribution.validate');
+
+    // -------------------------------- Mailgateway --------------------------------
+    Route::post('/api/mailgateway', fn () => '')->name('api.mailgateway.store');
 });

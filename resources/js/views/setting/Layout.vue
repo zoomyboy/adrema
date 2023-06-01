@@ -1,17 +1,15 @@
 <template>
-    <page-layout>
-        <div class="flex grow relative">
-            <ui-tabs v-model="active" :entries="$page.props.setting_menu"></ui-tabs>
-            <slot></slot>
-        </div>
-    </page-layout>
+    <div class="flex grow relative">
+        <ui-tabs v-model="active" :entries="$page.props.setting_menu"></ui-tabs>
+        <slot></slot>
+    </div>
 </template>
 
 <script>
 export default {
     data: function () {
         return {
-            innerActive: 0,
+            innerActive: this.$page.props.setting_menu.findIndex((menu) => menu.is_active),
         };
     },
     computed: {
@@ -19,19 +17,15 @@ export default {
             get() {
                 return this.innerActive;
             },
-            set(v, old) {
+            set(v) {
                 var _self = this;
                 this.$inertia.visit(this.$page.props.setting_menu[v].url, {
-                    onSuccess(page) {
-                        console.log('A');
+                    onSuccess() {
                         _self.innerActive = v;
                     },
                 });
             },
         },
-    },
-    mounted() {
-        this.innerActive = this.$page.props.setting_menu.findIndex((menu) => menu.is_active);
     },
 };
 </script>

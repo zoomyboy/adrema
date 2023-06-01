@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Mailgateway\Types\LocalType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
 
             return $this;
         });
+
+        app()->bind('mail-gateways', fn () => collect([
+            LocalType::class,
+        ]));
     }
 
     /**
