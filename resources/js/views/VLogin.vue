@@ -2,7 +2,7 @@
     <form @submit.prevent="submit">
         <div class="h-24 p-6 md:px-10 bg-primary-800 flex justify-between items-center w-full">
             <span class="text-primary-500 text-xl">Login</span>
-            <img src="/img/dpsg.gif" class="w-24" />
+            <img src="../../img/dpsg.gif" class="w-24" />
         </div>
         <div class="p-6 md:p-10 grid gap-5">
             <f-text id="email" label="E-Mail-Adresse" v-model="values.email"></f-text>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import FullLayout from '../layouts/FullLayout';
+import FullLayout from '../layouts/FullLayout.vue';
 
 export default {
     layout: FullLayout,

@@ -16,7 +16,7 @@ export default {
     },
 
     components: {
-        'VBlock': () => import('./VBlock'),
+        'VBlock': () => import('./VBlock.vue'),
         'age-group-count': () => import('./AgeGroupCount.vue'),
         'efz-pending': () => import('./EfzPending.vue'),
         'ps-pending': () => import('./PsPending.vue'),

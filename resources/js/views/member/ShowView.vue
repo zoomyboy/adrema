@@ -95,15 +95,15 @@ export default {
     },
 
     components: {
-        stamm: () => import(/* webpackChunkName: "member" */ './boxes/Stamm'),
-        kontakt: () => import(/* webpackChunkName: "member" */ './boxes/Kontakt'),
-        prae: () => import(/* webpackChunkName: "member" */ './boxes/Prae'),
-        courses: () => import(/* webpackChunkName: "member" */ './boxes/Courses'),
-        system: () => import(/* webpackChunkName: "member" */ './boxes/System'),
-        payments: () => import(/* webpackChunkName: "member" */ './boxes/Payments'),
-        memberships: () => import(/* webpackChunkName: "member" */ './boxes/Memberships'),
-        vmap: () => import(/* webpackChunkName: "member" */ './boxes/Vmap'),
-        tabs: () => import(/* webpackChunkName: "member" */ './Tabs'),
+        stamm: () => import(/* webpackChunkName: "member" */ './boxes/Stamm.vue'),
+        kontakt: () => import(/* webpackChunkName: "member" */ './boxes/Kontakt.vue'),
+        prae: () => import(/* webpackChunkName: "member" */ './boxes/Prae.vue'),
+        courses: () => import(/* webpackChunkName: "member" */ './boxes/Courses.vue'),
+        system: () => import(/* webpackChunkName: "member" */ './boxes/System.vue'),
+        payments: () => import(/* webpackChunkName: "member" */ './boxes/Payments.vue'),
+        memberships: () => import(/* webpackChunkName: "member" */ './boxes/Memberships.vue'),
+        vmap: () => import(/* webpackChunkName: "member" */ './boxes/Vmap.vue'),
+        tabs: () => import(/* webpackChunkName: "member" */ './Tabs.vue'),
     },
 
     created() {

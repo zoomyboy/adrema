@@ -153,9 +153,9 @@ export default {
         MemberMemberships,
         MemberPayments,
         MemberCourses,
-        'age-groups': () => import(/* webpackChunkName: "member" */ './AgeGroups'),
-        'tags': () => import(/* webpackChunkName: "member" */ './Tags'),
-        'actions': () => import(/* webpackChunkName: "member" */ './index/Actions'),
+        'age-groups': () => import('./AgeGroups.vue'),
+        'tags': () => import('./Tags.vue'),
+        'actions': () => import('./index/Actions.vue'),
     },
 
     methods: {
