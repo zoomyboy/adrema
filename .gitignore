@@ -29,3 +29,4 @@ resources/img/sprite.svg
 /.php-cs-fixer.cache
 /data
 .app.env
+/public/build
