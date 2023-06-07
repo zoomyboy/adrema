@@ -19,7 +19,7 @@ class MailmanTypeTest extends TestCase
             Phake::when($mock)->setCredentials('https://example.com', 'user', 'secret')->thenReturn($mock);
             Phake::when($mock)->check()->thenReturn(true);
         });
-        $type = new MailmanType([
+        $type = app(MailmanType::class)->setParams([
             'url' => 'https://example.com',
             'user' => 'user',
             'password' => 'secret',
@@ -35,7 +35,7 @@ class MailmanTypeTest extends TestCase
             Phake::when($mock)->setCredentials('https://example.com', 'user', 'secret')->thenReturn($mock);
             Phake::when($mock)->check()->thenReturn(false);
         });
-        $type = new MailmanType([
+        $type = app(MailmanType::class)->setParams([
             'url' => 'https://example.com',
             'user' => 'user',
             'password' => 'secret',
