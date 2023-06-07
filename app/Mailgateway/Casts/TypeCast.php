@@ -16,9 +16,9 @@ class TypeCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        $value = json_decode($value);
+        $value = json_decode($value, true);
 
-        return new $value->cls($value->params);
+        return app($value['cls'])->setParams($value['params']);
     }
 
     /**

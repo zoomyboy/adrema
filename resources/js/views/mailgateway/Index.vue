@@ -26,8 +26,9 @@
                     <template v-for="(field, index) in getType(model.type.cls).fields">
                         <f-text
                             :key="index"
-                            v-if="field.type === 'text'"
+                            v-if="field.type === 'text' || field.type === 'password'"
                             :label="field.label"
+                            :type="field.type"
                             :name="field.name"
                             :id="field.name"
                             v-model="model.type.params[field.name]"

@@ -54,7 +54,7 @@ class MailmanType extends Type
             [
                 'name' => 'password',
                 'label' => 'Passwort',
-                'type' => 'text',
+                'type' => 'password',
                 'storeValidator' => 'required|max:255',
                 'updateValidator' => 'nullable|max:255',
                 'default' => '',

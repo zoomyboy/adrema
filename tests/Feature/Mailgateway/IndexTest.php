@@ -5,7 +5,10 @@ namespace Tests\Feature\Mailgateway;
 use App\Mailgateway\Models\Mailgateway;
 use App\Mailgateway\Types\LocalType;
 use App\Mailgateway\Types\MailmanType;
+use App\Mailman\Support\MailmanService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Phake;
+use Tests\RequestFactories\MailmanTypeRequest;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
@@ -26,7 +29,7 @@ class IndexTest extends TestCase
         $response->assertOk();
     }
 
-    public function testItDisplaysGateways(): void
+    public function testItDisplaysLocalGateways(): void
     {
         $this->withoutExceptionHandling();
         Mailgateway::factory()->type(LocalType::class, [])->name('Lore')->domain('example.com')->create();
@@ -37,6 +40,18 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('Lore', $response, 'data.data.0.name');
         $this->assertInertiaHas('Lokal', $response, 'data.data.0.type_human');
         $this->assertInertiaHas(true, $response, 'data.data.0.works');
+    }
+
+    public function testItDisplaysMailmanGateways(): void
+    {
+        $this->stubIo(MailmanService::class, function ($mock) {
+            Phake::when($mock)->setCredentials()->thenReturn($mock);
+            Phake::when($mock)->check()->thenReturn(true);
+        });
+        $this->withoutExceptionHandling();
+        Mailgateway::factory()->type(MailmanType::class, MailmanTypeRequest::new()->create())->create();
+
+        $this->get('/setting/mailgateway')->assertOk();
     }
 
     public function testItHasMeta(): void
