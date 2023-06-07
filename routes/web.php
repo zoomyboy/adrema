@@ -81,5 +81,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/contribution-validate', ContributionValidateAction::class)->name('contribution.validate');
 
     // -------------------------------- Mailgateway --------------------------------
-    Route::post('/api/mailgateway', StoreAction::class)->name('api.mailgateway.store');
+    Route::post('/api/mailgateway', StoreAction::class)->name('mailgateway.store');
 });
