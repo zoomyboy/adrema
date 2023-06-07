@@ -27,6 +27,10 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas('mailgateways', [
             'domain' => 'example.com',
             'name' => 'lala',
+            'type' => json_encode([
+                'cls' => LocalType::class,
+                'params' => [],
+            ]),
         ]);
     }
 }
