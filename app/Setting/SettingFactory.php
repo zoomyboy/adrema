@@ -40,7 +40,7 @@ class SettingFactory
     {
         return collect($this->settings)->map(fn ($setting) => [
             'url' => $setting::url(),
-            'is_active' => request()->fullUrlIs(url($setting::url())),
+            'is_active' => '/'.request()->path() === $setting::url(),
             'title' => $setting::title(),
         ])
         ->toArray();
