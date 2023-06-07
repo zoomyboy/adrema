@@ -32,7 +32,7 @@ class IndexTest extends TestCase
     public function testItDisplaysLocalGateways(): void
     {
         $this->withoutExceptionHandling();
-        Mailgateway::factory()->type(LocalType::class, [])->name('Lore')->domain('example.com')->create();
+        $mailgateway = Mailgateway::factory()->type(LocalType::class, [])->name('Lore')->domain('example.com')->create();
 
         $response = $this->get('/setting/mailgateway');
 
@@ -40,6 +40,8 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('Lore', $response, 'data.data.0.name');
         $this->assertInertiaHas('Lokal', $response, 'data.data.0.type_human');
         $this->assertInertiaHas(true, $response, 'data.data.0.works');
+        $this->assertInertiaHas($mailgateway->id, $response, 'data.data.0.id');
+        $this->assertInertiaHas(route('mailgateway.update', ['mailgateway' => $mailgateway->id]), $response, 'data.data.0.links.update');
     }
 
     public function testItDisplaysMailmanGateways(): void

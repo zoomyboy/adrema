@@ -28,6 +28,10 @@ class MailgatewayResource extends JsonResource
             'type_human' => $this->type::name(),
             'works' => $this->type->works(),
             'type' => $this->type->toResource(),
+            'id' => $this->id,
+            'links' => [
+                'update' => route('mailgateway.update', ['mailgateway' => $this->getModel()]),
+            ],
         ];
     }
 

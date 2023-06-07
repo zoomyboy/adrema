@@ -3,7 +3,7 @@
         <template #toolbar>
             <page-toolbar-button @click.prevent="model = {...data.meta.default}" color="primary" icon="plus">Neue Verbindung</page-toolbar-button>
         </template>
-        <ui-popup heading="Neue Verbindung" v-if="model !== null && !model.id" @close="model = null">
+        <ui-popup :heading="model.id ? 'Verbindung bearbeiten' : 'Neue Verbindung'" v-if="model !== null" @close="model = null">
             <form @submit.prevent="submit">
                 <section class="grid grid-cols-2 gap-3 mt-6">
                     <f-text v-model="model.name" name="name" id="name" label="Bezeichnung" required></f-text>
@@ -101,7 +101,7 @@ export default {
         },
         async submit() {
             try {
-                await this.axios.post(this.data.meta.links.store, this.model);
+                await this.axios[this.model.id ? 'patch' : 'post'](this.model.id ? this.model.links.update : this.data.meta.links.store, this.model);
 
                 this.reload();
                 this.model = null;
