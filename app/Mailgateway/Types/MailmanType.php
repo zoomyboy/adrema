@@ -10,11 +10,13 @@ class MailmanType extends Type
     public string $user;
     public string $password;
 
-    public function __construct($params)
+    public function setParams(array $params): static
     {
         $this->url = data_get($params, 'url');
         $this->user = data_get($params, 'user');
         $this->password = data_get($params, 'password');
+
+        return $this;
     }
 
     public static function name(): string
@@ -27,6 +29,9 @@ class MailmanType extends Type
         return app(MailmanService::class)->setCredentials($this->url, $this->user, $this->password)->check();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function fields(): array
     {
         return [

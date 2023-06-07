@@ -3,8 +3,11 @@
 namespace Tests\Feature\Mailgateway;
 
 use App\Mailgateway\Types\LocalType;
+use App\Mailgateway\Types\MailmanType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Phake;
 use Tests\RequestFactories\MailgatewayRequestFactory;
+use Tests\RequestFactories\MailmanTypeRequest;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
@@ -20,7 +23,7 @@ class StoreTest extends TestCase
 
     public function testItCanStoreALocalGateway(): void
     {
-        $response = $this->post('/api/mailgateway', MailgatewayRequestFactory::new()->name('lala')->type(LocalType::class, [])->domain('example.com')->create());
+        $response = $this->postJson('/api/mailgateway', MailgatewayRequestFactory::new()->name('lala')->type(LocalType::class, [])->domain('example.com')->create());
 
         $response->assertOk();
 
@@ -32,5 +35,57 @@ class StoreTest extends TestCase
                 'params' => [],
             ]),
         ]);
+    }
+
+    public function testItCanStoreAMailmanGateway(): void
+    {
+        $typeParams = ['url' => 'https://example.com', 'user' => 'user', 'password' => 'secret'];
+        $this->stubIo(MailmanType::class, function ($mock) use ($typeParams) {
+            Phake::when($mock)->setParams($typeParams)->thenReturn($mock);
+            Phake::when($mock)->works()->thenReturn(true);
+        });
+        $this->postJson('/api/mailgateway', MailgatewayRequestFactory::new()->type(MailmanType::class, MailmanTypeRequest::new()->create($typeParams))->create());
+
+        $this->assertDatabaseHas('mailgateways', [
+            'type' => json_encode([
+                'cls' => MailmanType::class,
+                'params' => $typeParams,
+            ]),
+        ]);
+    }
+
+    public function testItThrowsErrorWhenMailmanConnectionFailed(): void
+    {
+        $typeParams = ['url' => 'https://example.com', 'user' => 'user', 'password' => 'secret'];
+        $this->stubIo(MailmanType::class, function ($mock) use ($typeParams) {
+            Phake::when($mock)->setParams($typeParams)->thenReturn($mock);
+            Phake::when($mock)->works()->thenReturn(false);
+        });
+        $this->postJson('/api/mailgateway', MailgatewayRequestFactory::new()->type(MailmanType::class, MailmanTypeRequest::new()->create($typeParams))->create())
+             ->assertJsonValidationErrors('connection');
+    }
+
+    public function testItValidatesCustomFields(): void
+    {
+        $typeParams = ['url' => 'https://example.com', 'user' => '', 'password' => 'secret'];
+        $this->stubIo(MailmanType::class, function ($mock) use ($typeParams) {
+            Phake::when($mock)->setParams($typeParams)->thenReturn($mock);
+            Phake::when($mock)->works()->thenReturn(false);
+        });
+        $this->postJson('/api/mailgateway', MailgatewayRequestFactory::new()->type(MailmanType::class, MailmanTypeRequest::new()->create($typeParams))->create())
+             ->assertJsonValidationErrors(['type.params.user' => 'Benutzer ist erforderlich.']);
+    }
+
+    public function testItValidatesType(): void
+    {
+        $this->postJson('/api/mailgateway', MailgatewayRequestFactory::new()->missingType()->create())
+            ->assertJsonValidationErrors('type.cls');
+    }
+
+    public function testItValidatesNameAndDomain(): void
+    {
+        $this->postJson('/api/mailgateway', MailgatewayRequestFactory::new()->withoutName()->withoutDomain()->create())
+            ->assertJsonValidationErrors('domain')
+            ->assertJsonValidationErrors('name');
     }
 }

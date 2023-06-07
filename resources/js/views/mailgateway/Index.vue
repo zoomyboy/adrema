@@ -4,8 +4,8 @@
             <page-toolbar-button @click.prevent="model = {...data.meta.default}" color="primary" icon="plus">Neue Verbindung</page-toolbar-button>
         </template>
         <ui-popup heading="Neue Verbindung" v-if="model !== null && !model.id" @close="model = null">
-            <div>
-                <div class="grid grid-cols-2 gap-3 mt-6">
+            <form @submit.prevent="submit">
+                <section class="grid grid-cols-2 gap-3 mt-6">
                     <f-text v-model="model.name" name="name" id="name" label="Bezeichnung" required></f-text>
                     <f-text v-model="model.domain" name="domain" id="domain" label="Domain" required></f-text>
                     <f-select
@@ -21,16 +21,25 @@
                         id="type"
                         :options="data.meta.types"
                         :placeholder="''"
+                        required
                     ></f-select>
                     <template v-for="(field, index) in getType(model.type.cls).fields">
-                        <f-text :key="index" v-if="field.type === 'text'" :label="field.label" :name="field.name" :id="field.name" v-model="model.type.params[field.name]"></f-text>
+                        <f-text
+                            :key="index"
+                            v-if="field.type === 'text'"
+                            :label="field.label"
+                            :name="field.name"
+                            :id="field.name"
+                            v-model="model.type.params[field.name]"
+                            :required="field.is_required"
+                        ></f-text>
                     </template>
-                </div>
-                <div class="flex mt-4 space-x-2">
-                    <a href="#" @click.prevent="submit" class="text-center btn btn-danger">Speichern</a>
-                    <a href="#" @click.prevent="model = null" class="text-center btn btn-primary">Abbrechen</a>
-                </div>
-            </div>
+                </section>
+                <section class="flex mt-4 space-x-2">
+                    <ui-button type="submit" class="btn-danger">Speichern</ui-button>
+                    <ui-button @click.prevent="model = null" class="btn-primary">Abbrechen</ui-button>
+                </section>
+            </form>
         </ui-popup>
         <setting-layout>
             <div class="w-full h-full pb-6">

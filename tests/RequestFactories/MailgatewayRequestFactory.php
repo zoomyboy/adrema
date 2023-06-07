@@ -2,6 +2,7 @@
 
 namespace Tests\RequestFactories;
 
+use App\Mailgateway\Types\Type;
 use Worksome\RequestFactories\RequestFactory;
 
 class MailgatewayRequestFactory extends RequestFactory
@@ -38,5 +39,23 @@ class MailgatewayRequestFactory extends RequestFactory
             'cls' => $type,
             'params' => $params,
         ]]);
+    }
+
+    public function missingType(): self
+    {
+        return $this->state(['type' => [
+            'cls' => null,
+            'params' => [],
+        ]]);
+    }
+
+    public function withoutName(): self
+    {
+        return $this->state(['name' => '']);
+    }
+
+    public function withoutDomain(): self
+    {
+        return $this->state(['domain' => '']);
     }
 }

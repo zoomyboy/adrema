@@ -40,7 +40,7 @@ class MailgatewayResource extends JsonResource
             'types' => app('mail-gateways')->map(fn ($gateway) => [
                 'id' => $gateway,
                 'name' => $gateway::name(),
-                'fields' => $gateway::fields(),
+                'fields' => $gateway::presentFields('storeValidator'),
                 'defaults' => (object) $gateway::defaults(),
             ])->prepend([
                 'id' => null,

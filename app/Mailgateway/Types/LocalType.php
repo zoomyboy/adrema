@@ -18,4 +18,9 @@ class LocalType extends Type
     {
         return [];
     }
+
+    public function setParams(array $params): static
+    {
+        return $this;
+    }
 }

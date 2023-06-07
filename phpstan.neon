@@ -18,6 +18,7 @@ parameters:
         ContributionMemberData: 'array<string, mixed>'
         ContributionRequestArray: 'array{dateFrom: string, dateUntil: string, zipLocation: string, country: int, eventName: string, members: array<int, int>}'
         ContributionApiRequestArray: 'array{dateFrom: string, dateUntil: string, zipLocation: string, country: int, eventName: string, member_data: array<int, ContributionMemberData>}'
+        MailgatewayCustomField: 'array{name: string, label: string, type: string, storeValidator: string, updateValidator: string, default: string}'
 
     ignoreErrors:
         -

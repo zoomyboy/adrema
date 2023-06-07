@@ -4,6 +4,7 @@ namespace Tests\Feature\Mailgateway;
 
 use App\Mailgateway\Models\Mailgateway;
 use App\Mailgateway\Types\LocalType;
+use App\Mailgateway\Types\MailmanType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -53,6 +54,15 @@ class IndexTest extends TestCase
             'id' => LocalType::class,
             'name' => 'Lokal',
         ], $response, 'data.meta.types.1');
+        $this->assertInertiaHas([
+            'id' => MailmanType::class,
+            'fields' => [
+                [
+                    'name' => 'url',
+                    'is_required' => true,
+                ],
+            ],
+        ], $response, 'data.meta.types.2');
         $this->assertInertiaHas([
             'domain' => '',
             'name' => '',

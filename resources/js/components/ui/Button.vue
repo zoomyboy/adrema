@@ -3,7 +3,7 @@
         <div :class="{hidden: !isLoading, flex: isLoading}" class="absolute items-center top-0 h-full left-0 ml-2">
             <ui-spinner class="border-primary-400 w-6 h-6 group-hover:border-primary-200"></ui-spinner>
         </div>
-        Weiter
+        <slot></slot>
     </button>
 </template>
 
