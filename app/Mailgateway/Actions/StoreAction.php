@@ -27,6 +27,7 @@ class StoreAction
             'name' => 'required|string|max:255',
             'domain' => 'required|string|max:255',
             'type.cls' => ['required', 'string', 'max:255', Rule::in(app('mail-gateways'))],
+            'type.params' => 'present|array',
             ...collect(request()->input('type.cls')::rules('storeValidator'))->mapWithKeys(fn ($rules, $key) => ["type.params.{$key}" => $rules]),
         ];
     }
