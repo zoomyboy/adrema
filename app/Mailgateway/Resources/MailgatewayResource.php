@@ -27,6 +27,7 @@ class MailgatewayResource extends JsonResource
             'domain' => $this->domain,
             'type_human' => $this->type::name(),
             'works' => $this->type->works(),
+            'type' => $this->type->toResource(),
         ];
     }
 
@@ -34,7 +35,7 @@ class MailgatewayResource extends JsonResource
     {
         return [
             'links' => [
-                'store' => route('api.mailgateway.store'),
+                'store' => route('mailgateway.store'),
             ],
             'types' => app('mail-gateways')->map(fn ($gateway) => [
                 'id' => $gateway,

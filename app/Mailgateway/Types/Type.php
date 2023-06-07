@@ -23,4 +23,12 @@ abstract class Type
             $field['name'] => $field[$validator],
         ])->toArray();
     }
+
+    public function toResource(): array
+    {
+        return [
+            'cls' => get_class($this),
+            'params' => get_object_vars($this),
+        ];
+    }
 }

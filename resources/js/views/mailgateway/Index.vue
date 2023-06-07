@@ -54,7 +54,9 @@
                                 :label="gateway.works ? 'Verbindung erfolgreich' : 'Verbindung fehlgeschlagen'"
                             ></ui-boolean-display>
                         </td>
-                        <td></td>
+                        <td>
+                            <a href="#" v-tooltip="`Bearbeiten`" @click.prevent="model = {...gateway}" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></a>
+                        </td>
                     </tr>
                 </table>
 
