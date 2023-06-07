@@ -21,6 +21,7 @@ use App\Initialize\Actions\NamiGetSearchLayerAction;
 use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Initialize\Actions\NamiSearchAction;
 use App\Mailgateway\Actions\StoreAction;
+use App\Mailgateway\Actions\UpdateAction;
 use App\Member\Actions\ExportAction;
 use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
@@ -82,4 +83,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
 
     // -------------------------------- Mailgateway --------------------------------
     Route::post('/api/mailgateway', StoreAction::class)->name('mailgateway.store');
+    Route::patch('/api/mailgateway/{mailgateway}', UpdateAction::class)->name('mailgateway.update');
 });
