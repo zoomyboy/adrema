@@ -44,10 +44,22 @@ class IndexTest extends TestCase
 
         $response = $this->get('/setting/mailgateway');
 
-        $this->assertInertiaHas(route('api.mailgateway.store'), $response, 'data.meta.links.store');
+        $this->assertInertiaHas(route('mailgateway.store'), $response, 'data.meta.links.store');
+        $this->assertInertiaHas([
+            'id' => null,
+            'name' => '-- kein --',
+        ], $response, 'data.meta.types.0');
         $this->assertInertiaHas([
             'id' => LocalType::class,
             'name' => 'Lokal',
-        ], $response, 'data.meta.types.0');
+        ], $response, 'data.meta.types.1');
+        $this->assertInertiaHas([
+            'domain' => '',
+            'name' => '',
+            'type' => [
+                'params' => [],
+                'cls' => null,
+            ],
+        ], $response, 'data.meta.default');
     }
 }
