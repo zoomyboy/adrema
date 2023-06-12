@@ -3,6 +3,7 @@
 namespace App\Mailman\Support;
 
 use App\Mailman\Data\MailingList;
+use App\Mailman\Data\Member;
 use App\Mailman\Exceptions\MailmanServiceException;
 use App\Mailman\MailmanSettings;
 use Illuminate\Http\Client\ConnectionException;
@@ -43,24 +44,48 @@ class MailmanService
     }
 
     /**
-     * @return LazyCollection<int, string>
+     * @return LazyCollection<int, Member>
      */
-    public function members(string $listId): LazyCollection
+    public function members(MailingList $list): LazyCollection
     {
         return app(Paginator::class)->result(
-            fn ($page) => $this->http()->get("/lists/{$listId}/roster/member?page={$page}&count=10"),
-            function ($response) use ($listId) {
-                throw_unless($response->ok(), MailmanServiceException::class, 'Fetching members for listId '.$listId.' failed.');
-                /** @var array<int, array{email: string}>|null */
-                $entries = data_get($response->json(), 'entries');
+            fn ($page) => $this->http()->get("/lists/{$list->listId}/roster/member?page={$page}&count=10"),
+            function ($response) use ($list) {
+                throw_unless($response->ok(), MailmanServiceException::class, 'Fetching members for listId '.$list->listId.' failed.');
+                /** @var array<int, array{email: string, self_link: string}>|null */
+                $entries = data_get($response->json(), 'entries', []);
                 throw_if(is_null($entries), MailmanServiceException::class, 'Failed getting member list from response');
 
                 foreach ($entries as $entry) {
-                    yield $entry['email'];
+                    yield Member::from([
+                        ...$entry,
+                        'member_id' => strrev(preg_split('/\//', strrev($entry['self_link']))[0]),
+                    ]);
                 }
             },
             fn ($response) => data_get($response->json(), 'total_size')
         );
+    }
+
+    public function addMember(MailingList $list, string $email): void
+    {
+        $response = $this->http()->post('members', [
+            'list_id' => $list->listId,
+            'subscriber' => $email,
+            'pre_verified' => 'true',
+            'pre_approved' => 'true',
+            'send_welcome_message' => 'false',
+            'pre_confirmed' => 'true',
+        ]);
+
+        throw_unless(201 === $response->status(), MailmanServiceException::class, 'Adding member '.$email.' to '.$list->listId.' failed');
+    }
+
+    public function removeMember(Member $member): void
+    {
+        $response = $this->http()->delete("members/{$member->memberId}");
+
+        throw_unless($response->ok(), MailmanServiceException::class, 'Removing member failed');
     }
 
     private function http(): PendingRequest
