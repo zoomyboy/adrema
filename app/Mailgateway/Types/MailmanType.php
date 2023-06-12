@@ -2,7 +2,9 @@
 
 namespace App\Mailgateway\Types;
 
+use App\Maildispatcher\Data\MailEntry;
 use App\Mailman\Support\MailmanService;
+use Illuminate\Support\Collection;
 
 class MailmanType extends Type
 {
@@ -60,5 +62,27 @@ class MailmanType extends Type
                 'default' => '',
             ],
         ];
+    }
+
+    public function search(string $name, string $domain, string $email): ?MailEntry
+    {
+        return null;
+    }
+
+    public function add(string $name, string $domain, string $email): void
+    {
+        return;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function list(string $name, string $domain): Collection
+    {
+        return collect([]);
+    }
+
+    public function remove(string $name, string $domain, string $email): void
+    {
     }
 }

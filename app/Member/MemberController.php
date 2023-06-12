@@ -4,6 +4,7 @@ namespace App\Member;
 
 use App\Country;
 use App\Http\Controllers\Controller;
+use App\Maildispatcher\Actions\ResyncAction;
 use App\Setting\GeneralSettings;
 use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
@@ -86,6 +87,7 @@ class MemberController extends Controller
         }
 
         $member->delete();
+        ResyncAction::dispatch();
 
         return redirect()->back();
     }
