@@ -6,6 +6,7 @@ use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
+use Tests\RequestFactories\MailinglistFactory;
 
 #[MapName(SnakeCaseMapper::class)]
 class MailingList extends Data
@@ -23,5 +24,10 @@ class MailingList extends Data
         public string $selfLink,
         public int $volume,
     ) {
+    }
+
+    public static function factory(): MailinglistFactory
+    {
+        return MailinglistFactory::new();
     }
 }

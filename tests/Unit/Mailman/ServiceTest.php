@@ -45,16 +45,16 @@ class ServiceTest extends TestCase
         Http::fake([
             'http://mailman.test/api/lists/listid/roster/member?page=1&count=10' => Http::response(json_encode([
                 'entries' => [
-                    ['email' => 'test@example.com'],
-                    ['email' => 'test2@example.com'],
+                    ['email' => 'test@example.com', 'self_link' => 'https://example.com/994'],
                 ],
                 'total_size' => 2,
             ]), 200),
         ]);
 
-        $result = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members('listid');
+        $result = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::factory()->id('listid')->toData())->first();
 
-        $this->assertEquals(['test@example.com', 'test2@example.com'], $result->toArray());
+        $this->assertEquals(994, $result->memberId);
+        $this->assertEquals('test@example.com', $result->email);
         Http::assertSentCount(1);
         Http::assertSent(fn ($request) => 'GET' === $request->method() && 'http://mailman.test/api/lists/listid/roster/member?page=1&count=10' === $request->url() && $request->header('Authorization') === ['Basic '.base64_encode('user:secret')]);
     }
@@ -66,7 +66,7 @@ class ServiceTest extends TestCase
             'http://mailman.test/api/lists/listid/roster/member?page=1&count=10' => Http::response('', 401),
         ]);
 
-        app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members('listid')->first();
+        app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::factory()->id('listid')->toData())->first();
     }
 
     public function testItCanGetLists(): void
@@ -94,7 +94,7 @@ class ServiceTest extends TestCase
         foreach (range(3, 40) as $i) {
             yield [
                 collect(range(1, $i))
-                    ->map(fn ($num) => ['email' => 'test'.$num.'@example.com'])
+                    ->map(fn ($num) => ['email' => 'test'.$num.'@example.com', 'self_link' => 'https://example.com/994'])
                     ->toArray(),
             ];
         }
@@ -115,7 +115,7 @@ class ServiceTest extends TestCase
             ]);
         }
 
-        $result = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members('listid');
+        $result = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::factory()->id('listid')->toData());
 
         $this->assertCount($totals->count(), $result->toArray());
         Http::assertSentCount($totals->chunk(10)->count());
