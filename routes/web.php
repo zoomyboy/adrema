@@ -20,6 +20,8 @@ use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
 use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Initialize\Actions\NamiSearchAction;
+use App\Maildispatcher\Actions\CreateAction;
+use App\Maildispatcher\Actions\IndexAction;
 use App\Maildispatcher\Actions\StoreAction as MaildispatcherStoreAction;
 use App\Mailgateway\Actions\StoreAction;
 use App\Mailgateway\Actions\UpdateAction;
@@ -85,5 +87,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     // ----------------------------------- mail ------------------------------------
     Route::post('/api/mailgateway', StoreAction::class)->name('mailgateway.store');
     Route::patch('/api/mailgateway/{mailgateway}', UpdateAction::class)->name('mailgateway.update');
-    Route::post('/api/maildispatcher', MaildispatcherStoreAction::class)->name('maildispatcher.index');
+    Route::get('/maildispatcher', IndexAction::class)->name('maildispatcher.index');
+    Route::get('/maildispatcher/create', CreateAction::class)->name('maildispatcher.create');
+    Route::post('/maildispatcher', MaildispatcherStoreAction::class)->name('maildispatcher.store');
 });

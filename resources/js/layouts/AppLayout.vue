@@ -16,6 +16,7 @@
                 <v-link href="/subscription" v-show="hasModule('bill')" menu="subscription" icon="money">Beiträge</v-link>
                 <v-link href="/contribution" menu="contribution" icon="contribution">Zuschüsse</v-link>
                 <v-link href="/activity" menu="activity" icon="activity">Tätigkeiten</v-link>
+                <v-link href="/maildispatcher" menu="maildispatcher" icon="at">Mail-Verteiler</v-link>
             </div>
             <div class="grid gap-2">
                 <v-link href="/setting" menu="setting" icon="setting">Einstellungen</v-link>
