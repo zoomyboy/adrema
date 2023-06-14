@@ -33,6 +33,9 @@ class UpdateAction
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function rules(): array
     {
         return [

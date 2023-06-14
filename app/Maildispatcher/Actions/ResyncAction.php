@@ -13,13 +13,16 @@ class ResyncAction
 {
     use AsAction;
 
-    public function handle()
+    public function handle(): void
     {
         foreach (Maildispatcher::get() as $dispatcher) {
             $dispatcher->gateway->type->sync($dispatcher->name, $dispatcher->gateway->domain, $this->getResults($dispatcher));
         }
     }
 
+    /**
+     * @return Collection<int, MailEntry>
+     */
     public function getResults(Maildispatcher $dispatcher): Collection
     {
         return Member::search(data_get($dispatcher->filter, 'search', ''))->query(

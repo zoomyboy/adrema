@@ -18,7 +18,7 @@ class MailgatewayResource extends JsonResource
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array<string, mixed>
      */
     public function toArray($request)
     {
@@ -35,6 +35,9 @@ class MailgatewayResource extends JsonResource
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function meta(): array
     {
         return [

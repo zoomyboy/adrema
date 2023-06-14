@@ -32,6 +32,9 @@ abstract class Type
      */
     abstract public function setParams(array $params): static;
 
+    /**
+     * @return array<string, string>
+     */
     public static function defaults(): array
     {
         return collect(static::fields())->mapWithKeys(fn ($field) => [
@@ -39,6 +42,9 @@ abstract class Type
         ])->toArray();
     }
 
+    /**
+     * @return array<int, MailgatewayParsedCustomField>
+     */
     public static function presentFields(string $validator): array
     {
         return array_map(fn ($field) => [
@@ -47,6 +53,9 @@ abstract class Type
         ], static::fields());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function rules(string $validator): array
     {
         return collect(static::fields())->mapWithKeys(fn ($field) => [
@@ -54,6 +63,9 @@ abstract class Type
         ])->toArray();
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function toResource(): array
     {
         return [

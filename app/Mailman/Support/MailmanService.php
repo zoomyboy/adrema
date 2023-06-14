@@ -85,7 +85,7 @@ class MailmanService
     {
         $response = $this->http()->delete("members/{$member->memberId}");
 
-        throw_unless($response->status(204), MailmanServiceException::class, 'Removing member failed');
+        throw_unless(204 === $response->status(), MailmanServiceException::class, 'Removing member failed');
     }
 
     private function http(): PendingRequest

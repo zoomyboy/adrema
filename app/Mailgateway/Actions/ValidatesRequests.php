@@ -9,6 +9,9 @@ use Lorisleiva\Actions\ActionRequest;
 
 trait ValidatesRequests
 {
+    /**
+     * @param array<string, mixed> $input
+     */
     public function checkIfWorks(array $input): void
     {
         if (!app(data_get($input, 'type.cls'))->setParams($input['type']['params'])->works()) {

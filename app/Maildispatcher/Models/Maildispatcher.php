@@ -29,6 +29,9 @@ class Maildispatcher extends Model
         });
     }
 
+    /**
+     * @return BelongsTo<Mailgateway, self>
+     */
     public function gateway(): BelongsTo
     {
         return $this->belongsTo(Mailgateway::class);

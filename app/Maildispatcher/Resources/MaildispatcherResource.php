@@ -3,12 +3,16 @@
 namespace App\Maildispatcher\Resources;
 
 use App\Lib\HasMeta;
+use App\Maildispatcher\Models\Maildispatcher;
 use App\Mailgateway\Models\Mailgateway;
 use App\Mailgateway\Resources\MailgatewayResource;
 use App\Member\FilterScope;
 use App\Member\Member;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Maildispatcher
+ */
 class MaildispatcherResource extends JsonResource
 {
     use HasMeta;
@@ -18,7 +22,7 @@ class MaildispatcherResource extends JsonResource
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array<string, mixed>
      */
     public function toArray($request)
     {

@@ -2,8 +2,12 @@
 
 namespace App\Mailgateway\Casts;
 
+use App\Mailgateway\Types\Type;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
+/**
+ * @implements CastsAttributes<Type, Type>
+ */
 class TypeCast implements CastsAttributes
 {
     /**
@@ -11,6 +15,7 @@ class TypeCast implements CastsAttributes
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param mixed                               $value
+     * @param array<string, mixed>                $attributes
      *
      * @return mixed
      */
@@ -26,6 +31,7 @@ class TypeCast implements CastsAttributes
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param mixed                               $value
+     * @param array<string, mixed>                $attributes
      *
      * @return mixed
      */

@@ -19,6 +19,7 @@ parameters:
         ContributionRequestArray: 'array{dateFrom: string, dateUntil: string, zipLocation: string, country: int, eventName: string, members: array<int, int>}'
         ContributionApiRequestArray: 'array{dateFrom: string, dateUntil: string, zipLocation: string, country: int, eventName: string, member_data: array<int, ContributionMemberData>}'
         MailgatewayCustomField: 'array{name: string, label: string, type: string, storeValidator: string, updateValidator: string, default: string}'
+        MailgatewayParsedCustomField: 'array{name: string, label: string, type: string, storeValidator: string, updateValidator: string, default: string, is_required: bool}'
 
     ignoreErrors:
         -
@@ -634,3 +635,43 @@ parameters:
             message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,class\\-string\\<App\\\\Setting\\\\LocalSettings\\>\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
             count: 1
             path: app/Setting/SettingFactory.php
+
+        -
+            message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$email\\.$#"
+            count: 2
+            path: app/Maildispatcher/Actions/ResyncAction.php
+
+        -
+            message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$email_parents\\.$#"
+            count: 2
+            path: app/Maildispatcher/Actions/ResyncAction.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 2
+            path: app/Mailgateway/Actions/StoreAction.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 2
+            path: app/Mailgateway/Actions/StoreAction.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 2
+            path: app/Mailgateway/Actions/UpdateAction.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 2
+            path: app/Mailgateway/Actions/UpdateAction.php
+
+        -
+            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<\\(int\\|string\\),mixed\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
+            count: 1
+            path: app/Mailgateway/Resources/MailgatewayResource.php
+
+        -
+            message: "#^Generic type Illuminate\\\\Pagination\\\\LengthAwarePaginator\\<int, App\\\\Member\\\\Member\\> in PHPDoc tag @return specifies 2 template types, but class Illuminate\\\\Pagination\\\\LengthAwarePaginator supports only 1\\: TValue$#"
+            count: 1
+            path: app/Member/Actions/SearchAction.php

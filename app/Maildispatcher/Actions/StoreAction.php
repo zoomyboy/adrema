@@ -33,6 +33,9 @@ class StoreAction
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function rules(): array
     {
         return [
