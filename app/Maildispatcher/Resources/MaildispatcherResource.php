@@ -25,6 +25,14 @@ class MaildispatcherResource extends JsonResource
         return [
             'name' => $this->name,
             'gateway' => new MailgatewayResource($this->whenLoaded('gateway')),
+            'gateway_id' => $this->gateway_id,
+            'filter' => $this->filter,
+            'id' => $this->id,
+            'links' => [
+                'edit' => route('maildispatcher.edit', ['maildispatcher' => $this->getModel()]),
+                'update' => route('maildispatcher.update', ['maildispatcher' => $this->getModel()]),
+                'delete' => route('maildispatcher.destroy', ['maildispatcher' => $this->getModel()]),
+            ],
         ];
     }
 

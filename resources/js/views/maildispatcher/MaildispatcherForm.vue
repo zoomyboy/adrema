@@ -84,14 +84,13 @@ export default {
 
     data: function () {
         return {
-            model: this.mode === 'create' ? {...this.meta.default_model} : {...this.data},
+            model: this.data === undefined ? {...this.meta.default_model} : {...this.data},
             members: null,
         };
     },
 
     props: {
         data: {},
-        mode: {},
         meta: {},
     },
 
@@ -107,7 +106,7 @@ export default {
 
         async submit() {
             try {
-                await this.axios.post('/maildispatcher', this.model);
+                this.model.id ? await this.axios.patch(this.model.links.update, this.model) : await this.axios.post('/maildispatcher', this.model);
                 this.$inertia.visit(this.meta.links.index);
             } catch (e) {
                 this.errorsFromException(e);
