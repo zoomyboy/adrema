@@ -194,12 +194,12 @@ class IndexTest extends TestCase
         Member::factory()->defaults()->for($group1)->create();
         Member::factory()->defaults()->for($group1)->create();
 
-        $oneResponse = $this->callFilter('member.index', ['group_id' => $group1->id]);
-        $twoResponse = $this->callFilter('member.index', ['group_id' => $group2->id]);
+        $oneResponse = $this->callFilter('member.index', ['group_ids' => [$group1->id]]);
+        $twoResponse = $this->callFilter('member.index', ['group_ids' => [$group2->id]]);
 
         $this->assertCount(3, $this->inertia($oneResponse, 'data.data'));
         $this->assertCount(0, $this->inertia($twoResponse, 'data.data'));
-        $this->assertInertiaHas($group1->id, $oneResponse, 'data.meta.filter.group_id');
+        $this->assertInertiaHas([$group1->id], $oneResponse, 'data.meta.filter.group_ids');
     }
 
     public function testItFiltersForAusstand(): void

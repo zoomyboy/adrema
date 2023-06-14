@@ -29,17 +29,17 @@ class StoreTest extends TestCase
         Member::factory()->defaults()->has(Membership::factory()->inLocal('Leiter*in', 'Wölfling'))->create(['email' => 'jane@example.com']);
         $activityId = Activity::first()->id;
 
-        $response = $this->postJson('/api/maildispatcher', [
+        $response = $this->postJson('/maildispatcher', [
             'name' => 'test',
             'gateway_id' => $gateway->id,
-            'filter' => ['activity_id' => $activityId],
+            'filter' => ['activity_ids' => [$activityId]],
         ]);
 
         $response->assertStatus(201);
         $this->assertDatabaseHas('maildispatchers', [
             'name' => 'test',
             'gateway_id' => $gateway->id,
-            'filter' => "{\"activity_id\":{$activityId}}",
+            'filter' => "{\"activity_ids\":[{$activityId}]}",
         ]);
         $dispatcher = Maildispatcher::first();
         $this->assertDatabaseCount('localmaildispatchers', 1);
