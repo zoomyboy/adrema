@@ -23,6 +23,16 @@ class StoreAction
         ResyncAction::dispatch();
     }
 
+    /**
+     * @return array<string, string>
+     */
+    public function getValidationAttributes(): array
+    {
+        return [
+            'gateway_id' => 'Verbindung',
+        ];
+    }
+
     public function rules(): array
     {
         return [
