@@ -10,7 +10,7 @@
                 class="flex items-center border-gray-600 text-gray-300 leading-none border-solid bg-gray-700 w-full appearance-none outline-none rounded-lg size-sm text-xs px-1 border pr-6"
                 v-text="`${value.length} Einträge ausgewählt`"
             ></div>
-            <div v-show="visible" class="absolute h-[31rem] overflow-auto shadow-lg bg-gray-600 border border-gray-500 rounded-lg p-2 top-7">
+            <div v-show="visible" class="absolute w-[max-content] z-30 h-[31rem] overflow-auto shadow-lg bg-gray-600 border border-gray-500 rounded-lg p-2 top-7">
                 <div v-for="(option, index) in parsedOptions" class="flex items-center space-x-2" :key="index">
                     <f-switch :id="`${id}-${index}`" size="sm" :items="value.includes(option.id)" :value="option.id" @input="trigger(option, $event)"></f-switch>
                     <div class="text-sm text-gray-200" v-text="option.name"></div>

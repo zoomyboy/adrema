@@ -19,6 +19,8 @@ class FilterScope extends Filter
     /**
      * @param array<int, int> $activityIds
      * @param array<int, int> $subactivityIds
+     * @param array<int, int> $groupIds
+     * @param array<int, int> $additional
      */
     public function __construct(
         public bool $ausstand = false,
@@ -26,7 +28,8 @@ class FilterScope extends Filter
         public array $activityIds = [],
         public array $subactivityIds = [],
         public string $search = '',
-        public ?int $groupId = null,
+        public array $groupIds = [],
+        public array $additional = [],
     ) {
     }
 
@@ -45,29 +48,35 @@ class FilterScope extends Filter
      */
     public function apply(Builder $query): Builder
     {
-        if ($this->ausstand) {
-            $query->whereAusstand();
-        }
+        $query->orWhere(function ($query) {
+            if ($this->ausstand) {
+                $query->whereAusstand();
+            }
 
-        if ($this->billKind) {
-            $query->where('bill_kind', BillKind::fromValue($this->billKind));
-        }
+            if ($this->billKind) {
+                $query->where('bill_kind', BillKind::fromValue($this->billKind));
+            }
 
-        if ($this->groupId) {
-            $query->where('group_id', $this->groupId);
-        }
+            if (count($this->groupIds)) {
+                $query->whereIn('group_id', $this->groupIds);
+            }
 
-        if (count($this->subactivityIds) + count($this->activityIds) > 0) {
-            $query->whereHas('memberships', function ($q) {
-                $q->active();
-                if (count($this->subactivityIds)) {
-                    $q->whereIn('subactivity_id', $this->subactivityIds);
-                }
-                if (count($this->activityIds)) {
-                    $q->whereIn('activity_id', $this->activityIds);
-                }
-            });
-        }
+            if (count($this->subactivityIds) + count($this->activityIds) > 0) {
+                $query->whereHas('memberships', function ($q) {
+                    $q->active();
+                    if (count($this->subactivityIds)) {
+                        $q->whereIn('subactivity_id', $this->subactivityIds);
+                    }
+                    if (count($this->activityIds)) {
+                        $q->whereIn('activity_id', $this->activityIds);
+                    }
+                });
+            }
+        })->orWhere(function ($query) {
+            if (count($this->additional)) {
+                $query->whereIn('id', $this->additional);
+            }
+        });
 
         return $query;
     }

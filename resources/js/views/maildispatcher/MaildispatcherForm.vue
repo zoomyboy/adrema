@@ -5,6 +5,12 @@
         </template>
         <form id="form" class="p-3 grid gap-3" @submit.prevent="submit">
             <f-save-button form="form"></f-save-button>
+            <ui-box heading="Metadatem">
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <f-text id="name" name="name" v-model="model.name" label="Name" size="sm" required></f-text>
+                    <f-select id="gateway_id" name="gateway_id" :options="meta.gateways" v-model="model.gateway_id" label="Verbindung" size="sm" required></f-select>
+                </div>
+            </ui-box>
             <ui-box heading="Filterregeln">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <f-multipleselect
@@ -15,7 +21,6 @@
                         @input="reload(1)"
                         label="Tätigkeit"
                         size="sm"
-                        required
                     ></f-multipleselect>
                     <f-multipleselect
                         id="subactivity_ids"
@@ -25,8 +30,17 @@
                         @input="reload(1)"
                         label="Unterttätigkeit"
                         size="sm"
-                        required
                     ></f-multipleselect>
+                    <f-multipleselect
+                        id="additional"
+                        name="additional"
+                        :options="meta.members"
+                        v-model="model.filter.additional"
+                        @input="reload(1)"
+                        label="Zusätzliche Mitglieder"
+                        size="sm"
+                    ></f-multipleselect>
+                    <f-multipleselect id="groupIds" name="groupIds" :options="meta.groups" v-model="model.filter.group_ids" @input="reload(1)" label="Gruppierungen" size="sm"></f-multipleselect>
                 </div>
             </ui-box>
             <ui-box heading="Mitglieder" v-if="members !== null">
