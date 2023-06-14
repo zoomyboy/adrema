@@ -140,6 +140,7 @@ class MemberResource extends JsonResource
             'genders' => Gender::pluck('name', 'id'),
             'billKinds' => BillKind::forSelect(),
             'nationalities' => Nationality::pluck('name', 'id'),
+            'members' => Member::ordered()->get()->map(fn ($member) => ['id' => $member->id, 'name' => $member->fullname]),
             'links' => [
                 'index' => route('member.index'),
                 'create' => route('member.create'),

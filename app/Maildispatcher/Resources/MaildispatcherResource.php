@@ -2,14 +2,11 @@
 
 namespace App\Maildispatcher\Resources;
 
-use App\Activity;
-use App\Group;
 use App\Lib\HasMeta;
 use App\Mailgateway\Models\Mailgateway;
 use App\Mailgateway\Resources\MailgatewayResource;
 use App\Member\FilterScope;
 use App\Member\Member;
-use App\Subactivity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MaildispatcherResource extends JsonResource
@@ -46,10 +43,7 @@ class MaildispatcherResource extends JsonResource
                 'gateway_id' => null,
                 'filter' => FilterScope::from([])->toArray(),
             ],
-            'activities' => Activity::pluck('name', 'id'),
-            'subactivities' => Subactivity::pluck('name', 'id'),
             'members' => Member::ordered()->get()->map(fn ($member) => ['id' => $member->id, 'name' => $member->fullname]),
-            'groups' => Group::pluck('name', 'id'),
             'gateways' => Mailgateway::pluck('name', 'id'),
         ];
     }

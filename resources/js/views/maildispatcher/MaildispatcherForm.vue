@@ -11,12 +11,12 @@
                     <f-select id="gateway_id" name="gateway_id" :options="meta.gateways" v-model="model.gateway_id" label="Verbindung" size="sm" required></f-select>
                 </div>
             </ui-box>
-            <ui-box heading="Filterregeln">
+            <ui-box heading="Filterregeln" v-if="members !== null">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <f-multipleselect
                         id="activity_ids"
                         name="activity_ids"
-                        :options="meta.activities"
+                        :options="members.meta.filterActivities"
                         v-model="model.filter.activity_ids"
                         @input="reload(1)"
                         label="Tätigkeit"
@@ -25,7 +25,7 @@
                     <f-multipleselect
                         id="subactivity_ids"
                         name="subactivity_ids"
-                        :options="meta.subactivities"
+                        :options="members.meta.filterSubactivities"
                         v-model="model.filter.subactivity_ids"
                         @input="reload(1)"
                         label="Unterttätigkeit"
@@ -34,13 +34,21 @@
                     <f-multipleselect
                         id="additional"
                         name="additional"
-                        :options="meta.members"
+                        :options="members.meta.members"
                         v-model="model.filter.additional"
                         @input="reload(1)"
                         label="Zusätzliche Mitglieder"
                         size="sm"
                     ></f-multipleselect>
-                    <f-multipleselect id="groupIds" name="groupIds" :options="meta.groups" v-model="model.filter.group_ids" @input="reload(1)" label="Gruppierungen" size="sm"></f-multipleselect>
+                    <f-multipleselect
+                        id="groupIds"
+                        name="groupIds"
+                        :options="members.meta.groups"
+                        v-model="model.filter.group_ids"
+                        @input="reload(1)"
+                        label="Gruppierungen"
+                        size="sm"
+                    ></f-multipleselect>
                 </div>
             </ui-box>
             <ui-box heading="Mitglieder" v-if="members !== null">
@@ -69,9 +77,10 @@
 
 <script>
 import indexHelpers from '../../mixins/indexHelpers.js';
+import hasFlash from '../../mixins/hasFlash.js';
 
 export default {
-    mixins: [indexHelpers],
+    mixins: [indexHelpers, hasFlash],
 
     data: function () {
         return {
@@ -94,6 +103,15 @@ export default {
                     filter: this.toFilterString(this.model.filter),
                 })
             ).data;
+        },
+
+        async submit() {
+            try {
+                await this.axios.post('/maildispatcher', this.model);
+                this.$inertia.visit(this.meta.links.index);
+            } catch (e) {
+                this.errorsFromException(e);
+            }
         },
     },
 
