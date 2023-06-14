@@ -8,12 +8,7 @@
             <select :disabled="disabled" :name="name" :value="value" @change="trigger">
                 <option v-if="placeholder" v-html="placeholder" :value="null"></option>
 
-                <option
-                    v-for="option in parsedOptions"
-                    :key="option.id"
-                    v-html="option.name"
-                    :value="option.id"
-                ></option>
+                <option v-for="option in parsedOptions" :key="option.id" v-html="option.name" :value="option.id"></option>
             </select>
             <div class="info-wrap">
                 <div v-if="hint" v-tooltip="hint">
@@ -95,10 +90,7 @@ export default {
     },
     methods: {
         trigger(v) {
-            this.$emit(
-                'input',
-                isNaN(parseInt(v.target.value)) ? (v.target.value ? v.target.value : null) : parseInt(v.target.value)
-            );
+            this.$emit('input', /^[0-9]+$/.test(v.target.value) ? parseInt(v.target.value) : v.target.value ? v.target.value : null);
         },
         clear() {
             this.$emit('input', null);
@@ -119,12 +111,6 @@ export default {
 
 <style scope>
 .inset-bg {
-    background: linear-gradient(
-        to bottom,
-        hsl(247.5, 66.7%, 97.6%) 0%,
-        hsl(247.5, 66.7%, 97.6%) 41%,
-        hsl(0deg 0% 100%) 41%,
-        hsl(180deg 0% 100%) 100%
-    );
+    background: linear-gradient(to bottom, hsl(247.5, 66.7%, 97.6%) 0%, hsl(247.5, 66.7%, 97.6%) 41%, hsl(0deg 0% 100%) 41%, hsl(180deg 0% 100%) 100%);
 }
 </style>
