@@ -16,6 +16,10 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 #[MapOutputName(SnakeCaseMapper::class)]
 class FilterScope extends Filter
 {
+    /**
+     * @param array<int, int> $activityIds
+     * @param array<int, int> $subactivityIds
+     */
     public function __construct(
         public bool $ausstand = false,
         public ?string $billKind = null,
