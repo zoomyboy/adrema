@@ -9,10 +9,13 @@ export default {
     },
     computed: {
         filterString() {
-            return btoa(encodeURIComponent(JSON.stringify(this.inner.meta.filter)));
+            return this.toFilterString(this.inner.meta.filter);
         },
     },
     methods: {
+        toFilterString(data) {
+            return btoa(encodeURIComponent(JSON.stringify(data)));
+        },
         reload(resetPage = true) {
             var _self = this;
             var data = {

@@ -71,7 +71,7 @@
             </thead>
 
             <tr v-for="(member, index) in inner.data" :key="index">
-                <td><age-groups :member="member"></age-groups></td>
+                <td><ui-age-groups :member="member"></ui-age-groups></td>
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
                 <td class="hidden 2xl:table-cell" v-text="member.full_address"></td>
@@ -92,7 +92,7 @@
         <div class="md:hidden p-3 grid gap-3">
             <ui-box class="relative" :heading="member.fullname" v-for="(member, index) in data.data" :key="index">
                 <div slot="in-title">
-                    <age-groups class="ml-2" :member="member" icon-class="w-4 h-4"></age-groups>
+                    <ui-age-groups class="ml-2" :member="member" icon-class="w-4 h-4"></ui-age-groups>
                 </div>
                 <div class="text-xs text-gray-200" v-text="member.full_address"></div>
                 <div class="flex items-center mt-1 space-x-4">
@@ -153,9 +153,8 @@ export default {
         MemberMemberships,
         MemberPayments,
         MemberCourses,
-        'age-groups': () => import('./AgeGroups.vue'),
-        'tags': () => import('./Tags.vue'),
-        'actions': () => import('./index/Actions.vue'),
+        tags: () => import('./Tags.vue'),
+        actions: () => import('./index/Actions.vue'),
     },
 
     methods: {
