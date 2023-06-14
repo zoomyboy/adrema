@@ -83,7 +83,11 @@ export default {
             set: debounce(async function (event) {
                 this.search.s = event;
 
-                var response = await this.axios.post('/api/member/search', {search: event, minLength: 3});
+                var response = await this.axios.post('/api/member/search', {
+                    filter: {
+                        search: event,
+                    },
+                });
 
                 this.search.results = response.data.data;
             }, 300),
