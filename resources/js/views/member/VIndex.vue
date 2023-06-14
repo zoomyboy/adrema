@@ -33,24 +33,24 @@
                 label="Rechnung"
                 size="sm"
             ></f-select>
-            <f-select
-                id="activity_id"
-                @input="setFilter('activity_id', $event)"
+            <f-multipleselect
+                id="activity_ids"
+                @input="setFilter('activity_ids', $event)"
                 :options="data.meta.filterActivities"
-                :value="getFilter('activity_id')"
-                label="Tätigkeit"
+                :value="getFilter('activity_ids')"
+                label="Tätigkeiten"
                 size="sm"
-                name="activity_id"
-            ></f-select>
-            <f-select
-                id="subactivity_id"
-                @input="setFilter('subactivity_id', $event)"
+                name="activity_ids"
+            ></f-multipleselect>
+            <f-multipleselect
+                id="subactivity_ids"
+                @input="setFilter('subactivity_ids', $event)"
                 :options="data.meta.filterSubactivities"
-                :value="getFilter('subactivity_id')"
-                label="Untertätigkeit"
+                :value="getFilter('subactivity_ids')"
+                label="Untertätigkeiten"
                 size="sm"
-                name="subactivity_id"
-            ></f-select>
+                name="subactivity_ids"
+            ></f-multipleselect>
             <button class="btn btn-primary label mr-2" @click.prevent="exportMembers">
                 <svg-sprite class="w-3 h-3 xl:mr-2" src="save"></svg-sprite>
                 <span class="hidden xl:inline">Exportieren</span>
