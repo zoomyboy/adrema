@@ -144,6 +144,24 @@ steps:
           branch: master
           event: push
 
+    - name: deploy dpsgbergischland
+      image: drillster/drone-rsync
+      settings:
+          hosts: ['zoomyboy.de']
+          user: dpsgbergischland
+          source: ./
+          target: ~/adrema
+          exclude: ['.git']
+          key:
+              from_secret: deploy_private_key
+          script:
+              - cd ~/adrema
+              - /usr/bin/php8.1 artisan migrate --force
+              - sudo systemctl restart adremabl-queue
+      when:
+          branch: master
+          event: push
+
     - name: github push
       image: alpine/git
       environment:
