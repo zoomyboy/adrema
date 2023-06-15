@@ -157,7 +157,7 @@ steps:
           script:
               - cd ~/adrema
               - /usr/bin/php8.1 artisan migrate --force
-              - sudo systemctl restart adremabl-queue
+              - sudo systemctl restart adremabl-horizon
       when:
           branch: master
           event: push
