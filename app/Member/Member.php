@@ -282,7 +282,7 @@ class Member extends Model implements Geolocatable
      */
     public function ageGroupMemberships(): HasMany
     {
-        return $this->memberships()->isAgeGroup();
+        return $this->memberships()->isAgeGroup()->active();
     }
 
     public static function booted()
