@@ -32,6 +32,14 @@ return new class() extends Migration {
     public function down()
     {
         Schema::table('members', function (Blueprint $table) {
+            $table->dropColumn('ps_at');
+            $table->dropColumn('more_ps_at');
+            $table->dropColumn('without_education_at');
+            $table->dropColumn('without_efz_at');
+            $table->dropColumn('has_svk');
+            $table->dropColumn('has_vk');
+            $table->dropColumn('multiply_pv');
+            $table->dropColumn('multiply_more_pv');
         });
     }
 };

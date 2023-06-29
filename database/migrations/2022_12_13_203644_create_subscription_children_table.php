@@ -1,6 +1,5 @@
 <?php
 
-use App\Payment\SubscriptionChild;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +12,6 @@ return new class() extends Migration {
      */
     public function up()
     {
-        $subscriptions = DB::table('subscriptions')->get();
-
         Schema::table('subscriptions', function (Blueprint $table) {
             $table->dropColumn('amount');
             $table->boolean('split')->default(false);
@@ -27,14 +24,6 @@ return new class() extends Migration {
             $table->string('name');
             $table->unsignedInteger('amount');
         });
-
-        foreach ($subscriptions as $subscription) {
-            SubscriptionChild::create([
-                'parent_id' => $subscription->id,
-                'name' => 'name',
-                'amount' => $subscription->amount,
-            ]);
-        }
     }
 
     /**
@@ -44,5 +33,11 @@ return new class() extends Migration {
      */
     public function down()
     {
+        Schema::dropIfExists('subscription_children');
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->unsignedInteger('amount');
+            $table->dropColumn('split');
+            $table->dropColumn('for_promise');
+        });
     }
 };

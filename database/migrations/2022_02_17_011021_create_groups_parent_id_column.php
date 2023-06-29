@@ -26,8 +26,8 @@ class CreateGroupsParentIdColumn extends Migration
     public function down()
     {
         Schema::table('groups', function (Blueprint $table) {
-            $table->dropForeign(['group_id']);
-            $table->dropColumn('group_id');
+            $table->dropForeign(['parent_id']);
+            $table->dropColumn('parent_id');
         });
     }
 }
