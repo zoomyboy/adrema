@@ -13,6 +13,9 @@
         <testsuite name="NamiUnit">
             <directory suffix="Test.php">./packages/laravel-nami/tests/Unit</directory>
         </testsuite>
+        <testsuite name="EndToEnd">
+            <directory suffix="Test.php">./tests/EndToEnd</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
