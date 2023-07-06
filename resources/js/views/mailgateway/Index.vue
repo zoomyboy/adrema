@@ -9,8 +9,8 @@
                     <f-text v-model="model.name" name="name" id="name" label="Bezeichnung" required></f-text>
                     <f-text v-model="model.domain" name="domain" id="domain" label="Domain" required></f-text>
                     <f-select
-                        :value="model.type.cls"
-                        @input="
+                        :modelValue="model.type.cls"
+                        @update:modelValue="
                             model.type = {
                                 cls: $event,
                                 params: {...getType($event).defaults},
@@ -65,7 +65,7 @@
                             ></ui-boolean-display>
                         </td>
                         <td>
-                            <a href="#" v-tooltip="`Bearbeiten`" @click.prevent="model = {...gateway}" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></a>
+                            <a href="#" v-tooltip="`Bearbeiten`" @click.prevent="model = {...gateway}" class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></a>
                         </td>
                     </tr>
                 </table>
@@ -100,14 +100,10 @@ export default {
             return this.data.meta.types.find((t) => t.id === type);
         },
         async submit() {
-            try {
-                await this.axios[this.model.id ? 'patch' : 'post'](this.model.id ? this.model.links.update : this.data.meta.links.store, this.model);
+            await this.axios[this.model.id ? 'patch' : 'post'](this.model.id ? this.model.links.update : this.data.meta.links.store, this.model);
 
-                this.reload();
-                this.model = null;
-            } catch (e) {
-                this.errorsFromException(e);
-            }
+            this.reload();
+            this.model = null;
         },
     },
     components: {

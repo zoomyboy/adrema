@@ -7,7 +7,7 @@
                 href="#"
                 @click.prevent="openMenu(index)"
                 class="rounded py-1 px-3 text-gray-400"
-                :class="index === value ? `bg-gray-600` : ''"
+                :class="index === modelValue ? `bg-gray-600` : ''"
                 v-text="item.title"
             ></a>
         </div>
@@ -18,12 +18,12 @@
 <script>
 export default {
     props: {
-        value: {},
+        modelValue: {},
         entries: {},
     },
     methods: {
         openMenu(index) {
-            this.$emit('input', index);
+            this.$emit('update:modelValue', index);
         },
     },
 };

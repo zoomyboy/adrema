@@ -13,6 +13,12 @@
             @apply bg-primary-500 text-primary-100;
         }
     }
+    &.btn-secondary {
+        @apply bg-primary-800 text-primary-400;
+        &:not(.disabled):hover {
+            @apply bg-primary-600 text-primary-200;
+        }
+    }
     &.btn-primary-light {
         @apply bg-primary-600 text-primary-200;
         &:not(.disabled):hover {

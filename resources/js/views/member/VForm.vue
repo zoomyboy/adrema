@@ -4,8 +4,10 @@
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
             <page-toolbar-button v-if="mode === 'edit'" :href="data.links.show" color="primary" icon="eye">anschauen</page-toolbar-button>
         </template>
-        <form class="flex grow relative" id="memberedit" @submit.prevent="submit">
+        <template #right>
             <f-save-button form="memberedit"></f-save-button>
+        </template>
+        <form class="flex grow relative" id="memberedit" @submit.prevent="submit">
             <ui-popup heading="Ein Konflikt ist aufgetreten" v-if="conflict === true">
                 <div>
                     <p class="mt-4">Dieses Mitglied wurde vorher bereits aktualisiert. Daher könnte ein Update zu Datenverlust führen.</p>

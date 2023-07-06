@@ -5,20 +5,20 @@
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
         <div class="real-field-wrap" :class="`size-${size}`">
-            <select :disabled="disabled" :name="name" :value="value" @change="trigger">
-                <option v-if="placeholder" v-html="placeholder" :value="null"></option>
+            <select :disabled="disabled" :name="name" :value="modelValue" @change="trigger">
+                <option v-if="placeholder" value="">{{ placeholder }}</option>
 
-                <option v-for="option in parsedOptions" :key="option.id" v-html="option.name" :value="option.id"></option>
+                <option v-for="option in parsedOptions" :key="option.id" :value="option.id">{{ option.name }}</option>
             </select>
             <div class="info-wrap">
                 <div v-if="hint" v-tooltip="hint">
-                    <svg-sprite src="info-button" class="info-button"></svg-sprite>
+                    <ui-sprite src="info-button" class="info-button"></ui-sprite>
                 </div>
                 <div class="px-1 relative" v-if="size != 'xs'">
-                    <svg-sprite class="chevron w-3 h-3 fill-current" src="chevron-down"></svg-sprite>
+                    <ui-sprite class="chevron w-3 h-3 fill-current" src="chevron-down"></ui-sprite>
                 </div>
                 <div class="px-1 relative" v-if="size == 'xs'">
-                    <svg-sprite class="chevron w-2 h-2 fill-current" src="chevron-down"></svg-sprite>
+                    <ui-sprite class="chevron w-2 h-2 fill-current" src="chevron-down"></ui-sprite>
                 </div>
             </div>
         </div>
@@ -29,6 +29,7 @@
 import map from 'lodash/map';
 
 export default {
+    emits: ['update:modelValue'],
     props: {
         disabled: {
             type: Boolean,
@@ -50,7 +51,7 @@ export default {
             default: false,
             type: Boolean,
         },
-        value: {
+        modelValue: {
             default: undefined,
         },
         label: {
@@ -90,20 +91,20 @@ export default {
     },
     methods: {
         trigger(v) {
-            this.$emit('input', /^[0-9]+$/.test(v.target.value) ? parseInt(v.target.value) : v.target.value ? v.target.value : null);
+            this.$emit('update:modelValue', /^[0-9]+$/.test(v.target.value) ? parseInt(v.target.value) : v.target.value ? v.target.value : null);
         },
         clear() {
-            this.$emit('input', null);
+            this.$emit('update:modelValue', null);
         },
     },
     mounted() {
-        if (this.def !== -1 && typeof this.value === 'undefined') {
-            this.$emit('input', this.def);
+        if (this.def !== -1 && typeof this.modelValue === 'undefined') {
+            this.$emit('update:modelValue', this.def);
             return;
         }
 
-        if (this.placeholder && typeof this.value === 'undefined') {
-            this.$emit('input', null);
+        if (this.placeholder && typeof this.modelValue === 'undefined') {
+            this.$emit('update:modelValue', null);
         }
     },
 };

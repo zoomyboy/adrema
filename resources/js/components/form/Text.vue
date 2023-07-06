@@ -19,7 +19,7 @@
             />
             <div v-if="hint" class="info-wrap">
                 <div v-tooltip="hint">
-                    <svg-sprite src="info-button" class="info-button"></svg-sprite>
+                    <ui-sprite src="info-button" class="info-button"></ui-sprite>
                 </div>
             </div>
         </div>
@@ -293,9 +293,7 @@ export default {
         hint: {
             default: null,
         },
-        value: {
-            default: undefined,
-        },
+        modelValue: {},
         mask: {
             default: undefined,
         },
@@ -335,10 +333,10 @@ export default {
     computed: {
         transformedValue: {
             get() {
-                return transformers[this.mode][this.focus ? 'edit' : 'display'].to(this.value);
+                return transformers[this.mode][this.focus ? 'edit' : 'display'].to(this.modelValue);
             },
             set(v) {
-                this.$emit('input', transformers[this.mode][this.focus ? 'edit' : 'display'].from(v));
+                this.$emit('update:modelValue', transformers[this.mode][this.focus ? 'edit' : 'display'].from(v));
             },
         },
         insetClass() {
@@ -353,7 +351,7 @@ export default {
         },
     },
     created() {
-        if (typeof this.value === 'undefined') {
+        if (typeof this.modelValue === 'undefined') {
             this.$emit('input', this.default === undefined ? '' : this.default);
         }
     },

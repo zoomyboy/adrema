@@ -1,8 +1,10 @@
 <template>
     <page-layout>
+        <template #right>
+            <f-save-button form="billsettingform"></f-save-button>
+        </template>
         <setting-layout>
             <form id="billsettingform" class="grow p-6 grid grid-cols-2 gap-3 items-start content-start" @submit.prevent="submit">
-                <f-save-button form="billsettingform"></f-save-button>
                 <f-text label="Absender" hint="Absender-Name in Kurzform, i.d.R. der kurze Stammesname" name="from" id="from" v-model="inner.from"></f-text>
                 <f-text label="Absender (lang)" v-model="inner.from_long" name="from_long" id="from_long" hint="Absender-Name in Langform, i.d.R. der Stammesname"></f-text>
                 <h2 class="text-lg font-semibold text-gray-300 col-span-2 mt-5">Kontaktdaten</h2>
@@ -34,7 +36,9 @@ export default {
     },
     methods: {
         submit() {
-            this.$inertia.post('/setting/bill', this.inner);
+            this.$inertia.post('/setting/bill', this.inner, {
+                onSuccess: () => this.$success('Einstellungen gespeichert.')
+            });
         },
     },
     components: {

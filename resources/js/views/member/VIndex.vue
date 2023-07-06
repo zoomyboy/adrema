@@ -20,13 +20,13 @@
             </div>
         </ui-popup>
         <div class="px-6 py-2 flex border-b border-gray-600 items-center space-x-3">
-            <f-text :value="getFilter('search')" @input="setFilter('search', $event)" id="search" name="search" label="Suchen …" size="sm"></f-text>
-            <f-switch v-show="hasModule('bill')" id="ausstand" @input="setFilter('ausstand', $event)" :items="getFilter('ausstand')" label="Nur Ausstände" size="sm"></f-switch>
+            <f-text :modelValue="getFilter('search')" @update:modelValue="setFilter('search', $event)" id="search" name="search" label="Suchen …" size="sm"></f-text>
+            <f-switch v-show="hasModule('bill')" id="ausstand" @update:modelValue="setFilter('ausstand', $event)" :modelValue="getFilter('ausstand')" label="Nur Ausstände" size="sm"></f-switch>
             <f-multipleselect
                 id="group_ids"
-                @input="setFilter('group_ids', $event)"
+                @update:modelValue="setFilter('group_ids', $event)"
                 :options="data.meta.groups"
-                :value="getFilter('group_ids')"
+                :modelValue="getFilter('group_ids')"
                 label="Gruppierungen"
                 size="sm"
                 name="group_ids"
@@ -35,32 +35,32 @@
                 v-show="hasModule('bill')"
                 name="billKinds"
                 id="billKinds"
-                @input="setFilter('bill_kind', $event)"
+                @update:modelValue="setFilter('bill_kind', $event)"
                 :options="data.meta.billKinds"
-                :value="getFilter('bill_kind')"
+                :modelValue="getFilter('bill_kind')"
                 label="Rechnung"
                 size="sm"
             ></f-select>
             <f-multipleselect
                 id="activity_ids"
-                @input="setFilter('activity_ids', $event)"
+                @update:modelValue="setFilter('activity_ids', $event)"
                 :options="data.meta.filterActivities"
-                :value="getFilter('activity_ids')"
+                :modelValue="getFilter('activity_ids')"
                 label="Tätigkeiten"
                 size="sm"
                 name="activity_ids"
             ></f-multipleselect>
             <f-multipleselect
                 id="subactivity_ids"
-                @input="setFilter('subactivity_ids', $event)"
+                @update:modelValue="setFilter('subactivity_ids', $event)"
                 :options="data.meta.filterSubactivities"
-                :value="getFilter('subactivity_ids')"
+                :modelValue="getFilter('subactivity_ids')"
                 label="Untertätigkeiten"
                 size="sm"
                 name="subactivity_ids"
             ></f-multipleselect>
             <button class="btn btn-primary label mr-2" @click.prevent="exportMembers">
-                <svg-sprite class="w-3 h-3 xl:mr-2" src="save"></svg-sprite>
+                <ui-sprite class="w-3 h-3 xl:mr-2" src="save"></ui-sprite>
                 <span class="hidden xl:inline">Exportieren</span>
             </button>
         </div>
@@ -109,7 +109,7 @@
                 </div>
                 <actions class="mt-2" :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)"></actions>
                 <div class="absolute right-0 top-0 h-full flex items-center mr-2">
-                    <i-link :href="member.links.show" v-tooltip="`Details`"><svg-sprite src="chevron-down" class="w-6 h-6 text-teal-100 -rotate-90"></svg-sprite></i-link>
+                    <i-link :href="member.links.show" v-tooltip="`Details`"><ui-sprite src="chevron-down" class="w-6 h-6 text-teal-100 -rotate-90"></ui-sprite></i-link>
                 </div>
             </ui-box>
         </div>
@@ -118,24 +118,22 @@
             <ui-pagination class="mt-4" :value="data.meta" :only="['data']"></ui-pagination>
         </div>
 
-        <transition name="sidebar">
-            <member-payments
-                v-if="single !== null && sidebar === 'payment.index'"
-                @close="closeSidebar"
-                :subscriptions="data.meta.subscriptions"
-                :statuses="data.meta.statuses"
-                :value="data.data[single]"
-            ></member-payments>
-            <member-memberships
-                v-if="single !== null && sidebar === 'membership.index'"
-                @close="closeSidebar"
-                :groups="data.meta.groups"
-                :activities="data.meta.formActivities"
-                :subactivities="data.meta.formSubactivities"
-                :value="data.data[single]"
-            ></member-memberships>
-            <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="data.meta.courses" :value="data.data[single]"></member-courses>
-        </transition>
+        <member-payments
+            v-if="single !== null && sidebar === 'payment.index'"
+            @close="closeSidebar"
+            :subscriptions="data.meta.subscriptions"
+            :statuses="data.meta.statuses"
+            :value="data.data[single]"
+        ></member-payments>
+        <member-memberships
+            v-if="single !== null && sidebar === 'membership.index'"
+            @close="closeSidebar"
+            :groups="data.meta.groups"
+            :activities="data.meta.formActivities"
+            :subactivities="data.meta.formSubactivities"
+            :value="data.data[single]"
+        ></member-memberships>
+        <member-courses v-if="single !== null && sidebar === 'courses.index'" @close="closeSidebar" :courses="data.meta.courses" :value="data.data[single]"></member-courses>
     </page-layout>
 </template>
 
@@ -145,6 +143,8 @@ import MemberMemberships from './MemberMemberships.vue';
 import MemberCourses from './MemberCourses.vue';
 import indexHelpers from '../../mixins/indexHelpers.js';
 import hasModule from '../../mixins/hasModule.js';
+import Tags from './Tags.vue';
+import Actions from './index/Actions.vue';
 
 export default {
     data: function () {
@@ -161,8 +161,8 @@ export default {
         MemberMemberships,
         MemberPayments,
         MemberCourses,
-        tags: () => import('./Tags.vue'),
-        actions: () => import('./index/Actions.vue'),
+        Tags,
+        Actions,
     },
 
     methods: {

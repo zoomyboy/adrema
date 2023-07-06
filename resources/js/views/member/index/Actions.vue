@@ -1,48 +1,16 @@
 <template>
     <div class="flex space-x-1">
-        <i-link :href="member.links.show" class="inline-flex btn btn-primary btn-sm" v-tooltip="`Details`"
-            ><svg-sprite src="eye"></svg-sprite
-        ></i-link>
-        <i-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm" v-tooltip="`bearbeiten`"
-            ><svg-sprite src="pencil"></svg-sprite
-        ></i-link>
-        <a
-            href="#"
-            v-tooltip="`Zahlungen`"
-            v-show="hasModule('bill')"
-            @click.prevent="$emit('sidebar', 'payment.index')"
-            class="inline-flex btn btn-info btn-sm"
-            ><svg-sprite src="money"></svg-sprite
+        <i-link :href="member.links.show" class="inline-flex btn btn-primary btn-sm" v-tooltip="`Details`"><ui-sprite src="eye"></ui-sprite></i-link>
+        <i-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm" v-tooltip="`bearbeiten`"><ui-sprite src="pencil"></ui-sprite></i-link>
+        <a href="#" v-tooltip="`Zahlungen`" v-show="hasModule('bill')" @click.prevent="$emit('sidebar', 'payment.index')" class="inline-flex btn btn-info btn-sm"
+            ><ui-sprite src="money"></ui-sprite
         ></a>
-        <a
-            href="#"
-            v-tooltip="`Ausbildungen`"
-            v-show="hasModule('courses')"
-            @click.prevent="$emit('sidebar', 'courses.index')"
-            class="inline-flex btn btn-info btn-sm"
-            ><svg-sprite src="course"></svg-sprite
+        <a href="#" v-tooltip="`Ausbildungen`" v-show="hasModule('courses')" @click.prevent="$emit('sidebar', 'courses.index')" class="inline-flex btn btn-info btn-sm"
+            ><ui-sprite src="course"></ui-sprite
         ></a>
-        <a
-            href="#"
-            v-tooltip="`Mitgliedschaften`"
-            @click.prevent="$emit('sidebar', 'membership.index')"
-            class="inline-flex btn btn-info btn-sm"
-            ><svg-sprite src="user"></svg-sprite
-        ></a>
-        <a
-            :href="member.efz_link"
-            v-show="member.efz_link"
-            class="inline-flex btn btn-info btn-sm"
-            v-tooltip="`EFZ Formular`"
-            ><svg-sprite src="report"></svg-sprite
-        ></a>
-        <i-link
-            href="#"
-            @click.prevent="$emit('remove')"
-            class="inline-flex btn btn-danger btn-sm"
-            v-tooltip="`Entfernen`"
-            ><svg-sprite src="trash"></svg-sprite
-        ></i-link>
+        <a href="#" v-tooltip="`Mitgliedschaften`" @click.prevent="$emit('sidebar', 'membership.index')" class="inline-flex btn btn-info btn-sm"><ui-sprite src="user"></ui-sprite></a>
+        <a :href="member.efz_link" v-show="member.efz_link" class="inline-flex btn btn-info btn-sm" v-tooltip="`EFZ Formular`"><ui-sprite src="report"></ui-sprite></a>
+        <i-link href="#" @click.prevent="$emit('remove')" class="inline-flex btn btn-danger btn-sm" v-tooltip="`Entfernen`"><ui-sprite src="trash"></ui-sprite></i-link>
     </div>
 </template>
 

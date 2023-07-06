@@ -3,8 +3,10 @@
         <template #toolbar>
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">Zurück</page-toolbar-button>
         </template>
-        <form id="form" class="p-3 grid gap-3" @submit.prevent="submit">
+        <template #right>
             <f-save-button form="form"></f-save-button>
+        </template>
+        <form id="form" class="p-3 grid gap-3" @submit.prevent="submit">
             <ui-box heading="Metadatem">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <f-text id="name" name="name" v-model="model.name" label="Name" size="sm" required></f-text>
@@ -18,7 +20,7 @@
                         name="activity_ids"
                         :options="members.meta.filterActivities"
                         v-model="model.filter.activity_ids"
-                        @input="reload(1)"
+                        @update:modelValue="reload(1)"
                         label="Tätigkeit"
                         size="sm"
                     ></f-multipleselect>
@@ -27,7 +29,7 @@
                         name="subactivity_ids"
                         :options="members.meta.filterSubactivities"
                         v-model="model.filter.subactivity_ids"
-                        @input="reload(1)"
+                        @update:modelValue="reload(1)"
                         label="Unterttätigkeit"
                         size="sm"
                     ></f-multipleselect>
@@ -36,7 +38,7 @@
                         name="additional"
                         :options="members.meta.members"
                         v-model="model.filter.additional"
-                        @input="reload(1)"
+                        @update:modelValue="reload(1)"
                         label="Zusätzliche Mitglieder"
                         size="sm"
                     ></f-multipleselect>
@@ -45,7 +47,7 @@
                         name="groupIds"
                         :options="members.meta.groups"
                         v-model="model.filter.group_ids"
-                        @input="reload(1)"
+                        @update:modelValue="reload(1)"
                         label="Gruppierungen"
                         size="sm"
                     ></f-multipleselect>
@@ -105,12 +107,8 @@ export default {
         },
 
         async submit() {
-            try {
-                this.model.id ? await this.axios.patch(this.model.links.update, this.model) : await this.axios.post('/maildispatcher', this.model);
-                this.$inertia.visit(this.meta.links.index);
-            } catch (e) {
-                this.errorsFromException(e);
-            }
+            this.model.id ? await this.axios.patch(this.model.links.update, this.model) : await this.axios.post('/maildispatcher', this.model);
+            this.$inertia.visit(this.meta.links.index);
         },
     },
 

@@ -27,7 +27,7 @@
                     id="gruppierung1Id"
                     size="sm"
                     :options="searchLayerOptions[0]"
-                    @input="loadSearchLayer(1, $event, search)"
+                    @update:modelValue="loadSearchLayer(1, $event, search)"
                     hint="Gruppierungs-Nummer einer Diözese, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deiner Diözese. Entspricht dem Feld '1. Ebene' in der NaMi Suche."
                 ></f-select>
                 <f-select
@@ -37,7 +37,7 @@
                     id="gruppierung2Id"
                     hint="Gruppierungs-Nummer eines Bezirks, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deines Bezirks. Entspricht dem Feld '2. Ebene' in der NaMi Suche. Fülle dieses Feld aus, um Mitglieder auf einen bestimmten Bezirk zu begrenzen."
                     :disabled="!values.params.gruppierung1Id"
-                    @input="loadSearchLayer(2, $event, search)"
+                    @update:modelValue="loadSearchLayer(2, $event, search)"
                     size="sm"
                     :options="searchLayerOptions[1]"
                 ></f-select>
@@ -47,7 +47,7 @@
                     name="gruppierung3Id"
                     id="gruppierung3Id"
                     size="sm"
-                    @input="search"
+                    @update:modelValue="search"
                     hint="Gruppierungs-Nummer deines Stammes, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deines Stammes. Entspricht dem Feld '3. Ebene' in der NaMi Suche. Fülle dieses Feld aus, um Mitglieder auf einen bestimmten Stamm zu beschränken."
                     :disabled="!values.params.gruppierung1Id || !values.params.gruppierung2Id"
                     :options="searchLayerOptions[2]"
@@ -58,7 +58,7 @@
                     name="mglStatusId"
                     id="mglStatusId"
                     size="sm"
-                    @input="search"
+                    @update:modelValue="search"
                     :options="states"
                     hint="Wähle hier etwas aus, um nur aktive oder nur inaktive Mitglieder zu synchronisieren. Wir empfehlen dir, dies so zu belassen und Mitglieder ohne 'Datenweiterverwendung' gänzlich zu löschen, um Karteileichen zu entfernen."
                 ></f-select>
@@ -67,7 +67,7 @@
                     label="In Gruppierung suchen"
                     name="inGrp"
                     id="inGrp"
-                    @input="search"
+                    @update:modelValue="search"
                     hint="Mitglieder finden, die direktes Mitglied in der kleinsten befüllten Gruppierung sind."
                     size="sm"
                 ></f-switch>
@@ -76,12 +76,12 @@
                     label="Unterhalb Gruppierung suchen"
                     name="unterhalbGrp"
                     id="unterhalbGrp"
-                    @input="search"
+                    @update:modelValue="search"
                     hint="Mitglieder finden, die direktes Mitglied in einer Untergruppe der kleinsten befüllten Gruppierung sind."
                     size="sm"
                 ></f-switch>
                 <div class="col-span-full flex justify-center">
-                    <ui-button :is-loading="loading" class="px-10" type="submit">Weiter</ui-button>
+                    <ui-button :is-loading="loading" class="!px-10" type="submit">Weiter</ui-button>
                 </div>
             </form>
 
@@ -117,9 +117,10 @@
                 <p>Dieser Gruppierung werden Mitglieder automatisch zugeordnet,<br />falls nichts anderes angegeben wurde.</p>
                 <p>I.d.R. ist das z.B. die Nummer deines Stammes, wenn du als StaVo mit Adrema Daten verwaltest.</p>
             </div>
-            <form @submit.prevent="submit" class="grid gap-3 mt-5">
-                <f-text v-model="values.group_id" label="Gruppierungs-Nummer" name="groupId" id="groupId" type="tel" required></f-text>
-                <button type="submit" class="btn w-full btn-primary mt-6 inline-block">Weiter</button>
+            <form @submit.prevent="submit" class="grid grid-cols-2 gap-3 mt-5">
+                <f-text v-model="values.group_id" label="Gruppierungs-Nummer" name="groupId" id="groupId" type="tel" class="col-span-full" required></f-text>
+                <ui-button class="btn-secondary" @click.prevent="step--">Zurück</ui-button>
+                <ui-button type="submit">Weiter</ui-button>
             </form>
         </div>
         <div v-if="step === 3">
@@ -171,12 +172,8 @@ export default {
     },
     methods: {
         async submit() {
-            try {
-                await this.axios.post('/initialize', this.values);
-                this.step = 3;
-            } catch (e) {
-                this.errorsFromException(e);
-            }
+            await this.axios.post('/initialize', this.values);
+            this.step = 3;
         },
         async storeSearch() {
             this.values.group_id = this.values.params.gruppierung3Id ? this.values.params.gruppierung3Id : this.values.params.gruppierung2Id;
@@ -189,11 +186,10 @@ export default {
             this.loading = true;
             try {
                 await this.axios.post('/nami/login-check', this.values);
+                this.$success('Login erfolgreich');
                 await this.loadSearchResult(1);
                 await this.loadSearchLayer(0, null, () => '');
                 this.step = 1;
-            } catch (e) {
-                this.errorsFromException(e);
             } finally {
                 this.loading = false;
             }
@@ -222,8 +218,6 @@ export default {
                 });
 
                 after();
-            } catch (e) {
-                this.errorsFromException(e);
             } finally {
                 this.loading = false;
             }
@@ -233,8 +227,6 @@ export default {
             try {
                 var result = await this.axios.post('/nami/search', {...this.values, page: page});
                 this.preview = result.data;
-            } catch (e) {
-                this.errorsFromException(e);
             } finally {
                 this.loading = false;
             }

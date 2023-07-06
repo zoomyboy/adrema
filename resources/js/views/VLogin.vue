@@ -5,8 +5,8 @@
             <img src="../../img/dpsg.gif" class="w-24" />
         </div>
         <div class="p-6 md:p-10 grid gap-5">
-            <f-text id="email" label="E-Mail-Adresse" v-model="values.email"></f-text>
-            <f-text id="password" type="password" label="Passwort" v-model="values.password"></f-text>
+            <f-text id="email" name="email" label="E-Mail-Adresse" v-model="values.email"></f-text>
+            <f-text id="password" name="password" type="password" label="Passwort" v-model="values.password"></f-text>
             <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </form>

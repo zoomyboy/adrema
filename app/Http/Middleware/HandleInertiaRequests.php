@@ -4,21 +4,40 @@ namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
 use App\Setting\GeneralSettings;
-use Closure;
-use Session;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Inertia\Middleware;
 
-class InertiaShareMiddleware
+class HandleInertiaRequests extends Middleware
 {
     /**
-     * Handle an incoming request.
+     * The root template that's loaded on the first page visit.
      *
-     * @param \Illuminate\Http\Request $request
+     * @see https://inertiajs.com/server-side-setup#root-template
      *
-     * @return mixed
+     * @var string
      */
-    public function handle($request, Closure $next)
+    protected $rootView = 'app';
+
+    /**
+     * Determines the current asset version.
+     *
+     * @see https://inertiajs.com/asset-versioning
+     */
+    public function version(Request $request): ?string
     {
-        \Inertia::share([
+        return parent::version($request);
+    }
+
+    /**
+     * Defines the props that are shared by default.
+     *
+     * @see https://inertiajs.com/shared-data
+     */
+    public function share(Request $request): array
+    {
+        return [
+            ...parent::share($request),
             'auth' => ['user' => auth()->check() ? new UserResource(auth()->user()) : null],
             'search' => $request->query('search', ''),
             'flash' => session()->get('flash'),
@@ -36,10 +55,6 @@ class InertiaShareMiddleware
             'settings' => [
                 'modules' => app(GeneralSettings::class)->modules,
             ],
-        ]);
-
-        $response = $next($request);
-
-        return $response;
+        ];
     }
 }

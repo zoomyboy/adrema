@@ -8,8 +8,8 @@
         </page-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
-            <f-select id="group_id" name="group_id" :options="groups" v-model="single.group_id" label="Gruppierung" size="sm" required></f-select>
-            <f-select id="activity_id" name="activity_id" :options="activities" v-model="single.activity_id" label="Tätigkeit" size="sm" required></f-select>
+            <f-select id="group_id" name="group_id" :options="groups" v-model="single.group_id" label="Gruppierung" required></f-select>
+            <f-select id="activity_id" name="activity_id" :options="activities" v-model="single.activity_id" label="Tätigkeit" required></f-select>
             <f-select
                 v-if="single.activity_id"
                 name="subactivity_id"
@@ -19,7 +19,7 @@
                 label="Untertätigkeit"
                 size="sm"
             ></f-select>
-            <f-switch id="has_promise" :items="single.promised_at !== null" @input="single.promised_at = $event ? '2000-02-02' : null" size="sm" label="Hat Versprechen"></f-switch>
+            <f-switch id="has_promise" :modelValue="single.promised_at !== null" @update:modelValue="single.promised_at = $event ? '2000-02-02' : null" label="Hat Versprechen"></f-switch>
             <f-text v-show="single.promised_at !== null" type="date" id="promised_at" v-model="single.promised_at" label="Versprechensdatum" size="sm"></f-text>
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
@@ -45,9 +45,9 @@
                                 mode = 'edit';
                             "
                             class="inline-flex btn btn-warning btn-sm"
-                            ><svg-sprite src="pencil"></svg-sprite
+                            ><ui-sprite src="pencil"></ui-sprite
                         ></a>
-                        <i-link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
+                        <i-link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><ui-sprite src="trash"></ui-sprite></i-link>
                     </td>
                 </tr>
             </table>

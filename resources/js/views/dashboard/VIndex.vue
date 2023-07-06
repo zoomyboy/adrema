@@ -2,13 +2,15 @@
     <page-layout>
         <div class="gap-6 md:grid-cols-2 xl:grid-cols-4 grid p-6">
             <v-block v-for="(block, index) in blocks" :key="index" :title="block.title">
-                <v-component :data="block.data" :is="block.component"></v-component>
+                <component :data="block.data" :is="block.component"></component>
             </v-block>
         </div>
     </page-layout>
 </template>
 
 <script>
+import {defineAsyncComponent} from 'vue';
+
 export default {
     props: {
         data: {},
@@ -16,12 +18,12 @@ export default {
     },
 
     components: {
-        'VBlock': () => import('./VBlock.vue'),
-        'age-group-count': () => import('./AgeGroupCount.vue'),
-        'efz-pending': () => import('./EfzPending.vue'),
-        'ps-pending': () => import('./PsPending.vue'),
-        'testers': () => import('./Testers.vue'),
-        'member-payment': () => import('./MemberPayment.vue'),
+        'VBlock': defineAsyncComponent(() => import('./VBlock.vue')),
+        'age-group-count': defineAsyncComponent(() => import('./AgeGroupCount.vue')),
+        'efz-pending': defineAsyncComponent(() => import('./EfzPending.vue')),
+        'ps-pending': defineAsyncComponent(() => import('./PsPending.vue')),
+        'testers': defineAsyncComponent(() => import('./Testers.vue')),
+        'member-payment': defineAsyncComponent(() => import('./MemberPayment.vue')),
     },
 };
 </script>

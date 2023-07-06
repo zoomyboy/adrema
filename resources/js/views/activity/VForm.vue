@@ -3,6 +3,9 @@
         <template #toolbar>
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
         </template>
+        <template #right>
+            <f-save-button form="actionform"></f-save-button>
+        </template>
         <form id="actionform" class="grow p-3" @submit.prevent="submit">
             <ui-popup heading="Neue Untertätigkeit" v-if="mode === 'edit' && currentSubactivity !== null" @close="currentSubactivity = null">
                 <subactivity-form class="mt-4" v-if="currentSubactivity" :value="currentSubactivity" @stored="reloadSubactivities" @updated="mergeSubactivity"></subactivity-form>
@@ -18,7 +21,7 @@
             <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
                 <div v-for="option in subactivities" class="flex items-center space-x-2">
                     <a href="#" @click.prevent="currentSubactivity = option" class="transition hover:bg-yellow-600 group w-5 h-5 rounded-full flex items-center justify-center flex-none">
-                        <svg-sprite src="pencil" class="text-yellow-800 w-3 h-3 group-hover:text-yellow-200 transition"></svg-sprite>
+                        <ui-sprite src="pencil" class="text-yellow-800 w-3 h-3 group-hover:text-yellow-200 transition"></ui-sprite>
                     </a>
                     <f-switch
                         inline
@@ -32,13 +35,20 @@
                     ></f-switch>
                 </div>
             </div>
-            <f-save-button form="actionform"></f-save-button>
         </form>
     </page-layout>
 </template>
 
 <script>
+import {defineAsyncComponent} from 'vue';
+import {useToast} from 'vue-toastification';
+
 export default {
+    setup() {
+        const toast = useToast();
+
+        return {toast};
+    },
     data: function () {
         return {
             currentSubactivity: null,
@@ -54,7 +64,7 @@ export default {
     },
 
     components: {
-        'subactivity-form': () => import('./SubactivityForm.vue'),
+        'subactivity-form': defineAsyncComponent(() => import('./SubactivityForm.vue')),
     },
 
     methods: {
@@ -63,27 +73,23 @@ export default {
         },
 
         reloadSubactivities(model) {
-            var _self = this;
-
             this.$inertia.reload({
-                onSuccess(page) {
-                    _self.subactivities = page.props.meta.subactivities;
-                    _self.inner.subactivities.push(model.id);
-                    _self.$success('Untertätigkeit gespeichert.');
-                    _self.currentSubactivity = null;
+                onSuccess: (page) => {
+                    this.subactivities = page.props.meta.subactivities;
+                    this.inner.subactivities.push(model.id);
+                    this.toast.success('Untertätigkeit gespeichert.');
+                    this.currentSubactivity = null;
                 },
             });
         },
 
         mergeSubactivity(model) {
-            var _self = this;
-
             this.$inertia.reload({
-                onSuccess(page) {
-                    _self.subactivities = page.props.meta.subactivities;
-                    _self.inner.subactivities = _self.inner.subactivities.map((s) => (s.id === model.id ? model : s));
-                    _self.$success('Untertätigkeit aktualisiert.');
-                    _self.currentSubactivity = null;
+                onSuccess: (page) => {
+                    this.subactivities = page.props.meta.subactivities;
+                    this.inner.subactivities = this.inner.subactivities.map((s) => (s.id === model.id ? model : s));
+                    this.toast.success('Untertätigkeit aktualisiert.');
+                    this.currentSubactivity = null;
                 },
             });
         },

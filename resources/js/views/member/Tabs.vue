@@ -29,18 +29,18 @@ export default {
     },
 
     props: {
-        value: {},
+        modelValue: {},
     },
 
     methods: {
         navigate(v) {
             this.inner.active = v;
-            this.$emit('input', this.inner);
+            this.$emit('update:modelValue', this.inner);
         },
     },
 
     created() {
-        this.inner = this.value;
+        this.inner = this.modelValue;
     },
 };
 </script>

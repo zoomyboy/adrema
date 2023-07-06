@@ -21,14 +21,14 @@
             <span>
                 <input :id="id" type="checkbox" :name="name" :value="value" v-model="v" :disabled="disabled" class="absolute peer" @keypress="$emit('keypress', $event)" />
                 <span class="relative cursor-pointer peer-focus:bg-red-500 flex grow display" :class="{'bg-switch': v === true, 'bg-gray-700': v === false}">
-                    <span><svg-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="check"></svg-sprite></span>
-                    <span><svg-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="close"></svg-sprite></span>
+                    <span><ui-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="check"></ui-sprite></span>
+                    <span><ui-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="close"></ui-sprite></span>
                     <var class="absolute overlay bg-gray-400 rounded top-0"></var>
                 </span>
             </span>
             <div v-if="hint" class="ml-2 info-wrap">
                 <div v-tooltip="hint">
-                    <svg-sprite src="info-button" class="info-button w-4 h-4 text-primary-700"></svg-sprite>
+                    <ui-sprite src="info-button" class="info-button w-4 h-4 text-primary-700"></ui-sprite>
                 </div>
             </div>
         </div>
@@ -37,6 +37,7 @@
 
 <script>
 export default {
+    emits: ['update:modelValue'],
     data: function () {
         return {
             sizes: {
@@ -54,10 +55,6 @@ export default {
                 },
             },
         };
-    },
-    model: {
-        prop: 'items',
-        event: 'input',
     },
     props: {
         hint: {
@@ -87,7 +84,7 @@ export default {
         label: {
             default: false,
         },
-        items: {
+        modelValue: {
             default: undefined,
         },
     },
@@ -98,28 +95,28 @@ export default {
                     return;
                 }
 
-                if (typeof this.items === 'boolean') {
-                    this.$emit('input', v);
+                if (typeof this.modelValue === 'boolean') {
+                    this.$emit('update:modelValue', v);
                     return;
                 }
 
-                var a = this.items.filter((i) => i !== this.value);
+                var a = this.modelValue.filter((i) => i !== this.value);
                 if (v) {
                     a.push(this.value);
                 }
 
-                this.$emit('input', a);
+                this.$emit('update:modelValue', a);
             },
             get() {
-                if (typeof this.items === 'boolean') {
-                    return this.items;
+                if (typeof this.modelValue === 'boolean') {
+                    return this.modelValue;
                 }
 
-                if (typeof this.items === 'undefined') {
-                    return this.$emit('input', false);
+                if (typeof this.modelValue === 'undefined') {
+                    return this.$emit('update:modelValue', false);
                 }
 
-                return this.items.indexOf(this.value) !== -1;
+                return this.modelValue.indexOf(this.value) !== -1;
             },
         },
         fieldSize() {

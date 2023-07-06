@@ -1,6 +1,6 @@
 <template>
-    <button v-on="$listeners" type="button" class="btn label btn-primary">
-        <svg-sprite class="w-3 h-3 mr-2" :src="icon"></svg-sprite>
+    <button v-bind="$attrs" type="button" class="btn label btn-primary">
+        <ui-sprite class="w-3 h-3 mr-2" :src="icon"></ui-sprite>
         <span><slot></slot></span>
     </button>
 </template>

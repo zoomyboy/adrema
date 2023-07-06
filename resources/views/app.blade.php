@@ -7,6 +7,6 @@
         @vite('resources/js/app.js')
     </head>
     <body class="min-h-full flex flex-col">
-        @inertia
+        @inertia('app" class="bg-gray-900 font-sans flex flex-col grow"')
     </body>
 </html>

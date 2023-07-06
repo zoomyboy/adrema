@@ -22,8 +22,8 @@
                 <td v-text="activity.name"></td>
                 <td>
                     <div class="flex space-x-1">
-                        <i-link :href="activity.links.edit" class="inline-flex btn btn-warning btn-sm" v-tooltip="`bearbeiten`"><svg-sprite src="pencil"></svg-sprite></i-link>
-                        <i-link href="#" @click.prevent="deleting = activity" class="inline-flex btn btn-danger btn-sm" v-tooltip="`Entfernen`"><svg-sprite src="trash"></svg-sprite></i-link>
+                        <i-link :href="activity.links.edit" class="inline-flex btn btn-warning btn-sm" v-tooltip="`bearbeiten`"><ui-sprite src="pencil"></ui-sprite></i-link>
+                        <i-link href="#" @click.prevent="deleting = activity" class="inline-flex btn btn-danger btn-sm" v-tooltip="`Entfernen`"><ui-sprite src="trash"></ui-sprite></i-link>
                     </div>
                 </td>
             </tr>

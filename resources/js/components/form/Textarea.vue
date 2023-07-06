@@ -30,7 +30,7 @@
             }"
         ></textarea>
         <div v-if="hint" v-tooltip="hint" class="absolute right-0 top-0 mr-2 mt-2">
-            <svg-sprite src="info-button" class="w-5 h-5 text-indigo-200"></svg-sprite>
+            <ui-sprite src="info-button" class="w-5 h-5 text-indigo-200"></ui-sprite>
         </div>
     </label>
 </template>

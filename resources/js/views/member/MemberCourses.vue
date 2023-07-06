@@ -38,9 +38,9 @@
                                 mode = 'edit';
                             "
                             class="inline-flex btn btn-warning btn-sm"
-                            ><svg-sprite src="pencil"></svg-sprite
+                            ><ui-sprite src="pencil"></ui-sprite
                         ></a>
-                        <i-link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
+                        <i-link href="#" @click.prevent="remove(course)" class="inline-flex btn btn-danger btn-sm"><ui-sprite src="trash"></ui-sprite></i-link>
                     </td>
                 </tr>
             </table>

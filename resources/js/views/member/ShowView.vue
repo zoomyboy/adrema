@@ -49,14 +49,15 @@
             </ui-box>
 
             <ui-box heading="Karte" container-class="grow" class="area-map hidden xl:flex">
-                <vmap v-if="inner.lat && inner.lon" :value="[inner.lat, inner.lon]"></vmap>
-                <div class="h-full flex items-center justify-center text-gray-400 text-center" v-else>Keine Karte vorhanden</div>
+                <div class="h-full flex items-center justify-center text-gray-400 text-center">Keine Karte vorhanden</div>
             </ui-box>
         </div>
     </page-layout>
 </template>
 
 <script>
+import {defineAsyncComponent} from 'vue';
+
 export default {
     data: function () {
         return {
@@ -95,15 +96,14 @@ export default {
     },
 
     components: {
-        stamm: () => import(/* webpackChunkName: "member" */ './boxes/Stamm.vue'),
-        kontakt: () => import(/* webpackChunkName: "member" */ './boxes/Kontakt.vue'),
-        prae: () => import(/* webpackChunkName: "member" */ './boxes/Prae.vue'),
-        courses: () => import(/* webpackChunkName: "member" */ './boxes/Courses.vue'),
-        system: () => import(/* webpackChunkName: "member" */ './boxes/System.vue'),
-        payments: () => import(/* webpackChunkName: "member" */ './boxes/Payments.vue'),
-        memberships: () => import(/* webpackChunkName: "member" */ './boxes/Memberships.vue'),
-        vmap: () => import(/* webpackChunkName: "member" */ './boxes/Vmap.vue'),
-        tabs: () => import(/* webpackChunkName: "member" */ './Tabs.vue'),
+        stamm: defineAsyncComponent(() => import('./boxes/Stamm.vue')),
+        kontakt: defineAsyncComponent(() => import('./boxes/Kontakt.vue')),
+        prae: defineAsyncComponent(() => import('./boxes/Prae.vue')),
+        courses: defineAsyncComponent(() => import('./boxes/Courses.vue')),
+        system: defineAsyncComponent(() => import('./boxes/System.vue')),
+        payments: defineAsyncComponent(() => import('./boxes/Payments.vue')),
+        memberships: defineAsyncComponent(() => import('./boxes/Memberships.vue')),
+        tabs: defineAsyncComponent(() => import('./Tabs.vue')),
     },
 
     created() {

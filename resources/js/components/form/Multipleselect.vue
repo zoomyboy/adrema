@@ -8,24 +8,24 @@
             <div
                 @click="visible = !visible"
                 class="flex items-center border-gray-600 text-gray-300 leading-none border-solid bg-gray-700 w-full appearance-none outline-none rounded-lg size-sm text-xs px-1 border pr-6"
-                v-text="`${value.length} Einträge ausgewählt`"
+                v-text="`${modelValue.length} Einträge ausgewählt`"
             ></div>
             <div v-show="visible" class="absolute w-[max-content] z-30 max-h-[31rem] overflow-auto shadow-lg bg-gray-600 border border-gray-500 rounded-lg p-2 top-7">
                 <div v-for="(option, index) in parsedOptions" class="flex items-center space-x-2" :key="index">
-                    <f-switch :id="`${id}-${index}`" size="sm" :items="value.includes(option.id)" :value="option.id" @input="trigger(option, $event)"></f-switch>
+                    <f-switch :id="`${id}-${index}`" size="sm" :modelValue="modelValue.includes(option.id)" :value="option.id" @update:modelValue="trigger(option, $event)"></f-switch>
                     <div class="text-sm text-gray-200" v-text="option.name"></div>
                 </div>
             </div>
 
             <div class="info-wrap">
                 <div v-if="hint" v-tooltip="hint">
-                    <svg-sprite src="info-button" class="info-button"></svg-sprite>
+                    <ui-sprite src="info-button" class="info-button"></ui-sprite>
                 </div>
                 <div class="px-1 relative" v-if="size != 'xs'">
-                    <svg-sprite class="chevron w-3 h-3 fill-current" src="chevron-down"></svg-sprite>
+                    <ui-sprite class="chevron w-3 h-3 fill-current" src="chevron-down"></ui-sprite>
                 </div>
                 <div class="px-1 relative" v-if="size == 'xs'">
-                    <svg-sprite class="chevron w-2 h-2 fill-current" src="chevron-down"></svg-sprite>
+                    <ui-sprite class="chevron w-2 h-2 fill-current" src="chevron-down"></ui-sprite>
                 </div>
             </div>
         </div>
@@ -36,6 +36,7 @@
 import map from 'lodash/map';
 
 export default {
+    emits: ['update:modelValue'],
     data: function () {
         return {
             visible: false,
@@ -62,7 +63,7 @@ export default {
             default: false,
             type: Boolean,
         },
-        value: {
+        modelValue: {
             default: undefined,
         },
         label: {
@@ -93,12 +94,12 @@ export default {
     },
     methods: {
         trigger(option, v) {
-            var value = [...this.value];
+            var value = [...this.modelValue];
 
-            this.$emit('input', value.includes(option.id) ? value.filter((cv) => cv !== option.id) : [...value, option.id]);
+            this.$emit('update:modelValue', value.includes(option.id) ? value.filter((cv) => cv !== option.id) : [...value, option.id]);
         },
         clear() {
-            this.$emit('input', null);
+            this.$emit('update:modelValue', null);
         },
     },
 };

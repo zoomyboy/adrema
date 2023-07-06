@@ -37,6 +37,6 @@ class SettingSaveAction
     {
         $this->handle($request->all());
 
-        return redirect()->back()->success('Einstellungen gespeichert');
+        return redirect()->back();
     }
 }

@@ -1,18 +1,13 @@
+import { useToast } from 'vue-toastification'
+const toast = useToast()
+
 export default {
     methods: {
         ['$success'](message) {
-            this.$toasted.show(message, {
-                position: 'bottom-right',
-                duration: 2000,
-                type: 'success',
-            });
+            toast.success(message);
         },
         ['$error'](message) {
-            this.$toasted.show(message, {
-                position: 'bottom-right',
-                duration: 2000,
-                type: 'error',
-            });
+            toast.error(message);
         },
         errorsFromException(e) {
             if (e.response?.status !== 422 || !e.response?.data?.errors) {
@@ -23,7 +18,7 @@ export default {
 
             Object.keys(errors).forEach((field) => {
                 errors[field].forEach((message) => {
-                    this.$error(message);
+                    toast.error(message);
                 });
             });
         },

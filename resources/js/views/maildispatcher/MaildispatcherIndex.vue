@@ -31,8 +31,8 @@
                     <div v-text="dispatcher.gateway.name"></div>
                 </td>
                 <td>
-                    <i-link :href="dispatcher.links.edit" class="mr-1 inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></i-link>
-                    <i-link @click.prevent="remove(dispatcher)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
+                    <i-link :href="dispatcher.links.edit" class="mr-1 inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></i-link>
+                    <button @click.prevent="remove(dispatcher)" class="inline-flex btn btn-danger btn-sm"><ui-sprite src="trash"></ui-sprite></button>
                 </td>
             </tr>
         </table>

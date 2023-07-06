@@ -35,10 +35,10 @@
                                 mode = 'edit';
                             "
                             class="inline-flex btn btn-warning btn-sm"
-                            ><svg-sprite src="pencil"></svg-sprite
+                            ><ui-sprite src="pencil"></ui-sprite
                         ></a>
-                        <i-link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><svg-sprite src="check"></svg-sprite></i-link>
-                        <i-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><svg-sprite src="trash"></svg-sprite></i-link>
+                        <i-link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><ui-sprite src="check"></ui-sprite></i-link>
+                        <i-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><ui-sprite src="trash"></ui-sprite></i-link>
                     </td>
                 </tr>
             </table>

@@ -8,9 +8,11 @@
 </template>
 
 <script>
+import {defineAsyncComponent} from 'vue';
+
 export default {
     components: {
-        VNotification: () => import('../components/VNotification.vue'),
+        VNotification: defineAsyncComponent(() => import('../components/VNotification.vue')),
     },
 };
 </script>

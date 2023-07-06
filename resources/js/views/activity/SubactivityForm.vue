@@ -24,16 +24,12 @@ export default {
 
     methods: {
         async store() {
-            try {
-                if (this.model.id) {
-                    var response = await this.axios.patch(this.model.links.update, this.model);
-                    this.$emit('updated', response.data);
-                } else {
-                    var response = await this.axios.post('/subactivity', this.model);
-                    this.$emit('stored', response.data);
-                }
-            } catch (e) {
-                this.errorsFromException(e);
+            if (this.model.id) {
+                var response = await this.axios.patch(this.model.links.update, this.model);
+                this.$emit('updated', response.data);
+            } else {
+                var response = await this.axios.post('/subactivity', this.model);
+                this.$emit('stored', response.data);
             }
         },
     },

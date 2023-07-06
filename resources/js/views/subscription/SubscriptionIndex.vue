@@ -22,7 +22,7 @@
                     <div v-text="subscription.fee_name"></div>
                 </td>
                 <td>
-                    <i-link :href="`/subscription/${subscription.id}/edit`" class="inline-flex btn btn-warning btn-sm"><svg-sprite src="pencil"></svg-sprite></i-link>
+                    <i-link :href="`/subscription/${subscription.id}/edit`" class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></i-link>
                 </td>
             </tr>
         </table>

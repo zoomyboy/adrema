@@ -33,7 +33,7 @@ export const menuStore = defineStore('menu', {
             window.addEventListener('resize', this.menuListener);
             this.menuListener();
 
-            window.addEventListener('inertiaStart', () => {
+            window.addEventListener('inertia:start', () => {
                 if (!window.matchMedia('(min-width: 1024px)').matches) {
                     _self.visible = false;
                     _self.overflowVisible = false;

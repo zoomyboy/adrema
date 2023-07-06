@@ -4,14 +4,14 @@
         <div class="-mx-1 items-baseline" :class="{hidden: value.last_page == 1, flex: value.last_page > 1}">
             <div class="pl-1 pr-3 text-gray-500 text-sm">Seite:</div>
             <div class="px-1" v-for="(link, index) in links" :key="index">
-                <i-link
+                <button
                     href="#"
                     @click.prevent="goto(link)"
                     class="rounded text-sm w-8 h-8 text-primary-100 flex items-center justify-center leading-none shadow"
                     :key="index"
                     v-text="link.page"
                     :class="{'bg-primary-700': link.current, 'bg-primary-900': !link.current}"
-                ></i-link>
+                ></button>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         goto(page) {
-            if (this.$listeners.reload) {
+            if (this.$attrs.onReload) {
                 this.$emit('reload', page.page);
                 return;
             }

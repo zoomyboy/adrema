@@ -4,7 +4,7 @@
             <svg class="absolute top-0 left-0 w-full h-full flex-none rotate-[105deg]" viewBox="-16 -16 32 32" :class="types[type].iconContainer">
                 <circle cx="0" cy="0" r="15" stroke-dasharray="62.76896820 31.38448410" stroke-width="2"></circle>
             </svg>
-            <svg-sprite :src="types[type].icon" class="relative w-4 h-4" :class="types[type].iconClass"></svg-sprite>
+            <ui-sprite :src="types[type].icon" class="relative w-4 h-4" :class="types[type].iconClass"></ui-sprite>
         </div>
         <div>
             <h3 class="font-semibold" :class="types[type].heading" v-text="types[type].intro"></h3>

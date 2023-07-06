@@ -1,6 +1,6 @@
 <template>
-    <div class="bool" v-tooltip="comment" :class="value ? 'enabled' : 'disabled'">
-        <svg-sprite v-if="!$slots.default" :src="value ? 'check' : 'close'"></svg-sprite>
+    <div class="bool" v-tooltip="comment" :class="modelValue ? 'enabled' : 'disabled'">
+        <ui-sprite v-if="!$slots.default" :src="modelValue ? 'check' : 'close'"></ui-sprite>
         <slot></slot>
     </div>
 </template>
@@ -8,20 +8,20 @@
 <script>
 export default {
     props: {
-        value: {},
+        modelValue: {},
         trueComment: {},
         falseComment: {},
     },
 
     computed: {
         t() {
-            return this.value ? 'Ja' : 'Nein';
+            return this.modelValue ? 'Ja' : 'Nein';
         },
         comment() {
-            if (this.value && this.trueComment) {
+            if (this.modelValue && this.trueComment) {
                 return this.trueComment;
             }
-            if (!this.value && this.falseComment) {
+            if (!this.modelValue && this.falseComment) {
                 return this.falseComment;
             }
 

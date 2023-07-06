@@ -1,8 +1,10 @@
 <template>
     <page-layout>
+        <template #right>
+            <f-save-button form="mailmansettingform"></f-save-button>
+        </template>
         <setting-layout>
             <form id="mailmansettingform" class="grow p-6 grid grid-cols-2 gap-3 items-start content-start" @submit.prevent="submit">
-                <f-save-button form="mailmansettingform"></f-save-button>
                 <div class="col-span-full text-gray-100 mb-3">
                     <p class="text-sm">
                         Scoutrobot kann automatisch Mailinglisten erstellen, wenn es mit einem existierenden
@@ -14,7 +16,7 @@
                     <f-switch id="is_active" v-model="inner.is_active" label="Mailman-Synchronisation aktiv"></f-switch>
                 </div>
                 <div class="flex h-full items-center">
-                    <svg-sprite :src="stateDisplay.icon" :class="stateDisplay.text" class="w-5 h-5"></svg-sprite>
+                    <ui-sprite :src="stateDisplay.icon" :class="stateDisplay.text" class="w-5 h-5"></ui-sprite>
                     <span class="ml-3" :class="stateDisplay.text" v-text="stateDisplay.label"></span>
                 </div>
                 <f-text label="URL" hint="URL der Mailman Api" name="base_url" id="base_url" v-model="inner.base_url"></f-text>
@@ -70,11 +72,10 @@ export default {
 
     methods: {
         submit() {
-            var _self = this;
-
             this.$inertia.post('/setting/mailman', this.inner, {
-                onSuccess(page) {
-                    _self.inner = page.props.data;
+                onSuccess: (page) => {
+                    this.$success('Einstellungen gespeichert.')
+                    this.inner = page.props.data;
                 },
             });
         },

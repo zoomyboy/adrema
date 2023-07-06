@@ -3,8 +3,10 @@
         <template #toolbar>
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
         </template>
-        <form id="subedit" class="p-3 grid gap-3" @submit.prevent="submit">
+        <template #right>
             <f-save-button form="subedit"></f-save-button>
+        </template>
+        <form id="subedit" class="p-3 grid gap-3" @submit.prevent="submit">
             <ui-box heading="Beitrag">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <f-text id="name" v-model="inner.name" label="Name" size="sm" required></f-text>
@@ -19,11 +21,11 @@
                         <f-text :id="`name-${index}`" v-model="pos.name" label="Name" size="sm" required></f-text>
                         <f-text :id="`amount-${index}`" v-model="pos.amount" label="Beitrag" size="sm" mode="area" required></f-text>
                         <a href="#" @click.prevent="inner.children.splice(index, 1)" class="btn btn-sm btn-danger icon flex-none">
-                            <svg-sprite src="trash" class="w-5 h-5"></svg-sprite>
+                            <ui-sprite src="trash" class="w-5 h-5"></ui-sprite>
                         </a>
                     </div>
                     <a href="#" @click.prevent="inner.children.push({name: '', amount: 0})" class="btn btn-sm flex btn-primary flex self-start mt-4">
-                        <svg-sprite src="plus" class="w-5 h-5"></svg-sprite>
+                        <ui-sprite src="plus" class="w-5 h-5"></ui-sprite>
                         Position hinzufügen
                     </a>
                 </div>
