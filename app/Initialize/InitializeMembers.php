@@ -4,6 +4,7 @@ namespace App\Initialize;
 
 use App\Member\Actions\InsertFullMemberAction;
 use App\Member\Data\FullMember;
+use App\Member\Member;
 use App\Nami\Api\FullMemberAction;
 use App\Setting\NamiSettings;
 use Illuminate\Support\Facades\Bus;
@@ -23,6 +24,9 @@ class InitializeMembers
     {
         $settings = app(NamiSettings::class);
         Redis::delete('members');
+
+        $memberIds = $api->search($settings->search_params)->map(fn ($member) => $member->id)->toArray();
+        Member::remote()->whereNotIn('nami_id', $memberIds)->get()->each->delete();
 
         $jobs = $api->search($settings->search_params)->map(function (NamiMemberEntry $member) use ($api) {
             return FullMemberAction::makeJob($api, $member->groupId, $member->id, 'members');
