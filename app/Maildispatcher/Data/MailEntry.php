@@ -8,5 +8,6 @@ class MailEntry extends Data
 {
     public function __construct(public string $email)
     {
+        $this->email = strtolower($email);
     }
 }

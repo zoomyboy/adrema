@@ -3,6 +3,7 @@
 namespace Tests\Feature\Maildispatcher;
 
 use App\Activity;
+use App\Maildispatcher\Models\Localmaildispatcher;
 use App\Maildispatcher\Models\Maildispatcher;
 use App\Mailgateway\Models\Mailgateway;
 use App\Mailgateway\Types\LocalType;
@@ -47,5 +48,19 @@ class StoreTest extends TestCase
             'from' => 'test@example.com',
             'to' => 'jane@example.com',
         ]);
+    }
+
+    public function testMaildispatcherReceivesLowerVersionOfEmail(): void
+    {
+        $gateway = Mailgateway::factory()->type(LocalType::class, [])->create();
+        Member::factory()->defaults()->create(['email' => 'Jane@example.com']);
+
+        $this->postJson('/maildispatcher', [
+            'name' => 'test',
+            'gateway_id' => $gateway->id,
+            'filter' => [],
+        ]);
+
+        $this->assertEquals('jane@example.com', Localmaildispatcher::first()->to);
     }
 }
