@@ -79,8 +79,9 @@ abstract class Type
      */
     public function sync(string $name, string $domain, Collection $results): void
     {
+        $members = $this->list($name, $domain);
         foreach ($results as $result) {
-            if ($this->search($name, $domain, $result->email)) {
+            if ($members->first(fn ($member) => $member->is($result))) {
                 continue;
             }
 
@@ -88,7 +89,7 @@ abstract class Type
         }
 
         $this->list($name, $domain)
-             ->filter(fn ($listEntry) => null === $results->first(fn ($r) => $r->email === $listEntry->email))
+             ->filter(fn ($listEntry) => $results->doesntContain(fn ($r) => $r->is($listEntry)))
              ->each(fn ($listEntry) => $this->remove($name, $domain, $listEntry->email));
     }
 

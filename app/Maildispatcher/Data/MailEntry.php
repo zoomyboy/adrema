@@ -10,4 +10,9 @@ class MailEntry extends Data
     {
         $this->email = strtolower($email);
     }
+
+    public function is(self $mailEntry): bool
+    {
+        return $this->email === $mailEntry->email;
+    }
 }
