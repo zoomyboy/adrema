@@ -34,12 +34,21 @@
                         size="sm"
                     ></f-multipleselect>
                     <f-multipleselect
-                        id="additional"
-                        name="additional"
+                        id="include"
+                        name="include"
                         :options="members.meta.members"
-                        v-model="model.filter.additional"
+                        v-model="model.filter.include"
                         @update:modelValue="reload(1)"
                         label="Zusätzliche Mitglieder"
+                        size="sm"
+                    ></f-multipleselect>
+                    <f-multipleselect
+                        id="exclude"
+                        name="exclude"
+                        :options="members.meta.members"
+                        v-model="model.filter.exclude"
+                        @update:modelValue="reload(1)"
+                        label="Mitglieder ausschließen"
                         size="sm"
                     ></f-multipleselect>
                     <f-multipleselect

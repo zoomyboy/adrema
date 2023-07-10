@@ -20,7 +20,8 @@ class FilterScope extends Filter
      * @param array<int, int> $activityIds
      * @param array<int, int> $subactivityIds
      * @param array<int, int> $groupIds
-     * @param array<int, int> $additional
+     * @param array<int, int> $include
+     * @param array<int, int> $exclude
      */
     public function __construct(
         public bool $ausstand = false,
@@ -29,7 +30,8 @@ class FilterScope extends Filter
         public array $subactivityIds = [],
         public ?string $search = '',
         public array $groupIds = [],
-        public array $additional = [],
+        public array $include = [],
+        public array $exclude = [],
     ) {
     }
 
@@ -73,9 +75,13 @@ class FilterScope extends Filter
                         }
                     });
                 }
+
+                if (count($this->exclude)) {
+                    $query->whereNotIn('id', $this->exclude);
+                }
             })->orWhere(function ($query) {
-                if (count($this->additional)) {
-                    $query->whereIn('id', $this->additional);
+                if (count($this->include)) {
+                    $query->whereIn('id', $this->include);
                 }
             });
         });
