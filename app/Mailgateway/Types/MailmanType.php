@@ -3,6 +3,7 @@
 namespace App\Mailgateway\Types;
 
 use App\Maildispatcher\Data\MailEntry;
+use App\Mailman\Data\MailingList;
 use App\Mailman\Exceptions\MailmanServiceException;
 use App\Mailman\Support\MailmanService;
 use Illuminate\Support\Collection;
@@ -67,8 +68,7 @@ class MailmanType extends Type
 
     public function search(string $name, string $domain, string $email): ?MailEntry
     {
-        $list = $this->service()->getLists()->first(fn ($list) => $list->fqdnListname === "{$name}@{$domain}");
-        throw_if(!$list, MailmanServiceException::class, "List for {$name}@{$domain} not found");
+        $list = $this->getList($name, $domain);
         $member = $this->service()->members($list)->first(fn ($member) => $member->email === $email);
 
         return $member ? MailEntry::from(['email' => $member->email]) : null;
@@ -76,8 +76,7 @@ class MailmanType extends Type
 
     public function add(string $name, string $domain, string $email): void
     {
-        $list = $this->service()->getLists()->first(fn ($list) => $list->fqdnListname === "{$name}@{$domain}");
-        throw_if(!$list, MailmanServiceException::class, "List for {$name}@{$domain} not found");
+        $list = $this->getList($name, $domain);
         $this->service()->addMember($list, $email);
     }
 
@@ -86,19 +85,25 @@ class MailmanType extends Type
      */
     public function list(string $name, string $domain): Collection
     {
-        $list = $this->service()->getLists()->first(fn ($list) => $list->fqdnListname === "{$name}@{$domain}");
-        throw_if(!$list, MailmanServiceException::class, "List for {$name}@{$domain} not found");
+        $list = $this->getList($name, $domain);
 
         return collect($this->service()->members($list)->map(fn ($member) => MailEntry::from(['email' => $member->email]))->all());
     }
 
     public function remove(string $name, string $domain, string $email): void
     {
-        $list = $this->service()->getLists()->first(fn ($list) => $list->fqdnListname === "{$name}@{$domain}");
-        throw_if(!$list, MailmanServiceException::class, "List for {$name}@{$domain} not found");
+        $list = $this->getList($name, $domain);
         $member = $this->service()->members($list)->first(fn ($member) => $member->email === $email);
         throw_if(!$member, MailmanServiceException::class, 'Member for removing not found');
         $this->service()->removeMember($member);
+    }
+
+    private function getList(string $name, string $domain): MailingList
+    {
+        $list = $this->service()->getLists()->first(fn ($list) => $list->fqdnListname === "{$name}@{$domain}");
+        throw_if(!$list, MailmanServiceException::class, "List for {$name}@{$domain} not found");
+
+        return $list;
     }
 
     private function service(): MailmanService
