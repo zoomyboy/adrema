@@ -20,7 +20,12 @@
             </div>
             <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
                 <div v-for="option in subactivities" class="flex items-center space-x-2">
-                    <a href="#" @click.prevent="currentSubactivity = option" class="transition hover:bg-yellow-600 group w-5 h-5 rounded-full flex items-center justify-center flex-none">
+                    <a
+                        href="#"
+                        v-if="mode === 'edit'"
+                        @click.prevent="currentSubactivity = option"
+                        class="transition hover:bg-yellow-600 group w-5 h-5 rounded-full flex items-center justify-center flex-none"
+                    >
                         <ui-sprite src="pencil" class="text-yellow-800 w-3 h-3 group-hover:text-yellow-200 transition"></ui-sprite>
                     </a>
                     <f-switch
