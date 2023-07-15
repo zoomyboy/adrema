@@ -10,7 +10,7 @@
         ></a>
         <a href="#" v-tooltip="`Mitgliedschaften`" @click.prevent="$emit('sidebar', 'membership.index')" class="inline-flex btn btn-info btn-sm"><ui-sprite src="user"></ui-sprite></a>
         <a :href="member.efz_link" v-show="member.efz_link" class="inline-flex btn btn-info btn-sm" v-tooltip="`EFZ Formular`"><ui-sprite src="report"></ui-sprite></a>
-        <i-link href="#" @click.prevent="$emit('remove')" class="inline-flex btn btn-danger btn-sm" v-tooltip="`Entfernen`"><ui-sprite src="trash"></ui-sprite></i-link>
+        <a href="#" @click.prevent="$emit('remove')" class="inline-flex btn btn-danger btn-sm" v-tooltip="`Entfernen`"><ui-sprite src="trash"></ui-sprite></a>
     </div>
 </template>
 

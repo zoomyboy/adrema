@@ -14,8 +14,8 @@
                     Dieses Mitglied ist in NaMi vorhanden und wird daher in NaMi abgemeldet werden. Sofern "Datenweiterverwendung" eingeschaltet ist, wird das Mitglied auf inaktiv gesetzt.
                 </ui-note>
                 <div class="grid grid-cols-2 gap-3 mt-6">
-                    <a href="#" @click.prevent="deleting.resolve()" class="text-center btn btn-danger">Mitglied loschen</a>
-                    <a href="#" @click.prevent="deleting.reject()" class="text-center btn btn-primary">Abbrechen</a>
+                    <a href="#" @click.prevent="deleting.resolve" class="text-center btn btn-danger">Mitglied loschen</a>
+                    <a href="#" @click.prevent="deleting.reject" class="text-center btn btn-primary">Abbrechen</a>
                 </div>
             </div>
         </ui-popup>
