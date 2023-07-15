@@ -58,7 +58,7 @@
                         <f-select :options="meta.subscriptions" id="subscription_id" v-model="inner.subscription_id" label="Beitrag" name="subscription_id" size="sm"></f-select>
                         <f-switch id="has_nami" size="sm" v-model="inner.has_nami" label="In Nami eintragen"></f-switch>
                         <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin versenden" size="sm"></f-switch>
-                        <f-text class="sm:col-span-2" type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum" size="sm"></f-text>
+                        <f-text class="sm:col-span-2" type="date" id="joined_at" v-model="inner.joined_at" label="Eintrittsdatum" size="sm" required></f-text>
                         <f-textarea rows="3" id="comment" class="col-span-2" v-model="inner.comment" label="Kommentar" size="sm"></f-textarea>
                         <div class="contents" v-if="mode === 'create'">
                             <f-select

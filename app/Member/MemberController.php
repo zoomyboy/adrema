@@ -43,6 +43,7 @@ class MemberController extends Controller
                 'without_education_at' => null,
                 'without_efz_at' => null,
                 'more_ps_at' => null,
+                'joined_at' => now()->format('Y-m-d'),
             ],
             'mode' => 'create',
             'meta' => MemberResource::meta(),
