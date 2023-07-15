@@ -12,6 +12,8 @@ class InitializeFormAction
 
     public function asController(): Response
     {
+        session()->put('title', 'Einrichtung');
+
         return Inertia::render('Initialize/VIndex');
     }
 }

@@ -23,7 +23,6 @@
 
 <script>
 import {menuStore} from '../../stores/menuStore.js';
-import {Head} from '@inertiajs/vue3';
 
 export default {
     inheritAttrs: false,
@@ -38,9 +37,6 @@ export default {
         return {
             menuStore: menuStore(),
         };
-    },
-    components: {
-        Head,
     },
 };
 </script>

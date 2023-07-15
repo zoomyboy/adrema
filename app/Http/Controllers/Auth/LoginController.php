@@ -42,6 +42,8 @@ class LoginController extends Controller
 
     public function showLoginForm(): Response
     {
+        session()->put('title', 'Anmelden');
+
         return \Inertia::render('VLogin');
     }
 

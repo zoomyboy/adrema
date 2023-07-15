@@ -1,5 +1,5 @@
 import {createApp, h, defineAsyncComponent} from 'vue';
-import {createInertiaApp, Link as ILink} from '@inertiajs/vue3';
+import {Head, createInertiaApp, Link as ILink} from '@inertiajs/vue3';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import {Plugin as FloatingVue, options as FloatingVueOptions} from './lib/floatingVue.js';
@@ -41,6 +41,7 @@ createInertiaApp({
             .use(VueAxios, axios)
             .use(PiniaVuePlugin)
             .component('ILink', ILink)
+            .component('Head', Head)
             .mixin(hasModule)
             .mixin(hasFlash);
 

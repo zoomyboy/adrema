@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <page-full-layout>
         <div v-if="step === 0">
             <page-full-heading>Willkommen im Adrema-Setup.<br /></page-full-heading>
             <div class="prose prose-invert">
@@ -132,16 +132,16 @@
             </div>
             <a href="/" class="mt-5 inline-block btn btn-primary">Abschließen</a>
         </div>
-    </div>
+    </page-full-layout>
 </template>
 
 <script>
-import InstallLayout from '../../layouts/InstallLayout.vue';
+import FullLayout from '../../layouts/FullLayout.vue';
 import hasFlash from '../../mixins/hasFlash.js';
 import debounce from 'lodash/debounce';
 
 export default {
-    layout: InstallLayout,
+    layout: FullLayout,
 
     mixins: [hasFlash],
 
