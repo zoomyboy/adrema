@@ -113,6 +113,11 @@ class MailmanType extends Type
         $this->service()->createList("{$name}@{$domain}");
     }
 
+    public function deleteList(string $name, string $domain): void
+    {
+        $this->service()->deleteList("{$name}@{$domain}");
+    }
+
     private function getList(string $name, string $domain): MailingList
     {
         $list = $this->service()->getLists()->first(fn ($list) => $list->fqdnListname === "{$name}@{$domain}");

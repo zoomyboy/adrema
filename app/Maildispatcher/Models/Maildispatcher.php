@@ -20,15 +20,6 @@ class Maildispatcher extends Model
         'filter' => 'json',
     ];
 
-    public static function booted(): void
-    {
-        static::deleting(function ($dispatcher) {
-            foreach ($dispatcher->gateway->type->list($dispatcher->name, $dispatcher->gateway->domain) as $email) {
-                $dispatcher->gateway->type->remove($dispatcher->name, $dispatcher->gateway->domain, $email->email);
-            }
-        });
-    }
-
     /**
      * @return BelongsTo<Mailgateway, self>
      */

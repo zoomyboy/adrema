@@ -12,6 +12,7 @@ class DestroyAction
 
     public function handle(Maildispatcher $maildispatcher): void
     {
+        $maildispatcher->gateway->type->deleteList($maildispatcher->name, $maildispatcher->gateway->domain);
         $maildispatcher->delete();
     }
 

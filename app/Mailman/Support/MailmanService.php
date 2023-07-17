@@ -59,6 +59,13 @@ class MailmanService
         return $list;
     }
 
+    public function deleteList(string $mailAddress): void
+    {
+        $list = $this->getLists()->first(fn ($list) => $list->fqdnListname === $mailAddress);
+        $response = $this->http()->delete("/lists/{$list->listId}");
+        throw_unless(204 === $response->status(), MailmanServiceException::class, 'Deleting list failed');
+    }
+
     public function check(): bool
     {
         try {
