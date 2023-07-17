@@ -13,12 +13,14 @@ class MailmanType extends Type
     public string $url;
     public string $user;
     public string $password;
+    public string $owner;
 
     public function setParams(array $params): static
     {
         $this->url = data_get($params, 'url');
         $this->user = data_get($params, 'user');
         $this->password = data_get($params, 'password');
+        $this->owner = data_get($params, 'owner', '');
 
         return $this;
     }
@@ -63,6 +65,14 @@ class MailmanType extends Type
                 'updateValidator' => 'nullable|max:255',
                 'default' => '',
             ],
+            [
+                'name' => 'owner',
+                'label' => 'E-Mail-Adresse des Eigentümers',
+                'type' => 'email',
+                'storeValidator' => 'required|max:255',
+                'updateValidator' => 'required|max:255',
+                'default' => '',
+            ],
         ];
     }
 
@@ -98,6 +108,11 @@ class MailmanType extends Type
         $this->service()->removeMember($member);
     }
 
+    public function createList(string $name, string $domain): void
+    {
+        $this->service()->createList("{$name}@{$domain}");
+    }
+
     private function getList(string $name, string $domain): MailingList
     {
         $list = $this->service()->getLists()->first(fn ($list) => $list->fqdnListname === "{$name}@{$domain}");
@@ -108,6 +123,6 @@ class MailmanType extends Type
 
     private function service(): MailmanService
     {
-        return app(MailmanService::class)->setCredentials($this->url, $this->user, $this->password);
+        return app(MailmanService::class)->setCredentials($this->url, $this->user, $this->password)->setOwner($this->owner);
     }
 }

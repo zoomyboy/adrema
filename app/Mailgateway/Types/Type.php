@@ -20,6 +20,8 @@ abstract class Type
 
     abstract public function add(string $name, string $domain, string $email): void;
 
+    abstract public function createList(string $name, string $domain): void;
+
     abstract public function remove(string $name, string $domain, string $email): void;
 
     /**

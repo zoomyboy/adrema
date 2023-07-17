@@ -120,4 +120,25 @@ class ServiceTest extends TestCase
         $this->assertCount($totals->count(), $result->toArray());
         Http::assertSentCount($totals->chunk(10)->count());
     }
+
+    public function testItCanCreateLists(): void
+    {
+        Http::fakeSequence()
+            ->push('', 201)
+            ->push(json_encode([
+                'entries' => [
+                    MailmanListRequestFactory::new()->create(['list_id' => 'test.example.com', 'fqdn_listname' => 'test@example.com']),
+                ],
+                'start' => 0,
+                'total_size' => 0,
+            ]), 200)
+            ->push('', 204)
+            ->push('', 201);
+        $service = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->setOwner('test@zoomyboy.de');
+        $list = $service->createList('test@example.com');
+
+        $this->assertInstanceOf(MailingList::class, $list);
+
+        Http::assertSent(fn ($request) => 'http://mailman.test/api/lists' === $request->url() && 'POST' === $request->method());
+    }
 }

@@ -53,6 +53,10 @@ class LocalType extends Type
         ]);
     }
 
+    public function createList(string $name, string $domain): void
+    {
+    }
+
     public function remove(string $name, string $domain, string $email): void
     {
         Localmaildispatcher::where('from', "{$name}@{$domain}")->where('to', $email)->delete();

@@ -16,10 +16,11 @@ class StoreAction
      */
     public function handle(array $input): void
     {
-        Maildispatcher::create([
+        $dispatcher = Maildispatcher::create([
             ...$input,
             'filter' => (object) $input['filter'],
         ]);
+        $dispatcher->gateway->type->createList($dispatcher->name, $dispatcher->gateway->domain);
         ResyncAction::dispatch();
     }
 

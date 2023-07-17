@@ -5,7 +5,6 @@ namespace App\Mailman\Support;
 use App\Mailman\Data\MailingList;
 use App\Mailman\Data\Member;
 use App\Mailman\Exceptions\MailmanServiceException;
-use App\Mailman\MailmanSettings;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
@@ -17,6 +16,7 @@ class MailmanService
     private string $baseUrl;
     private string $username;
     private string $password;
+    private string $owner;
 
     public function setCredentials(string $baseUrl, string $username, string $password): self
     {
@@ -27,9 +27,36 @@ class MailmanService
         return $this;
     }
 
-    public function fromSettings(MailmanSettings $settings): self
+    public function setOwner(string $owner): self
     {
-        return $this->setCredentials($settings->base_url, $settings->username, $settings->password);
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function createList(string $mailAddress): MailingList
+    {
+        $response = $this->http()->post('/lists', [
+            'fqdn_listname' => $mailAddress,
+        ]);
+        throw_unless(201 === $response->status(), MailmanServiceException::class, 'Creating list failed');
+        $list = $this->getLists()->first(fn ($list) => $list->fqdnListname === $mailAddress);
+        $response = $this->http()->patch("/lists/{$list->listId}/config", [
+            'advertised' => 'False',
+            'respond_to_post_requests' => 'False',
+            'send_goodbye_message' => 'False',
+            'send_welcome_message' => 'False',
+            'admin_immed_notify' => 'True',
+        ]);
+        throw_unless(204 === $response->status(), MailmanServiceException::class, 'Updating list config failed');
+        $response = $this->http()->post('/members', [
+            'list_id' => $list->listId,
+            'subscriber' => $this->owner,
+            'role' => 'owner',
+        ]);
+        throw_unless(201 === $response->status(), MailmanServiceException::class, 'Creating list owner failed');
+
+        return $list;
     }
 
     public function check(): bool
