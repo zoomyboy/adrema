@@ -6,6 +6,7 @@ RUN composer install --ignore-platform-reqs --no-dev
 FROM node:17.9.0-slim as node
 WORKDIR /app
 COPY . /app
+
 RUN npm install && npm run prod && rm -R node_modules
 
 FROM php:8.1.6-fpm as php
@@ -16,6 +17,7 @@ RUN pecl install redis && docker-php-ext-enable redis
 COPY --chown=www-data:www-data . /app
 COPY --chown=www-data:www-data --from=node /app/public /app/public
 COPY --chown=www-data:www-data --from=composer /app/vendor /app/vendor
+COPY .docker/fonts /usr/share/fonts/truetype
 EXPOSE 9000
 
 CMD ["php-fpm", "-F", "-R", "-O"]
