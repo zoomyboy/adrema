@@ -70,7 +70,7 @@ abstract class Invoice extends Document
 
     public function getEngine(): Engine
     {
-        return Engine::XELATEX;
+        return Engine::PDFLATEX;
     }
 
     public function basename(): string
