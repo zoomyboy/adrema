@@ -31,10 +31,9 @@ steps:
       commands:
           - apt-get update > /dev/null
           - apt-get install -y rsync libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev unzip > /dev/null
-          - apt-get install -y --no-install-recommends texlive-base texlive-latex-base texlive-pictures texlive-latex-extra texlive-lang-german texlive-plain-generic texlive-fonts-recommended > /dev/null
+          - apt-get install -y --no-install-recommends texlive-base texlive-latex-base texlive-pictures texlive-latex-extra texlive-lang-german texlive-plain-generic texlive-fonts-recommended texlive-fonts-extra > /dev/null
           - docker-php-ext-install pdo_mysql curl gd intl mbstring pcntl > /dev/null
           - pecl install redis && docker-php-ext-enable redis > /dev/null
-          - cp -R /drone/nami/.docker/fonts /usr/local/src/fonts && /usr/local/src/fonts/compile.sh
           - php artisan migrate
           - php artisan test
           - rm -f .env
