@@ -69,8 +69,8 @@ class MailmanType extends Type
                 'name' => 'owner',
                 'label' => 'E-Mail-Adresse des Eigentümers',
                 'type' => 'email',
-                'storeValidator' => 'required|max:255',
-                'updateValidator' => 'required|max:255',
+                'storeValidator' => 'required|email|max:255',
+                'updateValidator' => 'required|email|max:255',
                 'default' => '',
             ],
         ];

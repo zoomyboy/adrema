@@ -12,6 +12,7 @@ class MailmanTypeRequest extends RequestFactory
             'url' => 'https://'.$this->faker->domainName(),
             'user' => $this->faker->firstName(),
             'password' => $this->faker->password(),
+            'owner' => $this->faker->safeEmail(),
         ];
     }
 }
