@@ -2,6 +2,7 @@
 /public/build
 /public/sprite.svg
 /public/hot
+/public/vendor
 /storage/*.key
 /vendor
 .env
