@@ -18,11 +18,13 @@ class MailmanTypeTest extends TestCase
         $this->stubIo(MailmanService::class, function ($mock) {
             Phake::when($mock)->setCredentials('https://example.com', 'user', 'secret')->thenReturn($mock);
             Phake::when($mock)->check()->thenReturn(true);
+            Phake::when($mock)->setOwner('owner@example.com')->thenReturn($mock);
         });
         $type = app(MailmanType::class)->setParams([
             'url' => 'https://example.com',
             'user' => 'user',
             'password' => 'secret',
+            'owner' => 'owner@example.com',
         ]);
 
         $this->assertTrue($type->works());
