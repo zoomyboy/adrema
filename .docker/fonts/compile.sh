@@ -6,7 +6,7 @@ cd /usr/local/src/fonts
 
 for font in /usr/local/src/fonts/*.zip; do
         unzip $font
-        mv $(basename $font .zip)/* /usr/local/share/texmf
+        rsync -a $(basename $font .zip)/ /usr/local/share/texmf
 done
 
 mktexlsr
