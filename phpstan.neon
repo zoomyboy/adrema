@@ -209,14 +209,6 @@ parameters:
             message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy.*#"
 
         -
-            message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Mailman\\\\Support\\\\MailmanService given\\.$#"
-            count: 4
-            path: tests/Feature/Mailman/SettingTest.php
-
-        -
-            message: "#verifyNoInteraction\\(\\) expects Phake\\\\IMock#"
-
-        -
             message: "#^Method Tests\\\\Feature\\\\Member\\\\StoreTest\\:\\:attributes\\(\\) has parameter \\$overwrites with no value type specified in iterable type array\\.$#"
             count: 1
             path: tests/Feature/Member/StoreTest.php
