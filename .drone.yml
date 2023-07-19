@@ -26,16 +26,19 @@ steps:
       commands:
           - npm ci && npm run img && npm run prod && rm -R node_modules
 
-    - name: phpunit_tests
+    - name: tests
       image: php:8.1.6
       commands:
-          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync texlive-base texlive-xetex texlive-lang-german texlive-fonts-extra
-          - docker-php-ext-install pdo_mysql curl gd intl mbstring
+          - apt-get update
+          - apt-get install -y rsync libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev unzip
+          - apt-get install -y --no-install-recommends texlive-base texlive-latex-base texlive-pictures texlive-latex-extra texlive-lang-german texlive-plain-generic texlive-fonts-recommended
+          - docker-php-ext-install pdo_mysql curl gd intl mbstring pcntl
           - pecl install redis && docker-php-ext-enable redis
-          - cp .docker/fonts/* /usr/share/fonts/
+          - cp -R /drone/nami/.docker/fonts /usr/local/src/fonts && /usr/local/src/fonts/compile.sh
           - php artisan migrate
           - php artisan test
           - rm -f .env
+          - vendor/bin/phpstan analyse --memory-limit=2G
       environment:
           APP_NAME: Scoutrobot
           APP_KEY:
@@ -61,20 +64,13 @@ steps:
           PDFLATEX_BIN: /usr/bin/pdflatex
           XELATEX_BIN: /usr/bin/xelatex
 
-    - name: phpstan_tests
-      image: php:8.1.6
-      commands:
-          - apt-get update && apt-get install -y libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev rsync
-          - pecl install redis && docker-php-ext-enable redis
-          - vendor/bin/phpstan analyse --memory-limit=2G
-
     - name: composer_no_dev
       image: composer:2.2.7
       commands:
           - composer install --ignore-platform-reqs --no-dev
 
     - name: compress
-      image: php:7.3
+      image: php:8.1.6
       commands:
           - apt-get update -yqq
           - apt-get install -yqq zip tar
