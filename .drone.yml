@@ -63,6 +63,36 @@ steps:
           PDFLATEX_BIN: /usr/bin/pdflatex
           XELATEX_BIN: /usr/bin/xelatex
 
+    - name: docker_app_push
+      image: plugins/docker
+      settings:
+          dockerfile: ./.docker/php.Dockerfile
+          repo: zoomyboy/adrema-app
+          username: zoomyboy
+          password:
+              from_secret: docker_hub_token
+          tags:
+              - latest
+              - $DRONE_TAG
+          pull_image: true
+      when:
+          event: tag
+
+    - name: docker_webservice_push
+      image: plugins/docker
+      settings:
+          dockerfile: ./.docker/nginx.Dockerfile
+          repo: zoomyboy/adrema-webservice
+          username: zoomyboy
+          password:
+              from_secret: docker_hub_token
+          tags:
+              - latest
+              - $DRONE_TAG
+          pull_image: true
+      when:
+          event: tag
+
     - name: composer_no_dev
       image: composer:2.2.7
       commands:
