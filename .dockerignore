@@ -3,3 +3,4 @@ data
 vendor
 public/build
 public/vendor
+bootstrap/cache
