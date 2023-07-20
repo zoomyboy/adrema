@@ -6,6 +6,8 @@ services:
             - php
         ports:
             - '8000:80'
+        volumes:
+            - ./storage:/app/storage/app
 
     php:
         image: zoomyboy/adrema-app:latest
@@ -21,6 +23,9 @@ services:
             XELATEX_BIN: /usr/bin/xelatex
             PDFLATEX_BIN: /usr/bin/pdflatex
             REDIS_HOST: redis
+        volumes:
+            - ./storage:/app/storage/app
+            - ./cookies:/app/packages/laravel-nami/.cookies
 
     horizon:
         image: zoomyboy/adrema-app:latest

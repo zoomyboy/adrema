@@ -22,6 +22,8 @@ COPY --chown=www-data:www-data --from=composer /app/vendor /app/vendor
 COPY ./.docker/php-entrypoint /bin/php-entrypoint
 COPY ./.docker/horizon-entrypoint /bin/horizon-entrypoint
 
+VOLUME ["/app/packages/laravel-nami/.cookies", "/app/storage/app"]
+
 EXPOSE 9000
 
 CMD /bin/php-entrypoint

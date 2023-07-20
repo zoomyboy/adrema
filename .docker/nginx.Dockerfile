@@ -9,4 +9,6 @@ COPY --from=node /app /app
 COPY ./.docker/nginx/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 
+VOLUME ["/app/storage/app"]
+
 CMD ["nginx", "-g", "daemon off;"]
