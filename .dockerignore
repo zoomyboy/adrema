@@ -3,4 +3,6 @@ data
 vendor
 public/build
 public/vendor
-bootstrap/cache
+bootstrap/cache/services.php
+bootstrap/cache/packages.php
+bootstrap/cache/routes.php
