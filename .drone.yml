@@ -32,7 +32,7 @@ steps:
           - apt-get update > /dev/null
           - apt-get install -y rsync libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu-dev libonig-dev unzip > /dev/null
           - apt-get install -y --no-install-recommends texlive-base texlive-latex-base texlive-pictures texlive-latex-extra texlive-lang-german texlive-plain-generic texlive-fonts-recommended texlive-fonts-extra > /dev/null
-          - docker-php-ext-install pdo_mysql curl gd intl mbstring pcntl > /dev/null
+          - docker-php-ext-install pdo_mysql curl gd exif intl mbstring pcntl > /dev/null
           - pecl install redis && docker-php-ext-enable redis > /dev/null
           - php artisan migrate
           - php artisan test
