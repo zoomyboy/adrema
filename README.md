@@ -32,31 +32,45 @@ Außerdem ist AdReMa auch problemlos auf Handys und Tablets bedienbar ("mobiles 
 
 # Installation
 
-Submodules updaten:
+## App Key generieren
 
-```
-git submodule update --init
-```
-
-Example env erstellen:
+Kopiere .app.env.example nach .app.env
 
 ```
 cp .app.env.example .app.env
 ```
 
-Container bauen
+Services starten:
 
 ```
-docker-compose build
+docker compose up
 ```
 
-Key generieren
+Es wird die ein App Key generiert: ``Keinen APP KEY gefunden. Key wird generiert: base64:..........``
 
-```
-docker-compose run php php artisan key:generate --show
-```
+Kopiere diesen App key und setze in in .app.env als APP_KEY ein (APP_KEY=base64:........).
 
-Ersetze nun "YOUR_APP_KEY" in .app.env mit dem generierten Key (base64:qzX....).
+## Einstellungen
+
+Passe in der .app.env dann folgende Einstellungen an:
+
+### APP_URL
+
+Hier sollte die URL (mit HTTPS) stehen, unter der Adrema erreichbar sein soll (z.B. https://adrema.stamm-bipi.de)
+
+### Mail
+
+Setze nun die Einstellungen für den Mail-Versand ein. Du solltest mindestens MAIL_PORT, MAIL_HOST, MAIL_USERNAME, MAIL_PASSWORD und MAIL_ENCRYPTION setzen.
+
+MAIL_FROM_NAME ist der Name, der als Absender von E-Mails gesetzt wird. z.B. "Stamm Bipi Service".
+
+MAIL_FROM_ADDRESS die dazu gehörige E-Mail-Adresse, die natürlich erreichbar sein sollte (z.B. "vorstand@stamm-bipi.de").
+
+### DB Passwort
+
+Setze die beiden letzten Variablen (da wo "secret_db_password" steht) auf ein generiertes sicheres Passwort. Bei beiden Variablen muss der gleiche Wert eingestellt werden (also so wie vorher, nur sicherer :D )
+
+## Starten
 
 Führe nun den DB Container aus, um eine erste Version der Datenbank zu erstellen. 
 
@@ -64,24 +78,11 @@ Führe nun den DB Container aus, um eine erste Version der Datenbank zu erstelle
 docker-compose up db -d
 ```
 
-Migrations ausführen
-
-```
-docker-compose run php php artisan migrate --seed
-```
-
-Alles stoppen, dann alles neu starten
-
-```
-docker-compose stop
-docker-compose up -d
-```
-
 Nun kannst du auf localhost:8000 die App öffnen, einen LB verwenden, den Port mit CLI Optionen ändern, etc.
 
 ## Standard Login
 
-Wenn du die Seeder ausführst ("--seed", siehe oben), wird ein Benutzer mit folgenden Zugangsdaten erstellt:
+Beim ersten Starten wird ein Benutzer mit folgenden Zugangsdaten erstellt:
 
 * E-Mail-Adresse: admin@example.com
 * Passwort: admin

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+# --------------------------- ensure appkey is set ----------------------------
+if [ $APP_KEY = "YOUR_APP_KEY" ]; then
+    echo "----------------------- Keinen APP KEY gefunden. Key wird generiert:    $(php artisan key:generate --show)   ----------------------- Füge diesen Key als APP_KEY ein ---------------------"
+    exit 1
+fi
+
+# ------------------------- check for database access -------------------------
+function wait_for_db {
+    while true; do
+        echo "waiting for Database init"
+        php -r 'new PDO("mysql:host='$DB_HOST';dbname='$DB_DATABASE'", "'$DB_USERNAME'", "'$DB_PASSWORD'");' > /dev/null && return 0
+        sleep 1
+    done
+}
+
+wait_for_db
+
+php -r '$connection = new PDO("mysql:host='$DB_HOST';dbname='$DB_DATABASE'", "'$DB_USERNAME'", "'$DB_PASSWORD'"); $connection->query("DESCRIBE migrations");' > /dev/null || php artisan migrate --seed --force
+php artisan migrate --force
+
+php-fpm -F -R -O

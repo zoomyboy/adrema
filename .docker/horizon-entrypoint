@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+# ------------------------- check for database access -------------------------
+function wait_for_db {
+    while true; do
+        echo "waiting for Database init"
+        php -r 'new PDO("mysql:host='$DB_HOST';dbname='$DB_DATABASE'", "'$DB_USERNAME'", "'$DB_PASSWORD'");' > /dev/null && return 0
+    done
+}
+
+php artisan horizon

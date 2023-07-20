@@ -27,7 +27,7 @@ services:
         depends_on:
             - db
             - php
-        command: php artisan horizon
+        command: /bin/horizon-entrypoint
         env_file:
             - .app.env
         environment:
