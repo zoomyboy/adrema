@@ -10,4 +10,4 @@ function wait_for_db {
     done
 }
 
-su www-data -c 'php artisan horizon'
+su www-data -c 'php artisan horizon' -s /bin/sh
