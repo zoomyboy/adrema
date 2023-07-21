@@ -7,3 +7,4 @@ bootstrap/cache/services.php
 bootstrap/cache/packages.php
 bootstrap/cache/routes.php
 packages/laravel-nami/.cookies
+app/storage/app

@@ -15,6 +15,7 @@ WORKDIR /app
 COPY --from=node /app /app
 COPY --from=composer /app/public/vendor /app/public/vendor
 COPY ./.docker/nginx/nginx.conf /etc/nginx/nginx.conf
+RUN cd public && ln -s ../storage/app/public ./storage
 EXPOSE 80
 
 VOLUME ["/app/storage/app"]

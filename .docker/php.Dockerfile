@@ -19,6 +19,11 @@ COPY --chown=www-data:www-data . /app
 COPY --chown=www-data:www-data --from=node /app/public /app/public
 COPY --chown=www-data:www-data --from=composer /app/vendor /app/vendor
 
+USER www-data
+RUN php artisan telescope:publish
+RUN php artisan horizon:publish
+
+USER root
 COPY ./.docker/php-entrypoint /bin/php-entrypoint
 COPY ./.docker/horizon-entrypoint /bin/horizon-entrypoint
 

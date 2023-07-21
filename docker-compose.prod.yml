@@ -1,9 +1,7 @@
 version: '3'
 services:
     webservice:
-        build:
-            context: .
-            dockerfile: ./.docker/nginx.Dockerfile
+        image: zoomyboy/adrema-webservice:latest
         depends_on:
             - php
         ports:
@@ -12,9 +10,7 @@ services:
             - ./data/storage:/app/storage/app
 
     php:
-        build:
-            context: .
-            dockerfile: ./.docker/php.Dockerfile
+        image: zoomyboy/adrema-app:latest
         depends_on:
             - db
         env_file:
@@ -32,9 +28,7 @@ services:
             - ./cookies:/app/packages/laravel-nami/.cookies
 
     horizon:
-        build:
-            context: .
-            dockerfile: ./.docker/php.Dockerfile
+        image: zoomyboy/adrema-app:latest
         depends_on:
             - db
             - php
@@ -49,6 +43,9 @@ services:
             XELATEX_BIN: /usr/bin/xelatex
             PDFLATEX_BIN: /usr/bin/pdflatex
             REDIS_HOST: redis
+        volumes:
+            - ./data/storage:/app/storage/app
+            - ./cookies:/app/packages/laravel-nami/.cookies
 
     db:
         image: mariadb:10.6.5

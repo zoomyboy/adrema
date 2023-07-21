@@ -10,4 +10,4 @@ function wait_for_db {
     done
 }
 
-php artisan horizon
+su www-data -c 'php artisan horizon'
