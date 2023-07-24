@@ -86,6 +86,8 @@ export default {
                 var response = await this.axios.post('/api/member/search', {
                     filter: {
                         search: event,
+                        hasBirthday: true,
+                        hasFullAddress: true,
                     },
                 });
 

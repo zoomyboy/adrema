@@ -12,6 +12,7 @@ use App\Subactivity;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 use Zoomyboy\Phone\ValidPhoneRule;
 
 class MemberRequest extends FormRequest
@@ -51,15 +52,10 @@ class MemberRequest extends FormRequest
             }),
             'firstname' => 'required',
             'lastname' => 'required',
-            'address' => 'required',
-            'zip' => 'required|numeric',
-            'location' => 'required',
-            'birthday' => 'date|required',
             'country_id' => 'required|exists:countries,id',
             'email' => 'nullable|email',
             'email_parents' => 'nullable|email',
             'bill_kind' => ['nullable', Rule::in(BillKind::values())],
-            'joined_at' => 'date|required',
             'confession_id' => 'nullable|exists:confessions,id',
             'ps_at' => 'nullable|date_format:Y-m-d',
             'more_ps_at' => 'nullable|date_format:Y-m-d',
@@ -76,7 +72,6 @@ class MemberRequest extends FormRequest
             'invoice_address' => '',
             'gender_id' => 'nullable|exists:genders,id',
             'region_id' => 'nullable|exists:regions,id',
-            'nationality_id' => 'required|exists:nationalities,id',
             'children_phone' => ['nullable', new ValidPhoneRule('Telefon (Kind)')],
             'fax' => ['nullable', new ValidPhoneRule('Fax')],
             'other_country' => '',
@@ -121,5 +116,24 @@ class MemberRequest extends FormRequest
             DeleteJob::dispatch($member->nami_id);
         }
         ResyncAction::dispatch();
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $this->namiIfElse($validator, 'birthday', 'date|required');
+        $this->namiIfElse($validator, 'nationality_id', 'required|exists:nationalities,id');
+        $this->namiIfElse($validator, 'address', 'required|max:255');
+        $this->namiIfElse($validator, 'zip', 'required|numeric');
+        $this->namiIfElse($validator, 'location', 'required|max:255');
+        $this->namiIfElse($validator, 'joined_at', 'date|required');
+    }
+
+    public function namiIfElse(Validator $validator, string $attribute, string $rules): void
+    {
+        $request = request();
+        $when = fn () => true === $request->input('has_nami');
+        $notWhen = fn () => true !== $request->input('has_nami');
+        $validator->sometimes($attribute, $rules, $when);
+        $validator->sometimes($attribute, 'present', $notWhen);
     }
 }

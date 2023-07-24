@@ -80,6 +80,19 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(false, $response, 'data.data.2.is_leader');
     }
 
+    public function testItHasNoEfzLinkWhenAddressIsMissing(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()
+            ->defaults()
+            ->has(Membership::factory()->in('€ LeiterIn', 455, 'Pfadfinder', 15))
+            ->create(['address' => null]);
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas(null, $response, 'data.data.0.efz_link');
+    }
+
     public function testItShowsAgeGroupIcon(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
@@ -91,6 +104,17 @@ class IndexTest extends TestCase
         $response = $this->get('/member');
 
         $this->assertInertiaHas('woelfling', $response, 'data.data.0.age_group_icon');
+    }
+
+    public function testAgeIsNullWhenBirthdayIsNull(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()->defaults()->create(['birthday' => null]);
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas(null, $response, 'data.data.0.age');
+        $this->assertInertiaHas(null, $response, 'data.data.0.birthday');
     }
 
     public function testItShowsActivitiesAndSubactivities(): void

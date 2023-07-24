@@ -161,7 +161,7 @@ class Member extends Model implements Geolocatable
 
     public function getEfzLink(): ?string
     {
-        return $this->isLeader()
+        return $this->isLeader() && $this->address && $this->zip && $this->location && $this->birthday
             ? route('efz', ['member' => $this])
             : null;
     }
@@ -436,10 +436,13 @@ class Member extends Model implements Geolocatable
             'VERSION' => '3.0',
             'FN' => $this->fullname,
             'N' => [$this->lastname, $this->firstname, '', '', ''],
-            'BDAY' => $this->birthday->format('Ymd'),
             'CATEGORIES' => 'Scoutrobot',
             'UID' => $this->slug,
         ]);
+
+        if ($this->birthday) {
+            $card->add('BDAY', $this->birthday->format('Ymd'));
+        }
 
         if ($this->main_phone) {
             $card->add('TEL', $this->main_phone, ['type' => 'voice']);

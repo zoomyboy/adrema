@@ -27,14 +27,14 @@
                             <f-select id="gender_id" name="gender_id" :options="meta.genders" v-model="inner.gender_id" label="Geschlecht" size="sm"></f-select>
                             <f-text id="salutation" v-model="inner.salutation" size="sm" label="Anrede"></f-text>
                         </div>
-                        <f-select :options="meta.nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit" name="nationality_id" size="sm" required></f-select>
+                        <f-select :options="meta.nationalities" id="nationality_id" v-model="inner.nationality_id" label="Staatsangehörigkeit" name="nationality_id" size="sm"></f-select>
                         <f-text id="firstname" v-model="inner.firstname" size="sm" label="Vorname" required></f-text>
                         <f-text id="lastname" v-model="inner.lastname" size="sm" label="Nachname" required></f-text>
-                        <f-text id="address" v-model="inner.address" size="sm" label="Adresse" required></f-text>
+                        <f-text id="address" v-model="inner.address" size="sm" label="Adresse"></f-text>
                         <f-text id="further_address" v-model="inner.further_address" size="sm" label="Adresszusatz"></f-text>
-                        <f-text id="zip" v-model="inner.zip" size="sm" label="PLZ" required></f-text>
-                        <f-text id="location" v-model="inner.location" size="sm" label="Ort" required></f-text>
-                        <f-text type="date" id="birthday" v-model="inner.birthday" size="sm" label="Geburtsdatum" required></f-text>
+                        <f-text id="zip" v-model="inner.zip" size="sm" label="PLZ"></f-text>
+                        <f-text id="location" v-model="inner.location" size="sm" label="Ort"></f-text>
+                        <f-text type="date" id="birthday" v-model="inner.birthday" size="sm" label="Geburtsdatum"></f-text>
                         <f-select :options="meta.regions" name="region_id" id="region_id" v-model="inner.region_id" label="Bundesland" size="sm"></f-select>
                         <f-select :options="meta.countries" id="country_id" v-model="inner.country_id" label="Land" name="country_id" size="sm" required></f-select>
                         <f-text id="other_country" v-model="inner.other_country" label="Andere Staatsangehörigkeit" size="sm"></f-text>

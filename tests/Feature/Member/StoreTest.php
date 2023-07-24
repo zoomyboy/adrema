@@ -47,7 +47,7 @@ class StoreTest extends TestCase
                 'bill_kind' => 'Post',
                 'salutation' => 'Doktor',
                 'comment' => 'Lorem bla',
-            ]));
+            ]))->assertSessionHasNoErrors();
 
         $response->assertRedirect('/member')->assertSessionHasNoErrors();
         $member = Member::firstWhere('firstname', 'Joe');
@@ -140,6 +140,30 @@ class StoreTest extends TestCase
         ]);
     }
 
+    public function testItDoesntRequireBirthdayWhenNotInNami(): void
+    {
+        $this->login()->loginNami();
+
+        $this
+            ->post('/member', $this->attributes([
+                'nationality_id' => null,
+                'birthday' => null,
+                'has_nami' => false,
+                'address' => null,
+                'zip' => null,
+                'location' => null,
+                'joined_at' => null,
+            ]));
+        $this->assertDatabaseHas('members', [
+            'nationality_id' => null,
+            'birthday' => null,
+            'address' => null,
+            'zip' => null,
+            'location' => null,
+            'joined_at' => null,
+        ]);
+    }
+
     public function testItRequiresFields(): void
     {
         $this->login()->loginNami();
@@ -147,8 +171,13 @@ class StoreTest extends TestCase
         $this
             ->post('/member', $this->attributes([
                 'nationality_id' => null,
+                'birthday' => '',
+                'address' => '',
+                'zip' => '',
+                'location' => '',
+                'joined_at' => '',
             ]))
-            ->assertSessionHasErrors(['nationality_id']);
+            ->assertSessionHasErrors(['nationality_id', 'birthday', 'address', 'zip', 'location', 'joined_at']);
     }
 
     public function testSubscriptionIsRequiredIfFirstActivityIsPaid(): void

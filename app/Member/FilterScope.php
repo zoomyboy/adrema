@@ -32,6 +32,8 @@ class FilterScope extends Filter
         public array $groupIds = [],
         public array $include = [],
         public array $exclude = [],
+        public ?bool $hasFullAddress = null,
+        public ?bool $hasBirthday = null,
     ) {
     }
 
@@ -58,6 +60,22 @@ class FilterScope extends Filter
 
                 if ($this->billKind) {
                     $query->where('bill_kind', BillKind::fromValue($this->billKind));
+                }
+
+                if (true === $this->hasFullAddress) {
+                    $query->whereNotNull('address')->whereNotNull('zip')->whereNotNull('location')->where('address', '!=', '')->where('zip', '!=', '')->where('location', '!=', '');
+                }
+
+                if (false === $this->hasFullAddress) {
+                    $query->where(fn ($q) => $q
+                        ->orWhere('address', '')->orWhereNull('address')
+                        ->orWhere('zip', '')->orWhereNull('zip')
+                        ->orWhere('location', '')->orWhereNull('location')
+                    );
+                }
+
+                if (true === $this->hasBirthday) {
+                    $query->whereNotNull('birthday');
                 }
 
                 if (count($this->groupIds)) {

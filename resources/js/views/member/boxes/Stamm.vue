@@ -5,7 +5,7 @@
         <ui-text-display label="Geburtsdatum" :value="inner.birthday_human"></ui-text-display>
         <ui-text-display label="Alter" :value="inner.age"></ui-text-display>
         <ui-text-display label="Bundesland" :value="inner.region.name"></ui-text-display>
-        <ui-text-display label="Nationalität" :value="inner.nationality.name"></ui-text-display>
+        <ui-text-display label="Nationalität" :value="inner.nationality?.name"></ui-text-display>
         <ui-text-display v-show="inner.other_country" label="Andere Staatsangehörigkeit" :value="inner.other_country"></ui-text-display>
     </div>
 </template>

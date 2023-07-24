@@ -24,5 +24,4 @@ class SearchTest extends TestCase
 
         $this->assertEquals('::firstname:: ::lastname:: Kölner Str 3, 33333 Hilden', $member->search_text);
     }
-
 }

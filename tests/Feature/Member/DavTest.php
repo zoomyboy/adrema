@@ -76,6 +76,15 @@ VCARD;
         $this->assertEquals('Max Muster', $card->FN->getValue());
     }
 
+    public function testItDoesntNeedBirthday(): void
+    {
+        $member = Member::factory()->defaults()->create(['birthday' => null]);
+
+        $card = $member->toVcard();
+
+        $this->assertNull($card->BDAY);
+    }
+
     public function testItSetsTheBirthday(): void
     {
         $member = Member::factory()->defaults()->create(['birthday' => '1993-05-06']);

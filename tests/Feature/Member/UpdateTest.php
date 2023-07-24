@@ -73,6 +73,22 @@ class UpdateTest extends TestCase
         ]);
     }
 
+    public function testItSetsLocationToNull(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = $this->member(['location' => 'Hilden', 'nami_id' => null]);
+        $this->fakeRequest();
+        NamiPutMemberAction::allowToRun();
+
+        $this->patch("/member/{$member->id}", array_merge($member->getAttributes(), [
+            'location' => null,
+        ]));
+
+        $this->assertDatabaseHas('members', [
+            'location' => null,
+        ]);
+    }
+
     public function testItUpdatesContact(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
