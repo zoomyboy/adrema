@@ -33,3 +33,12 @@ if [ $1 == "app" ]; then
 fi
 
 
+if [ $1 == "schedule" ]; then
+    wait_for_db
+    while true; do
+        su www-data -c 'php artisan schedule:run -n'
+        sleep 60
+    done
+fi
+
+

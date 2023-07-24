@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(PruneCommand::class, ['--hours' => 168])->daily();     // 168h = 7 Tage
+        $schedule->command(InitializeMembers::class)->dailyAt('03:00');
     }
 
     /**

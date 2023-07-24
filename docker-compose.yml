@@ -50,6 +50,31 @@ services:
             XELATEX_BIN: /usr/bin/xelatex
             PDFLATEX_BIN: /usr/bin/pdflatex
             REDIS_HOST: redis
+        volumes:
+            - ./data/storage:/app/storage/app
+            - ./cookies:/app/packages/laravel-nami/.cookies
+
+    schedule:
+        build:
+            context: .
+            dockerfile: ./.docker/php.Dockerfile
+        depends_on:
+            - db
+            - php
+        command: /bin/entrypoint schedule
+        env_file:
+            - .app.env
+        environment:
+            DB_HOST: db
+            DB_DATABASE: db
+            DB_USERNAME: db
+            QUEUE_CONNECTION: redis
+            XELATEX_BIN: /usr/bin/xelatex
+            PDFLATEX_BIN: /usr/bin/pdflatex
+            REDIS_HOST: redis
+        volumes:
+            - ./data/storage:/app/storage/app
+            - ./cookies:/app/packages/laravel-nami/.cookies
 
     db:
         image: mariadb:10.6.5
