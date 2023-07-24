@@ -18,14 +18,14 @@ RUN pecl install redis && docker-php-ext-enable redis
 COPY --chown=www-data:www-data . /app
 COPY --chown=www-data:www-data --from=node /app/public /app/public
 COPY --chown=www-data:www-data --from=composer /app/vendor /app/vendor
+RUN usermod -s /bin/bash www-data
 
 USER www-data
 RUN php artisan telescope:publish
 RUN php artisan horizon:publish
 
 USER root
-COPY ./.docker/php-entrypoint /bin/php-entrypoint
-COPY ./.docker/horizon-entrypoint /bin/horizon-entrypoint
+COPY ./.docker/php /bin
 
 VOLUME ["/app/packages/laravel-nami/.cookies", "/app/storage/app"]
 

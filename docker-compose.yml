@@ -17,6 +17,7 @@ services:
             dockerfile: ./.docker/php.Dockerfile
         depends_on:
             - db
+        command: /bin/entrypoint app
         env_file:
             - .app.env
         environment:
@@ -38,7 +39,7 @@ services:
         depends_on:
             - db
             - php
-        command: /bin/horizon-entrypoint
+        command: /bin/entrypoint horizon
         env_file:
             - .app.env
         environment:
