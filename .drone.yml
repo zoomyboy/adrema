@@ -99,6 +99,8 @@ steps:
           SSH_KEY:
               from_secret: github_private_key
       commands:
+          - apt-get update > /dev/null
+          - apt-get install openssh-client
           - mkdir $HOME/.ssh
           - echo "UserKnownHostsFile=/dev/null" >> $HOME/.ssh/config
           - echo "StrictHostKeyChecking=no" >> $HOME/.ssh/config
