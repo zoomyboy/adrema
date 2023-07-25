@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_DRIVER', 'log'),
+    'default' => env('BROADCAST_DRIVER', 'pusher'),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,12 +30,16 @@ return [
     'connections' => [
         'pusher' => [
             'driver' => 'pusher',
-            'key' => env('PUSHER_APP_KEY'),
-            'secret' => env('PUSHER_APP_SECRET'),
-            'app_id' => env('PUSHER_APP_ID'),
+            'key' => 'adremakey',
+            'app_id' => 'adremaid',
+            'secret' => 'adremasecret',
             'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'cluster' => 'adrema',
+                'encrypted' => true,
+                'host' => env('PUSHER_APP_HOST', '127.0.0.1'),
                 'useTLS' => true,
+                'port' => 6001,
+                'scheme' => 'http',
             ],
         ],
 

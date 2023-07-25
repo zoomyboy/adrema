@@ -87,6 +87,15 @@ services:
         volumes:
             - ./data/db:/var/lib/mysql
 
+    socketi:
+        image: quay.io/soketi/soketi:89604f268623cf799573178a7ba56b7491416bde-16-debian
+        ports:
+            - '6001:6001'
+        environment:
+            SOKETI_DEFAULT_APP_ID: adremaid
+            SOKETI_DEFAULT_APP_KEY: adremakey
+            SOKETI_DEFAULT_APP_SECRET: adremasecret
+
     redis:
         image: redis:alpine3.18
         container_name: redis

@@ -4,6 +4,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import {Plugin as FloatingVue, options as FloatingVueOptions} from './lib/floatingVue.js';
 import {createPinia, PiniaVuePlugin} from 'pinia';
+import Echo from './lib/echo.js';
 import requireModules from './lib/requireModules.js';
 
 import AppLayout from './layouts/AppLayout.vue';
@@ -21,6 +22,7 @@ const pinia = createPinia();
 var views = import.meta.glob('./views/**/*.vue');
 
 axios.interceptors.response.use(...toastInterceptor);
+window.Echo = Echo;
 
 createInertiaApp({
     title: (title) => `${title} | Adrema`,
