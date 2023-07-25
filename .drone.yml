@@ -93,6 +93,13 @@ steps:
       when:
           event: tag
 
+    - name: deploy
+      image: php:8.1.6
+      commands:
+          - ./vendor/bin/envoy run deploy
+      when:
+          event: tag
+
     - name: composer_no_dev
       image: composer:2.2.7
       commands:
@@ -117,76 +124,6 @@ steps:
       when:
           event: tag
 
-    - name: deploy silva
-      image: drillster/drone-rsync
-      settings:
-          hosts: ['zoomyboy.de']
-          user: stammsilva
-          source: ./
-          target: ~/nami
-          exclude: ['.git']
-          key:
-              from_secret: deploy_private_key
-          script:
-              - cd ~/nami
-              - /usr/bin/php8.1 artisan migrate --force
-      when:
-          branch: master
-          event: push
-
-    - name: deploy lennep
-      image: drillster/drone-rsync
-      settings:
-          hosts: ['zoomyboy.de']
-          user: dpsg-lennep
-          source: ./
-          target: ~/nami
-          exclude: ['.git']
-          key:
-              from_secret: deploy_private_key
-          script:
-              - cd ~/nami
-              - /usr/bin/php8.1 artisan migrate --force
-      when:
-          branch: master
-          event: push
-
-    - name: deploy dpsgkoeln
-      image: drillster/drone-rsync
-      settings:
-          hosts: ['dpsg-koeln.de']
-          user: dpsg-koeln
-          source: ./
-          target: ~/adrema
-          exclude: ['.git']
-          key:
-              from_secret: deploy_private_key
-          script:
-              - cd ~/adrema
-              - /usr/bin/php8.1 artisan migrate --force
-              - sudo systemctl restart adrema-horizon
-      when:
-          branch: master
-          event: push
-
-    - name: deploy dpsgbergischland
-      image: drillster/drone-rsync
-      settings:
-          hosts: ['zoomyboy.de']
-          user: dpsgbergischland
-          source: ./
-          target: ~/adrema
-          exclude: ['.git']
-          key:
-              from_secret: deploy_private_key
-          script:
-              - cd ~/adrema
-              - /usr/bin/php8.1 artisan migrate --force
-              - sudo systemctl restart adremabl-horizon
-      when:
-          branch: master
-          event: push
-
     - name: github push
       image: alpine/git
       environment:
@@ -195,7 +132,6 @@ steps:
       commands:
           - mkdir $HOME/.ssh
           - git config core.sshCommand "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-          - echo "$SSH_KEY"
           - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
           - chmod 600 $HOME/.ssh/id_rsa
           - git remote add gh git@github.com:zoomyboy/adrema.git
