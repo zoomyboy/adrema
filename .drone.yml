@@ -129,6 +129,16 @@ steps:
       when:
           event: tag
 
+    - name: gitea_release
+      image: plugins/gitea-release
+      settings:
+          api_key:
+              from_secret: gitea_api_key
+          base_url: https://git.zoomyboy.de
+          files: ./nami.tar.gz
+      when:
+          event: tag
+
 services:
     - name: db
       image: mariadb/server:10.3
