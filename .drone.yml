@@ -95,10 +95,25 @@ steps:
 
     - name: deploy
       image: php:8.1.6
+      environment:
+          SSH_KEY:
+              from_secret: github_private_key
       commands:
+          - mkdir $HOME/.ssh
+          - echo "UserKnownHostsFile=/dev/null" >> $HOME/.ssh/config
+          - echo "StrictHostKeyChecking=no" >> $HOME/.ssh/config
+          - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
+          - chmod 600 $HOME/.ssh/id_rsa
           - ./vendor/bin/envoy run deploy
       when:
           event: tag
+
+    - name: github push
+      image: alpine/git
+      commands:
+      when:
+          branch: master
+          event: push
 
     - name: composer_no_dev
       image: composer:2.2.7
@@ -113,32 +128,6 @@ steps:
           - cd .. && tar -cvzf nami.tar.gz ./nami && mv nami.tar.gz nami/ && cd nami
       when:
           event: tag
-
-    - name: gitea_release
-      image: plugins/gitea-release
-      settings:
-          api_key:
-              from_secret: gitea_api_key
-          base_url: https://git.zoomyboy.de
-          files: ./nami.tar.gz
-      when:
-          event: tag
-
-    - name: github push
-      image: alpine/git
-      environment:
-          SSH_KEY:
-              from_secret: github_private_key
-      commands:
-          - mkdir $HOME/.ssh
-          - git config core.sshCommand "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-          - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
-          - chmod 600 $HOME/.ssh/id_rsa
-          - git remote add gh git@github.com:zoomyboy/adrema.git
-          - git push -f gh HEAD:master
-      when:
-          branch: master
-          event: push
 
 services:
     - name: db
