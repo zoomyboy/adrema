@@ -97,7 +97,7 @@ steps:
       image: php:8.1.6
       environment:
           SSH_KEY:
-              from_secret: github_private_key
+              from_secret: deploy_private_key
       commands:
           - apt-get update > /dev/null
           - apt-get install -y openssh-client
