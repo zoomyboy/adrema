@@ -14,11 +14,11 @@
                 <div v-if="hint" v-tooltip="hint">
                     <ui-sprite src="info-button" class="info-button"></ui-sprite>
                 </div>
-                <div class="px-1 relative" v-if="size != 'xs'">
-                    <ui-sprite class="chevron w-3 h-3 fill-current" src="chevron-down"></ui-sprite>
+                <div v-if="size != 'xs'" class="px-1 relative">
+                    <ui-sprite class="chevron w-3 h-3 fill-current" src="chevron"></ui-sprite>
                 </div>
-                <div class="px-1 relative" v-if="size == 'xs'">
-                    <ui-sprite class="chevron w-2 h-2 fill-current" src="chevron-down"></ui-sprite>
+                <div v-if="size == 'xs'" class="px-1 relative">
+                    <ui-sprite class="chevron w-2 h-2 fill-current" src="chevron"></ui-sprite>
                 </div>
             </div>
         </div>
@@ -29,7 +29,6 @@
 import map from 'lodash/map';
 
 export default {
-    emits: ['update:modelValue'],
     props: {
         disabled: {
             type: Boolean,
@@ -80,21 +79,14 @@ export default {
             },
         },
     },
+    emits: ['update:modelValue'],
     computed: {
         parsedOptions() {
             return Array.isArray(this.options)
                 ? this.options
                 : map(this.options, (value, key) => {
-                      return {name: value, id: key};
-                  });
-        },
-    },
-    methods: {
-        trigger(v) {
-            this.$emit('update:modelValue', /^[0-9]+$/.test(v.target.value) ? parseInt(v.target.value) : v.target.value ? v.target.value : null);
-        },
-        clear() {
-            this.$emit('update:modelValue', null);
+                    return { name: value, id: key };
+                });
         },
     },
     mounted() {
@@ -106,6 +98,14 @@ export default {
         if (this.placeholder && typeof this.modelValue === 'undefined') {
             this.$emit('update:modelValue', null);
         }
+    },
+    methods: {
+        trigger(v) {
+            this.$emit('update:modelValue', /^[0-9]+$/.test(v.target.value) ? parseInt(v.target.value) : v.target.value ? v.target.value : null);
+        },
+        clear() {
+            this.$emit('update:modelValue', null);
+        },
     },
 };
 </script>
