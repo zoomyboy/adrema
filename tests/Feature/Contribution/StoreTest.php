@@ -62,8 +62,8 @@ class StoreTest extends TestCase
         Gender::factory()->create(['name' => 'Männlich']);
         Passport::actingAsClient(Client::factory()->create(), ['contribution-generate']);
         $country = Country::factory()->create();
-        $member1 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
-        $member2 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
+        Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
+        Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
 
         $response = $this->postJson('/api/contribution-generate', [
             'country' => $country->id,
