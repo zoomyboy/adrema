@@ -1,44 +1,44 @@
 <template>
     <page-layout>
         <template #toolbar>
-            <page-toolbar-button @click.prevent="model = {...data.meta.default}" color="primary" icon="plus">Neue Verbindung</page-toolbar-button>
+            <page-toolbar-button color="primary" icon="plus" @click.prevent="model = {...meta.default}">Neue Verbindung</page-toolbar-button>
         </template>
-        <ui-popup :heading="model.id ? 'Verbindung bearbeiten' : 'Neue Verbindung'" v-if="model !== null" @close="model = null">
+        <ui-popup v-if="model !== null" :heading="model.id ? 'Verbindung bearbeiten' : 'Neue Verbindung'" @close="model = null">
             <form @submit.prevent="submit">
                 <section class="grid grid-cols-2 gap-3 mt-6">
-                    <f-text v-model="model.name" name="name" id="name" label="Bezeichnung" required></f-text>
-                    <f-text v-model="model.domain" name="domain" id="domain" label="Domain" required></f-text>
+                    <f-text id="name" v-model="model.name" name="name" label="Bezeichnung" required></f-text>
+                    <f-text id="domain" v-model="model.domain" name="domain" label="Domain" required></f-text>
                     <f-select
-                        :modelValue="model.type.cls"
-                        @update:modelValue="
+                        id="type"
+                        :model-value="model.type.cls"
+                        label="Typ"
+                        name="type"
+                        :options="meta.types"
+                        :placeholder="''"
+                        required
+                        @update:model-value="
                             model.type = {
                                 cls: $event,
                                 params: {...getType($event).defaults},
                             }
                         "
-                        label="Typ"
-                        name="type"
-                        id="type"
-                        :options="data.meta.types"
-                        :placeholder="''"
-                        required
                     ></f-select>
                     <template v-for="(field, index) in getType(model.type.cls).fields">
                         <f-text
-                            :key="index"
                             v-if="field.type === 'text' || field.type === 'password' || field.type === 'email'"
+                            :id="field.name"
+                            :key="index"
+                            v-model="model.type.params[field.name]"
                             :label="field.label"
                             :type="field.type"
                             :name="field.name"
-                            :id="field.name"
-                            v-model="model.type.params[field.name]"
                             :required="field.is_required"
                         ></f-text>
                     </template>
                 </section>
                 <section class="flex mt-4 space-x-2">
                     <ui-button type="submit" class="btn-danger">Speichern</ui-button>
-                    <ui-button @click.prevent="model = null" class="btn-primary">Abbrechen</ui-button>
+                    <ui-button class="btn-primary" @click.prevent="model = null">Abbrechen</ui-button>
                 </section>
             </form>
         </ui-popup>
@@ -53,7 +53,7 @@
                         <th>Aktion</th>
                     </thead>
 
-                    <tr v-for="(gateway, index) in inner.data" :key="index">
+                    <tr v-for="(gateway, index) in data" :key="index">
                         <td v-text="gateway.name"></td>
                         <td v-text="gateway.domain"></td>
                         <td v-text="gateway.type_human"></td>
@@ -65,49 +65,36 @@
                             ></ui-boolean-display>
                         </td>
                         <td>
-                            <a href="#" v-tooltip="`Bearbeiten`" @click.prevent="model = {...gateway}" class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></a>
+                            <a v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm" @click.prevent="model = {...gateway}"><ui-sprite src="pencil"></ui-sprite></a>
                         </td>
                     </tr>
                 </table>
 
                 <div class="px-6">
-                    <ui-pagination class="mt-4" :value="data.meta" :only="['data']"></ui-pagination>
+                    <ui-pagination class="mt-4" :value="meta" :only="['data']"></ui-pagination>
                 </div>
             </div>
         </setting-layout>
     </page-layout>
 </template>
 
-<script>
+<script setup>
+import {ref, inject} from 'vue';
+import {indexProps, useIndex} from '../../composables/useIndex.js';
 import SettingLayout from '../setting/Layout.vue';
-import indexHelpers from '../../mixins/indexHelpers.js';
 
-export default {
-    mixins: [indexHelpers],
+const props = defineProps(indexProps);
+const {meta, data, reload} = useIndex(props.data);
+const model = ref(null);
+const axios = inject('axios');
 
-    data: function () {
-        return {
-            model: null,
-            inner: {...this.data},
-        };
-    },
-    props: {
-        data: {},
-    },
+function getType(type) {
+    return meta.value.types.find((t) => t.id === type);
+}
+async function submit() {
+    await axios[model.value.id ? 'patch' : 'post'](model.value.id ? model.value.links.update : meta.value.links.store, model.value);
 
-    methods: {
-        getType(type) {
-            return this.data.meta.types.find((t) => t.id === type);
-        },
-        async submit() {
-            await this.axios[this.model.id ? 'patch' : 'post'](this.model.id ? this.model.links.update : this.data.meta.links.store, this.model);
-
-            this.reload();
-            this.model = null;
-        },
-    },
-    components: {
-        SettingLayout,
-    },
-};
+    reload();
+    model.value = null;
+}
 </script>

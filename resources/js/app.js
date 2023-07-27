@@ -51,6 +51,7 @@ createInertiaApp({
         requireModules(import.meta.glob('./components/ui/*.vue'), app, 'ui');
         requireModules(import.meta.glob('./components/page/*.vue', {eager: true}), app, 'page');
 
+        app.provide('axios', app.config.globalProperties.axios);
         app.mount(el);
     },
 });

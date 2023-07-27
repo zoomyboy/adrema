@@ -3,7 +3,7 @@
         <Head :title="$page.props.title"></Head>
         <page-header :title="$page.props.title">
             <template #before-title>
-                <a href="#" @click.prevent="menuStore.toggle()" class="mr-2 lg:hidden">
+                <a href="#" class="mr-2 lg:hidden" @click.prevent="menuStore.toggle()">
                     <ui-sprite src="menu" class="text-gray-100 w-5 h-5"></ui-sprite>
                 </a>
             </template>

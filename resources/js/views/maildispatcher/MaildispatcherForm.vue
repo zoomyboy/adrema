@@ -9,60 +9,60 @@
         <form id="form" class="p-3 grid gap-3" @submit.prevent="submit">
             <ui-box heading="Metadatem">
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <f-text id="name" name="name" v-model="model.name" label="Name" size="sm" required></f-text>
-                    <f-select id="gateway_id" name="gateway_id" :options="meta.gateways" v-model="model.gateway_id" label="Verbindung" size="sm" required></f-select>
+                    <f-text id="name" v-model="model.name" name="name" label="Name" size="sm" required></f-text>
+                    <f-select id="gateway_id" v-model="model.gateway_id" name="gateway_id" :options="meta.gateways" label="Verbindung" size="sm" required></f-select>
                 </div>
             </ui-box>
-            <ui-box heading="Filterregeln" v-if="members !== null">
+            <ui-box v-if="members !== null" heading="Filterregeln">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <f-multipleselect
                         id="activity_ids"
+                        v-model="model.filter.activity_ids"
                         name="activity_ids"
                         :options="members.meta.filterActivities"
-                        v-model="model.filter.activity_ids"
-                        @update:modelValue="reload(1)"
                         label="Tätigkeit"
                         size="sm"
+                        @update:model-value="reload(1)"
                     ></f-multipleselect>
                     <f-multipleselect
                         id="subactivity_ids"
+                        v-model="model.filter.subactivity_ids"
                         name="subactivity_ids"
                         :options="members.meta.filterSubactivities"
-                        v-model="model.filter.subactivity_ids"
-                        @update:modelValue="reload(1)"
                         label="Unterttätigkeit"
                         size="sm"
+                        @update:model-value="reload(1)"
                     ></f-multipleselect>
                     <f-multipleselect
                         id="include"
+                        v-model="model.filter.include"
                         name="include"
                         :options="members.meta.members"
-                        v-model="model.filter.include"
-                        @update:modelValue="reload(1)"
                         label="Zusätzliche Mitglieder"
                         size="sm"
+                        @update:model-value="reload(1)"
                     ></f-multipleselect>
                     <f-multipleselect
                         id="exclude"
+                        v-model="model.filter.exclude"
                         name="exclude"
                         :options="members.meta.members"
-                        v-model="model.filter.exclude"
-                        @update:modelValue="reload(1)"
                         label="Mitglieder ausschließen"
                         size="sm"
+                        @update:model-value="reload(1)"
                     ></f-multipleselect>
                     <f-multipleselect
                         id="groupIds"
+                        v-model="model.filter.group_ids"
                         name="groupIds"
                         :options="members.meta.groups"
-                        v-model="model.filter.group_ids"
-                        @update:modelValue="reload(1)"
                         label="Gruppierungen"
                         size="sm"
+                        @update:model-value="reload(1)"
                     ></f-multipleselect>
                 </div>
             </ui-box>
-            <ui-box heading="Mitglieder" v-if="members !== null">
+            <ui-box v-if="members !== null" heading="Mitglieder">
                 <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
                     <thead>
                         <th></th>
@@ -80,49 +80,46 @@
                         <td v-text="member.email_parents"></td>
                     </tr>
                 </table>
-                <ui-pagination class="mt-4" @reload="reload" :value="members.meta" :only="['data']"></ui-pagination>
+                <ui-pagination class="mt-4" :value="members.meta" :only="['data']" @reload="reload"></ui-pagination>
             </ui-box>
         </form>
     </page-layout>
 </template>
 
-<script>
-import indexHelpers from '../../mixins/indexHelpers.js';
-import hasFlash from '../../mixins/hasFlash.js';
+<script setup>
+import {ref, inject, defineProps} from 'vue';
+import {useIndex} from '../../composables/useIndex.js';
 
-export default {
-    mixins: [indexHelpers, hasFlash],
-
-    data: function () {
-        return {
-            model: this.data === undefined ? {...this.meta.default_model} : {...this.data},
-            members: null,
-        };
+const props = defineProps({
+    data: {
+        default: () => undefined,
+        type: Object,
     },
-
-    props: {
-        data: {},
-        meta: {},
+    meta: {
+        type: Object,
+        default: () => {},
     },
+});
 
-    methods: {
-        async reload(page) {
-            this.members = (
-                await this.axios.post('/api/member/search', {
-                    page: page || 1,
-                    filter: this.toFilterString(this.model.filter),
-                })
-            ).data;
-        },
+const {toFilterString, router} = useIndex({data: [], meta: {}});
 
-        async submit() {
-            this.model.id ? await this.axios.patch(this.model.links.update, this.model) : await this.axios.post('/maildispatcher', this.model);
-            this.$inertia.visit(this.meta.links.index);
-        },
-    },
+const model = ref(props.data === undefined ? {...props.meta.default_model} : {...props.data});
+const members = ref(null);
+const axios = inject('axios');
 
-    async created() {
-        this.reload();
-    },
-};
+async function reload(page) {
+    members.value = (
+        await axios.post('/api/member/search', {
+            page: page || 1,
+            filter: toFilterString(model.value.filter),
+        })
+    ).data;
+}
+
+reload();
+
+async function submit() {
+    model.value.id ? await axios.patch(model.value.links.update, model.value) : await axios.post('/maildispatcher', model.value);
+    router.visit(props.meta.links.index);
+}
 </script>
