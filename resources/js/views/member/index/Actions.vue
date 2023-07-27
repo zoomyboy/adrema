@@ -1,7 +1,7 @@
 <template>
     <div class="flex space-x-1">
         <i-link :href="member.links.show" class="inline-flex btn btn-primary btn-sm" v-tooltip="`Details`"><ui-sprite src="eye"></ui-sprite></i-link>
-        <i-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm" v-tooltip="`bearbeiten`"><ui-sprite src="pencil"></ui-sprite></i-link>
+        <i-link :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm" v-tooltip="`Bearbeiten`"><ui-sprite src="pencil"></ui-sprite></i-link>
         <a href="#" v-tooltip="`Zahlungen`" v-show="hasModule('bill')" @click.prevent="$emit('sidebar', 'payment.index')" class="inline-flex btn btn-info btn-sm"
             ><ui-sprite src="money"></ui-sprite
         ></a>

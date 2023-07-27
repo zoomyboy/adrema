@@ -23,7 +23,7 @@
                 <td v-text="activity.name"></td>
                 <td>
                     <div class="flex space-x-1">
-                        <i-link v-tooltip="`bearbeiten`" :href="activity.links.edit"
+                        <i-link v-tooltip="`Bearbeiten`" :href="activity.links.edit"
                             class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></i-link>
                         <a v-tooltip="`Entfernen`" href="#" class="inline-flex btn btn-danger btn-sm"
                             @click.prevent="deleting = activity"><ui-sprite src="trash"></ui-sprite></a>
