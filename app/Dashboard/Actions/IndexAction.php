@@ -3,7 +3,6 @@
 namespace App\Dashboard\Actions;
 
 use App\Dashboard\DashboardFactory;
-use Illuminate\Http\Request;
 use Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -22,7 +21,7 @@ class IndexAction
         ];
     }
 
-    public function asController(Request $request): Response
+    public function asController(): Response
     {
         session()->put('menu', 'dashboard');
         session()->put('title', 'Dashboard');
