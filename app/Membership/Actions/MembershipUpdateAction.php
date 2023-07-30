@@ -3,6 +3,7 @@
 namespace App\Membership\Actions;
 
 use App\Activity;
+use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Subactivity;
@@ -63,6 +64,8 @@ class MembershipUpdateAction
             $request->subactivity_id ? Subactivity::find($request->subactivity_id) : null,
             $request->promised_at ? Carbon::parse($request->promised_at) : null,
         );
+
+        ResyncAction::dispatch();
 
         return redirect()->back();
     }

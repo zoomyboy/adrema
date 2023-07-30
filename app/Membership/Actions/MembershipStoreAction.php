@@ -4,6 +4,7 @@ namespace App\Membership\Actions;
 
 use App\Activity;
 use App\Group;
+use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Setting\NamiSettings;
@@ -94,6 +95,8 @@ class MembershipStoreAction
             $request->promised_at ? Carbon::parse($request->promised_at) : null,
             $settings,
         );
+
+        ResyncAction::dispatch();
 
         return redirect()->back();
     }

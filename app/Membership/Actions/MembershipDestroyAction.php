@@ -2,6 +2,7 @@
 
 namespace App\Membership\Actions;
 
+use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Setting\NamiSettings;
@@ -16,7 +17,7 @@ class MembershipDestroyAction
     public function handle(Member $member, Membership $membership, NamiSettings $settings): void
     {
         $api = $settings->login();
-        
+
         if ($membership->hasNami) {
             $settings->login()->deleteMembership(
                 $member->nami_id,
@@ -38,6 +39,8 @@ class MembershipDestroyAction
             $membership,
             $settings,
         );
+
+        ResyncAction::dispatch();
 
         return redirect()->back();
     }
