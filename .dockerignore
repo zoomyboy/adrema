@@ -9,3 +9,4 @@ bootstrap/cache/routes.php
 packages/laravel-nami/.cookies
 app/storage/app
 cookies
+storage/logs/laravel.log
