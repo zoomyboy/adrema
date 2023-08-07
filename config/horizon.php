@@ -176,14 +176,14 @@ return [
                 'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'simple',
-                'processes' => 10,
+                'processes' => env('WORKERS', 10),
                 'tries' => 1,
             ],
             'supervisor-long-running' => [
                 'connection' => 'redis',
                 'queue' => ['long'],
                 'balance' => 'simple',
-                'processes' => 10,
+                'processes' => env('WORKERS', 10),
                 'tries' => 1,
                 'timeout' => 43200,     // 12 hours
             ],
@@ -201,14 +201,14 @@ return [
                 'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'simple',
-                'processes' => 10,
+                'processes' => env('WORKERS', 10),
                 'tries' => 1,
             ],
             'supervisor-long-running' => [
                 'connection' => 'redis',
                 'queue' => ['long'],
                 'balance' => 'simple',
-                'processes' => 10,
+                'processes' => env('WORKERS', 10),
                 'tries' => 1,
                 'timeout' => 43200,     // 12 hours
             ],
