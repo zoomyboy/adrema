@@ -1,4 +1,4 @@
-@servers(['docker' => ['stammsilva@zoomyboy.de']])
+@servers(['docker' => ['stammsilva@zoomyboy.de', 'stammgallier@stamm-gallier.de', 'dpsg-lennep@zoomyboy.de', 'dpsgbergischland@zoomyboy.de']])
 
 @task('deploy', ['on' => 'docker'])
 cd $ADREMA_PATH
