@@ -27,7 +27,7 @@ class ClientMessage implements ShouldBroadcastNow
 
     public static function make(string $message): self
     {
-        return new static($message);
+        return new self($message);
     }
 
     public function shouldReload(): self

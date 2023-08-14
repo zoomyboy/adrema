@@ -9,7 +9,7 @@ class DeleteAction
 {
     use AsAction;
 
-    public function handle(int $namiId)
+    public function handle(int $namiId): void
     {
         app(NamiSettings::class)->login()->deleteMember($namiId);
     }
