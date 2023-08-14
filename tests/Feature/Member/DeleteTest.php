@@ -26,7 +26,7 @@ class DeleteTest extends TestCase
 
         $response->assertRedirect('/member');
 
-        Queue::assertPushed(DeleteAction::class, fn ($job) => 123 === $job->namiId);
+        DeleteAction::assertPushed();
         $this->assertDatabaseMissing('members', [
             'id' => $member->id,
         ]);
@@ -54,7 +54,7 @@ class DeleteTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->inNami(123)->create();
 
-        dispatch(new DeleteAction(123));
+        DeleteAction::dispatch(123);
 
         app(MemberFake::class)->assertDeleted(123, Carbon::parse('yesterday'));
     }
