@@ -2,34 +2,16 @@
 
 namespace App\Member;
 
+use App\Lib\Data\JobMiddleware\SendsMessages;
 use App\Setting\NamiSettings;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Lorisleiva\Actions\Concerns\AsAction;
 
-class DeleteJob implements ShouldQueue
+class DeleteJob
 {
-    use Dispatchable;
-    use InteractsWithQueue;
-    use Queueable;
-    use SerializesModels;
+    use AsAction;
 
-    public int $namiId;
-
-    public function __construct(int $namiId)
+    public function handle(int $namiId)
     {
-        $this->namiId = $namiId;
-    }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle(NamiSettings $setting)
-    {
-        $setting->login()->deleteMember($this->namiId);
+        app(NamiSettings::class)->login()->deleteMember($namiId);
     }
 }
