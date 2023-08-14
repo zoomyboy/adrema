@@ -113,7 +113,7 @@ class MemberRequest extends FormRequest
             NamiPutMemberAction::run($member->fresh(), null, null);
         }
         if (!$this->input('has_nami') && null !== $member->nami_id) {
-            DeleteJob::dispatch($member->nami_id);
+            DeleteAction::dispatch($member->nami_id);
         }
         ResyncAction::dispatch();
     }

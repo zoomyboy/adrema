@@ -4,7 +4,7 @@ namespace Tests\Feature\Member;
 
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
-use App\Member\DeleteJob;
+use App\Member\DeleteAction;
 use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -26,7 +26,7 @@ class DeleteTest extends TestCase
 
         $response->assertRedirect('/member');
 
-        Queue::assertPushed(DeleteJob::class, fn ($job) => 123 === $job->namiId);
+        Queue::assertPushed(DeleteAction::class, fn ($job) => 123 === $job->namiId);
         $this->assertDatabaseMissing('members', [
             'id' => $member->id,
         ]);
@@ -42,7 +42,7 @@ class DeleteTest extends TestCase
 
         $response->assertRedirect('/member');
 
-        Queue::assertNotPushed(DeleteJob::class);
+        Queue::assertNotPushed(DeleteAction::class);
         $this->assertDatabaseMissing('members', [
             'id' => $member->id,
         ]);
@@ -54,7 +54,7 @@ class DeleteTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->inNami(123)->create();
 
-        dispatch(new DeleteJob(123));
+        dispatch(new DeleteAction(123));
 
         app(MemberFake::class)->assertDeleted(123, Carbon::parse('yesterday'));
     }

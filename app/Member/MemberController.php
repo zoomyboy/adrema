@@ -4,6 +4,7 @@ namespace App\Member;
 
 use App\Country;
 use App\Http\Controllers\Controller;
+use App\Lib\Events\ClientMessage;
 use App\Maildispatcher\Actions\ResyncAction;
 use App\Setting\GeneralSettings;
 use App\Setting\NamiSettings;
@@ -21,11 +22,12 @@ class MemberController extends Controller
         $filter = FilterScope::fromRequest($request->input('filter', ''));
 
         return \Inertia::render('member/VIndex', [
-            'data' => MemberResource::collection(Member::search($filter->search)->query(fn ($q) => $q->select('*')
-                ->withFilter($filter)
-                ->with('payments.subscription')->with(['memberships' => fn ($query) => $query->active()])->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
-                ->withPendingPayment()
-                ->ordered()
+            'data' => MemberResource::collection(Member::search($filter->search)->query(
+                fn ($q) => $q->select('*')
+                    ->withFilter($filter)
+                    ->with('payments.subscription')->with(['memberships' => fn ($query) => $query->active()])->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
+                    ->withPendingPayment()
+                    ->ordered()
             )->paginate(15)),
         ]);
     }
@@ -84,11 +86,12 @@ class MemberController extends Controller
     public function destroy(Member $member): RedirectResponse
     {
         if ($member->nami_id) {
-            DeleteJob::dispatch($member->nami_id);
+            DeleteAction::dispatch($member->nami_id);
         }
 
         $member->delete();
         ResyncAction::dispatch();
+        ClientMessage::make('Mitglied ' . $member->fullname . ' gelöscht.')->shouldReload()->dispatch();
 
         return redirect()->back();
     }

@@ -1,5 +1,7 @@
 import {ref, computed} from 'vue';
 import {router} from '@inertiajs/vue3';
+import Toast, {useToast} from 'vue-toastification';
+const toast = useToast();
 
 export function useIndex(props) {
     const rawProps = JSON.parse(JSON.stringify(props));
@@ -58,6 +60,15 @@ export function useIndex(props) {
             preserveState: true,
         };
     }
+
+    window.Echo.channel('jobs').listen('\\App\\Lib\\Events\\ClientMessage', (e) => {
+        if (e.message) {
+            toast.success(e.message);
+        }
+        if (e.reload) {
+            reload(false);
+        }
+    });
 
     return {
         data: inner.data,

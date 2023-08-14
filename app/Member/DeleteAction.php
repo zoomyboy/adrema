@@ -2,11 +2,10 @@
 
 namespace App\Member;
 
-use App\Lib\Data\JobMiddleware\SendsMessages;
 use App\Setting\NamiSettings;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class DeleteJob
+class DeleteAction
 {
     use AsAction;
 
