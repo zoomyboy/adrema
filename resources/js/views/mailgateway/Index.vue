@@ -1,39 +1,26 @@
 <template>
     <page-layout>
         <template #toolbar>
-            <page-toolbar-button color="primary" icon="plus" @click.prevent="model = {...meta.default}">Neue Verbindung</page-toolbar-button>
+            <page-toolbar-button color="primary" icon="plus" @click.prevent="model = { ...meta.default }">Neue
+                Verbindung</page-toolbar-button>
         </template>
-        <ui-popup v-if="model !== null" :heading="model.id ? 'Verbindung bearbeiten' : 'Neue Verbindung'" @close="model = null">
+        <ui-popup v-if="model !== null" :heading="model.id ? 'Verbindung bearbeiten' : 'Neue Verbindung'"
+            @close="model = null">
             <form @submit.prevent="submit">
                 <section class="grid grid-cols-2 gap-3 mt-6">
                     <f-text id="name" v-model="model.name" name="name" label="Bezeichnung" required></f-text>
                     <f-text id="domain" v-model="model.domain" name="domain" label="Domain" required></f-text>
-                    <f-select
-                        id="type"
-                        :model-value="model.type.cls"
-                        label="Typ"
-                        name="type"
-                        :options="meta.types"
-                        :placeholder="''"
-                        required
-                        @update:model-value="
+                    <f-select id="type" :model-value="model.type.cls" label="Typ" name="type" :options="meta.types"
+                        :placeholder="''" required @update:model-value="
                             model.type = {
                                 cls: $event,
-                                params: {...getType($event).defaults},
+                                params: { ...getType($event).defaults },
                             }
-                        "
-                    ></f-select>
+                        "></f-select>
                     <template v-for="(field, index) in getType(model.type.cls).fields">
-                        <f-text
-                            v-if="field.type === 'text' || field.type === 'password' || field.type === 'email'"
-                            :id="field.name"
-                            :key="index"
-                            v-model="model.type.params[field.name]"
-                            :label="field.label"
-                            :type="field.type"
-                            :name="field.name"
-                            :required="field.is_required"
-                        ></f-text>
+                        <f-text v-if="field.type === 'text' || field.type === 'password' || field.type === 'email'"
+                            :id="field.name" :key="index" v-model="model.type.params[field.name]" :label="field.label"
+                            :type="field.type" :name="field.name" :required="field.is_required"></f-text>
                     </template>
                 </section>
                 <section class="flex mt-4 space-x-2">
@@ -58,14 +45,12 @@
                         <td v-text="gateway.domain"></td>
                         <td v-text="gateway.type_human"></td>
                         <td>
-                            <ui-boolean-display
-                                :value="gateway.works"
-                                long-label="Verbindungsstatus"
-                                :label="gateway.works ? 'Verbindung erfolgreich' : 'Verbindung fehlgeschlagen'"
-                            ></ui-boolean-display>
+                            <ui-boolean-display :value="gateway.works" long-label="Verbindungsstatus"
+                                :label="gateway.works ? 'Verbindung erfolgreich' : 'Verbindung fehlgeschlagen'"></ui-boolean-display>
                         </td>
                         <td>
-                            <a v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm" @click.prevent="model = {...gateway}"><ui-sprite src="pencil"></ui-sprite></a>
+                            <a v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm"
+                                @click.prevent="model = { ...gateway }"><ui-sprite src="pencil"></ui-sprite></a>
                         </td>
                     </tr>
                 </table>
@@ -79,12 +64,12 @@
 </template>
 
 <script setup>
-import {ref, inject} from 'vue';
-import {indexProps, useIndex} from '../../composables/useIndex.js';
+import { ref, inject } from 'vue';
+import { indexProps, useIndex } from '../../composables/useIndex.js';
 import SettingLayout from '../setting/Layout.vue';
 
 const props = defineProps(indexProps);
-const {meta, data, reload} = useIndex(props.data);
+const { meta, data, reload } = useIndex(props.data, 'mailgateway');
 const model = ref(null);
 const axios = inject('axios');
 

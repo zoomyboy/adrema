@@ -2,7 +2,7 @@
 
 namespace App\Member\Actions;
 
-use App\Lib\Events\ClientMessage;
+use App\Lib\JobMiddleware\WithJobState;
 use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use Illuminate\Http\RedirectResponse;
@@ -13,16 +13,37 @@ class MemberDeleteAction
 
     use AsAction;
 
-    public function handle(Member $member): RedirectResponse
+    public function handle(int $memberId): void
     {
+        $member = Member::findOrFail($memberId);
+
         if ($member->nami_id) {
-            NamiDeleteMemberAction::dispatch($member->nami_id);
+            NamiDeleteMemberAction::run($member->nami_id);
         }
 
         $member->delete();
-        ResyncAction::dispatch();
-        ClientMessage::make('Mitglied ' . $member->fullname . ' gelöscht.')->shouldReload()->dispatch();
+        ResyncAction::run();
+    }
+
+    public function asController(Member $member): RedirectResponse
+    {
+        static::dispatch($member->id);
 
         return redirect()->back();
+    }
+
+    /**
+     * @return array<int, object>
+     */
+    public function getJobMiddleware(int $memberId): array
+    {
+        $member = Member::findOrFail($memberId);
+
+        return [
+            WithJobState::make('member')
+                ->before('Lösche Mitglied ' . $member->fullname)
+                ->after('Mitglied ' . $member->fullname . ' gelöscht')
+                ->shouldReload(),
+        ];
     }
 }

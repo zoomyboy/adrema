@@ -4,19 +4,22 @@ namespace Tests\Feature\Member;
 
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
+use App\Lib\Events\ClientMessage;
+use App\Lib\Events\JobFinished;
+use App\Lib\Events\JobStarted;
+use App\Member\Actions\MemberDeleteAction;
 use App\Member\Actions\NamiDeleteMemberAction;
 use App\Member\Member;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
-use Zoomyboy\LaravelNami\Fakes\MemberFake;
 
 class DeleteTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testItDeletesMemberFromNami(): void
+    public function testItFiresJob(): void
     {
         Queue::fake();
         $this->login()->loginNami();
@@ -26,7 +29,17 @@ class DeleteTest extends TestCase
 
         $response->assertRedirect('/member');
 
-        NamiDeleteMemberAction::assertPushed();
+        MemberDeleteAction::assertPushed(fn ($action, $parameters) => $parameters[0] === $member->id);
+    }
+
+    public function testItDeletesMemberFromNami(): void
+    {
+        $this->login()->loginNami();
+        NamiDeleteMemberAction::partialMock()->shouldReceive('handle')->with(123)->once();
+        $member = Member::factory()->defaults()->inNami(123)->create();
+
+        MemberDeleteAction::run($member->id);
+
         $this->assertDatabaseMissing('members', [
             'id' => $member->id,
         ]);
@@ -34,38 +47,33 @@ class DeleteTest extends TestCase
 
     public function testItDoesntRunActionWhenMemberIsNotInNami(): void
     {
-        Queue::fake();
         $this->login()->loginNami();
+        NamiDeleteMemberAction::partialMock()->shouldReceive('handle')->never();
         $member = Member::factory()->defaults()->create();
 
-        $response = $this->from('/member')->delete("/member/{$member->id}");
-
-        $response->assertRedirect('/member');
-
-        Queue::assertNotPushed(NamiDeleteMemberAction::class);
-        $this->assertDatabaseMissing('members', [
-            'id' => $member->id,
-        ]);
+        MemberDeleteAction::run($member->id);
     }
 
-    public function testTheActionDeletesNamiMember(): void
-    {
-        app(MemberFake::class)->deletes(123, Carbon::parse('yesterday'));
-        $this->withoutExceptionHandling()->login()->loginNami();
-        $member = Member::factory()->defaults()->inNami(123)->create();
-
-        NamiDeleteMemberAction::dispatch(123);
-
-        app(MemberFake::class)->assertDeleted(123, Carbon::parse('yesterday'));
-    }
 
     public function testItDeletesMembersWithCourses(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->has(CourseMember::factory()->for(Course::factory()), 'courses')->create();
 
-        $member->delete();
+        MemberDeleteAction::run($member->id);
 
         $this->assertDatabaseCount('members', 0);
+    }
+
+    public function testItFiresEventWhenFinished(): void
+    {
+        Event::fake([JobStarted::class, JobFinished::class]);
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()->defaults()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
+
+        MemberDeleteAction::dispatch($member->id);
+
+        Event::assertDispatched(JobStarted::class, fn ($event) => $event->broadcastOn()->name === 'member' && $event->message === 'Lösche Mitglied Max Muster' && $event->reload === false);
+        Event::assertDispatched(JobFinished::class, fn ($event) => $event->message === 'Mitglied Max Muster gelöscht' && $event->reload === true);
     }
 }

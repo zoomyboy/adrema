@@ -22,7 +22,8 @@ class InitializeMembersTest extends TestCase
         app(SearchFake::class)->fetches(1, 0, 100, [
             MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
         ]);
-        FullMemberAction::shouldRun()->once()->shouldReceive('configureJob');
+        FullMemberAction::partialMock()->shouldReceive('configureJob')->once();
+        FullMemberAction::partialMock()->shouldReceive('handle')->once();
 
         app(InitializeMembers::class)->handle($api);
     }
@@ -33,7 +34,8 @@ class InitializeMembersTest extends TestCase
         app(SearchFake::class)->fetches(1, 0, 100, [
             MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
         ]);
-        FullMemberAction::shouldRun()->once()->shouldReceive('configureJob');
+        FullMemberAction::partialMock()->shouldReceive('configureJob')->once();
+        FullMemberAction::partialMock()->shouldReceive('handle')->once();
 
         Artisan::call('member:pull');
     }

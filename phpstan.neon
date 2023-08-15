@@ -1,5 +1,6 @@
 includes:
     - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/phpstan/phpstan-mockery/extension.neon
 
 parameters:
 
@@ -127,7 +128,7 @@ parameters:
             count: 1
             path: app/Member/Member.php
 
-        - 
+        -
             message: "#^Unsafe usage of new static\\(\\)\\.$#"
             count: 1
             path: app/Member/Member.php
@@ -557,16 +558,6 @@ parameters:
             message: "#^Method Zoomyboy\\\\LaravelNami\\\\Tests\\\\TestCase\\:\\:getAnnotations\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: packages/laravel-nami/tests/TestCase.php
-
-        -
-            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:never\\(\\)\\.$#"
-            count: 1
-            path: tests/Feature/Initialize/InitializeActionTest.php
-
-        -
-            message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-            count: 2
-            path: tests/Feature/Initialize/InitializeMembersTest.php
 
         -
             message: "#^Parameter \\#1 \\$mock of static method Phake\\:\\:verify\\(\\) expects Phake\\\\IMock, App\\\\Actions\\\\PullMemberAction given\\.$#"
