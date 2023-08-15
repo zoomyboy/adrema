@@ -120,7 +120,7 @@ class Member extends Model implements Geolocatable
     // ----------------------------------- Getters -----------------------------------
     public function getFullnameAttribute(): string
     {
-        return $this->firstname.' '.$this->lastname;
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     public function getPreferredPhoneAttribute(): ?string
@@ -151,12 +151,12 @@ class Member extends Model implements Geolocatable
 
     public function getEtagAttribute(): string
     {
-        return $this->updated_at->timestamp.'_'.$this->version;
+        return $this->updated_at->timestamp . '_' . $this->version;
     }
 
     public function getFullAddressAttribute(): string
     {
-        return $this->address.', '.$this->zip.' '.$this->location;
+        return $this->address . ', ' . $this->zip . ' ' . $this->location;
     }
 
     public function getEfzLink(): ?string
@@ -412,7 +412,7 @@ class Member extends Model implements Geolocatable
         $settings = app(NamiSettings::class);
         $card = Reader::read($data);
         [$lastname, $firstname] = $card->N->getParts();
-        [$deprecated1, $deprecated2 , $address, $location, $region, $zip, $country] = $card->ADR->getParts();
+        [$deprecated1, $deprecated2, $address, $location, $region, $zip, $country] = $card->ADR->getParts();
 
         return new static([
             'joined_at' => now(),
@@ -482,8 +482,8 @@ class Member extends Model implements Geolocatable
         return Sender::from([
             'name' => $this->fullname,
             'address' => $this->address,
-            'zipLocation' => $this->zip.' '.$this->location,
-            'mglnr' => Lazy::create(fn () => 'Mglnr.: '.$this->nami_id),
+            'zipLocation' => $this->zip . ' ' . $this->location,
+            'mglnr' => Lazy::create(fn () => 'Mglnr.: ' . $this->nami_id),
         ]);
     }
 
@@ -524,5 +524,12 @@ class Member extends Model implements Geolocatable
             'lat' => null,
             'lon' => null,
         ]);
+    }
+
+    public function needsGeolocationUpdate(): bool
+    {
+        return $this->getOriginal('address') !== $this->address
+            || $this->getOriginal('zip') !== $this->zip
+            || $this->getOriginal('location') !== $this->location;
     }
 }

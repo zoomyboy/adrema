@@ -49,7 +49,7 @@
         "spatie/laravel-settings": "^2.2",
         "worksome/request-factories": "^2.5",
         "zoomyboy/laravel-nami": "dev-master",
-        "zoomyboy/osm": "^1.0",
+        "zoomyboy/osm": "1.0.3",
         "zoomyboy/phone": "^1.0",
         "zoomyboy/tex": "dev-main as 1.0"
     },

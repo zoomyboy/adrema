@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2cf2548c5e063cf19556d09a5cf2af7",
+    "content-hash": "62586d4169459f71189b880d8a86e1ec",
     "packages": [
         {
             "name": "beyondcode/laravel-dump-server",
@@ -10642,11 +10642,11 @@
         },
         {
             "name": "zoomyboy/osm",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://git.zoomyboy.de/zoomyboy/osm.git",
-                "reference": "255a7819f54b204c4da10f534a4bbb8b9fb3776c"
+                "reference": "132d15f36885ba06f0ea2d1715f2e7e148f37df1"
             },
             "type": "library",
             "autoload": {
@@ -10662,7 +10662,7 @@
                 }
             ],
             "description": "OSM Helper",
-            "time": "2023-05-16T14:19:14+00:00"
+            "time": "2023-08-15T11:24:07+00:00"
         },
         {
             "name": "zoomyboy/phone",
@@ -10700,7 +10700,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/tex",
-                "reference": "6f162102ef7ceca41822d18c3e694abd926f550b"
+                "reference": "48251272de62e3fea044a7ad31e1a411c15eb4c6"
             },
             "type": "library",
             "extra": {
@@ -13463,14 +13463,7 @@
             "time": "2023-05-30T22:51:52+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "zoomyboy/tex",
-            "version": "dev-main",
-            "alias": "1.0",
-            "alias_normalized": "1.0.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "zoomyboy/laravel-nami": 20,
