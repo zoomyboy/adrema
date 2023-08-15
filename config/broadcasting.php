@@ -36,7 +36,7 @@ return [
             'options' => [
                 'cluster' => 'adrema',
                 'encrypted' => true,
-                'host' => env('PUSHER_APP_HOST', '127.0.0.1'),
+                'host' => env('PUSHER_APP_HOST', 'socketi'),
                 'useTLS' => true,
                 'port' => 6001,
                 'scheme' => 'http',
