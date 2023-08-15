@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Member;
+namespace App\Member\Actions;
 
 use App\Setting\NamiSettings;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class DeleteAction
+class NamiDeleteMemberAction
 {
     use AsAction;
 

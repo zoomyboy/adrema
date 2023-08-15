@@ -6,6 +6,7 @@ use App\Country;
 use App\Http\Controllers\Controller;
 use App\Lib\Events\ClientMessage;
 use App\Maildispatcher\Actions\ResyncAction;
+use App\Member\Actions\NamiDeleteMemberAction;
 use App\Setting\GeneralSettings;
 use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
@@ -86,7 +87,7 @@ class MemberController extends Controller
     public function destroy(Member $member): RedirectResponse
     {
         if ($member->nami_id) {
-            DeleteAction::dispatch($member->nami_id);
+            NamiDeleteMemberAction::dispatch($member->nami_id);
         }
 
         $member->delete();

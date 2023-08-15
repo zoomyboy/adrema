@@ -6,6 +6,7 @@ use App\Activity;
 use App\Group;
 use App\Invoice\BillKind;
 use App\Maildispatcher\Actions\ResyncAction;
+use App\Member\Actions\NamiDeleteMemberAction;
 use App\Member\Actions\NamiPutMemberAction;
 use App\Setting\NamiSettings;
 use App\Subactivity;
@@ -113,7 +114,7 @@ class MemberRequest extends FormRequest
             NamiPutMemberAction::run($member->fresh(), null, null);
         }
         if (!$this->input('has_nami') && null !== $member->nami_id) {
-            DeleteAction::dispatch($member->nami_id);
+            NamiDeleteMemberAction::dispatch($member->nami_id);
         }
         ResyncAction::dispatch();
     }
