@@ -3,12 +3,15 @@
 namespace Tests\Feature\Member;
 
 use App\Member\Member;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 use Zoomyboy\Osm\FillCoordsJob;
 
 class GeolocationTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function testItFiresGeolocationJob(): void
     {
         Queue::fake();
