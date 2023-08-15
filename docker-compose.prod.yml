@@ -2,6 +2,7 @@ version: '3'
 services:
     webservice:
         image: zoomyboy/adrema-webservice:latest
+        restart: always
         depends_on:
             - php
         ports:
@@ -11,6 +12,7 @@ services:
 
     php:
         image: zoomyboy/adrema-app:latest
+        restart: always
         depends_on:
             - db
         command: /bin/entrypoint app
@@ -30,6 +32,7 @@ services:
 
     horizon:
         image: zoomyboy/adrema-app:latest
+        restart: always
         depends_on:
             - db
             - php
@@ -50,6 +53,7 @@ services:
 
     schedule:
         image: zoomyboy/adrema-app:latest
+        restart: always
         depends_on:
             - db
             - php
@@ -70,6 +74,7 @@ services:
 
     db:
         image: mariadb:10.6.5
+        restart: always
         env_file:
             - .app.env
         environment:
@@ -79,6 +84,14 @@ services:
         volumes:
             - ./data/db:/var/lib/mysql
 
+    socketi:
+        image: quay.io/soketi/soketi:89604f268623cf799573178a7ba56b7491416bde-16-debian
+        restart: always
+        environment:
+            SOKETI_DEFAULT_APP_ID: adremaid
+            SOKETI_DEFAULT_APP_KEY: adremakey
+            SOKETI_DEFAULT_APP_SECRET: adremasecret
+
     redis:
         image: redis:alpine3.18
-        container_name: redis
+        restart: always
