@@ -61,9 +61,9 @@ export function useIndex(props, siteName) {
         };
     }
 
-    function handleJobEvent(event) {
+    function handleJobEvent(event, type = 'success') {
         if (event.message) {
-            toast.success(event.message);
+            toast[type](event.message);
         }
         if (event.reload) {
             reload(false);
@@ -73,7 +73,8 @@ export function useIndex(props, siteName) {
     window.Echo.channel('jobs').listen('\\App\\Lib\\Events\\ClientMessage', (e) => handleJobEvent(e));
     window.Echo.channel(siteName)
         .listen('\\App\\Lib\\Events\\JobStarted', (e) => handleJobEvent(e))
-        .listen('\\App\\Lib\\Events\\JobFinished', (e) => handleJobEvent(e));
+        .listen('\\App\\Lib\\Events\\JobFinished', (e) => handleJobEvent(e))
+        .listen('\\App\\Lib\\Events\\JobFailed', (e) => handleJobEvent(e, 'error'));
     onBeforeUnmount(() => window.Echo.leave(siteName));
     onBeforeUnmount(() => window.Echo.leave('jobs'));
 

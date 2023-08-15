@@ -43,6 +43,7 @@ class MemberDeleteAction
             WithJobState::make('member')
                 ->before('Lösche Mitglied ' . $member->fullname)
                 ->after('Mitglied ' . $member->fullname . ' gelöscht')
+                ->failed('Löschen von ' . $member->fullname . ' fehlgeschlagen.')
                 ->shouldReload(),
         ];
     }
