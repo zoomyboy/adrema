@@ -29,6 +29,7 @@ use App\Maildispatcher\Actions\UpdateAction as MaildispatcherUpdateAction;
 use App\Mailgateway\Actions\StoreAction;
 use App\Mailgateway\Actions\UpdateAction;
 use App\Member\Actions\ExportAction;
+use App\Member\Actions\MemberDeleteAction;
 use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
 use App\Member\Actions\SearchAction;
@@ -55,7 +56,8 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/api/member/search', SearchAction::class)->name('member.search');
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');
-    Route::resource('member', MemberController::class)->except('show');
+    Route::resource('member', MemberController::class)->except('show', 'destroy');
+    Route::delete('/member/{member}', MemberDeleteAction::class);
     Route::get('/member/{member}', MemberShowAction::class)->name('member.show');
     Route::apiResource('member.payment', PaymentController::class);
     Route::get('allpayment', AllpaymentPageAction::class)->name('allpayment.page');
