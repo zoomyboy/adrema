@@ -107,7 +107,16 @@ steps:
 
     - name: github push
       image: alpine/git
+      environment:
+          SSH_KEY:
+              from_secret: github_private_key
       commands:
+          - mkdir $HOME/.ssh
+          - git config core.sshCommand "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+          - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
+          - chmod 600 $HOME/.ssh/id_rsa
+          - git remote add gh git@github.com:zoomyboy/adrema.git
+          - git push -f gh HEAD:master
       when:
           branch: master
           event: push
