@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Member;
 
+use Illuminate\Support\Str;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
 use App\Lib\Events\JobFailed;
@@ -21,6 +22,12 @@ class DeleteTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        Event::fake([JobStarted::class, JobFinished::class, JobFailed::class]);
+    }
+
     public function testItFiresJob(): void
     {
         Queue::fake();
@@ -31,6 +38,7 @@ class DeleteTest extends TestCase
 
         $response->assertRedirect('/member');
 
+        Event::assertDispatched(JobStarted::class);
         MemberDeleteAction::assertPushed(fn ($action, $parameters) => $parameters[0] === $member->id);
     }
 
@@ -64,7 +72,7 @@ class DeleteTest extends TestCase
 
         MemberDeleteAction::run($member->id);
 
-        $this->assertDatabaseCount('members', 0);
+        $this->assertDatabaseMissing('members', ['id' => $member->id]);
     }
 
     public function testItFiresEventWhenFinished(): void
@@ -72,11 +80,12 @@ class DeleteTest extends TestCase
         Event::fake([JobStarted::class, JobFinished::class]);
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
+        $uuid = Str::uuid();
 
-        MemberDeleteAction::dispatch($member->id);
+        MemberDeleteAction::dispatch($member->id, $uuid);
 
-        Event::assertDispatched(JobStarted::class, fn ($event) => $event->broadcastOn()->name === 'member' && $event->message === 'Lösche Mitglied Max Muster' && $event->reload === false);
-        Event::assertDispatched(JobFinished::class, fn ($event) => $event->message === 'Mitglied Max Muster gelöscht' && $event->reload === true);
+        Event::assertNotDispatched(JobStarted::class);
+        Event::assertDispatched(JobFinished::class, fn ($event) => $event->message === 'Mitglied Max Muster gelöscht' && $event->reload === true && $event->jobId->serialize() === $uuid->serialize());
     }
 
     public function testItFiresEventWhenDeletingFailed(): void
@@ -85,14 +94,15 @@ class DeleteTest extends TestCase
         $this->login()->loginNami();
         $member = Member::factory()->defaults()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
         MemberDeleteAction::partialMock()->shouldReceive('handle')->andThrow(new Exception('sorry'));
+        $uuid = Str::uuid();
 
         try {
-            MemberDeleteAction::dispatch($member->id);
+            MemberDeleteAction::dispatch($member->id, $uuid);
         } catch (Throwable) {
         }
 
-        Event::assertDispatched(JobStarted::class, fn ($event) => $event->broadcastOn()->name === 'member' && $event->message === 'Lösche Mitglied Max Muster' && $event->reload === false);
-        Event::assertDispatched(JobFailed::class, fn ($event) => $event->message === 'Löschen von Max Muster fehlgeschlagen.' && $event->reload === true);
+        Event::assertNotDispatched(JobStarted::class);
+        Event::assertDispatched(JobFailed::class, fn ($event) => $event->message === 'Löschen von Max Muster fehlgeschlagen.' && $event->reload === true && $event->jobId->serialize() === $uuid->serialize());
         Event::assertNotDispatched(JobFinished::class);
     }
 }

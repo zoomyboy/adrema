@@ -3,6 +3,7 @@
 namespace App\Member\Actions;
 
 use App\Lib\JobMiddleware\WithJobState;
+use App\Lib\Queue\TracksJob;
 use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use Illuminate\Http\RedirectResponse;
@@ -12,6 +13,7 @@ class MemberDeleteAction
 {
 
     use AsAction;
+    use TracksJob;
 
     public function handle(int $memberId): void
     {
@@ -27,24 +29,27 @@ class MemberDeleteAction
 
     public function asController(Member $member): RedirectResponse
     {
-        static::dispatch($member->id);
+        $this->startJob($member->id);
 
         return redirect()->back();
     }
 
     /**
-     * @return array<int, object>
+     * @param mixed $parameters
      */
-    public function getJobMiddleware(int $memberId): array
+    public function jobState(WithJobState $jobState, ...$parameters): WithJobState
     {
-        $member = Member::findOrFail($memberId);
+        $member = Member::findOrFail($parameters[0]);
 
-        return [
-            WithJobState::make('member')
-                ->before('Lösche Mitglied ' . $member->fullname)
-                ->after('Mitglied ' . $member->fullname . ' gelöscht')
-                ->failed('Löschen von ' . $member->fullname . ' fehlgeschlagen.')
-                ->shouldReload(),
-        ];
+        return $jobState
+            ->before('Mitglied ' . $member->fullname . ' wird gelöscht')
+            ->after('Mitglied ' . $member->fullname . ' gelöscht')
+            ->failed('Löschen von ' . $member->fullname . ' fehlgeschlagen.')
+            ->shouldReload();
+    }
+
+    public function jobChannel(): string
+    {
+        return 'member';
     }
 }

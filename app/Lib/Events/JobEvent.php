@@ -7,6 +7,8 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Ramsey\Uuid\UuidInterface;
 
 class JobEvent implements ShouldBroadcastNow
 {
@@ -15,13 +17,13 @@ class JobEvent implements ShouldBroadcastNow
     public bool $reload = false;
     public string $message = '';
 
-    final private function __construct(public string $channel)
+    final private function __construct(public string $channel, public UuidInterface $jobId)
     {
     }
 
-    public static function on(string $channel): static
+    public static function on(string $channel, UuidInterface $jobId): static
     {
-        return new static($channel);
+        return new static($channel, $jobId);
     }
 
     public function withMessage(string $message): static
@@ -31,14 +33,22 @@ class JobEvent implements ShouldBroadcastNow
         return $this;
     }
 
+    public function dispatch(): void
+    {
+        event($this);
+    }
+
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel
+     * @return array<int, Channel>
      */
     public function broadcastOn()
     {
-        return new Channel($this->channel);
+        return [
+            new Channel($this->channel),
+            new Channel('jobs'),
+        ];
     }
 
     public function shouldReload(): static
