@@ -29,8 +29,8 @@ steps:
     - name: tests
       image: zoomyboy/adrema-base:latest
       commands:
-          - php artisan migrate
-          - php artisan test
+          - php -d 'memory_limit=2G' artisan migrate
+          - php -d 'memory_limit=2G' artisan test
           - rm -f .env
           - vendor/bin/phpstan analyse --memory-limit=2G
       environment:
