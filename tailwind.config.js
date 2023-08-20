@@ -1,7 +1,7 @@
 const {colors} = require('tailwindcss/defaultTheme');
 
 module.exports = {
-    content: ['resources/js/views/**/*.vue', 'resources/js/components/**/*.vue', 'resources/js/layouts/**/*.vue', 'resources/views/**/*.blade.php'],
+    content: ['resources/js/views/**/*.vue', 'resources/js/components/**/*.vue', 'resources/js/layouts/**/*.vue', 'resources/views/**/*.blade.php', 'resources/js/composables/**/*.js'],
     theme: {
         extend: {
             colors: {
