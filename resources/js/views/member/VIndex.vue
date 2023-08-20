@@ -19,7 +19,7 @@
                 </div>
             </div>
         </ui-popup>
-        <div class="px-6 py-2 flex border-b border-gray-600 items-center space-x-3">
+        <page-filter breakpoint="xl">
             <f-text id="search" :model-value="getFilter('search')" name="search" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
             <f-switch v-show="hasModule('bill')" id="ausstand" :model-value="getFilter('ausstand')" label="Nur Ausstände" size="sm" @update:model-value="setFilter('ausstand', $event)"></f-switch>
             <f-multipleselect
@@ -63,17 +63,17 @@
                 <ui-sprite class="w-3 h-3 xl:mr-2" src="save"></ui-sprite>
                 <span class="hidden xl:inline">Exportieren</span>
             </button>
-        </div>
+        </page-filter>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
             <thead>
                 <th></th>
                 <th>Nachname</th>
                 <th>Vorname</th>
-                <th class="hidden 2xl:table-cell">Ort</th>
+                <th class="!hidden 2xl:!table-cell">Ort</th>
                 <th>Tags</th>
-                <th class="hidden xl:table-cell">Alter</th>
-                <th v-show="hasModule('bill')" class="hidden xl:table-cell">Rechnung</th>
+                <th class="!hidden xl:!table-cell">Alter</th>
+                <th v-show="hasModule('bill')" class="!hidden xl:!table-cell">Rechnung</th>
                 <th v-show="hasModule('bill')">Ausstand</th>
                 <th></th>
             </thead>
@@ -82,12 +82,12 @@
                 <td><ui-age-groups :member="member"></ui-age-groups></td>
                 <td v-text="member.lastname"></td>
                 <td v-text="member.firstname"></td>
-                <td class="hidden 2xl:table-cell" v-text="member.full_address"></td>
+                <td class="!hidden 2xl:!table-cell" v-text="member.full_address"></td>
                 <td>
                     <tags :member="member"></tags>
                 </td>
-                <td class="hidden xl:table-cell" v-text="member.age"></td>
-                <td v-show="hasModule('bill')" class="hidden xl:table-cell">
+                <td class="!hidden xl:!table-cell" v-text="member.age"></td>
+                <td v-show="hasModule('bill')" class="!hidden xl:!table-cell">
                     <ui-label :value="member.bill_kind_name" fallback="kein"></ui-label>
                 </td>
                 <td v-show="hasModule('bill')">
