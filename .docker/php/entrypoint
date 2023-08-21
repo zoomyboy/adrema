@@ -36,7 +36,7 @@ fi
 if [ $1 == "schedule" ]; then
     wait_for_db
     while true; do
-        su www-data -c 'php artisan schedule:run -n'
+        su www-data -c 'php -d memory_limit=2G artisan schedule:run -n'
         sleep 60
     done
 fi
