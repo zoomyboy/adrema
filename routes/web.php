@@ -15,6 +15,7 @@ use App\Contribution\Actions\ValidateAction as ContributionValidateAction;
 use App\Course\Controllers\CourseController;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
+use App\Group\Actions\ListAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
@@ -34,9 +35,11 @@ use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
 use App\Member\Actions\SearchAction;
 use App\Member\MemberController;
+use App\Membership\Actions\ApiListAction;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
 use App\Membership\Actions\MembershipUpdateAction;
+use App\Membership\Actions\SyncAction;
 use App\Payment\Actions\AllpaymentPageAction;
 use App\Payment\Actions\AllpaymentStoreAction;
 use App\Payment\PaymentController;
@@ -54,6 +57,8 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/nami/get-search-layer', NamiGetSearchLayerAction::class)->name('nami.get-search-layer');
     Route::post('/nami/search', NamiSearchAction::class)->name('nami.search');
     Route::post('/api/member/search', SearchAction::class)->name('member.search');
+    Route::post('/api/membership/member-list', ApiListAction::class)->name('membership.member-list');
+    Route::post('/api/membership/sync', SyncAction::class)->name('membership.sync');
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');
     Route::resource('member', MemberController::class)->except('show', 'destroy');
@@ -98,4 +103,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::patch('/maildispatcher/{maildispatcher}', MaildispatcherUpdateAction::class)->name('maildispatcher.update');
     Route::post('/maildispatcher', MaildispatcherStoreAction::class)->name('maildispatcher.store');
     Route::delete('/maildispatcher/{maildispatcher}', DestroyAction::class)->name('maildispatcher.destroy');
+
+    // ----------------------------------- group -----------------------------------
+    Route::get('/group', ListAction::class)->name('group.index');
 });

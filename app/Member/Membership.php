@@ -54,6 +54,14 @@ class Membership extends Model
     }
 
     /**
+     * @return BelongsTo<Member, self>
+     */
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(Member::class);
+    }
+
+    /**
      * @param Builder<Membership> $query
      *
      * @return Builder<Membership>

@@ -67,10 +67,11 @@ class FilterScope extends Filter
                 }
 
                 if (false === $this->hasFullAddress) {
-                    $query->where(fn ($q) => $q
-                        ->orWhere('address', '')->orWhereNull('address')
-                        ->orWhere('zip', '')->orWhereNull('zip')
-                        ->orWhere('location', '')->orWhereNull('location')
+                    $query->where(
+                        fn ($q) => $q
+                            ->orWhere('address', '')->orWhereNull('address')
+                            ->orWhere('zip', '')->orWhereNull('zip')
+                            ->orWhere('location', '')->orWhereNull('location')
                     );
                 }
 

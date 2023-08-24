@@ -1,9 +1,9 @@
 import {ref, computed, onBeforeUnmount} from 'vue';
 import {router} from '@inertiajs/vue3';
-import {useToast} from 'vue-toastification';
-const toast = useToast();
+import useQueueEvents from './useQueueEvents.js';
 
 export function useIndex(props, siteName) {
+    const {startListener, stopListener} = useQueueEvents(siteName, () => reload(false));
     const rawProps = JSON.parse(JSON.stringify(props));
     const inner = {
         data: ref(rawProps.data),
@@ -61,22 +61,8 @@ export function useIndex(props, siteName) {
         };
     }
 
-    function handleJobEvent(event, type = 'success') {
-        if (event.message) {
-            toast[type](event.message);
-        }
-        if (event.reload) {
-            reload(false);
-        }
-    }
-
-    window.Echo.channel('jobs').listen('\\App\\Lib\\Events\\ClientMessage', (e) => handleJobEvent(e));
-    window.Echo.channel(siteName)
-        .listen('\\App\\Lib\\Events\\JobStarted', (e) => handleJobEvent(e))
-        .listen('\\App\\Lib\\Events\\JobFinished', (e) => handleJobEvent(e))
-        .listen('\\App\\Lib\\Events\\JobFailed', (e) => handleJobEvent(e, 'error'));
-    onBeforeUnmount(() => window.Echo.leave(siteName));
-    onBeforeUnmount(() => window.Echo.leave('jobs'));
+    startListener(;
+    onBeforeUnmount(() => stopListener());
 
     return {
         data: inner.data,
