@@ -61,7 +61,7 @@ export function useIndex(props, siteName) {
         };
     }
 
-    startListener(;
+    startListener();
     onBeforeUnmount(() => stopListener());
 
     return {
