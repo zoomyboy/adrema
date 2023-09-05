@@ -1,27 +1,37 @@
-/node_modules
-/public/build
-/public/sprite.svg
-/public/hot
-/public/vendor
-/storage/*.key
-/vendor
-.env
-.env.backup
-.env.testing
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
+node_modules/
 npm-debug.log
 yarn-error.log
-tags
-/storage/temp
+/bootstrap/compiled.php
+/app/storage/
+/public/storage
+/public/hot
+/public/build
+/public/vendor
+storage/*.key
+vendor/
+Homestead.yaml
+Homestead.json
+.vagrant/
+.phpunit.result.cache
+/storage/temp/
+
+# User data files
+/data/
+/.app.env
+
+# Development files
+/docker-compose.yml
+/.env
+/.env.backup
+/.env.testing
+
+# Editor config files
+/.vscode/
 
 # Temporary files
 *.swp
 *.swo
 *.swm
-resources/img/sprite.svg
+/resources/img/sprite.svg
+/public/sprite.svg
 /.php-cs-fixer.cache
-/data
-.app.env
-cookies
