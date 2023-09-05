@@ -4,26 +4,26 @@ namespace App\Member;
 
 use App\Country;
 use App\Http\Controllers\Controller;
-use App\Setting\GeneralSettings;
 use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use Zoomyboy\LaravelNami\Exceptions\ConflictException;
+use Inertia;
 
 class MemberController extends Controller
 {
-    public function index(Request $request, GeneralSettings $settings): Response
+    public function index(Request $request): Response
     {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
         $filter = FilterScope::fromRequest($request->input('filter', ''));
 
-        return \Inertia::render('member/VIndex', [
+        return Inertia::render('member/VIndex', [
             'data' => MemberResource::collection(Member::search($filter->search)->query(
                 fn ($q) => $q->select('*')
                     ->withFilter($filter)
-                    ->with('payments.subscription')->with(['memberships' => fn ($query) => $query->active()])->with('courses')->with('subscription')->with('leaderMemberships')->with('ageGroupMemberships')
+                    ->with(['payments.subscription', 'memberships', 'courses', 'subscription', 'leaderMemberships', 'ageGroupMemberships'])
                     ->withPendingPayment()
                     ->ordered()
             )->paginate(15)),

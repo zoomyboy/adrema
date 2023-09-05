@@ -8,6 +8,8 @@ use App\Member\Member;
 use App\Member\Membership;
 use App\Payment\Payment;
 use App\Subactivity;
+use Carbon\Carbon;
+use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\Child;
 use Tests\TestCase;
@@ -78,6 +80,29 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(true, $response, 'data.data.0.is_leader');
         $this->assertInertiaHas(false, $response, 'data.data.1.is_leader');
         $this->assertInertiaHas(false, $response, 'data.data.2.is_leader');
+    }
+
+    public function membershipDataProvider(): Generator
+    {
+        yield [now()->subMonth(), null, true];
+        yield [now()->subMonth(), now()->subDay(), false];
+        yield [now()->addDay(), null, false];
+    }
+
+    /**
+     * @dataProvider membershipDataProvider
+     */
+    public function testItShowsIfMembershipIsActive(Carbon $from, ?Carbon $to, bool $isActive): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()
+            ->defaults()
+            ->has(Membership::factory()->in('€ LeiterIn', 455, 'Pfadfinder', 15)->state(['from' => $from, 'to' => $to]))
+            ->create();
+
+        $response = $this->get('/member');
+
+        $this->assertInertiaHas($isActive, $response, 'data.data.0.memberships.0.is_active');
     }
 
     public function testItHasNoEfzLinkWhenAddressIsMissing(): void
@@ -187,11 +212,11 @@ class IndexTest extends TestCase
             'subscription_id' => $member->payments->first()->subscription->id,
             'status_name' => 'Nicht bezahlt',
             'nr' => '2019',
-         ], $response, 'data.data.0.payments.0');
+        ], $response, 'data.data.0.payments.0');
         $this->assertInertiaHas([
             'id' => $member->subscription->id,
             'name' => $member->subscription->name,
-         ], $response, 'data.data.0.subscription');
+        ], $response, 'data.data.0.subscription');
     }
 
     public function testItCanFilterForBillKinds(): void

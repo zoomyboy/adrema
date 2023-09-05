@@ -14,6 +14,7 @@ use App\Payment\Payment;
 use App\Payment\Subscription;
 use App\Region;
 use Carbon\Carbon;
+use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\Child;
 use Tests\TestCase;
@@ -119,7 +120,7 @@ class ShowTest extends TestCase
             'id' => $member->memberships->first()->id,
             'human_date' => '19.11.2022',
             'promised_at' => now()->format('Y-m-d'),
-         ], $response, 'data.memberships.0');
+        ], $response, 'data.memberships.0');
         $this->assertInertiaHas([
             'organizer' => 'DPSG',
             'event_name' => 'Wochenende',
@@ -128,7 +129,7 @@ class ShowTest extends TestCase
                 'name' => '  Baustein 2e - Gewalt gegen Kinder und Jugendliche: Vertiefung, Prävention  ',
                 'short_name' => '2e',
             ],
-         ], $response, 'data.courses.0');
+        ], $response, 'data.courses.0');
         $this->assertInertiaHas([
             'subscription' => [
                 'name' => 'Free',
@@ -138,7 +139,7 @@ class ShowTest extends TestCase
             ],
             'status_name' => 'Nicht bezahlt',
             'nr' => '2019',
-         ], $response, 'data.payments.0');
+        ], $response, 'data.payments.0');
     }
 
     public function testItShowsMinimalSingleMember(): void
@@ -168,5 +169,28 @@ class ShowTest extends TestCase
             'multiply_pv' => false,
             'multiply_more_pv' => false,
         ], $response, 'data');
+    }
+
+    public function membershipDataProvider(): Generator
+    {
+        yield [now()->subMonth(), null, true];
+        yield [now()->subMonth(), now()->subDay(), false];
+        yield [now()->addDay(), null, false];
+    }
+
+    /**
+     * @dataProvider membershipDataProvider
+     */
+    public function testItShowsIfMembershipIsActive(Carbon $from, ?Carbon $to, bool $isActive): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()
+            ->defaults()
+            ->has(Membership::factory()->in('€ LeiterIn', 455, 'Pfadfinder', 15)->state(['from' => $from, 'to' => $to]))
+            ->create();
+
+        $response = $this->get("/member/{$member->id}");
+
+        $this->assertInertiaHas($isActive, $response, 'data.memberships.0.is_active');
     }
 }

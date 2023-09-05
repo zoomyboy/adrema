@@ -61,6 +61,11 @@ class Membership extends Model
         return $this->belongsTo(Member::class);
     }
 
+    public function isActive(): bool
+    {
+        return $this->from->isBefore(now()) && (null === $this->to || $this->to->isAfter(now()));
+    }
+
     /**
      * @param Builder<Membership> $query
      *
@@ -68,7 +73,8 @@ class Membership extends Model
      */
     public function scopeActive(Builder $query): Builder
     {
-        return $query->whereNull('to');
+        return $query->where('from', '<=', now())
+            ->where(fn ($query) => $query->whereNull('to')->orWhere('to', '>=', now()));
     }
 
     /**
@@ -106,7 +112,7 @@ class Membership extends Model
      *
      * @return Builder<Membership>
      */
-    public function scopeTrying(Builder $query): Builder
+    public function scopeIsTrying(Builder $query): Builder
     {
         return $query->active()->whereHas('activity', fn ($builder) => $builder->where('is_try', true));
     }

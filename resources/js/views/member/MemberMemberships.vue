@@ -1,35 +1,35 @@
 <template>
     <div class="sidebar flex flex-col group is-bright">
-        <page-header @close="$emit('close')" title="Mitgliedschaften">
+        <page-header title="Mitgliedschaften" @close="$emit('close')">
             <template #toolbar>
-                <page-toolbar-button @click.prevent="create" color="primary" icon="plus" v-if="single === null">Neue Mitgliedschaft</page-toolbar-button>
-                <page-toolbar-button @click.prevent="cancel" color="primary" icon="undo" v-if="single !== null">Zurück</page-toolbar-button>
+                <page-toolbar-button v-if="single === null" color="primary" icon="plus" @click.prevent="create">Neue
+                    Mitgliedschaft</page-toolbar-button>
+                <page-toolbar-button v-if="single !== null" color="primary" icon="undo"
+                    @click.prevent="cancel">Zurück</page-toolbar-button>
             </template>
         </page-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
-            <f-select id="group_id" name="group_id" :options="groups" v-model="single.group_id" label="Gruppierung" required></f-select>
-            <f-select id="activity_id" name="activity_id" :options="activities" v-model="single.activity_id" label="Tätigkeit" required></f-select>
-            <f-select
-                v-if="single.activity_id"
-                name="subactivity_id"
-                :options="subactivities[single.activity_id]"
-                id="subactivity_id"
-                v-model="single.subactivity_id"
-                label="Untertätigkeit"
-                size="sm"
-            ></f-select>
-            <f-switch id="has_promise" :modelValue="single.promised_at !== null" @update:modelValue="single.promised_at = $event ? '2000-02-02' : null" label="Hat Versprechen"></f-switch>
-            <f-text v-show="single.promised_at !== null" type="date" id="promised_at" v-model="single.promised_at" label="Versprechensdatum" size="sm"></f-text>
+            <f-select id="group_id" v-model="single.group_id" name="group_id" :options="groups" label="Gruppierung"
+                required></f-select>
+            <f-select id="activity_id" v-model="single.activity_id" name="activity_id" :options="activities"
+                label="Tätigkeit" required></f-select>
+            <f-select v-if="single.activity_id" id="subactivity_id" v-model="single.subactivity_id" name="subactivity_id"
+                :options="subactivities[single.activity_id]" label="Untertätigkeit" size="sm"></f-select>
+            <f-switch id="has_promise" :model-value="single.promised_at !== null" label="Hat Versprechen"
+                @update:modelValue="single.promised_at = $event ? '2000-02-02' : null"></f-switch>
+            <f-text v-show="single.promised_at !== null" id="promised_at" v-model="single.promised_at" type="date"
+                label="Versprechensdatum" size="sm"></f-text>
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 
-        <div class="grow" v-else>
+        <div v-else class="grow">
             <table class="custom-table custom-table-light custom-table-sm text-sm">
                 <thead>
                     <th>Tätigkeit</th>
                     <th>Untertätigkeit</th>
                     <th>Datum</th>
+                    <th>Aktiv</th>
                     <th></th>
                 </thead>
 
@@ -37,17 +37,14 @@
                     <td v-text="membership.activity_name"></td>
                     <td v-text="membership.subactivity_name"></td>
                     <td v-text="membership.human_date"></td>
+                    <td><ui-boolean-display :value="membership.is_active" dark></ui-boolean-display></td>
                     <td class="flex">
-                        <a
-                            href="#"
-                            @click.prevent="
-                                single = membership;
-                                mode = 'edit';
-                            "
-                            class="inline-flex btn btn-warning btn-sm"
-                            ><ui-sprite src="pencil"></ui-sprite
-                        ></a>
-                        <i-link href="#" @click.prevent="remove(membership)" class="inline-flex btn btn-danger btn-sm"><ui-sprite src="trash"></ui-sprite></i-link>
+                        <a href="#" class="inline-flex btn btn-warning btn-sm" @click.prevent="
+                            single = membership;
+                        mode = 'edit';
+                                                        "><ui-sprite src="pencil"></ui-sprite></a>
+                        <i-link href="#" class="inline-flex btn btn-danger btn-sm"
+                            @click.prevent="remove(membership)"><ui-sprite src="trash"></ui-sprite></i-link>
                     </td>
                 </tr>
             </table>
@@ -57,6 +54,12 @@
 
 <script>
 export default {
+    props: {
+        value: {},
+        activities: {},
+        subactivities: {},
+        groups: {},
+    },
     data: function () {
         return {
             mode: null,
@@ -78,7 +81,7 @@ export default {
     methods: {
         create() {
             this.mode = 'create';
-            this.single = {...this.def};
+            this.single = { ...this.def };
         },
         cancel() {
             this.mode = this.single = null;
@@ -88,7 +91,7 @@ export default {
         },
 
         accept(payment) {
-            this.$inertia.patch(`/member/${this.value.id}/payment/${payment.id}`, {...payment, status_id: 3});
+            this.$inertia.patch(`/member/${this.value.id}/payment/${payment.id}`, { ...payment, status_id: 3 });
         },
 
         openLink(link) {
@@ -113,13 +116,6 @@ export default {
                 ? this.$inertia.post(`/member/${this.value.id}/membership`, this.single, options)
                 : this.$inertia.patch(`/member/${this.value.id}/membership/${this.single.id}`, this.single, options);
         },
-    },
-
-    props: {
-        value: {},
-        activities: {},
-        subactivities: {},
-        groups: {},
     },
 };
 </script>

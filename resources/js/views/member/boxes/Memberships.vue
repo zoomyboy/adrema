@@ -5,11 +5,13 @@
                 <th>Tätigkeit</th>
                 <th>Untertätigkeit</th>
                 <th>Datum</th>
+                <th>Aktiv</th>
             </thead>
             <tr v-for="(membership, index) in inner" :key="index">
                 <td v-text="membership.activity_name"></td>
                 <td v-text="membership.subactivity_name"></td>
                 <td v-text="membership.human_date"></td>
+                <td><ui-boolean-display :value="membership.is_active"></ui-boolean-display></td>
             </tr>
         </table>
 
@@ -17,6 +19,7 @@
             <ui-box class="relative" :heading="membership.activity_name" v-for="(membership, index) in inner" :key="index" second>
                 <div class="text-xs text-gray-200" v-text="membership.subactivity_name"></div>
                 <div class="text-xs text-gray-200" v-text="membership.human_date"></div>
+                <div class="text-xs text-gray-200"><ui-boolean-display :value="membership.is_active"></ui-boolean-display></div>
             </ui-box>
         </div>
     </div>

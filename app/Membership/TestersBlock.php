@@ -13,11 +13,8 @@ class TestersBlock extends Block
      */
     public function query(): Builder
     {
-        return Member::whereHas('memberships', fn ($q) => $q
-            ->where('created_at', '<=', now()->subWeeks(7))
-            ->trying()
-        )
-        ->with(['memberships' => fn ($query) => $query->trying()]);
+        return Member::whereHas('memberships', fn ($q) => $q->isTrying())
+            ->with('memberships', fn ($q) => $q->isTrying());
     }
 
     /**
@@ -28,8 +25,8 @@ class TestersBlock extends Block
         return [
             'members' => $this->query()->get()->map(fn ($member) => [
                 'name' => $member->fullname,
-                'try_ends_at' => $member->memberships->first()->created_at->addWeeks(8)->format('d.m.Y'),
-                'try_ends_at_human' => $member->memberships->first()->created_at->addWeeks(8)->diffForHumans(),
+                'try_ends_at' => $member->memberships->first()->from->addWeeks(8)->format('d.m.Y'),
+                'try_ends_at_human' => $member->memberships->first()->from->addWeeks(8)->diffForHumans(),
             ])->toArray(),
         ];
     }

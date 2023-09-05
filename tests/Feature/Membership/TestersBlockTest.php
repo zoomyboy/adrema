@@ -18,11 +18,11 @@ class TestersBlockTest extends TestCase
 
         Member::factory()
             ->defaults()
-            ->has(Membership::factory()->in('Schnuppermitgliedschaft', 7, 'Wölfling', 8)->state(['created_at' => now()->subMonths(10)]))
+            ->has(Membership::factory()->in('Schnuppermitgliedschaft', 7, 'Wölfling', 8)->state(['from' => now()->subMonths(10)]))
             ->create(['firstname' => 'Max', 'lastname' => 'Muster']);
         $inactiveMember = Member::factory()
             ->defaults()
-            ->has(Membership::factory()->ended()->in('Schnuppermitgliedschaft', 7, 'Wölfling', 8)->state(['created_at' => now()->subMonths(10)]))
+            ->has(Membership::factory()->ended()->in('Schnuppermitgliedschaft', 7, 'Wölfling', 8)->state(['from' => now()->subMonths(10)]))
             ->create(['firstname' => 'Max', 'lastname' => 'Muster']);
 
         $data = app(TestersBlock::class)->render()['data'];
