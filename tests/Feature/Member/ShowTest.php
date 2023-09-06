@@ -23,15 +23,10 @@ class ShowTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Carbon::setTestNow(Carbon::parse('2006-01-01 15:00:00'));
-    }
-
     public function testItShowsSingleMember(): void
     {
+        Carbon::setTestNow(Carbon::parse('2006-01-01 15:00:00'));
+
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()
             ->defaults()
