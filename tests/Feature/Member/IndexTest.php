@@ -84,9 +84,9 @@ class IndexTest extends TestCase
 
     public function membershipDataProvider(): Generator
     {
-        yield [now()->subMonth(), null, true];
-        yield [now()->subMonth(), now()->subDay(), false];
-        yield [now()->addDay(), null, false];
+        yield [now()->subMonths(2), null, true];
+        yield [now()->subMonths(2), now()->subDay(), false];
+        yield [now()->addDays(2), null, false];
     }
 
     /**
