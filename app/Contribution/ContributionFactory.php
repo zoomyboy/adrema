@@ -2,6 +2,7 @@
 
 namespace App\Contribution;
 
+use App\Contribution\Documents\BdkjHesse;
 use App\Contribution\Documents\ContributionDocument;
 use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Documents\CityRemscheidDocument;
@@ -20,6 +21,7 @@ class ContributionFactory
         CitySolingenDocument::class,
         CityRemscheidDocument::class,
         CityFrankfurtMainDocument::class,
+        BdkjHesse::class,
     ];
 
     /**

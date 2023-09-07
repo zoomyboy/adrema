@@ -26,6 +26,7 @@ class StoreTest extends TestCase
      *  ["App\\Contribution\\Documents\\RdpNrwDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]]
      *  ["App\\Contribution\\Documents\\CityRemscheidDocument", ["Max", "Muster", "Jane"]]
      *  ["App\\Contribution\\Documents\\CityFrankfurtMainDocument", ["Max", "Muster", "Jane"]]
+     *  ["App\\Contribution\\Documents\\BdkjHesse", ["Max", "Muster", "Jane"]]
      *
      * @param array<int, string> $bodyChecks
      */

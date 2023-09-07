@@ -67,8 +67,18 @@ class MemberData extends Data
         return $this->address.', '.$this->zip.' '.$this->location;
     }
 
+    public function city(): string
+    {
+        return $this->zip.' '.$this->location;
+    }
+
     public function age(): string
     {
         return (string) $this->birthday->diffInYears(now()) ?: '';
+    }
+
+    public function birthYear(): string
+    {
+        return (string) $this->birthday->year;
     }
 }

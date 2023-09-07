@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
-class CityFrankfurtMainDocument extends ContributionDocument
+class BdkjHesse extends ContributionDocument
 {
     /**
      * @param Collection<int, Collection<int, MemberData>> $members
@@ -25,6 +25,16 @@ class CityFrankfurtMainDocument extends ContributionDocument
     ) {
     }
 
+    public function dateFrom(): string
+    {
+        return Carbon::parse($this->dateFrom)->format('d.m.Y');
+    }
+
+    public function dateUntil(): string
+    {
+        return Carbon::parse($this->dateUntil)->format('d.m.Y');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +45,7 @@ class CityFrankfurtMainDocument extends ContributionDocument
             dateUntil: $request['dateUntil'],
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
-            members: MemberData::fromModels($request['members'])->chunk(15),
+            members: MemberData::fromModels($request['members'])->chunk(20),
         );
     }
 
@@ -49,24 +59,26 @@ class CityFrankfurtMainDocument extends ContributionDocument
             dateUntil: $request['dateUntil'],
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
-            members: MemberData::fromApi($request['member_data'])->chunk(15),
+            members: MemberData::fromApi($request['member_data'])->chunk(20),
         );
     }
-
-    public function dateFromHuman(): string
-    {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y');
-    }
-
-    public function dateUntilHuman(): string
-    {
-        return Carbon::parse($this->dateUntil)->format('d.m.Y');
-    }
-
 
     public function countryName(): string
     {
         return $this->country->name;
+    }
+
+    public function durationDays(): int
+    {
+        return Carbon::parse($this->dateUntil)->diffInDays(Carbon::parse($this->dateFrom)) + 1;
+    }
+
+    /**
+     * @param Collection<int, MemberData> $chunk
+     */
+    public function membersDays(Collection $chunk): int
+    {
+        return $this->durationDays() * $chunk->count();
     }
 
     public function pages(): int
@@ -74,34 +86,43 @@ class CityFrankfurtMainDocument extends ContributionDocument
         return count($this->members);
     }
 
-    public function memberShort(MemberData $member): string
-    {
-        return $member->isLeader ? 'L' : '';
-    }
-
     public function memberName(MemberData $member): string
     {
         return $member->separatedName();
     }
 
-    public function memberAddress(MemberData $member): string
+    public function memberCity(MemberData $member): string
     {
-        return $member->fullAddress();
+        return $member->city();
     }
 
-    public function memberAge(MemberData $member): string
+    public function memberGender(MemberData $member): string
     {
-        return $member->age();
+        if (!$member->gender) {
+            return '';
+        }
+
+        return strtolower(substr($member->gender->name, 0, 1));
+    }
+
+    public function memberBirthYear(MemberData $member): string
+    {
+        return $member->birthYear();
+    }
+
+    public function memberDays(MemberData $member): string
+    {
+        return $this->durationDays();
     }
 
     public function basename(): string
     {
-        return 'zuschuesse-frankfurt';
+        return 'zuschuesse-bdkj-hessen';
     }
 
     public function view(): string
     {
-        return 'tex.contribution.city-frankfurt-main';
+        return 'tex.contribution.bdkj-hesse';
     }
 
     public function template(): Template
@@ -123,7 +144,7 @@ class CityFrankfurtMainDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für Frankfurt erstellen';
+        return 'Für BDKJ Hessen erstellen';
     }
 
     /**
