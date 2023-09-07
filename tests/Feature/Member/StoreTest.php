@@ -75,9 +75,10 @@ class StoreTest extends TestCase
             'salutation' => 'Doktor',
             'comment' => 'Lorem bla',
         ]);
-        NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(fn (Member $memberParam, Activity $activityParam, Subactivity $subactivityParam) => $memberParam->is($member)
-            && $activityParam->is($activity)
-            && $subactivityParam->is($subactivity)
+        NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(
+            fn (Member $memberParam, Activity $activityParam, Subactivity $subactivityParam) => $memberParam->is($member)
+                && $activityParam->is($activity)
+                && $subactivityParam->is($subactivity)
         )->once();
     }
 

@@ -149,4 +149,51 @@ class MemberResource extends JsonResource
             ],
         ];
     }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function defaultModel(): array
+    {
+        return [
+            'gender_id' => null,
+            'salutation' => '',
+            'nationality_id' => null,
+            'firstname' => '',
+            'lastname' => '',
+            'address' => '',
+            'further_address' => '',
+            'zip' => '',
+            'location' => '',
+            'birthday' => '',
+            'region_id' => null,
+            'country_id' => Country::default(),
+            'other_country' => '',
+            'main_phone' => '',
+            'mobile_phone' => '',
+            'work_phone' => '',
+            'children_phone' => '',
+            'email' => '',
+            'email_parents' => '',
+            'fax' => '',
+            'letter_address' => '',
+            'bill_kind' => null,
+            'subscription_id' => null,
+            'has_nami' => false,
+            'send_newspaper' => false,
+            'joined_at' => now()->format('Y-m-d'),
+            'comment' => '',
+            'first_activity_id' => null,
+            'first_subactivity_id' => null,
+            'efz' => null,
+            'ps_at' => null,
+            'more_ps_at' => null,
+            'without_education_at' => null,
+            'without_efz_at' => null,
+            'has_vk' => false,
+            'has_svk' => false,
+            'multiply_pv' => false,
+            'multiply_more_pv' => false,
+        ];
+    }
 }

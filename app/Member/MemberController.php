@@ -36,15 +36,7 @@ class MemberController extends Controller
         session()->put('title', 'Mitglied erstellen');
 
         return \Inertia::render('member/VForm', [
-            'data' => [
-                'country_id' => Country::default(),
-                'efz' => null,
-                'ps_at' => null,
-                'without_education_at' => null,
-                'without_efz_at' => null,
-                'more_ps_at' => null,
-                'joined_at' => now()->format('Y-m-d'),
-            ],
+            'data' => MemberResource::defaultModel(),
             'mode' => 'create',
             'meta' => MemberResource::meta(),
         ]);
