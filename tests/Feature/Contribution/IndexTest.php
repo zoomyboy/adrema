@@ -23,7 +23,7 @@ class IndexTest extends TestCase
 
         $this->assertInertiaHas([
             'class' => RdpNrwDocument::class,
-            'title' => 'Für DV Köln erstellen',
+            'title' => 'Für RdP NRW erstellen',
         ], $response, 'compilers.0');
         $this->assertInertiaHas([
             'id' => $country->id,
