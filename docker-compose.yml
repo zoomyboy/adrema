@@ -17,6 +17,8 @@ services:
             dockerfile: ./.docker/php.Dockerfile
         depends_on:
             - db
+            - redis
+            - socketi
         command: /bin/entrypoint app
         env_file:
             - .app.env
@@ -37,7 +39,6 @@ services:
             context: .
             dockerfile: ./.docker/php.Dockerfile
         depends_on:
-            - db
             - php
         command: /bin/entrypoint horizon
         env_file:
@@ -59,7 +60,6 @@ services:
             context: .
             dockerfile: ./.docker/php.Dockerfile
         depends_on:
-            - db
             - php
         command: /bin/entrypoint schedule
         env_file:
