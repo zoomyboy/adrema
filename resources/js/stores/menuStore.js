@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia';
+import {router} from '@inertiajs/vue3';
 
 export const menuStore = defineStore('menu', {
     state: () => ({
@@ -28,15 +29,13 @@ export const menuStore = defineStore('menu', {
             this.tooltipsVisible = !window.matchMedia('(min-width: 1280px)').matches;
         },
         startInertiaListener() {
-            var _self = this;
-
             window.addEventListener('resize', this.menuListener);
             this.menuListener();
 
-            window.addEventListener('inertia:start', () => {
+            router.on('before', () => {
                 if (!window.matchMedia('(min-width: 1024px)').matches) {
-                    _self.visible = false;
-                    _self.overflowVisible = false;
+                    this.visible = false;
+                    this.overflowVisible = false;
                 }
             });
         },
