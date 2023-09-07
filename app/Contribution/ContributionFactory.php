@@ -6,6 +6,7 @@ use App\Contribution\Documents\ContributionDocument;
 use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Documents\CityRemscheidDocument;
 use App\Contribution\Documents\CitySolingenDocument;
+use App\Contribution\Documents\CityFrankfurtMainDocument;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
@@ -18,6 +19,7 @@ class ContributionFactory
         RdpNrwDocument::class,
         CitySolingenDocument::class,
         CityRemscheidDocument::class,
+        CityFrankfurtMainDocument::class,
     ];
 
     /**
