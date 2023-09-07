@@ -3,9 +3,9 @@
 namespace App\Contribution;
 
 use App\Contribution\Documents\ContributionDocument;
-use App\Contribution\Documents\DvDocument;
-use App\Contribution\Documents\RemscheidDocument;
-use App\Contribution\Documents\SolingenDocument;
+use App\Contribution\Documents\RdpNrwDocument;
+use App\Contribution\Documents\CityRemscheidDocument;
+use App\Contribution\Documents\CitySolingenDocument;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
@@ -15,9 +15,9 @@ class ContributionFactory
      * @var array<int, class-string<ContributionDocument>>
      */
     private array $documents = [
-        DvDocument::class,
-        SolingenDocument::class,
-        RemscheidDocument::class,
+        RdpNrwDocument::class,
+        CitySolingenDocument::class,
+        CityRemscheidDocument::class,
     ];
 
     /**

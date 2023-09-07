@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
-class SolingenDocument extends ContributionDocument
+class CitySolingenDocument extends ContributionDocument
 {
     /**
      * @param Collection<int, MemberData> $members
@@ -80,24 +80,24 @@ class SolingenDocument extends ContributionDocument
         $output = '';
 
         $firstRow = collect(['B' => 'Jugendbildungsmaßnahme', 'G' => 'Gruppenleiter/innenschulung', 'FK' => 'Ferienkolonie', 'F' => 'Freizeitnaßnahme'])->map(function ($item, $key) {
-            return ($this->type === $key ? '\\checkedcheckbox' : '\\checkbox').'{'.$item.'}';
-        })->implode(' & ').' \\\\';
+            return ($this->type === $key ? '\\checkedcheckbox' : '\\checkbox') . '{' . $item . '}';
+        })->implode(' & ') . ' \\\\';
 
         $secondRow = collect(['I' => 'Int. Jugendbegegnung', 'P' => 'politische Jugendbildung', 'PR' => 'Projekte'])->map(function ($item, $key) {
-            return ($this->type === $key ? '\\checkedcheckbox' : '\\checkbox').'{'.$item.'}';
-        })->implode(' & ').' & \\emptycheckbox \\\\';
+            return ($this->type === $key ? '\\checkedcheckbox' : '\\checkbox') . '{' . $item . '}';
+        })->implode(' & ') . ' & \\emptycheckbox \\\\';
 
-        return $firstRow."\n".$secondRow;
+        return $firstRow . "\n" . $secondRow;
     }
 
     public function basename(): string
     {
-        return 'zuschuesse-solingen-'.Str::slug($this->eventName);
+        return 'zuschuesse-solingen-' . Str::slug($this->eventName);
     }
 
     public function view(): string
     {
-        return 'tex.zuschuss-stadt';
+        return 'tex.contribution.city-solingen';
     }
 
     public function getEngine(): Engine

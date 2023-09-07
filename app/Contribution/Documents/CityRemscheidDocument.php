@@ -4,32 +4,38 @@ namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
 use App\Country;
+use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
-class DvDocument extends ContributionDocument
+class CityRemscheidDocument extends ContributionDocument
 {
     /**
-     * @param Collection<int, Collection<int, MemberData>> $members
+     * @param Collection<int, Collection<int, Member>> $leaders
+     * @param Collection<int, Collection<int, Member>> $children
      */
     public function __construct(
         public string $dateFrom,
         public string $dateUntil,
         public string $zipLocation,
         public ?Country $country,
-        public Collection $members,
+        public Collection $leaders,
+        public Collection $children,
         public ?string $filename = '',
         public string $type = 'F',
     ) {
     }
 
-    public function dateRange(): string
+    public function niceDateFrom(): string
     {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y')
-            .' - '
-            .Carbon::parse($this->dateUntil)->format('d.m.Y');
+        return Carbon::parse($this->dateFrom)->format('d.m.Y');
+    }
+
+    public function niceDateUntil(): string
+    {
+        return Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
     /**
@@ -37,12 +43,15 @@ class DvDocument extends ContributionDocument
      */
     public static function fromRequest(array $request): self
     {
+        [$leaders, $children] = MemberData::fromModels($request['members'])->partition(fn ($member) => $member->isLeader);
+
         return new self(
             dateFrom: $request['dateFrom'],
             dateUntil: $request['dateUntil'],
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
-            members: MemberData::fromModels($request['members'])->chunk(17),
+            leaders: $leaders->values()->toBase()->chunk(6),
+            children: $children->values()->toBase()->chunk(20),
         );
     }
 
@@ -51,57 +60,27 @@ class DvDocument extends ContributionDocument
      */
     public static function fromApiRequest(array $request): self
     {
+        $members = MemberData::fromApi($request['member_data']);
+        [$leaders, $children] = $members->partition(fn ($member) => $member->isLeader);
+
         return new self(
             dateFrom: $request['dateFrom'],
             dateUntil: $request['dateUntil'],
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
-            members: MemberData::fromApi($request['member_data'])->chunk(17),
+            leaders: $leaders->values()->toBase()->chunk(6),
+            children: $children->values()->toBase()->chunk(20),
         );
-    }
-
-    public function countryName(): string
-    {
-        return $this->country->name;
-    }
-
-    public function memberShort(MemberData $member): string
-    {
-        return $member->isLeader ? 'L' : '';
-    }
-
-    public function memberName(MemberData $member): string
-    {
-        return $member->separatedName();
-    }
-
-    public function memberAddress(MemberData $member): string
-    {
-        return $member->fullAddress();
-    }
-
-    public function memberGender(MemberData $member): string
-    {
-        if (!$member->gender) {
-            return '';
-        }
-
-        return strtolower(substr($member->gender->name, 0, 1));
-    }
-
-    public function memberAge(MemberData $member): string
-    {
-        return $member->age();
     }
 
     public function basename(): string
     {
-        return 'zuschuesse-dv';
+        return 'zuschuesse-remscheid';
     }
 
     public function view(): string
     {
-        return 'tex.zuschuss-dv';
+        return 'tex.contribution.city-remscheid';
     }
 
     public function template(): Template
@@ -123,7 +102,7 @@ class DvDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für DV erstellen';
+        return 'Für Remscheid erstellen';
     }
 
     /**
@@ -134,9 +113,8 @@ class DvDocument extends ContributionDocument
         return [
             'dateFrom' => 'required|string|date_format:Y-m-d',
             'dateUntil' => 'required|string|date_format:Y-m-d',
-            'country' => 'required|integer|exists:countries,id',
             'zipLocation' => 'required|string',
-            'eventName' => 'required|string',
+            'country' => 'required|integer|exists:countries,id',
         ];
     }
 }

@@ -12,7 +12,7 @@
 \begin{document}
 
 @foreach($children as $chunk)
-    \backgroundsetup{scale = 1, angle = 0, opacity = 1, color=black, contents = {\includegraphics[width = \paperwidth, height = \paperheight] {tn.pdf}}}
+    \backgroundsetup{scale = 1, angle = 0, opacity = 1, color=black, contents = {\includegraphics[width = \paperwidth, height = \paperheight] {city-remscheid-children.pdf}}}
     \noindent \sffamily
     \begin{tikzpicture}[remember picture,overlay,yscale=-1]
         \fill[white] (19mm,30mm) rectangle (80mm,36mm);
@@ -31,7 +31,7 @@
 @endforeach
 
 @foreach($leaders as $chunk)
-    \backgroundsetup{scale = 1, angle = 0, opacity = 1, color=black, contents = {\includegraphics[width = \paperwidth, height = \paperheight] {leader.pdf}}}
+    \backgroundsetup{scale = 1, angle = 0, opacity = 1, color=black, contents = {\includegraphics[width = \paperwidth, height = \paperheight] {city-remscheid-leader.pdf}}}
     \noindent \sffamily
     \begin{tikzpicture}[remember picture,overlay,yscale=-1]
         \fill[white] (17mm,27mm) rectangle (284mm,34mm);

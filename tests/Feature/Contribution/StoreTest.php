@@ -3,8 +3,8 @@
 namespace Tests\Feature\Contribution;
 
 use App\Contribution\Documents\ContributionDocument;
-use App\Contribution\Documents\DvDocument;
-use App\Contribution\Documents\SolingenDocument;
+use App\Contribution\Documents\RdpNrwDocument;
+use App\Contribution\Documents\CitySolingenDocument;
 use App\Country;
 use App\Gender;
 use App\Member\Member;
@@ -22,9 +22,9 @@ class StoreTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * @testWith ["App\\Contribution\\Documents\\SolingenDocument", ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]]
-     *  ["App\\Contribution\\Documents\\DvDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]]
-     *  ["App\\Contribution\\Documents\\RemscheidDocument", ["Max", "Muster", "Jane"]]
+     * @testWith ["App\\Contribution\\Documents\\CitySolingenDocument", ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]]
+     *  ["App\\Contribution\\Documents\\RdpNrwDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]]
+     *  ["App\\Contribution\\Documents\\CityRemscheidDocument", ["Max", "Muster", "Jane"]]
      *
      * @param array<int, string> $bodyChecks
      */
@@ -70,7 +70,7 @@ class StoreTest extends TestCase
             'dateFrom' => '1991-06-15',
             'dateUntil' => '1991-06-16',
             'eventName' => 'Super tolles Lager',
-            'type' => SolingenDocument::class,
+            'type' => CitySolingenDocument::class,
             'zipLocation' => '42777 SG',
             'member_data' => [
                 ContributionMemberApiRequestFactory::new()->create(),
@@ -80,7 +80,7 @@ class StoreTest extends TestCase
 
         $response->assertSessionDoesntHaveErrors();
         $response->assertOk();
-        Tex::assertCompiled(SolingenDocument::class, fn ($document) => $document->hasAllContent(['Super']));
+        Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Super']));
     }
 
     /**
@@ -130,67 +130,67 @@ class StoreTest extends TestCase
     {
         yield [
             ['type' => 'aaa'],
-            SolingenDocument::class,
+            CitySolingenDocument::class,
             'type',
         ];
         yield [
             ['type' => ''],
-            SolingenDocument::class,
+            CitySolingenDocument::class,
             'type',
         ];
         yield [
             ['dateFrom' => ''],
-            SolingenDocument::class,
+            CitySolingenDocument::class,
             'dateFrom',
         ];
         yield [
             ['dateFrom' => '2022-01'],
-            SolingenDocument::class,
+            CitySolingenDocument::class,
             'dateFrom',
         ];
         yield [
             ['dateUntil' => ''],
-            SolingenDocument::class,
+            CitySolingenDocument::class,
             'dateUntil',
         ];
         yield [
             ['dateUntil' => '2022-01'],
-            SolingenDocument::class,
+            CitySolingenDocument::class,
             'dateUntil',
         ];
         yield [
             ['country' => -1],
-            DvDocument::class,
+            RdpNrwDocument::class,
             'country',
         ];
         yield [
             ['country' => 'AAAA'],
-            DvDocument::class,
+            RdpNrwDocument::class,
             'country',
         ];
         yield [
             ['members' => 'A'],
-            DvDocument::class,
+            RdpNrwDocument::class,
             'members',
         ];
         yield [
             ['members' => [99999]],
-            DvDocument::class,
+            RdpNrwDocument::class,
             'members.0',
         ];
         yield [
             ['members' => ['lalala']],
-            DvDocument::class,
+            RdpNrwDocument::class,
             'members.0',
         ];
         yield [
             ['eventName' => ''],
-            SolingenDocument::class,
+            CitySolingenDocument::class,
             'eventName',
         ];
         yield [
             ['zipLocation' => ''],
-            SolingenDocument::class,
+            CitySolingenDocument::class,
             'zipLocation',
         ];
     }

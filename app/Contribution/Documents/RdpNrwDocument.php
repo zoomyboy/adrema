@@ -4,38 +4,32 @@ namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
 use App\Country;
-use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
-class RemscheidDocument extends ContributionDocument
+class RdpNrwDocument extends ContributionDocument
 {
     /**
-     * @param Collection<int, Collection<int, Member>> $leaders
-     * @param Collection<int, Collection<int, Member>> $children
+     * @param Collection<int, Collection<int, MemberData>> $members
      */
     public function __construct(
         public string $dateFrom,
         public string $dateUntil,
         public string $zipLocation,
         public ?Country $country,
-        public Collection $leaders,
-        public Collection $children,
+        public Collection $members,
         public ?string $filename = '',
         public string $type = 'F',
     ) {
     }
 
-    public function niceDateFrom(): string
+    public function dateRange(): string
     {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y');
-    }
-
-    public function niceDateUntil(): string
-    {
-        return Carbon::parse($this->dateUntil)->format('d.m.Y');
+        return Carbon::parse($this->dateFrom)->format('d.m.Y')
+            . ' - '
+            . Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
     /**
@@ -43,15 +37,12 @@ class RemscheidDocument extends ContributionDocument
      */
     public static function fromRequest(array $request): self
     {
-        [$leaders, $children] = MemberData::fromModels($request['members'])->partition(fn ($member) => $member->isLeader);
-
         return new self(
             dateFrom: $request['dateFrom'],
             dateUntil: $request['dateUntil'],
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
-            leaders: $leaders->values()->toBase()->chunk(6),
-            children: $children->values()->toBase()->chunk(20),
+            members: MemberData::fromModels($request['members'])->chunk(17),
         );
     }
 
@@ -60,27 +51,57 @@ class RemscheidDocument extends ContributionDocument
      */
     public static function fromApiRequest(array $request): self
     {
-        $members = MemberData::fromApi($request['member_data']);
-        [$leaders, $children] = $members->partition(fn ($member) => $member->isLeader);
-
         return new self(
             dateFrom: $request['dateFrom'],
             dateUntil: $request['dateUntil'],
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
-            leaders: $leaders->values()->toBase()->chunk(6),
-            children: $children->values()->toBase()->chunk(20),
+            members: MemberData::fromApi($request['member_data'])->chunk(17),
         );
+    }
+
+    public function countryName(): string
+    {
+        return $this->country->name;
+    }
+
+    public function memberShort(MemberData $member): string
+    {
+        return $member->isLeader ? 'L' : '';
+    }
+
+    public function memberName(MemberData $member): string
+    {
+        return $member->separatedName();
+    }
+
+    public function memberAddress(MemberData $member): string
+    {
+        return $member->fullAddress();
+    }
+
+    public function memberGender(MemberData $member): string
+    {
+        if (!$member->gender) {
+            return '';
+        }
+
+        return strtolower(substr($member->gender->name, 0, 1));
+    }
+
+    public function memberAge(MemberData $member): string
+    {
+        return $member->age();
     }
 
     public function basename(): string
     {
-        return 'zuschuesse-remscheid';
+        return 'zuschuesse-rdp-nrw';
     }
 
     public function view(): string
     {
-        return 'tex.zuschuss-remscheid';
+        return 'tex.contribution.rdp-nrw';
     }
 
     public function template(): Template
@@ -102,7 +123,7 @@ class RemscheidDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für Remscheid erstellen';
+        return 'Für RdP NRW erstellen';
     }
 
     /**
@@ -113,8 +134,9 @@ class RemscheidDocument extends ContributionDocument
         return [
             'dateFrom' => 'required|string|date_format:Y-m-d',
             'dateUntil' => 'required|string|date_format:Y-m-d',
-            'zipLocation' => 'required|string',
             'country' => 'required|integer|exists:countries,id',
+            'zipLocation' => 'required|string',
+            'eventName' => 'required|string',
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Contribution;
 
-use App\Contribution\Documents\DvDocument;
+use App\Contribution\Documents\RdpNrwDocument;
 use App\Country;
 use App\Member\Member;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -22,8 +22,8 @@ class IndexTest extends TestCase
         $response = $this->get('/contribution');
 
         $this->assertInertiaHas([
-            'class' => DvDocument::class,
-            'title' => 'Für DV erstellen',
+            'class' => RdpNrwDocument::class,
+            'title' => 'Für DV Köln erstellen',
         ], $response, 'compilers.0');
         $this->assertInertiaHas([
             'id' => $country->id,
