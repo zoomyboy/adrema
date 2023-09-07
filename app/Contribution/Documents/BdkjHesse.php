@@ -110,11 +110,6 @@ class BdkjHesse extends ContributionDocument
         return $member->birthYear();
     }
 
-    public function memberDays(MemberData $member): string
-    {
-        return $this->durationDays();
-    }
-
     public function basename(): string
     {
         return 'zuschuesse-bdkj-hessen';
