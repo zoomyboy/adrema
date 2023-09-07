@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Authentication;
 
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -10,11 +10,6 @@ use Tests\TestCase;
 class UserLoginTest extends TestCase
 {
     use DatabaseTransactions;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
 
     public function testItCanLoginWithUserAccount(): void
     {
