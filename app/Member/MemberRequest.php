@@ -41,6 +41,10 @@ class MemberRequest extends FormRequest
                 'first_subactivity' => 'exclude|required',
             ] : [],
             'subscription_id' => Rule::requiredIf(function () {
+                if (!$this->input('has_nami')) {
+                    return false;
+                }
+
                 if ('POST' != $this->method()) {
                     return false;
                 }

@@ -154,7 +154,7 @@ class StoreTest extends TestCase
                 'zip' => null,
                 'location' => null,
                 'joined_at' => null,
-            ]));
+            ]))->assertSessionDoesntHaveErrors();
         $this->assertDatabaseHas('members', [
             'nationality_id' => null,
             'birthday' => null,
@@ -162,6 +162,20 @@ class StoreTest extends TestCase
             'zip' => null,
             'location' => null,
             'joined_at' => null,
+        ]);
+    }
+
+    public function testItDoesntNeedSubscription(): void
+    {
+        $this->login()->loginNami();
+
+        $this
+            ->post('/member', $this->attributes([
+                'has_nami' => false,
+                'subscription_id' => null,
+            ]))->assertSessionDoesntHaveErrors();
+        $this->assertDatabaseHas('members', [
+            'subscription_id' => null,
         ]);
     }
 
