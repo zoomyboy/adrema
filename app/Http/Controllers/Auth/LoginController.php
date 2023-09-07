@@ -44,7 +44,7 @@ class LoginController extends Controller
     {
         session()->put('title', 'Anmelden');
 
-        return \Inertia::render('VLogin');
+        return \Inertia::render('authentication/VLogin');
     }
 
     /**
