@@ -19,7 +19,7 @@ AdReMa kann von jedem und jeder genutzt werden, die einen NaMi-Account besitzt u
 -   Beitragszahlungen eintragen
 -   Automatische Rechunungserstellung
 -   Eigenen Beitragssatz hinterlegen (z.B. interner Stammes-Jahresbeitrag)
--   Generieren von Zuschusslisten (aktuell RdP NRW)
+-   Generieren von Zuschusslisten (aktuell RdP NRW, Bdkj Hessen, Stadt Solingen, Stadt Remscheid, Stadt Frankfurt a. M.)
 -   Einpflegen von internen Tätigkeiten, die nicht in NaMi vorhanden sind (um z.B. stammes-interne AGs / AKs zu verwalten)
 -   Automatisches Erstellen und Managen von E-Mail-Verteilern mittels Mailman 3.0
 -   eFz-Bescheinigung abrufen für alle Leitenden (das kann in NaMi nur jede\*r für sich selbst)
