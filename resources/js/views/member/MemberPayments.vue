@@ -1,20 +1,20 @@
 <template>
     <div class="sidebar flex flex-col group is-bright">
-        <page-header @close="$emit('close')" title="Zahlungen">
+        <page-header title="Zahlungen" @close="$emit('close')">
             <template #toolbar>
-                <page-toolbar-button @click.prevent="create" color="primary" icon="plus" v-if="single === null">Neue Zahlung</page-toolbar-button>
-                <page-toolbar-button @click.prevent="cancel" color="primary" icon="undo" v-if="single !== null">Zurück</page-toolbar-button>
+                <page-toolbar-button v-if="single === null" color="primary" icon="plus" @click.prevent="create">Neue Zahlung</page-toolbar-button>
+                <page-toolbar-button v-if="single !== null" color="primary" icon="undo" @click.prevent="cancel">Zurück</page-toolbar-button>
             </template>
         </page-header>
 
         <form v-if="single" class="p-6 grid gap-4 justify-start" @submit.prevent="submit">
             <f-text id="nr" v-model="single.nr" label="Jahr" required></f-text>
-            <f-select id="subscription_id" name="subscription_id" :options="subscriptions" v-model="single.subscription_id" label="Beitrag" required></f-select>
-            <f-select id="status_id" name="status_id" :options="statuses" v-model="single.status_id" label="Status" required></f-select>
+            <f-select id="subscription_id" v-model="single.subscription_id" name="subscription_id" :options="subscriptions" label="Beitrag" required></f-select>
+            <f-select id="status_id" v-model="single.status_id" name="status_id" :options="statuses" label="Status" required></f-select>
             <button type="submit" class="btn btn-primary">Absenden</button>
         </form>
 
-        <div class="grow" v-else>
+        <div v-else class="grow">
             <table class="custom-table custom-table-light custom-table-sm text-sm">
                 <thead>
                     <th>Nr</th>
@@ -30,28 +30,28 @@
                     <td class="flex">
                         <a
                             href="#"
+                            class="inline-flex btn btn-warning btn-sm"
                             @click.prevent="
                                 single = payment;
                                 mode = 'edit';
                             "
-                            class="inline-flex btn btn-warning btn-sm"
                             ><ui-sprite src="pencil"></ui-sprite
                         ></a>
-                        <i-link v-show="!payment.is_accepted" href="#" @click.prevent="accept(payment)" class="inline-flex btn btn-success btn-sm"><ui-sprite src="check"></ui-sprite></i-link>
-                        <i-link href="#" @click.prevent="remove(payment)" class="inline-flex btn btn-danger btn-sm"><ui-sprite src="trash"></ui-sprite></i-link>
+                        <i-link v-show="!payment.is_accepted" href="#" class="inline-flex btn btn-success btn-sm" @click.prevent="accept(payment)"><ui-sprite src="check"></ui-sprite></i-link>
+                        <i-link href="#" class="inline-flex btn btn-danger btn-sm" @click.prevent="remove(payment)"><ui-sprite src="trash"></ui-sprite></i-link>
                     </td>
                 </tr>
             </table>
         </div>
         <div class="flex flex-col pb-6 px-6">
             <a
-                href="#"
-                @click.prevent="openLink(link)"
-                :class="{disabled: link.disabled}"
-                target="_BLANK"
                 v-for="(link, index) in value.payment_links"
                 :key="index"
+                href="#"
+                :class="{disabled: link.disabled}"
+                target="_BLANK"
                 class="mt-1 text-center btn btn-primary"
+                @click.prevent="openLink(link)"
                 v-text="link.label"
             ></a>
         </div>
@@ -60,6 +60,12 @@
 
 <script>
 export default {
+
+    props: {
+        value: {},
+        subscriptions: {},
+        statuses: {},
+    },
     data: function () {
         return {
             mode: null,
@@ -106,12 +112,6 @@ export default {
                       },
                   });
         },
-    },
-
-    props: {
-        value: {},
-        subscriptions: {},
-        statuses: {},
     },
 };
 </script>

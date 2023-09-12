@@ -77,7 +77,7 @@
                     <ui-label :value="member.pending_payment" fallback="---"></ui-label>
                 </td>
                 <td>
-                    <actions :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)"></actions>
+                    <actions :member="member" @sidebar="openSidebar($event, member)" @remove="remove(member)"></actions>
                 </td>
             </tr>
         </table>
@@ -93,7 +93,7 @@
                     <ui-label v-show="hasModule('bill')" class="text-gray-100 block" :value="member.pending_payment"
                         fallback=""></ui-label>
                 </div>
-                <actions class="mt-2" :member="member" @sidebar="openSidebar(index, $event)" @remove="remove(member)">
+                <actions class="mt-2" :member="member" @sidebar="openSidebar($event, member)" @remove="remove(member)">
                 </actions>
                 <div class="absolute right-0 top-0 h-full flex items-center mr-2">
                     <i-link v-tooltip="`Details`" :href="member.links.show"><ui-sprite src="chevron"
@@ -106,12 +106,11 @@
             <ui-pagination class="mt-4" :value="meta" :only="['data']"></ui-pagination>
         </div>
 
-        <member-payments v-if="single !== null && sidebar === 'payment.index'" :subscriptions="meta.subscriptions"
-            :statuses="meta.statuses" :value="data[single]" @close="closeSidebar"></member-payments>
-        <member-memberships v-if="single !== null && sidebar === 'membership.index'" :groups="meta.groups"
-            :activities="meta.formActivities" :subactivities="meta.formSubactivities" :value="data[single]"
-            @close="closeSidebar"></member-memberships>
-        <member-courses v-if="single !== null && sidebar === 'courses.index'" :courses="meta.courses" :value="data[single]"
+        <member-payments v-if="single !== null && single.type === 'payment'" :subscriptions="meta.subscriptions"
+            :statuses="meta.statuses" :value="single.model" @close="closeSidebar"></member-payments>
+        <member-memberships v-if="single !== null && single.type === 'membership'" :activities="meta.formActivities"
+            :subactivities="meta.formSubactivities" :value="single.model" @close="closeSidebar"></member-memberships>
+        <member-courses v-if="single !== null && single.type === 'courses'" :courses="meta.courses" :value="single.model"
             @close="closeSidebar"></member-courses>
     </page-layout>
 </template>
@@ -125,7 +124,6 @@ import Actions from './index/Actions.vue';
 import { indexProps, useIndex } from '../../composables/useIndex.js';
 import { ref, defineProps } from 'vue';
 
-const sidebar = ref(null);
 const single = ref(null);
 const deleting = ref(null);
 
@@ -147,12 +145,13 @@ async function remove(member) {
         .catch(() => (deleting.value = null));
 }
 
-function openSidebar(index, name) {
-    single.value = index;
-    sidebar.value = name;
+function openSidebar(type, model) {
+    single.value = {
+        type: type,
+        model: model,
+    };
 }
 function closeSidebar() {
     single.value = null;
-    sidebar.value = null;
 }
 </script>

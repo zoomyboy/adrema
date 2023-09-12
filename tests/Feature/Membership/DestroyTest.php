@@ -44,9 +44,9 @@ class DestroyTest extends TestCase
             ->inNami(6)
             ->create();
 
-        $response = $this->from('/member')->delete("/member/{$member->id}/membership/{$member->memberships->first()->id}");
+        $response = $this->delete("/membership/{$member->memberships->first()->id}");
 
-        $response->assertRedirect('/member');
+        $response->assertOk();
         $this->assertEquals(1506, $member->fresh()->version);
         $this->assertDatabaseMissing('memberships', [
             'member_id' => $member->id,
@@ -65,9 +65,8 @@ class DestroyTest extends TestCase
             ->inNami(6)
             ->create();
 
-        $response = $this->from('/member')->delete("/member/{$member->id}/membership/{$member->memberships->first()->id}");
+        $response = $this->delete("/membership/{$member->memberships->first()->id}");
 
-        $response->assertRedirect('/member');
         $this->assertDatabaseMissing('memberships', [
             'member_id' => $member->id,
         ]);

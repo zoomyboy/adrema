@@ -4,11 +4,10 @@ namespace App\Membership\Actions;
 
 use App\Activity;
 use App\Maildispatcher\Actions\ResyncAction;
-use App\Member\Member;
 use App\Member\Membership;
 use App\Subactivity;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 use Lorisleiva\Actions\ActionRequest;
@@ -20,8 +19,6 @@ class MembershipUpdateAction
 
     public function handle(Membership $membership, Activity $activity, ?Subactivity $subactivity, ?Carbon $promisedAt): Membership
     {
-        $from = now()->startOfDay();
-
         $membership->update([
             'activity_id' => $activity->id,
             'subactivity_id' => $subactivity ? $subactivity->id : null,
@@ -56,7 +53,7 @@ class MembershipUpdateAction
         ];
     }
 
-    public function asController(Member $member, Membership $membership, ActionRequest $request): RedirectResponse
+    public function asController(Membership $membership, ActionRequest $request): JsonResponse
     {
         $this->handle(
             $membership,
@@ -67,6 +64,6 @@ class MembershipUpdateAction
 
         ResyncAction::dispatch();
 
-        return redirect()->back();
+        return response()->json([]);
     }
 }

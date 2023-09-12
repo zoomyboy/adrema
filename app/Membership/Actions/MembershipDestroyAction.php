@@ -6,7 +6,7 @@ use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Setting\NamiSettings;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -32,16 +32,15 @@ class MembershipDestroyAction
         }
     }
 
-    public function asController(Member $member, Membership $membership, ActionRequest $request, NamiSettings $settings): RedirectResponse
+    public function asController(Membership $membership, NamiSettings $settings): JsonResponse
     {
         $this->handle(
-            $member,
+            $membership->member,
             $membership,
             $settings,
         );
 
         ResyncAction::dispatch();
-
-        return redirect()->back();
+        return response()->json([]);
     }
 }

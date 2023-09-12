@@ -23,7 +23,7 @@ class MemberController extends Controller
             'data' => MemberResource::collection(Member::search($filter->search)->query(
                 fn ($q) => $q->select('*')
                     ->withFilter($filter)
-                    ->with(['payments.subscription', 'memberships', 'courses', 'subscription', 'leaderMemberships', 'ageGroupMemberships'])
+                    ->with(['payments.subscription', 'courses', 'subscription', 'leaderMemberships', 'ageGroupMemberships'])
                     ->withPendingPayment()
                     ->ordered()
             )->paginate(15)),

@@ -63,10 +63,11 @@ class MembershipFactory extends Factory
 
     public function in(string $activity, int $activityNamiId, ?string $subactivity = null, ?int $subactivityNamiId = null): self
     {
-        $instance = $this->for(Activity::factory()->name($activity)->inNami($activityNamiId));
+        $activityModel = Activity::factory()->name($activity)->inNami($activityNamiId)->create();
+        $instance = $this->for($activityModel);
 
         if ($subactivity) {
-            $instance = $instance->for(Subactivity::factory()->name($subactivity)->inNami($subactivityNamiId));
+            $instance = $instance->for(Subactivity::factory()->name($subactivity)->inNami($subactivityNamiId)->hasAttached($activityModel));
         }
 
         return $instance;

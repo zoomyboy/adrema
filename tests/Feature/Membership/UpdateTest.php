@@ -37,11 +37,11 @@ class UpdateTest extends TestCase
         $membership = $member->memberships->first();
 
         $response = $this->from('/member')->patch(
-            "/member/{$member->id}/membership/{$membership->id}",
+            "/membership/{$membership->id}",
             MembershipRequestFactory::new()->promise(now())->in($membership->activity, $membership->subactivity)->create()
         );
 
-        $response->assertRedirect('/member');
+        $response->assertOk();
         $this->assertDatabaseHas('memberships', [
             'member_id' => $member->id,
             'activity_id' => $activity->id,

@@ -8,8 +8,6 @@ use App\Member\Member;
 use App\Member\Membership;
 use App\Payment\Payment;
 use App\Subactivity;
-use Carbon\Carbon;
-use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\Child;
 use Tests\TestCase;
@@ -22,7 +20,7 @@ class IndexTest extends TestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         $group = Group::factory()->create();
-        Member::factory()->defaults()->for($group)->create([
+        $member = Member::factory()->defaults()->for($group)->create([
             'firstname' => '::firstname::',
             'address' => 'Kölner Str 3',
             'zip' => 33333,
@@ -36,6 +34,8 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(false, $response, 'data.data.0.has_nami');
         $this->assertInertiaHas('Kölner Str 3, 33333 Hilden', $response, 'data.data.0.full_address');
         $this->assertInertiaHas($group->id, $response, 'data.data.0.group_id');
+        $this->assertInertiaHas(null, $response, 'data.data.0.memberships');
+        $this->assertInertiaHas(route('member.membership.index', ['member' => $member]), $response, 'data.data.0.links.membership_index');
     }
 
     public function testFieldsCanBeNull(): void
@@ -80,29 +80,6 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(true, $response, 'data.data.0.is_leader');
         $this->assertInertiaHas(false, $response, 'data.data.1.is_leader');
         $this->assertInertiaHas(false, $response, 'data.data.2.is_leader');
-    }
-
-    public function membershipDataProvider(): Generator
-    {
-        yield [now()->subMonths(2), null, true];
-        yield [now()->subMonths(2), now()->subDay(), false];
-        yield [now()->addDays(2), null, false];
-    }
-
-    /**
-     * @dataProvider membershipDataProvider
-     */
-    public function testItShowsIfMembershipIsActive(Carbon $from, ?Carbon $to, bool $isActive): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        $member = Member::factory()
-            ->defaults()
-            ->has(Membership::factory()->in('€ LeiterIn', 455, 'Pfadfinder', 15)->state(['from' => $from, 'to' => $to]))
-            ->create();
-
-        $response = $this->get('/member');
-
-        $this->assertInertiaHas($isActive, $response, 'data.data.0.memberships.0.is_active');
     }
 
     public function testItHasNoEfzLinkWhenAddressIsMissing(): void
@@ -153,28 +130,6 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('Biber', $response, "data.meta.formSubactivities.{$activity->id}.{$subactivity->id}");
         $this->assertInertiaHas('Biber', $response, "data.meta.filterSubactivities.{$subactivity->id}");
         $this->assertInertiaHas('€ Mitglied', $response, "data.meta.formActivities.{$activity->id}");
-    }
-
-    public function testItShowsActivityAndSubactivityNamesOfMember(): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        $group = Group::factory()->create();
-        $member = Member::factory()
-            ->defaults()
-            ->has(Membership::factory()->for($group)->in('€ Mitglied', 122, 'Wölfling', 234)->from('2022-11-02'))
-            ->create();
-
-        $response = $this->get('/member');
-
-        $this->assertInertiaHas([
-            'activity_id' => $member->memberships->first()->activity_id,
-            'subactivity_id' => $member->memberships->first()->subactivity_id,
-            'activity_name' => '€ Mitglied',
-            'subactivity_name' => 'Wölfling',
-            'human_date' => '02.11.2022',
-            'group_id' => $group->id,
-            'id' => $member->memberships->first()->id,
-        ], $response, 'data.data.0.memberships.0');
     }
 
     public function testItReturnsPayments(): void
