@@ -32,6 +32,7 @@ services:
             REDIS_HOST: redis
         volumes:
             - ./data/storage:/app/storage/app
+            - ./data/plugins:/app/plugins
             - ./data/cookies:/app/packages/laravel-nami/.cookies
 
     horizon:
@@ -53,6 +54,7 @@ services:
             REDIS_HOST: redis
         volumes:
             - ./data/storage:/app/storage/app
+            - ./data/plugins:/app/plugins
             - ./data/cookies:/app/packages/laravel-nami/.cookies
 
     schedule:
@@ -74,6 +76,7 @@ services:
             REDIS_HOST: redis
         volumes:
             - ./data/storage:/app/storage/app
+            - ./data/plugins:/app/plugins
             - ./data/cookies:/app/packages/laravel-nami/.cookies
 
     db:

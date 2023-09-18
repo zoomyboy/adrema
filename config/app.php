@@ -189,6 +189,7 @@ return [
         App\Dav\ServiceProvider::class,
         App\Setting\SettingServiceProvider::class,
         App\Dashboard\DashboardServiceProvider::class,
+        App\Providers\PluginServiceProvider::class,
     ],
 
     /*
