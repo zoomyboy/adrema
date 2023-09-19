@@ -13,7 +13,7 @@ class PluginTest extends TestCase
     public function testItCanRegisterAPlugin(): void
     {
         $pluginsPath = __DIR__.'/../../../plugins/Test';
-        @mkdir($pluginsPath);
+        @mkdir($pluginsPath, 0755, true);
 
         file_put_contents($pluginsPath.'/ServiceProvider.php', '<?php
             namespace Plugins\Test;
