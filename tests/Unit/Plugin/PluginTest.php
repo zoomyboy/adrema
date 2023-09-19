@@ -3,6 +3,7 @@
 namespace Tests\Unit\Plugin;
 
 use Tests\TestCase;
+use Plugins\Test\ServiceProvider;
 
 class PluginTest extends TestCase
 {
@@ -27,7 +28,7 @@ class PluginTest extends TestCase
 
         parent::setUp();
 
-        $this->assertInstanceOf('Plugins\\Test\\ServiceProvider', app()->getProvider('Plugins\\Test\\ServiceProvider'));
+        $this->assertInstanceOf(ServiceProvider::class, app()->getProvider('Plugins\\Test\\ServiceProvider'));
 
         array_map(fn ($file) => unlink($file), glob($pluginsPath.'/*'));
         rmdir($pluginsPath);
