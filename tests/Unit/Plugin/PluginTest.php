@@ -31,5 +31,6 @@ class PluginTest extends TestCase
 
         array_map(fn ($file) => unlink($file), glob($pluginsPath.'/*'));
         rmdir($pluginsPath);
+        rmdir(dirname($pluginsPath));
     }
 }
