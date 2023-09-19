@@ -164,11 +164,6 @@ parameters:
             path: app/Providers/AuthServiceProvider.php
 
         -
-            message: "#^Method App\\\\Subactivity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Subactivity.php
-
-        -
             message: "#^Method Database\\\\Factories\\\\ActivityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: database/factories/ActivityFactory.php
@@ -199,30 +194,10 @@ parameters:
             path: database/factories/Payment/StatusFactory.php
 
         -
-            message: "#^Method Database\\\\Factories\\\\SubactivityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: database/factories/SubactivityFactory.php
-
-        -
             message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy.*#"
 
         -
             message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy.*#"
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Member\\\\StoreTest\\:\\:attributes\\(\\) has parameter \\$overwrites with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Member/StoreTest.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Member\\\\StoreTest\\:\\:attributes\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Member/StoreTest.php
-
-        -
-            message: "#^Method Tests\\\\Feature\\\\Member\\\\StoreTest\\:\\:defaults\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: tests/Feature/Member/StoreTest.php
 
         -
             message: "#^PHPDoc tag @param has invalid value \\(\\<class\\-string\\> \\$class\\)\\: Unexpected token \"\\<\", expected type at offset 18$#"

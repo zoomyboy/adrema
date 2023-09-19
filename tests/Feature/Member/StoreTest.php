@@ -211,6 +211,9 @@ class StoreTest extends TestCase
             ->assertSessionHasErrors(['subscription_id' => 'Beitragsart ist erforderlich.']);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function defaults(): array
     {
         $country = Country::factory()->create();

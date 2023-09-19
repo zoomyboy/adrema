@@ -4,8 +4,15 @@ namespace Tests\Lib;
 
 trait MergesAttributes
 {
-    abstract public function defaults();
+    /**
+     * @return array<string, mixed>
+     */
+    abstract public function defaults(): array;
 
+    /**
+     * @param array<string, mixed> $overwrites
+     * @return array<string, mixed>
+     */
     public function attributes(?array $overwrites = []): array
     {
         $defaults = collect($this->defaults());

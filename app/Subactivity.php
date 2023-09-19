@@ -14,15 +14,27 @@ class Subactivity extends Model
     use HasNamiField;
     use Sluggable;
 
+    /**
+     * @var array<int, string>
+     */
     public $fillable = ['is_age_group', 'is_filterable', 'slug', 'name', 'nami_id'];
 
+    /**
+     * @var bool
+     */
     public $timestamps = false;
 
+    /**
+     * @var array<string, string>
+     */
     public $casts = [
         'is_age_group' => 'boolean',
         'is_filterable' => 'boolean',
     ];
 
+    /**
+     * @return array<string, array{source: string}>
+     */
     public function sluggable(): array
     {
         return [
