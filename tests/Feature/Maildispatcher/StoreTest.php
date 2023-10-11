@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Maildispatcher;
 
+use \Mockery as M;
 use App\Activity;
 use App\Maildispatcher\Models\Localmaildispatcher;
 use App\Maildispatcher\Models\Maildispatcher;
@@ -47,6 +48,23 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas('localmaildispatchers', [
             'from' => 'test@example.com',
             'to' => 'jane@example.com',
+        ]);
+    }
+
+    public function testItDoesntStoreTwoMembersWithSameEmailAddress(): void
+    {
+        $type = M::mock(LocalType::class)->makePartial();
+        $type->shouldReceive('add')->once();
+        app()->instance(LocalType::class, $type);
+
+        $gateway = Mailgateway::factory()->type(LocalType::class, [])->domain('example.com')->create();
+        Member::factory()->defaults()->create(['email' => 'jane@example.com']);
+        Member::factory()->defaults()->create(['email' => 'jane@example.com']);
+
+        $this->postJson('/maildispatcher', [
+            'name' => 'test',
+            'gateway_id' => $gateway->id,
+            'filter' => [],
         ]);
     }
 
