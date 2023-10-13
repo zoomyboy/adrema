@@ -58,6 +58,10 @@ export function useApiIndex(url, siteName) {
         };
     }
 
+    function cancel() {
+        single.value = null;
+    }
+
     startListener();
     onBeforeUnmount(() => stopListener());
 
@@ -73,5 +77,7 @@ export function useApiIndex(url, siteName) {
         router,
         submit,
         remove,
+        cancel,
+        axios,
     };
 }

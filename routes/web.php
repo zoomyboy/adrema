@@ -43,6 +43,7 @@ use App\Membership\Actions\MembershipUpdateAction;
 use App\Membership\Actions\SyncAction;
 use App\Payment\Actions\AllpaymentPageAction;
 use App\Payment\Actions\AllpaymentStoreAction;
+use App\Payment\Actions\ApiIndexAction as PaymentApiIndexAction;
 use App\Payment\PaymentController;
 use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
@@ -57,16 +58,11 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/nami/login-check', NamiLoginCheckAction::class)->name('nami.login-check');
     Route::post('/nami/get-search-layer', NamiGetSearchLayerAction::class)->name('nami.get-search-layer');
     Route::post('/nami/search', NamiSearchAction::class)->name('nami.search');
-    Route::post('/api/member/search', SearchAction::class)->name('member.search');
-    Route::post('/api/membership/member-list', ApiListAction::class)->name('membership.member-list');
-    Route::post('/api/membership/sync', SyncAction::class)->name('membership.sync');
-    Route::post('/api/member/{member}/membership', ApiIndexAction::class)->name('member.membership.index');
     Route::get('/initialize', InitializeFormAction::class)->name('initialize.form');
     Route::post('/initialize', InitializeAction::class)->name('initialize.store');
     Route::resource('member', MemberController::class)->except('show', 'destroy');
     Route::delete('/member/{member}', MemberDeleteAction::class);
     Route::get('/member/{member}', MemberShowAction::class)->name('member.show');
-    Route::apiResource('member.payment', PaymentController::class);
     Route::get('allpayment', AllpaymentPageAction::class)->name('allpayment.page');
     Route::post('allpayment', AllpaymentStoreAction::class)->name('allpayment.store');
     Route::resource('subscription', SubscriptionController::class);
@@ -74,9 +70,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
         ->name('member.singlepdf');
     Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
-    Route::post('/member/{member}/membership', MembershipStoreAction::class)->name('member.membership.store');
-    Route::patch('/membership/{membership}', MembershipUpdateAction::class)->name('membership.update');
-    Route::delete('/membership/{membership}', MembershipDestroyAction::class)->name('membership.destroy');
     Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncAction::class)->name('member.resync');
@@ -90,6 +83,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/subactivity', SubactivityStoreAction::class)->name('api.subactivity.store');
     Route::patch('/subactivity/{subactivity}', SubactivityUpdateAction::class)->name('api.subactivity.update');
     Route::get('/subactivity/{subactivity}', SubactivityShowAction::class)->name('api.subactivity.show');
+    Route::post('/api/member/search', SearchAction::class)->name('member.search');
 
     // ------------------------------- Contributions -------------------------------
     Route::get('/contribution', ContributionFormAction::class)->name('contribution.form');
@@ -108,4 +102,16 @@ Route::group(['middleware' => 'auth:web'], function (): void {
 
     // ----------------------------------- group -----------------------------------
     Route::get('/group', ListAction::class)->name('group.index');
+
+    // ---------------------------------- payment ----------------------------------
+    Route::apiResource('member.payment', PaymentController::class);
+    Route::post('/api/member/{member}/payment', PaymentApiIndexAction::class)->name('member.payment.index');
+
+    // --------------------------------- membership --------------------------------
+    Route::post('/member/{member}/membership', MembershipStoreAction::class)->name('member.membership.store');
+    Route::patch('/membership/{membership}', MembershipUpdateAction::class)->name('membership.update');
+    Route::delete('/membership/{membership}', MembershipDestroyAction::class)->name('membership.destroy');
+    Route::post('/api/membership/member-list', ApiListAction::class)->name('membership.member-list');
+    Route::post('/api/membership/sync', SyncAction::class)->name('membership.sync');
+    Route::post('/api/member/{member}/membership', ApiIndexAction::class)->name('member.membership.index');
 });

@@ -106,6 +106,7 @@ class MemberResource extends JsonResource
             'lon' => $this->lon,
             'links' => [
                 'membership_index' => route('member.membership.index', ['member' => $this->getModel()]),
+                'payment_index' => route('member.payment.index', ['member' => $this->getModel()]),
                 'show' => route('member.show', ['member' => $this->getModel()]),
                 'edit' => route('member.edit', ['member' => $this->getModel()]),
             ],
@@ -135,7 +136,6 @@ class MemberResource extends JsonResource
             'filter' => FilterScope::fromRequest(request()->input('filter', '')),
             'courses' => Course::pluck('name', 'id'),
             'regions' => Region::forSelect(),
-            'statuses' => Status::pluck('name', 'id'),
             'subscriptions' => Subscription::pluck('name', 'id'),
             'countries' => Country::pluck('name', 'id'),
             'genders' => Gender::pluck('name', 'id'),

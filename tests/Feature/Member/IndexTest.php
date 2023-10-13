@@ -20,12 +20,13 @@ class IndexTest extends TestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         $group = Group::factory()->create();
-        $member = Member::factory()->defaults()->for($group)->create([
-            'firstname' => '::firstname::',
-            'address' => 'Kölner Str 3',
-            'zip' => 33333,
-            'location' => 'Hilden',
-        ]);
+        $member = Member::factory()->defaults()->for($group)
+            ->create([
+                'firstname' => '::firstname::',
+                'address' => 'Kölner Str 3',
+                'zip' => 33333,
+                'location' => 'Hilden',
+            ]);
 
         $response = $this->get('/member');
 
@@ -35,7 +36,12 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('Kölner Str 3, 33333 Hilden', $response, 'data.data.0.full_address');
         $this->assertInertiaHas($group->id, $response, 'data.data.0.group_id');
         $this->assertInertiaHas(null, $response, 'data.data.0.memberships');
-        $this->assertInertiaHas(route('member.membership.index', ['member' => $member]), $response, 'data.data.0.links.membership_index');
+        $this->assertInertiaHas("/api/member/{$member->id}/membership", $response, 'data.data.0.links.membership_index');
+        $this->assertInertiaHas("/api/member/{$member->id}/payment", $response, 'data.data.0.links.payment_index');
+        $this->assertInertiaHas([
+            'id' => $member->subscription->id,
+            'name' => $member->subscription->name,
+        ], $response, 'data.data.0.subscription');
     }
 
     public function testFieldsCanBeNull(): void
@@ -130,34 +136,6 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('Biber', $response, "data.meta.formSubactivities.{$activity->id}.{$subactivity->id}");
         $this->assertInertiaHas('Biber', $response, "data.meta.filterSubactivities.{$subactivity->id}");
         $this->assertInertiaHas('€ Mitglied', $response, "data.meta.formActivities.{$activity->id}");
-    }
-
-    public function testItReturnsPayments(): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        $member = Member::factory()
-            ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', [
-                new Child('a', 1000),
-                new Child('b', 50),
-            ]))
-            ->defaults()->create();
-
-        $response = $this->get('/member');
-
-        $this->assertInertiaHas([
-            'subscription' => [
-                'name' => 'Free',
-                'id' => $member->payments->first()->subscription->id,
-                'amount' => 1050,
-            ],
-            'subscription_id' => $member->payments->first()->subscription->id,
-            'status_name' => 'Nicht bezahlt',
-            'nr' => '2019',
-        ], $response, 'data.data.0.payments.0');
-        $this->assertInertiaHas([
-            'id' => $member->subscription->id,
-            'name' => $member->subscription->name,
-        ], $response, 'data.data.0.subscription');
     }
 
     public function testItCanFilterForBillKinds(): void

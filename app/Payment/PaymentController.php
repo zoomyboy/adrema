@@ -7,10 +7,11 @@ use App\Lib\Events\ClientMessage;
 use App\Member\Member;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PaymentController extends Controller
 {
-    public function store(Request $request, Member $member): RedirectResponse
+    public function store(Request $request, Member $member): Response
     {
         $member->createPayment($request->validate([
             'nr' => 'required',
@@ -20,10 +21,10 @@ class PaymentController extends Controller
 
         ClientMessage::make('Zahlung erstellt.')->shouldReload()->dispatch();
 
-        return redirect()->back();
+        return response('');
     }
 
-    public function update(Request $request, Member $member, Payment $payment): RedirectResponse
+    public function update(Request $request, Member $member, Payment $payment): Response
     {
         $payment->update($request->validate([
             'nr' => 'required',
@@ -33,15 +34,15 @@ class PaymentController extends Controller
 
         ClientMessage::make('Zahlung aktualisiert.')->shouldReload()->dispatch();
 
-        return redirect()->back();
+        return response('');
     }
 
-    public function destroy(Request $request, Member $member, Payment $payment): RedirectResponse
+    public function destroy(Request $request, Member $member, Payment $payment): Response
     {
         $payment->delete();
 
         ClientMessage::make('Zahlung gelöscht.')->shouldReload()->dispatch();
 
-        return redirect()->back();
+        return response('');
     }
 }

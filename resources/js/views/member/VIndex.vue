@@ -121,7 +121,7 @@
         </div>
 
         <ui-sidebar v-if="single !== null" @close="closeSidebar">
-            <member-payments v-if="single.type === 'payment'" :subscriptions="meta.subscriptions" :statuses="meta.statuses" :value="single.model" @close="closeSidebar"></member-payments>
+            <member-payments v-if="single.type === 'payment'" :url="single.model.links.payment_index" @close="closeSidebar"></member-payments>
             <member-memberships v-if="single.type === 'membership'" :url="single.model.links.membership_index" @close="closeSidebar"></member-memberships>
             <member-courses v-if="single.type === 'courses'" :courses="meta.courses" :value="single.model" @close="closeSidebar"></member-courses>
         </ui-sidebar>

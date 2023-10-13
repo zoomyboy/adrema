@@ -2,6 +2,7 @@
 
 namespace App\Payment;
 
+use App\Member\Member;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -26,6 +27,29 @@ class PaymentResource extends JsonResource
             'nr' => $this->nr,
             'id' => $this->id,
             'is_accepted' => $this->status->isAccepted(),
+            'links' => [
+                'update' => route('member.payment.update', ['payment' => $this->getModel(), 'member' => $this->getModel()->member]),
+                'destroy' => route('member.payment.destroy', ['payment' => $this->getModel(), 'member' => $this->getModel()->member]),
+            ]
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function memberMeta(Member $member): array
+    {
+        return [
+            'statuses' => Status::forSelect(),
+            'subscriptions' => Subscription::forSelect(),
+            'default' => [
+                'nr' => '',
+                'subscription_id' => null,
+                'status_id' => null
+            ],
+            'links' => [
+                'store' => route('member.payment.store', ['member' => $member]),
+            ]
         ];
     }
 }

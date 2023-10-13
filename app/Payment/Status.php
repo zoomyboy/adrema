@@ -38,4 +38,12 @@ class Status extends Model
             return $query->where('is_bill', true)->orWhere('is_remember', true);
         });
     }
+
+    /**
+     * @return array<int, array{name: string, id: int}>
+     */
+    public static function forSelect(): array
+    {
+        return static::select('name', 'id')->get()->toArray();
+    }
 }
