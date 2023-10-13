@@ -1,7 +1,7 @@
 <template>
     <div class="flex space-x-1">
         <i-link v-tooltip="`Details`" :href="member.links.show" class="inline-flex btn btn-primary btn-sm"><ui-sprite src="eye"></ui-sprite></i-link>
-        <i-link v-tooltip="`Bearbeiten`" :href="`/member/${member.id}/edit`" class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></i-link>
+        <i-link v-tooltip="`Bearbeiten`" :href="member.links.edit" class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></i-link>
         <a v-show="hasModule('bill')" v-tooltip="`Zahlungen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="$emit('sidebar', 'payment')"><ui-sprite src="money"></ui-sprite></a>
         <a v-show="hasModule('courses')" v-tooltip="`Ausbildungen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="$emit('sidebar', 'courses')"
             ><ui-sprite src="course"></ui-sprite
@@ -12,10 +12,11 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        member: {},
-    },
-};
+<script setup>
+defineProps({
+    member: {
+        type: Object,
+        required: true,
+    }
+});
 </script>

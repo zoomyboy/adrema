@@ -6,7 +6,7 @@
             <slot name="toolbar"></slot>
         </div>
         <div class="flex items-center space-x-2 ml-2">
-            <a href="#" v-if="$attrs.onClose" @click.prevent="$emit('close')" class="btn label btn-primary-light icon">
+            <a v-if="$attrs.onClose" href="#" class="btn label btn-primary-light icon" @click.prevent="$emit('close')">
                 <ui-sprite class="w-3 h-3" src="close"></ui-sprite>
             </a>
             <slot name="right"></slot>
@@ -14,14 +14,13 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        title: {
-            default: function () {
-                return '';
-            },
+<script setup>
+defineProps({
+    title: {
+        type: String,
+        default: function () {
+            return '';
         },
     },
-};
+});
 </script>
