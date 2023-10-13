@@ -254,7 +254,7 @@ class AddressBookBackend extends AbstractBackend
     {
         return [
             'lastmodified' => $member->updated_at->timestamp,
-            'etag' => '"'.$member->etag.'"',
+            'etag' => '"' . $member->etag . '"',
             'uri' => $member->slug,
             'id' => $member->id,
             'size' => strlen($member->toVcard()->serialize()),
