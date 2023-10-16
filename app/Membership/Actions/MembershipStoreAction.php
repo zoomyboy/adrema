@@ -4,13 +4,15 @@ namespace App\Membership\Actions;
 
 use App\Activity;
 use App\Group;
+use App\Lib\JobMiddleware\WithJobState;
+use App\Lib\Queue\TracksJob;
 use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Setting\NamiSettings;
 use App\Subactivity;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 use Illuminate\Validation\ValidationException;
@@ -22,8 +24,9 @@ use Zoomyboy\LaravelNami\Exceptions\HttpException;
 class MembershipStoreAction
 {
     use AsAction;
+    use TracksJob;
 
-    public function handle(Member $member, Activity $activity, ?Subactivity $subactivity, Group $group, ?Carbon $promisedAt, NamiSettings $settings): Membership
+    public function handle(Member $member, Activity $activity, ?Subactivity $subactivity, Group $group, ?Carbon $promisedAt): Membership
     {
         $from = now()->startOfDay();
 
@@ -31,7 +34,7 @@ class MembershipStoreAction
 
         if ($activity->hasNami && ($subactivity->id === null || $subactivity->hasNami)) {
             try {
-                $namiId = $settings->login()->putMembership($member->nami_id, NamiMembership::from([
+                $namiId = app(NamiSettings::class)->login()->putMembership($member->nami_id, NamiMembership::from([
                     'startsAt' => $from,
                     'groupId' => $group->nami_id,
                     'activityId' => $activity->nami_id,
@@ -54,6 +57,8 @@ class MembershipStoreAction
         if ($activity->hasNami && ($subactivity->id === null || $subactivity->hasNami)) {
             $member->syncVersion();
         }
+
+        ResyncAction::dispatch();
 
         return $membership;
     }
@@ -85,19 +90,35 @@ class MembershipStoreAction
         ];
     }
 
-    public function asController(Member $member, ActionRequest $request, NamiSettings $settings): RedirectResponse
+    public function asController(Member $member, ActionRequest $request): Response
     {
-        $this->handle(
+        $this->startJob(
             $member,
             Activity::find($request->activity_id),
             $request->subactivity_id ? Subactivity::find($request->subactivity_id) : null,
             Group::findOrFail($request->input('group_id', -1)),
             $request->promised_at ? Carbon::parse($request->promised_at) : null,
-            $settings,
         );
 
-        ResyncAction::dispatch();
+        return response('');
+    }
 
-        return redirect()->back();
+    /**
+     * @param mixed $parameters
+     */
+    public function jobState(WithJobState $jobState, ...$parameters): WithJobState
+    {
+        $member = $parameters[0];
+
+        return $jobState
+            ->before('Mitgliedschaft für ' . $member->fullname . ' wird gespeichert')
+            ->after('Mitgliedschaft für ' . $member->fullname . ' gespeichert')
+            ->failed('Fehler beim Erstellen der Mitgliedschaft für ' . $member->fullname)
+            ->shouldReload();
+    }
+
+    public function jobChannel(): string
+    {
+        return 'member';
     }
 }
