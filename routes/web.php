@@ -43,8 +43,10 @@ use App\Membership\Actions\MembershipUpdateAction;
 use App\Membership\Actions\StoreForGroupAction;
 use App\Payment\Actions\AllpaymentPageAction;
 use App\Payment\Actions\AllpaymentStoreAction;
-use App\Payment\Actions\ApiIndexAction as PaymentApiIndexAction;
-use App\Payment\PaymentController;
+use App\Payment\Actions\IndexAction as PaymentIndexAction;
+use App\Payment\Actions\PaymentDestroyAction;
+use App\Payment\Actions\PaymentStoreAction;
+use App\Payment\Actions\PaymentUpdateAction;
 use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
 use App\Pdf\MemberPdfController;
@@ -104,8 +106,10 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/group', ListAction::class)->name('group.index');
 
     // ---------------------------------- payment ----------------------------------
-    Route::apiResource('member.payment', PaymentController::class);
-    Route::post('/api/member/{member}/payment', PaymentApiIndexAction::class)->name('member.payment.index');
+    Route::get('/member/{member}/payment', PaymentIndexAction::class)->name('member.payment.index');
+    Route::post('/member/{member}/payment', PaymentStoreAction::class)->name('member.payment.store');
+    Route::patch('/payment/{payment}', PaymentUpdateAction::class)->name('payment.update');
+    Route::delete('/payment/{payment}', PaymentDestroyAction::class)->name('payment.destroy');
 
     // --------------------------------- membership --------------------------------
     Route::get('/member/{member}/membership', MembershipIndexAction::class)->name('member.membership.index');

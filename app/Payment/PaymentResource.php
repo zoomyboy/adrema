@@ -28,8 +28,8 @@ class PaymentResource extends JsonResource
             'id' => $this->id,
             'is_accepted' => $this->status->isAccepted(),
             'links' => [
-                'update' => route('member.payment.update', ['payment' => $this->getModel(), 'member' => $this->getModel()->member]),
-                'destroy' => route('member.payment.destroy', ['payment' => $this->getModel(), 'member' => $this->getModel()->member]),
+                'update' => route('payment.update', ['payment' => $this->getModel()]),
+                'destroy' => route('payment.destroy', ['payment' => $this->getModel()]),
             ]
         ];
     }

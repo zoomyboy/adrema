@@ -25,15 +25,15 @@ class IndexTest extends TestCase
             ->defaults()->create();
         $payment = $member->payments->first();
 
-        $this->postJson("/api/member/{$member->id}/payment")
+        $this->get("/member/{$member->id}/payment")
             ->assertJsonPath('data.0.subscription.name', 'Free')
             ->assertJsonPath('data.0.subscription.id', $payment->subscription->id)
             ->assertJsonPath('data.0.subscription.amount', 1050)
             ->assertJsonPath('data.0.subscription_id', $payment->subscription->id)
             ->assertJsonPath('data.0.status_name', 'Nicht bezahlt')
             ->assertJsonPath('data.0.nr', '2019')
-            ->assertJsonPath('data.0.links.update', url("/member/{$member->id}/payment/{$payment->id}"))
-            ->assertJsonPath('data.0.links.destroy', url("/member/{$member->id}/payment/{$payment->id}"))
+            ->assertJsonPath('data.0.links.update', url("/payment/{$payment->id}"))
+            ->assertJsonPath('data.0.links.destroy', url("/payment/{$payment->id}"))
             ->assertJsonPath('meta.statuses.0.name', 'Nicht bezahlt')
             ->assertJsonPath('meta.statuses.0.id', $payment->status->id)
             ->assertJsonPath('meta.subscriptions.0.id', Subscription::first()->id)
