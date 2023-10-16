@@ -35,7 +35,7 @@ use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
 use App\Member\Actions\SearchAction;
 use App\Member\MemberController;
-use App\Membership\Actions\ApiIndexAction;
+use App\Membership\Actions\IndexAction as MembershipIndexAction;
 use App\Membership\Actions\ListForGroupAction;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
@@ -108,10 +108,10 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/api/member/{member}/payment', PaymentApiIndexAction::class)->name('member.payment.index');
 
     // --------------------------------- membership --------------------------------
+    Route::get('/member/{member}/membership', MembershipIndexAction::class)->name('member.membership.index');
     Route::post('/member/{member}/membership', MembershipStoreAction::class)->name('member.membership.store');
     Route::patch('/membership/{membership}', MembershipUpdateAction::class)->name('membership.update');
     Route::delete('/membership/{membership}', MembershipDestroyAction::class)->name('membership.destroy');
     Route::post('/api/membership/member-list', ListForGroupAction::class)->name('membership.member-list');
     Route::post('/api/membership/sync', StoreForGroupAction::class)->name('membership.sync');
-    Route::post('/api/member/{member}/membership', ApiIndexAction::class)->name('member.membership.index');
 });

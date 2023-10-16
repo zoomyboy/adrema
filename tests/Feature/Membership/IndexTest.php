@@ -26,7 +26,7 @@ class IndexTest extends TestCase
             ->create();
         $membership = $member->memberships->first();
 
-        $this->postJson("/api/member/{$member->id}/membership")
+        $this->get("/member/{$member->id}/membership")
             ->assertJsonPath('data.0.activity_id', $membership->activity_id)
             ->assertJsonPath('data.0.subactivity_id', $membership->subactivity_id)
             ->assertJsonPath('data.0.activity_name', '€ Mitglied')
@@ -62,7 +62,7 @@ class IndexTest extends TestCase
             ->has(Membership::factory()->in('€ LeiterIn', 455, 'Pfadfinder', 15)->state(['from' => $from, 'to' => $to]))
             ->create();
 
-        $this->postJson("/api/member/{$member->id}/membership")
+        $this->get("/member/{$member->id}/membership")
             ->assertJsonPath('data.0.is_active', $isActive);
     }
 }

@@ -16,7 +16,7 @@ export function useApiIndex(url, siteName) {
             page: resetPage ? 1 : inner.meta.value.current_page,
         };
 
-        var response = (await axios.post(url, params)).data;
+        var response = (await axios.get(url, params)).data;
         inner.data.value = response.data;
         inner.meta.value = response.meta;
     }
