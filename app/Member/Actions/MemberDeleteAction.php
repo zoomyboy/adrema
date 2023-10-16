@@ -2,6 +2,7 @@
 
 namespace App\Member\Actions;
 
+use App\Lib\JobMiddleware\JobChannels;
 use App\Lib\JobMiddleware\WithJobState;
 use App\Lib\Queue\TracksJob;
 use App\Maildispatcher\Actions\ResyncAction;
@@ -45,11 +46,6 @@ class MemberDeleteAction
             ->before('Mitglied ' . $member->fullname . ' wird gelöscht')
             ->after('Mitglied ' . $member->fullname . ' gelöscht')
             ->failed('Löschen von ' . $member->fullname . ' fehlgeschlagen.')
-            ->shouldReload();
-    }
-
-    public function jobChannel(): string
-    {
-        return 'member';
+            ->shouldReload(JobChannels::make()->add('member'));
     }
 }

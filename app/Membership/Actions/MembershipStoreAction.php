@@ -4,6 +4,7 @@ namespace App\Membership\Actions;
 
 use App\Activity;
 use App\Group;
+use App\Lib\JobMiddleware\JobChannels;
 use App\Lib\JobMiddleware\WithJobState;
 use App\Lib\Queue\TracksJob;
 use App\Maildispatcher\Actions\ResyncAction;
@@ -12,6 +13,7 @@ use App\Member\Membership;
 use App\Setting\NamiSettings;
 use App\Subactivity;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
@@ -90,7 +92,7 @@ class MembershipStoreAction
         ];
     }
 
-    public function asController(Member $member, ActionRequest $request): Response
+    public function asController(Member $member, ActionRequest $request): JsonResponse
     {
         $this->startJob(
             $member,
@@ -100,7 +102,7 @@ class MembershipStoreAction
             $request->promised_at ? Carbon::parse($request->promised_at) : null,
         );
 
-        return response('');
+        return response()->json([]);
     }
 
     /**
@@ -114,11 +116,6 @@ class MembershipStoreAction
             ->before('Mitgliedschaft für ' . $member->fullname . ' wird gespeichert')
             ->after('Mitgliedschaft für ' . $member->fullname . ' gespeichert')
             ->failed('Fehler beim Erstellen der Mitgliedschaft für ' . $member->fullname)
-            ->shouldReload();
-    }
-
-    public function jobChannel(): string
-    {
-        return 'member';
+            ->shouldReload(JobChannels::make()->add('member')->add('membership'));
     }
 }

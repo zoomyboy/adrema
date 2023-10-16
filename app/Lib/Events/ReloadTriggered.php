@@ -8,28 +8,18 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Ramsey\Uuid\UuidInterface;
 
-class JobEvent implements ShouldBroadcastNow
+class ReloadTriggered implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public string $message = '';
-
-    final private function __construct(public UuidInterface $jobId)
+    final private function __construct(public JobChannels $channels)
     {
     }
 
-    public static function on(UuidInterface $jobId): static
+    public static function on(JobChannels $channels): self
     {
-        return new static($jobId);
-    }
-
-    public function withMessage(string $message): static
-    {
-        $this->message = $message;
-
-        return $this;
+        return new static($channels);
     }
 
     public function dispatch(): void
@@ -44,8 +34,6 @@ class JobEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return [
-            new Channel('jobs'),
-        ];
+        return $this->channels->toBroadcast();
     }
 }

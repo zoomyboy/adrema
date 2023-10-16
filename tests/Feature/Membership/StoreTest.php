@@ -4,10 +4,14 @@ namespace Tests\Feature\Membership;
 
 use App\Activity;
 use App\Group;
+use App\Lib\Events\JobFinished;
+use App\Lib\Events\JobStarted;
+use App\Lib\Events\ReloadTriggered;
 use App\Member\Member;
 use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
 use Tests\RequestFactories\MembershipRequestFactory;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Fakes\MemberFake;
@@ -45,7 +49,7 @@ class StoreTest extends TestCase
             MembershipRequestFactory::new()->promise(now())->in($activity, $activity->subactivities->first())->group($member->group)->create()
         );
 
-        $response->assertRedirect('/member');
+        $response->assertOk();
         $this->assertEquals(1506, $member->fresh()->version);
         $this->assertDatabaseHas('memberships', [
             'member_id' => $member->id,
@@ -62,6 +66,23 @@ class StoreTest extends TestCase
             'aktivVon' => '2022-02-03T00:00:00',
             'aktivBis' => null,
         ]);
+    }
+
+    public function testItFiresJobEvents(): void
+    {
+        Event::fake([JobStarted::class, JobFinished::class, ReloadTriggered::class]);
+        $this->withoutExceptionHandling();
+        $member = Member::factory()->defaults()->for(Group::factory())->createOne();
+        $activity = Activity::factory()->hasAttached(Subactivity::factory())->createOne();
+
+        $this->from('/member')->post(
+            "/member/{$member->id}/membership",
+            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->group($member->group)->create()
+        );
+
+        Event::assertDispatched(JobStarted::class, fn ($event) => $event->broadcastOn()[0]->name === 'jobs' && $event->message !== null);
+        Event::assertDispatched(JobFinished::class, fn ($event) => $event->broadcastOn()[0]->name === 'jobs' && $event->message !== null);
+        Event::assertDispatched(ReloadTriggered::class, fn ($event) => ['member', 'membership'] === $event->channels->toArray());
     }
 
     public function testItDoesntFireNamiWhenMembershipIsLocal(): void

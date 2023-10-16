@@ -91,9 +91,4 @@ class StoreForGroupAction
             ->after('Gruppen aktualisiert')
             ->failed('Aktualisieren von Gruppen fehlgeschlagen');
     }
-
-    public function jobChannel(): string
-    {
-        return 'group';
-    }
 }
