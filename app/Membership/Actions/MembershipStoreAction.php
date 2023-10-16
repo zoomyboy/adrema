@@ -14,7 +14,6 @@ use App\Setting\NamiSettings;
 use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 use Illuminate\Validation\ValidationException;

@@ -9,7 +9,6 @@ use App\Lib\Queue\TracksJob;
 use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use App\Member\Membership;
-use App\Setting\NamiSettings;
 use App\Subactivity;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\ActionRequest;
@@ -47,7 +46,7 @@ class StoreForGroupAction
             ];
 
             Membership::where($attributes)->active()->whereNotIn('member_id', $members)->get()
-                ->each(fn ($membership) => MembershipDestroyAction::run($membership->member, $membership, app(NamiSettings::class)));
+                ->each(fn ($membership) => MembershipDestroyAction::run($membership));
 
             collect($members)
                 ->except(Membership::where($attributes)->active()->pluck('member_id'))
@@ -58,7 +57,6 @@ class StoreForGroupAction
                     $subactivity,
                     $group,
                     null,
-                    app(NamiSettings::class),
                 ));
 
 
