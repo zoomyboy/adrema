@@ -11,19 +11,6 @@ use Illuminate\Http\Response;
 
 class PaymentController extends Controller
 {
-    public function store(Request $request, Member $member): Response
-    {
-        $member->createPayment($request->validate([
-            'nr' => 'required',
-            'subscription_id' => 'required|exists:subscriptions,id',
-            'status_id' => 'required|exists:statuses,id',
-        ]));
-
-        ClientMessage::make('Zahlung erstellt.')->shouldReload()->dispatch();
-
-        return response('');
-    }
-
     public function update(Request $request, Member $member, Payment $payment): Response
     {
         $payment->update($request->validate([
