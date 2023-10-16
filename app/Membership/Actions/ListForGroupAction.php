@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class ApiListAction
+class ListForGroupAction
 {
     use AsAction;
 

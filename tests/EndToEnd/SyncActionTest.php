@@ -9,7 +9,7 @@ use App\Member\Member;
 use App\Member\Membership;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
-use App\Membership\Actions\SyncAction;
+use App\Membership\Actions\StoreForGroupAction;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Queue;
@@ -37,7 +37,7 @@ class SyncActionTest extends TestCase
             'subactivity_id' => $subactivity->id,
             'group_id' => $group->id,
         ]);
-        SyncAction::assertPushed(fn ($action, $params) => $params[0]->is($group) && $params[1]->is($activity) && $params[2]->is($subactivity) && $params[3][0] === $member->id);
+        StoreForGroupAction::assertPushed(fn ($action, $params) => $params[0]->is($group) && $params[1]->is($activity) && $params[2]->is($subactivity) && $params[3][0] === $member->id);
     }
 
     public function testItCreatesAMembership(): void
@@ -49,7 +49,7 @@ class SyncActionTest extends TestCase
         $subactivity = Subactivity::factory()->create();
         $group = Group::factory()->create();
 
-        SyncAction::run($group, $activity, $subactivity, [$member->id]);
+        StoreForGroupAction::run($group, $activity, $subactivity, [$member->id]);
     }
 
     public function testItDeletesAMembership(): void
@@ -60,7 +60,7 @@ class SyncActionTest extends TestCase
 
         $member = Member::factory()->defaults()->has(Membership::factory()->inLocal('Leiter*in', 'Rover'))->create();
 
-        SyncAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
+        StoreForGroupAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
     }
 
     public function testItRollsbackWhenDeletionFails(): void
@@ -78,7 +78,7 @@ class SyncActionTest extends TestCase
             ->create();
 
         try {
-            SyncAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
+            StoreForGroupAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
         } catch (Throwable $e) {
         }
         $this->assertDatabaseCount('memberships', 2);

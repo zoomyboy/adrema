@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class SyncAction
+class StoreForGroupAction
 {
     use AsAction;
     use TracksJob;
