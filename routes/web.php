@@ -12,7 +12,10 @@ use App\Activity\Api\SubactivityUpdateAction;
 use App\Contribution\Actions\FormAction as ContributionFormAction;
 use App\Contribution\Actions\GenerateAction as ContributionGenerateAction;
 use App\Contribution\Actions\ValidateAction as ContributionValidateAction;
-use App\Course\Controllers\CourseController;
+use App\Course\Actions\CourseDestroyAction;
+use App\Course\Actions\CourseIndexAction;
+use App\Course\Actions\CourseStoreAction;
+use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
 use App\Group\Actions\ListAction;
@@ -72,7 +75,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
         ->name('member.singlepdf');
     Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
-    Route::resource('member.course', CourseController::class);
     Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncAction::class)->name('member.resync');
     Route::get('member-export', ExportAction::class)->name('member-export');
@@ -118,4 +120,10 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::delete('/membership/{membership}', MembershipDestroyAction::class)->name('membership.destroy');
     Route::post('/api/membership/member-list', ListForGroupAction::class)->name('membership.member-list');
     Route::post('/api/membership/sync', StoreForGroupAction::class)->name('membership.sync');
+
+    // ----------------------------------- course ----------------------------------
+    Route::get('/member/{member}/course', CourseIndexAction::class)->name('member.course.index');
+    Route::post('/member/{member}/course', CourseStoreAction::class)->name('member.course.store');
+    Route::patch('/course/{course}', CourseUpdateAction::class)->name('course.update');
+    Route::delete('/course/{course}', CourseDestroyAction::class)->name('course.destroy');
 });

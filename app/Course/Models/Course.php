@@ -22,4 +22,12 @@ class Course extends Model
             ->trim()
             ->replaceMatches('/ - .*/', '');
     }
+
+    /**
+     * @return array<int, array{id: int, name: string}>
+     */
+    public static function forSelect(): array
+    {
+        return static::select('name', 'id')->get()->toArray();
+    }
 }

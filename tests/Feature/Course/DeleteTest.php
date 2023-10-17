@@ -19,7 +19,7 @@ class DeleteTest extends TestCase
         app(CourseFake::class)->deletesSuccessfully(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
 
-        $this->delete("/member/{$member->id}/course/{$member->courses->first()->id}");
+        $this->delete("//course/{$member->courses->first()->id}");
 
         $this->assertDatabaseCount('course_members', 0);
         app(CourseFake::class)->assertDeleted(123, 999);
@@ -31,7 +31,7 @@ class DeleteTest extends TestCase
         app(CourseFake::class)->failsDeleting(123, 999);
         $member = Member::factory()->defaults()->inNami(123)->has(CourseMember::factory()->inNami(999)->for(Course::factory()), 'courses')->createOne();
 
-        $response = $this->delete("/member/{$member->id}/course/{$member->courses->first()->id}");
+        $response = $this->delete("/course/{$member->courses->first()->id}");
 
         $this->assertDatabaseCount('course_members', 1);
         $response->assertSessionHasErrors(['id' => 'Unbekannter Fehler']);

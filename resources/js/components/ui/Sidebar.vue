@@ -1,5 +1,6 @@
 <template>
-    <div class="fixed w-full w-[80vw] max-w-[30rem] shadow-2xl bg-gray-600 right-0 top-0 h-full flex flex-col group is-bright">
+    <div
+        class="fixed w-full w-[80vw] max-w-[40rem] shadow-2xl bg-gray-600 right-0 top-0 h-full flex flex-col group is-bright">
         <suspense>
             <slot></slot>
 

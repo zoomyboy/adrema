@@ -2,6 +2,8 @@
 
 namespace App\Course\Resources;
 
+use App\Course\Models\Course;
+use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,6 +30,29 @@ class CourseMemberResource extends JsonResource
             'course_name' => $this->course->name,
             'course_id' => $this->course->id,
             'course' => new CourseResource($this->whenLoaded('course')),
+            'links' => [
+                'update' => route('course.update', ['course' => $this->getModel()]),
+                'destroy' => route('course.destroy', ['course' => $this->getModel()]),
+            ]
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function memberMeta(Member $member): array
+    {
+        return [
+            'default' => [
+                'event_name' => '',
+                'completed_at' => null,
+                'course_id' => null,
+                'organizer' => ''
+            ],
+            'courses' => Course::forSelect(),
+            'links' => [
+                'store' => route('member.course.store', ['member' => $member]),
+            ]
         ];
     }
 }

@@ -38,6 +38,7 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(null, $response, 'data.data.0.memberships');
         $this->assertInertiaHas(url("/member/{$member->id}/membership"), $response, 'data.data.0.links.membership_index');
         $this->assertInertiaHas(url("/member/{$member->id}/payment"), $response, 'data.data.0.links.payment_index');
+        $this->assertInertiaHas(url("/member/{$member->id}/course"), $response, 'data.data.0.links.course_index');
         $this->assertInertiaHas([
             'id' => $member->subscription->id,
             'name' => $member->subscription->name,
