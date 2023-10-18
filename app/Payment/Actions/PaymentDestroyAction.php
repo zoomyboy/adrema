@@ -14,14 +14,14 @@ class PaymentDestroyAction
     use AsAction;
     use TracksJob;
 
-    public function handle(Payment $payment): void
+    public function handle(int $paymentId): void
     {
-        $payment->delete();
+        Payment::find($paymentId)->delete();
     }
 
     public function asController(Payment $payment): JsonResponse
     {
-        $this->startJob($payment);
+        $this->startJob($payment->id, $payment->member->fullname);
 
         return response()->json([]);
     }
@@ -31,12 +31,12 @@ class PaymentDestroyAction
      */
     public function jobState(WithJobState $jobState, ...$parameters): WithJobState
     {
-        $member = $parameters[0]->member;
+        $memberName = $parameters[1];
 
         return $jobState
-            ->before('Zahlung für ' . $member->fullname . ' wird gelöscht')
-            ->after('Zahlung für ' . $member->fullname . ' gelöscht')
-            ->failed('Fehler beim Löschen der Zahlung für ' . $member->fullname)
+            ->before('Zahlung für ' . $memberName . ' wird gelöscht')
+            ->after('Zahlung für ' . $memberName . ' gelöscht')
+            ->failed('Fehler beim Löschen der Zahlung für ' . $memberName)
             ->shouldReload(JobChannels::make()->add('member')->add('payment'));
     }
 }

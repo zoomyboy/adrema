@@ -16,8 +16,9 @@ class MembershipDestroyAction
     use AsAction;
     use TracksJob;
 
-    public function handle(Membership $membership): void
+    public function handle(int $membershipId): void
     {
+        $membership = Membership::find($membershipId);
         $api = app(NamiSettings::class)->login();
 
         if ($membership->hasNami) {
@@ -38,7 +39,7 @@ class MembershipDestroyAction
 
     public function asController(Membership $membership): JsonResponse
     {
-        $this->startJob($membership);
+        $this->startJob($membership->id, $membership->member->fullname);
 
         return response()->json([]);
     }
@@ -48,12 +49,12 @@ class MembershipDestroyAction
      */
     public function jobState(WithJobState $jobState, ...$parameters): WithJobState
     {
-        $member = $parameters[0]->member;
+        $memberName = $parameters[1];
 
         return $jobState
-            ->before('Mitgliedschaft für ' . $member->fullname . ' wird gelöscht')
-            ->after('Mitgliedschaft für ' . $member->fullname . ' gelöscht')
-            ->failed('Fehler beim Löschen der Mitgliedschaft für ' . $member->fullname)
+            ->before('Mitgliedschaft für ' . $memberName . ' wird gelöscht')
+            ->after('Mitgliedschaft für ' . $memberName . ' gelöscht')
+            ->failed('Fehler beim Löschen der Mitgliedschaft für ' . $memberName)
             ->shouldReload(JobChannels::make()->add('member')->add('membership'));
     }
 }
