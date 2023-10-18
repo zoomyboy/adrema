@@ -4,15 +4,11 @@ namespace App\Course\Actions;
 
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
-use App\Course\Resources\CourseMemberResource;
 use App\Lib\JobMiddleware\JobChannels;
 use App\Lib\JobMiddleware\WithJobState;
 use App\Lib\Queue\TracksJob;
-use App\Member\Member;
 use App\Setting\NamiSettings;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -22,7 +18,7 @@ class CourseUpdateAction
     use TracksJob;
 
     /**
-     * @return Collection<int, Course>
+     * @param array<string, string> $attributes
      */
     public function handle(CourseMember $course, array $attributes): void
     {

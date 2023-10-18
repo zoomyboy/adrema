@@ -7,7 +7,6 @@ use App\Lib\JobMiddleware\WithJobState;
 use App\Lib\Queue\TracksJob;
 use App\Payment\Payment;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\Rules\In;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -16,13 +15,16 @@ class PaymentUpdateAction
     use AsAction;
     use TracksJob;
 
+    /**
+     * @param array<string, string> $attributes
+     */
     public function handle(Payment $payment, array $attributes): void
     {
         $payment->update($attributes);
     }
 
     /**
-     * @return array<string, array<int, string|In>>
+     * @return array<string, string>
      */
     public function rules(): array
     {

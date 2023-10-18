@@ -2,7 +2,7 @@
 
 namespace App\Course\Actions;
 
-use App\Course\Models\Course;
+use App\Course\Models\CourseMember;
 use App\Course\Resources\CourseMemberResource;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,7 +14,7 @@ class CourseIndexAction
     use AsAction;
 
     /**
-     * @return Collection<int, Course>
+     * @return Collection<int, CourseMember>
      */
     public function handle(Member $member): Collection
     {

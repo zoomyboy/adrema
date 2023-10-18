@@ -29,16 +29,6 @@ parameters:
             path: app/Activity.php
 
         -
-            message: "#^Unable to resolve the template type TKey in call to function collect$#"
-            count: 1
-            path: app/Course/Requests/StoreRequest.php
-
-        -
-            message: "#^Unable to resolve the template type TValue in call to function collect$#"
-            count: 1
-            path: app/Course/Requests/StoreRequest.php
-
-        -
             message: "#^Method App\\\\Dav\\\\AddressBookBackend\\:\\:getCard\\(\\) should return M of array\\{lastmodified\\: int, etag\\: string, uri\\: string, id\\: int, size\\: int\\} but returns false\\.$#"
             count: 1
             path: app/Dav/AddressBookBackend.php
