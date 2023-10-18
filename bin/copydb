@@ -3,5 +3,6 @@
 echo "drop database scoutrobot;" | sudo mysql
 echo "create database scoutrobot;" | sudo mysql
 
-ssh -l stammsilva zoomyboy.de "mysqldump -u nami -p$SCOUTROBOT_DB_PASSWORD nami" > db.tmp && sudo mysql scoutrobot < db.tmp
+ssh -l stammsilva zoomyboy.de "cd /usr/share/webapps/nami_silva && docker compose exec db mysqldump -udb -p$SCOUTROBOT_DB_PASSWORD db" > db.tmp
+sudo mysql scoutrobot < db.tmp
 rm db.tmp
