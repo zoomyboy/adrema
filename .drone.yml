@@ -19,7 +19,7 @@ steps:
     - name: mysql_healthcheck
       image: mysql:oracle
       commands:
-          - while ! mysqladmin ping -h db -u db -pdb --silent; do sleep 1; done
+          - mysqladmin ping -h db -u db -pdb --silent; do sleep 1; done
 
     - name: node
       image: node:17.9.0-slim
