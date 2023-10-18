@@ -46,7 +46,7 @@ class StoreForGroupAction
             ];
 
             Membership::where($attributes)->active()->whereNotIn('member_id', $members)->get()
-                ->each(fn ($membership) => MembershipDestroyAction::run($membership));
+                ->each(fn ($membership) => MembershipDestroyAction::run($membership->id));
 
             collect($members)
                 ->except(Membership::where($attributes)->active()->pluck('member_id'))
