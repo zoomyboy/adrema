@@ -19,7 +19,7 @@ steps:
     - name: mysql_healthcheck
       image: mysql:oracle
       commands:
-          - mysqladmin ping -h db -u db -pdb --silent; do sleep 1; done
+          - while ! mysqladmin ping -h db -u db -pdb --silent; do sleep 1; done
 
     - name: node
       image: node:17.9.0-slim
@@ -152,7 +152,7 @@ services:
           MARIADB_DATABASE: db
           MARIADB_USER: db
           MARIADB_PASSWORD: db
-          MARIADB_ALLOW_EMPTY_PASSWORD: yes
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
     - name: redis
       image: redis
 
