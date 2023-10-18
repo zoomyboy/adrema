@@ -29,10 +29,11 @@ steps:
     - name: tests
       image: zoomyboy/adrema-base:latest
       commands:
-          - php -d 'memory_limit=2G' artisan migrate
-          - php -d 'memory_limit=2G' artisan test
+          - echo 'memory_limit = 2G' >> /usr/local/etc/php/conf.d/99-custom-php-memlimit.ini;
+          - php artisan migrate
+          - php artisan test
           - rm -f .env
-          - vendor/bin/phpstan analyse --memory-limit=2G
+          - vendor/bin/phpstan analyse
       environment:
           APP_NAME: Scoutrobot
           APP_KEY:
