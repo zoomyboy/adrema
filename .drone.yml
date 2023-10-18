@@ -17,7 +17,7 @@ steps:
           - composer install --ignore-platform-reqs --dev
 
     - name: mysql_healthcheck
-      image: mariadb:10.6.5
+      image: mysql:oracle
       commands:
           - while ! mysqladmin ping -h db -u db -pdb --silent; do sleep 1; done
 
