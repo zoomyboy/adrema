@@ -147,7 +147,7 @@ steps:
 
 services:
     - name: db
-      image: mariadb/server:10.3
+      image: mariadb:10.3
       environment:
           MARIADB_DATABASE: db
           MARIADB_USER: db
