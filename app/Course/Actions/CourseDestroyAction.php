@@ -15,8 +15,9 @@ class CourseDestroyAction
     use AsAction;
     use TracksJob;
 
-    public function handle(CourseMember $course): void
+    public function handle(int $courseId): void
     {
+        $course = CourseMember::find($courseId);
         app(NamiSettings::class)->login()->deleteCourse($course->member->nami_id, $course->nami_id);
 
         $course->delete();
@@ -24,7 +25,7 @@ class CourseDestroyAction
 
     public function asController(CourseMember $course): JsonResponse
     {
-        $this->startJob($course);
+        $this->startJob($course->id, $course->member->fullname);
 
         return response()->json([]);
     }
@@ -34,12 +35,12 @@ class CourseDestroyAction
      */
     public function jobState(WithJobState $jobState, ...$parameters): WithJobState
     {
-        $member = $parameters[0]->member;
+        $memberFullname = $parameters[1];
 
         return $jobState
-            ->before('Ausbildung für ' . $member->fullname . ' wird gelöscht')
-            ->after('Ausbildung für ' . $member->fullname . ' gelöscht')
-            ->failed('Fehler beim Löschen der Ausbildung für ' . $member->fullname)
+            ->before('Ausbildung für ' . $memberFullname . ' wird gelöscht')
+            ->after('Ausbildung für ' . $memberFullname . ' gelöscht')
+            ->failed('Fehler beim Löschen der Ausbildung für ' . $memberFullname)
             ->shouldReload(JobChannels::make()->add('member')->add('course'));
     }
 }
