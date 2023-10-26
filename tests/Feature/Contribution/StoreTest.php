@@ -36,20 +36,18 @@ class StoreTest extends TestCase
         $this->withoutExceptionHandling();
         Tex::spy();
         $this->login()->loginNami();
-        $country = Country::factory()->create();
         $member1 = Member::factory()->defaults()->for(Gender::factory())->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
         $member2 = Member::factory()->defaults()->for(Gender::factory())->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
 
         $response = $this->call('GET', '/contribution-generate', [
-            'payload' => base64_encode(json_encode([
-                'country' => $country->id,
+            'payload' => ContributionRequestFactory::new()->type($type)->state([
                 'dateFrom' => '1991-06-15',
                 'dateUntil' => '1991-06-16',
                 'eventName' => 'Super tolles Lager',
                 'members' => [$member1->id, $member2->id],
                 'type' => $type,
                 'zipLocation' => '42777 SG',
-            ])),
+            ])->toBase64(),
         ]);
 
         $response->assertSessionDoesntHaveErrors();
@@ -61,22 +59,10 @@ class StoreTest extends TestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         Tex::spy();
-        $member = Member::factory()->defaults()->for(Gender::factory())->create();
-
-        InvoiceSettings::fake([
-            'from_long' => 'Stamm BiPi',
-        ]);
+        InvoiceSettings::fake(['from_long' => 'Stamm BiPi']);
 
         $this->call('GET', '/contribution-generate', [
-            'payload' => base64_encode(json_encode([
-                'country' => Country::factory()->create()->id,
-                'dateFrom' => '1991-06-15',
-                'dateUntil' => '1991-06-16',
-                'eventName' => 'Super tolles Lager',
-                'members' => [$member->id],
-                'type' => CitySolingenDocument::class,
-                'zipLocation' => '42777 SG',
-            ])),
+            'payload' => ContributionRequestFactory::new()->type(CitySolingenDocument::class)->toBase64(),
         ]);
 
         Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Stamm BiPi']));

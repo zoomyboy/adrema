@@ -15,11 +15,11 @@ class ContributionRequestFactory extends RequestFactory
         $compilers = collect(app(ContributionFactory::class)->compilerSelect())->pluck('class');
 
         return [
-            'country' => $this->faker->randomElement(Country::get())->id,
+            'country' => Country::factory()->create()->id,
             'dateFrom' => $this->faker->date(),
             'dateUntil' => $this->faker->date(),
             'eventName' => $this->faker->words(3, true),
-            'members' => [$this->faker->randomElement(Member::get())->id],
+            'members' => [Member::factory()->defaults()->create()->id],
             'type' => $this->faker->randomElement($compilers),
             'zipLocation' => $this->faker->city,
         ];
@@ -27,7 +27,7 @@ class ContributionRequestFactory extends RequestFactory
 
     public function toBase64(): string
     {
-        return base64_encode(json_encode($this->create()));
+        return base64_encode(urlencode(json_encode($this->create())));
     }
 
     /**

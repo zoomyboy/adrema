@@ -49,6 +49,6 @@ class GenerateAction
      */
     private function payload(ActionRequest $request): array
     {
-        return json_decode(base64_decode($request->input('payload', '')), true);
+        return json_decode(urldecode(base64_decode($request->input('payload', ''))), true);
     }
 }

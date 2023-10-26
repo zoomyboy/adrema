@@ -33,11 +33,13 @@ class JsonBase64Rule implements Rule
             return false;
         }
 
-        if (base64_encode(base64_decode($value, true)) !== $value) {
+        $decoded = urldecode(base64_decode($value, true));
+
+        if (base64_encode(urlencode($decoded)) !== $value) {
             return false;
         }
 
-        if (!is_array(json_decode(base64_decode($value), true))) {
+        if (!is_array(json_decode($decoded, true))) {
             return false;
         }
 
