@@ -3,6 +3,7 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
+use App\Invoice\InvoiceSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -11,6 +12,8 @@ use Zoomyboy\Tex\Template;
 
 class CitySolingenDocument extends ContributionDocument
 {
+    public string $fromName;
+
     /**
      * @param Collection<int, MemberData> $members
      */
@@ -22,6 +25,7 @@ class CitySolingenDocument extends ContributionDocument
         public string $eventName,
         public string $type = 'F',
     ) {
+        $this->fromName = app(InvoiceSettings::class)->from_long;
     }
 
     /**

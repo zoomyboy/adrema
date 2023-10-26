@@ -92,7 +92,7 @@
     \node[align=left,inner sep=0cm,anchor=west] at (options-2-4.west) {\tikz{\node[draw,very thick,rectangle,text height=0.5cm,text width=0.5cm,inner sep=0cm] (checkbox) at (0,0) {}; \draw[thick] (checkbox.south east) ++(0.2cm,0) -- (checkbox.south east -| options-2-4.south east);}};
 
     \node[anchor=north west] (org) at ($(options.south west)+(0cm,-0.5cm)$) {\large{Veranstalter:}};
-    \draw (org.south east -| options-2-2.south west) -- (org.south east -| options-2-4.south east) node[formfill] {DPSG Stamm Silva Solingen Wald};
+    \draw (org.south east -| options-2-2.south west) -- (org.south east -| options-2-4.south east) node[formfill] {<<<$fromName>>>};
 
     \node[anchor=north west] (title) at ($(org.south west)+(0cm,-0.5cm)$) {\large{Titel der Maßnahme:}};
     \draw (title.south east -| options-2-2.south west) -- (title.south east -| options-2-4.south east) node[formfill] {<<<$eventName>>>};

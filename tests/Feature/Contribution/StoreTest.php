@@ -7,6 +7,7 @@ use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Documents\CitySolingenDocument;
 use App\Country;
 use App\Gender;
+use App\Invoice\InvoiceSettings;
 use App\Member\Member;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -54,6 +55,31 @@ class StoreTest extends TestCase
         $response->assertSessionDoesntHaveErrors();
         $response->assertOk();
         Tex::assertCompiled($type, fn ($document) => $document->hasAllContent($bodyChecks));
+    }
+
+    public function testItCompilesGroupNameInSolingenDocument(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        Tex::spy();
+        $member = Member::factory()->defaults()->for(Gender::factory())->create();
+
+        InvoiceSettings::fake([
+            'from_long' => 'Stamm BiPi',
+        ]);
+
+        $this->call('GET', '/contribution-generate', [
+            'payload' => base64_encode(json_encode([
+                'country' => Country::factory()->create()->id,
+                'dateFrom' => '1991-06-15',
+                'dateUntil' => '1991-06-16',
+                'eventName' => 'Super tolles Lager',
+                'members' => [$member->id],
+                'type' => CitySolingenDocument::class,
+                'zipLocation' => '42777 SG',
+            ])),
+        ]);
+
+        Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Stamm BiPi']));
     }
 
     public function testItCompilesContributionDocumentsViaApi(): void
