@@ -16,7 +16,7 @@ export function useIndex(props, siteName) {
 
     const filterString = computed(() => toFilterString(inner.meta.value.filter));
 
-    function reload(resetPage = true) {
+    function reload(resetPage = true, withMeta = true) {
         var data = {
             filter: filterString.value,
             page: 1,
@@ -29,7 +29,9 @@ export function useIndex(props, siteName) {
             preserveState: true,
             onSuccess: (page) => {
                 inner.data.value = page.props.data.data;
-                inner.meta.value = page.props.data.meta;
+                if (withMeta) {
+                    inner.meta.value = page.props.data.meta;
+                }
             },
         });
     }
@@ -44,7 +46,7 @@ export function useIndex(props, siteName) {
 
     function setFilter(key, value) {
         inner.meta.value.filter[key] = value;
-        reload();
+        reload(true, false);
     }
 
     function requestCallback(successMessage, failureMessage) {
