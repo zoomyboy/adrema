@@ -27,5 +27,6 @@ class SettingServiceProvider extends ServiceProvider
     {
         app(SettingFactory::class)->register(InvoiceSettings::class);
         app(SettingFactory::class)->register(MailgatewaySettings::class);
+        app(SettingFactory::class)->register(NamiSettings::class);
     }
 }

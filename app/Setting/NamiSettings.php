@@ -3,11 +3,14 @@
 namespace App\Setting;
 
 use App\Group;
-use Spatie\LaravelSettings\Settings;
+use App\Nami\Actions\SettingIndexAction;
+use App\Nami\Actions\SettingSaveAction;
+use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Storeable;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Nami;
 
-class NamiSettings extends Settings
+class NamiSettings extends LocalSettings implements Indexable, Storeable
 {
     public int $mglnr;
 
@@ -31,5 +34,25 @@ class NamiSettings extends Settings
     public function localGroup(): ?Group
     {
         return Group::firstWhere('nami_id', $this->default_group_id);
+    }
+
+    public static function slug(): string
+    {
+        return 'nami';
+    }
+
+    public static function indexAction(): string
+    {
+        return SettingIndexAction::class;
+    }
+
+    public static function storeAction(): string
+    {
+        return SettingSaveAction::class;
+    }
+
+    public static function title(): string
+    {
+        return 'NaMi-Login';
     }
 }
