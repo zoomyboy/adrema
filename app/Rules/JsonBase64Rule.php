@@ -33,9 +33,9 @@ class JsonBase64Rule implements Rule
             return false;
         }
 
-        $decoded = urldecode(base64_decode($value, true));
+        $decoded = rawurldecode(base64_decode($value, true));
 
-        if (base64_encode(urlencode($decoded)) !== $value) {
+        if (base64_encode(rawurlencode($decoded)) !== $value) {
             return false;
         }
 
