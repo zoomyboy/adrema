@@ -19,7 +19,7 @@
         >
         <div class="relative flex items-center inner-field mt-1" :class="`h-field-${fieldSize}`">
             <span>
-                <input :id="id" type="checkbox" :name="name" :value="value" v-model="v" :disabled="disabled" class="absolute peer" @keypress="$emit('keypress', $event)" />
+                <input :id="id" v-model="v" type="checkbox" :name="name" :value="value" :disabled="disabled" class="absolute peer" @keypress="$emit('keypress', $event)" />
                 <span class="relative cursor-pointer peer-focus:bg-red-500 flex grow display" :class="{'bg-switch': v === true, 'bg-gray-700': v === false}">
                     <span><ui-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="check"></ui-sprite></span>
                     <span><ui-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="close"></ui-sprite></span>
@@ -37,25 +37,6 @@
 
 <script>
 export default {
-    emits: ['update:modelValue'],
-    data: function () {
-        return {
-            sizes: {
-                sm: {
-                    wrap: 'field-wrap-sm',
-                    field: 'size-sm',
-                },
-                base: {
-                    wrap: 'field-wrap-base',
-                    field: 'size-base',
-                },
-                lg: {
-                    wrap: 'field-wrap-lg',
-                    field: 'size-lg',
-                },
-            },
-        };
-    },
     props: {
         hint: {
             default: null,
@@ -87,6 +68,25 @@ export default {
         modelValue: {
             default: undefined,
         },
+    },
+    emits: ['update:modelValue', 'keypress'],
+    data: function () {
+        return {
+            sizes: {
+                sm: {
+                    wrap: 'field-wrap-sm',
+                    field: 'size-sm',
+                },
+                base: {
+                    wrap: 'field-wrap-base',
+                    field: 'size-base',
+                },
+                lg: {
+                    wrap: 'field-wrap-lg',
+                    field: 'size-lg',
+                },
+            },
+        };
     },
     computed: {
         v: {
