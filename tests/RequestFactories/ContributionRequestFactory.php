@@ -27,7 +27,7 @@ class ContributionRequestFactory extends RequestFactory
 
     public function toBase64(): string
     {
-        return base64_encode(urlencode(json_encode($this->create())));
+        return base64_encode(rawurlencode(json_encode($this->create())));
     }
 
     /**
