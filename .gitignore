@@ -14,6 +14,7 @@ Homestead.json
 .vagrant/
 .phpunit.result.cache
 /storage/temp/
+/storage/debugbar/
 
 # User data files
 /data/
