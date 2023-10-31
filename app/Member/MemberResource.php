@@ -119,6 +119,10 @@ class MemberResource extends JsonResource
      */
     public static function meta(): array
     {
+        if (request()->header('X-Inertia-Partial-Data', '') !== '' && !str_contains(request()->header('X-Inertia-Partial-Data', ''), 'meta')) {
+            return [];
+        }
+
         $activities = Activity::with('subactivities')->get();
         $createActivities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
 
@@ -127,11 +131,11 @@ class MemberResource extends JsonResource
             'filterSubactivities' => Subactivity::where('is_filterable', true)->pluck('name', 'id'),
             'formActivities' => $activities->pluck('name', 'id'),
             'formSubactivities' => $activities->map(function (Activity $activity) {
-                return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
+                return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
             'formCreateActivities' => $createActivities->pluck('name', 'id'),
             'formCreateSubactivities' => $createActivities->map(function (Activity $activity) {
-                return ['subactivities' => $activity->subactivities()->pluck('name', 'id'), 'id' => $activity->id];
+                return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];
             })->pluck('subactivities', 'id'),
             'groups' => NestedGroup::cacheForSelect(),
             'filter' => FilterScope::fromRequest(request()->input('filter', '')),

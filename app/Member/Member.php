@@ -177,7 +177,7 @@ class Member extends Model implements Geolocatable
 
     public function isLeader(): bool
     {
-        return $this->memberships()->isLeader()->exists();
+        return $this->leaderMemberships->count() > 0;
     }
 
     public function getAge(): ?int
@@ -274,7 +274,7 @@ class Member extends Model implements Geolocatable
      */
     public function leaderMemberships(): HasMany
     {
-        return $this->ageGroupMemberships()->isLeader();
+        return $this->ageGroupMemberships()->isLeader()->active();
     }
 
     /**

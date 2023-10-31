@@ -16,24 +16,31 @@ export function useIndex(props, siteName) {
 
     const filterString = computed(() => toFilterString(inner.meta.value.filter));
 
-    function reload(resetPage = true, withMeta = true) {
+    function reload(resetPage = true, withMeta = true, data) {
         var data = {
             filter: filterString.value,
-            page: 1,
+            page: resetPage ? 1 : inner.meta.value.current_page,
+            ...data,
         };
-
-        data['page'] = resetPage ? 1 : inner.meta.value.current_page;
 
         router.visit(window.location.pathname, {
             data,
             preserveState: true,
+            only: ['data'],
             onSuccess: (page) => {
                 inner.data.value = page.props.data.data;
                 if (withMeta) {
-                    inner.meta.value = page.props.data.meta;
+                    inner.meta.value = {
+                        ...inner.meta.value,
+                        ...page.props.data.meta,
+                    };
                 }
             },
         });
+    }
+
+    function reloadPage(page) {
+        reload(false, true, {page: page});
     }
 
     function can(permission) {
@@ -46,7 +53,7 @@ export function useIndex(props, siteName) {
 
     function setFilter(key, value) {
         inner.meta.value.filter[key] = value;
-        reload(true, false);
+        reload(true);
     }
 
     function requestCallback(successMessage, failureMessage) {
@@ -77,6 +84,7 @@ export function useIndex(props, siteName) {
         filterString,
         router,
         toFilterString,
+        reloadPage,
     };
 }
 

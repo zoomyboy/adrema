@@ -103,7 +103,7 @@
         </div>
 
         <div class="px-6">
-            <ui-pagination class="mt-4" :value="meta" :only="['data']"></ui-pagination>
+            <ui-pagination class="mt-4" :value="meta" @reload="reloadPage"></ui-pagination>
         </div>
 
         <ui-sidebar v-if="single !== null" @close="closeSidebar">
@@ -130,7 +130,7 @@ const single = ref(null);
 const deleting = ref(null);
 
 const props = defineProps(indexProps);
-var { router, data, meta, getFilter, setFilter, filterString } = useIndex(props.data, 'member');
+var { router, data, meta, getFilter, setFilter, filterString, reloadPage } = useIndex(props.data, 'member');
 
 function exportMembers() {
     window.open(`/member-export?filter=${filterString.value}`);
