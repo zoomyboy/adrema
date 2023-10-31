@@ -25,7 +25,7 @@
             <button v-for="(compiler, index) in compilers" class="btn btn-primary mt-3 inline-block" @click.prevent="
                 values.type = compiler.class;
             submit();
-                                " v-text="compiler.title"></button>
+                                                " v-text="compiler.title"></button>
         </form>
     </page-layout>
 </template>
@@ -66,13 +66,17 @@ export default {
                 this.search.s = event;
 
                 debounce(async () => {
-                    var response = await this.axios.post('/api/member/search', {
-                        filter: {
-                            search: event,
-                            hasBirthday: true,
-                            hasFullAddress: true,
+                    var response = await this.axios.post(
+                        '/api/member/search',
+                        {
+                            filter: {
+                                search: event,
+                                hasBirthday: true,
+                                hasFullAddress: true,
+                            },
                         },
-                    });
+                        { headers: { 'X-Meta': 'false' } }
+                    );
 
                     this.search.results = response.data.data;
                 }, 300)();

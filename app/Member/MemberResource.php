@@ -119,6 +119,10 @@ class MemberResource extends JsonResource
      */
     public static function meta(): array
     {
+        if (request()->header('X-Meta') === 'false') {
+            return [];
+        }
+
         if (request()->header('X-Inertia-Partial-Data', '') !== '' && !str_contains(request()->header('X-Inertia-Partial-Data', ''), 'meta')) {
             return [];
         }
