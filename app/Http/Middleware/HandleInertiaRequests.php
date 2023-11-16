@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
-use App\Setting\GeneralSettings;
+use App\Module\ModuleSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
@@ -53,7 +53,7 @@ class HandleInertiaRequests extends Middleware
                 return session()->get('title', '');
             },
             'settings' => [
-                'modules' => app(GeneralSettings::class)->modules,
+                'modules' => app(ModuleSettings::class)->modules,
             ],
         ];
     }

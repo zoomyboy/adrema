@@ -96,18 +96,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | App Mode
-    |--------------------------------------------------------------------------
-    |
-    | The mode of the app will set some default settings for you on initial
-    | database setup. You can change these Settings anytime later, but it
-    | usually defines a good starting point for you to set up the world.
-    |
-    */
-    'mode' => env('APP_MODE', 'stamm'),
-
-    /*
-    |--------------------------------------------------------------------------
     | Faker Locale
     |--------------------------------------------------------------------------
     |

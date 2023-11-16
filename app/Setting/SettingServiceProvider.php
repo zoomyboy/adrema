@@ -4,6 +4,7 @@ namespace App\Setting;
 
 use App\Invoice\InvoiceSettings;
 use App\Mailgateway\MailgatewaySettings;
+use App\Module\ModuleSettings;
 use Illuminate\Support\ServiceProvider;
 
 class SettingServiceProvider extends ServiceProvider
@@ -25,6 +26,7 @@ class SettingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        app(SettingFactory::class)->register(ModuleSettings::class);
         app(SettingFactory::class)->register(InvoiceSettings::class);
         app(SettingFactory::class)->register(MailgatewaySettings::class);
         app(SettingFactory::class)->register(NamiSettings::class);
