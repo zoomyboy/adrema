@@ -7,12 +7,14 @@ enum Module: string
 
     case BILL = 'bill';
     case COURSE = 'course';
+    case EVENT = 'event';
 
     public function title(): string
     {
         return match ($this) {
             static::BILL => 'Zahlungs-Management',
             static::COURSE => 'Ausbildung',
+            static::EVENT => 'Veranstaltungen',
         };
     }
 
