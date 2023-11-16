@@ -17,7 +17,7 @@ enum Module: string
     }
 
     /**
-     * @return array<int, array{id: int, name: string}>
+     * @return array<int, array{id: string, name: string}>
      */
     public static function forSelect(): array
     {
