@@ -20,7 +20,7 @@
             <ui-boolean-display :value="inner.has_svk" long-label="SVK unterschrieben" label="SVK"></ui-boolean-display>
             <ui-boolean-display :value="inner.multiply_pv" long-label="Multiplikator*in Präventionsschulung"
                 label="Multipl. PS"></ui-boolean-display>
-            <ui-boolean-display :value="inner.multiply_more_pv" long-label="Multiplikator*in Vertierungsschulung"
+            <ui-boolean-display :value="inner.multiply_more_pv" long-label="Multiplikator*in Vertiefungsschulung"
                 label="Multipl. VS"></ui-boolean-display>
         </div>
     </div>
