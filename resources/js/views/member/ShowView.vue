@@ -34,7 +34,7 @@
             <ui-box class="area-membershipcourse hidden xl:block">
                 <tabs v-model="tabs.membershipcourse">
                     <courses v-show="tabs.membershipcourse.active === 'course'" :value="inner.courses"></courses>
-                    <memberships v-show="tabs.membershipcourse.active === 'membership'" :value="inner.memberships"></memberships>
+                    <memberships v-show="tabs.membershipcourse.active === 'membership'" :value="inner.memberships"> </memberships>
                 </tabs>
             </ui-box>
             <ui-box heading="Ausbildungen" class="area-courses xl:hidden">
@@ -59,6 +59,11 @@
 import {defineAsyncComponent} from 'vue';
 
 export default {
+
+    props: {
+        data: {},
+        meta: {},
+    },
     data: function () {
         return {
             inner: {},
@@ -79,7 +84,7 @@ export default {
                 },
                 membershipcourse: {
                     children: {
-                        membership: 'Mitgliedshaften',
+                        membership: 'Mitgliedschaften',
                         course: 'Ausbildungen',
                     },
                     active: 'membership',
@@ -89,11 +94,6 @@ export default {
     },
 
     methods: {},
-
-    props: {
-        data: {},
-        meta: {},
-    },
 
     components: {
         stamm: defineAsyncComponent(() => import('./boxes/Stamm.vue')),
@@ -122,6 +122,7 @@ export default {
         'payments';
     grid-template-columns: 1fr;
 }
+
 @media screen and (min-width: 1280px) {
     .this-grid {
         grid-template-areas:
@@ -131,36 +132,47 @@ export default {
         grid-template-columns: max-content max-content max-content 1fr;
     }
 }
+
 .area-stamm {
     grid-area: stamm;
 }
+
 .area-kontakt {
     grid-area: kontakt;
 }
+
 .area-praev {
     grid-area: praev;
 }
+
 .area-courses {
     grid-area: courses;
 }
+
 .area-system {
     grid-area: system;
 }
+
 .area-memberships {
     grid-area: memberships;
 }
+
 .area-payments {
     grid-area: payments;
 }
+
 .area-map {
     grid-area: map;
 }
+
 .area-stammkontakt {
     grid-area: stammkontakt;
 }
+
 .area-membershipcourse {
     grid-area: membershipcourse;
 }
+
 .area-praesystem {
     grid-area: praesystem;
 }
