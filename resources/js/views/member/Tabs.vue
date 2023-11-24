@@ -4,9 +4,9 @@
             <a
                 v-for="(v, index) in inner.children"
                 href="#"
+                class="font-semibold hover:text-teal-600 transition-all"
+                :class="{'text-teal-800': inner.active !== index, 'text-teal-600': inner.active === index}"
                 @click.prevent="navigate(index)"
-                class="text-teal-800 font-semibold hover:text-teal-600 transition-all"
-                :class="{'text-teal-600': inner.active === index}"
             >
                 <span v-text="v"></span>
             </a>
@@ -19,6 +19,10 @@
 
 <script>
 export default {
+
+    props: {
+        modelValue: {},
+    },
     data: function () {
         return {
             inner: {
@@ -28,8 +32,8 @@ export default {
         };
     },
 
-    props: {
-        modelValue: {},
+    created() {
+        this.inner = this.modelValue;
     },
 
     methods: {
@@ -37,10 +41,6 @@ export default {
             this.inner.active = v;
             this.$emit('update:modelValue', this.inner);
         },
-    },
-
-    created() {
-        this.inner = this.modelValue;
     },
 };
 </script>
