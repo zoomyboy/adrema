@@ -30,6 +30,7 @@ class ShowTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()
             ->defaults()
+            ->for(Group::factory()->name('Stamm Beispiel'))
             ->has(Membership::factory()->promise(now())->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->from('2022-11-19'))
             ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', [
                 new Child('uu', 1000),
@@ -78,6 +79,7 @@ class ShowTest extends TestCase
         $this->assertInertiaHas([
             'birthday_human' => '20.04.1991',
             'age' => 14,
+            'group_name' => 'Stamm Beispiel',
             'full_address' => 'Itterstr 3, 42719 Solingen',
             'region' => ['name' => 'NRW'],
             'other_country' => 'other',

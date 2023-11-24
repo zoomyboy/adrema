@@ -7,6 +7,7 @@
         <ui-text-display label="Bundesland" :value="inner.region.name"></ui-text-display>
         <ui-text-display label="Nationalität" :value="inner.nationality?.name"></ui-text-display>
         <ui-text-display v-show="inner.other_country" label="Andere Staatsangehörigkeit" :value="inner.other_country"></ui-text-display>
+        <ui-text-display class="col-span-2" label="Stammgruppierung" :value="inner.group_name"></ui-text-display>
     </div>
 </template>
 

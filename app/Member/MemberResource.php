@@ -106,6 +106,7 @@ class MemberResource extends JsonResource
             'comment' => $this->comment,
             'lat' => $this->lat,
             'lon' => $this->lon,
+            'group_name' => $this->group->name,
             'links' => [
                 'membership_index' => route('member.membership.index', ['member' => $this->getModel()]),
                 'payment_index' => route('member.payment.index', ['member' => $this->getModel()]),
