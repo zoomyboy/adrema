@@ -61,7 +61,7 @@ class Member extends Model implements Geolocatable
     /**
      * @var array<int, string>
      */
-    public $dates = ['try_created_at', 'joined_at', 'birthday', 'efz', 'ps_at', 'more_ps_at', 'without_education_at', 'without_efz_at'];
+    public $dates = ['try_created_at', 'recertified_at', 'joined_at', 'birthday', 'efz', 'ps_at', 'more_ps_at', 'without_education_at', 'without_efz_at'];
 
     /**
      * @var array<string, string>

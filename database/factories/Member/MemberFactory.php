@@ -37,6 +37,7 @@ class MemberFactory extends Factory
             'zip' => $this->faker->postcode,
             'location' => $this->faker->city,
             'email' => $this->faker->safeEmail(),
+            'recertified_at' => null,
         ];
     }
 

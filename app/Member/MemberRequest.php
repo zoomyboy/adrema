@@ -69,6 +69,7 @@ class MemberRequest extends FormRequest
             'efz' => 'nullable|date_format:Y-m-d',
             'without_education_at' => 'nullable|date_format:Y-m-d',
             'without_efz_at' => 'nullable|date_format:Y-m-d',
+            'recertified_at' => 'nullable|date_format:Y-m-d',
             'multiply_pv' => 'boolean',
             'multiply_more_pv' => 'boolean',
             'send_newspaper' => 'boolean',

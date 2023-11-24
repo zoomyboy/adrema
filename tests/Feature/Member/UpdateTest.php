@@ -32,9 +32,10 @@ class UpdateTest extends TestCase
             ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true]));
 
         $response->assertRedirect('/member');
-        NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(fn (Member $memberParam, ?Activity $activityParam, ?Subactivity $subactivityParam) => $memberParam->is($member)
-            && null === $activityParam
-            && null === $subactivityParam
+        NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(
+            fn (Member $memberParam, ?Activity $activityParam, ?Subactivity $subactivityParam) => $memberParam->is($member)
+                && null === $activityParam
+                && null === $subactivityParam
         )->once();
     }
 
@@ -120,6 +121,7 @@ class UpdateTest extends TestCase
                 'efz' => '2021-02-03',
                 'without_education_at' => '2021-02-04',
                 'without_efz_at' => '2021-02-05',
+                'recertified_at' => '2021-02-08',
                 'has_nami' => false,
                 'multiply_pv' => true,
                 'multiply_more_pv' => true,
@@ -135,6 +137,7 @@ class UpdateTest extends TestCase
         $this->assertEquals('2021-02-03', $member->fresh()->efz->format('Y-m-d'));
         $this->assertEquals('2021-02-04', $member->fresh()->without_education_at->format('Y-m-d'));
         $this->assertEquals('2021-02-05', $member->fresh()->without_efz_at->format('Y-m-d'));
+        $this->assertEquals('2021-02-08', $member->fresh()->recertified_at->format('Y-m-d'));
         $this->assertEquals('Doktor', $member->fresh()->salutation);
     }
 
