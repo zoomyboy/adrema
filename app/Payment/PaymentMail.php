@@ -25,7 +25,7 @@ class PaymentMail extends Mailable
     {
         $this->invoice = $invoice;
         $this->filename = $filename;
-        $this->salutation = 'Liebe Familie '.$invoice->pages->first()->familyName;
+        $this->salutation = 'Liebe Familie ' . $invoice->pages->first()->familyName;
     }
 
     /**
@@ -36,8 +36,8 @@ class PaymentMail extends Mailable
     public function build()
     {
         return $this->markdown($this->invoice->mailView())
-                    ->attach($this->filename)
-                    ->replyTo('kasse@stamm-silva.de')
-                    ->subject($this->invoice->getSubject().' | DPSG Stamm Silva');
+            ->attach($this->filename)
+            ->replyTo('kasse@stamm-silva.de')
+            ->subject($this->invoice->getSubject() . ' | DPSG Stamm Silva');
     }
 }
