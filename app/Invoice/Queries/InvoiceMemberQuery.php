@@ -3,7 +3,6 @@
 namespace App\Invoice\Queries;
 
 use App\Invoice\Invoice;
-use App\Invoice\Page;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -13,34 +12,45 @@ use Illuminate\Support\Str;
 abstract class InvoiceMemberQuery
 {
     /**
+     * @param class-string<Invoice> $type
+     */
+    public string $type;
+
+    /**
      * @return Builder<Member>
      */
     abstract protected function getQuery(): Builder;
 
     /**
-     * @param class-string<Invoice> $type
-     *
-     * @return Collection<int, Page>
+     * @return Collection<(int|string), EloquentCollection<(int|string), Member>>
      */
-    public function getPages(string $type): Collection
+    public function getMembers(): Collection
     {
-        return $this->get($type)->groupBy(
+        return $this->get()->groupBy(
             fn ($member) => Str::slug(
                 "{$member->lastname}{$member->address}{$member->zip}{$member->location}",
             ),
-        )->map(fn ($page) => new Page($page));
+        )->toBase();
     }
 
     /**
      * @param class-string<Invoice> $type
-     *
+     */
+    public function type(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * @return EloquentCollection<int, Member>
      */
-    private function get(string $type): EloquentCollection
+    private function get(): EloquentCollection
     {
         return $this->getQuery()
             ->with([
-                'payments' => fn ($query) => $type::paymentsQuery($query)
+                'payments' => fn ($query) => $this->type::paymentsQuery($query)
                     ->orderByRaw('nr, member_id'),
             ])
             ->get()

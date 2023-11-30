@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Phake;
+use Symfony\Component\HttpFoundation\File\File;
 use Tests\Lib\MakesHttpCalls;
 use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
@@ -81,8 +82,8 @@ abstract class TestCase extends BaseTestCase
         $sessionErrors = $response->getSession()->get('errors')->getBag('default');
 
         foreach ($errors as $key => $value) {
-            $this->assertTrue($sessionErrors->has($key), "Cannot find key {$key} in errors '".print_r($sessionErrors, true));
-            $this->assertEquals($value, $sessionErrors->get($key)[0], "Failed to validate value for session error key {$key}. Actual value: ".print_r($sessionErrors, true));
+            $this->assertTrue($sessionErrors->has($key), "Cannot find key {$key} in errors '" . print_r($sessionErrors, true));
+            $this->assertEquals($value, $sessionErrors->get($key)[0], "Failed to validate value for session error key {$key}. Actual value: " . print_r($sessionErrors, true));
         }
 
         return $this;
@@ -105,5 +106,15 @@ abstract class TestCase extends BaseTestCase
         Http::fake(['*' => Http::response('', 200)]);
 
         return $this;
+    }
+
+    public function assertPdfPageCount(int $pageCount, File $file): void
+    {
+        $this->assertTrue(file_exists($file->getPathname()));
+        exec('pdfinfo ' . escapeshellarg($file->getPathname()) . ' | grep ^Pages | sed "s/Pages:\s*//"', $output, $returnVar);
+
+        $this->assertSame(0, $returnVar, 'Failed to get Pages of PDF File ' . $file->getPathname());
+        $this->assertCount(1, $output, 'Failed to parse output format of pdfinfo');
+        $this->assertEquals($pageCount, $output[0]);
     }
 }

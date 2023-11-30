@@ -3,6 +3,7 @@
 namespace App\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Invoice\BillDocument;
 use App\Invoice\BillKind;
 use App\Invoice\DocumentFactory;
 use App\Invoice\Queries\BillKindQuery;
@@ -30,15 +31,19 @@ class SendpaymentController extends Controller
      */
     public function send(Request $request)
     {
-        $invoice = app(DocumentFactory::class)->singleInvoice($request->type, new BillKindQuery(BillKind::POST));
+        $memberCollection = (new BillKindQuery(BillKind::POST))->type($request->type)->getMembers();
 
-        if (is_null($invoice)) {
+        if ($memberCollection->isEmpty()) {
             return response()->noContent();
         }
 
-        $pdfFile = Tex::compile($invoice);
-        app(DocumentFactory::class)->afterSingle($invoice);
+        $documents = $memberCollection->map(function ($members) use ($request) {
+            $document = $request->type::fromMembers($members);
+            app(DocumentFactory::class)->afterSingle($document, $members);
+            return $document;
+        });
 
-        return $pdfFile;
+
+        return Tex::merge($documents->all());
     }
 }

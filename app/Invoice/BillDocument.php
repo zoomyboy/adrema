@@ -29,7 +29,10 @@ class BillDocument extends Invoice
 
     public function afterSingle(Payment $payment): void
     {
-        $payment->update(['status_id' => 2]);
+        $payment->update([
+            'invoice_data' => $this->toArray(),
+            'status_id' => 2,
+        ]);
     }
 
     public function getMailSubject(): string

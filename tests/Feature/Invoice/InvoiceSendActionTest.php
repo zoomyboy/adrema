@@ -8,7 +8,6 @@ use App\Member\Member;
 use App\Payment\Payment;
 use App\Payment\PaymentMail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Tests\RequestFactories\Child;
@@ -19,42 +18,29 @@ class InvoiceSendActionTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public Member $member;
-
-    public function setUp(): void
+    public function testItCanCreatePdfPayments(): void
     {
-        parent::setUp();
-
+        Mail::fake();
+        Tex::spy();
         Storage::fake('temp');
         $this->withoutExceptionHandling();
         $this->login()->loginNami();
-        $this->member = Member::factory()
+        $member = Member::factory()
             ->defaults()
             ->has(Payment::factory()->notPaid()->nr('1997')->subscription('tollerbeitrag', [
                 new Child('a', 5400),
             ]))
             ->emailBillKind()
             ->create(['firstname' => 'Lah', 'lastname' => 'Mom', 'email' => 'peter@example.com']);
-    }
-
-    public function testItCanCreatePdfPayments(): void
-    {
-        Mail::fake();
-
-        Artisan::call('invoice:send');
-
-        Mail::assertSent(PaymentMail::class, fn ($mail) => Storage::disk('temp')->path('rechnung-fur-mom.pdf') === $mail->filename && Storage::disk('temp')->exists('rechnung-fur-mom.pdf'));
-    }
-
-    public function testItCanCompileAttachment(): void
-    {
-        Mail::fake();
-        Tex::spy();
 
         InvoiceSendAction::run();
 
-        Tex::assertCompiled(BillDocument::class, fn ($document) => 'Mom' === $document->pages->first()->familyName
-            && $document->pages->first()->getPositions() === ['tollerbeitrag 1997 für Lah Mom' => '54.00']
+        Mail::assertSent(PaymentMail::class, fn ($mail) => Storage::disk('temp')->path('rechnung-fur-mom.pdf') === $mail->filename && Storage::disk('temp')->exists('rechnung-fur-mom.pdf'));
+        Tex::assertCompiled(
+            BillDocument::class,
+            fn ($document) => 'Mom' === $document->familyName
+                && $document->positions === ['tollerbeitrag 1997 für Lah Mom' => '54.00']
         );
+        Tex::assertCompiledContent(BillDocument::class, BillDocument::from($member->payments->first()->invoice_data)->renderBody());
     }
 }

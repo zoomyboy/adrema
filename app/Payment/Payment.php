@@ -12,7 +12,18 @@ class Payment extends Model
 {
     use HasFactory;
 
-    public $fillable = ['member_id', 'subscription_id', 'nr', 'status_id', 'last_remembered_at'];
+    /**
+     * @var array<int, string>
+     */
+    public $fillable = ['member_id', 'invoice_data', 'subscription_id', 'nr', 'status_id', 'last_remembered_at'];
+
+    /**
+     * @var array<string, string>
+     */
+    public $casts = [
+        'invoice_data' => 'json',
+        'last_remembered_at' => 'date',
+    ];
 
     /**
      * @return BelongsTo<Member, self>

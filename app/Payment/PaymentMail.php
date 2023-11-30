@@ -25,7 +25,7 @@ class PaymentMail extends Mailable
     {
         $this->invoice = $invoice;
         $this->filename = $filename;
-        $this->salutation = 'Liebe Familie ' . $invoice->pages->first()->familyName;
+        $this->salutation = 'Liebe Familie ' . $invoice->familyName;
     }
 
     /**

@@ -1,6 +1,6 @@
 \documentclass[silvaletter,12pt]{scrlttr2}
 
-\setkomavar{subject}{<<< $subject >>>}
+\setkomavar{subject}{<<< $getSubject >>>}
 \setkomavar{fromname}[<<<$settings->from>>>]{<<<$settings->from_long>>>}
 \setkomavar{frommobilephone}[Mobiltelefon: ]{<<<$settings->mobile>>>}
 \setkomavar{fromemail}[E-Mail: ]{<<<$settings->email>>>}
@@ -11,17 +11,16 @@
 \setkomavar{fromlogo}{\includegraphics[width=2cm]{logo.png}}    % stammeslogo
 
 \begin{document}
-@foreach($pages as $page)
-\begin{letter}{Familie <<< $page->familyName >>>\\<<< $page->address >>>\\<<< $page->zip >>> <<< $page->location >>>}
+\begin{letter}{Familie <<< $familyName >>>\\<<< $address >>>\\<<< $zip >>> <<< $location >>>}
     \sffamily
     \gdef\TotalHT{0}
-    \opening{Liebe Familie <<< $page->familyName >>>,}
+    \opening{Liebe Familie <<< $familyName >>>,}
 
     Ihr Mitgliedbeitrag ist noch ausstehend. Dieser setzt sich wie folgt zusammen:
 
     \begin{center}
         \begin{tabular}{@{}p{0.8\textwidth}|r}
-            @foreach($page->positions as $desc => $price)
+            @foreach($positions as $desc => $price)
             \product{<<< $desc >>>}{<<< $price >>>}
             @endforeach
             \hline
@@ -35,15 +34,14 @@
         Kontoinhaber: & <<<$settings->from_long>>> \\
         IBAN: & <<<$settings->iban>>> \\
         Bic: & <<<$settings->bic>>> \\
-        Verwendungszweck: & <<<$page->usage>>>
+        Verwendungszweck: & <<<$usage>>>
     \end{tabular}
 
     Bitte nehmen Sie zur Kenntnis, dass der für jedes Mitglied obligatorische Versicherungsschutz über die DPSG nur dann für Ihr Kind / Ihre Kinder gilt, wenn der Mitgliedsbeitrag bezahlt wurde. Wenn dies nicht geschieht, müssen wir Ihr Kind / Ihre Kinder von allen Pfadfinderaktionen ausschließen. Dazu gehören sowohl die Gruppenstunden sowie Tagesaktionen als auch mehrtägige Lager.
-    
+
     Bei Fragen zur Rechnung können Sie mich auch persönlich erreichen.
 
     \closing{Viele Grüße \\ Der Stammesvorstand}
 \end{letter}
-@endforeach
 \end{document}
 

@@ -7,6 +7,7 @@ use App\Payment\Payment;
 use App\Payment\Status;
 use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 use Tests\RequestFactories\Child;
 
 /**
@@ -22,13 +23,18 @@ class PaymentFactory extends Factory
             'nr' => $this->faker->year,
             'subscription_id' => Subscription::factory()->create()->id,
             'status_id' => Status::factory()->create()->id,
-            'last_remembered_at' => $this->faker->dateTime,
+            'last_remembered_at' => now(),
         ];
     }
 
     public function notPaid(): self
     {
         return $this->for(Status::whereName('Nicht bezahlt')->first());
+    }
+
+    public function pending(): self
+    {
+        return $this->for(Status::whereName('Rechnung gestellt')->first())->state(['last_remembered_at' => now()->subYears(2)]);;
     }
 
     public function paid(): self

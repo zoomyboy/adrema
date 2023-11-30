@@ -52,7 +52,6 @@ use App\Payment\Actions\PaymentStoreAction;
 use App\Payment\Actions\PaymentUpdateAction;
 use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
-use App\Pdf\MemberPdfController;
 
 Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
     Auth::routes(['register' => false]);
@@ -71,8 +70,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('allpayment', AllpaymentPageAction::class)->name('allpayment.page');
     Route::post('allpayment', AllpaymentStoreAction::class)->name('allpayment.store');
     Route::resource('subscription', SubscriptionController::class);
-    Route::get('/member/{member}/pdf', MemberPdfController::class)
-        ->name('member.singlepdf');
     Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
     Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');

@@ -3,8 +3,11 @@
 namespace Tests\Feature\Invoice;
 
 use App\Invoice\BillDocument;
+use App\Invoice\BillKind;
 use App\Invoice\DocumentFactory;
+use App\Invoice\Invoice;
 use App\Invoice\InvoiceSettings;
+use App\Invoice\Queries\BillKindQuery;
 use App\Invoice\Queries\InvoiceMemberQuery;
 use App\Invoice\Queries\SingleMemberQuery;
 use App\Invoice\RememberDocument;
@@ -15,7 +18,7 @@ use Tests\RequestFactories\Child;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
-class DocumentFactoryTest extends TestCase
+class BillRememberDocumentTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -30,13 +33,14 @@ class DocumentFactoryTest extends TestCase
                 'zip' => '::zip::',
                 'location' => '::location::',
             ])
+            ->postBillKind()
             ->has(Payment::factory()->notPaid()->nr('1995')->subscription('::subName::', [
                 new Child('a', 1000),
                 new Child('a', 500),
             ]))
             ->create();
 
-        $invoice = app(DocumentFactory::class)->singleInvoice(BillDocument::class, $this->query($member));
+        $invoice = BillDocument::fromMembers($this->query(BillDocument::class)->getMembers()->first());
 
         $invoice->assertHasAllContent([
             'Rechnung',
@@ -51,6 +55,7 @@ class DocumentFactoryTest extends TestCase
     {
         $member = Member::factory()
             ->defaults()
+            ->postBillKind()
             ->state([
                 'firstname' => '::firstname::',
                 'lastname' => '::lastname::',
@@ -61,7 +66,7 @@ class DocumentFactoryTest extends TestCase
             ], ['split' => true]))
             ->create();
 
-        $invoice = app(DocumentFactory::class)->singleInvoice(BillDocument::class, $this->query($member));
+        $invoice = BillDocument::fromMembers($this->query(BillDocument::class)->getMembers()->first());
 
         $invoice->assertHasAllContent([
             'Rechnung',
@@ -75,46 +80,48 @@ class DocumentFactoryTest extends TestCase
 
     public function testBillSetsFilename(): void
     {
-        $member = Member::factory()
+        Member::factory()
             ->defaults()
+            ->postBillKind()
             ->state(['lastname' => '::lastname::'])
             ->has(Payment::factory()->notPaid()->nr('1995'))
             ->create();
 
-        $invoice = app(DocumentFactory::class)->singleInvoice(BillDocument::class, $this->query($member));
+        $invoice = BillDocument::fromMembers($this->query(BillDocument::class)->getMembers()->first());
 
         $this->assertEquals('rechnung-fur-lastname.pdf', $invoice->compiledFilename());
     }
 
     public function testRememberSetsFilename(): void
     {
-        $member = Member::factory()
+        Member::factory()
+            ->postBillKind()
             ->defaults()
             ->state(['lastname' => '::lastname::'])
             ->has(Payment::factory()->notPaid()->state(['last_remembered_at' => now()->subMonths(6)]))
             ->create();
 
-        $invoice = app(DocumentFactory::class)->singleInvoice(RememberDocument::class, $this->query($member));
+        $invoice = RememberDocument::fromMembers($this->query(RememberDocument::class)->getMembers()->first());
 
         $this->assertEquals('zahlungserinnerung-fur-lastname.pdf', $invoice->compiledFilename());
     }
 
     public function testItCreatesOneFileForFamilyMembers(): void
     {
-        $firstMember = Member::factory()
+        Member::factory()
             ->defaults()
+            ->postBillKind()
             ->state(['firstname' => 'Max1', 'lastname' => '::lastname::', 'address' => '::address::', 'zip' => '12345', 'location' => '::location::'])
             ->has(Payment::factory()->notPaid()->nr('nr1'))
             ->create();
         Member::factory()
             ->defaults()
+            ->postBillKind()
             ->state(['firstname' => 'Max2', 'lastname' => '::lastname::', 'address' => '::address::', 'zip' => '12345', 'location' => '::location::'])
             ->has(Payment::factory()->notPaid()->nr('nr2'))
             ->create();
 
-        $invoice = app(DocumentFactory::class)->singleInvoice(BillDocument::class, $this->query($firstMember));
-
-        $invoice->assertHasAllContent(['Max1', 'Max2', 'nr1', 'nr2']);
+        $this->assertCount(2, $this->query(BillDocument::class)->getMembers()->first());
     }
 
     /**
@@ -135,12 +142,13 @@ class DocumentFactoryTest extends TestCase
             'iban' => 'DE444',
             'bic' => 'SOLSSSSS',
         ]);
-        $member = Member::factory()
+        Member::factory()
             ->defaults()
-            ->has(Payment::factory()->notPaid()->nr('nr2'))
+            ->postBillKind()
+            ->has(Payment::factory()->notPaid()->nr('nr2')->state(['last_remembered_at' => now()->subYear()]))
             ->create();
 
-        $invoice = app(DocumentFactory::class)->singleInvoice($type, $this->query($member));
+        $invoice = BillDocument::fromMembers($this->query(BillDocument::class)->getMembers()->first());
 
         $invoice->assertHasAllContent([
             'langer Stammesname',
@@ -156,26 +164,11 @@ class DocumentFactoryTest extends TestCase
         ]);
     }
 
-    public function testItGeneratesAPdf(): void
+    /**
+     * @param class-string<Invoice> $type
+     */
+    private function query(string $type): InvoiceMemberQuery
     {
-        Tex::fake();
-        $member = Member::factory()
-            ->defaults()
-            ->has(Payment::factory()->notPaid())
-            ->create(['lastname' => 'lastname']);
-        $this->withoutExceptionHandling();
-        $this->login()->init()->loginNami();
-
-        $response = $this->call('GET', "/member/{$member->id}/pdf", [
-            'type' => BillDocument::class,
-        ]);
-
-        $this->assertEquals('application/pdf', $response->headers->get('content-type'));
-        $this->assertEquals('inline; filename="rechnung-fur-lastname.pdf"', $response->headers->get('content-disposition'));
-    }
-
-    private function query(Member $member): InvoiceMemberQuery
-    {
-        return new SingleMemberQuery($member);
+        return (new BillKindQuery(BillKind::POST))->type($type);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Invoice;
 
-use App\Invoice\Queries\InvoiceMemberQuery;
+use App\Member\Member;
 use Illuminate\Support\Collection;
 
 class DocumentFactory
@@ -24,44 +24,14 @@ class DocumentFactory
     }
 
     /**
-     * @param class-string<Invoice> $type
+     * @param Collection<(int|string), Member> $members
      */
-    public function singleInvoice(string $type, InvoiceMemberQuery $query): ?Invoice
+    public function afterSingle(Invoice $invoice, Collection $members): void
     {
-        $pages = $query->getPages($type);
-
-        if ($pages->isEmpty()) {
-            return null;
+        foreach ($members as $member) {
+            foreach ($member->payments as $payment) {
+                $invoice->afterSingle($payment);
+            }
         }
-
-        return $this->resolve($type, $pages);
-    }
-
-    /**
-     * @param class-string<Invoice> $type
-     *
-     * @return Collection<int, Invoice>
-     */
-    public function invoiceCollection(string $type, InvoiceMemberQuery $query): Collection
-    {
-        return $query
-            ->getPages($type)
-            ->map(fn ($page) => $this->resolve($type, collect([$page])));
-    }
-
-    public function afterSingle(Invoice $invoice): void
-    {
-        foreach ($invoice->allPayments() as $payment) {
-            $invoice->afterSingle($payment);
-        }
-    }
-
-    /**
-     * @param class-string<Invoice> $type
-     * @param Collection<int, Page> $pages
-     */
-    private function resolve(string $type, Collection $pages): Invoice
-    {
-        return new $type($pages);
     }
 }
