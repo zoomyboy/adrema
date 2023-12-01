@@ -31,9 +31,11 @@
                 <td v-text="payment.status_name"></td>
                 <td v-text="payment.subscription.name"></td>
                 <td class="flex">
+                    <a v-show="payment.links.show" :href="payment.links.show"
+                        class="inline-flex btn btn-success btn-sm"><ui-sprite src="eye"></ui-sprite></a>
                     <a href="#" class="inline-flex btn btn-warning btn-sm" @click.prevent="edit(payment)"><ui-sprite
                             src="pencil"></ui-sprite></a>
-                    <button v-show="!payment.is_accepted" href="#" class="inline-flex btn btn-success btn-sm"
+                    <button v-show="!payment.is_accepted" class="inline-flex btn btn-success btn-sm"
                         @click.prevent="accept(payment)"><ui-sprite src="check"></ui-sprite></button>
                     <button class="inline-flex btn btn-danger btn-sm" @click.prevent="remove(payment)"><ui-sprite
                             src="trash"></ui-sprite></button>

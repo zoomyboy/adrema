@@ -28,6 +28,9 @@ class PaymentResource extends JsonResource
             'id' => $this->id,
             'is_accepted' => $this->status->isAccepted(),
             'links' => [
+                'show' => $this->invoice_data
+                    ? route('payment.pdf', ['payment' => $this->getModel()])
+                    : null,
                 'update' => route('payment.update', ['payment' => $this->getModel()]),
                 'destroy' => route('payment.destroy', ['payment' => $this->getModel()]),
             ]

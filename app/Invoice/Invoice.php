@@ -116,7 +116,7 @@ abstract class Invoice extends Document
     }
 
     /**
-     * @param Collection<int|string, Member> $members
+     * @param Collection<(int|string), Member> $members
      *
      * @return array<string, string>
      */

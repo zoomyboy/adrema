@@ -46,6 +46,7 @@ use App\Membership\Actions\MembershipUpdateAction;
 use App\Membership\Actions\StoreForGroupAction;
 use App\Payment\Actions\AllpaymentPageAction;
 use App\Payment\Actions\AllpaymentStoreAction;
+use App\Payment\Actions\DisplayPdfAction;
 use App\Payment\Actions\IndexAction as PaymentIndexAction;
 use App\Payment\Actions\PaymentDestroyAction;
 use App\Payment\Actions\PaymentStoreAction;
@@ -106,6 +107,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
 
     // ---------------------------------- payment ----------------------------------
     Route::get('/member/{member}/payment', PaymentIndexAction::class)->name('member.payment.index');
+    Route::get('/payment/{payment}/pdf', DisplayPdfAction::class)->name('payment.pdf');
     Route::post('/member/{member}/payment', PaymentStoreAction::class)->name('member.payment.store');
     Route::patch('/payment/{payment}', PaymentUpdateAction::class)->name('payment.update');
     Route::delete('/payment/{payment}', PaymentDestroyAction::class)->name('payment.destroy');
