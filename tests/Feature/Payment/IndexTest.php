@@ -8,6 +8,7 @@ use App\Member\Member;
 use App\Payment\Payment;
 use App\Payment\Subscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Collection;
 use Tests\RequestFactories\Child;
 use Tests\TestCase;
 
@@ -54,6 +55,7 @@ class IndexTest extends TestCase
             ]))
             ->defaults()->create();
 
+        /** @var Collection<int|string, Member> */
         $members = collect([$member]);
         app(DocumentFactory::class)->afterSingle(BillDocument::fromMembers($members), $members);
 

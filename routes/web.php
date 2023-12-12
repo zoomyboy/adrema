@@ -15,6 +15,7 @@ use App\Contribution\Actions\ValidateAction as ContributionValidateAction;
 use App\Course\Actions\CourseDestroyAction;
 use App\Course\Actions\CourseIndexAction;
 use App\Course\Actions\CourseStoreAction;
+use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
@@ -111,6 +112,9 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/member/{member}/payment', PaymentStoreAction::class)->name('member.payment.store');
     Route::patch('/payment/{payment}', PaymentUpdateAction::class)->name('payment.update');
     Route::delete('/payment/{payment}', PaymentDestroyAction::class)->name('payment.destroy');
+
+    // ---------------------------------- invoice ----------------------------------
+    Route::post('/invoice', InvoiceStoreAction::class)->name('invoice.store');
 
     // --------------------------------- membership --------------------------------
     Route::get('/member/{member}/membership', MembershipIndexAction::class)->name('member.membership.index');

@@ -45,7 +45,6 @@ class PaymentPdfTest extends TestCase
             ]))
             ->emailBillKind()
             ->create(['firstname' => 'Lah', 'lastname' => 'Mom', 'email' => 'peter@example.com']);
-        /** @var Collection<(int|string), Member> */
 
         $response = $this->get(route('payment.pdf', ['payment' => $member->payments->first()]));
         $response->assertStatus(204);
