@@ -17,8 +17,6 @@ return new class extends Migration
             $table->id();
             $table->json('to');
             $table->string('greeting');
-            $table->text('intro');
-            $table->text('outro');
             $table->string('status');
             $table->timestamps();
         });

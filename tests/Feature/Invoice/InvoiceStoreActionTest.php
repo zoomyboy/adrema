@@ -27,8 +27,6 @@ class InvoiceStoreActionTest extends TestCase
                 ->status(InvoiceStatus::PAID)
                 ->state([
                     'greeting' => 'Hallo Familie',
-                    'intro' => 'Hiermit stellen wir ihnen den Beitrag in Rechnung.',
-                    'outro' => 'Das ist die Rechnung',
                 ])
                 ->create()
         );
@@ -36,8 +34,6 @@ class InvoiceStoreActionTest extends TestCase
         $response->assertOk();
         $this->assertDatabaseHas('invoices', [
             'greeting' => 'Hallo Familie',
-            'intro' => 'Hiermit stellen wir ihnen den Beitrag in Rechnung.',
-            'outro' => 'Das ist die Rechnung',
             'status' => InvoiceStatus::PAID->value,
         ]);
         $invoice = Invoice::firstWhere('greeting', 'Hallo Familie');

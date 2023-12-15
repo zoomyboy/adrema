@@ -13,8 +13,6 @@ class InvoiceRequestFactory extends RequestFactory
         return [
             'to' => ReceiverRequestFactory::new(),
             'greeting' => 'Hallo Familie',
-            'intro' => 'Hiermit stellen wir ihnen den Beitrag in Rechnung.',
-            'outro' => 'Das ist die Rechnung',
             'positions' => []
         ];
     }

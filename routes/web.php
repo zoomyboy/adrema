@@ -25,6 +25,7 @@ use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
 use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Initialize\Actions\NamiSearchAction;
+use App\Invoice\Actions\MassStoreAction;
 use App\Maildispatcher\Actions\CreateAction;
 use App\Maildispatcher\Actions\DestroyAction;
 use App\Maildispatcher\Actions\EditAction;
@@ -69,8 +70,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::resource('member', MemberController::class)->except('show', 'destroy');
     Route::delete('/member/{member}', MemberDeleteAction::class);
     Route::get('/member/{member}', MemberShowAction::class)->name('member.show');
-    Route::get('allpayment', AllpaymentPageAction::class)->name('allpayment.page');
-    Route::post('allpayment', AllpaymentStoreAction::class)->name('allpayment.store');
     Route::resource('subscription', SubscriptionController::class);
     Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');
     Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
@@ -112,6 +111,10 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/member/{member}/payment', PaymentStoreAction::class)->name('member.payment.store');
     Route::patch('/payment/{payment}', PaymentUpdateAction::class)->name('payment.update');
     Route::delete('/payment/{payment}', PaymentDestroyAction::class)->name('payment.destroy');
+
+    // -------------------------------- allpayment ---------------------------------
+    Route::get('allpayment', AllpaymentPageAction::class)->name('allpayment.page');
+    Route::post('allpayment', MassStoreAction::class)->name('allpayment.store');
 
     // ---------------------------------- invoice ----------------------------------
     Route::post('/invoice', InvoiceStoreAction::class)->name('invoice.store');

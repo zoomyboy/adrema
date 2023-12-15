@@ -362,18 +362,6 @@ class Member extends Model implements Geolocatable
      *
      * @return Builder<self>
      */
-    public function scopeWhereNoPayment(Builder $query, int $year): Builder
-    {
-        return $query->whereDoesntHave('payments', function (Builder $q) use ($year) {
-            $q->where('nr', '=', $year);
-        });
-    }
-
-    /**
-     * @param Builder<self> $query
-     *
-     * @return Builder<self>
-     */
     public function scopeForDashboard(Builder $query): Builder
     {
         return $query->selectRaw('SUM(id)');

@@ -25,8 +25,6 @@ class InvoiceStoreAction
             'to.zip' => 'required|string|max:255',
             'to.name' => 'required|string|max:255',
             'greeting' => 'required|string|max:255',
-            'intro' => 'required|string',
-            'outro' => 'required|string',
             'positions' => 'array',
             'positions.*.description' => 'required|string|max:300',
             'positions.*.price' => 'required|integer|min:0',

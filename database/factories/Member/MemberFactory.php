@@ -95,4 +95,15 @@ class MemberFactory extends Factory
             }
         });
     }
+
+    public function sameFamilyAs(Member $member): self
+    {
+        return $this->state([
+            'firstname' => $member->firstname . 'a',
+            'lastname' => $member->lastname,
+            'address' => $member->address,
+            'zip' => $member->zip,
+            'location' => $member->location,
+        ]);
+    }
 }
