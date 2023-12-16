@@ -4,6 +4,9 @@ includes:
 
 parameters:
 
+    stubFiles:
+        - tests/stub/phpstan/TestResponse.stub
+
     paths:
         - app
         - tests
