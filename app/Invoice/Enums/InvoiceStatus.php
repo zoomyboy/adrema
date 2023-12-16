@@ -17,4 +17,12 @@ enum InvoiceStatus: string
     {
         return collect(static::cases())->map(fn ($case) => $case->value);
     }
+
+    /**
+     * @return array<int, array{id: string, name: string}>
+     */
+    public static function forSelect(): array
+    {
+        return array_map(fn ($case) => ['id' => $case->value, 'name' => $case->value], static::cases());
+    }
 }

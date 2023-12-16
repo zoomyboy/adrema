@@ -2,6 +2,8 @@
 
 namespace App\Invoice\Resources;
 
+use App\Invoice\BillKind;
+use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -39,7 +41,9 @@ class InvoiceResource extends JsonResource
         return [
             'links' => [
                 'mass-store' => route('invoice.mass-store'),
-            ]
+            ],
+            'vias' => BillKind::forSelect(),
+            'statuses' => InvoiceStatus::forSelect(),
         ];
     }
 }
