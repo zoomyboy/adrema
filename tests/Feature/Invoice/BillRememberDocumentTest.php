@@ -4,19 +4,16 @@ namespace Tests\Feature\Invoice;
 
 use App\Invoice\BillDocument;
 use App\Invoice\BillKind;
-use App\Invoice\DocumentFactory;
 use App\Invoice\Invoice;
 use App\Invoice\InvoiceSettings;
 use App\Invoice\Queries\BillKindQuery;
 use App\Invoice\Queries\InvoiceMemberQuery;
-use App\Invoice\Queries\SingleMemberQuery;
 use App\Invoice\RememberDocument;
 use App\Member\Member;
 use App\Payment\Payment;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\Child;
 use Tests\TestCase;
-use Zoomyboy\Tex\Tex;
 
 class BillRememberDocumentTest extends TestCase
 {
