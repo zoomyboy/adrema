@@ -57,20 +57,6 @@ export function useIndex(props, siteName) {
         reload(true);
     }
 
-    function requestCallback(successMessage, failureMessage) {
-        return {
-            onSuccess: () => {
-                this.$success(successMessage);
-                reload(false);
-            },
-            onFailure: () => {
-                this.$error(failureMessage);
-                reload(false);
-            },
-            preserveState: true,
-        };
-    }
-
     startListener();
     onBeforeUnmount(() => stopListener());
 
@@ -80,7 +66,6 @@ export function useIndex(props, siteName) {
         can,
         getFilter,
         setFilter,
-        requestCallback,
         meta: inner.meta,
         filterString,
         router,
