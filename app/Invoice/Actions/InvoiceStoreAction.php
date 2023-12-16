@@ -7,6 +7,7 @@ use App\Invoice\Enums\InvoiceStatus;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use App\Invoice\Models\Invoice;
+use App\Lib\Events\Succeeded;
 use Illuminate\Validation\Rule;
 
 class InvoiceStoreAction
@@ -56,5 +57,7 @@ class InvoiceStoreAction
         foreach ($request->validated('positions') as $position) {
             $invoice->positions()->create($position);
         }
+
+        Succeeded::message('Rechnung erstellt.')->dispatch();
     }
 }
