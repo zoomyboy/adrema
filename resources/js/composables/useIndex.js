@@ -1,8 +1,9 @@
-import {ref, computed, onBeforeUnmount} from 'vue';
+import {ref, inject, computed, onBeforeUnmount} from 'vue';
 import {router} from '@inertiajs/vue3';
 import useQueueEvents from './useQueueEvents.js';
 
 export function useIndex(props, siteName) {
+    const axios = inject('axios');
     const {startListener, stopListener} = useQueueEvents(siteName, () => reload(false));
     const rawProps = JSON.parse(JSON.stringify(props));
     const inner = {
@@ -85,6 +86,7 @@ export function useIndex(props, siteName) {
         router,
         toFilterString,
         reloadPage,
+        axios,
     };
 }
 

@@ -11,6 +11,7 @@
             <v-link href="/" menu="dashboard" icon="loss">Dashboard</v-link>
             <v-link href="/member" menu="member" icon="user">Mitglieder</v-link>
             <v-link v-show="hasModule('bill')" href="/subscription" menu="subscription" icon="money">Beiträge</v-link>
+            <v-link v-show="hasModule('bill')" href="/invoice" menu="invoice" icon="moneypaper">Rechnungen</v-link>
             <v-link href="/contribution" menu="contribution" icon="contribution">Zuschüsse</v-link>
             <v-link href="/activity" menu="activity" icon="activity">Tätigkeiten</v-link>
             <v-link href="/group" menu="group" icon="group">Gruppen</v-link>

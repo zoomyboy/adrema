@@ -24,6 +24,9 @@ class InvoiceIndexAction
 
     public function asController(): Response
     {
+        session()->put('menu', 'invoice');
+        session()->put('title', 'Rechnungen');
+
         return Inertia::render('invoice/Index', [
             'data' => InvoiceResource::collection($this->handle()),
         ]);

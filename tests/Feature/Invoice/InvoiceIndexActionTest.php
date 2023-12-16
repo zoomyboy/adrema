@@ -34,4 +34,13 @@ class InvoiceIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.via', 'Post')
             ->assertInertiaPath('data.meta.links.mass-store', route('invoice.mass-store'));
     }
+
+    public function testValuesCanBeNull(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        Invoice::factory()->create();
+
+        $this->get(route('invoice.index'))
+            ->assertInertiaPath('data.data.0.sent_at_human', '');
+    }
 }
