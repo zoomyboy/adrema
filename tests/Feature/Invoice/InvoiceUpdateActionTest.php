@@ -5,23 +5,24 @@ namespace Tests\Feature\Invoice;
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
+use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class InvoiceStoreActionTest extends TestCase
+class InvoiceUpdateActionTest extends TestCase
 {
 
     use DatabaseTransactions;
 
-    public function testItCanCreateAnInvoice(): void
+    public function testItCanUpdateAnInvoice(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $member = Member::factory()->defaults()->create();
+        $invoice = Invoice::factory()->create();
 
-        $response = $this->postJson(
-            route('invoice.store'),
+        $this->patchJson(
+            route('invoice.update', ['invoice' => $invoice]),
             InvoiceRequestFactory::new()
                 ->to(ReceiverRequestFactory::new()->name('Familie Blabla')->address('Musterstr 44')->zip('22222')->location('Solingen'))
                 ->status(InvoiceStatus::PAID)
@@ -29,29 +30,72 @@ class InvoiceStoreActionTest extends TestCase
                 ->state([
                     'greeting' => 'Hallo Familie',
                 ])
-                ->position(InvoicePositionRequestFactory::new()->description('Beitrag Abc')->price(3250)->member($member))
                 ->create()
-        );
+        )->assertOk();
 
-        $response->assertOk();
+        $this->assertDatabaseCount('invoices', 1);
         $this->assertDatabaseHas('invoices', [
             'greeting' => 'Hallo Familie',
             'via' => BillKind::POST->value,
             'status' => InvoiceStatus::PAID->value,
+            'id' => $invoice->id,
         ]);
         $invoice = Invoice::firstWhere('greeting', 'Hallo Familie');
-        $this->assertDatabaseHas('invoice_positions', [
-            'invoice_id' => $invoice->id,
-            'member_id' => $member->id,
-            'price' => 3250,
-            'description' => 'Beitrag Abc',
-        ]);
         $this->assertEquals([
             'name' => 'Familie Blabla',
             'address' => 'Musterstr 44',
             'zip' => '22222',
             'location' => 'Solingen',
         ], $invoice->to);
+    }
+
+    public function testItAddsAPosition(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $invoice = Invoice::factory()->create();
+
+        $this->patchJson(
+            route('invoice.update', ['invoice' => $invoice]),
+            InvoiceRequestFactory::new()
+                ->position(InvoicePositionRequestFactory::new())
+                ->position(InvoicePositionRequestFactory::new())
+                ->create()
+        )->assertOk();
+
+        $this->assertDatabaseCount('invoice_positions', 2);
+    }
+
+    public function testItUpdatesAPosition(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $invoice = Invoice::factory()->has(InvoicePosition::factory(), 'positions')->create();
+
+        $this->patchJson(
+            route('invoice.update', ['invoice' => $invoice]),
+            InvoiceRequestFactory::new()
+                ->position(InvoicePositionRequestFactory::new()->description('la')->id($invoice->positions->first()->id))
+                ->create()
+        )->assertOk();
+
+        $this->assertDatabaseCount('invoice_positions', 1);
+        $this->assertDatabaseHas('invoice_positions', [
+            'description' => 'la',
+            'id' => $invoice->positions->first()->id,
+        ]);
+    }
+
+    public function testItDeletesAPosition(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $invoice = Invoice::factory()->has(InvoicePosition::factory(), 'positions')->create();
+
+        $this->patchJson(
+            route('invoice.update', ['invoice' => $invoice]),
+            InvoiceRequestFactory::new()
+                ->create()
+        )->assertOk();
+
+        $this->assertDatabaseCount('invoice_positions', 0);
     }
 
     public function validationDataProvider(): Generator

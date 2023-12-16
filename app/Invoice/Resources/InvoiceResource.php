@@ -26,11 +26,17 @@ class InvoiceResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'to_name' => $this->to['name'],
+            'id' => $this->id,
+            'to' => $this->to,
             'sum_human' => number_format($this->positions->sum('price') / 100, 2, ',', '') . ' €',
             'sent_at_human' => $this->sent_at?->format('d.m.Y') ?: '',
             'status' => $this->status->value,
             'via' => $this->via->value,
+            'positions' => InvoicePositionResource::collection($this->whenLoaded('positions')),
+            'greeting' => $this->greeting,
+            'links' => [
+                'update' => route('invoice.update', ['invoice' => $this->getModel()]),
+            ]
         ];
     }
 
@@ -60,6 +66,7 @@ class InvoiceResource extends JsonResource
                 'via' => null,
             ],
             'default_position' => [
+                'id' => null,
                 'price' => 0,
                 'description' => '',
                 'member_id' => null,

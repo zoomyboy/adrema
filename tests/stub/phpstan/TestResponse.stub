@@ -5,7 +5,7 @@ namespace Illuminate\Testing;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * @method self assertInertiaPath(string $path, string $value)
+ * @method self assertInertiaPath(string $path, string|array<string, mixed> $value)
  * @method File getFile()
  */
 class TestResponse

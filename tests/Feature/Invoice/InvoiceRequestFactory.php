@@ -8,11 +8,16 @@ use Worksome\RequestFactories\RequestFactory;
 
 class InvoiceRequestFactory extends RequestFactory
 {
+    /** @var array<int, InvoicePositionRequestFactory> */
+    public $positions = [];
+
     public function definition(): array
     {
         return [
             'to' => ReceiverRequestFactory::new(),
             'greeting' => 'Hallo Familie',
+            'status' => InvoiceStatus::NEW->value,
+            'via' => BillKind::EMAIL->value,
             'positions' => []
         ];
     }
@@ -29,9 +34,17 @@ class InvoiceRequestFactory extends RequestFactory
 
     public function position(InvoicePositionRequestFactory $factory): self
     {
-        return $this->state(['positions' => [
-            $factory->create(),
-        ]]);
+        $this->positions[] = $factory;
+
+        return $this;
+    }
+
+    public function create(array $attributes = []): array
+    {
+        return parent::create([
+            'positions' => array_map(fn ($position) => $position->create(), $this->positions),
+            ...$attributes,
+        ]);
     }
 
     public function via(BillKind $via): self

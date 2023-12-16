@@ -26,6 +26,7 @@ use App\Initialize\Actions\NamiGetSearchLayerAction;
 use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Initialize\Actions\NamiSearchAction;
 use App\Invoice\Actions\InvoiceIndexAction;
+use App\Invoice\Actions\InvoiceUpdateAction;
 use App\Invoice\Actions\MassStoreAction;
 use App\Maildispatcher\Actions\CreateAction;
 use App\Maildispatcher\Actions\DestroyAction;
@@ -117,6 +118,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     // ---------------------------------- invoice ----------------------------------
     Route::get('/invoice', InvoiceIndexAction::class)->name('invoice.index');
     Route::post('/invoice', InvoiceStoreAction::class)->name('invoice.store');
+    Route::patch('/invoice/{invoice}', InvoiceUpdateAction::class)->name('invoice.update');
 
     // --------------------------------- membership --------------------------------
     Route::get('/member/{member}/membership', MembershipIndexAction::class)->name('member.membership.index');

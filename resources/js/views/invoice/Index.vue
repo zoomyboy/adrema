@@ -16,7 +16,8 @@
                 </section>
             </form>
         </ui-popup>
-        <ui-popup v-if="single !== null" heading="Rechnung erstellen" inner-width="max-w-4xl" @close="cancel">
+        <ui-popup v-if="single !== null" :heading="`Rechnung ${single.id ? 'bearbeiten' : 'erstellen'}`"
+            inner-width="max-w-4xl" @close="cancel">
             <form class="grid grid-cols-2 gap-3 mt-4" @submit.prevent="submit">
                 <ui-box heading="Empfänger" container-class="grid grid-cols-2 gap-3">
                     <f-text id="to_name" v-model="single.to.name" name="to_name" label="Name" class="col-span-full"
@@ -67,7 +68,7 @@
 
             <tr v-for="(invoice, index) in data" :key="index">
                 <td>
-                    <div v-text="invoice.to_name"></div>
+                    <div v-text="invoice.to.name"></div>
                 </td>
                 <td>
                     <div v-text="invoice.sum_human"></div>
@@ -81,7 +82,10 @@
                 <td>
                     <div v-text="invoice.via"></div>
                 </td>
-                <td></td>
+                <td>
+                    <a v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm"
+                        @click.prevent="edit(invoice)"><ui-sprite src="pencil"></ui-sprite></a>
+                </td>
             </tr>
         </table>
         <div class="px-6">
@@ -94,7 +98,7 @@
 import { ref } from 'vue';
 import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 const props = defineProps(indexProps);
-var { axios, meta, data, reloadPage, create, single, cancel, submit } = useIndex(props.data, 'invoice');
+var { axios, meta, data, reloadPage, create, single, edit, cancel, submit } = useIndex(props.data, 'invoice');
 const massstore = ref(null);
 
 async function sendMassstore() {

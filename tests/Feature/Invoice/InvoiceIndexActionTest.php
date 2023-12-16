@@ -6,6 +6,7 @@ use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use App\Invoice\Models\InvoicePosition;
+use App\Member\Member;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -18,8 +19,8 @@ class InvoiceIndexActionTest extends TestCase
     {
         $this->login()->loginNami()->withoutExceptionHandling();
         $member = Member::factory()->defaults()->create(['firstname' => 'Aaaa', 'lastname' => 'Aaab']);
-        Invoice::factory()
-            ->has(InvoicePosition::factory()->price(1100), 'positions')
+        $invoice = Invoice::factory()
+            ->has(InvoicePosition::factory()->price(1100)->for($member)->state(['description' => 'lala']), 'positions')
             ->has(InvoicePosition::factory()->price(2200), 'positions')
             ->to(ReceiverRequestFactory::new()->name('Familie Blabla'))
             ->sentAt(now()->subDay())
@@ -28,11 +29,18 @@ class InvoiceIndexActionTest extends TestCase
             ->create();
 
         $this->get(route('invoice.index'))
-            ->assertInertiaPath('data.data.0.to_name', 'Familie Blabla')
+            ->assertInertiaPath('data.data.0.to.name', 'Familie Blabla')
+            ->assertInertiaPath('data.data.0.id', $invoice->id)
             ->assertInertiaPath('data.data.0.sum_human', '33,00 €')
             ->assertInertiaPath('data.data.0.sent_at_human', now()->subDay()->format('d.m.Y'))
             ->assertInertiaPath('data.data.0.status', 'Rechnung gestellt')
             ->assertInertiaPath('data.data.0.via', 'Post')
+            ->assertInertiaPath('data.data.0.greeting', $invoice->greeting)
+            ->assertInertiaPath('data.data.0.positions.0.price', 1100)
+            ->assertInertiaPath('data.data.0.positions.0.member_id', $member->id)
+            ->assertInertiaPath('data.data.0.positions.0.description', 'lala')
+            ->assertInertiaPath('data.data.0.positions.0.id', $invoice->positions->first()->id)
+            ->assertInertiaPath('data.data.0.links.update', route('invoice.update', ['invoice' => $invoice]))
             ->assertInertiaPath('data.meta.links.mass-store', route('invoice.mass-store'))
             ->assertInertiaPath('data.meta.links.store', route('invoice.store'))
             ->assertInertiaPath('data.meta.vias.0', ['id' => 'E-Mail', 'name' => 'E-Mail'])
@@ -51,8 +59,10 @@ class InvoiceIndexActionTest extends TestCase
                 'via' => null,
             ])
             ->assertInertiaPath('data.meta.default_position', [
+                'id' => null,
                 'price' => 0,
                 'description' => '',
+                'member_id' => null,
             ]);
     }
 

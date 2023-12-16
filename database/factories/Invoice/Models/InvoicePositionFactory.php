@@ -23,6 +23,7 @@ class InvoicePositionFactory extends Factory
         return [
             'description' => $this->faker->words(4, true),
             'member_id' => Member::factory()->defaults()->create()->id,
+            'price' => $this->faker->numberBetween(1000, 2000),
         ];
     }
 

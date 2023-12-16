@@ -12,6 +12,8 @@ class InvoicePositionRequestFactory extends RequestFactory
         return [
             'description' => 'Beitrag Abc',
             'price' => 3250,
+            'member_id' => Member::factory()->defaults()->create()->id,
+            'id' => null,
         ];
     }
 
@@ -28,5 +30,10 @@ class InvoicePositionRequestFactory extends RequestFactory
     public function member(Member $member): self
     {
         return $this->state(['member_id' => $member->id]);
+    }
+
+    public function id(int $id): self
+    {
+        return $this->state(['id' => $id]);
     }
 }
