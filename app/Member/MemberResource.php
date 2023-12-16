@@ -157,7 +157,6 @@ class MemberResource extends JsonResource
             'links' => [
                 'index' => route('member.index'),
                 'create' => route('member.create'),
-                'allpayment' => route('allpayment.page'),
                 'sendpayment' => route('sendpayment.create'),
             ],
         ];

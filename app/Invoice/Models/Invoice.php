@@ -16,6 +16,11 @@ class Invoice extends Model
 
     public $casts = [
         'to' => 'json',
+        'status' => InvoiceStatus::class,
+    ];
+
+    public $dates = [
+        'sent_at',
     ];
 
     /**

@@ -24,7 +24,7 @@ class MassStoreActionTest extends TestCase
     {
         Member::factory()->defaults()->emailBillKind()->create(['subscription_id' => null]);
 
-        $this->postJson(route('allpayment.store'), [
+        $this->postJson(route('invoice.mass-store'), [
             'year' => now()->addYear()->year,
         ])->assertOk();
 
@@ -35,7 +35,7 @@ class MassStoreActionTest extends TestCase
     {
         Member::factory()->defaults()->create();
 
-        $this->postJson(route('allpayment.store'), [
+        $this->postJson(route('invoice.mass-store'), [
             'year' => now()->addYear()->year,
         ])->assertOk();
 
@@ -50,7 +50,7 @@ class MassStoreActionTest extends TestCase
                 new Child('beitrag2 für {name} für {year}', 2290),
             ]))->emailBillKind()->create(['firstname' => 'Max', 'lastname' => 'Muster', 'address' => 'Maxstr 4', 'zip' => '33445', 'location' => 'Solingen']);
 
-        $this->postJson(route('allpayment.store'), [
+        $this->postJson(route('invoice.mass-store'), [
             'year' => now()->addYear()->year,
         ])->assertOk();
 
@@ -82,7 +82,7 @@ class MassStoreActionTest extends TestCase
         $member = Member::factory()->defaults()->for($subscription)->emailBillKind()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
         Member::factory()->defaults()->for($subscription)->sameFamilyAs($member)->emailBillKind()->create(['firstname' => 'Jane']);
 
-        $this->postJson(route('allpayment.store'), ['year' => now()->addYear()->year])->assertOk();
+        $this->postJson(route('invoice.mass-store'), ['year' => now()->addYear()->year])->assertOk();
 
         $this->assertDatabaseCount('invoices', 1);
         $this->assertDatabaseCount('invoice_positions', 2);
@@ -96,7 +96,7 @@ class MassStoreActionTest extends TestCase
         $member = Member::factory()->defaults()->for($subscription)->emailBillKind()->create();
         Member::factory()->defaults()->for($subscription)->sameFamilyAs($member)->postBillKind()->create();
 
-        $this->postJson(route('allpayment.store'), ['year' => now()->addYear()->year])->assertOk();
+        $this->postJson(route('invoice.mass-store'), ['year' => now()->addYear()->year])->assertOk();
 
         $this->assertDatabaseCount('invoices', 2);
         $this->assertDatabaseCount('invoice_positions', 2);

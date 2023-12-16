@@ -9,8 +9,10 @@ use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
 use Phake;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Tests\Lib\MakesHttpCalls;
 use Tests\Lib\TestsInertia;
@@ -29,6 +31,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         Auth::fake();
         Member::disableGeolocation();
+        $this->initInertiaTestcase();
     }
 
     public function loginNami(int $mglnr = 12345, string $password = 'password', int|Group $groupId = 55): self
@@ -116,5 +119,18 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, $returnVar, 'Failed to get Pages of PDF File ' . $file->getPathname());
         $this->assertCount(1, $output, 'Failed to parse output format of pdfinfo');
         $this->assertEquals($pageCount, $output[0]);
+    }
+
+    public function initInertiaTestcase(): void
+    {
+        TestResponse::macro('assertInertiaPath', function ($path, $value) {
+            /** @var TestResponse */
+            $response = $this;
+            $props = data_get($response->viewData('page'), 'props');
+            Assert::assertNotNull($props);
+            $json = new AssertableJsonString($props);
+            $json->assertPath($path, $value);
+            return $this;
+        });
     }
 }

@@ -25,6 +25,7 @@ use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
 use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Initialize\Actions\NamiSearchAction;
+use App\Invoice\Actions\InvoiceIndexAction;
 use App\Invoice\Actions\MassStoreAction;
 use App\Maildispatcher\Actions\CreateAction;
 use App\Maildispatcher\Actions\DestroyAction;
@@ -46,8 +47,6 @@ use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
 use App\Membership\Actions\MembershipUpdateAction;
 use App\Membership\Actions\StoreForGroupAction;
-use App\Payment\Actions\AllpaymentPageAction;
-use App\Payment\Actions\AllpaymentStoreAction;
 use App\Payment\Actions\DisplayPdfAction;
 use App\Payment\Actions\IndexAction as PaymentIndexAction;
 use App\Payment\Actions\PaymentDestroyAction;
@@ -113,10 +112,10 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::delete('/payment/{payment}', PaymentDestroyAction::class)->name('payment.destroy');
 
     // -------------------------------- allpayment ---------------------------------
-    Route::get('allpayment', AllpaymentPageAction::class)->name('allpayment.page');
-    Route::post('allpayment', MassStoreAction::class)->name('allpayment.store');
+    Route::post('/invoice/mass-store', MassStoreAction::class)->name('invoice.mass-store');
 
     // ---------------------------------- invoice ----------------------------------
+    Route::get('/invoice', InvoiceIndexAction::class)->name('invoice.index');
     Route::post('/invoice', InvoiceStoreAction::class)->name('invoice.store');
 
     // --------------------------------- membership --------------------------------
