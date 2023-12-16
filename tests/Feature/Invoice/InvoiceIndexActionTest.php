@@ -33,8 +33,25 @@ class InvoiceIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.status', 'Rechnung gestellt')
             ->assertInertiaPath('data.data.0.via', 'Post')
             ->assertInertiaPath('data.meta.links.mass-store', route('invoice.mass-store'))
+            ->assertInertiaPath('data.meta.links.store', route('invoice.store'))
             ->assertInertiaPath('data.meta.vias.0', ['id' => 'E-Mail', 'name' => 'E-Mail'])
-            ->assertInertiaPath('data.meta.statuses.0', ['id' => 'Neu', 'name' => 'Neu']);
+            ->assertInertiaPath('data.meta.statuses.0', ['id' => 'Neu', 'name' => 'Neu'])
+            ->assertInertiaPath('data.meta.default', [
+                'to' => [
+                    'name' => '',
+                    'address' => '',
+                    'zip' => '',
+                    'location' => '',
+                ],
+                'positions' => [],
+                'greeting' => '',
+                'status' => InvoiceStatus::NEW->value,
+                'via' => null,
+            ])
+            ->assertInertiaPath('data.meta.default_position', [
+                'price' => 0,
+                'description' => '',
+            ]);
     }
 
     public function testValuesCanBeNull(): void

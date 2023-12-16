@@ -41,9 +41,26 @@ class InvoiceResource extends JsonResource
         return [
             'links' => [
                 'mass-store' => route('invoice.mass-store'),
+                'store' => route('invoice.store'),
             ],
             'vias' => BillKind::forSelect(),
             'statuses' => InvoiceStatus::forSelect(),
+            'default' => [
+                'to' => [
+                    'name' => '',
+                    'address' => '',
+                    'zip' => '',
+                    'location' => '',
+                ],
+                'positions' => [],
+                'greeting' => '',
+                'status' => InvoiceStatus::NEW->value,
+                'via' => null,
+            ],
+            'default_position' => [
+                'price' => 0,
+                'description' => '',
+            ]
         ];
     }
 }
