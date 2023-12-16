@@ -59,7 +59,8 @@ const props = defineProps(indexProps);
 var { axios, meta, data, reloadPage } = useIndex(props.data, 'invoice');
 const massstore = ref(null);
 
-function sendMassstore() {
-    axios.post(meta.value.links['mass-store'], massstore.value);
+async function sendMassstore() {
+    await axios.post(meta.value.links['mass-store'], massstore.value);
+    massstore.value = null;
 }
 </script>
