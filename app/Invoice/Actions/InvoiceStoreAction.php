@@ -2,6 +2,7 @@
 
 namespace App\Invoice\Actions;
 
+use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -19,6 +20,7 @@ class InvoiceStoreAction
     {
         return [
             'status' => ['required', 'string', 'max:255', Rule::in(InvoiceStatus::values())],
+            'via' => ['required', 'string', 'max:255', Rule::in(BillKind::values())],
             'to' => 'array',
             'to.address' => 'required|string|max:255',
             'to.location' => 'required|string|max:255',
@@ -43,6 +45,7 @@ class InvoiceStoreAction
             'to.zip' => 'PLZ',
             'to.location' => 'Ort',
             'status' => 'Status',
+            'via' => 'Rechnungsweg',
         ];
     }
 

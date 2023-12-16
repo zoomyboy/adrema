@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Invoice;
 
+use App\Invoice\BillKind;
 use App\Invoice\Models\Invoice;
 use App\Member\Member;
 use App\Payment\Subscription;
@@ -62,6 +63,7 @@ class MassStoreActionTest extends TestCase
             'zip' => '33445',
             'location' => 'Solingen',
         ], $invoice->to);
+        $this->assertEquals(BillKind::EMAIL, $invoice->via);
         $this->assertDatabaseHas('invoice_positions', [
             'invoice_id' => $invoice->id,
             'member_id' => $member->id,

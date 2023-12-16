@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Invoice;
 
+use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use App\Invoice\Models\InvoicePosition;
@@ -21,6 +22,7 @@ class InvoiceIndexActionTest extends TestCase
             ->has(InvoicePosition::factory()->price(2200), 'positions')
             ->to(ReceiverRequestFactory::new()->name('Familie Blabla'))
             ->sentAt(now()->subDay())
+            ->via(BillKind::POST)
             ->status(InvoiceStatus::SENT)
             ->create();
 
@@ -29,6 +31,7 @@ class InvoiceIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.sum_human', '33,00 €')
             ->assertInertiaPath('data.data.0.sent_at_human', now()->subDay()->format('d.m.Y'))
             ->assertInertiaPath('data.data.0.status', 'Rechnung gestellt')
+            ->assertInertiaPath('data.data.0.via', 'Post')
             ->assertInertiaPath('data.meta.links.mass-store', route('invoice.mass-store'));
     }
 }

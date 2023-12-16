@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Invoice\Models;
 
+use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use Carbon\Carbon;
@@ -40,5 +41,10 @@ class InvoiceFactory extends Factory
     public function status(InvoiceStatus $status): self
     {
         return $this->state(['status' => $status->value]);
+    }
+
+    public function via(BillKind $via): self
+    {
+        return $this->state(['via' => $via->value]);
     }
 }

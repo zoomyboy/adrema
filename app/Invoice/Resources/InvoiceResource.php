@@ -27,6 +27,7 @@ class InvoiceResource extends JsonResource
             'sum_human' => number_format($this->positions->sum('price') / 100, 2, ',', '') . ' €',
             'sent_at_human' => $this->sent_at->format('d.m.Y'),
             'status' => $this->status->value,
+            'via' => $this->via->value,
         ];
     }
 

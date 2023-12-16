@@ -2,6 +2,7 @@
 
 namespace App\Invoice\Models;
 
+use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,8 +18,10 @@ class Invoice extends Model
     public $casts = [
         'to' => 'json',
         'status' => InvoiceStatus::class,
+        'via' => BillKind::class,
     ];
 
+    /** @var array<int, string> */
     public $dates = [
         'sent_at',
     ];
@@ -42,6 +45,7 @@ class Invoice extends Model
             ],
             'greeting' => 'Liebe Familie ' . $member->lastname,
             'status' => InvoiceStatus::NEW,
+            'via' => $member->bill_kind,
         ]);
     }
 }

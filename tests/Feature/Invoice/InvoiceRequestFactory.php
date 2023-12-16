@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Invoice;
 
+use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
-use App\Member\Member;
 use Worksome\RequestFactories\RequestFactory;
 
 class InvoiceRequestFactory extends RequestFactory
@@ -32,5 +32,10 @@ class InvoiceRequestFactory extends RequestFactory
         return $this->state(['positions' => [
             $factory->create(),
         ]]);
+    }
+
+    public function via(BillKind $via): self
+    {
+        return $this->state(['via' => $via->value]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Invoice;
 
+use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use App\Member\Member;
@@ -25,6 +26,7 @@ class InvoiceStoreActionTest extends TestCase
                 ->to(ReceiverRequestFactory::new()->name('Familie Blabla')->address('Musterstr 44')->zip('22222')->location('Solingen'))
                 ->position(InvoicePositionRequestFactory::new()->description('Beitrag Abc')->price(3250)->member($member))
                 ->status(InvoiceStatus::PAID)
+                ->via(BillKind::POST)
                 ->state([
                     'greeting' => 'Hallo Familie',
                 ])
@@ -34,6 +36,7 @@ class InvoiceStoreActionTest extends TestCase
         $response->assertOk();
         $this->assertDatabaseHas('invoices', [
             'greeting' => 'Hallo Familie',
+            'via' => BillKind::POST->value,
             'status' => InvoiceStatus::PAID->value,
         ]);
         $invoice = Invoice::firstWhere('greeting', 'Hallo Familie');
@@ -82,6 +85,16 @@ class InvoiceStoreActionTest extends TestCase
             ['to.zip' => ''],
             ['to.zip' => 'PLZ ist erforderlich.']
         ];
+
+        yield [
+            ['via' => ''],
+            ['via' => 'Rechnungsweg ist erforderlich.']
+        ];
+
+        yield [
+            ['via' => 'lala'],
+            ['via' => 'Der gewählte Wert für Rechnungsweg ist ungültig.']
+        ];
     }
 
     /**
@@ -98,6 +111,7 @@ class InvoiceStoreActionTest extends TestCase
             InvoiceRequestFactory::new()
                 ->to(ReceiverRequestFactory::new())
                 ->position(InvoicePositionRequestFactory::new()->member(Member::factory()->defaults()->create()))
+                ->via(BillKind::POST)
                 ->state($input)
                 ->create()
         );

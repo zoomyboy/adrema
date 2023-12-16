@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('greeting');
             $table->string('status');
             $table->date('sent_at')->nullable();
+            $table->string('via');
             $table->timestamps();
         });
 
