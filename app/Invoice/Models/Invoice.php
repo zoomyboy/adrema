@@ -48,4 +48,11 @@ class Invoice extends Model
             'via' => $member->bill_kind,
         ]);
     }
+
+    public static function booted(): void
+    {
+        static::deleting(function ($model) {
+            $model->positions()->delete();
+        });
+    }
 }
