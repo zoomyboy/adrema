@@ -494,6 +494,14 @@ class Member extends Model implements Geolocatable
         ])->implode(' ');
     }
 
+    /**
+     * @return array<int, array{id: int, name: string}>
+     */
+    public static function forSelect(): array
+    {
+        return static::select(['id', 'firstname', 'lastname'])->get()->map(fn ($member) => ['id' => $member->id, 'name' => $member->fullname])->toArray();
+    }
+
     // -------------------------------- Geolocation --------------------------------
     // *****************************************************************************
     public function fillCoordinate(Coordinate $coordinate): void

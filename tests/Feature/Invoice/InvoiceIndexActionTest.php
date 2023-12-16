@@ -17,6 +17,7 @@ class InvoiceIndexActionTest extends TestCase
     public function testItDisplaysInvoices(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
+        $member = Member::factory()->defaults()->create(['firstname' => 'Aaaa', 'lastname' => 'Aaab']);
         Invoice::factory()
             ->has(InvoicePosition::factory()->price(1100), 'positions')
             ->has(InvoicePosition::factory()->price(2200), 'positions')
@@ -36,6 +37,7 @@ class InvoiceIndexActionTest extends TestCase
             ->assertInertiaPath('data.meta.links.store', route('invoice.store'))
             ->assertInertiaPath('data.meta.vias.0', ['id' => 'E-Mail', 'name' => 'E-Mail'])
             ->assertInertiaPath('data.meta.statuses.0', ['id' => 'Neu', 'name' => 'Neu'])
+            ->assertInertiaPath('data.meta.members.0', ['id' => $member->id, 'name' => 'Aaaa Aaab'])
             ->assertInertiaPath('data.meta.default', [
                 'to' => [
                     'name' => '',

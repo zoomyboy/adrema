@@ -6,6 +6,7 @@ use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use App\Lib\HasMeta;
+use App\Member\Member;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -45,6 +46,7 @@ class InvoiceResource extends JsonResource
             ],
             'vias' => BillKind::forSelect(),
             'statuses' => InvoiceStatus::forSelect(),
+            'members' => Member::forSelect(),
             'default' => [
                 'to' => [
                     'name' => '',
@@ -60,6 +62,7 @@ class InvoiceResource extends JsonResource
             'default_position' => [
                 'price' => 0,
                 'description' => '',
+                'member_id' => null,
             ]
         ];
     }
