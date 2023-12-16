@@ -3,6 +3,9 @@
 namespace App\Invoice\Actions;
 
 use App\Invoice\Models\Invoice;
+use App\Lib\JobMiddleware\JobChannels;
+use App\Lib\JobMiddleware\WithJobState;
+use App\Lib\Queue\TracksJob;
 use App\Member\Member;
 use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\ActionRequest;
@@ -11,6 +14,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
 class MassStoreAction
 {
     use AsAction;
+    use TracksJob;
 
     /**
      * @return array<string, string>
@@ -43,8 +47,19 @@ class MassStoreAction
 
     public function asController(ActionRequest $request): JsonResponse
     {
-        $this->handle($request->year);
+        $this->startJob($request->year);
 
         return response()->json([]);
+    }
+
+    /**
+     * @param mixed $parameters
+     */
+    public function jobState(WithJobState $jobState, ...$parameters): WithJobState
+    {
+        return $jobState
+            ->after('Zahlungen erstellt')
+            ->failed('Fehler beim Erstellen von Zahlungen')
+            ->shouldReload(JobChannels::make()->add('invoice'));
     }
 }

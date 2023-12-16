@@ -17,7 +17,7 @@ trait TracksJob
     {
         $jobId = Str::uuid();
         $jobState = WithJobState::make($jobId);
-        $this->jobState(...[$jobState, ...$parameters])->beforeMessage->dispatch();
+        tap($this->jobState(...[$jobState, ...$parameters])->beforeMessage, fn ($beforeMessage) => $beforeMessage && $beforeMessage->dispatch());;
         $parameters[] = $jobId;
         static::dispatch(...$parameters);
     }
