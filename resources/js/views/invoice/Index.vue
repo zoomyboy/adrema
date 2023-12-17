@@ -94,7 +94,9 @@
                     <div v-text="invoice.via"></div>
                 </td>
                 <td>
-                    <a v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm"
+                    <a v-tooltip="`Anschauen`" :href="invoice.links.pdf" target="_BLANK"
+                        class="inline-flex btn btn-info btn-sm"><ui-sprite src="eye"></ui-sprite></a>
+                    <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm"
                         @click.prevent="edit(invoice)"><ui-sprite src="pencil"></ui-sprite></a>
                     <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm"
                         @click.prevent="deleting = invoice"><ui-sprite src="trash"></ui-sprite></a>

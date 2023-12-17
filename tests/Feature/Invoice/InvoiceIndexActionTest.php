@@ -41,6 +41,7 @@ class InvoiceIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.positions.0.member_id', $member->id)
             ->assertInertiaPath('data.data.0.positions.0.description', 'lala')
             ->assertInertiaPath('data.data.0.positions.0.id', $invoice->positions->first()->id)
+            ->assertInertiaPath('data.data.0.links.pdf', route('invoice.pdf', ['invoice' => $invoice]))
             ->assertInertiaPath('data.data.0.links.update', route('invoice.update', ['invoice' => $invoice]))
             ->assertInertiaPath('data.data.0.links.destroy', route('invoice.destroy', ['invoice' => $invoice]))
             ->assertInertiaPath('data.meta.links.mass-store', route('invoice.mass-store'))

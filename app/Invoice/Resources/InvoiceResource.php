@@ -36,6 +36,7 @@ class InvoiceResource extends JsonResource
             'greeting' => $this->greeting,
             'usage' => $this->usage,
             'links' => [
+                'pdf' => route('invoice.pdf', ['invoice' => $this->getModel()]),
                 'update' => route('invoice.update', ['invoice' => $this->getModel()]),
                 'destroy' => route('invoice.destroy', ['invoice' => $this->getModel()]),
             ]
