@@ -2,21 +2,21 @@
 
 namespace Tests\Feature\Invoice;
 
-use App\Invoice\BillDocument;
 use App\Invoice\BillKind;
 use App\Invoice\InvoiceSettings;
 use App\Invoice\Models\Invoice;
 use App\Invoice\Models\InvoicePosition;
+use App\Invoice\RememberDocument;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
-class ShowPdfTest extends TestCase
+class ShowRememberpdfTest extends TestCase
 {
 
     use DatabaseTransactions;
 
-    public function testItShowsAnInvoiceAsPdf(): void
+    public function testItShowsRememberAsPdf(): void
     {
         Tex::spy();
         InvoiceSettings::fake([
@@ -38,15 +38,15 @@ class ShowPdfTest extends TestCase
             ->via(BillKind::EMAIL)
             ->create(['usage' => 'Usa']);
 
-        $this->get(route('invoice.pdf', ['invoice' => $invoice]))
+        $this->get(route('invoice.rememberpdf', ['invoice' => $invoice]))
             ->assertOk()
             ->assertPdfPageCount(1)
-            ->assertPdfName('rechnung-fur-familie-lala.pdf');
+            ->assertPdfName('zahlungserinnerung-fur-familie-lala.pdf');
 
-        Tex::assertCompiled(BillDocument::class, fn ($document) => $document->hasAllContent([
+        Tex::assertCompiled(RememberDocument::class, fn ($document) => $document->hasAllContent([
             'Beitrag12',
             'Familie Lala',
-            'Rechnung',
+            'Zahlungserinnerung',
             '15.00',
             'Usa',
             'langer Stammesname',

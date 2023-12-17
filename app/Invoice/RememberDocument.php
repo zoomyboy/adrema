@@ -5,7 +5,7 @@ namespace App\Invoice;
 use App\Payment\Payment;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class RememberDocument extends Invoice
+class RememberDocument extends InvoiceDocument
 {
     public function linkLabel(): string
     {

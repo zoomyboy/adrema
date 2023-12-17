@@ -37,6 +37,7 @@ class InvoiceResource extends JsonResource
             'usage' => $this->usage,
             'links' => [
                 'pdf' => route('invoice.pdf', ['invoice' => $this->getModel()]),
+                'rememberpdf' => route('invoice.rememberpdf', ['invoice' => $this->getModel()]),
                 'update' => route('invoice.update', ['invoice' => $this->getModel()]),
                 'destroy' => route('invoice.destroy', ['invoice' => $this->getModel()]),
             ]

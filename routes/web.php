@@ -26,6 +26,7 @@ use App\Initialize\Actions\NamiGetSearchLayerAction;
 use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Initialize\Actions\NamiSearchAction;
 use App\Invoice\Actions\DisplayPdfAction;
+use App\Invoice\Actions\DisplayRememberpdfAction;
 use App\Invoice\Actions\InvoiceDestroyAction;
 use App\Invoice\Actions\InvoiceIndexAction;
 use App\Invoice\Actions\InvoiceUpdateAction;
@@ -112,6 +113,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::patch('/invoice/{invoice}', InvoiceUpdateAction::class)->name('invoice.update');
     Route::delete('/invoice/{invoice}', InvoiceDestroyAction::class)->name('invoice.destroy');
     Route::get('/invoice/{invoice}/pdf', DisplayPdfAction::class)->name('invoice.pdf');
+    Route::get('/invoice/{invoice}/rememberpdf', DisplayRememberpdfAction::class)->name('invoice.rememberpdf');
 
 
     // ----------------------------- invoice-position ------------------------------

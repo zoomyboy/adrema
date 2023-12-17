@@ -96,6 +96,8 @@
                 <td>
                     <a v-tooltip="`Anschauen`" :href="invoice.links.pdf" target="_BLANK"
                         class="inline-flex btn btn-info btn-sm"><ui-sprite src="eye"></ui-sprite></a>
+                    <a v-tooltip="`Erinnerung anschauen`" :href="invoice.links.rememberpdf" target="_BLANK"
+                        class="ml-2 inline-flex btn btn-info btn-sm"><ui-sprite src="document"></ui-sprite></a>
                     <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm"
                         @click.prevent="edit(invoice)"><ui-sprite src="pencil"></ui-sprite></a>
                     <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm"
