@@ -109,9 +109,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
 
     // ---------------------------------- payment ----------------------------------
     Route::get('/payment/{payment}/pdf', DisplayPdfAction::class)->name('payment.pdf');
-    Route::post('/member/{member}/payment', PaymentStoreAction::class)->name('member.payment.store');
-    Route::patch('/payment/{payment}', PaymentUpdateAction::class)->name('payment.update');
-    Route::delete('/payment/{payment}', PaymentDestroyAction::class)->name('payment.destroy');
 
     // -------------------------------- allpayment ---------------------------------
     Route::post('/invoice/mass-store', MassStoreAction::class)->name('invoice.mass-store');

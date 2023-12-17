@@ -31,8 +31,6 @@ class PaymentResource extends JsonResource
                 'show' => $this->invoice_data
                     ? route('payment.pdf', ['payment' => $this->getModel()])
                     : null,
-                'update' => route('payment.update', ['payment' => $this->getModel()]),
-                'destroy' => route('payment.destroy', ['payment' => $this->getModel()]),
             ]
         ];
     }
