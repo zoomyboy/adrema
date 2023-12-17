@@ -4,10 +4,8 @@ namespace Tests\Feature\Sendpayment;
 
 use App\Invoice\BillDocument;
 use App\Invoice\BillKind;
-use App\Invoice\DocumentFactory;
 use App\Invoice\InvoiceSettings;
 use App\Invoice\Queries\BillKindQuery;
-use App\Invoice\Queries\SingleMemberQuery;
 use App\Invoice\RememberDocument;
 use App\Member\Member;
 use App\Payment\Payment;
