@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('status');
             $table->date('sent_at')->nullable();
             $table->string('via');
+            $table->string('usage');
             $table->timestamps();
         });
 

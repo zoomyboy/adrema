@@ -25,6 +25,7 @@ use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
 use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Initialize\Actions\NamiSearchAction;
+use App\Invoice\Actions\DisplayPdfAction;
 use App\Invoice\Actions\InvoiceDestroyAction;
 use App\Invoice\Actions\InvoiceIndexAction;
 use App\Invoice\Actions\InvoiceUpdateAction;
@@ -50,11 +51,6 @@ use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
 use App\Membership\Actions\MembershipUpdateAction;
 use App\Membership\Actions\StoreForGroupAction;
-use App\Payment\Actions\DisplayPdfAction;
-use App\Payment\Actions\IndexAction as PaymentIndexAction;
-use App\Payment\Actions\PaymentDestroyAction;
-use App\Payment\Actions\PaymentStoreAction;
-use App\Payment\Actions\PaymentUpdateAction;
 use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
 
@@ -107,9 +103,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     // ----------------------------------- group -----------------------------------
     Route::get('/group', ListAction::class)->name('group.index');
 
-    // ---------------------------------- payment ----------------------------------
-    Route::get('/payment/{payment}/pdf', DisplayPdfAction::class)->name('payment.pdf');
-
     // -------------------------------- allpayment ---------------------------------
     Route::post('/invoice/mass-store', MassStoreAction::class)->name('invoice.mass-store');
 
@@ -118,6 +111,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/invoice', InvoiceStoreAction::class)->name('invoice.store');
     Route::patch('/invoice/{invoice}', InvoiceUpdateAction::class)->name('invoice.update');
     Route::delete('/invoice/{invoice}', InvoiceDestroyAction::class)->name('invoice.destroy');
+    Route::get('/invoice/{invoice}/pdf', DisplayPdfAction::class)->name('invoice.pdf');
 
 
     // ----------------------------- invoice-position ------------------------------

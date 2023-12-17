@@ -2,17 +2,16 @@
 
 namespace App\Invoice;
 
-use App\Member\Member;
+use App\Invoice\Models\Invoice;
 use App\Payment\Payment;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Zoomyboy\Tex\Document;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
-abstract class Invoice extends Document
+abstract class InvoiceDocument extends Document
 {
     abstract public function getSubject(): string;
     abstract public function view(): string;
@@ -39,33 +38,28 @@ abstract class Invoice extends Document
      * @param array<string, string> $positions
      */
     public function __construct(
-        public string $familyName,
-        public string $singleName,
-        public string $address,
-        public string $zip,
-        public string $location,
+        public string $toName,
+        public string $toAddress,
+        public string $toZip,
+        public string $toLocation,
+        public string $greeting,
         public array $positions,
         public string $usage,
-        public ?string $email,
     ) {
         $this->until = now()->addWeeks(2)->format('d.m.Y');
-        $this->filename = Str::slug("{$this->getSubject()} für {$familyName}");
+        $this->filename = Str::slug("{$this->getSubject()} für {$toName}");
     }
 
-    /**
-     * @param Collection<(int|string), Member> $members
-     */
-    public static function fromMembers(Collection $members): self
+    public static function fromInvoice(Invoice $invoice): self
     {
         return static::withoutMagicalCreationFrom([
-            'familyName' => $members->first()->lastname,
-            'singleName' => $members->first()->lastname,
-            'address' => $members->first()->address,
-            'zip' => $members->first()->zip,
-            'location' => $members->first()->location,
-            'email' => $members->first()->email_parents ?: $members->first()->email,
-            'positions' => static::renderPositions($members),
-            'usage' => "Mitgliedsbeitrag für {$members->first()->lastname}",
+            'toName' => $invoice->to['name'],
+            'toAddress' => $invoice->to['address'],
+            'toZip' => $invoice->to['zip'],
+            'toLocation' => $invoice->to['location'],
+            'greeting' => $invoice->greeting,
+            'positions' => static::renderPositions($invoice),
+            'usage' => $invoice->usage,
         ]);
     }
 
@@ -116,26 +110,11 @@ abstract class Invoice extends Document
     }
 
     /**
-     * @param Collection<(int|string), Member> $members
-     *
      * @return array<string, string>
      */
-    public static function renderPositions(Collection $members): array
+    public static function renderPositions(Invoice $invoice): array
     {
-        /** @var array<string, string> */
-        $result = [];
-
-        foreach ($members->pluck('payments')->flatten(1) as $payment) {
-            if ($payment->subscription->split) {
-                foreach ($payment->subscription->children as $child) {
-                    $result["{$payment->subscription->name} ({$child->name}) {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname}"] = static::number($child->amount);
-                }
-            } else {
-                $result["{$payment->subscription->name} {$payment->nr} für {$payment->member->firstname} {$payment->member->lastname}"] = static::number($payment->subscription->getAmount());
-            }
-        }
-
-        return $result;
+        return $invoice->positions->mapWithKeys(fn ($position) => [$position->description => static::number($position->price)])->toArray();
     }
 
     public static function number(int $number): string

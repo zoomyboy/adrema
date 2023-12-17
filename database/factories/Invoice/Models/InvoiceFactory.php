@@ -27,7 +27,8 @@ class InvoiceFactory extends Factory
             'greeting' => $this->faker->words(4, true),
             'to' => ReceiverRequestFactory::new()->create(),
             'status' => InvoiceStatus::NEW->value,
-            'via' => BillKind::POST->value
+            'via' => BillKind::POST->value,
+            'usage' => $this->faker->words(4, true),
         ];
     }
 

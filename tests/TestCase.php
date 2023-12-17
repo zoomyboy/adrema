@@ -111,16 +111,6 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
-    public function assertPdfPageCount(int $pageCount, File $file): void
-    {
-        $this->assertTrue(file_exists($file->getPathname()));
-        exec('pdfinfo ' . escapeshellarg($file->getPathname()) . ' | grep ^Pages | sed "s/Pages:\s*//"', $output, $returnVar);
-
-        $this->assertSame(0, $returnVar, 'Failed to get Pages of PDF File ' . $file->getPathname());
-        $this->assertCount(1, $output, 'Failed to parse output format of pdfinfo');
-        $this->assertEquals($pageCount, $output[0]);
-    }
-
     public function initInertiaTestcase(): void
     {
         TestResponse::macro('assertInertiaPath', function ($path, $value) {
@@ -130,6 +120,28 @@ abstract class TestCase extends BaseTestCase
             Assert::assertNotNull($props);
             $json = new AssertableJsonString($props);
             $json->assertPath($path, $value);
+            return $this;
+        });
+
+        TestResponse::macro('assertPdfPageCount', function (int $count) {
+            /** @var TestResponse */
+            $response = $this;
+            $file = $response->getFile();
+            Assert::assertTrue(file_exists($file->getPathname()));
+            exec('pdfinfo ' . escapeshellarg($file->getPathname()) . ' | grep ^Pages | sed "s/Pages:\s*//"', $output, $returnVar);
+
+            Assert::assertSame(0, $returnVar, 'Failed to get Pages of PDF File ' . $file->getPathname());
+            Assert::assertCount(1, $output, 'Failed to parse output format of pdfinfo');
+            Assert::assertEquals($count, $output[0]);
+
+            return $this;
+        });
+
+        TestResponse::macro('assertPdfName', function (string $filename) {
+            /** @var TestResponse */
+            $response = $this;
+            Assert::assertEquals($filename, $response->getFile()->getFilename());
+
             return $this;
         });
     }
