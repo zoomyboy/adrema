@@ -47,7 +47,7 @@ class Invoice extends Model
             'greeting' => 'Liebe Familie ' . $member->lastname,
             'status' => InvoiceStatus::NEW,
             'via' => $member->bill_kind,
-            'usage' => 'Mitgliedsbeitrag für Familie ' . $member->lastname,
+            'usage' => 'Mitgliedsbeitrag für ' . $member->lastname,
         ]);
     }
 
