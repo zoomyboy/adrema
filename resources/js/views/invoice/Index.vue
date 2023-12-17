@@ -31,11 +31,9 @@
         <ui-popup v-if="single !== null" :heading="`Rechnung ${single.id ? 'bearbeiten' : 'erstellen'}`"
             inner-width="max-w-4xl" @close="cancel">
             <form class="grid grid-cols-2 gap-3 mt-4" @submit.prevent="submit">
-                <ui-box heading="Empfänger" container-class="grid grid-cols-2 gap-3">
-                    <f-text id="to_name" v-model="single.to.name" name="to_name" label="Name" class="col-span-full"
-                        required></f-text>
-                    <f-text id="to_address" v-model="single.to.address" name="to_address" class="col-span-full"
-                        label="Adresse" required></f-text>
+                <ui-box heading="Empfänger" container-class="grid gap-3">
+                    <f-text id="to_name" v-model="single.to.name" name="to_name" label="Name" required></f-text>
+                    <f-text id="to_address" v-model="single.to.address" name="to_address" label="Adresse" required></f-text>
                     <f-text id="to_zip" v-model="single.to.zip" name="to_zip" label="PLZ" required></f-text>
                     <f-text id="to_location" v-model="single.to.location" name="to_location" label="Ort" required></f-text>
                 </ui-box>
@@ -45,6 +43,7 @@
                     <f-select id="via" v-model="single.via" :options="meta.vias" name="via" label="Rechnungsweg"
                         required></f-select>
                     <f-text id="greeting" v-model="single.greeting" name="greeting" label="Anrede" required></f-text>
+                    <f-text id="usage" v-model="single.usage" name="usage" label="Verwendungszweck" required></f-text>
                 </ui-box>
                 <ui-box heading="Positionen" class="col-span-full" container-class="grid gap-3">
                     <template #in-title>

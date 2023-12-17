@@ -26,7 +26,7 @@ class InvoiceIndexActionTest extends TestCase
             ->sentAt(now()->subDay())
             ->via(BillKind::POST)
             ->status(InvoiceStatus::SENT)
-            ->create();
+            ->create(['usage' => 'Usa']);
 
         $this->get(route('invoice.index'))
             ->assertInertiaPath('data.data.0.to.name', 'Familie Blabla')
@@ -35,6 +35,7 @@ class InvoiceIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.sent_at_human', now()->subDay()->format('d.m.Y'))
             ->assertInertiaPath('data.data.0.status', 'Rechnung gestellt')
             ->assertInertiaPath('data.data.0.via', 'Post')
+            ->assertInertiaPath('data.data.0.usage', 'Usa')
             ->assertInertiaPath('data.data.0.greeting', $invoice->greeting)
             ->assertInertiaPath('data.data.0.positions.0.price', 1100)
             ->assertInertiaPath('data.data.0.positions.0.member_id', $member->id)
@@ -58,6 +59,7 @@ class InvoiceIndexActionTest extends TestCase
                 'greeting' => '',
                 'status' => InvoiceStatus::NEW->value,
                 'via' => null,
+                'usage' => '',
             ])
             ->assertInertiaPath('data.meta.default_position', [
                 'id' => null,

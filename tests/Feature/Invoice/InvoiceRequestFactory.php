@@ -18,7 +18,8 @@ class InvoiceRequestFactory extends RequestFactory
             'greeting' => 'Hallo Familie',
             'status' => InvoiceStatus::NEW->value,
             'via' => BillKind::EMAIL->value,
-            'positions' => []
+            'positions' => [],
+            'usage' => $this->faker->words(4, true),
         ];
     }
 

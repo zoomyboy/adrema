@@ -95,6 +95,11 @@ class InvoiceStoreActionTest extends TestCase
             ['via' => 'lala'],
             ['via' => 'Der gewählte Wert für Rechnungsweg ist ungültig.']
         ];
+
+        yield [
+            ['usage' => ''],
+            ['usage' => 'Verwendungszweck ist erforderlich.']
+        ];
     }
 
     /**

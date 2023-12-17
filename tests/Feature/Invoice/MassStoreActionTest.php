@@ -63,6 +63,7 @@ class MassStoreActionTest extends TestCase
             'zip' => '33445',
             'location' => 'Solingen',
         ], $invoice->to);
+        $this->assertEquals('Mitgliedsbeitrag für Familie Muster', $invoice->usage);
         $this->assertEquals(BillKind::EMAIL, $invoice->via);
         $this->assertDatabaseHas('invoice_positions', [
             'invoice_id' => $invoice->id,

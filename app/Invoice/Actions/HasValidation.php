@@ -16,6 +16,7 @@ trait HasValidation
         return [
             'status' => ['required', 'string', 'max:255', Rule::in(InvoiceStatus::values())],
             'via' => ['required', 'string', 'max:255', Rule::in(BillKind::values())],
+            'usage' => 'required|max:255|string',
             'to' => 'array',
             'to.address' => 'required|string|max:255',
             'to.location' => 'required|string|max:255',
@@ -42,6 +43,7 @@ trait HasValidation
             'to.location' => 'Ort',
             'status' => 'Status',
             'via' => 'Rechnungsweg',
+            'usage' => 'Verwendungszweck',
         ];
     }
 }

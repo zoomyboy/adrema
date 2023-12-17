@@ -34,6 +34,7 @@ class InvoiceResource extends JsonResource
             'via' => $this->via->value,
             'positions' => InvoicePositionResource::collection($this->whenLoaded('positions')),
             'greeting' => $this->greeting,
+            'usage' => $this->usage,
             'links' => [
                 'update' => route('invoice.update', ['invoice' => $this->getModel()]),
                 'destroy' => route('invoice.destroy', ['invoice' => $this->getModel()]),
@@ -65,6 +66,7 @@ class InvoiceResource extends JsonResource
                 'greeting' => '',
                 'status' => InvoiceStatus::NEW->value,
                 'via' => null,
+                'usage' => '',
             ],
             'default_position' => [
                 'id' => null,
