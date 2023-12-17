@@ -21,7 +21,7 @@ class InvoiceIndexActionTest extends TestCase
         $member = Member::factory()->defaults()->create(['firstname' => 'Aaaa', 'lastname' => 'Aaab']);
         $invoice = Invoice::factory()
             ->has(InvoicePosition::factory()->price(1100)->for($member)->state(['description' => 'lala']), 'positions')
-            ->has(InvoicePosition::factory()->price(2200), 'positions')
+            ->has(InvoicePosition::factory()->price(2200)->withMember(), 'positions')
             ->to(ReceiverRequestFactory::new()->name('Familie Blabla'))
             ->sentAt(now()->subDay())
             ->via(BillKind::POST)

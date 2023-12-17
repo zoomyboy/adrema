@@ -15,7 +15,7 @@ class InvoiceDestroyActionTest extends TestCase
     public function testItDestroysInvoice(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $invoice = Invoice::factory()->has(InvoicePosition::factory(), 'positions')->create();
+        $invoice = Invoice::factory()->has(InvoicePosition::factory()->withMember(), 'positions')->create();
 
         $this->delete(route('invoice.destroy', ['invoice' => $invoice]))->assertOk();
         $this->assertDatabaseCount('invoices', 0);

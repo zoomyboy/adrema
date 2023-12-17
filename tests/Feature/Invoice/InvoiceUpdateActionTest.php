@@ -68,7 +68,7 @@ class InvoiceUpdateActionTest extends TestCase
     public function testItUpdatesAPosition(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $invoice = Invoice::factory()->has(InvoicePosition::factory(), 'positions')->create();
+        $invoice = Invoice::factory()->has(InvoicePosition::factory()->withMember(), 'positions')->create();
 
         $this->patchJson(
             route('invoice.update', ['invoice' => $invoice]),
@@ -87,7 +87,7 @@ class InvoiceUpdateActionTest extends TestCase
     public function testItDeletesAPosition(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $invoice = Invoice::factory()->has(InvoicePosition::factory(), 'positions')->create();
+        $invoice = Invoice::factory()->has(InvoicePosition::factory()->withMember(), 'positions')->create();
 
         $this->patchJson(
             route('invoice.update', ['invoice' => $invoice]),
