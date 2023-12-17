@@ -109,7 +109,7 @@ class MemberResource extends JsonResource
             'group_name' => $this->group->name,
             'links' => [
                 'membership_index' => route('member.membership.index', ['member' => $this->getModel()]),
-                'payment_index' => route('member.payment.index', ['member' => $this->getModel()]),
+                'invoiceposition_index' => route('member.invoice-position.index', ['member' => $this->getModel()]),
                 'course_index' => route('member.course.index', ['member' => $this->getModel()]),
                 'show' => route('member.show', ['member' => $this->getModel()]),
                 'edit' => route('member.edit', ['member' => $this->getModel()]),

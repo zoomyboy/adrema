@@ -26,6 +26,11 @@ class InvoicePositionFactory extends Factory
         ];
     }
 
+    public function description(string $description): self
+    {
+        return $this->state(['description' => $description]);
+    }
+
     public function price(int $price): self
     {
         return $this->state(['price' => $price]);

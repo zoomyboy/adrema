@@ -29,6 +29,7 @@ use App\Invoice\Actions\InvoiceDestroyAction;
 use App\Invoice\Actions\InvoiceIndexAction;
 use App\Invoice\Actions\InvoiceUpdateAction;
 use App\Invoice\Actions\MassStoreAction;
+use App\Invoice\Actions\PaymentPositionIndexAction;
 use App\Maildispatcher\Actions\CreateAction;
 use App\Maildispatcher\Actions\DestroyAction;
 use App\Maildispatcher\Actions\EditAction;
@@ -107,7 +108,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/group', ListAction::class)->name('group.index');
 
     // ---------------------------------- payment ----------------------------------
-    Route::get('/member/{member}/payment', PaymentIndexAction::class)->name('member.payment.index');
     Route::get('/payment/{payment}/pdf', DisplayPdfAction::class)->name('payment.pdf');
     Route::post('/member/{member}/payment', PaymentStoreAction::class)->name('member.payment.store');
     Route::patch('/payment/{payment}', PaymentUpdateAction::class)->name('payment.update');
@@ -121,6 +121,10 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/invoice', InvoiceStoreAction::class)->name('invoice.store');
     Route::patch('/invoice/{invoice}', InvoiceUpdateAction::class)->name('invoice.update');
     Route::delete('/invoice/{invoice}', InvoiceDestroyAction::class)->name('invoice.destroy');
+
+
+    // ----------------------------- invoice-position ------------------------------
+    Route::get('/member/{member}/invoice-position', PaymentPositionIndexAction::class)->name('member.invoice-position.index');
 
     // --------------------------------- membership --------------------------------
     Route::get('/member/{member}/membership', MembershipIndexAction::class)->name('member.membership.index');

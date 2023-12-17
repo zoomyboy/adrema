@@ -24,6 +24,8 @@ class InvoicePositionResource extends JsonResource
             'price' => $this->price,
             'member_id' => $this->member_id,
             'description' => $this->description,
+            'invoice' => new InvoiceResource($this->whenLoaded('invoice')),
+            'price_human' => number_format($this->price / 100, 2, ',', '') . ' €',
         ];
     }
 }
