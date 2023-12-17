@@ -22,7 +22,6 @@ class InvoicePositionFactory extends Factory
     {
         return [
             'description' => $this->faker->words(4, true),
-            'member_id' => Member::factory()->defaults()->create()->id,
             'price' => $this->faker->numberBetween(1000, 2000),
         ];
     }
@@ -30,5 +29,10 @@ class InvoicePositionFactory extends Factory
     public function price(int $price): self
     {
         return $this->state(['price' => $price]);
+    }
+
+    public function withMember(): self
+    {
+        return $this->state(['member_id' => Member::factory()->defaults()->create()->id]);
     }
 }

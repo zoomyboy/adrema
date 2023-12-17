@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Payment;
+namespace App\Invoice;
 
 use App\Dashboard\Blocks\Block;
+use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 
 class MemberPaymentBlock extends Block
@@ -12,17 +13,15 @@ class MemberPaymentBlock extends Block
      */
     public function data(): array
     {
-        $amount = Payment::whereNeedsPayment()
-            ->selectRaw('sum(subscription_children.amount) AS nr')
-            ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')
-            ->join('subscription_children', 'subscriptions.id', 'subscription_children.parent_id')
+        $amount = InvoicePosition::whereHas('invoice', fn ($query) => $query->whereNeedsPayment())
+            ->selectRaw('sum(price) AS price')
             ->first();
         $members = Member::whereHasPendingPayment()->count();
 
         return [
             'members' => $members,
             'total_members' => Member::count(),
-            'amount' => number_format((int) $amount->nr / 100, 2, ',', '.').' €',
+            'amount' => number_format((int) $amount->price / 100, 2, ',', '.') . ' €',
         ];
     }
 

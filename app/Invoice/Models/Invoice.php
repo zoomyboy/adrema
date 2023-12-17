@@ -5,6 +5,7 @@ namespace App\Invoice\Models;
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Member\Member;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -54,5 +55,15 @@ class Invoice extends Model
         static::deleting(function ($model) {
             $model->positions()->delete();
         });
+    }
+
+    /**
+     * @param Builder<self> $query
+     *
+     * @return Builder<self>
+     */
+    public function scopeWhereNeedsPayment(Builder $query): Builder
+    {
+        return $query->whereIn('status', [InvoiceStatus::NEW->value, InvoiceStatus::SENT->value]);
     }
 }

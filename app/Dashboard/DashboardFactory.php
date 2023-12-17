@@ -4,10 +4,10 @@ namespace App\Dashboard;
 
 use App\Dashboard\Blocks\Block;
 use App\Efz\EfzPendingBlock;
+use App\Invoice\MemberPaymentBlock;
 use App\Member\PsPendingBlock;
 use App\Membership\AgeGroupCountBlock;
 use App\Membership\TestersBlock;
-use App\Payment\MemberPaymentBlock;
 
 class DashboardFactory
 {

@@ -342,9 +342,7 @@ class Member extends Model implements Geolocatable
      */
     public function scopeWhereHasPendingPayment(Builder $query): Builder
     {
-        return $query->whereHas('payments', function (Builder $q): void {
-            $q->whereNeedsPayment();
-        });
+        return $query->whereHas('invoicePositions', fn ($q) => $q->whereHas('invoice', fn ($q) => $q->whereNeedsPayment()));
     }
 
     /**
