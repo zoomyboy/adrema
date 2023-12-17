@@ -8,6 +8,7 @@ use App\Course\Models\CourseMember;
 use App\Gender;
 use App\Group;
 use App\Invoice\BillKind;
+use App\Invoice\Models\InvoicePosition;
 use App\Nami\HasNamiField;
 use App\Nationality;
 use App\Payment\Payment;
@@ -214,6 +215,14 @@ class Member extends Model implements Geolocatable
     }
 
     /**
+     * @return HasMany<InvoicePosition>
+     */
+    public function invoicePositions(): HasMany
+    {
+        return $this->hasMany(InvoicePosition::class);
+    }
+
+    /**
      * @return BelongsTo<Confession, self>
      */
     public function confession(): BelongsTo
@@ -291,6 +300,9 @@ class Member extends Model implements Geolocatable
             $model->payments->each->delete();
             $model->memberships->each->delete();
             $model->courses->each->delete();
+            $model->invoicePositions->each(function ($position) {
+                $position->delete();
+            });
         });
 
         static::saving(fn ($model) => $model->updateSearch());

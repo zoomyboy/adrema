@@ -5,6 +5,8 @@ namespace Tests\Feature\Member;
 use Illuminate\Support\Str;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
+use App\Invoice\Models\Invoice;
+use App\Invoice\Models\InvoicePosition;
 use App\Lib\Events\JobFailed;
 use App\Lib\Events\JobFinished;
 use App\Lib\Events\JobStarted;
@@ -73,6 +75,37 @@ class DeleteTest extends TestCase
         MemberDeleteAction::run($member->id);
 
         $this->assertDatabaseMissing('members', ['id' => $member->id]);
+    }
+
+    public function testItDeletesInvoicePositions(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()->defaults()->create();
+        $member2 = Member::factory()->defaults()->create();
+        Invoice::factory()
+            ->has(InvoicePosition::factory()->for($member), 'positions')
+            ->has(InvoicePosition::factory()->for($member2), 'positions')
+            ->create();
+
+        MemberDeleteAction::run($member->id);
+
+        $this->assertDatabaseCount('invoices', 1);
+        $this->assertDatabaseCount('invoice_positions', 1);
+    }
+
+    public function testItDeletesInvoicePositionsAndInvoices(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()->defaults()->create();
+        Invoice::factory()
+            ->has(InvoicePosition::factory()->for($member), 'positions')
+            ->has(InvoicePosition::factory()->for($member), 'positions')
+            ->create();
+
+        MemberDeleteAction::run($member->id);
+
+        $this->assertDatabaseCount('invoices', 0);
+        $this->assertDatabaseCount('invoice_positions', 0);
     }
 
     public function testItFiresEventWhenFinished(): void
