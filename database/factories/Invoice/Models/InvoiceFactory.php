@@ -29,6 +29,7 @@ class InvoiceFactory extends Factory
             'status' => InvoiceStatus::NEW->value,
             'via' => BillKind::POST->value,
             'usage' => $this->faker->words(4, true),
+            'mail_email' => $this->faker->safeEmail(),
         ];
     }
 

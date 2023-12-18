@@ -6,6 +6,7 @@ use App\Invoice\BillDocument;
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\InvoiceDocument;
+use App\Invoice\RememberDocument;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,7 @@ class Invoice extends Model
     /** @var array<int, string> */
     public $dates = [
         'sent_at',
+        'last_remembered_at',
     ];
 
     /**
@@ -82,6 +84,19 @@ class Invoice extends Model
         return $query->where('status', InvoiceStatus::NEW);
     }
 
+    /**
+     * @param Builder<self> $query
+     *
+     * @return Builder<self>
+     */
+    public function scopeWhereNeedsRemember(Builder $query): Builder
+    {
+        return $query->where('status', InvoiceStatus::SENT)->whereNotNull('sent_at')->where(function ($query) {
+            return $query->orWhere('last_remembered_at', '<=', now()->subMonths(3))
+                ->orWhereNull('last_remembered_at');
+        });
+    }
+
     public function getMailRecipient(): stdClass
     {
         return (object) [
@@ -95,6 +110,13 @@ class Invoice extends Model
         if (is_a($document, BillDocument::class)) {
             $this->update([
                 'sent_at' => now(),
+                'status' => InvoiceStatus::SENT,
+            ]);
+        }
+
+        if (is_a($document, RememberDocument::class)) {
+            $this->update([
+                'last_remembered_at' => now(),
                 'status' => InvoiceStatus::SENT,
             ]);
         }

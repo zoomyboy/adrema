@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('via');
             $table->string('usage');
             $table->string('mail_email')->nullable();
+            $table->datetime('last_remembered_at')->nullable();
             $table->timestamps();
         });
 
