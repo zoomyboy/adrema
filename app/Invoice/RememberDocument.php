@@ -32,11 +32,6 @@ class RememberDocument extends InvoiceDocument
         $payment->update(['last_remembered_at' => now()]);
     }
 
-    public function getMailSubject(): string
-    {
-        return 'Zahlungserinnerung';
-    }
-
     /**
      * @param HasMany<Payment> $query
      *

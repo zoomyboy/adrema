@@ -4,13 +4,14 @@ namespace Tests\Feature\Invoice;
 
 use App\Invoice\Actions\InvoiceSendAction;
 use App\Invoice\BillDocument;
-use App\Member\Member;
-use App\Payment\Payment;
-use App\Payment\PaymentMail;
+use App\Invoice\BillKind;
+use App\Invoice\Enums\InvoiceStatus;
+use App\Invoice\Mails\BillMail;
+use App\Invoice\Models\Invoice;
+use App\Invoice\Models\InvoicePosition;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Tests\RequestFactories\Child;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
@@ -23,24 +24,18 @@ class InvoiceSendActionTest extends TestCase
         Mail::fake();
         Tex::spy();
         Storage::fake('temp');
-        $this->withoutExceptionHandling();
-        $this->login()->loginNami();
-        $member = Member::factory()
-            ->defaults()
-            ->has(Payment::factory()->notPaid()->nr('1997')->subscription('tollerbeitrag', [
-                new Child('a', 5400),
-            ]))
-            ->emailBillKind()
-            ->create(['firstname' => 'Lah', 'lastname' => 'Mom', 'email' => 'peter@example.com']);
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $invoice = Invoice::factory()
+            ->to(ReceiverRequestFactory::new()->name('Familie Muster'))
+            ->has(InvoicePosition::factory()->description('lalab')->withMember(), 'positions')
+            ->via(BillKind::EMAIL)
+            ->create(['mail_name' => 'Muster', 'mail_email' => 'max@muster.de']);
 
         InvoiceSendAction::run();
 
-        Mail::assertSent(PaymentMail::class, fn ($mail) => Storage::disk('temp')->path('rechnung-fur-mom.pdf') === $mail->filename && Storage::disk('temp')->exists('rechnung-fur-mom.pdf'));
-        Tex::assertCompiled(
-            BillDocument::class,
-            fn ($document) => 'Mom' === $document->familyName
-                && $document->positions === ['tollerbeitrag 1997 für Lah Mom' => '54.00']
-        );
-        Tex::assertCompiledContent(BillDocument::class, BillDocument::from($member->payments->first()->invoice_data)->renderBody());
+        Mail::assertSent(BillMail::class, fn ($mail) => $mail->build() && $mail->hasTo('max@muster.de', 'Muster') && Storage::disk('temp')->path('rechnung-fur-familie-muster.pdf') === $mail->filename && Storage::disk('temp')->exists('rechnung-fur-familie-muster.pdf'));
+        Tex::assertCompiled(BillDocument::class, fn ($document) => 'Familie Muster' === $document->toName);
+        $this->assertEquals(InvoiceStatus::SENT, $invoice->fresh()->status);
+        $this->assertEquals(now()->format('Y-m-d'), $invoice->fresh()->sent_at->format('Y-m-d'));
     }
 }

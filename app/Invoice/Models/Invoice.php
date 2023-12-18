@@ -2,13 +2,16 @@
 
 namespace App\Invoice\Models;
 
+use App\Invoice\BillDocument;
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
+use App\Invoice\InvoiceDocument;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use stdClass;
 
 class Invoice extends Model
 {
@@ -48,6 +51,8 @@ class Invoice extends Model
             'status' => InvoiceStatus::NEW,
             'via' => $member->bill_kind,
             'usage' => 'Mitgliedsbeitrag für ' . $member->lastname,
+            'mail_email' => $member->email,
+            'mail_name' => 'Familie ' . $member->lastname,
         ]);
     }
 
@@ -66,5 +71,33 @@ class Invoice extends Model
     public function scopeWhereNeedsPayment(Builder $query): Builder
     {
         return $query->whereIn('status', [InvoiceStatus::NEW->value, InvoiceStatus::SENT->value]);
+    }
+
+    /**
+     * @param Builder<self> $query
+     *
+     * @return Builder<self>
+     */
+    public function scopeWhereNeedsBill(Builder $query): Builder
+    {
+        return $query->where('status', InvoiceStatus::NEW);
+    }
+
+    public function getMailRecipient(): stdClass
+    {
+        return (object) [
+            'email' => $this->mail_email,
+            'name' => $this->mail_name,
+        ];
+    }
+
+    public function sent(InvoiceDocument $document): void
+    {
+        if (is_a($document, BillDocument::class)) {
+            $this->update([
+                'sent_at' => now(),
+                'status' => InvoiceStatus::SENT,
+            ]);
+        }
     }
 }

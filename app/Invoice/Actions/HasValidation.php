@@ -17,6 +17,8 @@ trait HasValidation
             'status' => ['required', 'string', 'max:255', Rule::in(InvoiceStatus::values())],
             'via' => ['required', 'string', 'max:255', Rule::in(BillKind::values())],
             'usage' => 'required|max:255|string',
+            'mail_name' => 'nullable|string|max:255',
+            'mail_email' => 'nullable|string|max:255|email',
             'to' => 'array',
             'to.address' => 'required|string|max:255',
             'to.location' => 'required|string|max:255',

@@ -35,11 +35,6 @@ class BillDocument extends InvoiceDocument
         ]);
     }
 
-    public function getMailSubject(): string
-    {
-        return 'Jahresrechnung';
-    }
-
     /**
      * @param HasMany<Payment> $query
      *

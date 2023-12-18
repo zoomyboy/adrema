@@ -4,7 +4,6 @@ namespace App\Invoice;
 
 use App\Invoice\Models\Invoice;
 use App\Payment\Payment;
-use Exception;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Zoomyboy\Tex\Document;
@@ -88,25 +87,6 @@ abstract class InvoiceDocument extends Document
         $this->filename = $filename;
 
         return $this;
-    }
-
-    public function getRecipient(): MailRecipient
-    {
-        throw_unless($this->email, Exception::class, 'Cannot get Recipient. Mail not set.');
-
-        return new MailRecipient($this->email, $this->familyName);
-    }
-
-    /**
-     * @return view-string
-     */
-    public function mailView(): string
-    {
-        $view = 'mail.payment.' . Str::snake(class_basename($this));
-
-        throw_unless(view()->exists($view), Exception::class, 'Mail view ' . $view . ' existiert nicht.');
-
-        return $view;
     }
 
     /**

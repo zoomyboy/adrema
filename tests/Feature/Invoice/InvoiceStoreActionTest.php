@@ -30,7 +30,7 @@ class InvoiceStoreActionTest extends TestCase
                     'greeting' => 'Hallo Familie',
                 ])
                 ->position(InvoicePositionRequestFactory::new()->description('Beitrag Abc')->price(3250)->member($member))
-                ->create()
+                ->create(['mail_email' => 'a@b.de', 'mail_name' => 'lala'])
         );
 
         $response->assertOk();
@@ -38,6 +38,8 @@ class InvoiceStoreActionTest extends TestCase
             'greeting' => 'Hallo Familie',
             'via' => BillKind::POST->value,
             'status' => InvoiceStatus::PAID->value,
+            'mail_email' => 'a@b.de',
+            'mail_name' => 'lala'
         ]);
         $invoice = Invoice::firstWhere('greeting', 'Hallo Familie');
         $this->assertDatabaseHas('invoice_positions', [

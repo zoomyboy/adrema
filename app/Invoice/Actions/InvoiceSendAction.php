@@ -2,11 +2,9 @@
 
 namespace App\Invoice\Actions;
 
-use App\Invoice\BillKind;
-use App\Invoice\DocumentFactory;
-use App\Invoice\Queries\BillKindQuery;
-use App\Payment\Payment;
-use App\Payment\PaymentMail;
+use App\Invoice\BillDocument;
+use App\Invoice\Mails\BillMail;
+use App\Invoice\Models\Invoice;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -33,15 +31,11 @@ class InvoiceSendAction
      */
     public function handle(): int
     {
-        foreach (app(DocumentFactory::class)->getTypes() as $type) {
-            $memberCollection = (new BillKindQuery(BillKind::EMAIL))->type($type)->getMembers();
-
-            foreach ($memberCollection as $members) {
-                $invoice = $type::fromMembers($members);
-                $invoicePath = Storage::disk('temp')->path(Tex::compile($invoice)->storeIn('', 'temp'));
-                Mail::to($invoice->getRecipient())->send(new PaymentMail($invoice, $invoicePath));
-                app(DocumentFactory::class)->afterSingle($invoice, $members);
-            }
+        foreach (Invoice::whereNeedsBill()->get() as $invoice) {
+            $document = BillDocument::fromInvoice($invoice);
+            $path = Storage::disk('temp')->path(Tex::compile($document)->storeIn('', 'temp'));
+            Mail::to($invoice->getMailRecipient())->send(new BillMail($invoice, $path));
+            $invoice->sent($document);
         }
 
         return 0;

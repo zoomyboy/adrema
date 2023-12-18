@@ -49,7 +49,7 @@ class MassStoreActionTest extends TestCase
             ->for(Subscription::factory()->children([
                 new Child('beitrag {name}', 4466),
                 new Child('beitrag2 für {name} für {year}', 2290),
-            ]))->emailBillKind()->create(['firstname' => 'Max', 'lastname' => 'Muster', 'address' => 'Maxstr 4', 'zip' => '33445', 'location' => 'Solingen']);
+            ]))->emailBillKind()->create(['firstname' => 'Max', 'lastname' => 'Muster', 'address' => 'Maxstr 4', 'zip' => '33445', 'location' => 'Solingen', 'email' => 'lala@b.de']);
 
         $this->postJson(route('invoice.mass-store'), [
             'year' => now()->addYear()->year,
@@ -64,6 +64,8 @@ class MassStoreActionTest extends TestCase
             'location' => 'Solingen',
         ], $invoice->to);
         $this->assertEquals('Mitgliedsbeitrag für Muster', $invoice->usage);
+        $this->assertEquals('lala@b.de', $invoice->mail_email);
+        $this->assertEquals('Familie Muster', $invoice->mail_name);
         $this->assertEquals(BillKind::EMAIL, $invoice->via);
         $this->assertDatabaseHas('invoice_positions', [
             'invoice_id' => $invoice->id,
