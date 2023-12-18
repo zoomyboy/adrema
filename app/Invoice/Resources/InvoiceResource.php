@@ -35,7 +35,6 @@ class InvoiceResource extends JsonResource
             'positions' => InvoicePositionResource::collection($this->whenLoaded('positions')),
             'greeting' => $this->greeting,
             'usage' => $this->usage,
-            'mail_name' => $this->mail_name,
             'mail_email' => $this->mail_email,
             'links' => [
                 'pdf' => route('invoice.pdf', ['invoice' => $this->getModel()]),
@@ -71,7 +70,6 @@ class InvoiceResource extends JsonResource
                 'status' => InvoiceStatus::NEW->value,
                 'via' => null,
                 'usage' => '',
-                'mail_name' => '',
                 'mail_email' => '',
             ],
             'default_position' => [

@@ -31,11 +31,15 @@
         <ui-popup v-if="single !== null" :heading="`Rechnung ${single.id ? 'bearbeiten' : 'erstellen'}`"
             inner-width="max-w-4xl" @close="cancel">
             <form class="grid grid-cols-2 gap-3 mt-4" @submit.prevent="submit">
-                <ui-box heading="Empfänger" container-class="grid gap-3">
-                    <f-text id="to_name" v-model="single.to.name" name="to_name" label="Name" required></f-text>
-                    <f-text id="to_address" v-model="single.to.address" name="to_address" label="Adresse" required></f-text>
+                <ui-box heading="Empfänger" container-class="grid grid-cols-2 gap-3 col-span-full">
+                    <f-text id="to_name" v-model="single.to.name" name="to_name" label="Name" class="col-span-full"
+                        required></f-text>
+                    <f-text id="to_address" v-model="single.to.address" name="to_address" label="Adresse"
+                        class="col-span-full" required></f-text>
                     <f-text id="to_zip" v-model="single.to.zip" name="to_zip" label="PLZ" required></f-text>
                     <f-text id="to_location" v-model="single.to.location" name="to_location" label="Ort" required></f-text>
+                    <f-text id="mail_email" v-model="single.mail_email" name="mail_email" label="E-Mail-Adresse"
+                        class="col-span-full"></f-text>
                 </ui-box>
                 <ui-box heading="Status" container-class="grid gap-3">
                     <f-select id="status" v-model="single.status" :options="meta.statuses" name="status" label="Status"

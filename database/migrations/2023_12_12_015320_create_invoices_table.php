@@ -21,7 +21,6 @@ return new class extends Migration
             $table->date('sent_at')->nullable();
             $table->string('via');
             $table->string('usage');
-            $table->string('mail_name')->nullable();
             $table->string('mail_email')->nullable();
             $table->timestamps();
         });

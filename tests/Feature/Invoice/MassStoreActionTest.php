@@ -65,7 +65,6 @@ class MassStoreActionTest extends TestCase
         ], $invoice->to);
         $this->assertEquals('Mitgliedsbeitrag für Muster', $invoice->usage);
         $this->assertEquals('lala@b.de', $invoice->mail_email);
-        $this->assertEquals('Familie Muster', $invoice->mail_name);
         $this->assertEquals(BillKind::EMAIL, $invoice->via);
         $this->assertDatabaseHas('invoice_positions', [
             'invoice_id' => $invoice->id,

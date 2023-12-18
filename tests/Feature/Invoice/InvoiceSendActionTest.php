@@ -29,11 +29,11 @@ class InvoiceSendActionTest extends TestCase
             ->to(ReceiverRequestFactory::new()->name('Familie Muster'))
             ->has(InvoicePosition::factory()->description('lalab')->withMember(), 'positions')
             ->via(BillKind::EMAIL)
-            ->create(['mail_name' => 'Muster', 'mail_email' => 'max@muster.de']);
+            ->create(['mail_email' => 'max@muster.de']);
 
         InvoiceSendAction::run();
 
-        Mail::assertSent(BillMail::class, fn ($mail) => $mail->build() && $mail->hasTo('max@muster.de', 'Muster') && Storage::disk('temp')->path('rechnung-fur-familie-muster.pdf') === $mail->filename && Storage::disk('temp')->exists('rechnung-fur-familie-muster.pdf'));
+        Mail::assertSent(BillMail::class, fn ($mail) => $mail->build() && $mail->hasTo('max@muster.de', 'Familie Muster') && Storage::disk('temp')->path('rechnung-fur-familie-muster.pdf') === $mail->filename && Storage::disk('temp')->exists('rechnung-fur-familie-muster.pdf'));
         Tex::assertCompiled(BillDocument::class, fn ($document) => 'Familie Muster' === $document->toName);
         $this->assertEquals(InvoiceStatus::SENT, $invoice->fresh()->status);
         $this->assertEquals(now()->format('Y-m-d'), $invoice->fresh()->sent_at->format('Y-m-d'));

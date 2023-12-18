@@ -51,8 +51,7 @@ class Invoice extends Model
             'status' => InvoiceStatus::NEW,
             'via' => $member->bill_kind,
             'usage' => 'Mitgliedsbeitrag für ' . $member->lastname,
-            'mail_email' => $member->email,
-            'mail_name' => 'Familie ' . $member->lastname,
+            'mail_email' => $member->email_parents ?: $member->email,
         ]);
     }
 
@@ -87,7 +86,7 @@ class Invoice extends Model
     {
         return (object) [
             'email' => $this->mail_email,
-            'name' => $this->mail_name,
+            'name' => $this->to['name']
         ];
     }
 
