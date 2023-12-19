@@ -117,11 +117,6 @@ parameters:
             path: app/Member/Member.php
 
         -
-            message: "#^Method App\\\\Member\\\\Member\\:\\:createPayment\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Member/Member.php
-
-        -
             message: "#^Unsafe usage of new static\\(\\)\\.$#"
             count: 1
             path: app/Member/Member.php
@@ -135,11 +130,6 @@ parameters:
             message: "#^Method App\\\\Membership\\\\MembershipResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Membership/MembershipResource.php
-
-        -
-            message: "#^Method App\\\\Payment\\\\PaymentResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Payment/PaymentResource.php
 
         -
             message: "#^Method App\\\\Payment\\\\SubscriptionResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -180,11 +170,6 @@ parameters:
             message: "#^Method Database\\\\Factories\\\\NationalityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: database/factories/NationalityFactory.php
-
-        -
-            message: "#^Method Database\\\\Factories\\\\Payment\\\\StatusFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: database/factories/Payment/StatusFactory.php
 
         -
             message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy.*#"

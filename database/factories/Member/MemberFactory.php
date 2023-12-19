@@ -8,10 +8,8 @@ use App\Group;
 use App\Invoice\BillKind;
 use App\Member\Member;
 use App\Nationality;
-use App\Payment\Payment;
 use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<Member>
@@ -80,20 +78,6 @@ class MemberFactory extends Factory
     public function inNami(int $namiId): self
     {
         return $this->state(['nami_id' => $namiId]);
-    }
-
-    /**
-     * @param array<int, callable> $payments
-     */
-    public function withPayments(array $payments): self
-    {
-        return $this->afterCreating(function (Model $model) use ($payments): void {
-            foreach ($payments as $paymentClosure) {
-                $factory = Payment::factory()->for($model);
-                $factory = call_user_func($paymentClosure, $factory);
-                $factory->create();
-            }
-        });
     }
 
     public function sameFamilyAs(Member $member): self

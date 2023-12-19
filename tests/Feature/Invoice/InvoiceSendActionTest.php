@@ -52,7 +52,7 @@ class InvoiceSendActionTest extends TestCase
             ->has(InvoicePosition::factory()->withMember(), 'positions')
             ->via(BillKind::EMAIL)
             ->status(InvoiceStatus::SENT)
-            ->create(['sent_at' => now()->subMonths(6), 'mail_email' => 'max@muster.de']);
+            ->create(['sent_at' => now()->subMonths(6), 'mail_email' => 'max@muster.de', 'last_remembered_at' => now()->subMonths(6)]);
 
         InvoiceSendAction::run();
 

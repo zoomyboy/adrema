@@ -8,14 +8,13 @@ use App\Course\Models\Course;
 use App\Course\Resources\CourseMemberResource;
 use App\Gender;
 use App\Invoice\BillKind;
+use App\Invoice\Resources\InvoicePositionResource;
 use App\Lib\HasMeta;
 use App\Member\Data\NestedGroup;
 use App\Member\Resources\NationalityResource;
 use App\Member\Resources\RegionResource;
 use App\Membership\MembershipResource;
 use App\Nationality;
-use App\Payment\PaymentResource;
-use App\Payment\Status;
 use App\Payment\Subscription;
 use App\Payment\SubscriptionResource;
 use App\Region;
@@ -72,11 +71,11 @@ class MemberResource extends JsonResource
             'bill_kind_name' => optional($this->bill_kind)->value,
             'has_nami' => null !== $this->nami_id,
             'children_phone' => $this->children_phone,
-            'payments' => PaymentResource::collection($this->whenLoaded('payments')),
             'pending_payment' => $this->pending_payment ? number_format($this->pending_payment / 100, 2, ',', '.') . ' €' : null,
             'age_group_icon' => $this->ageGroupMemberships->first()?->subactivity->slug,
             'courses' => CourseMemberResource::collection($this->whenLoaded('courses')),
             'memberships' => MembershipResource::collection($this->whenLoaded('memberships')),
+            'invoicePositions' => InvoicePositionResource::collection($this->whenLoaded('invoicePositions')),
             'nationality' => new NationalityResource($this->whenLoaded('nationality')),
             'region' => new RegionResource($this->whenLoaded('region')),
             'full_address' => $this->fullAddress,
@@ -157,7 +156,6 @@ class MemberResource extends JsonResource
             'links' => [
                 'index' => route('member.index'),
                 'create' => route('member.create'),
-                'sendpayment' => route('sendpayment.create'),
             ],
         ];
     }

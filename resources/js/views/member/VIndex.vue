@@ -5,8 +5,6 @@
                 anlegen</page-toolbar-button>
             <page-toolbar-button v-if="hasModule('bill')" :href="meta.links.allpayment" color="primary"
                 icon="invoice">Rechnungen erstellen</page-toolbar-button>
-            <page-toolbar-button v-if="hasModule('bill')" :href="meta.links.sendpayment" color="info"
-                icon="envelope">Rechnungen versenden</page-toolbar-button>
         </template>
         <ui-popup v-if="deleting !== null" heading="Mitglied löschen?" @close="deleting.reject()">
             <div>

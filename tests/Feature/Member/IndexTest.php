@@ -4,6 +4,9 @@ namespace Tests\Feature\Member;
 
 use App\Activity;
 use App\Group;
+use App\Invoice\Enums\InvoiceStatus;
+use App\Invoice\Models\Invoice;
+use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Payment\Payment;
@@ -175,7 +178,7 @@ class IndexTest extends TestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()
-            ->has(Payment::factory()->notPaid()->subscription('Free', [new Child('b', 50)]))
+            ->has(InvoicePosition::factory()->for(Invoice::factory()->status(InvoiceStatus::NEW)))
             ->defaults()->create();
         Member::factory()->defaults()->create();
         Member::factory()->defaults()->create();

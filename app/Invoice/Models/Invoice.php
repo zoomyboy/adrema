@@ -91,10 +91,11 @@ class Invoice extends Model
      */
     public function scopeWhereNeedsRemember(Builder $query): Builder
     {
-        return $query->where('status', InvoiceStatus::SENT)->whereNotNull('sent_at')->where(function ($query) {
-            return $query->orWhere('last_remembered_at', '<=', now()->subMonths(3))
-                ->orWhereNull('last_remembered_at');
-        });
+        return $query
+            ->where('status', InvoiceStatus::SENT)
+            ->whereNotNull('sent_at')
+            ->whereNotNull('last_remembered_at')
+            ->where('last_remembered_at', '<=', now()->subMonths(3));
     }
 
     public function getMailRecipient(): stdClass
@@ -111,6 +112,7 @@ class Invoice extends Model
             $this->update([
                 'sent_at' => now(),
                 'status' => InvoiceStatus::SENT,
+                'last_remembered_at' => now(),
             ]);
         }
 

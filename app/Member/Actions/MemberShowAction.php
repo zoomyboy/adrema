@@ -18,13 +18,14 @@ class MemberShowAction
     public function handle(Member $member): array
     {
         return [
-            'data' => new MemberResource($member
-                ->load('memberships')
-                ->load('payments.subscription.children')
-                ->load('nationality')
-                ->load('region')
-                ->load('subscription')
-                ->load('courses.course')
+            'data' => new MemberResource(
+                $member
+                    ->load('memberships')
+                    ->load('invoicePositions.invoice')
+                    ->load('nationality')
+                    ->load('region')
+                    ->load('subscription')
+                    ->load('courses.course')
             ),
             'meta' => MemberResource::meta(),
         ];
@@ -33,7 +34,7 @@ class MemberShowAction
     public function asController(Member $member): Response
     {
         session()->put('menu', 'member');
-        session()->put('title', 'Mitglied '.$member->fullname);
+        session()->put('title', 'Mitglied ' . $member->fullname);
 
         return Inertia::render('member/ShowView', $this->handle($member));
     }

@@ -4,7 +4,10 @@
             <page-toolbar-button color="primary" icon="plus" @click="create">Rechnung anlegen</page-toolbar-button>
             <page-toolbar-button color="primary" icon="plus" @click="massstore = { year: '' }">Massenrechnung
                 anlegen</page-toolbar-button>
+            <page-toolbar-button :href="meta.links.masspdf" color="primary" icon="plus">Post-Briefe
+                abrufen</page-toolbar-button>
         </template>
+
         <ui-popup v-if="massstore !== null" heading="Massenrechnung anlegen" @close="massstore = null">
             <form @submit.prevent="sendMassstore">
                 <section class="grid grid-cols-2 gap-3 mt-6">

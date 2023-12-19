@@ -11,7 +11,6 @@ use App\Invoice\BillKind;
 use App\Invoice\Models\InvoicePosition;
 use App\Nami\HasNamiField;
 use App\Nationality;
-use App\Payment\Payment;
 use App\Payment\Subscription;
 use App\Pdf\Sender;
 use App\Region;
@@ -109,13 +108,6 @@ class Member extends Model implements Geolocatable
         $version = app(NamiSettings::class)->login()->member($this->group->nami_id, $this->nami_id)->version;
 
         $this->update(['version' => $version]);
-    }
-
-    public function createPayment(array $attributes): void
-    {
-        $this->payments()->create(array_merge($attributes, [
-            'last_remembered_at' => now(),
-        ]));
     }
 
     // ----------------------------------- Getters -----------------------------------
@@ -271,14 +263,6 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return HasMany<Payment>
-     */
-    public function payments(): HasMany
-    {
-        return $this->hasMany(Payment::class)->orderBy('nr');
-    }
-
-    /**
      * @return HasMany<Membership>
      */
     public function leaderMemberships(): HasMany
@@ -297,7 +281,6 @@ class Member extends Model implements Geolocatable
     public static function booted()
     {
         static::deleting(function (self $model): void {
-            $model->payments->each->delete();
             $model->memberships->each->delete();
             $model->courses->each->delete();
             $model->invoicePositions->each(function ($position) {
@@ -327,11 +310,9 @@ class Member extends Model implements Geolocatable
     public function scopeWithPendingPayment(Builder $query): Builder
     {
         return $query->addSelect([
-            'pending_payment' => Payment::selectRaw('SUM(subscription_children.amount)')
-                ->whereColumn('payments.member_id', 'members.id')
-                ->whereNeedsPayment()
-                ->join('subscriptions', 'subscriptions.id', 'payments.subscription_id')
-                ->join('subscription_children', 'subscriptions.id', 'subscription_children.parent_id'),
+            'pending_payment' => InvoicePosition::selectRaw('SUM(price)')
+                ->whereColumn('invoice_positions.member_id', 'members.id')
+                ->whereHas('invoice', fn ($query) => $query->whereNeedsPayment())
         ]);
     }
 
@@ -352,8 +333,8 @@ class Member extends Model implements Geolocatable
      */
     public function scopeWhereAusstand(Builder $query): Builder
     {
-        return $query->whereHas('payments', function ($q) {
-            return $q->whereHas('status', fn ($q) => $q->where('is_remember', true));
+        return $query->whereHas('invoicePositions', function ($q) {
+            return $q->whereHas('invoice', fn ($query) => $query->whereNeedsPayment());
         });
     }
 

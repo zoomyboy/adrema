@@ -21,10 +21,6 @@ class CreatePaymentsTable extends Migration
             $table->boolean('is_remember');
         });
 
-        Status::create(['name' => 'Nicht bezahlt', 'is_bill' => true, 'is_remember' => true]);
-        Status::create(['name' => 'Rechnung gestellt', 'is_bill' => false, 'is_remember' => true]);
-        Status::create(['name' => 'Rechnung beglichen', 'is_bill' => false, 'is_remember' => false]);
-
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('nr');

@@ -30,6 +30,7 @@ use App\Invoice\Actions\DisplayRememberpdfAction;
 use App\Invoice\Actions\InvoiceDestroyAction;
 use App\Invoice\Actions\InvoiceIndexAction;
 use App\Invoice\Actions\InvoiceUpdateAction;
+use App\Invoice\Actions\MassPostPdfAction;
 use App\Invoice\Actions\MassStoreAction;
 use App\Invoice\Actions\PaymentPositionIndexAction;
 use App\Maildispatcher\Actions\CreateAction;
@@ -52,7 +53,6 @@ use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
 use App\Membership\Actions\MembershipUpdateAction;
 use App\Membership\Actions\StoreForGroupAction;
-use App\Payment\SendpaymentController;
 use App\Payment\SubscriptionController;
 
 Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
@@ -70,8 +70,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::delete('/member/{member}', MemberDeleteAction::class);
     Route::get('/member/{member}', MemberShowAction::class)->name('member.show');
     Route::resource('subscription', SubscriptionController::class);
-    Route::get('/sendpayment', [SendpaymentController::class, 'create'])->name('sendpayment.create');
-    Route::get('/sendpayment/pdf', [SendpaymentController::class, 'send'])->name('sendpayment.pdf');
     Route::get('/member/{member}/efz', ShowEfzDocumentAction::class)->name('efz');
     Route::get('/member/{member}/resync', MemberResyncAction::class)->name('member.resync');
     Route::get('member-export', ExportAction::class)->name('member-export');
@@ -114,6 +112,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::delete('/invoice/{invoice}', InvoiceDestroyAction::class)->name('invoice.destroy');
     Route::get('/invoice/{invoice}/pdf', DisplayPdfAction::class)->name('invoice.pdf');
     Route::get('/invoice/{invoice}/rememberpdf', DisplayRememberpdfAction::class)->name('invoice.rememberpdf');
+    Route::get('/invoice/masspdf', MassPostPdfAction::class)->name('invoice.masspdf');
 
 
     // ----------------------------- invoice-position ------------------------------

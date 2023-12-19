@@ -7,6 +7,8 @@ use App\Course\Models\CourseMember;
 use App\Fee;
 use App\Gender;
 use App\Group;
+use App\Invoice\Models\Invoice;
+use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Nationality;
@@ -32,10 +34,7 @@ class ShowTest extends TestCase
             ->defaults()
             ->for(Group::factory()->name('Stamm Beispiel'))
             ->has(Membership::factory()->promise(now())->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->from('2022-11-19'))
-            ->has(Payment::factory()->notPaid()->nr('2019')->subscription('Free', [
-                new Child('uu', 1000),
-                new Child('a', 50),
-            ]))
+            ->has(InvoicePosition::factory()->for(Invoice::factory())->price(1050)->description('uu'))
             ->for(Gender::factory()->name('Männlich'))
             ->for(Region::factory()->name('NRW'))
             ->postBillKind()
@@ -130,15 +129,12 @@ class ShowTest extends TestCase
             ],
         ], $response, 'data.courses.0');
         $this->assertInertiaHas([
-            'subscription' => [
-                'name' => 'Free',
-                'id' => $member->payments->first()->subscription->id,
-                'amount' => 1050,
-                'amount_human' => '10,50 €',
-            ],
-            'status_name' => 'Nicht bezahlt',
-            'nr' => '2019',
-        ], $response, 'data.payments.0');
+            'description' => 'uu',
+            'price_human' => '10,50 €',
+            'invoice' => [
+                'status' => 'Neu',
+            ]
+        ], $response, 'data.invoicePositions.0');
     }
 
     public function testItShowsMinimalSingleMember(): void

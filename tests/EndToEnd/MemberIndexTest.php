@@ -3,6 +3,8 @@
 namespace Tests\EndToEnd;
 
 use App\Group;
+use App\Invoice\Models\Invoice;
+use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 use App\Payment\Payment;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -57,9 +59,7 @@ class MemberIndexTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $group = Group::factory()->create();
         Member::factory()->defaults()->for($group)
-            ->has(Payment::factory()->notPaid()->subscription('tollerbeitrag', [
-                new Child('a', 5400),
-            ]))
+            ->has(InvoicePosition::factory()->for(Invoice::factory()))
             ->create(['firstname' => '::firstname::']);
         Member::factory()->defaults()->for($group)->create(['firstname' => '::firstname::']);
 

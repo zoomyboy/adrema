@@ -14,21 +14,6 @@ abstract class InvoiceDocument extends Document
 {
     abstract public function getSubject(): string;
     abstract public function view(): string;
-    abstract public function afterSingle(Payment $payment): void;
-    abstract public function linkLabel(): string;
-    abstract public static function sendAllLabel(): string;
-
-    /**
-     * @param HasMany<Payment> $query
-     *
-     * @return HasMany<Payment>
-     */
-    abstract public static function paymentsQuery(HasMany $query): HasMany;
-
-    /**
-     * @return array<int, string>
-     */
-    abstract public static function getDescription(): array;
 
     public string $until;
     public string $filename;
