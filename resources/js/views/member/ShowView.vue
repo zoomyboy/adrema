@@ -45,7 +45,7 @@
             </ui-box>
 
             <ui-box heading="Zahlungen" class="area-payments">
-                <payments :value="inner.payments"></payments>
+                <payments :value="inner.invoicePositions"></payments>
             </ui-box>
 
             <ui-box heading="Karte" container-class="grow" class="area-map hidden xl:flex">
@@ -59,7 +59,6 @@
 import {defineAsyncComponent} from 'vue';
 
 export default {
-
     props: {
         data: {},
         meta: {},

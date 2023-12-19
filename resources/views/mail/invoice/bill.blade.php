@@ -1,5 +1,5 @@
 @component('mail::message')
-# {{ $salutation }},
+# {{ $invoice->greeting }},
 
 Im Anhang findet ihr die aktuelle Rechnung des Stammes Silva für das laufende Jahr. Bitte begleicht diese bis zum angegebenen Datum.
 
