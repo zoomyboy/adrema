@@ -26,11 +26,9 @@ class SubscriptionResource extends JsonResource
             'name' => $this->name,
             'fee_id' => $this->fee_id,
             'fee_name' => $this->fee->name,
-            'amount_human' => number_format($this->getAmount() / 100, 2, ',', '.').' €',
+            'amount_human' => number_format($this->getAmount() / 100, 2, ',', '.') . ' €',
             'amount' => $this->getAmount(),
-            'split' => $this->split,
             'children' => SubscriptionChildResource::collection($this->whenLoaded('children')),
-            'for_promise' => $this->for_promise,
         ];
     }
 

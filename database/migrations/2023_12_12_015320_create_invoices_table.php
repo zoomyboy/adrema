@@ -92,6 +92,11 @@ return new class extends Migration
         }
 
         Schema::dropIfExists('payments');
+
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->dropColumn('split');
+            $table->dropColumn('for_promise');
+        });
     }
 
     /**
@@ -101,7 +106,17 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->boolean('split')->default(false);
+            $table->boolean('for_promise')->default(false);
+        });
         Schema::dropIfExists('invoice_positions');
         Schema::dropIfExists('invoices');
+        Schema::create('payments', function ($table) {
+            $table->id();
+            $table->string('nr');
+            $table->integer('subscription_id');
+            $table->json('invoice_data');
+        });
     }
 };

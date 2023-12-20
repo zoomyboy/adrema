@@ -39,12 +39,9 @@ class SubscriptionController extends Controller
     {
         $subscriptionParams = $request->validate([
             'name' => 'required|max:255',
-            'split' => 'present|boolean',
             'fee_id' => 'required|exists:fees,id',
-            'for_promise' => 'present|boolean',
         ], [], [
             'fee_id' => 'Nami-Beitrag',
-            'for_promise' => 'Für Versprechen benutzen',
         ]);
 
         $children = $request->validate([
@@ -76,12 +73,9 @@ class SubscriptionController extends Controller
     {
         $subscriptionParams = $request->validate([
             'name' => 'required|max:255',
-            'split' => 'present|boolean',
             'fee_id' => 'required|exists:fees,id',
-            'for_promise' => 'present|boolean',
         ], [], [
             'fee_id' => 'Nami-Beitrag',
-            'for_promise' => 'Für Versprechen benutzen',
         ]);
         $subscription->update($subscriptionParams);
         $children = $request->validate([

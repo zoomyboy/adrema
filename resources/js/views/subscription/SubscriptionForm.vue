@@ -10,21 +10,23 @@
             <ui-box heading="Beitrag">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <f-text id="name" v-model="inner.name" label="Name" size="sm" required></f-text>
-                    <f-select id="fee_id" name="fee_id" :options="fees" v-model="inner.fee_id" label="Nami-Beitrag" size="sm" required></f-select>
-                    <f-switch id="split" label="Rechnung aufsplitten" v-model="inner.split" size="sm"></f-switch>
-                    <f-switch id="for_promise" label="Für Versprechen benutzen" v-model="inner.for_promise" size="sm"></f-switch>
+                    <f-select id="fee_id" v-model="inner.fee_id" name="fee_id" :options="fees" label="Nami-Beitrag"
+                        size="sm" required></f-select>
                 </div>
             </ui-box>
             <ui-box heading="Positionen">
                 <div class="flex flex-col space-y-4">
                     <div v-for="(pos, index) in inner.children" :key="index" class="flex space-x-2 items-end">
                         <f-text :id="`name-${index}`" v-model="pos.name" label="Name" size="sm" required></f-text>
-                        <f-text :id="`amount-${index}`" v-model="pos.amount" label="Beitrag" size="sm" mode="area" required></f-text>
-                        <a href="#" @click.prevent="inner.children.splice(index, 1)" class="btn btn-sm btn-danger icon flex-none">
+                        <f-text :id="`amount-${index}`" v-model="pos.amount" label="Beitrag" size="sm" mode="area"
+                            required></f-text>
+                        <a href="#" class="btn btn-sm btn-danger icon flex-none"
+                            @click.prevent="inner.children.splice(index, 1)">
                             <ui-sprite src="trash" class="w-5 h-5"></ui-sprite>
                         </a>
                     </div>
-                    <a href="#" @click.prevent="inner.children.push({name: '', amount: 0})" class="btn btn-sm flex btn-primary flex self-start mt-4">
+                    <a href="#" class="btn btn-sm flex btn-primary flex self-start mt-4"
+                        @click.prevent="inner.children.push({ name: '', amount: 0 })">
                         <ui-sprite src="plus" class="w-5 h-5"></ui-sprite>
                         Position hinzufügen
                     </a>
@@ -36,17 +38,17 @@
 
 <script>
 export default {
-    data: function () {
-        return {
-            inner: {...this.data},
-        };
-    },
 
     props: {
         data: {},
         fees: {},
         mode: {},
         meta: {},
+    },
+    data: function () {
+        return {
+            inner: { ...this.data },
+        };
     },
 
     methods: {

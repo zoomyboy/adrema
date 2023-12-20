@@ -15,10 +15,10 @@ class EditTest extends TestCase
     public function testItReturnsChildren(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $subscription = Subscription::factory()->name('hi')->forPromise()->for(Fee::factory())->children([
+        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->children([
             new Child('a', 1400),
             new Child('b', 1500),
-        ])->create(['split' => true]);
+        ])->create();
 
         $response = $this->get("/subscription/{$subscription->id}/edit");
 
@@ -29,8 +29,6 @@ class EditTest extends TestCase
             ],
             'name' => 'hi',
             'id' => $subscription->id,
-            'split' => true,
-            'for_promise' => true,
         ], $response, 'data');
     }
 }

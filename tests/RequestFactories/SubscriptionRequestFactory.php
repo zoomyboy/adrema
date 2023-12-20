@@ -8,16 +8,14 @@ use Worksome\RequestFactories\RequestFactory;
 class SubscriptionRequestFactory extends RequestFactory
 {
     /**
-     * @return array{fee_id: int, name: string, split: bool, for_promise: bool, children: array<int, array{amount: int, name: string}>}
+     * @return array{fee_id: int, name: string, children: array<int, array{amount: int, name: string}>}
      */
     public function definition(): array
     {
         return [
             'fee_id' => Fee::factory()->create()->id,
             'name' => $this->faker->words(5, true),
-            'split' => $this->faker->boolean(),
             'children' => [],
-            'for_promise' => $this->faker->boolean(),
         ];
     }
 
@@ -41,7 +39,6 @@ class SubscriptionRequestFactory extends RequestFactory
         return $this->state([
             'fee_id' => 9999,
             'name' => '',
-            'for_promise' => 'A',
         ]);
     }
 

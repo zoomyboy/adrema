@@ -126,8 +126,6 @@ class PullMemberActionTest extends TestCase
         $this->assertDatabaseHas('subscriptions', [
             'fee_id' => $fee->id,
             'name' => 'Lala',
-            'split' => false,
-            'for_promise' => false,
         ]);
         $this->assertDatabaseHas('subscription_children', [
             'name' => 'Lala',
