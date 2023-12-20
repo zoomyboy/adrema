@@ -41,6 +41,7 @@ class IndexTest extends TestCase
             ->assertJsonPath('meta.groups.0.id', $group->id)
             ->assertJsonPath('meta.activities.0.id', $membership->activity_id)
             ->assertJsonPath("meta.subactivities.{$membership->activity_id}.0.id", $membership->subactivity_id)
+            ->assertJsonPath("meta.subactivities.{$membership->activity_id}.0.is_age_group", true)
             ->assertJsonPath('meta.links.store', route('member.membership.store', ['member' => $member]));
     }
 

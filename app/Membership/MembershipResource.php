@@ -52,7 +52,7 @@ class MembershipResource extends JsonResource
             ],
             'groups' => NestedGroup::cacheForSelect(),
             'activities' => $activities->map(fn ($activity) => ['id' => $activity->id, 'name' => $activity->name]),
-            'subactivities' => $activities->mapWithKeys(fn ($activity) => [$activity->id => $activity->subactivities->map(fn ($subactivity) => ['id' => $subactivity->id, 'name' => $subactivity->name])]),
+            'subactivities' => $activities->mapWithKeys(fn ($activity) => [$activity->id => $activity->subactivities->map(fn ($subactivity) => ['id' => $subactivity->id, 'name' => $subactivity->name, 'is_age_group' => $subactivity->is_age_group])]),
             'default' => [
                 'group_id' => $member->group_id,
                 'activity_id' => null,
