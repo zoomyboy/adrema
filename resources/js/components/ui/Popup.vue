@@ -5,7 +5,7 @@
                 <ui-sprite src="close" class="text-zinc-400 w-6 h-6"></ui-sprite>
             </a>
             <h3 v-if="heading" class="font-semibold text-primary-200 text-xl" v-html="heading"></h3>
-            <div class="text-primary-100">
+            <div class="text-primary-100 group is-popup">
                 <slot></slot>
             </div>
         </div>
