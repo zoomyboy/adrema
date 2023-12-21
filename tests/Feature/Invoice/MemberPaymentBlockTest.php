@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Payment;
+namespace Tests\Feature\Invoice;
 
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\MemberPaymentBlock;
