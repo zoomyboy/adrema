@@ -22,6 +22,8 @@ use App\Efz\ShowEfzDocumentAction;
 use App\Group\Actions\GroupApiIndexAction;
 use App\Group\Actions\GroupBulkstoreAction;
 use App\Group\Actions\GroupIndexAction;
+use App\Form\Actions\FormtemplateIndexAction;
+use App\Form\Actions\FormtemplateStoreAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
@@ -140,4 +142,8 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/member/{member}/course', CourseStoreAction::class)->name('member.course.store');
     Route::patch('/course/{course}', CourseUpdateAction::class)->name('course.update');
     Route::delete('/course/{course}', CourseDestroyAction::class)->name('course.destroy');
+
+    // ------------------------------------ form -----------------------------------
+    Route::get('/formtemplate', FormtemplateIndexAction::class)->name('formtemplate.index');
+    Route::post('/formtemplate', FormtemplateStoreAction::class)->name('formtemplate.store');
 });
