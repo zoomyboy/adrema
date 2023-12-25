@@ -85,8 +85,8 @@ export default {
             return Array.isArray(this.options)
                 ? this.options
                 : map(this.options, (value, key) => {
-                    return { name: value, id: key };
-                });
+                      return {name: value, id: key};
+                  });
         },
     },
     mounted() {
