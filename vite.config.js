@@ -22,6 +22,9 @@ export default defineConfig({
                     // reference assets in the public directory as expected.
                     includeAbsolute: false,
                 },
+                compilerOptions: {
+                    isCustomElement: (tag) => tag === 'event-form',
+                },
             },
         }),
     ],
