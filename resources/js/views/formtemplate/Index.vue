@@ -4,14 +4,7 @@
             <page-toolbar-button color="primary" icon="plus" @click="create">Vorlage erstellen</page-toolbar-button>
         </template>
 
-        <ui-popup v-if="single !== null" :heading="`Vorlage ${single.id ? 'bearbeiten' : 'erstellen'}`" full @close="cancel">
-            <form-builder v-model="single" :meta="meta"></form-builder>
-            <template #actions>
-                <a href="#" @click.prevent="submit">
-                    <ui-sprite src="save" class="text-zinc-400 w-6 h-6"></ui-sprite>
-                </a>
-            </template>
-        </ui-popup>
+        <form-builder v-if="single !== null" :model-value="single" :meta="meta" @submit="innerSubmit" @cancel="cancel"></form-builder>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
                 <th>Name</th>
@@ -39,4 +32,10 @@ import FormBuilder from './FormBuilder.vue';
 
 const props = defineProps(indexProps);
 var {meta, data, reloadPage, create, single, edit, cancel, submit} = useIndex(props.data, 'invoice');
+
+function innerSubmit(payload) {
+    single.value = payload;
+
+    submit();
+}
 </script>
