@@ -5,8 +5,20 @@
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
         <div class="real-field-wrap size-sm" :class="sizes[size].field">
-            <input :name="name" :type="type" :value="transformedValue" :disabled="disabled" :placeholder="placeholder"
-                @keypress="$emit('keypress', $event)" @input="onInput" @change="onChange" @focus="onFocus" @blur="onBlur" />
+            <input
+                :name="name"
+                :type="type"
+                :value="transformedValue"
+                :disabled="disabled"
+                :placeholder="placeholder"
+                :min="min"
+                :max="max"
+                @keypress="$emit('keypress', $event)"
+                @input="onInput"
+                @change="onChange"
+                @focus="onFocus"
+                @blur="onBlur"
+            />
             <div v-if="hint" class="info-wrap">
                 <div v-tooltip="hint">
                     <ui-sprite src="info-button" class="info-button"></ui-sprite>
@@ -281,6 +293,12 @@ export default {
             default: false,
             type: Boolean,
         },
+        min: {
+            default: () => '',
+        },
+        max: {
+            default: () => '',
+        },
         name: {},
     },
     data: function () {
@@ -324,7 +342,7 @@ export default {
     },
     created() {
         if (typeof this.modelValue === 'undefined') {
-            this.$emit('input', this.default === undefined ? '' : this.default);
+            this.$emit('update:modelValue', this.default === undefined ? '' : this.default);
         }
     },
     methods: {

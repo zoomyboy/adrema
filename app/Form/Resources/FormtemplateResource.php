@@ -2,6 +2,7 @@
 
 namespace App\Form\Resources;
 
+use App\Form\Fields\Field;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -32,7 +33,8 @@ class FormtemplateResource extends JsonResource
     public static function meta(): array
     {
         return [
-            'fields' => [
+            'fields' => Field::asMeta(),
+            [
                 [
                     'id' => 'TextField',
                     'name' => 'Text',

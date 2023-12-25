@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Models\Formtemplate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -12,10 +13,27 @@ class FormtemplateIndexActionTest extends TestCase
 
     public function testItDisplaysIndexPage(): void
     {
+        $formtemplate = Formtemplate::factory()->create();
+
         $this->login()->loginNami()->withoutExceptionHandling();
 
         $this->get(route('formtemplate.index'))
+            ->assertInertiaPath('data.data.0.links', [
+                'update' => route('formtemplate.update', ['formtemplate' => $formtemplate]),
+            ])
             ->assertInertiaPath('data.meta.fields.0', [
+                'id' => 'DropdownField',
+                'name' => 'Dropdown',
+                'default' => [
+                    'name' => '',
+                    'type' => 'DropdownField',
+                    'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
+                    'default' => [],
+                    'required' => false,
+                    'options' => [],
+                ]
+            ])
+            ->assertInertiaPath('data.meta.fields.1', [
                 'id' => 'TextField',
                 'name' => 'Text',
                 'default' => [
@@ -24,6 +42,18 @@ class FormtemplateIndexActionTest extends TestCase
                     'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
                     'default' => '',
                     'required' => false,
+                ]
+            ])
+            ->assertInertiaPath('data.meta.fields.2', [
+                'id' => 'TextareaField',
+                'name' => 'Textarea',
+                'default' => [
+                    'name' => '',
+                    'type' => 'TextareaField',
+                    'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
+                    'default' => '',
+                    'required' => false,
+                    'rows' => 5,
                 ]
             ])
             ->assertInertiaPath('data.meta.default', [

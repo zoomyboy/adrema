@@ -27,6 +27,7 @@
                 >
                     <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
                     <f-switch id="fieldrequired" v-model="singleField.model.required" label="Erforderlich" size="sm" name="fieldrequired" inline></f-switch>
+                    <component :is="fields[singleField.model.type]" v-model="singleField.model"></component>
                 </asideform>
             </div>
             <ui-box heading="Vorschau" container-class="grid gap-3" class="w-[800px]">
@@ -49,6 +50,9 @@
 import {computed, ref} from 'vue';
 import '!/eventform/dist/main.js';
 import Asideform from './Asideform.vue';
+import TextareaField from './TextareaField.vue';
+import DropdownField from './DropdownField.vue';
+import RadioField from './RadioField.vue';
 
 const sectionVisible = ref(-1);
 const singleSection = ref(null);
@@ -59,6 +63,12 @@ const props = defineProps({
     meta: {},
 });
 const emit = defineEmits(['submit', 'cancel']);
+
+const fields = {
+    TextareaField: TextareaField,
+    DropdownField: DropdownField,
+    RadioField: RadioField,
+};
 
 function editSection(sectionIndex) {
     singleSection.value = {

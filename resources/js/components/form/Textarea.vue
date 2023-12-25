@@ -19,8 +19,6 @@
             >{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span
         >
         <textarea
-            v-text="value"
-            @input="trigger"
             :placeholder="placeholder"
             class="h-full outline-none bg-gray-700 border-gray-600 border-solid"
             :rows="rows"
@@ -28,6 +26,8 @@
                 'rounded-lg text-sm border-2 p-2 text-gray-300': size === null,
                 'rounded-lg py-2 px-2 text-xs border-2 text-gray-300': size == 'sm',
             }"
+            @input="trigger"
+            v-text="modelValue"
         ></textarea>
         <div v-if="hint" v-tooltip="hint" class="absolute right-0 top-0 mr-2 mt-2">
             <ui-sprite src="info-button" class="w-5 h-5 text-indigo-200"></ui-sprite>
@@ -35,66 +35,57 @@
     </label>
 </template>
 
-<script>
-export default {
-    data: function () {
-        return {
-            focus: false,
-        };
+<script setup>
+const emit = defineEmits(['update:modelValue']);
+
+const props = defineProps({
+    required: {
+        type: Boolean,
+        default: false,
     },
-    props: {
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        inset: {
-            default: false,
-            type: Boolean,
-        },
-        size: {
-            default: null,
-        },
-        rows: {
-            default: function () {
-                return 4;
-            },
-        },
-        id: {
-            required: true,
-        },
-        hint: {
-            default: null,
-        },
-        value: {
-            default: undefined,
-        },
-        mask: {
-            default: undefined,
-        },
-        label: {
-            default: false,
-        },
-        type: {
-            required: false,
-            default: function () {
-                return 'text';
-            },
-        },
-        placeholder: {
-            default: '',
+    inset: {
+        default: false,
+        type: Boolean,
+    },
+    size: {
+        default: null,
+    },
+    rows: {
+        default: function () {
+            return 4;
         },
     },
-    methods: {
-        trigger(v) {
-            this.$emit('input', v.target.value);
+    id: {
+        required: true,
+    },
+    hint: {
+        default: null,
+    },
+    modelValue: {
+        default: undefined,
+    },
+    mask: {
+        default: undefined,
+    },
+    label: {
+        default: false,
+    },
+    type: {
+        required: false,
+        default: function () {
+            return 'text';
         },
     },
-    created() {
-        if (typeof this.value === 'undefined') {
-            this.$emit('input', '');
-        }
+    placeholder: {
+        default: '',
     },
-};
+});
+function trigger(v) {
+    emit('update:modelValue', v.target.value);
+}
+if (typeof props.modelValue === 'undefined') {
+    emit('update:modelValue', '');
+}
 </script>
 
 <style scope>
