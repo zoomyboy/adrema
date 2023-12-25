@@ -24,6 +24,7 @@ use App\Group\Actions\GroupBulkstoreAction;
 use App\Group\Actions\GroupIndexAction;
 use App\Form\Actions\FormtemplateIndexAction;
 use App\Form\Actions\FormtemplateStoreAction;
+use App\Form\Actions\FormtemplateUpdateAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
@@ -146,4 +147,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     // ------------------------------------ form -----------------------------------
     Route::get('/formtemplate', FormtemplateIndexAction::class)->name('formtemplate.index');
     Route::post('/formtemplate', FormtemplateStoreAction::class)->name('formtemplate.store');
+    Route::patch('/formtemplate/{formtemplate}', FormtemplateUpdateAction::class)->name('formtemplate.update');
 });
