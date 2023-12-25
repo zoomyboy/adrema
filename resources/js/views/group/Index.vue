@@ -4,6 +4,11 @@
             <f-save-button form="groupform"></f-save-button>
         </template>
         <ui-popup v-if="editing !== null" heading="Untergruppen bearbeiten" inner-width="max-w-5xl" @close="editing = null">
+            <template #actions>
+                <a href="#" @click.prevent="store">
+                    <ui-sprite src="save" class="text-zinc-400 w-6 h-6"></ui-sprite>
+                </a>
+            </template>
             <div class="flex space-x-3">
                 <f-text id="parent-inner_name" v-model="editing.parent.inner_name" label="Interner Name" name="parent-inner_name"></f-text>
                 <f-select id="parent-level" v-model="editing.parent.level" label="Ebene" name="parent-level" :options="meta.levels"></f-select>
@@ -27,7 +32,6 @@
                         </td>
                     </tr>
                 </table>
-                <ui-button class="btn-primary" @click.prevent="store">Speichern</ui-button>
             </div>
         </ui-popup>
         <form id="groupform" class="grow p-3" @submit.prevent="submit">
@@ -53,9 +57,7 @@
                         <td v-text="child.inner_name"></td>
                         <td v-text="child.level"></td>
                         <td>
-                            <a v-if="child.children_count" v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm" @click.prevent="edit(child)"
-                                ><ui-sprite src="pencil"></ui-sprite
-                            ></a>
+                            <a v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm" @click.prevent="edit(child)"><ui-sprite src="pencil"></ui-sprite></a>
                         </td>
                     </tr>
                     <template v-for="subchild in childrenOf(child.id)" :key="subchild.id">
