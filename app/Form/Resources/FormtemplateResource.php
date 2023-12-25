@@ -31,6 +31,13 @@ class FormtemplateResource extends JsonResource
                 [
                     'id' => 'TextField',
                     'name' => 'Text',
+                    'default' => [
+                        'name' => '',
+                        'type' => 'TextField',
+                        'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
+                        'default' => '',
+                        'required' => false,
+                    ]
                 ]
             ],
             'links' => [
@@ -43,6 +50,8 @@ class FormtemplateResource extends JsonResource
                 ]
             ],
             'section_default' => [
+                'name' => '',
+                'intro' => '',
                 'fields' => [],
             ]
         ];
