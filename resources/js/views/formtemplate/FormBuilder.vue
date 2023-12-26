@@ -53,6 +53,8 @@ import Asideform from './Asideform.vue';
 import TextareaField from './TextareaField.vue';
 import DropdownField from './DropdownField.vue';
 import RadioField from './RadioField.vue';
+import CheckboxField from './CheckboxField.vue';
+import CheckboxesField from './DropdownField.vue';
 
 const sectionVisible = ref(-1);
 const singleSection = ref(null);
@@ -68,6 +70,8 @@ const fields = {
     TextareaField: TextareaField,
     DropdownField: DropdownField,
     RadioField: RadioField,
+    CheckboxField: CheckboxField,
+    CheckboxesField: CheckboxesField,
 };
 
 function editSection(sectionIndex) {
