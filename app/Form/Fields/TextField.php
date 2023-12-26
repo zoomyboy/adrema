@@ -25,6 +25,8 @@ class TextField extends Field
 
     public static function fake(Generator $faker): array
     {
-        return [];
+        return [
+            'required' => $faker->boolean(),
+        ];
     }
 }
