@@ -14,7 +14,7 @@ class RadioField extends Field
     public static function meta(): array
     {
         return [
-            ['key' => 'options', 'default' => [], 'rules' => ['options' => 'present|array', 'options.*' => 'string'], 'label' => 'Optionen'],
+            ['key' => 'options', 'default' => [], 'rules' => ['options' => 'present|array', 'options.*' => 'required|string'], 'label' => 'Optionen'],
             ['key' => 'required', 'default' => false, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
         ];
     }

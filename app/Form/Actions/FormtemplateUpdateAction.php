@@ -10,6 +10,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
 class FormtemplateUpdateAction
 {
     use AsAction;
+    use HasValidation;
 
     /**
      * @return array<string, mixed>
