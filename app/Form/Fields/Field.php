@@ -36,7 +36,7 @@ abstract class Field
             'default' => [
                 'name' => '',
                 'type' => class_basename(static::class),
-                'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
+                'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                 'default' => static::default(),
                 'required' => false,
                 ...static::meta(),
