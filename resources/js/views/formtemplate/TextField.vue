@@ -8,19 +8,13 @@
         inline
         @update:modelValue="$emit('update:modelValue', {...modelValue, required: $event})"
     ></f-switch>
-    <f-textarea
-        id="description"
-        label="Beschreibung"
-        size="sm"
-        name="description"
-        :model-value="modelValue.description"
-        @update:modelValue="$emit('update:modelValue', {...modelValue, description: $event})"
-    ></f-textarea>
 </template>
 
 <script setup>
 const props = defineProps({
-    modelValue: {},
+    modelValue: {
+        validator: (v) => v === true || v === false,
+    },
 });
 
 const emit = defineEmits(['update:modelValue']);

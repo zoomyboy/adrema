@@ -14,7 +14,7 @@ class CheckboxesField extends Field
     public static function meta(): array
     {
         return [
-            ['key' => 'options', 'default' => [], 'rules' => ['options' => 'array', 'options.*' => 'string'], 'label' => 'Optionen'],
+            ['key' => 'options', 'default' => [], 'rules' => ['options' => 'array', 'options.*' => 'required|string'], 'label' => 'Optionen'],
         ];
     }
 

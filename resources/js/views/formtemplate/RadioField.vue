@@ -12,6 +12,15 @@
         ></f-text>
         <ui-icon-button icon="plus" @click="$emit('update:modelValue', {...modelValue, options: [...modelValue.options, '']})">Option einfügen</ui-icon-button>
     </div>
+    <f-switch
+        id="fieldrequired"
+        v-model="modelValue.required"
+        label="Erforderlich"
+        size="sm"
+        name="fieldrequired"
+        inline
+        @update:modelValue="$emit('update:modelValue', {...modelValue, required: $event})"
+    ></f-switch>
 </template>
 
 <script setup>

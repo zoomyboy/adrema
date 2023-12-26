@@ -26,7 +26,6 @@
                     @submit="storeField"
                 >
                     <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
-                    <f-switch id="fieldrequired" v-model="singleField.model.required" label="Erforderlich" size="sm" name="fieldrequired" inline></f-switch>
                     <component :is="fields[singleField.model.type]" v-model="singleField.model"></component>
                 </asideform>
             </div>
@@ -52,10 +51,11 @@ import {snakeCase} from 'change-case';
 import '!/eventform/dist/main.js';
 import Asideform from './Asideform.vue';
 import TextareaField from './TextareaField.vue';
-import DropdownField from './DropdownField.vue';
+import TextField from './TextField.vue';
+import DropdownField from './RadioField.vue';
 import RadioField from './RadioField.vue';
 import CheckboxField from './CheckboxField.vue';
-import CheckboxesField from './DropdownField.vue';
+import CheckboxesField from './CheckboxesField.vue';
 
 const sectionVisible = ref(-1);
 const singleSection = ref(null);
@@ -69,6 +69,7 @@ const emit = defineEmits(['submit', 'cancel']);
 
 const fields = {
     TextareaField: TextareaField,
+    TextField: TextField,
     DropdownField: DropdownField,
     RadioField: RadioField,
     CheckboxField: CheckboxField,
