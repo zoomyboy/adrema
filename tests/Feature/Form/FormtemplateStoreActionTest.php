@@ -23,7 +23,7 @@ class FormtemplateStoreActionTest extends TestCase
         $this->login()->loginNami()->withoutExceptionHandling();
         FormtemplateRequest::new()->name('testname')->sections([
             FormtemplateSectionRequest::new()->name('Persönliches')->fields([
-                FormtemplateFieldRequest::new()->type(TextField::class)->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false),
+                FormtemplateFieldRequest::new()->type(TextField::class)->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false)->default('zuzu'),
                 FormtemplateFieldRequest::new()->type(TextareaField::class)->name('lala2')->required(false)->rows(10),
             ]),
         ])->fake();
@@ -34,6 +34,7 @@ class FormtemplateStoreActionTest extends TestCase
         $this->assertEquals('Persönliches', $formtemplate->config['sections'][0]['name']);
         $this->assertEquals('lala1', $formtemplate->config['sections'][0]['fields'][0]['name']);
         $this->assertEquals('TextField', $formtemplate->config['sections'][0]['fields'][0]['type']);
+        $this->assertEquals('zuzu', $formtemplate->config['sections'][0]['fields'][0]['default']);
         $this->assertEquals('TextareaField', $formtemplate->config['sections'][0]['fields'][1]['type']);
         $this->assertEquals(false, $formtemplate->config['sections'][0]['fields'][1]['required']);
         $this->assertEquals(['mobile' => 2, 'tablet' => 2, 'desktop' => 1], $formtemplate->config['sections'][0]['fields'][0]['columns']);

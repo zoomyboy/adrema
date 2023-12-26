@@ -13,6 +13,7 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self type(string $type)
  * @method self rows(int $rows)
  * @method self columns(array{mobile: int, tablet: int, desktop: int} $rows)
+ * @method self default(mixed $default)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {
@@ -26,6 +27,7 @@ class FormtemplateFieldRequest extends RequestFactory
             'key' => str($this->faker->words(5, true))->snake()->toString(),
             'type' => $this->faker->randomElement(array_column(Field::asMeta(), 'id')),
             'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
+            'default' => '',
         ];
     }
 
