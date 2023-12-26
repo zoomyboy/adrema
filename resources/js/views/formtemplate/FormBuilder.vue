@@ -48,6 +48,7 @@
 
 <script setup>
 import {computed, ref} from 'vue';
+import {snakeCase} from 'change-case';
 import '!/eventform/dist/main.js';
 import Asideform from './Asideform.vue';
 import TextareaField from './TextareaField.vue';
@@ -109,6 +110,7 @@ function storeSection() {
 }
 
 function storeField() {
+    singleField.value.model.key = snakeCase(singleField.value.model.name);
     if (singleField.value.index !== null) {
         inner.value.config.sections[singleField.value.sectionIndex].fields.splice(singleField.value.index, 1, singleField.value.model);
     } else {

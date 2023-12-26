@@ -3,9 +3,13 @@
 namespace App\Form\Resources;
 
 use App\Form\Fields\Field;
+use App\Form\Models\Formtemplate;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Formtemplate
+ */
 class FormtemplateResource extends JsonResource
 {
 
@@ -34,19 +38,6 @@ class FormtemplateResource extends JsonResource
     {
         return [
             'fields' => Field::asMeta(),
-            [
-                [
-                    'id' => 'TextField',
-                    'name' => 'Text',
-                    'default' => [
-                        'name' => '',
-                        'type' => 'TextField',
-                        'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
-                        'default' => '',
-                        'required' => false,
-                    ]
-                ]
-            ],
             'links' => [
                 'store' => route('formtemplate.store'),
             ],

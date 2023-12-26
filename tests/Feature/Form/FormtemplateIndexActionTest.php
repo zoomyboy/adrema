@@ -21,36 +21,36 @@ class FormtemplateIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.links', [
                 'update' => route('formtemplate.update', ['formtemplate' => $formtemplate]),
             ])
-            ->assertInertiaPath('data.meta.fields.0', [
+            ->assertInertiaPath('data.meta.fields.2', [
                 'id' => 'DropdownField',
                 'name' => 'Dropdown',
                 'default' => [
                     'name' => '',
                     'type' => 'DropdownField',
-                    'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
-                    'default' => [],
+                    'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
+                    'default' => null,
                     'required' => false,
                     'options' => [],
                 ]
             ])
-            ->assertInertiaPath('data.meta.fields.1', [
+            ->assertInertiaPath('data.meta.fields.4', [
                 'id' => 'TextField',
                 'name' => 'Text',
                 'default' => [
                     'name' => '',
                     'type' => 'TextField',
-                    'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
+                    'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                     'default' => '',
                     'required' => false,
                 ]
             ])
-            ->assertInertiaPath('data.meta.fields.2', [
+            ->assertInertiaPath('data.meta.fields.5', [
                 'id' => 'TextareaField',
                 'name' => 'Textarea',
                 'default' => [
                     'name' => '',
                     'type' => 'TextareaField',
-                    'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 12],
+                    'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                     'default' => '',
                     'required' => false,
                     'rows' => 5,
