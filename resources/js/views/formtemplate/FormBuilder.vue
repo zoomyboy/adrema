@@ -26,6 +26,7 @@
                     @submit="storeField"
                 >
                     <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
+                    <column-selector v-model="singleField.model.columns"></column-selector>
                     <component :is="fields[singleField.model.type]" v-model="singleField.model"></component>
                 </asideform>
             </div>
@@ -56,6 +57,7 @@ import DropdownField from './RadioField.vue';
 import RadioField from './RadioField.vue';
 import CheckboxField from './CheckboxField.vue';
 import CheckboxesField from './CheckboxesField.vue';
+import ColumnSelector from './ColumnSelector.vue';
 
 const sectionVisible = ref(-1);
 const singleSection = ref(null);
