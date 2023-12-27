@@ -1,17 +1,6 @@
 <template>
-    <ui-popup v-if="singleField !== null && singleField.model === null" heading="Feldtyp auswählen"
-        @close="singleField = null">
-        <div class="mt-3 grid gap-3 grid-cols-3">
-            <a v-for="(field, index) in props.meta.fields" :key="index"
-                class="py-2 px-3 border rounded bg-zinc-800 hover:bg-zinc-700 transition" href="#"
-                @click.prevent="setFieldType(field)">
-                <span v-text="field.name"></span>
-            </a>
-        </div>
-    </ui-popup>
     <form class="grid gap-3 mt-4 grid-cols-[1fr_max-content] items-start" @submit.prevent="submit">
         <div class="grid gap-3">
-            <slot name="meta"></slot>
             <asideform v-if="singleSection !== null"
                 :heading="`Sektion ${singleSection.index !== null ? 'bearbeiten' : 'erstellen'}`"
                 @close="singleSection = null" @submit="storeSection">
@@ -20,7 +9,17 @@
                 <f-textarea :id="`sectionform-intro`" v-model="singleSection.model.intro" label="Einleitung"
                     :name="`sectionform-intro`"></f-textarea>
             </asideform>
-            <asideform v-if="singleField !== null && singleField.model !== null"
+            <asideform v-if="singleSection === null && singleField === null" heading="Feld erstellen" :closeable="false"
+                :storeable="false" @submit="storeField">
+                <div class="mt-3 grid gap-3">
+                    <a v-for="(field, index) in props.meta.fields" :key="index"
+                        class="py-2 px-3 border rounded bg-zinc-800 hover:bg-zinc-700 transition" href="#"
+                        @click.prevent="addField(field)">
+                        <span v-text="field.name"></span>
+                    </a>
+                </div>
+            </asideform>
+            <asideform v-if="singleSection === null && singleField !== null"
                 :heading="`Feld ${singleField.index !== null ? 'bearbeiten' : 'erstellen'}`" @close="singleField = null"
                 @submit="storeField">
                 <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
@@ -32,15 +31,15 @@
             <event-form editable
                 style="--primary: hsl(181, 75%, 26%); --secondary: hsl(181, 75%, 35%); --font: hsl(181, 84%, 78%); --circle: hsl(181, 86%, 16%)"
                 :value="previewString" @editSection="editSection($event.detail[0])" @addSection="addSection"
-                @addField="addField($event.detail[0])" @editField="editField($event.detail[0], $event.detail[1])"
+                @editField="editField($event.detail[0], $event.detail[1])"
                 @deleteField="deleteField($event.detail[0], $event.detail[1])"
-                @deleteSection="deleteSection($event.detail[0])"></event-form>
+                @deleteSection="deleteSection($event.detail[0])" @active="updateActive($event.detail[0])"></event-form>
         </ui-box>
     </form>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { watch, computed, ref } from 'vue';
 import { snakeCase } from 'change-case';
 import '!/eventform/dist/main.js';
 import Asideform from './Asideform.vue';
@@ -54,6 +53,14 @@ import ColumnSelector from './ColumnSelector.vue';
 
 const singleSection = ref(null);
 const singleField = ref(null);
+const active = ref(null);
+
+function updateActive(a) {
+    active.value = a;
+    if (a === null) {
+        addSection();
+    }
+}
 
 const props = defineProps({
     modelValue: {},
@@ -125,10 +132,10 @@ function deleteField(sindex, findex) {
     push();
 }
 
-function addField(sectionIndex) {
+function addField(type) {
     singleField.value = {
-        model: null,
-        sectionIndex: sectionIndex,
+        model: JSON.parse(JSON.stringify(type.default)),
+        sectionIndex: active,
         index: null,
     };
 }
@@ -136,10 +143,6 @@ function addField(sectionIndex) {
 function deleteSection(sindex) {
     inner.value.sections.splice(sindex, 1);
     push();
-}
-
-function setFieldType(field) {
-    singleField.value.model = JSON.parse(JSON.stringify(field.default));
 }
 
 const previewString = computed(() => (inner.value && inner.value ? JSON.stringify(inner.value) : '{}'));
