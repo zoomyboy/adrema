@@ -22,6 +22,7 @@ use App\Efz\ShowEfzDocumentAction;
 use App\Group\Actions\GroupApiIndexAction;
 use App\Group\Actions\GroupBulkstoreAction;
 use App\Group\Actions\GroupIndexAction;
+use App\Form\Actions\FormStoreAction;
 use App\Form\Actions\FormtemplateIndexAction;
 use App\Form\Actions\FormtemplateStoreAction;
 use App\Form\Actions\FormtemplateUpdateAction;
@@ -148,4 +149,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/formtemplate', FormtemplateIndexAction::class)->name('formtemplate.index');
     Route::post('/formtemplate', FormtemplateStoreAction::class)->name('formtemplate.store');
     Route::patch('/formtemplate/{formtemplate}', FormtemplateUpdateAction::class)->name('formtemplate.update');
+    Route::post('/form', FormStoreAction::class)->name('form.store');
 });
