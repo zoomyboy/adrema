@@ -1,6 +1,7 @@
 <template>
     <form class="grid gap-3 mt-4 grid-cols-[1fr_max-content] items-start" @submit.prevent="submit">
         <div class="grid gap-3">
+            <slot name="meta"></slot>
             <asideform v-if="singleSection !== null"
                 :heading="`Sektion ${singleSection.index !== null ? 'bearbeiten' : 'erstellen'}`"
                 @close="singleSection = null" @submit="storeSection">
