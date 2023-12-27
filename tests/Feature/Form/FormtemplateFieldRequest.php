@@ -22,12 +22,14 @@ class FormtemplateFieldRequest extends RequestFactory
      */
     public function definition(): array
     {
+        $type = $this->faker->randomElement(array_column(Field::asMeta(), 'id'));
         return [
             'name' => $this->faker->words(5, true),
             'key' => str($this->faker->words(5, true))->snake()->toString(),
-            'type' => $this->faker->randomElement(array_column(Field::asMeta(), 'id')),
+            'type' => $type,
             'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
             'default' => '',
+            ...Field::classFromType($type)::fake($this->faker),
         ];
     }
 

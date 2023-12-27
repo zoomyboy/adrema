@@ -26,6 +26,9 @@ class RadioField extends Field
 
     public static function fake(Generator $faker): array
     {
-        return [];
+        return [
+            'options' => $faker->words(4),
+            'required' => $faker->boolean(),
+        ];
     }
 }

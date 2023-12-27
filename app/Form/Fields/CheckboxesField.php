@@ -25,6 +25,8 @@ class CheckboxesField extends Field
 
     public static function fake(Generator $faker): array
     {
-        return [];
+        return [
+            'options' => $faker->words(4),
+        ];
     }
 }

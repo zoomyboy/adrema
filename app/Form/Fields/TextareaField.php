@@ -26,6 +26,9 @@ class TextareaField extends Field
 
     public static function fake(Generator $faker): array
     {
-        return [];
+        return [
+            'rows' => $faker->numberBetween(5, 10),
+            'required' => $faker->boolean(),
+        ];
     }
 }
