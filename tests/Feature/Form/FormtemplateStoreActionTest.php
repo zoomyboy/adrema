@@ -79,16 +79,4 @@ class FormtemplateStoreActionTest extends TestCase
         $this->postJson(route('formtemplate.store'))
             ->assertJsonValidationErrors($messages);
     }
-
-    public function testNameIsRequired(): void
-    {
-        $this->login()->loginNami();
-
-        $this->postJson(route('formtemplate.store'), [
-            'name' => '',
-            'config' => [
-                'sections' => []
-            ]
-        ])->assertJsonValidationErrors(['name' => 'Name ist erforderlich']);
-    }
 }
