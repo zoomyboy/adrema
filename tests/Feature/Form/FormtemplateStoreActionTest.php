@@ -40,7 +40,7 @@ class FormtemplateStoreActionTest extends TestCase
         $this->assertEquals(['mobile' => 2, 'tablet' => 2, 'desktop' => 1], $formtemplate->config['sections'][0]['fields'][0]['columns']);
         $this->assertEquals(10, $formtemplate->config['sections'][0]['fields'][1]['rows']);
         $this->assertFalse($formtemplate->config['sections'][0]['fields'][0]['required']);
-        Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message = 'Vorlage gespeichert.');
+        Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Vorlage gespeichert.');
     }
 
     public function validationDataProvider(): Generator
