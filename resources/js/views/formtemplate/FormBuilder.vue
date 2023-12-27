@@ -40,6 +40,7 @@
                     @addField="addField($event.detail[0])"
                     @editField="editField($event.detail[0], $event.detail[1])"
                     @deleteField="deleteField($event.detail[0], $event.detail[1])"
+                    @deleteSection="deleteSection($event.detail[0])"
                 ></event-form>
             </ui-box>
         </form>
@@ -132,6 +133,10 @@ function addField(sectionIndex) {
         sectionIndex: sectionIndex,
         index: null,
     };
+}
+
+function deleteSection(sindex) {
+    inner.value.config.sections.splice(sindex, 1);
 }
 
 function setFieldType(field) {
