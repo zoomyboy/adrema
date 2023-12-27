@@ -19,6 +19,15 @@ return new class extends Migration
             $table->json('config');
             $table->timestamps();
         });
+
+        Schema::create('forms', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->text('excerpt');
+            $table->json('config');
+            $table->timestamps();
+        });
     }
 
     /**

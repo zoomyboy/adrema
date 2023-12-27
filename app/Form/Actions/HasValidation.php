@@ -12,7 +12,7 @@ trait HasValidation
     /**
      * @return array<string, mixed>
      */
-    public function rules(): array
+    public function globalRules(): array
     {
         return [
             'name' => 'required|string|max:255',
