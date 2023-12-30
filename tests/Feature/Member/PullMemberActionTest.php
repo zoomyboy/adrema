@@ -53,7 +53,6 @@ class PullMemberActionTest extends TestCase
 
         $member = app(PullMemberAction::class)->handle(1000, 1001);
 
-        Group::firstWhere('nami_id', 1000);
         $this->assertDatabaseHas('members', [
             'firstname' => '::firstname::',
             'lastname' => '::lastname::',
@@ -76,6 +75,7 @@ class PullMemberActionTest extends TestCase
         $this->assertDatabaseHas('groups', [
             'name' => 'SG Wald',
             'nami_id' => 1000,
+            'inner_name' => 'SG Wald',
         ]);
         $this->assertEquals(1001, $member->nami_id);
     }

@@ -46,13 +46,14 @@ class InitializeGroupsTest extends TestCase
         $this->assertDatabaseHas('groups', [
             'nami_id' => 150,
             'name' => 'lorem',
+            'inner_name' => 'lorem',
             'parent_id' => null,
         ]);
     }
 
     public function testItDoesntCreateAGroupTwiceWithTheSameNamiId(): void
     {
-        GroupModel::factory()->create(['nami_id' => 150]);
+        $existingGroup = GroupModel::factory()->create(['nami_id' => 150, 'inner_name' => 'Def']);
         $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
         $this->api->method('groups')->will($this->returnValueMap([
             [null, collect([$parentGroup])],
@@ -62,6 +63,12 @@ class InitializeGroupsTest extends TestCase
         (new InitializeGroups($this->api))->handle();
 
         $this->assertDatabaseCount('groups', 1);
+        $this->assertDatabaseHas('groups', [
+            'id' => $existingGroup->id,
+            'name' => 'lorem',
+            'inner_name' => 'Def',
+            'nami_id' => 150
+        ]);
     }
 
     public function testItSynchsSubgroups(): void
@@ -101,7 +108,7 @@ class InitializeGroupsTest extends TestCase
 
     public function testItAssignsIdAndParentToAnExistingSubgroup(): void
     {
-        GroupModel::factory()->create(['nami_id' => 200]);
+        $existingSubgroup = GroupModel::factory()->create(['name' => 'Abc', 'inner_name' => 'Def', 'nami_id' => 200]);
         $parentGroup = Group::from(['id' => 150, 'name' => 'root', 'parentId' => null]);
         $subgroup = Group::from(['id' => 200, 'name' => 'child', 'parentId' => 150]);
         $this->api->method('groups')->will($this->returnValueMap([
@@ -114,8 +121,10 @@ class InitializeGroupsTest extends TestCase
 
         $this->assertDatabaseCount('groups', 2);
         $this->assertDatabaseHas('groups', [
+            'id' => $existingSubgroup->id,
             'nami_id' => 200,
             'name' => 'child',
+            'inner_name' => 'Def',
             'parent_id' => GroupModel::firstWhere('nami_id', 150)->id,
         ]);
     }

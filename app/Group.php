@@ -27,4 +27,13 @@ class Group extends Model
     {
         return $this->belongsTo(static::class, 'parent_id');
     }
+
+    public static function booted(): void
+    {
+        static::creating(function (self $group) {
+            if (!$group->getAttribute('inner_name') && $group->getAttribute('name')) {
+                $group->setAttribute('inner_name', $group->getAttribute('name'));
+            }
+        });
+    }
 }

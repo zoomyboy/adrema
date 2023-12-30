@@ -18,11 +18,11 @@ class IndexTest extends TestCase
         $group = Group::factory()->for(Group::first(), 'parent')->create(['name' => 'Afff', 'inner_name' => 'Gruppe', 'level' => Level::REGION]);
 
         $this->get('/group')
-            ->assertInertiaPath('data.data.2.name', 'Afff')
-            ->assertInertiaPath('data.data.2.inner_name', 'Gruppe')
-            ->assertInertiaPath('data.data.2.id', $group->id)
-            ->assertInertiaPath('data.data.2.level', 'Bezirk')
-            ->assertInertiaPath('data.data.2.parent_id', Group::first()->id)
+            ->assertInertiaPath('data.data.1.name', 'Afff')
+            ->assertInertiaPath('data.data.1.inner_name', 'Gruppe')
+            ->assertInertiaPath('data.data.1.id', $group->id)
+            ->assertInertiaPath('data.data.1.level', 'Bezirk')
+            ->assertInertiaPath('data.data.1.parent_id', Group::first()->id)
             ->assertInertiaPath('data.meta.links.bulkstore', route('group.bulkstore'));
     }
 

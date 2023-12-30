@@ -7,9 +7,9 @@ use App\Group;
 use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use App\Member\Membership;
+use App\Membership\Actions\MassStoreAction;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
-use App\Membership\Actions\StoreForGroupAction;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Queue;
@@ -17,7 +17,7 @@ use Tests\TestCase;
 use Throwable;
 use Zoomyboy\LaravelNami\Fakes\MembershipFake;
 
-class SyncActionTest extends TestCase
+class MassstoreActionTest extends TestCase
 {
 
     use DatabaseMigrations;
@@ -31,13 +31,13 @@ class SyncActionTest extends TestCase
         $subactivity = Subactivity::factory()->create();
         $group = Group::factory()->create();
 
-        $this->postJson('/api/membership/sync', [
+        $this->postJson(route('membership.masslist.store'), [
             'members' => [$member->id],
             'activity_id' => $activity->id,
             'subactivity_id' => $subactivity->id,
             'group_id' => $group->id,
         ]);
-        StoreForGroupAction::assertPushed(fn ($action, $params) => $params[0]->is($group) && $params[1]->is($activity) && $params[2]->is($subactivity) && $params[3][0] === $member->id);
+        MassStoreAction::assertPushed(fn ($action, $params) => $params[0]->is($group) && $params[1]->is($activity) && $params[2]->is($subactivity) && $params[3][0] === $member->id);
     }
 
     public function testItCreatesAMembership(): void
@@ -49,7 +49,7 @@ class SyncActionTest extends TestCase
         $subactivity = Subactivity::factory()->create();
         $group = Group::factory()->create();
 
-        StoreForGroupAction::run($group, $activity, $subactivity, [$member->id]);
+        MassStoreAction::run($group, $activity, $subactivity, [$member->id]);
     }
 
     public function testItDeletesAMembership(): void
@@ -60,7 +60,7 @@ class SyncActionTest extends TestCase
 
         $member = Member::factory()->defaults()->has(Membership::factory()->inLocal('Leiter*in', 'Rover'))->create();
 
-        StoreForGroupAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
+        MassStoreAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
     }
 
     public function testItRollsbackWhenDeletionFails(): void
@@ -78,7 +78,7 @@ class SyncActionTest extends TestCase
             ->create();
 
         try {
-            StoreForGroupAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
+            MassStoreAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
         } catch (Throwable $e) {
         }
         $this->assertDatabaseCount('memberships', 2);
