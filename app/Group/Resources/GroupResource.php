@@ -2,9 +2,13 @@
 
 namespace App\Group\Resources;
 
+use App\Group;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Group
+ */
 class GroupResource extends JsonResource
 {
 
@@ -14,7 +18,7 @@ class GroupResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array<string, mixed>
      */
     public function toArray($request)
     {
@@ -27,6 +31,9 @@ class GroupResource extends JsonResource
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function meta(): array
     {
         return [

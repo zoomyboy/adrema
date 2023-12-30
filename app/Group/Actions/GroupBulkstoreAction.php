@@ -4,7 +4,6 @@ namespace App\Group\Actions;
 
 use App\Group;
 use App\Group\Enums\Level;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 use Lorisleiva\Actions\ActionRequest;
@@ -14,6 +13,9 @@ class GroupBulkstoreAction
 {
     use AsAction;
 
+    /**
+     * @return array<string, string|array<int, string|Rule>>
+     */
     public function rules(): array
     {
         return [
@@ -23,7 +25,10 @@ class GroupBulkstoreAction
         ];
     }
 
-    public function handle($groups): void
+    /**
+     * @param array<int, array{id: int, inner_name: string, level: string}> $groups
+     */
+    public function handle(array $groups): void
     {
         foreach ($groups as $payload) {
             Group::find($payload['id'])->update(['level' => $payload['level'], 'inner_name' => $payload['inner_name']]);
