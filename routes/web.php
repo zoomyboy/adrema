@@ -19,6 +19,7 @@ use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
+use App\Group\Actions\GroupApiIndexAction;
 use App\Group\Actions\GroupBulkstoreAction;
 use App\Group\Actions\GroupIndexAction;
 use App\Initialize\Actions\InitializeAction;
@@ -129,6 +130,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
 
     // ----------------------------------- group ----------------------------------
     Route::get('/group', GroupIndexAction::class)->name('group.index');
+    Route::get('/api/group/{group?}', GroupApiIndexAction::class)->name('api.group');
     Route::post('/group/bulkstore', GroupBulkstoreAction::class)->name('group.bulkstore');
 
     // ----------------------------------- course ----------------------------------

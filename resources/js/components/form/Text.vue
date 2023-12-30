@@ -5,18 +5,8 @@
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
         <div class="real-field-wrap size-sm" :class="sizes[size].field">
-            <input
-                @keypress="$emit('keypress', $event)"
-                :name="name"
-                :type="type"
-                :value="transformedValue"
-                @input="onInput"
-                @change="onChange"
-                :disabled="disabled"
-                :placeholder="placeholder"
-                @focus="onFocus"
-                @blur="onBlur"
-            />
+            <input :name="name" :type="type" :value="transformedValue" :disabled="disabled" :placeholder="placeholder"
+                @keypress="$emit('keypress', $event)" @input="onInput" @change="onChange" @focus="onFocus" @blur="onBlur" />
             <div v-if="hint" class="info-wrap">
                 <div v-tooltip="hint">
                     <ui-sprite src="info-button" class="info-button"></ui-sprite>
@@ -242,25 +232,6 @@ var transformers = {
 };
 
 export default {
-    data: function () {
-        return {
-            focus: false,
-            sizes: {
-                sm: {
-                    wrap: 'field-wrap-sm',
-                    field: 'size-sm',
-                },
-                base: {
-                    wrap: 'field-wrap-base',
-                    field: 'size-base',
-                },
-                lg: {
-                    wrap: 'field-wrap-lg',
-                    field: 'size-lg',
-                },
-            },
-        };
-    },
     props: {
         placeholder: {
             default: function () {
@@ -312,23 +283,24 @@ export default {
         },
         name: {},
     },
-    methods: {
-        onFocus() {
-            this.focus = true;
-        },
-        onBlur() {
-            this.focus = false;
-        },
-        onChange(v) {
-            if (this.mode !== 'none') {
-                this.transformedValue = v.target.value;
-            }
-        },
-        onInput(v) {
-            if (this.mode === 'none') {
-                this.transformedValue = v.target.value;
-            }
-        },
+    data: function () {
+        return {
+            focus: false,
+            sizes: {
+                sm: {
+                    wrap: 'field-wrap-sm',
+                    field: 'size-sm',
+                },
+                base: {
+                    wrap: 'field-wrap-base',
+                    field: 'size-base',
+                },
+                lg: {
+                    wrap: 'field-wrap-lg',
+                    field: 'size-lg',
+                },
+            },
+        };
     },
     computed: {
         transformedValue: {
@@ -354,6 +326,25 @@ export default {
         if (typeof this.modelValue === 'undefined') {
             this.$emit('input', this.default === undefined ? '' : this.default);
         }
+    },
+    methods: {
+        onFocus() {
+            this.focus = true;
+        },
+        onBlur() {
+            this.focus = false;
+        },
+        onChange(v) {
+            if (this.mode !== 'none') {
+                this.transformedValue = v.target.value;
+            }
+        },
+        onInput(v) {
+            console.log(this.modelModifiers);
+            if (this.mode === 'none') {
+                this.transformedValue = v.target.value;
+            }
+        },
     },
 };
 </script>

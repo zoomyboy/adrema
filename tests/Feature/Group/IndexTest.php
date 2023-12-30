@@ -11,27 +11,55 @@ class IndexTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testItDisplaysAllActivitiesAndSubactivities(): void
+    public function testItDisplaysGroupPage(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        $this->get('/group')
+            ->assertOk()
+            ->assertInertiaPath('data.meta.links.root_path', route('api.group'));
+    }
+
+    public function testItDisplaysParentGroup(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        $group = Group::factory()->create(['name' => 'Afff', 'inner_name' => 'Gruppe', 'level' => Level::REGION]);
+
+        $this->get('/api/group')
+            ->assertJsonCount(2, 'data')
+            ->assertJsonPath('data.1.name', 'Afff')
+            ->assertJsonPath('data.1.inner_name', 'Gruppe')
+            ->assertJsonPath('data.1.id', $group->id)
+            ->assertJsonPath('data.1.level', 'Bezirk')
+            ->assertJsonPath('data.1.parent_id', null)
+            ->assertJsonPath('meta.links.bulkstore', route('group.bulkstore'));
+    }
+
+    public function testItDisplaysGroupsForParent(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
 
         $group = Group::factory()->for(Group::first(), 'parent')->create(['name' => 'Afff', 'inner_name' => 'Gruppe', 'level' => Level::REGION]);
+        Group::factory()->for(Group::first(), 'parent')->create(['name' => 'Afff', 'inner_name' => 'Gruppe', 'level' => Level::REGION]);
 
-        $this->get('/group')
-            ->assertInertiaPath('data.data.1.name', 'Afff')
-            ->assertInertiaPath('data.data.1.inner_name', 'Gruppe')
-            ->assertInertiaPath('data.data.1.id', $group->id)
-            ->assertInertiaPath('data.data.1.level', 'Bezirk')
-            ->assertInertiaPath('data.data.1.parent_id', Group::first()->id)
-            ->assertInertiaPath('data.meta.links.bulkstore', route('group.bulkstore'));
+        $this->get('/api/group/' . Group::first()->id)
+            ->assertJsonCount(2, 'data')
+            ->assertJsonPath('data.0.name', 'Afff')
+            ->assertJsonPath('data.0.inner_name', 'Gruppe')
+            ->assertJsonPath('data.0.id', $group->id)
+            ->assertJsonPath('data.0.level', 'Bezirk')
+            ->assertJsonPath('data.0.parent_id', Group::first()->id)
+            ->assertJsonPath('data.0.links.children', route('api.group', ['group' => $group->id]))
+            ->assertJsonPath('meta.links.bulkstore', route('group.bulkstore'));
     }
 
     public function testLevelCanBeNull(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
 
-        Group::factory()->create(['level' => null]);
+        $group = Group::factory()->for(Group::first(), 'parent')->create(['level' => null]);
 
-        $this->get('/group')->assertInertiaPath('data.data.2.level', null);
+        $this->get('/api/group/' . Group::first()->id)->assertJsonPath('data.0.id', $group->id);
     }
 }

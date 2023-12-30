@@ -3,6 +3,7 @@
 namespace App\Group\Resources;
 
 use App\Group;
+use App\Group\Enums\Level;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,6 +29,10 @@ class GroupResource extends JsonResource
             'parent_id' => $this->parent_id,
             'id' => $this->id,
             'level' => $this->level?->value,
+            'children_count' => $this->children_count,
+            'links' => [
+                'children' => route('api.group', ['group' => $this->id]),
+            ]
         ];
     }
 
@@ -39,7 +44,9 @@ class GroupResource extends JsonResource
         return [
             'links' => [
                 'bulkstore' => route('group.bulkstore'),
-            ]
+                'root_path' => route('api.group'),
+            ],
+            'levels' => Level::forSelect(),
         ];
     }
 }

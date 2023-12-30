@@ -7,6 +7,7 @@ use App\Nami\HasNamiField;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Group extends Model
 {
@@ -26,6 +27,14 @@ class Group extends Model
     public function parent(): BelongsTo
     {
         return $this->belongsTo(static::class, 'parent_id');
+    }
+
+    /**
+     * @return HasMany<self>
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(static::class, 'parent_id');
     }
 
     public static function booted(): void

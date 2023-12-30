@@ -5,11 +5,12 @@ namespace App\Group\Actions;
 use App\Group;
 use App\Group\Resources\GroupResource;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class GroupIndexAction
+class GroupApiIndexAction
 {
     use AsAction;
 
@@ -21,13 +22,8 @@ class GroupIndexAction
         return Group::get();
     }
 
-    public function asController(): Response
+    public function asController(?Group $group = null): AnonymousResourceCollection
     {
-        session()->put('menu', 'group');
-        session()->put('title', 'Gruppierungen');
-
-        return Inertia::render('group/Index', [
-            'data' => GroupResource::collection(Group::where('parent_id', null)->withCount('children')->get()),
-        ]);
+        return GroupResource::collection($group ? $group->children()->withCount('children')->get() : Group::where('parent_id', null)->withCount('children')->get());
     }
 }
