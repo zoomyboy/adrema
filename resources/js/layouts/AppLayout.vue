@@ -16,6 +16,7 @@
             <v-link v-show="hasModule('bill')" href="/invoice" menu="invoice" icon="moneypaper">Rechnungen</v-link>
             <v-link href="/contribution" menu="contribution" icon="contribution">Zuschüsse</v-link>
             <v-link href="/activity" menu="activity" icon="activity">Tätigkeiten</v-link>
+            <v-link href="/group" menu="group" icon="group">Gruppierungen</v-link>
             <v-link href="/maildispatcher" menu="maildispatcher" icon="at">Mail-Verteiler</v-link>
         </div>
         <div class="grid gap-2">

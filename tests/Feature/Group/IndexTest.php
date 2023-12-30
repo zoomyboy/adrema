@@ -2,9 +2,8 @@
 
 namespace Tests\Feature\Group;
 
-use App\Activity;
 use App\Group;
-use App\Subactivity;
+use App\Group\Enums\Level;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -14,18 +13,25 @@ class IndexTest extends TestCase
 
     public function testItDisplaysAllActivitiesAndSubactivities(): void
     {
-        $this->login()->loginNami();
+        $this->login()->loginNami()->withoutExceptionHandling();
 
-        $leiter = Activity::factory()->name('Leiter*in')->hasAttached(Subactivity::factory()->name('Rover'))->create();
-        $intern = Activity::factory()->name('Intern')->hasAttached(Subactivity::factory()->name('Lager'))->create();
-        $group = Group::factory()->create();
+        $group = Group::factory()->for(Group::first(), 'parent')->create(['name' => 'Afff', 'inner_name' => 'Gruppe', 'level' => Level::REGION]);
 
-        $response = $this->get('/group');
+        $this->get('/group')
+            ->assertInertiaPath('data.data.2.name', 'Afff')
+            ->assertInertiaPath('data.data.2.inner_name', 'Gruppe')
+            ->assertInertiaPath('data.data.2.id', $group->id)
+            ->assertInertiaPath('data.data.2.level', 'Bezirk')
+            ->assertInertiaPath('data.data.2.parent_id', Group::first()->id)
+            ->assertInertiaPath('data.meta.links.bulkstore', route('group.bulkstore'));
+    }
 
-        $this->assertInertiaHas('Leiter*in', $response, "activities.{$leiter->id}");
-        $this->assertInertiaHas('Intern', $response, "activities.{$intern->id}");
-        $this->assertInertiaHas('Rover', $response, "subactivities.{$leiter->id}.{$leiter->subactivities->first()->id}");
-        $this->assertInertiaHas('Lager', $response, "subactivities.{$intern->id}.{$intern->subactivities->first()->id}");
-        $this->assertInertiaHas($group->name, $response, "groups.{$group->id}");
+    public function testLevelCanBeNull(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        Group::factory()->create(['level' => null]);
+
+        $this->get('/group')->assertInertiaPath('data.data.2.level', null);
     }
 }

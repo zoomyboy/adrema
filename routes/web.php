@@ -19,7 +19,8 @@ use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
-use App\Group\Actions\ListAction;
+use App\Group\Actions\GroupBulkstoreAction;
+use App\Group\Actions\GroupIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
@@ -31,7 +32,7 @@ use App\Invoice\Actions\InvoiceDestroyAction;
 use App\Invoice\Actions\InvoiceIndexAction;
 use App\Invoice\Actions\InvoiceUpdateAction;
 use App\Invoice\Actions\MassPostPdfAction;
-use App\Invoice\Actions\MassStoreAction;
+use App\Invoice\Actions\MassStoreAction as InvoiceMassStoreAction;
 use App\Invoice\Actions\PaymentPositionIndexAction;
 use App\Maildispatcher\Actions\CreateAction;
 use App\Maildispatcher\Actions\DestroyAction;
@@ -49,10 +50,11 @@ use App\Member\Actions\SearchAction;
 use App\Member\MemberController;
 use App\Membership\Actions\IndexAction as MembershipIndexAction;
 use App\Membership\Actions\ListForGroupAction;
+use App\Membership\Actions\MassListAction;
+use App\Membership\Actions\MassStoreAction;
 use App\Membership\Actions\MembershipDestroyAction;
 use App\Membership\Actions\MembershipStoreAction;
 use App\Membership\Actions\MembershipUpdateAction;
-use App\Membership\Actions\StoreForGroupAction;
 use App\Payment\SubscriptionController;
 
 Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
@@ -99,11 +101,9 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/maildispatcher', MaildispatcherStoreAction::class)->name('maildispatcher.store');
     Route::delete('/maildispatcher/{maildispatcher}', DestroyAction::class)->name('maildispatcher.destroy');
 
-    // ----------------------------------- group -----------------------------------
-    Route::get('/group', ListAction::class)->name('group.index');
 
     // -------------------------------- allpayment ---------------------------------
-    Route::post('/invoice/mass-store', MassStoreAction::class)->name('invoice.mass-store');
+    Route::post('/invoice/mass-store', InvoiceMassStoreAction::class)->name('invoice.mass-store');
 
     // ---------------------------------- invoice ----------------------------------
     Route::get('/invoice', InvoiceIndexAction::class)->name('invoice.index');
@@ -124,7 +124,12 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::patch('/membership/{membership}', MembershipUpdateAction::class)->name('membership.update');
     Route::delete('/membership/{membership}', MembershipDestroyAction::class)->name('membership.destroy');
     Route::post('/api/membership/member-list', ListForGroupAction::class)->name('membership.member-list');
-    Route::post('/api/membership/sync', StoreForGroupAction::class)->name('membership.sync');
+    Route::post('/api/membership/masslist', MassStoreAction::class)->name('membership.masslist.store');
+    Route::get('/membership/masslist', MassListAction::class)->name('membership.masslist.index');
+
+    // ----------------------------------- group ----------------------------------
+    Route::get('/group', GroupIndexAction::class)->name('group.index');
+    Route::post('/group/bulkstore', GroupBulkstoreAction::class)->name('group.bulkstore');
 
     // ----------------------------------- course ----------------------------------
     Route::get('/member/{member}/course', CourseIndexAction::class)->name('member.course.index');

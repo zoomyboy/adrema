@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Group;
+use App\Group\Enums\Level;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,8 @@ class GroupFactory extends Factory
         return [
             'name' => $this->faker->words(5, true),
             'nami_id' => $this->faker->randomNumber(),
+            'inner_name' => $this->faker->words(5, true),
+            'level' => $this->faker->randomElement(Level::cases()),
         ];
     }
 
