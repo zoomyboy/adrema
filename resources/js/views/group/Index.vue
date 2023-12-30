@@ -100,8 +100,8 @@
                                     ></a>
                                     <span v-text="subsubchild.name"></span>
                                 </div>
-                                <td v-text="subchild.inner_name"></td>
-                                <td v-text="subchild.level"></td>
+                                <td v-text="subsubchild.inner_name"></td>
+                                <td v-text="subsubchild.level"></td>
                                 <td>
                                     <a v-if="subsubchild.children_count" v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm" @click.prevent="edit(subsubchild)"
                                         ><ui-sprite src="pencil"></ui-sprite
