@@ -1,8 +1,8 @@
 <template>
     <page-layout page-class="pb-6">
         <template #toolbar>
-            <page-toolbar-button :href="meta.links.create" color="primary" icon="plus">Tätigkeit
-                erstellen</page-toolbar-button>
+            <page-toolbar-button :href="meta.links.create" color="primary" icon="plus">Tätigkeit erstellen</page-toolbar-button>
+            <page-toolbar-button :href="meta.links.membership_masslist" color="primary" icon="pencil">Mitgliedschaften zuweisen</page-toolbar-button>
         </template>
         <ui-popup v-if="deleting !== null" heading="Bitte bestätigen" @close="deleting = null">
             <div>
@@ -23,10 +23,8 @@
                 <td v-text="activity.name"></td>
                 <td>
                     <div class="flex space-x-1">
-                        <i-link v-tooltip="`Bearbeiten`" :href="activity.links.edit"
-                            class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></i-link>
-                        <a v-tooltip="`Entfernen`" href="#" class="inline-flex btn btn-danger btn-sm"
-                            @click.prevent="deleting = activity"><ui-sprite src="trash"></ui-sprite></a>
+                        <i-link v-tooltip="`Bearbeiten`" :href="activity.links.edit" class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></i-link>
+                        <a v-tooltip="`Entfernen`" href="#" class="inline-flex btn btn-danger btn-sm" @click.prevent="deleting = activity"><ui-sprite src="trash"></ui-sprite></a>
                     </div>
                 </td>
             </tr>
@@ -39,11 +37,11 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
-import { indexProps, useIndex } from '../../composables/useIndex.js';
+import {ref, defineProps} from 'vue';
+import {indexProps, useIndex} from '../../composables/useIndex.js';
 
 const props = defineProps(indexProps);
-const { router, data, meta } = useIndex(props.data, 'activity');
+const {router, data, meta} = useIndex(props.data, 'activity');
 const deleting = ref(null);
 
 function remove() {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Group\Actions;
+namespace App\Membership\Actions;
 
 use App\Activity;
 use App\Group;
@@ -8,14 +8,14 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class ListAction
+class MassListAction
 {
     use AsAction;
 
     public function asController(): Response
     {
-        session()->put('menu', 'group');
-        session()->put('title', 'Gruppen');
+        session()->put('menu', 'activity');
+        session()->put('title', 'Mitgliedschaften zuweisen');
         $activities = Activity::with('subactivities')->get();
 
         return Inertia::render('group/Index', [

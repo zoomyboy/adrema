@@ -22,6 +22,7 @@ class IndexTest extends TestCase
         $this->assertInertiaHas('Local', $response, 'data.data.0.name');
         $this->assertInertiaHas(route('activity.update', ['activity' => $first]), $response, 'data.data.0.links.update');
         $this->assertInertiaHas(route('activity.destroy', ['activity' => $first]), $response, 'data.data.0.links.destroy');
+        $this->assertInertiaHas(route('membership.masslist.index'), $response, 'data.meta.links.membership_masslist');
         $this->assertCount(2, $this->inertia($response, 'data.data'));
     }
 

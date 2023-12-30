@@ -29,7 +29,7 @@
 <script lang="js" setup>
 import { onBeforeUnmount, ref, defineProps, reactive, inject } from 'vue';
 import useQueueEvents from '../../composables/useQueueEvents.js';
-const {startListener, stopListener} = useQueueEvents('group', () => null);
+const { startListener, stopListener } = useQueueEvents('group', () => null);
 const axios = inject('axios');
 
 startListener();
@@ -86,7 +86,7 @@ async function setActivityId(id) {
 }
 
 async function submit() {
-    await axios.post('/api/membership/sync', {
+    await axios.post('/api/membership/masslist', {
         ...meta,
         members: selected.value,
     });

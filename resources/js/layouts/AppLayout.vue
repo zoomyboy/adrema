@@ -2,11 +2,13 @@
     <v-notification class="fixed z-40 right-0 bottom-0 mb-3 mr-3"></v-notification>
 
     <!-- ******************************** Sidebar ******************************** -->
-    <div class="fixed z-40 bg-gray-800 p-6 w-56 top-0 h-screen border-r border-gray-600 border-solid flex flex-col justify-between transition-all"
+    <div
+        class="fixed z-40 bg-gray-800 p-6 w-56 top-0 h-screen border-r border-gray-600 border-solid flex flex-col justify-between transition-all"
         :class="{
             '-left-[14rem]': !menuStore.isShifted,
             'left-0': menuStore.isShifted,
-        }">
+        }"
+    >
         <div class="grid gap-2">
             <v-link href="/" menu="dashboard" icon="loss">Dashboard</v-link>
             <v-link href="/member" menu="member" icon="user">Mitglieder</v-link>
@@ -14,7 +16,6 @@
             <v-link v-show="hasModule('bill')" href="/invoice" menu="invoice" icon="moneypaper">Rechnungen</v-link>
             <v-link href="/contribution" menu="contribution" icon="contribution">Zuschüsse</v-link>
             <v-link href="/activity" menu="activity" icon="activity">Tätigkeiten</v-link>
-            <v-link href="/group" menu="group" icon="group">Gruppen</v-link>
             <v-link href="/maildispatcher" menu="maildispatcher" icon="at">Mail-Verteiler</v-link>
         </div>
         <div class="grid gap-2">
@@ -31,7 +32,7 @@
 
 <script>
 import VLink from './_VLink.vue';
-import { menuStore } from '../stores/menuStore.js';
+import {menuStore} from '../stores/menuStore.js';
 import VNotification from '../components/VNotification.vue';
 
 export default {

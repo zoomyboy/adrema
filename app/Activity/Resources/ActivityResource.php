@@ -55,6 +55,7 @@ class ActivityResource extends JsonResource
             'links' => [
                 'index' => route('activity.index'),
                 'create' => route('activity.create'),
+                'membership_masslist' => route('membership.masslist.index'),
             ],
         ];
     }
