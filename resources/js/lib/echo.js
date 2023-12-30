@@ -27,7 +27,7 @@ var echo = new Echo({
 echo.channel('jobs')
     .listen('\\App\\Lib\\Events\\JobStarted', (e) => handleJobEvent(e, 'success'))
     .listen('\\App\\Lib\\Events\\JobFinished', (e) => handleJobEvent(e, 'success'))
-    .listen('\\App\\Lib\\Events\\JobFailed', (e) => handleJobEvent(e, 'error'));
+    .listen('\\App\\Lib\\Events\\JobFailed', (e) => handleJobEvent(e, 'error'))
     .listen('\\App\\Lib\\Events\\Succeeded', (e) => handleJobEvent(e, 'success'));
 
 export default echo;
