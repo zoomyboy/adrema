@@ -46,6 +46,9 @@ class Group extends Model
         });
     }
 
+    /**
+     * @return array<int, array{id: int, name: string}>
+     */
     public static function forSelect(?self $parent = null, string $prefix = ''): array
     {
         $result = self::where('parent_id', $parent ? $parent->id : null)->withCount('children')->get();

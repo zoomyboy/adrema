@@ -6,6 +6,8 @@ use Worksome\RequestFactories\RequestFactory;
 
 /**
  * @method self name(string $name)
+ * @method self description(string $description)
+ * @method self excerpt(string $description)
  */
 class FormRequest extends RequestFactory
 {
@@ -17,6 +19,7 @@ class FormRequest extends RequestFactory
         return [
             'name' => $this->faker->words(4, true),
             'description' => $this->faker->text(),
+            'excerpt' => $this->faker->words(10, true),
             'config' => ['sections' => []],
         ];
     }

@@ -6,14 +6,14 @@ use App\Form\Models\Form;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Form\Models\Form>
+ * @extends Factory<Form>
  */
 class FormFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Form>
      */
     protected $model = Form::class;
 
