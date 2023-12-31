@@ -45,4 +45,17 @@ class Group extends Model
             }
         });
     }
+
+    public static function forSelect(?self $parent = null, string $prefix = ''): array
+    {
+        $result = self::where('parent_id', $parent ? $parent->id : null)->withCount('children')->get();
+
+        return $result
+            ->reduce(
+                fn ($before, $group) => $before->concat([['id' => $group->id, 'name' => $prefix . ($group->inner_name ?: $group->name)]])
+                    ->concat($group->children_count > 0 ? self::forSelect($group, $prefix . '-- ') : []),
+                collect([])
+            )
+            ->toArray();
+    }
 }

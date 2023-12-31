@@ -21,13 +21,14 @@
             >
                 <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
                 <column-selector v-model="singleField.model.columns"></column-selector>
-                <component :is="fields[singleField.model.type]" v-model="singleField.model"></component>
+                <component :is="fields[singleField.model.type]" v-model="singleField.model" :payload="inner.sections" :meta="props.meta"></component>
             </asideform>
         </div>
         <ui-box heading="Vorschau" container-class="grid gap-3" class="w-[800px]">
             <event-form
                 editable
                 style="--primary: hsl(181, 75%, 26%); --secondary: hsl(181, 75%, 35%); --font: hsl(181, 84%, 78%); --circle: hsl(181, 86%, 16%)"
+                :base-url="meta.base_url"
                 :value="previewString"
                 @editSection="editSection($event.detail[0])"
                 @addSection="addSection"
@@ -50,6 +51,7 @@ import TextField from './TextField.vue';
 import DateField from './DateField.vue';
 import DropdownField from './RadioField.vue';
 import RadioField from './RadioField.vue';
+import GroupField from './GroupField.vue';
 import CheckboxField from './CheckboxField.vue';
 import CheckboxesField from './CheckboxesField.vue';
 import ColumnSelector from './ColumnSelector.vue';
@@ -79,6 +81,7 @@ const fields = {
     RadioField: RadioField,
     CheckboxField: CheckboxField,
     CheckboxesField: CheckboxesField,
+    GroupField: GroupField,
 };
 
 function editSection(sectionIndex) {

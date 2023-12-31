@@ -4,6 +4,8 @@ namespace App\Form\Resources;
 
 use App\Form\Fields\Field;
 use App\Form\Models\Formtemplate;
+use App\Group;
+use App\Group\Enums\Level;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -37,6 +39,8 @@ class FormtemplateResource extends JsonResource
     public static function meta(): array
     {
         return [
+            'base_url' => url(''),
+            'groups' => Group::forSelect(),
             'fields' => Field::asMeta(),
             'links' => [
                 'store' => route('formtemplate.store'),

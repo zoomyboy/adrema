@@ -3,6 +3,7 @@
 namespace Tests\Feature\Form;
 
 use App\Form\Models\Formtemplate;
+use App\Group;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -15,13 +16,19 @@ class FormtemplateIndexActionTest extends TestCase
     {
         $formtemplate = Formtemplate::factory()->create();
 
-        $this->login()->loginNami()->withoutExceptionHandling();
+        $group = Group::factory()->has(Group::factory()->state(['inner_name' => 'child']), 'children')->create(['inner_name' => 'root']);
+        $this->login()->loginNami(12345, 'pasword', $group)->withoutExceptionHandling();
 
         $this->get(route('formtemplate.index'))
             ->assertInertiaPath('data.data.0.links', [
                 'update' => route('formtemplate.update', ['formtemplate' => $formtemplate]),
             ])
-            ->assertInertiaPath('data.meta.fields.2', [
+            ->assertInertiaPath('data.meta.groups', [
+                ['id' => $group->id, 'name' => 'root'],
+                ['id' => $group->children->first()->id, 'name' => '-- child'],
+            ])
+            ->assertInertiaPath('data.meta.base_url', url(''))
+            ->assertInertiaPath('data.meta.fields.3', [
                 'id' => 'DropdownField',
                 'name' => 'Dropdown',
                 'default' => [
@@ -33,7 +40,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'options' => [],
                 ]
             ])
-            ->assertInertiaPath('data.meta.fields.4', [
+            ->assertInertiaPath('data.meta.fields.6', [
                 'id' => 'TextField',
                 'name' => 'Text',
                 'default' => [
@@ -44,7 +51,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'required' => false,
                 ]
             ])
-            ->assertInertiaPath('data.meta.fields.5', [
+            ->assertInertiaPath('data.meta.fields.7', [
                 'id' => 'TextareaField',
                 'name' => 'Textarea',
                 'default' => [

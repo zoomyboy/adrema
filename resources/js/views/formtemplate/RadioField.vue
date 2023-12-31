@@ -26,6 +26,8 @@
 <script setup>
 const props = defineProps({
     modelValue: {},
+    meta: {},
+    payload: {},
 });
 
 const emit = defineEmits(['update:modelValue']);

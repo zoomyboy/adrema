@@ -136,7 +136,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
 
     // ----------------------------------- group ----------------------------------
     Route::get('/group', GroupIndexAction::class)->name('group.index');
-    Route::get('/api/group/{group?}', GroupApiIndexAction::class)->name('api.group');
     Route::post('/group/bulkstore', GroupBulkstoreAction::class)->name('group.bulkstore');
 
     // ----------------------------------- course ----------------------------------
@@ -151,3 +150,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::patch('/formtemplate/{formtemplate}', FormtemplateUpdateAction::class)->name('formtemplate.update');
     Route::post('/form', FormStoreAction::class)->name('form.store');
 });
+
+Route::get('/api/group/{group?}', GroupApiIndexAction::class)->name('api.group');
