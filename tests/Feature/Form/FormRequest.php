@@ -21,6 +21,12 @@ class FormRequest extends RequestFactory
             'description' => $this->faker->text(),
             'excerpt' => $this->faker->words(10, true),
             'config' => ['sections' => []],
+            'from' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
+            'to' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
+            'registration_from' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
+            'registration_until' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
+            'mail_top' => $this->faker->text(),
+            'mail_bottom' => $this->faker->text(),
         ];
     }
 
@@ -37,6 +43,6 @@ class FormRequest extends RequestFactory
      */
     public function __call(string $method, $args): self
     {
-        return $this->state([$method => $args[0]]);
+        return $this->state([str($method)->snake()->toString() => $args[0]]);
     }
 }

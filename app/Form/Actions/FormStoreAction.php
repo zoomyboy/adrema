@@ -22,6 +22,12 @@ class FormStoreAction
             ...$this->globalRules(),
             'description' => 'required|string',
             'excerpt' => 'required|string|max:120',
+            'from' => 'required|date',
+            'to' => 'required|date',
+            'registration_from' => 'present|nullable|date',
+            'registration_until' => 'present|nullable|date',
+            'mail_top' => 'nullable|string',
+            'mail_bottom' => 'nullable|string',
         ];
     }
 
@@ -31,6 +37,18 @@ class FormStoreAction
     public function handle(array $attributes): Form
     {
         return Form::create($attributes);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getValidationAttributes(): array
+    {
+        return [
+            ...$this->globalValidationAttributes(),
+            'from' => 'Start',
+            'to' => 'Ende',
+        ];
     }
 
     public function asController(ActionRequest $request): JsonResponse

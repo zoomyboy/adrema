@@ -33,7 +33,7 @@ trait HasValidation
     /**
      * @return array<string, mixed>
      */
-    public function getValidationAttributes(): array
+    public function globalValidationAttributes(): array
     {
         return [
             'config.sections.*.name' => 'Sektionsname',

@@ -14,4 +14,7 @@ class Form extends Model
     public $casts = [
         'config' => 'json',
     ];
+
+    /** @var array<int, string> */
+    public $dates = ['from', 'to', 'registration_from', 'registration_until'];
 }
