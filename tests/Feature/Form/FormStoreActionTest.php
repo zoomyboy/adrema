@@ -22,7 +22,7 @@ class FormStoreActionTest extends TestCase
             ->name('formname')
             ->description('lala ggg')
             ->excerpt('avff')
-            ->registrationFrom('2023-05-04 01:00:00')->registrationUntil('2023-07-07 01:00:00')->from('2023-07-07 03:00')->to('2023-07-08 05:00')
+            ->registrationFrom('2023-05-04 01:00:00')->registrationUntil('2023-07-07 01:00:00')->from('2023-07-07')->to('2023-07-08')
             ->mailTop('Guten Tag')
             ->mailBottom('Viele Grüße')
             ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::new()])])
@@ -39,8 +39,8 @@ class FormStoreActionTest extends TestCase
         $this->assertEquals('Viele Grüße', $form->mail_bottom);
         $this->assertEquals('2023-05-04 01:00', $form->registration_from->format('Y-m-d H:i'));
         $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));
-        $this->assertEquals('2023-07-07 03:00', $form->from->format('Y-m-d H:i'));
-        $this->assertEquals('2023-07-08 05:00', $form->to->format('Y-m-d H:i'));
+        $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
+        $this->assertEquals('2023-07-08', $form->to->format('Y-m-d'));
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Formular gespeichert.');
     }
 
