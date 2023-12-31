@@ -24,6 +24,16 @@ class FormtemplateUpdateAction
     }
 
     /**
+     * @return array<string, mixed>
+     */
+    public function getValidationAttributes(): array
+    {
+        return [
+            ...$this->globalValidationAttributes(),
+        ];
+    }
+
+    /**
      * @param array<string, mixed> $attributes
      */
     public function handle(Formtemplate $formtemplate, array $attributes): void
