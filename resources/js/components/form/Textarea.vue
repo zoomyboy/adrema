@@ -1,36 +1,23 @@
 <template>
-    <label class="flex flex-col relative">
-        <span
-            v-if="label && !inset"
-            class="font-semibold text-gray-400"
+    <label class="flex flex-col">
+        <span v-if="label && !inset" class="font-semibold text-gray-400" :class="{
+            'text-xs': size == 'sm',
+            'text-sm': size === null,
+        }">{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span>
+        <span v-if="label && inset" class="absolute top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700"
             :class="{
                 'text-xs': size == 'sm',
                 'text-sm': size === null,
-            }"
-            >{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span
-        >
-        <span
-            v-if="label && inset"
-            class="absolute top-0 left-0 -mt-2 px-1 ml-3 inset-bg font-semibold text-gray-700"
-            :class="{
-                'text-xs': size == 'sm',
-                'text-sm': size === null,
-            }"
-            >{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span
-        >
-        <textarea
-            :placeholder="placeholder"
-            class="h-full outline-none bg-gray-700 border-gray-600 border-solid"
-            :rows="rows"
-            :class="{
-                'rounded-lg text-sm border-2 p-2 text-gray-300': size === null,
-                'rounded-lg py-2 px-2 text-xs border-2 text-gray-300': size == 'sm',
-            }"
-            @input="trigger"
-            v-text="modelValue"
-        ></textarea>
-        <div v-if="hint" v-tooltip="hint" class="absolute right-0 top-0 mr-2 mt-2">
-            <ui-sprite src="info-button" class="w-5 h-5 text-indigo-200"></ui-sprite>
+            }">{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span>
+        <div class="relative w-full h-full">
+            <textarea :placeholder="placeholder" class="h-full w-full outline-none bg-gray-700 border-gray-600 border-solid"
+                :rows="rows" :class="{
+                    'rounded-lg text-sm border-2 p-2 text-gray-300': size === null,
+                    'rounded-lg py-2 px-2 text-xs border-2 text-gray-300': size == 'sm',
+                }" @input="trigger" v-text="modelValue"></textarea>
+            <div v-if="hint" v-tooltip="hint" class="absolute right-0 top-0 mr-2 mt-2">
+                <ui-sprite src="info-button" class="w-5 h-5 text-indigo-200"></ui-sprite>
+            </div>
         </div>
     </label>
 </template>
