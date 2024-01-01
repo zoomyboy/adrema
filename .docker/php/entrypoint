@@ -10,8 +10,8 @@ function wait_for_db {
     done
 }
 
-mkdir /app/packages/laravel-nami/.cookies || true
-mkdir /app/storage/app || true
+mkdir -p /app/packages/laravel-nami/.cookies || true
+mkdir -p /app/storage/app/public || true
 chown -R www-data:www-data /app/packages/laravel-nami/.cookies
 chown -R www-data:www-data /app/storage/app
 

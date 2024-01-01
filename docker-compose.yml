@@ -9,7 +9,7 @@ services:
         ports:
             - '8000:80'
         volumes:
-            - ./data/storage/public:/app/storage/app/public
+            - ./data/storage/public:/app/public/storage
 
     php:
         build:
