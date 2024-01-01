@@ -3,6 +3,8 @@
 namespace App\Form\Resources;
 
 use App\Form\Models\Form;
+use App\Form\Models\Formtemplate;
+use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -10,6 +12,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class FormResource extends JsonResource
 {
+
+    use HasMeta;
+
     /**
      * Transform the resource into an array.
      *
@@ -31,6 +36,16 @@ class FormResource extends JsonResource
             'registration_from' => $this->registration_from?->format('Y-m-d H:i:s'),
             'registration_until' => $this->registration_until?->format('Y-m-d H:i:s'),
             'config' => $this->config,
+        ];
+    }
+
+    public static function meta(): array
+    {
+        return [
+            'links' => [
+                'store' => route('form.store'),
+            ],
+            'templates' => FormtemplateResource::collection(Formtemplate::get()),
         ];
     }
 }

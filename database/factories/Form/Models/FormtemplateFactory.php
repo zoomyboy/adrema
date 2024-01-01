@@ -4,9 +4,11 @@ namespace Database\Factories\Form\Models;
 
 use App\Form\Models\Formtemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tests\Feature\Form\FormtemplateSectionRequest;
 
 /**
  * @extends Factory<Formtemplate>
+ * @method self name(string $name)
  */
 class FormtemplateFactory extends Factory
 {
@@ -24,5 +26,21 @@ class FormtemplateFactory extends Factory
             'name' => $this->faker->words(4, true),
             'config' => [],
         ];
+    }
+
+    /**
+     * @param array<int, FormtemplateSectionRequest> $sections
+     */
+    public function sections(array $sections): self
+    {
+        return $this->state(['config' => ['sections' => $sections]]);
+    }
+
+    /**
+     * @param mixed $args
+     */
+    public function __call($method, $parameters): self
+    {
+        return $this->state([str($method)->snake()->toString() => $parameters[0]]);
     }
 }

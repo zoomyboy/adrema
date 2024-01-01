@@ -14,7 +14,7 @@ class FormtemplateIndexActionTest extends TestCase
 
     public function testItDisplaysIndexPage(): void
     {
-        $formtemplate = Formtemplate::factory()->create();
+        $formtemplate = Formtemplate::factory()->sections([FormtemplateSectionRequest::new()->name('sname')->create()])->create();
 
         $group = Group::factory()->has(Group::factory()->state(['inner_name' => 'child']), 'children')->create(['inner_name' => 'root']);
         $this->login()->loginNami(12345, 'pasword', $group)->withoutExceptionHandling();
@@ -23,6 +23,7 @@ class FormtemplateIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.links', [
                 'update' => route('formtemplate.update', ['formtemplate' => $formtemplate]),
             ])
+            ->assertInertiaPath('data.data.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.meta.groups', [
                 ['id' => $group->id, 'name' => 'root'],
                 ['id' => $group->children->first()->id, 'name' => '-- child'],

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Form;
 
 use App\Form\Models\Form;
+use App\Form\Models\Formtemplate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -14,7 +15,8 @@ class FormIndexActionTest extends TestCase
     public function testItDisplaysForms(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $form = Form::factory()
+        Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')->create()])->create();
+        Form::factory()
             ->name('lala')
             ->excerpt('fff')
             ->description('desc')
@@ -40,6 +42,9 @@ class FormIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.from', '2023-05-05')
             ->assertInertiaPath('data.data.0.to', '2023-06-07')
             ->assertInertiaPath('data.data.0.registration_from', '2023-05-06 04:00:00')
-            ->assertInertiaPath('data.data.0.registration_until', '2023-04-01 05:00:00');
+            ->assertInertiaPath('data.data.0.registration_until', '2023-04-01 05:00:00')
+            ->assertInertiaPath('data.meta.links.store', route('form.store'))
+            ->assertInertiaPath('data.meta.templates.0.name', 'tname')
+            ->assertInertiaPath('data.meta.templates.0.config.sections.0.name', 'sname');
     }
 }
