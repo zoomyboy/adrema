@@ -23,7 +23,7 @@ class FormtemplateIndexAction
 
     public function asController(): Response
     {
-        session()->put('menu', 'formtemplate');
+        session()->put('menu', 'form');
         session()->put('title', 'Formular-Vorlagen');
 
         return Inertia::render('formtemplate/Index', [

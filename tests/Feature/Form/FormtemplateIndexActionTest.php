@@ -71,6 +71,7 @@ class FormtemplateIndexActionTest extends TestCase
                 ]
             ])
             ->assertInertiaPath('data.meta.links.store', route('formtemplate.store'))
+            ->assertInertiaPath('data.meta.links.form_index', route('form.index'))
             ->assertInertiaPath('data.meta.section_default', [
                 'name' => '',
                 'intro' => '',

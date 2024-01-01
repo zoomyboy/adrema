@@ -1,6 +1,6 @@
 <template>
     <div class="flex grow relative">
-        <ui-tabs v-model="active" :entries="$page.props.setting_menu"></ui-tabs>
+        <ui-menulist v-model="active" :entries="$page.props.setting_menu"></ui-menulist>
         <slot></slot>
     </div>
 </template>

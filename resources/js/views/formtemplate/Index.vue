@@ -2,6 +2,8 @@
     <page-layout>
         <template #toolbar>
             <page-toolbar-button color="primary" icon="plus" @click="create">Vorlage erstellen</page-toolbar-button>
+            <page-toolbar-button :href="meta.links.form_index" color="primary"
+                icon="event">Veranstaltungen</page-toolbar-button>
         </template>
 
         <ui-popup v-if="single !== null" :heading="`Vorlage ${single.id ? 'bearbeiten' : 'erstellen'}`" full

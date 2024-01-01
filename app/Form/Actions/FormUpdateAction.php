@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Lorisleiva\Actions\ActionRequest;
 
-class FormStoreAction
+class FormUpdateAction
 {
     use AsAction;
     use HasValidation;
@@ -34,9 +34,10 @@ class FormStoreAction
     /**
      * @param array<string, mixed> $attributes
      */
-    public function handle(array $attributes): Form
+    public function handle(Form $form, array $attributes): Form
     {
-        return Form::create($attributes);
+        $form->update($attributes);
+        return $form;
     }
 
     /**
@@ -51,11 +52,11 @@ class FormStoreAction
         ];
     }
 
-    public function asController(ActionRequest $request): JsonResponse
+    public function asController(Form $form, ActionRequest $request): JsonResponse
     {
-        $this->handle($request->validated());
+        $this->handle($form, $request->validated());
 
-        Succeeded::message('Veranstaltung gespeichert.')->dispatch();
+        Succeeded::message('Veranstaltung aktualisiert.')->dispatch();
         return response()->json([]);
     }
 }

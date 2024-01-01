@@ -23,6 +23,9 @@ class FormIndexAction
 
     public function asController(): Response
     {
+        session()->put('menu', 'form');
+        session()->put('title', 'Veranstaltungen');
+
         return Inertia::render('form/Index', [
             'data' => FormResource::collection($this->handle()),
         ]);

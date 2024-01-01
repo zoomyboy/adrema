@@ -16,7 +16,7 @@ class FormIndexActionTest extends TestCase
     {
         $this->login()->loginNami()->withoutExceptionHandling();
         Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')->create()])->create();
-        Form::factory()
+        $form = Form::factory()
             ->name('lala')
             ->excerpt('fff')
             ->description('desc')
@@ -33,6 +33,7 @@ class FormIndexActionTest extends TestCase
             ->assertOk()
             ->assertInertiaPath('data.data.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.data.0.name', 'lala')
+            ->assertInertiaPath('data.data.0.id', $form->id)
             ->assertInertiaPath('data.data.0.excerpt', 'fff')
             ->assertInertiaPath('data.data.0.description', 'desc')
             ->assertInertiaPath('data.data.0.mail_top', 'Guten Tag')
@@ -44,7 +45,12 @@ class FormIndexActionTest extends TestCase
             ->assertInertiaPath('data.data.0.registration_from', '2023-05-06 04:00:00')
             ->assertInertiaPath('data.data.0.registration_until', '2023-04-01 05:00:00')
             ->assertInertiaPath('data.meta.links.store', route('form.store'))
+            ->assertInertiaPath('data.meta.links.formtemplate_index', route('formtemplate.index'))
             ->assertInertiaPath('data.meta.templates.0.name', 'tname')
-            ->assertInertiaPath('data.meta.templates.0.config.sections.0.name', 'sname');
+            ->assertInertiaPath('data.meta.templates.0.config.sections.0.name', 'sname')
+            ->assertInertiaPath('data.meta.default.name', '')
+            ->assertInertiaPath('data.meta.default.description', '')
+            ->assertInertiaPath('data.meta.default.excerpt', '')
+            ->assertInertiaPath('data.meta.default.config', null);
     }
 }

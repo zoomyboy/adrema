@@ -44,6 +44,7 @@ class FormtemplateResource extends JsonResource
             'fields' => Field::asMeta(),
             'links' => [
                 'store' => route('formtemplate.store'),
+                'form_index' => route('form.index'),
             ],
             'default' => [
                 'name' => '',

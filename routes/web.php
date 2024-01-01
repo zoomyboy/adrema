@@ -19,6 +19,7 @@ use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
+use App\Form\Actions\FormDestroyAction;
 use App\Form\Actions\FormIndexAction;
 use App\Group\Actions\GroupApiIndexAction;
 use App\Group\Actions\GroupBulkstoreAction;
@@ -27,6 +28,7 @@ use App\Form\Actions\FormStoreAction;
 use App\Form\Actions\FormtemplateIndexAction;
 use App\Form\Actions\FormtemplateStoreAction;
 use App\Form\Actions\FormtemplateUpdateAction;
+use App\Form\Actions\FormUpdateAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
@@ -148,6 +150,8 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     // ------------------------------------ form -----------------------------------
     Route::get('/formtemplate', FormtemplateIndexAction::class)->name('formtemplate.index');
     Route::get('/form', FormIndexAction::class)->name('form.index');
+    Route::patch('/form/{form}', FormUpdateAction::class)->name('form.update');
+    Route::delete('/form/{form}', FormDestroyAction::class)->name('form.destroy');
     Route::post('/formtemplate', FormtemplateStoreAction::class)->name('formtemplate.store');
     Route::patch('/formtemplate/{formtemplate}', FormtemplateUpdateAction::class)->name('formtemplate.update');
     Route::post('/form', FormStoreAction::class)->name('form.store');
