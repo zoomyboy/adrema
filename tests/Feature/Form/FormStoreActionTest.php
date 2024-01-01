@@ -41,7 +41,7 @@ class FormStoreActionTest extends TestCase
         $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));
         $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
         $this->assertEquals('2023-07-08', $form->to->format('Y-m-d'));
-        Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Formular gespeichert.');
+        Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Veranstaltung gespeichert.');
     }
 
     public function testRegistrationDatesCanBeNull(): void
