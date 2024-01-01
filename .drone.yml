@@ -24,7 +24,7 @@ steps:
     - name: node
       image: node:17.9.0-slim
       commands:
-          - npm ci && npm run img && npm run prod && rm -R node_modules
+          - cd packages/adrema-plugin && npm ci && npm run build && cd ../../ && npm ci && npm run img && npm run prod && rm -R node_modules
 
     - name: tests
       image: zoomyboy/adrema-base:latest
