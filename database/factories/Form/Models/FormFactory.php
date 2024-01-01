@@ -4,6 +4,7 @@ namespace Database\Factories\Form\Models;
 
 use App\Form\Models\Form;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tests\Feature\Form\FormtemplateSectionRequest;
 
 /**
  * @extends Factory<Form>
@@ -48,7 +49,7 @@ class FormFactory extends Factory
      */
     public function sections(array $sections): self
     {
-        return $this->state(['config.sections' => $sections]);
+        return $this->state(['config' => ['sections' => $sections]]);
     }
 
     /**

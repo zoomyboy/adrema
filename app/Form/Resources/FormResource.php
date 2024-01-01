@@ -30,6 +30,7 @@ class FormResource extends JsonResource
             'mail_bottom' => $this->mail_bottom,
             'registration_from' => $this->registration_from?->format('Y-m-d H:i:s'),
             'registration_until' => $this->registration_until?->format('Y-m-d H:i:s'),
+            'config' => $this->config,
         ];
     }
 }
