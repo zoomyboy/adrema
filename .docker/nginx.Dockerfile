@@ -5,7 +5,7 @@ RUN composer install --ignore-platform-reqs --no-dev
 RUN php artisan telescope:publish
 RUN php artisan horizon:publish
 
-FROM node:17.9.0-slim as node
+FROM node:18.13.0-slim as node
 WORKDIR /app
 COPY . /app
 RUN npm install && npm run prod && npm run img && rm -R node_modules

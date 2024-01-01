@@ -22,7 +22,7 @@ steps:
           - while ! mysqladmin ping -h db -u db -pdb --silent; do sleep 1; done
 
     - name: node
-      image: node:17.9.0-slim
+      image: node:18.13.0-slim
       commands:
           - cd packages/adrema-plugin && npm ci && npm run build && cd ../../ && npm ci && npm run img && npm run prod && rm -R node_modules
 
