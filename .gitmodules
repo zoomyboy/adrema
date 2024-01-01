@@ -9,4 +9,4 @@
 	url = https://git.zoomyboy.de/pille/tex
 [submodule "packages/eventform"]
 	path = packages/eventform
-	url = git@zoomyboy.de:pille/eventform.git
+	url = https://git.zoomyboy.de/pille/eventform.git
