@@ -51,6 +51,8 @@ class FormIndexActionTest extends TestCase
             ->assertInertiaPath('data.meta.default.name', '')
             ->assertInertiaPath('data.meta.default.description', '')
             ->assertInertiaPath('data.meta.default.excerpt', '')
-            ->assertInertiaPath('data.meta.default.config', null);
+            ->assertInertiaPath('data.meta.default.config', null)
+            ->assertInertiaPath('data.meta.base_url', url(''))
+            ->assertInertiaPath('data.meta.section_default.name', '');
     }
 }
