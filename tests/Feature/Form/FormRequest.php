@@ -9,6 +9,8 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self from(string $date)
  * @method self to(string $date)
  * @method self description(string $description)
+ * @method self mailTop(string $content)
+ * @method self mailBottom(string $content)
  * @method self excerpt(string $description)
  * @method self registrationFrom(string|null $date)
  * @method self registrationUntil(string|null $date)
