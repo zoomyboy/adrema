@@ -8,6 +8,8 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self name(string $name)
  * @method self description(string $description)
  * @method self excerpt(string $description)
+ * @method self registrationFrom(string $date)
+ * @method self registrationUntil(string $date)
  */
 class FormRequest extends RequestFactory
 {
