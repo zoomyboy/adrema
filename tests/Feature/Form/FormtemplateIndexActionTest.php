@@ -14,7 +14,7 @@ class FormtemplateIndexActionTest extends TestCase
 
     public function testItDisplaysIndexPage(): void
     {
-        $formtemplate = Formtemplate::factory()->sections([FormtemplateSectionRequest::new()->name('sname')->create()])->create();
+        $formtemplate = Formtemplate::factory()->sections([FormtemplateSectionRequest::new()->name('sname')])->create();
 
         $group = Group::factory()->has(Group::factory()->state(['inner_name' => 'child']), 'children')->create(['inner_name' => 'root']);
         $this->login()->loginNami(12345, 'pasword', $group)->withoutExceptionHandling();
