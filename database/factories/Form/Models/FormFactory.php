@@ -15,6 +15,8 @@ use Tests\Feature\Form\FormtemplateSectionRequest;
  * @method self mailBottom(string $content)
  * @method self excerpt(string $excerpt)
  * @method self description(string $description)
+ * @method self registrationFrom(string|null $date)
+ * @method self registrationUntil(string|null $date)
  */
 class FormFactory extends Factory
 {
