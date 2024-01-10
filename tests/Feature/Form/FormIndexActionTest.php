@@ -15,7 +15,7 @@ class FormIndexActionTest extends TestCase
     public function testItDisplaysForms(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')->create()])->create();
+        Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')])->create();
         $form = Form::factory()
             ->name('lala')
             ->excerpt('fff')

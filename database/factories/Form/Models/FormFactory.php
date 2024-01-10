@@ -11,6 +11,8 @@ use Tests\Feature\Form\FormtemplateSectionRequest;
  * @method self name(string $name)
  * @method self from(string $from)
  * @method self to(string $to)
+ * @method self mailTop(string $content)
+ * @method self mailBottom(string $content)
  * @method self excerpt(string $excerpt)
  * @method self description(string $description)
  */
@@ -53,7 +55,7 @@ class FormFactory extends Factory
     }
 
     /**
-     * @param mixed $args
+     * @param mixed $parameters
      */
     public function __call($method, $parameters): self
     {

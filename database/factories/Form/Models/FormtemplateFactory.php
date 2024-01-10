@@ -33,11 +33,11 @@ class FormtemplateFactory extends Factory
      */
     public function sections(array $sections): self
     {
-        return $this->state(['config' => ['sections' => $sections]]);
+        return $this->state(['config' => ['sections' => array_map(fn ($section) => $section->create(), $sections)]]);
     }
 
     /**
-     * @param mixed $args
+     * @param mixed $parameters
      */
     public function __call($method, $parameters): self
     {

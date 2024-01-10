@@ -28,10 +28,10 @@ class FormResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'from_human' => $this->from?->format('d.m.Y'),
-            'to_human' => $this->to?->format('d.m.Y'),
-            'from' => $this->from?->format('Y-m-d'),
-            'to' => $this->to?->format('Y-m-d'),
+            'from_human' => $this->from->format('d.m.Y'),
+            'to_human' => $this->to->format('d.m.Y'),
+            'from' => $this->from->format('Y-m-d'),
+            'to' => $this->to->format('Y-m-d'),
             'excerpt' => $this->excerpt,
             'description' => $this->description,
             'mail_top' => $this->mail_top,
@@ -46,6 +46,9 @@ class FormResource extends JsonResource
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function meta(): array
     {
         return [

@@ -6,10 +6,12 @@ use Worksome\RequestFactories\RequestFactory;
 
 /**
  * @method self name(string $name)
+ * @method self from(string $date)
+ * @method self to(string $date)
  * @method self description(string $description)
  * @method self excerpt(string $description)
- * @method self registrationFrom(string $date)
- * @method self registrationUntil(string $date)
+ * @method self registrationFrom(string|null $date)
+ * @method self registrationUntil(string|null $date)
  */
 class FormRequest extends RequestFactory
 {
