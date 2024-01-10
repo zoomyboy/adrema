@@ -26,7 +26,7 @@ class FormIndexActionTest extends TestCase
             ->mailBottom('Cheers')
             ->registrationFrom('2023-05-06 04:00:00')
             ->registrationUntil('2023-04-01 05:00:00')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::new()])->create()])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::new()])])
             ->create();
 
         $this->get(route('form.index'))
