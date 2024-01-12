@@ -7,11 +7,16 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Zoomyboy\MedialibraryHelper\DefersUploads;
 
-class Form extends Model
+class Form extends Model implements HasMedia
 {
     use HasFactory;
     use Sluggable;
+    use InteractsWithMedia;
+    use DefersUploads;
 
     public $guarded = [];
 
@@ -24,6 +29,14 @@ class Form extends Model
         return [
             'slug' => ['source' => ['name']],
         ];
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('headerImage')
+            ->singleFile()
+            ->maxWidth(fn () => 500)
+            ->forceFileName(fn (Form $model, string $name) => $model->slug);
     }
 
     /** @var array<int, string> */

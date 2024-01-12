@@ -8,11 +8,19 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 use Generator;
+use Illuminate\Support\Facades\Storage;
 
 class FormStoreActionTest extends TestCase
 {
 
     use DatabaseTransactions;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Storage::fake('temp');
+    }
 
     public function testItStoresForm(): void
     {
@@ -25,6 +33,7 @@ class FormStoreActionTest extends TestCase
             ->registrationFrom('2023-05-04 01:00:00')->registrationUntil('2023-07-07 01:00:00')->from('2023-07-07')->to('2023-07-08')
             ->mailTop('Guten Tag')
             ->mailBottom('Viele Grüße')
+            ->headerImage('htzz.jpg')
             ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::new()])])
             ->fake();
 
@@ -41,6 +50,8 @@ class FormStoreActionTest extends TestCase
         $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));
         $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
         $this->assertEquals('2023-07-08', $form->to->format('Y-m-d'));
+        $this->assertCount(1, $form->getMedia('headerImage'));
+        $this->assertEquals('formname.jpg', $form->getMedia('headerImage')->first()->file_name);
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Veranstaltung gespeichert.');
     }
 
@@ -63,6 +74,7 @@ class FormStoreActionTest extends TestCase
         yield [FormRequest::new()->description(''), ['description' => 'Beschreibung ist erforderlich.']];
         yield [FormRequest::new()->state(['from' => null]), ['from' => 'Start ist erforderlich']];
         yield [FormRequest::new()->state(['to' => null]), ['to' => 'Ende ist erforderlich']];
+        yield [FormRequest::new()->state(['header_image' => null]), ['header_image' => 'Bild ist erforderlich']];
     }
 
     /**

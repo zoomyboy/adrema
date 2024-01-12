@@ -28,6 +28,7 @@ class FormStoreAction
             'registration_until' => 'present|nullable|date',
             'mail_top' => 'nullable|string',
             'mail_bottom' => 'nullable|string',
+            'header_image' => 'required|exclude',
         ];
     }
 
@@ -36,7 +37,10 @@ class FormStoreAction
      */
     public function handle(array $attributes): Form
     {
-        return Form::create($attributes);
+        return tap(
+            Form::create($attributes),
+            fn ($form) => $form->setDeferredUploads(request()->input('header_image'))
+        );
     }
 
     /**
@@ -48,6 +52,7 @@ class FormStoreAction
             ...$this->globalValidationAttributes(),
             'from' => 'Start',
             'to' => 'Ende',
+            'header_image' => 'Bild',
         ];
     }
 

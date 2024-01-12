@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Form;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Worksome\RequestFactories\RequestFactory;
 
 /**
@@ -33,6 +35,7 @@ class FormRequest extends RequestFactory
             'registration_until' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
             'mail_top' => $this->faker->text(),
             'mail_bottom' => $this->faker->text(),
+            'header_image' => $this->getHeaderImagePayload(str()->uuid() . '.jpg')
         ];
     }
 
@@ -50,5 +53,31 @@ class FormRequest extends RequestFactory
     public function __call(string $method, $args): self
     {
         return $this->state([str($method)->snake()->toString() => $args[0]]);
+    }
+
+    public function headerImage(string $fileName): self
+    {
+        UploadedFile::fake()->image($fileName, 1000, 1000)->storeAs('media-library', $fileName, 'temp');
+
+        Storage::disk('temp')->assertExists('media-library/' . $fileName);
+
+        return $this->state([
+            'header_image' => $this->getHeaderImagePayload($fileName)
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getHeaderImagePayload(string $fileName): array
+    {
+        UploadedFile::fake()->image($fileName, 1000, 1000)->storeAs('media-library', $fileName, 'temp');
+
+        Storage::disk('temp')->assertExists('media-library/' . $fileName);
+
+        return [
+            'file_name' => $fileName,
+            'collection_name' => 'headerImage',
+        ];
     }
 }

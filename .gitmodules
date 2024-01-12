@@ -10,3 +10,7 @@
 [submodule "packages/adrema-plugin"]
 	path = packages/adrema-plugin
 	url = https://git.zoomyboy.de/silva/adrema-plugin.git
+[submodule "packages/medialibrary-helper"]
+	path = packages/medialibrary-helper
+	url = https://git.zoomyboy.de/zoomyboy/medialibrary-helper.git
+	branch = version2

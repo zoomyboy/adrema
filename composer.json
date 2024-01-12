@@ -20,6 +20,13 @@
             "options": {
                 "symlink": true
             }
+        },
+        {
+            "type": "path",
+            "url": "./packages/medialibrary-helper",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "license": "MIT",
@@ -53,7 +60,8 @@
         "zoomyboy/laravel-nami": "dev-master",
         "zoomyboy/osm": "1.0.3",
         "zoomyboy/phone": "^1.0",
-        "zoomyboy/tex": "dev-main as 1.0"
+        "zoomyboy/tex": "dev-main as 1.0",
+        "zoomyboy/medialibrary-helper": "dev-master as 1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
