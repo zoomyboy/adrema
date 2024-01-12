@@ -23,6 +23,7 @@ return new class extends Migration
         Schema::create('forms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->text('description');
             $table->text('excerpt');
             $table->json('config');
@@ -44,5 +45,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('formtemplates');
+        Schema::dropIfExists('forms');
     }
 };

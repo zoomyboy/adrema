@@ -41,8 +41,8 @@ class FormFactory extends Factory
             'config' => ['sections' => []],
             'from' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
             'to' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
-            'registration_from' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
-            'registration_until' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
+            'registration_from' => $this->faker->dateTimeBetween('-2 weeks', 'now')->format('Y-m-d H:i:s'),
+            'registration_until' => $this->faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d H:i:s'),
             'mail_top' => $this->faker->text(),
             'mail_bottom' => $this->faker->text(),
         ];

@@ -19,6 +19,7 @@ use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
+use App\Form\Actions\FormApiListAction;
 use App\Form\Actions\FormDestroyAction;
 use App\Form\Actions\FormIndexAction;
 use App\Group\Actions\GroupApiIndexAction;
@@ -158,3 +159,4 @@ Route::group(['middleware' => 'auth:web'], function (): void {
 });
 
 Route::get('/api/group/{group?}', GroupApiIndexAction::class)->name('api.group');
+Route::get('/api/form', FormApiListAction::class)->name('api.form.index');
