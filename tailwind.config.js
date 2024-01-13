@@ -1,7 +1,14 @@
 const {colors} = require('tailwindcss/defaultTheme');
 
 module.exports = {
-    content: ['resources/js/views/**/*.vue', 'resources/js/components/**/*.vue', 'resources/js/layouts/**/*.vue', 'resources/views/**/*.blade.php', 'resources/js/composables/**/*.js'],
+    content: [
+        'resources/js/views/**/*.vue',
+        'resources/js/components/**/*.vue',
+        'resources/js/layouts/**/*.vue',
+        'resources/views/**/*.blade.php',
+        'resources/js/composables/**/*.js',
+        'packages/medialibrary-helper/**/*.vue',
+    ],
     theme: {
         extend: {
             colors: {

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Form\Models\Form;
 use App\Mailgateway\Types\LocalType;
 use App\Mailgateway\Types\MailmanType;
 use Illuminate\Http\RedirectResponse;
@@ -33,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
             LocalType::class,
             MailmanType::class,
         ]));
+
+        app()->extend('media-library-helpers', fn ($p) => $p->put('form', Form::class));
     }
 
     /**

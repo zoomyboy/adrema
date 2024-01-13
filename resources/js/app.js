@@ -50,6 +50,10 @@ createInertiaApp({
         requireModules(import.meta.glob('./components/form/*.vue'), app, 'f');
         requireModules(import.meta.glob('./components/ui/*.vue'), app, 'ui');
         requireModules(import.meta.glob('./components/page/*.vue', {eager: true}), app, 'page');
+        app.component(
+            'f-singlefile',
+            defineAsyncComponent(() => import('!/medialibrary-helper/assets/components/SingleFile.vue'))
+        );
 
         app.provide('axios', app.config.globalProperties.axios);
         app.mount(el);

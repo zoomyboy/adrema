@@ -71,6 +71,8 @@ class FormResource extends JsonResource
                 'mail_top' => null,
                 'mail_bottom' => null,
                 'config' => null,
+                'header_image' => null,
+                'id' => null,
             ],
             'section_default' => [
                 'name' => '',

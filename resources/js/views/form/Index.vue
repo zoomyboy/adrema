@@ -35,7 +35,9 @@
             <div class="flex flex-col mt-3">
                 <ui-tabs v-model="active" :entries="tabs"></ui-tabs>
                 <div v-if="active === 0" class="grid grid-cols-2 gap-3">
-                    <f-text id="name" v-model="single.name" class="col-span-2" name="name" label="Name" required></f-text>
+                    <f-text id="name" v-model="single.name" name="name" label="Name" required></f-text>
+                    <f-singlefile id="header_image" v-model="single.header_image" label="Bild" name="header_image"
+                        parent-name="form" :parent-id="single.id" collection="headerImage" required></f-singlefile>
                     <f-text id="from" v-model="single.from" type="date" name="from" label="Von" required></f-text>
                     <f-text id="to" v-model="single.to" type="date" name="to" label="Bis" required></f-text>
                     <f-textarea id="excerpt" v-model="single.excerpt"
