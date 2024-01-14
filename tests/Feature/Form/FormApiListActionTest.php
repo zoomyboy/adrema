@@ -5,6 +5,7 @@ namespace Tests\Feature\Form;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class FormApiListActionTest extends TestCase
@@ -14,11 +15,13 @@ class FormApiListActionTest extends TestCase
 
     public function testItDisplaysForms(): void
     {
+        Storage::fake('temp');
         $this->loginNami()->withoutExceptionHandling();
         Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')])->create();
         $form = Form::factory()
             ->name('lala 2')
             ->excerpt('fff')
+            ->withImage('headerImage', 'lala-2.jpg')
             ->description('desc')
             ->from('2023-05-05')
             ->to('2023-06-07')
@@ -33,6 +36,7 @@ class FormApiListActionTest extends TestCase
             ->assertJsonPath('data.0.excerpt', 'fff')
             ->assertJsonPath('data.0.description', 'desc')
             ->assertJsonPath('data.0.slug', 'lala-2')
+            ->assertJsonPath('data.0.image', $form->getMedia('headerImage')->first()->getFullUrl())
             ->assertJsonPath('data.0.dates', '05.05.2023 - 07.06.2023')
             ->assertJsonPath('data.0.from_human', '05.05.2023')
             ->assertJsonPath('data.0.to_human', '07.06.2023');

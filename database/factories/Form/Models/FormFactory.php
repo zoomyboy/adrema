@@ -3,6 +3,7 @@
 namespace Database\Factories\Form\Models;
 
 use App\Form\Models\Form;
+use Database\Factories\Traits\FakesMedia;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Tests\Feature\Form\FormtemplateSectionRequest;
 
@@ -20,6 +21,8 @@ use Tests\Feature\Form\FormtemplateSectionRequest;
  */
 class FormFactory extends Factory
 {
+    use FakesMedia;
+
     /**
      * The name of the factory's corresponding model.
      *
