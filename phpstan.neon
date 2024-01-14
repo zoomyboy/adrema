@@ -24,6 +24,7 @@ parameters:
         ContributionApiRequestArray: 'array{dateFrom: string, dateUntil: string, zipLocation: string, country: int, eventName: string, member_data: array<int, ContributionMemberData>}'
         MailgatewayCustomField: 'array{name: string, label: string, type: string, storeValidator: string, updateValidator: string, default: string}'
         MailgatewayParsedCustomField: 'array{name: string, label: string, type: string, storeValidator: string, updateValidator: string, default: string, is_required: bool}'
+        SluggableConfig: 'array<string, array{source: array<int, string>}>'
 
     ignoreErrors:
         -
@@ -135,16 +136,6 @@ parameters:
             message: "#^Method App\\\\Payment\\\\SubscriptionResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Payment/SubscriptionResource.php
-
-        -
-            message: "#^PHPDoc type array of property App\\\\Providers\\\\AuthServiceProvider\\:\\:\\$policies is not covariant with PHPDoc type array\\<class\\-string, class\\-string\\> of overridden property Illuminate\\\\Foundation\\\\Support\\\\Providers\\\\AuthServiceProvider\\:\\:\\$policies\\.$#"
-            count: 1
-            path: app/Providers/AuthServiceProvider.php
-
-        -
-            message: "#^Property App\\\\Providers\\\\AuthServiceProvider\\:\\:\\$policies type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: app/Providers/AuthServiceProvider.php
 
         -
             message: "#^Method Database\\\\Factories\\\\ActivityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"

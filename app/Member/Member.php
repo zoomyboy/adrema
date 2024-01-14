@@ -93,7 +93,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return array<string, array{source: array<int, string>}>
+     * @return SluggableConfig
      */
     public function sluggable(): array
     {

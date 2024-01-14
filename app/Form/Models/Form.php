@@ -24,6 +24,9 @@ class Form extends Model implements HasMedia
         'config' => 'json',
     ];
 
+    /**
+     * @return SluggableConfig
+     */
     public function sluggable(): array
     {
         return [
