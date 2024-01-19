@@ -7,8 +7,10 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Zoomyboy\MedialibraryHelper\DefersUploads;
 
 class Form extends Model implements HasMedia
@@ -39,7 +41,10 @@ class Form extends Model implements HasMedia
         $this->addMediaCollection('headerImage')
             ->singleFile()
             ->maxWidth(fn () => 500)
-            ->forceFileName(fn (Form $model, string $name) => $model->slug);
+            ->forceFileName(fn (Form $model, string $name) => $model->slug)
+            ->registerMediaConversions(function (Media $media) {
+                $this->addMediaConversion('square')->fit(Manipulations::FIT_CROP, 400, 400);
+            });
     }
 
     /** @var array<int, string> */

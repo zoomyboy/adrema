@@ -36,7 +36,7 @@ class FormApiListActionTest extends TestCase
             ->assertJsonPath('data.0.excerpt', 'fff')
             ->assertJsonPath('data.0.description', 'desc')
             ->assertJsonPath('data.0.slug', 'lala-2')
-            ->assertJsonPath('data.0.image', $form->getMedia('headerImage')->first()->getFullUrl())
+            ->assertJsonPath('data.0.image', $form->getMedia('headerImage')->first()->getFullUrl('square'))
             ->assertJsonPath('data.0.dates', '05.05.2023 - 07.06.2023')
             ->assertJsonPath('data.0.from_human', '05.05.2023')
             ->assertJsonPath('data.0.to_human', '07.06.2023');
