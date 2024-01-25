@@ -57,8 +57,7 @@ steps:
           MAIL_FROM_NAME: '${APP_NAME}'
           PDFLATEX_BIN: /usr/bin/pdflatex
           XELATEX_BIN: /usr/bin/xelatex
-          MEILISEARCH_HOST: http://meilisearch:7700
-          MEILISEARCH_KEY: abc
+          SCOUT_DRIVER: database
 
     - name: docker_app_push
       image: plugins/docker
@@ -157,10 +156,6 @@ services:
           MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
     - name: redis
       image: redis
-    - name: meilisearch
-      image: getmeili/meilisearch:v1.6
-      commands:
-          - meilisearch --master-key="abc"
 
 trigger:
     event:
