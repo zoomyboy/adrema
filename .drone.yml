@@ -159,7 +159,8 @@ services:
       image: redis
     - name: meilisearch
       image: getmeili/meilisearch:v1.6
-      command: 'meilisearch --master-key="abc"'
+      commands:
+          - meilisearch --master-key="abc"
 
 trigger:
     event:
