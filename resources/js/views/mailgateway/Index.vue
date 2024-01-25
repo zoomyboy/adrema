@@ -1,31 +1,29 @@
 <template>
     <page-layout>
         <template #toolbar>
-            <page-toolbar-button color="primary" icon="plus" @click.prevent="model = { ...meta.default }">Neue
-                Verbindung</page-toolbar-button>
+            <page-toolbar-button color="primary" icon="plus" @click.prevent="create">Neue Verbindung</page-toolbar-button>
         </template>
-        <ui-popup v-if="model !== null" :heading="model.id ? 'Verbindung bearbeiten' : 'Neue Verbindung'"
-            @close="model = null">
+        <ui-popup v-if="single !== null" :heading="single.id ? 'Verbindung bearbeiten' : 'Neue Verbindung'" @close="cancel">
             <form @submit.prevent="submit">
                 <section class="grid grid-cols-2 gap-3 mt-6">
-                    <f-text id="name" v-model="model.name" name="name" label="Bezeichnung" required></f-text>
-                    <f-text id="domain" v-model="model.domain" name="domain" label="Domain" required></f-text>
-                    <f-select id="type" :model-value="model.type.cls" label="Typ" name="type" :options="meta.types"
+                    <f-text id="name" v-model="single.name" name="name" label="Bezeichnung" required></f-text>
+                    <f-text id="domain" v-model="single.domain" name="domain" label="Domain" required></f-text>
+                    <f-select id="type" :model-value="single.type.cls" label="Typ" name="type" :options="meta.types"
                         :placeholder="''" required @update:model-value="
-                            model.type = {
+                            single.type = {
                                 cls: $event,
                                 params: { ...getType($event).defaults },
                             }
                         "></f-select>
-                    <template v-for="(field, index) in getType(model.type.cls).fields">
+                    <template v-for="(field, index) in getType(single.type.cls).fields">
                         <f-text v-if="field.type === 'text' || field.type === 'password' || field.type === 'email'"
-                            :id="field.name" :key="index" v-model="model.type.params[field.name]" :label="field.label"
+                            :id="field.name" :key="index" v-model="single.type.params[field.name]" :label="field.label"
                             :type="field.type" :name="field.name" :required="field.is_required"></f-text>
                     </template>
                 </section>
                 <section class="flex mt-4 space-x-2">
                     <ui-button type="submit" class="btn-danger">Speichern</ui-button>
-                    <ui-button class="btn-primary" @click.prevent="model = null">Abbrechen</ui-button>
+                    <ui-button class="btn-primary" @click.prevent="single = null">Abbrechen</ui-button>
                 </section>
             </form>
         </ui-popup>
@@ -50,7 +48,7 @@
                         </td>
                         <td>
                             <a v-tooltip="`Bearbeiten`" href="#" class="inline-flex btn btn-warning btn-sm"
-                                @click.prevent="model = { ...gateway }"><ui-sprite src="pencil"></ui-sprite></a>
+                                @click.prevent="edit(gateway)"><ui-sprite src="pencil"></ui-sprite></a>
                         </td>
                     </tr>
                 </table>
@@ -64,22 +62,13 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue';
-import { indexProps, useIndex } from '../../composables/useIndex.js';
+import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 import SettingLayout from '../setting/Layout.vue';
 
 const props = defineProps(indexProps);
-const { meta, data, reload } = useIndex(props.data, 'mailgateway');
-const model = ref(null);
-const axios = inject('axios');
+const { meta, data, create, edit, cancel, single, submit } = useIndex(props.data, 'mailgateway');
 
 function getType(type) {
     return meta.value.types.find((t) => t.id === type);
-}
-async function submit() {
-    await axios[model.value.id ? 'patch' : 'post'](model.value.id ? model.value.links.update : meta.value.links.store, model.value);
-
-    reload();
-    model.value = null;
 }
 </script>

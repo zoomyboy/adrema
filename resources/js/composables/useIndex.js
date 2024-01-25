@@ -9,15 +9,16 @@ export function useIndex(props, siteName) {
     const inner = {
         data: ref(rawProps.data),
         meta: ref(rawProps.meta),
+        filter: ref(rawProps.meta.filter ? rawProps.meta.filter : {}),
     };
 
     function toFilterString(data) {
         return btoa(encodeURIComponent(JSON.stringify(data)));
     }
 
-    const filterString = computed(() => toFilterString(inner.meta.value.filter));
+    const filterString = computed(() => toFilterString(inner.filter.value));
 
-    function reload(resetPage = true, withMeta = true, data) {
+    function reload(resetPage = true, data) {
         var data = {
             filter: filterString.value,
             page: resetPage ? 1 : inner.meta.value.current_page,
@@ -30,18 +31,16 @@ export function useIndex(props, siteName) {
             only: ['data'],
             onSuccess: (page) => {
                 inner.data.value = page.props.data.data;
-                if (withMeta) {
-                    inner.meta.value = {
-                        ...inner.meta.value,
-                        ...page.props.data.meta,
-                    };
-                }
+                inner.meta.value = {
+                    ...inner.meta.value,
+                    ...page.props.data.meta,
+                };
             },
         });
     }
 
     function reloadPage(page) {
-        reload(false, true, {page: page});
+        reload(false, {page: page});
     }
 
     function can(permission) {
@@ -49,12 +48,12 @@ export function useIndex(props, siteName) {
     }
 
     function getFilter(value) {
-        return inner.meta.value.filter[value];
+        return inner.filter.value[value];
     }
 
     function setFilter(key, value) {
-        inner.meta.value.filter[key] = value;
-        reload(true, false);
+        inner.filter.value[key] = value;
+        reload(true);
     }
 
     startListener();
@@ -62,7 +61,6 @@ export function useIndex(props, siteName) {
 
     return {
         data: inner.data,
-        reload,
         can,
         getFilter,
         setFilter,

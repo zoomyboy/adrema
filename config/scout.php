@@ -1,5 +1,7 @@
 <?php
 
+use App\Member\Member;
+
 return [
 
     /*
@@ -15,7 +17,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'database'),
+    'driver' => env('SCOUT_DRIVER', 'manticore'),
 
     /*
     |--------------------------------------------------------------------------
@@ -133,9 +135,9 @@ return [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key' => env('MEILISEARCH_KEY', null),
         'index-settings' => [
-            // 'users' => [
-            //     'filterableAttributes'=> ['id', 'name', 'email'],
-            // ],
+            Member::class => [
+                'filterableAttributes' => ['fullname', 'address'],
+            ]
         ],
     ],
 

@@ -287,8 +287,6 @@ class Member extends Model implements Geolocatable
                 $position->delete();
             });
         });
-
-        static::saving(fn ($model) => $model->updateSearch());
     }
 
     // ---------------------------------- Scopes -----------------------------------
@@ -312,7 +310,7 @@ class Member extends Model implements Geolocatable
         return $query->addSelect([
             'pending_payment' => InvoicePosition::selectRaw('SUM(price)')
                 ->whereColumn('invoice_positions.member_id', 'members.id')
-                ->whereHas('invoice', fn ($query) => $query->whereNeedsPayment())
+                ->whereHas('invoice', fn ($query) => $query->whereNeedsPayment()),
         ]);
     }
 
@@ -467,25 +465,6 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return array<string, mixed>
-     */
-    #[SearchUsingFullText(['search_text'])]
-    public function toSearchableArray(): array
-    {
-        return [
-            'search_text' => $this->search_text ?: '',
-        ];
-    }
-
-    public function updateSearch(): void
-    {
-        $this->attributes['search_text'] = collect([
-            $this->fullname,
-            $this->fullAddress,
-        ])->implode(' ');
-    }
-
-    /**
      * @return array<int, array{id: int, name: string}>
      */
     public static function forSelect(): array
@@ -518,5 +497,21 @@ class Member extends Model implements Geolocatable
         return $this->getOriginal('address') !== $this->address
             || $this->getOriginal('zip') !== $this->zip
             || $this->getOriginal('location') !== $this->location;
+    }
+
+    // --------------------------------- Searching ---------------------------------
+    // *****************************************************************************
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'address' => $this->fullAddress,
+            'fullname' => $this->fullname,
+        ];
     }
 }
