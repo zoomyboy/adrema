@@ -156,6 +156,10 @@ services:
           MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
     - name: redis
       image: redis
+    - name: meilisearch
+      image: getmeili/meilisearch:v1.6
+      commands:
+          - meilisearch --master-key="abc"
 
 trigger:
     event:

@@ -6,14 +6,22 @@ use App\Group;
 use App\Invoice\Models\Invoice;
 use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
-use App\Payment\Payment;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\RequestFactories\Child;
+use Illuminate\Support\Facades\Artisan;
+use Laravel\Scout\Console\SyncIndexSettingsCommand;
 use Tests\TestCase;
 
 class MemberIndexTest extends TestCase
 {
     use DatabaseMigrations;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('scout.driver', 'meilisearch');
+        Artisan::call(SyncIndexSettingsCommand::class);
+    }
 
     public function testItHandlesFullTextSearch(): void
     {
