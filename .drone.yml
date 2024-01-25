@@ -58,7 +58,7 @@ steps:
           PDFLATEX_BIN: /usr/bin/pdflatex
           XELATEX_BIN: /usr/bin/xelatex
           SCOUT_DRIVER: database
-          MEILISEARCH_HOST: meilisearch
+          MEILISEARCH_HOST: http://meilisearch:7700
 
     - name: docker_app_push
       image: plugins/docker
