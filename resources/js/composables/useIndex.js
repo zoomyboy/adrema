@@ -54,7 +54,7 @@ export function useIndex(props, siteName) {
 
     function setFilter(key, value) {
         inner.meta.value.filter[key] = value;
-        reload(true);
+        reload(true, false);
     }
 
     startListener();
