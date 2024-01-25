@@ -28,6 +28,8 @@ services:
             XELATEX_BIN: /usr/bin/xelatex
             PDFLATEX_BIN: /usr/bin/pdflatex
             REDIS_HOST: redis
+            MEILISEARCH_HOST: http://meilisearch:7700
+            MEILISEARCH_KEY: abc
         volumes:
             - ./data/storage:/app/storage/app
             - ./data/plugins:/app/plugins
@@ -49,6 +51,8 @@ services:
             XELATEX_BIN: /usr/bin/xelatex
             PDFLATEX_BIN: /usr/bin/pdflatex
             REDIS_HOST: redis
+            MEILISEARCH_HOST: http://meilisearch:7700
+            MEILISEARCH_KEY: abc
         volumes:
             - ./data/storage:/app/storage/app
             - ./data/plugins:/app/plugins
@@ -70,6 +74,8 @@ services:
             XELATEX_BIN: /usr/bin/xelatex
             PDFLATEX_BIN: /usr/bin/pdflatex
             REDIS_HOST: redis
+            MEILISEARCH_HOST: http://meilisearch:7700
+            MEILISEARCH_KEY: abc
         volumes:
             - ./data/storage:/app/storage/app
             - ./data/plugins:/app/plugins
