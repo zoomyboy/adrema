@@ -41,7 +41,7 @@ class MassStoreAction
             foreach ($members as $member) {
                 foreach ($member->subscription->children as $child) {
                     $invoice->positions()->create([
-                        'description' => str($child->name)->replace('{name}', $member->firstname . ' ' . $member->lastname)->replace('{year}', $year),
+                        'description' => str($child->name)->replace('{name}', $member->firstname . ' ' . $member->lastname)->replace('{year}', (string) $year),
                         'price' => $child->amount,
                         'member_id' => $member->id,
                     ]);

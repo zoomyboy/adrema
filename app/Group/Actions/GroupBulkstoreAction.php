@@ -26,7 +26,7 @@ class GroupBulkstoreAction
     }
 
     /**
-     * @param array<int, array{id: int, inner_name: string, level: string}> $groups
+     * @param array<array-key, mixed> $groups
      */
     public function handle(array $groups): void
     {
