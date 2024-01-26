@@ -26,9 +26,8 @@ class MemberIndexTest extends TestCase
     public function testItHandlesFullTextSearch(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $group = Group::factory()->create();
-        Member::factory()->defaults()->for($group)->create(['firstname' => 'Alexander']);
-        Member::factory()->defaults()->for($group)->create(['firstname' => 'Heinrich']);
+        Member::factory()->defaults()->create(['firstname' => 'Alexander']);
+        Member::factory()->defaults()->create(['firstname' => 'Heinrich']);
 
         $response = $this->callFilter('member.index', ['search' => 'Alexander']);
 
@@ -38,10 +37,9 @@ class MemberIndexTest extends TestCase
     public function testItHandlesAddress(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $group = Group::factory()->create();
-        Member::factory()->defaults()->for($group)->create(['address' => '']);
-        Member::factory()->defaults()->for($group)->create(['zip' => '']);
-        Member::factory()->defaults()->for($group)->create(['location' => '']);
+        Member::factory()->defaults()->create(['address' => '']);
+        Member::factory()->defaults()->create(['zip' => '']);
+        Member::factory()->defaults()->create(['location' => '']);
 
         $response = $this->callFilter('member.index', ['has_full_address' => true]);
         $noResponse = $this->callFilter('member.index', ['has_full_address' => false]);
@@ -53,8 +51,7 @@ class MemberIndexTest extends TestCase
     public function testItHandlesBirthday(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $group = Group::factory()->create();
-        $member = Member::factory()->defaults()->for(Group::factory())->create(['birthday' => null]);
+        $member = Member::factory()->defaults()->create(['birthday' => null]);
 
         $response = $this->callFilter('member.index', ['has_birthday' => true]);
 
@@ -65,11 +62,10 @@ class MemberIndexTest extends TestCase
     public function testItFiltersForSearchButNotForPayments(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $group = Group::factory()->create();
-        Member::factory()->defaults()->for($group)
+        Member::factory()->defaults()
             ->has(InvoicePosition::factory()->for(Invoice::factory()))
             ->create(['firstname' => '::firstname::']);
-        Member::factory()->defaults()->for($group)->create(['firstname' => '::firstname::']);
+        Member::factory()->defaults()->create(['firstname' => '::firstname::']);
 
         $response = $this->callFilter('member.index', ['search' => '::firstname::', 'ausstand' => true]);
 
