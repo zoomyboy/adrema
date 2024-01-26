@@ -194,6 +194,7 @@ class IndexTest extends TestCase
 
     public function testItLoadsGroups(): void
     {
+        $this->withoutExceptionHandling();
         $parent1 = Group::factory()->name('par1')->create();
         $child1 = Group::factory()->name('ch1')->for($parent1, 'parent')->create();
         $child2 = Group::factory()->name('ch2')->for($parent1, 'parent')->create();
@@ -201,6 +202,7 @@ class IndexTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami(12345, 'password', $parent1);
 
         $response = $this->get('/member');
+        $response->assertOk();
 
         $this->assertInertiaHas('par1', $response, 'data.meta.groups.0.name');
         $this->assertInertiaHas('- ch1', $response, 'data.meta.groups.1.name');
