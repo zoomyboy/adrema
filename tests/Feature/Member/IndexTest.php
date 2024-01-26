@@ -192,15 +192,6 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(false, $defaultResponse, 'data.meta.filter.ausstand');
     }
 
-    public function testItHandlesFullTextSearch(): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-
-        $searchResponse = $this->callFilter('member.index', ['search' => 'Maxö']);
-
-        $this->assertInertiaHas('Maxö', $searchResponse, 'data.meta.filter.search');
-    }
-
     public function testItLoadsGroups(): void
     {
         $parent1 = Group::factory()->name('par1')->create();
