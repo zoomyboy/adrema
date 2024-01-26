@@ -38,6 +38,7 @@ class MemberIndexTest extends TestCase
     public function testItHandlesAddress(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
+        $group = Group::factory()->create();
         Member::factory()->defaults()->for($group)->create(['address' => '']);
         Member::factory()->defaults()->for($group)->create(['zip' => '']);
         Member::factory()->defaults()->for($group)->create(['location' => '']);
