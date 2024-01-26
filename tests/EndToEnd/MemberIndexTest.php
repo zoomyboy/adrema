@@ -29,6 +29,7 @@ class MemberIndexTest extends TestCase
         Member::factory()->defaults()->create(['firstname' => 'Alexander']);
         Member::factory()->defaults()->create(['firstname' => 'Heinrich']);
 
+        sleep(5);
         $response = $this->callFilter('member.index', ['search' => 'Alexander']);
 
         $this->assertCount(1, $this->inertia($response, 'data.data'));
@@ -41,6 +42,7 @@ class MemberIndexTest extends TestCase
         Member::factory()->defaults()->create(['zip' => '']);
         Member::factory()->defaults()->create(['location' => '']);
 
+        sleep(5);
         $response = $this->callFilter('member.index', ['has_full_address' => true]);
         $noResponse = $this->callFilter('member.index', ['has_full_address' => false]);
 
@@ -53,6 +55,7 @@ class MemberIndexTest extends TestCase
         $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->create(['birthday' => null]);
 
+        sleep(5);
         $response = $this->callFilter('member.index', ['has_birthday' => true]);
 
         $this->assertCount(0, $this->inertia($response, 'data.data'));
@@ -67,6 +70,7 @@ class MemberIndexTest extends TestCase
             ->create(['firstname' => '::firstname::']);
         Member::factory()->defaults()->create(['firstname' => '::firstname::']);
 
+        sleep(5);
         $response = $this->callFilter('member.index', ['search' => '::firstname::', 'ausstand' => true]);
 
         $this->assertCount(1, $this->inertia($response, 'data.data'));
