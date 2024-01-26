@@ -27,10 +27,10 @@ class MemberIndexTest extends TestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         $group = Group::factory()->create();
-        Member::factory()->defaults()->for($group)->create(['firstname' => '::firstname::']);
-        Member::factory()->defaults()->for($group)->create(['firstname' => '::gggname::']);
+        Member::factory()->defaults()->for($group)->create(['firstname' => 'Alexander']);
+        Member::factory()->defaults()->for($group)->create(['firstname' => 'Heinrich']);
 
-        $response = $this->callFilter('member.index', ['search' => '::firstname::']);
+        $response = $this->callFilter('member.index', ['search' => 'Alexander']);
 
         $this->assertCount(1, $this->inertia($response, 'data.data'));
     }
@@ -38,10 +38,9 @@ class MemberIndexTest extends TestCase
     public function testItHandlesAddress(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $group = Group::factory()->create();
-        Member::factory()->defaults()->for(Group::factory())->create(['address' => '']);
-        Member::factory()->defaults()->for(Group::factory())->create(['zip' => '']);
-        Member::factory()->defaults()->for(Group::factory())->create(['location' => '']);
+        Member::factory()->defaults()->for($group)->create(['address' => '']);
+        Member::factory()->defaults()->for($group)->create(['zip' => '']);
+        Member::factory()->defaults()->for($group)->create(['location' => '']);
 
         $response = $this->callFilter('member.index', ['has_full_address' => true]);
         $noResponse = $this->callFilter('member.index', ['has_full_address' => false]);
