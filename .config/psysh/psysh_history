@@ -1,2 +1,0 @@
-\App\User::factory()->create();
-\App\User::factory()->create();

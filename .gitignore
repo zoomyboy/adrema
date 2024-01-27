@@ -19,6 +19,7 @@ Homestead.json
 # User data files
 /data/
 /.app.env
+.config/psysh	
 
 # Development files
 /docker-compose.yml
