@@ -499,7 +499,7 @@ class Member extends Model implements Geolocatable
             'lastname' => $this->lastname,
             'birthday' => $this->birthday?->format('Y-m-d'),
             'ausstand' => $this->getAusstand(),
-            'bill_kind' => $this->bill_kind->value,
+            'bill_kind' => $this->bill_kind?->value,
             'group_id' => $this->group->id,
             'memberships' => $this->memberships()->active()->get()
                 ->map(fn ($membership) => [...$membership->only('activity_id', 'subactivity_id'), 'both' => $membership->activity_id . '|' . $membership->subactivity_id]),

@@ -1,5 +1,5 @@
 includes:
-    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/larastan/larastan/extension.neon
     - ./vendor/phpstan/phpstan-mockery/extension.neon
 
 parameters:
@@ -527,3 +527,7 @@ parameters:
             count: 1
             path: tests/Unit/Plugin/PluginTest.php
 
+        -
+            message: "#^Using nullsafe property access on non\\-nullable type App\\\\Invoice\\\\BillKind\\. Use \\-\\> instead\\.$#"
+            count: 1
+            path: app/Member/Member.php

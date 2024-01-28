@@ -60,7 +60,7 @@
         "laravel/envoy": "^2.8",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/larastan": "^2.0",
+        "larastan/larastan": "^2.0",
         "orchestra/testbench": "^7.0",
         "phpstan/phpstan-mockery": "^1.1",
         "phpunit/phpunit": "^9.5.10"
