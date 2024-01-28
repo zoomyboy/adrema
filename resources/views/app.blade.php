@@ -6,7 +6,6 @@
         <meta name="socketport" content="{{env('SOCKET_PORT')}}" />
         @if(auth()->id())
         <meta name="meilisearch_key" content="{{config('scout.meilisearch.key')}}" />
-        <meta name="meilisearch_baseurl" content="http://localhost:7700" />
         @endif
         @vite('resources/js/app.js')
     </head>

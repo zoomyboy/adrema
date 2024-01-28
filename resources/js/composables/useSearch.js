@@ -4,7 +4,7 @@ export default function useSearch() {
     const axios = inject('axios');
     async function search(text, filters = []) {
         var response = await axios.post(
-            document.querySelector('meta[name="meilisearch_baseurl"]').content + '/indexes/members/search',
+            '/indexes/members/search',
             {
                 q: text,
                 filter: filters,
