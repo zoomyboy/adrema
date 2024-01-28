@@ -2,10 +2,8 @@
 
 namespace App;
 
-use App\Http\Views\ActivityFilterScope;
 use App\Nami\HasNamiField;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -31,16 +29,6 @@ class Activity extends Model
                 'source' => 'name',
             ],
         ];
-    }
-
-    /**
-     * @param Builder<self> $query
-     *
-     * @return Builder<self>
-     */
-    public function scopeWithFilter(Builder $query, ActivityFilterScope $filter): Builder
-    {
-        return $filter->apply($query);
     }
 
     /**

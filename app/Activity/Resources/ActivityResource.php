@@ -3,7 +3,6 @@
 namespace App\Activity\Resources;
 
 use App\Activity;
-use App\Http\Views\ActivityFilterScope;
 use App\Lib\HasMeta;
 use App\Resources\SubactivityResource;
 use App\Subactivity;
@@ -51,7 +50,6 @@ class ActivityResource extends JsonResource
     {
         return [
             'subactivities' => SubactivityResource::collectionWithoutMeta(Subactivity::get()),
-            'filter' => ActivityFilterScope::fromRequest(request()->input('filter')),
             'links' => [
                 'index' => route('activity.index'),
                 'create' => route('activity.create'),

@@ -14,7 +14,7 @@ abstract class Filter extends Data
 {
 
     /**
-     * @return self<T>
+     * @return Builder
      */
     abstract public function getQuery(): Builder;
     protected Builder $query;

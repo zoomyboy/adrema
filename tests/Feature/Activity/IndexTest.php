@@ -25,26 +25,4 @@ class IndexTest extends TestCase
         $this->assertInertiaHas(route('membership.masslist.index'), $response, 'data.meta.links.membership_masslist');
         $this->assertCount(2, $this->inertia($response, 'data.data'));
     }
-
-    public function testItDisplaysDefaultFilter(): void
-    {
-        $this->login()->loginNami()->withoutExceptionHandling();
-
-        $response = $this->callFilter('activity.index', []);
-
-        $this->assertInertiaHas(null, $response, 'data.meta.filter.subactivity');
-    }
-
-    public function testItFiltersActivityBySubactivity(): void
-    {
-        $this->login()->loginNami()->withoutExceptionHandling();
-        $subactivity = Subactivity::factory()->name('jjon')->create();
-        Activity::factory()->name('Local')->hasAttached($subactivity)->create();
-        Activity::factory()->count(2)->name('Local')->create();
-
-        $response = $this->callFilter('activity.index', ['subactivity_id' => $subactivity->id]);
-
-        $this->assertInertiaHas($subactivity->id, $response, 'data.meta.filter.subactivity_id');
-        $this->assertCount(1, $this->inertia($response, 'data.data'));
-    }
 }
