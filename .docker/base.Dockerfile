@@ -9,4 +9,5 @@ RUN pecl install redis && docker-php-ext-enable redis
 RUN docker-php-ext-configure gd --with-jpeg
 RUN docker-php-ext-enable gd
 RUN usermod -s /bin/bash www-data
+RUN echo 'memory_limit = 2G' >> /usr/local/etc/php/conf.d/99-custom-php-memlimit.ini
 

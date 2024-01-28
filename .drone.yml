@@ -29,7 +29,6 @@ steps:
     - name: tests
       image: zoomyboy/adrema-base:latest
       commands:
-          - echo 'memory_limit = 2G' >> /usr/local/etc/php/conf.d/99-custom-php-memlimit.ini;
           - php artisan migrate
           - php artisan test
           - rm -f .env
