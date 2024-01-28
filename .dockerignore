@@ -7,7 +7,10 @@ bootstrap/cache/services.php
 bootstrap/cache/packages.php
 bootstrap/cache/routes.php
 packages/laravel-nami/.cookies
-storage
+storage/logs/**
+storage/temp/**
+storage/debugbar/**
+storage/app/tmp/**
 cookies
 storage/logs/laravel.log
 .git

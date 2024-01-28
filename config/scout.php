@@ -132,7 +132,7 @@ return [
     */
 
     'meilisearch' => [
-        'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
+        'host' => env('MEILISEARCH_HOST', 'http://meilisearch:7700'),
         'key' => env('MEILI_MASTER_KEY', null),
         'index-settings' => [
             Member::class => [
