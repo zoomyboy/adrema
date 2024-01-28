@@ -502,7 +502,7 @@ class Member extends Model implements Geolocatable
             'bill_kind' => $this->bill_kind?->value,
             'group_id' => $this->group->id,
             'memberships' => $this->memberships()->active()->get()
-                ->map(fn ($membership) => [...$membership->only('activity_id', 'subactivity_id'), 'both' => $membership->activity_id . '|' . $membership->subactivity_id]),
+                ->map(fn ($membership) => [...$membership->only('activity_id', 'subactivity_id'), 'both' => $membership->activity_id . '|' . $membership->subactivity_id, 'with_group' => $membership->group_id . '|' . $membership->activity_id . '|' . $membership->subactivity_id]),
         ];
     }
 }

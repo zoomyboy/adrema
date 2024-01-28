@@ -169,6 +169,36 @@ class MemberIndexTest extends EndToEndTestCase
             ->assertInertiaCount('data.data', 0);
     }
 
+    public function testItFiltersForMemberships(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $mitglied = Activity::factory()->create();
+        $woelfling = Subactivity::factory()->create();
+        $juffi = Subactivity::factory()->create();
+        $group = Group::factory()->create();
+        Member::factory()->defaults()->has(Membership::factory()->for($mitglied)->for($woelfling)->for($group))->create();
+        Member::factory()->defaults()->has(Membership::factory()->for($mitglied)->for($juffi)->for($group))->create();
+        Member::factory()->defaults()
+            ->has(Membership::factory()->for($mitglied)->for($woelfling)->for($group))
+            ->has(Membership::factory()->for($mitglied)->for($juffi)->for($group))
+            ->create();
+
+        sleep(1);
+        $this->callFilter('member.index', ['memberships' => [
+            ['group_ids' => [$group->id], 'activity_ids' => [$mitglied->id], 'subactivity_ids' => [$woelfling->id]]
+        ]])->assertInertiaCount('data.data', 2);
+        $this->callFilter('member.index', ['memberships' => [
+            ['group_ids' => [$group->id], 'activity_ids' => [$mitglied->id], 'subactivity_ids' => [$juffi->id]]
+        ]])->assertInertiaCount('data.data', 2);
+        $this->callFilter('member.index', ['memberships' => [
+            ['group_ids' => [$group->id], 'activity_ids' => [$mitglied->id], 'subactivity_ids' => [$juffi->id, $woelfling->id]],
+        ]])->assertInertiaCount('data.data', 3);
+        $this->callFilter('member.index', ['memberships' => [
+            ['group_ids' => [$group->id], 'activity_ids' => [$mitglied->id], 'subactivity_ids' => [$woelfling->id]],
+            ['group_ids' => [$group->id], 'activity_ids' => [$mitglied->id], 'subactivity_ids' => [$juffi->id]],
+        ]])->assertInertiaCount('data.data', 1);
+    }
+
     public function testItFiltersForSearchButNotForPayments(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();

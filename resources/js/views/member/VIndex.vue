@@ -23,6 +23,28 @@
                 </div>
             </div>
         </ui-popup>
+        <ui-popup v-if="membershipFilters !== null" heading="Nach Mitgliedschaften filtern" full
+            @close="membershipFilters = null">
+            <button class="btn btn-primary label mt-2"
+                @click.prevent="membershipFilters.push({ ...meta.default_membership_filter })">
+                <ui-sprite class="w-3 h-3 xl:mr-2" src="plus"></ui-sprite>
+                <span class="hidden xl:inline">Hinzufügen</span>
+            </button>
+            <div v-for="(filter, index) in membershipFilters" :key="index" class="flex space-x-2 mt-2">
+                <f-multipleselect id="group_id" v-model="filter.group_ids" :options="meta.groups" label="Gruppierung"
+                    size="sm" name="group_id"></f-multipleselect>
+                <f-multipleselect id="activity_ids" v-model="filter.activity_ids" :options="meta.filterActivities"
+                    label="Tätigkeiten" size="sm" name="activity_ids"></f-multipleselect>
+                <f-multipleselect id="subactivity_ids" v-model="filter.subactivity_ids" :options="meta.filterSubactivities"
+                    label="Untertätigkeiten" size="sm" name="subactivity_ids"></f-multipleselect>
+            </div>
+            <button class="btn btn-primary label mt-3" @click.prevent="
+                setFilter('memberships', membershipFilters);
+            membershipFilters = null;
+                                ">
+                <span class="hidden xl:inline">Anwenden</span>
+            </button>
+        </ui-popup>
         <page-filter breakpoint="xl">
             <f-text id="search" :model-value="getFilter('search')" name="search" label="Suchen …" size="sm"
                 @update:model-value="setFilter('search', $event)"></f-text>
@@ -34,12 +56,10 @@
             <f-select v-show="hasModule('bill')" id="billKinds" name="billKinds" :options="meta.billKinds"
                 :model-value="getFilter('bill_kind')" label="Rechnung" size="sm"
                 @update:model-value="setFilter('bill_kind', $event)"></f-select>
-            <f-multipleselect id="activity_ids" :options="meta.filterActivities" :model-value="getFilter('activity_ids')"
-                label="Tätigkeiten" size="sm" name="activity_ids"
-                @update:model-value="setFilter('activity_ids', $event)"></f-multipleselect>
-            <f-multipleselect id="subactivity_ids" :options="meta.filterSubactivities"
-                :model-value="getFilter('subactivity_ids')" label="Untertätigkeiten" size="sm" name="subactivity_ids"
-                @update:model-value="setFilter('subactivity_ids', $event)"></f-multipleselect>
+            <button class="btn btn-primary label mr-2" @click.prevent="membershipFilters = getFilter('memberships')">
+                <ui-sprite class="w-3 h-3 xl:mr-2" src="filter"></ui-sprite>
+                <span class="hidden xl:inline">Mitgliedschaften</span>
+            </button>
             <button class="btn btn-primary label mr-2" @click.prevent="exportMembers">
                 <ui-sprite class="w-3 h-3 xl:mr-2" src="save"></ui-sprite>
                 <span class="hidden xl:inline">Exportieren</span>
@@ -126,6 +146,7 @@ import { ref, defineProps } from 'vue';
 
 const single = ref(null);
 const deleting = ref(null);
+const membershipFilters = ref(null);
 
 const props = defineProps(indexProps);
 var { router, data, meta, getFilter, setFilter, filterString, reloadPage } = useIndex(props.data, 'member');

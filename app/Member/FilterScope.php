@@ -23,10 +23,12 @@ class FilterScope extends Filter
      * @param array<int, int> $groupIds
      * @param array<int, int> $include
      * @param array<int, int> $exclude
+     * @param array<int, array{group_ids: array<int, int>, subactivity_ids: array<int, int>, activity_ids: array<int, int>}> $memberships
      */
     public function __construct(
         public bool $ausstand = false,
         public ?string $billKind = null,
+        public array $memberships = [],
         public array $activityIds = [],
         public array $subactivityIds = [],
         public ?string $search = '',
@@ -73,11 +75,14 @@ class FilterScope extends Filter
                 $filter->push($this->inExpression('memberships.subactivity_id', $this->subactivityIds));
             }
             if ($this->subactivityIds && $this->activityIds) {
-                $combinations = collect($this->activityIds)
-                    ->map(fn ($activityId) => collect($this->subactivityIds)->map(fn ($subactivityId) => $activityId . '|' . $subactivityId))
-                    ->flatten()
+                $combinations = $this->combinations($this->activityIds, $this->subactivityIds)
+                    ->map(fn ($combination) => implode('|', $combination))
                     ->map(fn ($combination) => str($combination)->wrap('"'));
                 $filter->push($this->inExpression('memberships.both', $combinations));
+            }
+
+            foreach ($this->memberships as $membership) {
+                $filter->push($this->inExpression('memberships.with_group', $this->possibleValuesForMembership($membership)->map(fn ($value) => str($value)->wrap('"'))));
             }
 
             if (count($this->exclude)) {
@@ -126,5 +131,34 @@ class FilterScope extends Filter
         $valueString = Collection::wrap($values)->implode(',');
 
         return "$key NOT IN [{$valueString}]";
+    }
+
+    protected function possibleValuesForMembership(array $membership): Collection
+    {
+        return $this->combinations($membership['group_ids'], $membership['activity_ids'], $membership['subactivity_ids'])
+            ->map(fn ($combination) => collect($combination)->implode('|'));
+    }
+
+    /**
+     * @return Collection<int, mixed>
+     */
+    protected function combinations(...$parts): Collection
+    {
+        $firstPart = array_shift($parts);
+        $otherParts = $parts;
+
+        if (!count($otherParts)) {
+            return collect(array_map(fn ($p) => [$p], $firstPart));
+        }
+
+        /** @var Collection<int, mixed> */
+        $results = collect([]);
+        foreach ($firstPart as $firstPartSegment) {
+            foreach ($this->combinations(...$otherParts) as $combination) {
+                $results->push([$firstPartSegment, ...$combination]);
+            }
+        }
+
+        return $results;
     }
 }

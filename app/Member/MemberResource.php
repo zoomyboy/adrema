@@ -157,6 +157,11 @@ class MemberResource extends JsonResource
                 'index' => route('member.index'),
                 'create' => route('member.create'),
             ],
+            'default_membership_filter' => [
+                'group_ids' => [],
+                'activity_ids' => [],
+                'subactivity_ids' => []
+            ],
         ];
     }
 
