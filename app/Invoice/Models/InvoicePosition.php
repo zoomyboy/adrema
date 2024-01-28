@@ -31,10 +31,14 @@ class InvoicePosition extends Model
 
     public static function booted(): void
     {
+        static::saved(function ($model) {
+            $model->member->touch();
+        });
         static::deleted(function ($model) {
             if ($model->invoice->positions()->get()->count() === 0) {
                 $model->invoice->delete();
             }
+            $model->member->touch();
         });
     }
 }

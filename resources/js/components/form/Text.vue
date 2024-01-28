@@ -340,7 +340,6 @@ export default {
             }
         },
         onInput(v) {
-            console.log(this.modelModifiers);
             if (this.mode === 'none') {
                 this.transformedValue = v.target.value;
             }

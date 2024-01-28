@@ -116,4 +116,14 @@ class Membership extends Model
     {
         return $query->active()->whereHas('activity', fn ($builder) => $builder->where('is_try', true));
     }
+
+    public static function booted(): void
+    {
+        static::saved(function ($membership) {
+            $membership->member->touch();
+        });
+        static::deleted(function ($membership) {
+            $membership->member->touch();
+        });
+    }
 }

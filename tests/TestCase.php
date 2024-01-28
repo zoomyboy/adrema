@@ -13,10 +13,12 @@ use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
 use Phake;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\HttpFoundation\File\File;
 use Tests\Lib\MakesHttpCalls;
 use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
+use Illuminate\Support\Facades\Artisan;
+use Laravel\Scout\Console\FlushCommand;
+use Laravel\Scout\Console\SyncIndexSettingsCommand;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -92,6 +94,15 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
+    public function useMeilisearch(): self
+    {
+        config()->set('scout.driver', 'meilisearch');
+        Artisan::call(FlushCommand::class, ['model' => Member::class]);
+        Artisan::call(SyncIndexSettingsCommand::class);
+
+        return $this;
+    }
+
     /**
      * @param <class-string> $class
      */
@@ -120,6 +131,16 @@ abstract class TestCase extends BaseTestCase
             Assert::assertNotNull($props);
             $json = new AssertableJsonString($props);
             $json->assertPath($path, $value);
+            return $this;
+        });
+
+        TestResponse::macro('assertInertiaCount', function ($path, $count) {
+            /** @var TestResponse */
+            $response = $this;
+            $props = data_get($response->viewData('page'), 'props');
+            Assert::assertNotNull($props);
+            $json = new AssertableJsonString($props);
+            $json->assertCount($count, $path);
             return $this;
         });
 

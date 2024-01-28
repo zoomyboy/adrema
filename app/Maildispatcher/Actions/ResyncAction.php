@@ -25,9 +25,7 @@ class ResyncAction
      */
     public function getResults(Maildispatcher $dispatcher): Collection
     {
-        return Member::search(data_get($dispatcher->filter, 'search', ''))->query(
-            fn ($q) => $q->select('*')->withFilter(FilterScope::fromPost($dispatcher->filter))
-        )->get()
+        return FilterScope::fromPost($dispatcher->filter)->getQuery()->get()
             ->filter(fn ($member) => $member->email || $member->email_parents)
             ->map(fn ($member) => MailEntry::from(['email' => $member->email ?: $member->email_parents]))
             ->unique(fn ($member) => $member->email);

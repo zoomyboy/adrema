@@ -15,19 +15,16 @@ class SearchAction
     use AsAction;
 
     /**
+     * @param array<string, mixed> $filter
      * @return LengthAwarePaginator<int, Member>
      */
-    public function handle(FilterScope $filter, int $perPage): LengthAwarePaginator
+    public function handle(array $filter, int $perPage): LengthAwarePaginator
     {
-        return Member::search($filter->search)->query(
-            fn ($q) => $q->select('*')
-                ->withFilter($filter)
-                ->ordered()
-        )->paginate($perPage);
+        return FilterScope::fromPost($filter)->getQuery()->paginate($perPage);
     }
 
     public function asController(ActionRequest $request): AnonymousResourceCollection
     {
-        return MemberResource::collection($this->handle(FilterScope::fromRequest($request->input('filter', '')), $request->input('per_page', 15)));
+        return MemberResource::collection($this->handle($request->input('filter', []), $request->input('per_page', 15)));
     }
 }

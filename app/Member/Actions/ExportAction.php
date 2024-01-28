@@ -43,9 +43,8 @@ class ExportAction
 
     public function asController(ActionRequest $request): StreamedResponse
     {
-        $filter = FilterScope::fromRequest($request->input('filter'));
-
-        $contents = $this->handle(Member::ordered()->withFilter($filter)->get());
+        $members = FilterScope::fromRequest($request->input('filter'))->getQuery()->get();
+        $contents = $this->handle($members);
 
         Storage::disk('temp')->put('mitglieder.csv', $contents);
 

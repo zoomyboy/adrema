@@ -4,7 +4,8 @@ namespace App\Member;
 
 use App\Invoice\BillKind;
 use App\Lib\Filter;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
+use Laravel\Scout\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -37,72 +38,93 @@ class FilterScope extends Filter
     ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function locks(): array
+    public function getQuery(): Builder
     {
-        return [];
+        $this->search = $this->search ?: '';
+
+        return Member::search($this->search, function ($engine, string $query, array $options) {
+            $filter = collect([]);
+
+            if ($this->hasFullAddress === true) {
+                $filter->push('address IS NOT EMPTY');
+            }
+            if ($this->hasFullAddress === false) {
+                $filter->push('address IS EMPTY');
+            }
+            if ($this->hasBirthday === false) {
+                $filter->push('birthday IS NULL');
+            }
+            if ($this->hasBirthday === true) {
+                $filter->push('birthday IS NOT NULL');
+            }
+            if ($this->ausstand === true) {
+                $filter->push('ausstand > 0');
+            }
+            if ($this->billKind) {
+                $filter->push('bill_kind = ' . BillKind::fromValue($this->billKind)->value);
+            }
+            if (count($this->groupIds)) {
+                $filter->push($this->inExpression('group_id', $this->groupIds));
+            }
+            if (!$this->subactivityIds && $this->activityIds) {
+                $filter->push($this->inExpression('memberships.activity_id', $this->activityIds));
+            }
+            if ($this->subactivityIds && !$this->activityIds) {
+                $filter->push($this->inExpression('memberships.subactivity_id', $this->subactivityIds));
+            }
+            if ($this->subactivityIds && $this->activityIds) {
+                $combinations = collect($this->activityIds)
+                    ->map(fn ($activityId) => collect($this->subactivityIds)->map(fn ($subactivityId) => $activityId . '|' . $subactivityId))
+                    ->flatten()
+                    ->map(fn ($combination) => str($combination)->wrap('"'));
+                $filter->push($this->inExpression('memberships.both', $combinations));
+            }
+
+            if (count($this->exclude)) {
+                $filter->push($this->notInExpression('id', $this->exclude));
+            }
+
+            $andFilter = $filter->map(fn ($expression) => "($expression)")->implode(' AND ');
+
+            $options['filter'] = $this->implode(collect([$andFilter])->push($this->inExpression('id', $this->include)), 'OR');
+            $options['sort'] = ['lastname:asc', 'firstname:asc'];
+
+            return $engine->search($query, $options);
+        });
     }
 
     /**
-     * @param Builder<Member> $query
-     *
-     * @return Builder<Member>
+     * @param Collection<int, mixed> $values
      */
-    public function apply(Builder $query): Builder
+    protected function implode(Collection $values, string $between): string
     {
-        return $query->where(function ($query) {
-            $query->orWhere(function ($query) {
-                if ($this->ausstand) {
-                    $query->whereAusstand();
-                }
+        return $values->filter(fn ($expression) => $expression)->implode(" {$between} ");
+    }
 
-                if ($this->billKind) {
-                    $query->where('bill_kind', BillKind::fromValue($this->billKind));
-                }
+    /**
+     * @param array<int, mixed>|Collection<int, mixed> $values
+     */
+    private function inExpression(string $key, array|Collection $values): ?string
+    {
+        if (!count($values)) {
+            return null;
+        }
+        $valueString = Collection::wrap($values)->implode(',');
 
-                if (true === $this->hasFullAddress) {
-                    $query->whereNotNull('address')->whereNotNull('zip')->whereNotNull('location')->where('address', '!=', '')->where('zip', '!=', '')->where('location', '!=', '');
-                }
+        return "$key IN [{$valueString}]";
+    }
 
-                if (false === $this->hasFullAddress) {
-                    $query->where(
-                        fn ($q) => $q
-                            ->orWhere('address', '')->orWhereNull('address')
-                            ->orWhere('zip', '')->orWhereNull('zip')
-                            ->orWhere('location', '')->orWhereNull('location')
-                    );
-                }
+    /**
+     * @param array<int, mixed>|Collection<int, mixed> $values
+     */
+    private function notInExpression(string $key, array|Collection $values): ?string
+    {
+        if (!count($values)) {
+            return null;
+        }
 
-                if (true === $this->hasBirthday) {
-                    $query->whereNotNull('birthday');
-                }
+        $valueString = Collection::wrap($values)->implode(',');
 
-                if (count($this->groupIds)) {
-                    $query->whereIn('group_id', $this->groupIds);
-                }
-
-                if (count($this->subactivityIds) + count($this->activityIds) > 0) {
-                    $query->whereHas('memberships', function ($q) {
-                        $q->active();
-                        if (count($this->subactivityIds)) {
-                            $q->whereIn('subactivity_id', $this->subactivityIds);
-                        }
-                        if (count($this->activityIds)) {
-                            $q->whereIn('activity_id', $this->activityIds);
-                        }
-                    });
-                }
-
-                if (count($this->exclude)) {
-                    $query->whereNotIn('id', $this->exclude);
-                }
-            })->orWhere(function ($query) {
-                if (count($this->include)) {
-                    $query->whereIn('id', $this->include);
-                }
-            });
-        });
+        return "$key NOT IN [{$valueString}]";
     }
 }

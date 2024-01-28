@@ -5,6 +5,7 @@ namespace App\Http\Views;
 use App\Activity;
 use App\Lib\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Builder as ScoutBuilder;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -21,12 +22,9 @@ class ActivityFilterScope extends Filter
     ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function locks(): array
+    public function getQuery(): ScoutBuilder
     {
-        return [];
+        return Activity::search('');
     }
 
     /**

@@ -17,15 +17,13 @@ class MemberController extends Controller
     {
         session()->put('menu', 'member');
         session()->put('title', 'Mitglieder');
-        $filter = FilterScope::fromRequest($request->input('filter', ''));
 
         return Inertia::render('member/VIndex', [
-            'data' => MemberResource::collection(Member::search($filter->search)->query(
-                fn ($q) => $q->select('*')
-                    ->withFilter($filter)
+            'data' => MemberResource::collection(FilterScope::fromRequest($request->input('filter', ''))->getQuery()->query(
+                fn ($q) => $q
+                    ->select('*')
                     ->with(['gender', 'subscription', 'leaderMemberships', 'ageGroupMemberships.subactivity'])
                     ->withPendingPayment()
-                    ->ordered()
             )->paginate(15)),
         ]);
     }

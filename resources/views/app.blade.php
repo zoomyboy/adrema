@@ -4,6 +4,10 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <meta name="socketport" content="{{env('SOCKET_PORT')}}" />
+        @if(auth()->id())
+        <meta name="meilisearch_key" content="{{config('scout.meilisearch.key')}}" />
+        <meta name="meilisearch_baseurl" content="http://localhost:7700" />
+        @endif
         @vite('resources/js/app.js')
     </head>
     <body class="min-h-full flex flex-col">

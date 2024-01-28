@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Maildispatcher;
+namespace Tests\EndToEnd\Maildispatcher;
 
 use \Mockery as M;
 use App\Activity;
@@ -10,12 +10,10 @@ use App\Mailgateway\Models\Mailgateway;
 use App\Mailgateway\Types\LocalType;
 use App\Member\Member;
 use App\Member\Membership;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
+use Tests\EndToEndTestCase;
 
-class StoreTest extends TestCase
+class StoreTest extends EndToEndTestCase
 {
-    use DatabaseTransactions;
 
     public function setUp(): void
     {
@@ -31,6 +29,7 @@ class StoreTest extends TestCase
         Member::factory()->defaults()->has(Membership::factory()->inLocal('Leiter*in', 'Wölfling'))->create(['email' => 'jane@example.com']);
         $activityId = Activity::first()->id;
 
+        sleep(1);
         $response = $this->postJson('/maildispatcher', [
             'name' => 'test',
             'gateway_id' => $gateway->id,
@@ -61,6 +60,7 @@ class StoreTest extends TestCase
         Member::factory()->defaults()->create(['email' => 'jane@example.com']);
         Member::factory()->defaults()->create(['email' => 'jane@example.com']);
 
+        sleep(1);
         $this->postJson('/maildispatcher', [
             'name' => 'test',
             'gateway_id' => $gateway->id,
@@ -73,6 +73,7 @@ class StoreTest extends TestCase
         $gateway = Mailgateway::factory()->type(LocalType::class, [])->create();
         Member::factory()->defaults()->create(['email' => 'Jane@example.com']);
 
+        sleep(1);
         $this->postJson('/maildispatcher', [
             'name' => 'test',
             'gateway_id' => $gateway->id,

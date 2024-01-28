@@ -104,8 +104,7 @@ services:
 
     meilisearch:
         image: getmeili/meilisearch:v1.6
-        command: 'meilisearch --master-key="abc"'
         volumes:
             - ./data/meilisearch:/meili_data
-        ports:
-            - '7700:7700'
+        env_file:
+            - .app.env

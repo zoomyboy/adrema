@@ -133,10 +133,12 @@ return [
 
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
-        'key' => env('MEILISEARCH_KEY', null),
+        'key' => env('MEILI_MASTER_KEY', null),
         'index-settings' => [
             Member::class => [
-                'filterableAttributes' => ['fullname', 'address'],
+                'filterableAttributes' => ['address', 'birthday', 'ausstand', 'bill_kind', 'group_id', 'memberships', 'id'],
+                'searchableAttributes' => ['fullname', 'address'],
+                'sortableAttributes' => ['lastname', 'firstname'],
             ]
         ],
     ],

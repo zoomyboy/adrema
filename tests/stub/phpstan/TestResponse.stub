@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @method self assertInertiaPath(string $path, string|array<string, mixed>|int|null $value)
+ * @method self assertInertiaCount(string $path, int $count)
  * @method self assertPdfPageCount(int $count)
  * @method self assertPdfName(string $filename)
  * @method File getFile()

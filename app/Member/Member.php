@@ -149,7 +149,9 @@ class Member extends Model implements Geolocatable
 
     public function getFullAddressAttribute(): string
     {
-        return $this->address . ', ' . $this->zip . ' ' . $this->location;
+        return $this->address && $this->zip && $this->location
+            ? $this->address . ', ' . $this->zip . ' ' . $this->location
+            : '';
     }
 
     public function getEfzLink(): ?string
@@ -176,6 +178,11 @@ class Member extends Model implements Geolocatable
     public function getAge(): ?int
     {
         return $this->birthday?->diffInYears(now());
+    }
+
+    protected function getAusstand(): int
+    {
+        return (int) $this->invoicePositions()->whereHas('invoice', fn ($query) => $query->whereNeedsPayment())->sum('price');
     }
 
     // ---------------------------------- Relations ----------------------------------
@@ -329,18 +336,6 @@ class Member extends Model implements Geolocatable
      *
      * @return Builder<self>
      */
-    public function scopeWhereAusstand(Builder $query): Builder
-    {
-        return $query->whereHas('invoicePositions', function ($q) {
-            return $q->whereHas('invoice', fn ($query) => $query->whereNeedsPayment());
-        });
-    }
-
-    /**
-     * @param Builder<self> $query
-     *
-     * @return Builder<self>
-     */
     public function scopePayable(Builder $query): Builder
     {
         return $query->where('bill_kind', '!=', null)->where('subscription_id', '!=', null);
@@ -354,18 +349,6 @@ class Member extends Model implements Geolocatable
     public function scopeForDashboard(Builder $query): Builder
     {
         return $query->selectRaw('SUM(id)');
-    }
-
-    /**
-     * @todo refactor this to an actual filter model
-     *
-     * @param Builder<self> $query
-     *
-     * @return Builder<self>
-     */
-    public function scopeWithFilter(Builder $query, FilterScope $filter): Builder
-    {
-        return $filter->apply($query);
     }
 
     /**
@@ -512,6 +495,14 @@ class Member extends Model implements Geolocatable
         return [
             'address' => $this->fullAddress,
             'fullname' => $this->fullname,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'birthday' => $this->birthday?->format('Y-m-d'),
+            'ausstand' => $this->getAusstand(),
+            'bill_kind' => $this->bill_kind?->value,
+            'group_id' => $this->group->id,
+            'memberships' => $this->memberships()->active()->get()
+                ->map(fn ($membership) => [...$membership->only('activity_id', 'subactivity_id'), 'both' => $membership->activity_id . '|' . $membership->subactivity_id]),
         ];
     }
 }

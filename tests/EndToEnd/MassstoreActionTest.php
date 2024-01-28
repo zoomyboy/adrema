@@ -13,14 +13,13 @@ use App\Membership\Actions\MembershipStoreAction;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Queue;
+use Tests\EndToEndTestCase;
 use Tests\TestCase;
 use Throwable;
 use Zoomyboy\LaravelNami\Fakes\MembershipFake;
 
-class MassstoreActionTest extends TestCase
+class MassstoreActionTest extends EndToEndTestCase
 {
-
-    use DatabaseMigrations;
 
     public function testItFiresActionJobWhenUsingController(): void
     {

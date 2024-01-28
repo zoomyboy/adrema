@@ -2,21 +2,22 @@
 
 namespace App\Lib;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Builder;
 use Spatie\LaravelData\Data;
 
 /**
  * @template T of Model
+ * @property Builder $query
  */
 abstract class Filter extends Data
 {
-    public string $unsetReplacer = 'yoNee3ainge4eetiier9ogaiChoe0ahcaR3Hu1uzah8xaiv7ael7yahphai7ruG9';
 
     /**
-     * @return array<string, mixed>
+     * @return self<T>
      */
-    abstract protected function locks(): array;
+    abstract public function getQuery(): Builder;
+    protected Builder $query;
 
     /**
      * @param array<string, mixed>|string|null $request
@@ -35,51 +36,6 @@ abstract class Filter extends Data
      */
     public static function fromPost(?array $post = null): static
     {
-        return static::withoutMagicalCreationFrom($post ?: [])->parseLocks();
-    }
-
-    public function parseLocks(): static
-    {
-        foreach ($this->locks() as $key => $value) {
-            if ($value === $this->unsetReplacer) {
-                continue;
-            }
-
-            $this->{$key} = $value;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function when(bool $when, $value)
-    {
-        return $when ? $value : $this->unsetReplacer;
-    }
-
-    /**
-     * @param Builder<T> $query
-     *
-     * @return Builder<T>
-     */
-    protected function applyOwnOthers(Builder $query, bool $own, bool $others): Builder
-    {
-        if ($own && !$others) {
-            $query->where('user_id', auth()->id());
-        }
-
-        if (!$own && $others) {
-            $query->where('user_id', '!=', auth()->id());
-        }
-
-        if (!$own && !$others) {
-            $query->where('id', -1);
-        }
-
-        return $query;
+        return static::withoutMagicalCreationFrom($post ?: []);
     }
 }

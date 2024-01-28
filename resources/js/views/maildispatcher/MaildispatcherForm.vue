@@ -10,27 +10,56 @@
             <ui-box heading="Metadatem">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <f-text id="name" v-model="model.name" name="name" label="Name" size="sm" required></f-text>
-                    <f-select id="gateway_id" v-model="model.gateway_id" name="gateway_id" :options="meta.gateways"
-                        label="Verbindung" size="sm" required></f-select>
+                    <f-select id="gateway_id" v-model="model.gateway_id" name="gateway_id" :options="meta.gateways" label="Verbindung" size="sm" required></f-select>
                 </div>
             </ui-box>
             <ui-box v-if="members !== null" heading="Filterregeln">
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <f-multipleselect id="activity_ids" v-model="model.filter.activity_ids" name="activity_ids"
-                        :options="members.meta.filterActivities" label="Tätigkeit" size="sm"
-                        @update:model-value="reload(1)"></f-multipleselect>
-                    <f-multipleselect id="subactivity_ids" v-model="model.filter.subactivity_ids" name="subactivity_ids"
-                        :options="members.meta.filterSubactivities" label="Unterttätigkeit" size="sm"
-                        @update:model-value="reload(1)"></f-multipleselect>
-                    <f-multipleselect id="include" v-model="model.filter.include" name="include"
-                        :options="members.meta.members" label="Zusätzliche Mitglieder" size="sm"
-                        @update:model-value="reload(1)"></f-multipleselect>
-                    <f-multipleselect id="exclude" v-model="model.filter.exclude" name="exclude"
-                        :options="members.meta.members" label="Mitglieder ausschließen" size="sm"
-                        @update:model-value="reload(1)"></f-multipleselect>
-                    <f-multipleselect id="groupIds" v-model="model.filter.group_ids" name="groupIds"
-                        :options="members.meta.groups" label="Gruppierungen" size="sm"
-                        @update:model-value="reload(1)"></f-multipleselect>
+                    <f-multipleselect
+                        id="activity_ids"
+                        v-model="model.filter.activity_ids"
+                        name="activity_ids"
+                        :options="members.meta.filterActivities"
+                        label="Tätigkeit"
+                        size="sm"
+                        @update:model-value="reload(1)"
+                    ></f-multipleselect>
+                    <f-multipleselect
+                        id="subactivity_ids"
+                        v-model="model.filter.subactivity_ids"
+                        name="subactivity_ids"
+                        :options="members.meta.filterSubactivities"
+                        label="Unterttätigkeit"
+                        size="sm"
+                        @update:model-value="reload(1)"
+                    ></f-multipleselect>
+                    <f-multipleselect
+                        id="include"
+                        v-model="model.filter.include"
+                        name="include"
+                        :options="members.meta.members"
+                        label="Zusätzliche Mitglieder"
+                        size="sm"
+                        @update:model-value="reload(1)"
+                    ></f-multipleselect>
+                    <f-multipleselect
+                        id="exclude"
+                        v-model="model.filter.exclude"
+                        name="exclude"
+                        :options="members.meta.members"
+                        label="Mitglieder ausschließen"
+                        size="sm"
+                        @update:model-value="reload(1)"
+                    ></f-multipleselect>
+                    <f-multipleselect
+                        id="groupIds"
+                        v-model="model.filter.group_ids"
+                        name="groupIds"
+                        :options="members.meta.groups"
+                        label="Gruppierungen"
+                        size="sm"
+                        @update:model-value="reload(1)"
+                    ></f-multipleselect>
                 </div>
             </ui-box>
             <ui-box v-if="members !== null" heading="Mitglieder">
@@ -58,8 +87,8 @@
 </template>
 
 <script setup>
-import { ref, inject, defineProps } from 'vue';
-import { useIndex } from '../../composables/useIndex.js';
+import {ref, inject, defineProps} from 'vue';
+import {useIndex} from '../../composables/useIndex.js';
 
 const props = defineProps({
     data: {
@@ -68,21 +97,21 @@ const props = defineProps({
     },
     meta: {
         type: Object,
-        default: () => { },
+        default: () => {},
     },
 });
 
-const { toFilterString, router } = useIndex({ data: [], meta: {} }, 'maildispatcher');
+const {router} = useIndex({data: [], meta: {}}, 'maildispatcher');
 
-const model = ref(props.data === undefined ? { ...props.meta.default_model } : { ...props.data });
+const model = ref(props.data === undefined ? {...props.meta.default_model} : {...props.data});
 const members = ref(null);
 const axios = inject('axios');
 
 async function reload(page) {
     members.value = (
         await axios.post('/api/member/search', {
-            page: page || 1,
-            filter: toFilterString(model.value.filter),
+            page: page,
+            filter: model.value.filter,
         })
     ).data;
 }

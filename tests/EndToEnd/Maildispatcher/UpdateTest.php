@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Maildispatcher;
+namespace Tests\EndToEnd\Maildispatcher;
 
 use App\Maildispatcher\Actions\ResyncAction;
 use App\Maildispatcher\Models\Maildispatcher;
@@ -8,13 +8,11 @@ use App\Mailgateway\Models\Mailgateway;
 use App\Mailgateway\Types\LocalType;
 use App\Member\FilterScope;
 use App\Member\Member;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\EndToEndTestCase;
 
-class UpdateTest extends TestCase
+class UpdateTest extends EndToEndTestCase
 {
-    use DatabaseTransactions;
-
     public function setUp(): void
     {
         parent::setUp();
@@ -24,13 +22,15 @@ class UpdateTest extends TestCase
 
     public function testItCanUpdateFilters(): void
     {
+        $this->withoutExceptionHandling();
         $dispatcher = Maildispatcher::factory()
             ->for(Mailgateway::factory()->type(LocalType::class, [])->domain('example.com'), 'gateway')
             ->filter(FilterScope::from([]))
             ->create();
         Member::factory()->defaults()->create(['email' => 'to@example.com']);
 
-        $response = $this->patchJson("/maildispatcher/{$dispatcher->id}", [
+        sleep(1);
+        $this->patchJson("/maildispatcher/{$dispatcher->id}", [
             'name' => 'test',
             'gateway_id' => $dispatcher->gateway->id,
             'filter' => [],
@@ -51,6 +51,7 @@ class UpdateTest extends TestCase
         Member::factory()->defaults()->create(['email' => 'to@example.com']);
         ResyncAction::run();
 
+        sleep(1);
         $response = $this->patchJson("/maildispatcher/{$dispatcher->id}", [
             'name' => 'testa',
             'gateway_id' => $dispatcher->gateway->id,
@@ -73,6 +74,7 @@ class UpdateTest extends TestCase
             ->filter(FilterScope::from([]))
             ->create();
         $member = Member::factory()->defaults()->create(['email' => 'to@example.com']);
+        sleep(1);
         ResyncAction::run();
         $member->update(['email' => 'to2@example.com']);
         ResyncAction::run();
