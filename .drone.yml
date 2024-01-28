@@ -59,7 +59,7 @@ steps:
           XELATEX_BIN: /usr/bin/xelatex
           SCOUT_DRIVER: database
           MEILISEARCH_HOST: http://meilisearch:7700
-          MEILISEARCH_KEY: abc
+          MEILI_MASTER_KEY: abc
 
     - name: docker_app_push
       image: plugins/docker
