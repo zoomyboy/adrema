@@ -501,6 +501,13 @@ class Member extends Model implements Geolocatable
             'ausstand' => $this->getAusstand(),
             'bill_kind' => $this->bill_kind?->value,
             'group_id' => $this->group->id,
+            'group_name' => $this->group->inner_name ?: $this->group->name,
+            'links' => [
+                'show' => route('member.show', ['member' => $this]),
+                'edit' => route('member.edit', ['member' => $this]),
+            ],
+            'age_group_icon' => $this->ageGroupMemberships->first()?->subactivity->slug,
+            'is_leader' => $this->leaderMemberships()->count() > 0,
             'memberships' => $this->memberships()->active()->get()
                 ->map(fn ($membership) => [...$membership->only('activity_id', 'subactivity_id'), 'both' => $membership->activity_id . '|' . $membership->subactivity_id, 'with_group' => $membership->group_id . '|' . $membership->activity_id . '|' . $membership->subactivity_id]),
         ];

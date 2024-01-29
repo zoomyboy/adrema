@@ -139,6 +139,7 @@ return [
                 'filterableAttributes' => ['address', 'birthday', 'ausstand', 'bill_kind', 'group_id', 'memberships', 'id'],
                 'searchableAttributes' => ['fullname', 'address'],
                 'sortableAttributes' => ['lastname', 'firstname'],
+                'displayedAttributes' => ['age_group_icon', 'group_name', 'links', 'is_leader', 'lastname', 'firstname', 'fullname', 'address', 'ausstand', 'birthday', 'id', 'memberships', 'bill_kind', 'group_id'],
             ]
         ],
     ],

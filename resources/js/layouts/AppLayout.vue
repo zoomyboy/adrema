@@ -20,6 +20,10 @@
             <v-link href="/maildispatcher" menu="maildispatcher" icon="at">Mail-Verteiler</v-link>
         </div>
         <div class="grid gap-2">
+            <a href="#" class="flex w-full px-3 py-2 rounded-xl text-gray-300 bg-gray-700" @click.prevent="searchVisible = true">
+                <ui-sprite src="search" class="text-white w-6 h-6 mr-4" />
+                <div class="">Suchen</div>
+            </a>
             <v-link href="/setting" menu="setting" icon="setting">Einstellungen</v-link>
             <v-link icon="logout" href="/logout" @click.prevent="$inertia.post('/logout')">Abmelden</v-link>
         </div>
@@ -29,6 +33,8 @@
     </div>
 
     <slot></slot>
+
+    <page-search-modal v-if="searchVisible" @close="searchVisible = false"></page-search-modal>
 </template>
 
 <script>
@@ -44,6 +50,7 @@ export default {
     data: function () {
         return {
             menuStore: menuStore(),
+            searchVisible: false,
         };
     },
 
