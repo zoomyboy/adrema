@@ -5,8 +5,8 @@ namespace App\Form\Actions;
 use App\Form\FilterScope;
 use App\Form\Models\Form;
 use App\Form\Resources\FormApiResource;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -15,15 +15,19 @@ class FormApiListAction
     use AsAction;
 
     /**
-     * @return Collection<int, Form>
+     * @param array<string, mixed> $filter
+     * @return LengthAwarePaginator<Form>
      */
-    public function handle(FilterScope $filter): Collection
+    public function handle(string $filter, int $perPage): LengthAwarePaginator
     {
-        return Form::withFilter($filter)->get();
+        return FilterScope::fromRequest($filter)->getQuery()->paginate($perPage);
     }
 
     public function asController(ActionRequest $request): AnonymousResourceCollection
     {
-        return FormApiResource::collection($this->handle(FilterScope::fromRequest($request->input('filter', ''))));
+        return FormApiResource::collection($this->handle(
+            $request->input('filter', ''),
+            $request->input('perPage', 10)
+        ));
     }
 }

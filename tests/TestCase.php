@@ -16,9 +16,6 @@ use PHPUnit\Framework\Assert;
 use Tests\Lib\MakesHttpCalls;
 use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
-use Illuminate\Support\Facades\Artisan;
-use Laravel\Scout\Console\FlushCommand;
-use Laravel\Scout\Console\SyncIndexSettingsCommand;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -90,15 +87,6 @@ abstract class TestCase extends BaseTestCase
             $this->assertTrue($sessionErrors->has($key), "Cannot find key {$key} in errors '" . print_r($sessionErrors, true));
             $this->assertEquals($value, $sessionErrors->get($key)[0], "Failed to validate value for session error key {$key}. Actual value: " . print_r($sessionErrors, true));
         }
-
-        return $this;
-    }
-
-    public function useMeilisearch(): self
-    {
-        config()->set('scout.driver', 'meilisearch');
-        Artisan::call(FlushCommand::class, ['model' => Member::class]);
-        Artisan::call(SyncIndexSettingsCommand::class);
 
         return $this;
     }
