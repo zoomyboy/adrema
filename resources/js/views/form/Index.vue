@@ -70,6 +70,13 @@
             </template>
         </ui-popup>
 
+        <page-filter breakpoint="xl">
+            <f-text id="search" :model-value="getFilter('search')" name="search" label="Suchen …" size="sm"
+                @update:model-value="setFilter('search', $event)"></f-text>
+            <f-switch id="past" :model-value="getFilter('past')" label="vergangene zeigen" size="sm"
+                @update:model-value="setFilter('past', $event)"></f-switch>
+        </page-filter>
+
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
                 <th>Name</th>
@@ -108,7 +115,7 @@ import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from '../formtemplate/FormBuilder.vue';
 
 const props = defineProps(indexProps);
-var { meta, data, reloadPage, create, single, edit, cancel, submit, remove } = useIndex(props.data, 'form');
+var { meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter } = useIndex(props.data, 'form');
 
 const active = ref(0);
 const deleting = ref(null);

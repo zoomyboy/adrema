@@ -2,11 +2,10 @@
 
 namespace App\Form\Models;
 
-use App\Form\FilterScope;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -19,6 +18,7 @@ class Form extends Model implements HasMedia
     use Sluggable;
     use InteractsWithMedia;
     use DefersUploads;
+    use Searchable;
 
     public $guarded = [];
 
@@ -50,13 +50,20 @@ class Form extends Model implements HasMedia
     /** @var array<int, string> */
     public $dates = ['from', 'to', 'registration_from', 'registration_until'];
 
+    // --------------------------------- Searching ---------------------------------
+    // *****************************************************************************
+
     /**
-     * @param Builder<self> $query
+     * Get the indexable data array for the model.
      *
-     * @return Builder<self>
+     * @return array<string, mixed>
      */
-    public function scopeWithFilter(Builder $query, FilterScope $filter): Builder
+    public function toSearchableArray()
     {
-        return $filter->apply($query);
+        return [
+            'from' => $this->from->timestamp,
+            'to' => $this->to->timestamp,
+            'name' => $this->name,
+        ];
     }
 }

@@ -10,13 +10,14 @@ export function useIndex(props, siteName) {
     const inner = {
         data: ref(rawProps.data),
         meta: ref(rawProps.meta),
+        filter: ref(rawProps.meta.filter ? rawProps.meta.filter : {}),
     };
 
     function toFilterString(data) {
         return btoa(encodeURIComponent(JSON.stringify(data)));
     }
 
-    const filterString = computed(() => toFilterString(inner.meta.value.filter));
+    const filterString = computed(() => toFilterString(inner.filter.value));
 
     function reload(resetPage = true, withMeta = true, data) {
         data = {
@@ -76,6 +77,15 @@ export function useIndex(props, siteName) {
         single.value = null;
     }
 
+    function getFilter(value) {
+        return inner.filter.value[value];
+    }
+
+    function setFilter(key, value) {
+        inner.filter.value[key] = value;
+        reload(true);
+    }
+
     startListener();
     onBeforeUnmount(() => stopListener());
 
@@ -93,6 +103,8 @@ export function useIndex(props, siteName) {
         remove,
         cancel,
         axios,
+        setFilter,
+        getFilter,
     };
 }
 

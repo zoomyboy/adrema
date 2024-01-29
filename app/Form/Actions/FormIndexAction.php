@@ -2,11 +2,13 @@
 
 namespace App\Form\Actions;
 
+use App\Form\FilterScope;
 use App\Form\Models\Form;
 use App\Form\Resources\FormResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Response;
+use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class FormIndexAction
@@ -16,18 +18,18 @@ class FormIndexAction
     /**
      * @return LengthAwarePaginator<Form>
      */
-    public function handle(): LengthAwarePaginator
+    public function handle(string $filter): LengthAwarePaginator
     {
-        return Form::paginate(15);
+        return FilterScope::fromRequest($filter)->getQuery()->paginate(15);
     }
 
-    public function asController(): Response
+    public function asController(ActionRequest $request): Response
     {
         session()->put('menu', 'form');
         session()->put('title', 'Veranstaltungen');
 
         return Inertia::render('form/Index', [
-            'data' => FormResource::collection($this->handle()),
+            'data' => FormResource::collection($this->handle($request->input('filter', ''))),
         ]);
     }
 }
