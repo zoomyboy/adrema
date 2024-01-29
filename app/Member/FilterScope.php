@@ -133,6 +133,10 @@ class FilterScope extends Filter
         return "$key NOT IN [{$valueString}]";
     }
 
+    /**
+     * @param array{group_ids: array<int, int>, subactivity_ids: array<int, int>, activity_ids: array<int, int>} $membership
+     * @return Collection<int, string>
+     */
     protected function possibleValuesForMembership(array $membership): Collection
     {
         return $this->combinations($membership['group_ids'], $membership['activity_ids'], $membership['subactivity_ids'])
@@ -140,7 +144,8 @@ class FilterScope extends Filter
     }
 
     /**
-     * @return Collection<int, mixed>
+     * @param array<int, array<int, int>> $parts
+     * @return Collection<int, array<int, int>>
      */
     protected function combinations(...$parts): Collection
     {
@@ -148,7 +153,8 @@ class FilterScope extends Filter
         $otherParts = $parts;
 
         if (!count($otherParts)) {
-            return collect(array_map(fn ($p) => [$p], $firstPart));
+            /** @var Collection<int, Collection<int, int>> */
+            return collect($firstPart)->map(fn ($p) => [$p]);
         }
 
         /** @var Collection<int, mixed> */
