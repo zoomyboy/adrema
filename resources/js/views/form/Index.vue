@@ -73,12 +73,20 @@
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
                 <th>Name</th>
+                <th>Von</th>
+                <th>Bis</th>
                 <th></th>
             </thead>
 
             <tr v-for="(form, index) in data" :key="index">
                 <td>
                     <div v-text="form.name"></div>
+                </td>
+                <td>
+                    <div v-text="form.from_human"></div>
+                </td>
+                <td>
+                    <div v-text="form.to_human"></div>
                 </td>
                 <td>
                     <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm"
