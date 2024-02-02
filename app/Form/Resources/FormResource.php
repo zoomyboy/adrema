@@ -63,7 +63,7 @@ class FormResource extends JsonResource
             ],
             'templates' => FormtemplateResource::collection(Formtemplate::get()),
             'default' => [
-                'description' => '',
+                'description' => [],
                 'name' => '',
                 'excerpt' => '',
                 'from' => null,

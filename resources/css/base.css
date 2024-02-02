@@ -1,3 +1,7 @@
+::selection {
+    @apply bg-blue-800;
+}
+
 .button-group > div {
     padding-left: 0 !important;
     padding-right: 0 !important;

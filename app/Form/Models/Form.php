@@ -24,6 +24,7 @@ class Form extends Model implements HasMedia
 
     public $casts = [
         'config' => 'json',
+        'description' => 'json',
     ];
 
     /**

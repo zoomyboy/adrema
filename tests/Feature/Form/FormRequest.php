@@ -4,13 +4,14 @@ namespace Tests\Feature\Form;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\RequestFactories\EditorRequestFactory;
 use Worksome\RequestFactories\RequestFactory;
 
 /**
  * @method self name(string $name)
  * @method self from(string $date)
  * @method self to(string $date)
- * @method self description(string $description)
+ * @method self description(?EditorRequestFactory $description)
  * @method self mailTop(string $content)
  * @method self mailBottom(string $content)
  * @method self excerpt(string $description)
@@ -26,7 +27,13 @@ class FormRequest extends RequestFactory
     {
         return [
             'name' => $this->faker->words(4, true),
-            'description' => $this->faker->text(),
+            'description' => [
+                'time' => 45069432,
+                'blocks' => [
+                    ['id' => 'TTzz66', 'type' => 'paragraph', 'data' => ['text' => 'lorem']]
+                ],
+                'version' => '1.0',
+            ],
             'excerpt' => $this->faker->words(10, true),
             'config' => ['sections' => []],
             'from' => $this->faker->dateTime()->format('Y-m-d H:i:s'),

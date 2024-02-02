@@ -20,7 +20,10 @@ class FormUpdateAction
     {
         return [
             ...$this->globalRules(),
-            'description' => 'required|string',
+            'description' => 'required|array',
+            'description.time' => 'required|integer',
+            'description.blocks' => 'required|array',
+            'description.version' => 'required|string',
             'excerpt' => 'required|string|max:130',
             'from' => 'required|date',
             'to' => 'required|date',
@@ -49,6 +52,7 @@ class FormUpdateAction
             ...$this->globalValidationAttributes(),
             'from' => 'Start',
             'to' => 'Ende',
+            'description.blocks' => 'Beschreibung',
         ];
     }
 

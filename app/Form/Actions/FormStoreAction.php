@@ -20,7 +20,9 @@ class FormStoreAction
     {
         return [
             ...$this->globalRules(),
-            'description' => 'required|string',
+            'description.time' => 'required|integer',
+            'description.blocks' => 'required|array',
+            'description.version' => 'required|string',
             'excerpt' => 'required|string|max:130',
             'from' => 'required|date',
             'to' => 'required|date',
@@ -53,6 +55,7 @@ class FormStoreAction
             'from' => 'Start',
             'to' => 'Ende',
             'header_image' => 'Bild',
+            'description.blocks' => 'Beschreibung',
         ];
     }
 

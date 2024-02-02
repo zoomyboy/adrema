@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 use Generator;
 use Illuminate\Support\Facades\Storage;
+use Tests\RequestFactories\EditorRequestFactory;
 
 class FormStoreActionTest extends TestCase
 {
@@ -26,9 +27,10 @@ class FormStoreActionTest extends TestCase
     {
         Event::fake([Succeeded::class]);
         $this->login()->loginNami()->withoutExceptionHandling();
+        $description = EditorRequestFactory::new()->text(10, 'Lorem');
         FormRequest::new()
             ->name('formname')
-            ->description('lala ggg')
+            ->description($description->create())
             ->excerpt('avff')
             ->registrationFrom('2023-05-04 01:00:00')->registrationUntil('2023-07-07 01:00:00')->from('2023-07-07')->to('2023-07-08')
             ->mailTop('Guten Tag')
@@ -43,7 +45,7 @@ class FormStoreActionTest extends TestCase
         $this->assertEquals('sname', $form->config['sections'][0]['name']);
         $this->assertEquals('formname', $form->name);
         $this->assertEquals('avff', $form->excerpt);
-        $this->assertEquals('lala ggg', $form->description);
+        $this->assertEquals($description->paragraphBlock(10, 'Lorem'), $form->description);
         $this->assertEquals('Guten Tag', $form->mail_top);
         $this->assertEquals('Viele Grüße', $form->mail_bottom);
         $this->assertEquals('2023-05-04 01:00', $form->registration_from->format('Y-m-d H:i'));
@@ -71,7 +73,7 @@ class FormStoreActionTest extends TestCase
     {
         yield [FormRequest::new()->name(''), ['name' => 'Name ist erforderlich.']];
         yield [FormRequest::new()->excerpt(''), ['excerpt' => 'Auszug ist erforderlich.']];
-        yield [FormRequest::new()->description(''), ['description' => 'Beschreibung ist erforderlich.']];
+        yield [FormRequest::new()->description(null), ['description.blocks' => 'Beschreibung ist erforderlich.']];
         yield [FormRequest::new()->state(['from' => null]), ['from' => 'Start ist erforderlich']];
         yield [FormRequest::new()->state(['to' => null]), ['to' => 'Ende ist erforderlich']];
         yield [FormRequest::new()->state(['header_image' => null]), ['header_image' => 'Bild ist erforderlich']];

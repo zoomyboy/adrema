@@ -12,9 +12,9 @@
         "fix": "eslint \"resources/js/**/*.{js,vue}\" --fix"
     },
     "devDependencies": {
+        "accounting": "^0.4.1",
         "autoprefixer": "^10.4.17",
         "axios": "^1.6.6",
-        "accounting": "^0.4.1",
         "dayjs": "^1.11.10",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^8.10.0",
@@ -24,6 +24,9 @@
         "vue-axios": "^3.5.2"
     },
     "dependencies": {
+        "@editorjs/editorjs": "^2.29.0",
+        "@editorjs/header": "^2.8.1",
+        "@editorjs/paragraph": "^2.11.3",
         "@inertiajs/vue3": "^1.0.14",
         "@tailwindcss/typography": "^0.5.10",
         "@vitejs/plugin-vue": "^4.6.2",
