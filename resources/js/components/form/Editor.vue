@@ -16,6 +16,7 @@ import {onMounted, ref} from 'vue';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import Paragraph from '@editorjs/paragraph';
+import NestedList from '@editorjs/nested-list';
 import useFieldSize from '../../composables/useFieldSize.js';
 const emit = defineEmits(['update:modelValue']);
 
@@ -62,7 +63,7 @@ onMounted(async () => {
         tools: {
             paragraph: {
                 class: Paragraph,
-                shortcut: 'SHIFT+P',
+                shortcut: 'CTRL+P',
                 inlineToolbar: true,
                 config: {
                     preserveBlank: true,
@@ -78,6 +79,11 @@ onMounted(async () => {
                     levels: [2, 3, 4],
                     defaultLevel: 2,
                 },
+            },
+            list: {
+                class: NestedList,
+                shortcut: 'CTRL+L',
+                inlineToolbar: true,
             },
         },
         onChange: debounce(async (api, event) => {
