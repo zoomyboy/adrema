@@ -1,28 +1,17 @@
 <?php
 
-namespace Tests\Feature\Member;
+namespace Tests\EndToEnd\Member;
 
 use App\Activity;
 use App\Group;
-use App\Invoice\Enums\InvoiceStatus;
-use App\Invoice\Models\Invoice;
-use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\TestCase;
+use Tests\EndToEndTestCase;
 
-class IndexTest extends TestCase
+class IndexTest extends EndToEndTestCase
 {
-    use DatabaseMigrations;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->useMeilisearch();
-    }
-
     public function testItGetsMembers(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
