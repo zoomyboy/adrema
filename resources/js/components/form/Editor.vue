@@ -72,7 +72,7 @@ onMounted(async () => {
             heading: {
                 class: Header,
                 shortcut: 'CTRL+H',
-                inlineToolbar: [],
+                inlineToolbar: true,
                 config: {
                     placeholder: 'Überschrift',
                     levels: [2, 3, 4],

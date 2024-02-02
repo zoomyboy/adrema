@@ -19,6 +19,18 @@
     @apply bg-gray-800;
 }
 
+h2.ce-header {
+    @apply font-semibold text-white text-xl mt-2;
+}
+
+h3.ce-header {
+    @apply font-semibold text-white text-lg mt-2;
+}
+
+h4.ce-header {
+    @apply font-semibold text-white mt-2;
+}
+
 .ce-block--selected .ce-block__content {
     @apply bg-gray-800;
 }
