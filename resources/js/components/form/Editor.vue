@@ -58,6 +58,7 @@ onMounted(async () => {
     editor.value = new EditorJS({
         placeholder: props.placeholder,
         holder: props.id,
+        minHeight: 0,
         defaultBlock: 'paragraph',
         data: JSON.parse(JSON.stringify(props.modelValue)),
         tools: {
