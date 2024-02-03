@@ -1,19 +1,20 @@
 <?php
 
-namespace Tests\Feature\Form;
+namespace Tests\EndToEnd\Form;
 
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
+use Carbon\Carbon;
+use Tests\EndToEndTestCase;
+use Tests\Feature\Form\FormtemplateFieldRequest;
+use Tests\Feature\Form\FormtemplateSectionRequest;
 
-class FormIndexActionTest extends TestCase
+class FormIndexActionTest extends EndToEndTestCase
 {
-
-    use DatabaseTransactions;
 
     public function testItDisplaysForms(): void
     {
+        Carbon::setTestNow(Carbon::parse('2023-03-03'));
         $this->login()->loginNami()->withoutExceptionHandling();
         Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')])->create();
         $form = Form::factory()
@@ -29,10 +30,11 @@ class FormIndexActionTest extends TestCase
             ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::new()])])
             ->create();
 
+        sleep(1);
         $this->get(route('form.index'))
             ->assertOk()
-            ->assertInertiaPath('data.data.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.data.0.name', 'lala')
+            ->assertInertiaPath('data.data.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.data.0.id', $form->id)
             ->assertInertiaPath('data.data.0.excerpt', 'fff')
             ->assertInertiaPath('data.data.0.description', 'desc')
@@ -49,10 +51,51 @@ class FormIndexActionTest extends TestCase
             ->assertInertiaPath('data.meta.templates.0.name', 'tname')
             ->assertInertiaPath('data.meta.templates.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.meta.default.name', '')
-            ->assertInertiaPath('data.meta.default.description', '')
+            ->assertInertiaPath('data.meta.default.description', [])
             ->assertInertiaPath('data.meta.default.excerpt', '')
             ->assertInertiaPath('data.meta.default.config', null)
             ->assertInertiaPath('data.meta.base_url', url(''))
             ->assertInertiaPath('data.meta.section_default.name', '');
+    }
+
+    public function testItHandlesFullTextSearch()
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        Form::factory()->to(now()->addYear())->name('ZEM 2024')->create();
+        Form::factory()->to(now()->addYear())->name('Rover-Spek 2025')->create();
+
+        sleep(1);
+        $this->callFilter('form.index', ['search' => 'ZEM'])
+            ->assertInertiaCount('data.data', 1);
+        $this->callFilter('form.index', [])
+            ->assertInertiaCount('data.data', 2);
+    }
+
+    public function testItOrdersByStartDateDesc()
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $form1 = Form::factory()->from(now()->addDays(4))->to(now()->addYear())->create();
+        $form2 = Form::factory()->from(now()->addDays(3))->to(now()->addYear())->create();
+        $form3 = Form::factory()->from(now()->addDays(2))->to(now()->addYear())->create();
+
+        sleep(1);
+        $this->callFilter('form.index', [])
+            ->assertInertiaPath('data.data.0.id', $form3->id)
+            ->assertInertiaPath('data.data.1.id', $form2->id)
+            ->assertInertiaPath('data.data.2.id', $form1->id);
+    }
+
+    public function testItShowsPastEvents()
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        Form::factory()->count(5)->to(now()->subDays(2))->create();
+        Form::factory()->count(3)->to(now()->subDays(5))->create();
+        Form::factory()->count(2)->to(now()->addDays(3))->create();
+
+        sleep(1);
+        $this->callFilter('form.index', ['past' => true])
+            ->assertInertiaCount('data.data', 10);
+        $this->callFilter('form.index', [])
+            ->assertInertiaCount('data.data', 2);
     }
 }

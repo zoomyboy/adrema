@@ -19,9 +19,9 @@ class DateField extends Field
         ];
     }
 
-    public static function default(): string
+    public static function default(): ?string
     {
-        return '';
+        return null;
     }
 
     public static function fake(Generator $faker): array

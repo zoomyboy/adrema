@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\EndToEnd;
+namespace Tests\EndToEnd\Form;
 
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Storage;
 use Tests\EndToEndTestCase;
 use Tests\Feature\Form\FormtemplateFieldRequest;
 use Tests\Feature\Form\FormtemplateSectionRequest;
-use Tests\TestCase;
 
 class FormApiListActionTest extends EndToEndTestCase
 {

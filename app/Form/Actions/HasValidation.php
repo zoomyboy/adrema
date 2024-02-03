@@ -24,6 +24,7 @@ trait HasValidation
             'config.sections.*.fields.*.key' => ['required', 'string', 'regex:/^[a-zA-Z_]*$/'],
             'config.sections.*.fields.*.default' => 'present',
             'config.sections.*.fields.*.columns' => 'required|array',
+            'config.sections.*.fields.*.*' => '',
             'config.sections.*.fields.*.columns.mobile' => 'required|numeric|gt:0|lte:2',
             'config.sections.*.fields.*.columns.tablet' => 'required|numeric|gt:0|lte:4',
             'config.sections.*.fields.*.columns.desktop' => 'required|numeric|gt:0|lte:6',
