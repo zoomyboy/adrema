@@ -2,6 +2,7 @@
 
 namespace Tests\EndToEnd\Form;
 
+use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
 use Carbon\Carbon;
@@ -29,7 +30,7 @@ class FormApiListActionTest extends EndToEndTestCase
             ->description('desc')
             ->from('2023-05-05')
             ->to('2023-06-07')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::new()])])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::type(TextField::class)])])
             ->create();
 
         sleep(1);

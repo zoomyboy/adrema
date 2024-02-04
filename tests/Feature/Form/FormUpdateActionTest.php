@@ -26,7 +26,7 @@ class FormUpdateActionTest extends TestCase
         $form = Form::factory()->create();
         $payload = FormRequest::new()->sections([
             FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::new()->type(DateField::class)->state(['max_today' => true]),
+                FormtemplateFieldRequest::type(DateField::class)->state(['max_today' => true]),
             ])
         ])->create();
 

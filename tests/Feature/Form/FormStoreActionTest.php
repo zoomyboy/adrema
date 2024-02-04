@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -36,7 +37,7 @@ class FormStoreActionTest extends TestCase
             ->mailTop('Guten Tag')
             ->mailBottom('Viele Grüße')
             ->headerImage('htzz.jpg')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::new()])])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::type(TextField::class)])])
             ->fake();
 
         $this->postJson(route('form.store'))->assertOk();
