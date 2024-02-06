@@ -12,6 +12,8 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self rows(int $rows)
  * @method self columns(array{mobile: int, tablet: int, desktop: int} $rows)
  * @method self default(mixed $default)
+ * @method self options(array<int, string> $options)
+ * @method self maxToday(bool $maxToday)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {
