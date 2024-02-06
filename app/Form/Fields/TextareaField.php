@@ -6,6 +6,10 @@ use Faker\Generator;
 
 class TextareaField extends Field
 {
+    public string $name;
+    public string $key;
+    public bool $required;
+
     public static function name(): string
     {
         return 'Textarea';
@@ -30,5 +34,29 @@ class TextareaField extends Field
             'rows' => $faker->numberBetween(5, 10),
             'required' => $faker->boolean(),
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationRules(): array
+    {
+        return [$this->key => $this->required ? ['required', 'string'] : ['nullable', 'string']];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationAttributes(): array
+    {
+        return [$this->key => $this->name];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationMessages(): array
+    {
+        return [];
     }
 }

@@ -9,6 +9,12 @@ use Illuminate\Validation\Rule;
 
 class GroupField extends Field
 {
+    public string $name;
+    public string $key;
+    public bool $required;
+    public ?string $parentField = null;
+    public ?int $parentGroup = null;
+
     public static function name(): string
     {
         return 'Gruppierungs-Auswahl';
@@ -35,5 +41,42 @@ class GroupField extends Field
             'parent_field' => null,
             'parent_group' => null,
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationRules(): array
+    {
+
+        $rules = [$this->required ? 'required' : 'nullable'];
+
+        $rules[] = 'integer';
+
+        if ($this->parentGroup) {
+            $rules[] = Rule::in(Group::find($this->parentGroup)->children()->pluck('id'));
+        }
+
+        if ($this->parentField && request()->input($this->parentField)) {
+            $rules[] = Rule::in(Group::find(request()->input($this->parentField))->children()->pluck('id'));
+        }
+
+        return [$this->key => $rules];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationAttributes(): array
+    {
+        return [$this->key => $this->name];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationMessages(): array
+    {
+        return [];
     }
 }

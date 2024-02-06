@@ -2,9 +2,12 @@
 
 namespace App\Form\Models;
 
+use App\Form\Fields\Field;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
@@ -27,6 +30,9 @@ class Form extends Model implements HasMedia
         'description' => 'json',
     ];
 
+    /** @var array<int, string> */
+    public $dates = ['from', 'to', 'registration_from', 'registration_until'];
+
     /**
      * @return SluggableConfig
      */
@@ -36,6 +42,15 @@ class Form extends Model implements HasMedia
             'slug' => ['source' => ['name']],
         ];
     }
+
+    /**
+     * @return HasMany<Participant, self>
+     */
+    public function participants(): HasMany
+    {
+        return $this->hasMany(Participant::class);
+    }
+
 
     public function registerMediaCollections(): void
     {
@@ -48,8 +63,59 @@ class Form extends Model implements HasMedia
             });
     }
 
-    /** @var array<int, string> */
-    public $dates = ['from', 'to', 'registration_from', 'registration_until'];
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRegistrationRules(): array
+    {
+        return $this->getFields()->reduce(function ($carry, $current) {
+            $field = Field::fromConfig($current);
+
+            return [
+                ...$carry,
+                ...$field->getRegistrationRules(),
+            ];
+        }, []);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRegistrationMessages(): array
+    {
+        return $this->getFields()->reduce(function ($carry, $current) {
+            $field = Field::fromConfig($current);
+
+            return [
+                ...$carry,
+                ...$field->getRegistrationMessages(),
+            ];
+        }, []);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRegistrationAttributes(): array
+    {
+        return $this->getFields()->reduce(function ($carry, $current) {
+            $field = Field::fromConfig($current);
+
+            return [
+                ...$carry,
+                ...$field->getRegistrationAttributes(),
+            ];
+        }, []);
+    }
+
+    /**
+     * @return Collection<string, mixed>
+     */
+    public function getFields(): Collection
+    {
+        return collect($this->config['sections'])->reduce(fn ($carry, $current) => $carry->merge($current['fields']), collect([]));
+    }
+
 
     // --------------------------------- Searching ---------------------------------
     // *****************************************************************************

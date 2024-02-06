@@ -3,9 +3,15 @@
 namespace App\Form\Fields;
 
 use Faker\Generator;
+use Illuminate\Validation\Rule;
 
 class CheckboxField extends Field
 {
+    public string $name;
+    public string $key;
+    public bool $required;
+    public string $description;
+
     public static function name(): string
     {
         return 'Checkbox';
@@ -30,5 +36,33 @@ class CheckboxField extends Field
             'description' => $faker->text(),
             'required' => $faker->boolean(),
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationRules(): array
+    {
+        return [
+            $this->key => $this->required ? ['boolean', 'accepted'] : ['present', 'boolean'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationAttributes(): array
+    {
+        return [
+            $this->key => $this->name,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationMessages(): array
+    {
+        return [];
     }
 }

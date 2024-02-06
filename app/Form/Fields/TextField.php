@@ -6,6 +6,11 @@ use Faker\Generator;
 
 class TextField extends Field
 {
+
+    public string $name;
+    public string $key;
+    public bool $required;
+
     public static function name(): string
     {
         return 'Text';
@@ -28,5 +33,29 @@ class TextField extends Field
         return [
             'required' => $faker->boolean(),
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationRules(): array
+    {
+        return [$this->key => $this->required ? ['required', 'string'] : ['nullable', 'string']];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationAttributes(): array
+    {
+        return [$this->key => $this->name];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationMessages(): array
+    {
+        return [];
     }
 }

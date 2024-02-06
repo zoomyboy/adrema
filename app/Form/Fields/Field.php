@@ -4,8 +4,12 @@ namespace App\Form\Fields;
 
 use Faker\Generator;
 use Illuminate\Support\Collection;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Attributes\MapInputName;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
-abstract class Field
+#[MapInputName(SnakeCaseMapper::class)]
+abstract class Field extends Data
 {
 
     abstract public static function name(): string;
@@ -15,6 +19,15 @@ abstract class Field
 
     /** @return mixed */
     abstract public static function default();
+
+    /** @return array<string, mixed> */
+    abstract public function getRegistrationRules(): array;
+
+    /** @return array<string, mixed> */
+    abstract public function getRegistrationAttributes(): array;
+
+    /** @return array<string, mixed> */
+    abstract public function getRegistrationMessages(): array;
 
     /** @return array<string, mixed> */
     abstract public static function fake(Generator $faker): array;
@@ -48,6 +61,14 @@ abstract class Field
         }
 
         return $fieldClass;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    public static function fromConfig(array $config): static
+    {
+        return static::classFromType($config['type'])::withoutMagicalCreationFrom($config);
     }
 
     /**

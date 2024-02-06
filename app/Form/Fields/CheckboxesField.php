@@ -3,9 +3,15 @@
 namespace App\Form\Fields;
 
 use Faker\Generator;
+use Illuminate\Validation\Rule;
 
 class CheckboxesField extends Field
 {
+    public string $name;
+    public string $key;
+    /** @var array<int, string> */
+    public array $options;
+
     public static function name(): string
     {
         return 'Checkboxes';
@@ -28,5 +34,35 @@ class CheckboxesField extends Field
         return [
             'options' => $faker->words(4),
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationRules(): array
+    {
+        return [
+            $this->key => 'array',
+            $this->key . '.*' => ['string', Rule::in($this->options)],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationAttributes(): array
+    {
+        return [
+            ...collect($this->options)->mapWithKeys(fn ($option, $key) => [$this->key . '.' . $key => $this->name])->toArray(),
+            $this->key => $this->name,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationMessages(): array
+    {
+        return [];
     }
 }
