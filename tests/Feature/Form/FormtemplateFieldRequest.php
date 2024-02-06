@@ -49,6 +49,6 @@ class FormtemplateFieldRequest extends RequestFactory
      */
     public function __call(string $method, $args): self
     {
-        return $this->state([$method => $args[0]]);
+        return $this->state([(string) str($method)->snake() => $args[0]]);
     }
 }
