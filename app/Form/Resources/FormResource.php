@@ -42,6 +42,7 @@ class FormResource extends JsonResource
             'config' => $this->config,
             'participants_count' => $this->participants_count,
             'links' => [
+                'participant_index' => route('form.participant.index', ['form' => $this->getModel()]),
                 'update' => route('form.update', ['form' => $this->getModel()]),
                 'destroy' => route('form.destroy', ['form' => $this->getModel()]),
             ]

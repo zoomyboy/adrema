@@ -30,6 +30,7 @@ use App\Form\Actions\FormtemplateIndexAction;
 use App\Form\Actions\FormtemplateStoreAction;
 use App\Form\Actions\FormtemplateUpdateAction;
 use App\Form\Actions\FormUpdateAction;
+use App\Form\Actions\ParticipantIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
 use App\Initialize\Actions\NamiGetSearchLayerAction;
@@ -156,4 +157,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/formtemplate', FormtemplateStoreAction::class)->name('formtemplate.store');
     Route::patch('/formtemplate/{formtemplate}', FormtemplateUpdateAction::class)->name('formtemplate.update');
     Route::post('/form', FormStoreAction::class)->name('form.store');
+    Route::get('/form/{form}/participants', ParticipantIndexAction::class)->name('form.participant.index');
 });

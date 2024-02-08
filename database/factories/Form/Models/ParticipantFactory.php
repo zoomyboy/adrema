@@ -38,4 +38,12 @@ class ParticipantFactory extends Factory
     {
         return $this->state(['config' => ['sections' => array_map(fn ($section) => $section->create(), $sections)]]);
     }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function data(array $data): self
+    {
+        return $this->state(['data' => $data]);
+    }
 }

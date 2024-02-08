@@ -50,6 +50,7 @@ class FormIndexActionTest extends EndToEndTestCase
             ->assertInertiaPath('data.data.0.to', '2023-06-07')
             ->assertInertiaPath('data.data.0.registration_from', '2023-05-06 04:00:00')
             ->assertInertiaPath('data.data.0.registration_until', '2023-04-01 05:00:00')
+            ->assertInertiaPath('data.data.0.links.participant_index', route('form.participant.index', ['form' => $form]))
             ->assertInertiaPath('data.meta.links.store', route('form.store'))
             ->assertInertiaPath('data.meta.links.formtemplate_index', route('formtemplate.index'))
             ->assertInertiaPath('data.meta.templates.0.name', 'tname')
