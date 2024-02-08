@@ -7,8 +7,6 @@ use Illuminate\Validation\Rule;
 
 class RadioField extends Field
 {
-    public string $name;
-    public string $key;
     public bool $required;
     /** @var array<int, string> */
     public array $options;

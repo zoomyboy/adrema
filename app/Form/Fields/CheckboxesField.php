@@ -7,8 +7,6 @@ use Illuminate\Validation\Rule;
 
 class CheckboxesField extends Field
 {
-    public string $name;
-    public string $key;
     /** @var array<int, string> */
     public array $options;
 

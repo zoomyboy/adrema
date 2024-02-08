@@ -37,4 +37,9 @@ class GroupFactory extends Factory
     {
         return $this->state(['name' => $name]);
     }
+
+    public function innerName(string $name): self
+    {
+        return $this->state(['inner_name' => $name]);
+    }
 }

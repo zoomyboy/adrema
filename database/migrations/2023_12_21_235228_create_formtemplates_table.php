@@ -33,6 +33,7 @@ return new class extends Migration
             $table->dateTime('registration_until')->nullable();
             $table->text('mail_top')->nullable();
             $table->text('mail_bottom')->nullable();
+            $table->json('active_columns');
             $table->timestamps();
         });
     }

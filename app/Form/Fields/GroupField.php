@@ -9,8 +9,6 @@ use Illuminate\Validation\Rule;
 
 class GroupField extends Field
 {
-    public string $name;
-    public string $key;
     public bool $required;
     public ?string $parentField = null;
     public ?int $parentGroup = null;
@@ -78,5 +76,22 @@ class GroupField extends Field
     public function getRegistrationMessages(): array
     {
         return [];
+    }
+
+    /**
+     * @param mixed $value
+     * @return mixed
+     */
+    public function presentValue($value)
+    {
+        return [
+            $this->key => $value,
+            $this->key . '_name' => Group::find($value)?->display() ?: ''
+        ];
+    }
+
+    public function displayAttribute(): string
+    {
+        return $this->key . '_name';
     }
 }

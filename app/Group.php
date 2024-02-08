@@ -55,10 +55,15 @@ class Group extends Model
 
         return $result
             ->reduce(
-                fn ($before, $group) => $before->concat([['id' => $group->id, 'name' => $prefix . ($group->inner_name ?: $group->name)]])
+                fn ($before, $group) => $before->concat([['id' => $group->id, 'name' => $prefix . ($group->display())]])
                     ->concat($group->children_count > 0 ? self::forSelect($group, $prefix . '-- ') : []),
                 collect([])
             )
             ->toArray();
+    }
+
+    public function display(): string
+    {
+        return $this->inner_name ?: $this->name;
     }
 }

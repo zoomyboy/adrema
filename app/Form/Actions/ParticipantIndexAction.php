@@ -6,7 +6,6 @@ use App\Form\Models\Form;
 use App\Form\Resources\ParticipantResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ParticipantIndexAction
@@ -18,7 +17,7 @@ class ParticipantIndexAction
         return $form->participants()->with('form')->paginate(15);
     }
 
-    public function asController(ActionRequest $request, Form $form): AnonymousResourceCollection
+    public function asController(Form $form): AnonymousResourceCollection
     {
         return ParticipantResource::collection($this->handle($form))
             ->additional(['meta' => ParticipantResource::meta($form)]);

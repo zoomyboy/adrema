@@ -31,6 +31,10 @@
             </div>
         </ui-popup>
 
+        <ui-popup v-if="showing !== null" :heading="`Teilnehmende für ${showing.name}`" full @close="showing = null">
+            <participants :url="showing.links.participant_index"></participants>
+        </ui-popup>
+
         <ui-popup v-if="single !== null && single.config !== null" :heading="`Veranstaltung ${single.id ? 'bearbeiten' : 'erstellen'}`" full @close="cancel">
             <div class="flex flex-col mt-3">
                 <ui-tabs v-model="active" :entries="tabs"></ui-tabs>
@@ -109,6 +113,7 @@
                 </td>
                 <td>
                     <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(form)"><ui-sprite src="pencil"></ui-sprite></a>
+                    <a v-tooltip="`Teilnehmende anzeigen`" href="#" class="ml-2 inline-flex btn btn-info btn-sm" @click.prevent="showParticipants(form)"><ui-sprite src="user"></ui-sprite></a>
                     <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = form"><ui-sprite src="trash"></ui-sprite></a>
                 </td>
             </tr>
@@ -123,17 +128,23 @@
 import {ref} from 'vue';
 import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from '../formtemplate/FormBuilder.vue';
+import Participants from './Participants.vue';
 
 const props = defineProps(indexProps);
 var {meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter} = useIndex(props.data, 'form');
 
 const active = ref(0);
 const deleting = ref(null);
+const showing = ref(null);
 
 const tabs = [{title: 'Allgemeines'}, {title: 'Formular'}, {title: 'E-Mail'}, {title: 'Export'}];
 
 function setTemplate(template) {
     active.value = 0;
     single.value.config = template.config;
+}
+
+function showParticipants(form) {
+    showing.value = form;
 }
 </script>

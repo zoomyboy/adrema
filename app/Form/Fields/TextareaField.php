@@ -6,8 +6,6 @@ use Faker\Generator;
 
 class TextareaField extends Field
 {
-    public string $name;
-    public string $key;
     public bool $required;
 
     public static function name(): string

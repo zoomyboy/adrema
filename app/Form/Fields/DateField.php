@@ -2,13 +2,13 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Contracts\Displayable;
+use Carbon\Carbon;
 use Faker\Generator;
 
 class DateField extends Field
 {
 
-    public string $name;
-    public string $key;
     public bool $required;
     public bool $maxToday;
 
@@ -72,5 +72,22 @@ class DateField extends Field
         return [
             $this->key . '.before_or_equal' => $this->name . ' muss ein Datum vor oder gleich dem ' . now()->format('d.m.Y') . ' sein.',
         ];
+    }
+
+    /**
+     * @param mixed $value
+     * @return mixed
+     */
+    public function presentValue($value)
+    {
+        return [
+            $this->key => $value,
+            $this->key . '_human' => $value ? Carbon::parse($value)->format('d.m.Y') : null,
+        ];
+    }
+
+    public function displayAttribute(): string
+    {
+        return $this->key . '_human';
     }
 }

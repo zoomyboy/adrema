@@ -3,7 +3,6 @@
 namespace App\Form\Fields;
 
 use Faker\Generator;
-use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -11,6 +10,9 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 #[MapInputName(SnakeCaseMapper::class)]
 abstract class Field extends Data
 {
+
+    public string $key;
+    public string $name;
 
     abstract public static function name(): string;
 
@@ -72,6 +74,15 @@ abstract class Field extends Data
     }
 
     /**
+     * @param mixed $value
+     * @return mixed
+     */
+    public function presentValue($value)
+    {
+        return [$this->key => $value];
+    }
+
+    /**
      * @return array<string, string>
      */
     public static function metaAttributes(): array
@@ -116,5 +127,10 @@ abstract class Field extends Data
                 ...collect(static::meta())->mapWithKeys(fn ($meta) => [$meta['key'] => $meta['default']])->toArray(),
             ],
         ];
+    }
+
+    public function displayAttribute(): string
+    {
+        return $this->key;
     }
 }

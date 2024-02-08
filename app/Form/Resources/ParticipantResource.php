@@ -2,6 +2,7 @@
 
 namespace App\Form\Resources;
 
+use App\Form\Fields\Field;
 use App\Form\Models\Form;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,19 +16,28 @@ class ParticipantResource extends JsonResource
      */
     public function toArray($request)
     {
-        return $this->form->getFields()->mapWithKeys(function ($field) {
-            return [$field['key'] => $this->data[$field['key']]];
-        })->toArray();
+        $attributes = collect([]);
+
+        foreach ($this->form->getFields() as $field) {
+            $attributes = $attributes->merge(Field::fromConfig($field)->presentValue($this->data[$field['key']]));
+        }
+
+        return $attributes;
     }
 
     public static function meta(Form $form): array
     {
         return [
-            'columns' => $form->getFields()->map(fn ($field) => [
-                'name' => $field['name'],
-                'base_type' => class_basename($field['type']),
-                'id' => $field['key'],
-            ])
+            'active_columns' => $form->active_columns,
+            'columns' => $form->getFields()->map(function ($field) {
+                $field = Field::fromConfig($field);
+                return [
+                    'name' => $field->name,
+                    'base_type' => class_basename($field),
+                    'id' => $field->key,
+                    'display_attribute' => $field->displayAttribute(),
+                ];
+            })
         ];
     }
 }

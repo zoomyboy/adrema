@@ -27,6 +27,7 @@ class Form extends Model implements HasMedia
 
     public $casts = [
         'config' => 'json',
+        'active_columns' => 'json',
         'description' => 'json',
     ];
 
@@ -132,5 +133,14 @@ class Form extends Model implements HasMedia
             'to' => $this->to->timestamp,
             'name' => $this->name,
         ];
+    }
+
+    public static function booted(): void
+    {
+        static::saving(function (self $model) {
+            if (is_null($model->active_columns)) {
+                $model->setAttribute('active_columns', $model->getFields()->take(4)->pluck('key')->toArray());
+            }
+        });
     }
 }
