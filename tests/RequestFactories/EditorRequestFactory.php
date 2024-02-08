@@ -2,8 +2,6 @@
 
 namespace Tests\RequestFactories;
 
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Worksome\RequestFactories\RequestFactory;
 
 class EditorRequestFactory extends RequestFactory
@@ -27,6 +25,9 @@ class EditorRequestFactory extends RequestFactory
         return $this->state($this->paragraphBlock($id, $text));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function paragraphBlock(int $id, string $text): array
     {
         return [

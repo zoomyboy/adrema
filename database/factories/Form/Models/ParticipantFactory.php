@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Form\Models;
 
-use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Tests\Feature\Form\FormtemplateSectionRequest;
@@ -15,7 +14,7 @@ class ParticipantFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<Form>
+     * @var class-string<Participant>
      */
     protected $model = Participant::class;
 

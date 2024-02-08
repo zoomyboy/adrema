@@ -4,15 +4,19 @@ namespace App\Form\Resources;
 
 use App\Form\Fields\Field;
 use App\Form\Models\Form;
+use App\Form\Models\Participant;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Participant
+ */
 class ParticipantResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array<string, mixed>
      */
     public function toArray($request)
     {
@@ -22,9 +26,12 @@ class ParticipantResource extends JsonResource
             $attributes = $attributes->merge(Field::fromConfig($field)->presentValue($this->data[$field['key']]));
         }
 
-        return $attributes;
+        return $attributes->toArray();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function meta(Form $form): array
     {
         return [

@@ -532,3 +532,18 @@ parameters:
             message: "#^Parameter \\#1 \\.\\.\\.\\$parts of method App\\\\Member\\\\FilterScope\\:\\:combinations\\(\\) expects array\\<int, int\\>, array\\<int, array\\<int, int\\>\\> given\\.$#"
             count: 1
             path: app/Member/FilterScope.php
+
+        -
+            message: "#^Call to function is_null\\(\\) with array will always evaluate to false\\.$#"
+            count: 1
+            path: app/Form/Models/Form.php
+
+        -
+            message: "#^Unable to resolve the template type TKey in call to function collect$#"
+            count: 1
+            path: app/Form/Models/Form.php
+
+        -
+            message: "#^Unable to resolve the template type TValue in call to function collect$#"
+            count: 1
+            path: app/Form/Models/Form.php

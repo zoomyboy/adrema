@@ -8,7 +8,7 @@ use Spatie\MediaLibrary\HasMedia;
 trait FakesMedia
 {
 
-    public function withImage(string $collection, $filename): self
+    public function withImage(string $collection, string $filename): self
     {
         return $this->afterCreating(function (HasMedia $model) use ($filename, $collection) {
             $pathinfo = pathinfo($filename);

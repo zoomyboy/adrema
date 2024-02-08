@@ -14,6 +14,8 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self default(mixed $default)
  * @method self options(array<int, string> $options)
  * @method self maxToday(bool $maxToday)
+ * @method self parentGroup(int $groupId)
+ * @method self parentField(string $fieldKey)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {

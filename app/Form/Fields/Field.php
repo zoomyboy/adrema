@@ -79,7 +79,9 @@ abstract class Field extends Data
      */
     public function presentValue($value)
     {
-        return [$this->key => $value];
+        return [
+            $this->key => $value,
+        ];
     }
 
     /**

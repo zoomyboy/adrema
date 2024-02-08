@@ -56,6 +56,8 @@ class FormRegisterActionTest extends TestCase
 
     /**
      * @dataProvider validationDataProvider
+     * @param array<string, mixed> $payload
+     * @param ?array<string, mixed> $messages
      */
     public function testItValidatesInput(FormtemplateFieldRequest $fieldGenerator, array $payload, ?array $messages): void
     {
@@ -73,7 +75,7 @@ class FormRegisterActionTest extends TestCase
         }
     }
 
-    private function validationDataProvider(): Generator
+    public function validationDataProvider(): Generator
     {
         yield [
             FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->maxToday(false)->key('birthday'),
@@ -89,7 +91,7 @@ class FormRegisterActionTest extends TestCase
 
         yield [
             FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->maxToday(true)->key('birthday'),
-            ['birthday' => now()->addDay(1)->format('Y-m-d')],
+            ['birthday' => now()->addDay()->format('Y-m-d')],
             ['birthday' => 'Geburtsdatum muss ein Datum vor oder gleich dem ' . now()->format('d.m.Y') . ' sein.'],
         ];
 

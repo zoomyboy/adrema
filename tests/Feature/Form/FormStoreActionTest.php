@@ -31,7 +31,7 @@ class FormStoreActionTest extends TestCase
         $description = EditorRequestFactory::new()->text(10, 'Lorem');
         FormRequest::new()
             ->name('formname')
-            ->description($description->create())
+            ->description($description)
             ->excerpt('avff')
             ->registrationFrom('2023-05-04 01:00:00')->registrationUntil('2023-07-07 01:00:00')->from('2023-07-07')->to('2023-07-08')
             ->mailTop('Guten Tag')

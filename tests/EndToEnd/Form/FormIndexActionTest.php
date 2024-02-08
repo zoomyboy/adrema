@@ -63,7 +63,7 @@ class FormIndexActionTest extends EndToEndTestCase
             ->assertInertiaPath('data.meta.section_default.name', '');
     }
 
-    public function testItHandlesFullTextSearch()
+    public function testItHandlesFullTextSearch(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         Form::factory()->to(now()->addYear())->name('ZEM 2024')->create();
@@ -76,7 +76,7 @@ class FormIndexActionTest extends EndToEndTestCase
             ->assertInertiaCount('data.data', 2);
     }
 
-    public function testItOrdersByStartDateDesc()
+    public function testItOrdersByStartDateDesc(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         $form1 = Form::factory()->from(now()->addDays(4))->to(now()->addYear())->create();
@@ -90,7 +90,7 @@ class FormIndexActionTest extends EndToEndTestCase
             ->assertInertiaPath('data.data.2.id', $form1->id);
     }
 
-    public function testItShowsPastEvents()
+    public function testItShowsPastEvents(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
         Form::factory()->count(5)->to(now()->subDays(2))->create();
