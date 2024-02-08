@@ -3,6 +3,7 @@
 namespace App\Form\Actions;
 
 use App\Form\Models\Form;
+use App\Form\Models\Participant;
 use App\Form\Resources\ParticipantResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -12,6 +13,9 @@ class ParticipantIndexAction
 {
     use AsAction;
 
+    /**
+     * @return LengthAwarePaginator<Participant>
+     */
     public function handle(Form $form): LengthAwarePaginator
     {
         return $form->participants()->with('form')->paginate(15);

@@ -12,6 +12,9 @@ class RegisterAction
 {
     use AsAction;
 
+    /**
+     * @param array<string, mixed> $input
+     */
     public function handle(Form $form, array $input): Participant
     {
         return $form->participants()->create([

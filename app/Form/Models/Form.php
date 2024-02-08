@@ -45,7 +45,7 @@ class Form extends Model implements HasMedia
     }
 
     /**
-     * @return HasMany<Participant, self>
+     * @return HasMany<Participant>
      */
     public function participants(): HasMany
     {
