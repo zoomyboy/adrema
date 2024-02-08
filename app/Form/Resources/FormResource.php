@@ -40,6 +40,7 @@ class FormResource extends JsonResource
             'registration_from' => $this->registration_from?->format('Y-m-d H:i:s'),
             'registration_until' => $this->registration_until?->format('Y-m-d H:i:s'),
             'config' => $this->config,
+            'participants_count' => $this->participants_count,
             'links' => [
                 'update' => route('form.update', ['form' => $this->getModel()]),
                 'destroy' => route('form.destroy', ['form' => $this->getModel()]),

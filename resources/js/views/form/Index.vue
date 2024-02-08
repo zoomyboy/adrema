@@ -90,6 +90,7 @@
                 <th>Name</th>
                 <th>Von</th>
                 <th>Bis</th>
+                <th>Anzahl TN</th>
                 <th></th>
             </thead>
 
@@ -102,6 +103,9 @@
                 </td>
                 <td>
                     <div v-text="form.to_human"></div>
+                </td>
+                <td>
+                    <div v-text="form.participants_count"></div>
                 </td>
                 <td>
                     <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(form)"><ui-sprite src="pencil"></ui-sprite></a>

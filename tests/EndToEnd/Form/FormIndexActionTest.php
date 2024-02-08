@@ -5,6 +5,7 @@ namespace Tests\EndToEnd\Form;
 use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
+use App\Form\Models\Participant;
 use Carbon\Carbon;
 use Tests\EndToEndTestCase;
 use Tests\Feature\Form\FormtemplateFieldRequest;
@@ -29,6 +30,7 @@ class FormIndexActionTest extends EndToEndTestCase
             ->registrationFrom('2023-05-06 04:00:00')
             ->registrationUntil('2023-04-01 05:00:00')
             ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::type(TextField::class)])])
+            ->has(Participant::factory()->count(5))
             ->create();
 
         sleep(1);
@@ -44,6 +46,7 @@ class FormIndexActionTest extends EndToEndTestCase
             ->assertInertiaPath('data.data.0.from_human', '05.05.2023')
             ->assertInertiaPath('data.data.0.to_human', '07.06.2023')
             ->assertInertiaPath('data.data.0.from', '2023-05-05')
+            ->assertInertiaPath('data.data.0.participants_count', 5)
             ->assertInertiaPath('data.data.0.to', '2023-06-07')
             ->assertInertiaPath('data.data.0.registration_from', '2023-05-06 04:00:00')
             ->assertInertiaPath('data.data.0.registration_until', '2023-04-01 05:00:00')
