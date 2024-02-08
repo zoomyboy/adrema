@@ -16,9 +16,14 @@ export function useApiIndex(url, siteName) {
             page: resetPage ? 1 : inner.meta.value.current_page,
         };
 
-        var response = (await axios.get(url, params)).data;
+        var response = (await axios.get(url, {params})).data;
         inner.data.value = response.data;
         inner.meta.value = response.meta;
+    }
+
+    async function reloadPage(page) {
+        inner.meta.value.current_page = page;
+        await reload(false);
     }
 
     function create() {
@@ -72,6 +77,7 @@ export function useApiIndex(url, siteName) {
         create,
         edit,
         reload,
+        reloadPage,
         can,
         requestCallback,
         router,
