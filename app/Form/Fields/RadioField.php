@@ -2,6 +2,7 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Presenters\Presenter;
 use Faker\Generator;
 use Illuminate\Validation\Rule;
 

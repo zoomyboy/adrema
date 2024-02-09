@@ -2,6 +2,8 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Presenters\EnumPresenter;
+use App\Form\Presenters\Presenter;
 use Faker\Generator;
 use Illuminate\Validation\Rule;
 
@@ -62,5 +64,10 @@ class CheckboxesField extends Field
     public function getRegistrationMessages(): array
     {
         return [];
+    }
+
+    public function getPresenter(): Presenter
+    {
+        return app(EnumPresenter::class);
     }
 }

@@ -42,7 +42,7 @@ class ParticipantResource extends JsonResource
                     'name' => $field->name,
                     'base_type' => class_basename($field),
                     'id' => $field->key,
-                    'display_attribute' => $field->displayAttribute(),
+                    'display_attribute' => $field->getdisplayAttribute(),
                 ];
             })
         ];

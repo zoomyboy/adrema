@@ -2,6 +2,8 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Presenters\DefaultPresenter;
+use App\Form\Presenters\Presenter;
 use Faker\Generator;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -81,6 +83,7 @@ abstract class Field extends Data
     {
         return [
             $this->key => $value,
+            $this->getDisplayAttribute() => $this->getPresenter()->present($value),
         ];
     }
 
@@ -131,8 +134,13 @@ abstract class Field extends Data
         ];
     }
 
-    public function displayAttribute(): string
+    public function getPresenter(): Presenter
     {
-        return $this->key;
+        return app(DefaultPresenter::class);
+    }
+
+    public function getDisplayAttribute(): string
+    {
+        return $this->key . '_display';
     }
 }

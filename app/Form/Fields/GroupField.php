@@ -2,6 +2,8 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Presenters\GroupPresenter;
+use App\Form\Presenters\Presenter;
 use App\Group;
 use App\Group\Enums\Level;
 use Faker\Generator;
@@ -78,20 +80,8 @@ class GroupField extends Field
         return [];
     }
 
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
-    public function presentValue($value)
+    public function getPresenter(): Presenter
     {
-        return [
-            $this->key => $value,
-            $this->key . '_name' => Group::find($value)?->display() ?: ''
-        ];
-    }
-
-    public function displayAttribute(): string
-    {
-        return $this->key . '_name';
+        return app(GroupPresenter::class);
     }
 }

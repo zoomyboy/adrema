@@ -23,7 +23,7 @@ class ParticipantIndexActionTest extends TestCase
         $this->login()->loginNami()->withoutExceptionHandling();
         $group = Group::factory()->innerName('Stamm')->create();
         $form = Form::factory()
-            ->has(Participant::factory()->data(['vorname' => 'Max', 'select' => 'A', 'stufe' => 'Pfadfinder', 'test1' => '', 'test2' => '', 'test3' => '', 'birthday' => '1991-04-20', 'bezirk' => $group->id]))
+            ->has(Participant::factory()->data(['vorname' => 'Max', 'select' => ['A', 'B'], 'stufe' => 'Pfadfinder', 'test1' => '', 'test2' => '', 'test3' => '', 'birthday' => '1991-04-20', 'bezirk' => $group->id]))
             ->sections([
                 FormtemplateSectionRequest::new()->fields([
                     FormtemplateFieldRequest::type(TextField::class)->name('Vorname')->key('vorname'),
@@ -41,16 +41,19 @@ class ParticipantIndexActionTest extends TestCase
         $this->callFilter('form.participant.index', [], ['form' => $form])
             ->assertOk()
             ->assertJsonPath('data.0.vorname', 'Max')
+            ->assertJsonPath('data.0.vorname_display', 'Max')
             ->assertJsonPath('data.0.stufe', 'Pfadfinder')
             ->assertJsonPath('data.0.bezirk', $group->id)
-            ->assertJsonPath('data.0.bezirk_name', 'Stamm')
-            ->assertJsonPath('data.0.birthday_human', '20.04.1991')
+            ->assertJsonPath('data.0.bezirk_display', 'Stamm')
+            ->assertJsonPath('data.0.birthday_display', '20.04.1991')
             ->assertJsonPath('data.0.birthday', '1991-04-20')
+            ->assertJsonPath('data.0.select', ['A', 'B'])
+            ->assertJsonPath('data.0.select_display', 'A, B')
             ->assertJsonPath('meta.columns.0.name', 'Vorname')
             ->assertJsonPath('meta.columns.0.base_type', class_basename(TextField::class))
             ->assertJsonPath('meta.columns.0.id', 'vorname')
-            ->assertJsonPath('meta.columns.6.display_attribute', 'birthday_human')
-            ->assertJsonPath('meta.columns.0.display_attribute', 'vorname')
+            ->assertJsonPath('meta.columns.6.display_attribute', 'birthday_display')
+            ->assertJsonPath('meta.columns.0.display_attribute', 'vorname_display')
             ->assertJsonPath('meta.active_columns', ['vorname', 'select', 'stufe', 'test1']);
     }
 }

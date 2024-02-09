@@ -3,6 +3,8 @@
 namespace App\Form\Fields;
 
 use App\Form\Contracts\Displayable;
+use App\Form\Presenters\DatePresenter;
+use App\Form\Presenters\Presenter;
 use Carbon\Carbon;
 use Faker\Generator;
 
@@ -74,20 +76,8 @@ class DateField extends Field
         ];
     }
 
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
-    public function presentValue($value)
+    public function getPresenter(): Presenter
     {
-        return [
-            $this->key => $value,
-            $this->key . '_human' => $value ? Carbon::parse($value)->format('d.m.Y') : null,
-        ];
-    }
-
-    public function displayAttribute(): string
-    {
-        return $this->key . '_human';
+        return app(DatePresenter::class);
     }
 }
