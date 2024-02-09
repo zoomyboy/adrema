@@ -9,6 +9,7 @@ use App\Invoice\InvoiceDocument;
 use App\Invoice\RememberDocument;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -40,9 +41,12 @@ class Invoice extends Model
         return $this->hasMany(InvoicePosition::class);
     }
 
-    public static function createForMember(Member $member): self
+    /**
+     * @param Collection<int, Member> $members
+     */
+    public static function createForMember(Member $member, Collection $members, int $year): self
     {
-        return static::create([
+        $invoice = new static([
             'to' => [
                 'name' => 'Familie ' . $member->lastname,
                 'address' => $member->address,
@@ -55,6 +59,20 @@ class Invoice extends Model
             'usage' => 'Mitgliedsbeitrag für ' . $member->lastname,
             'mail_email' => $member->email_parents ?: $member->email,
         ]);
+
+        $positions = collect([]);
+        foreach ($members as $member) {
+            foreach ($member->subscription->children as $child) {
+                $positions->push([
+                    'description' => str($child->name)->replace('{name}', $member->firstname . ' ' . $member->lastname)->replace('{year}', (string) $year),
+                    'price' => $child->amount,
+                    'member_id' => $member->id,
+                ]);
+            }
+        }
+        $invoice->setRelation('positions', $positions);
+
+        return $invoice;
     }
 
     public static function booted(): void

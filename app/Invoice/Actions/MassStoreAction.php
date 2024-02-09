@@ -35,20 +35,12 @@ class MassStoreAction
 
         $memberGroup = Member::payable()->get()
             ->groupBy(fn ($member) => "{$member->bill_kind->value}{$member->lastname}{$member->address}{$member->zip}{$member->location}");
+
         foreach ($memberGroup as $members) {
-            $invoice = Invoice::createForMember($members->first());
-
-            foreach ($members as $member) {
-                foreach ($member->subscription->children as $child) {
-                    $invoice->positions()->create([
-                        'description' => str($child->name)->replace('{name}', $member->firstname . ' ' . $member->lastname)->replace('{year}', (string) $year),
-                        'price' => $child->amount,
-                        'member_id' => $member->id,
-                    ]);
-                }
-            }
-
-            $invoices->push($invoice);
+            $invoice = Invoice::createForMember($members->first(), $members, $year);
+            $invoice->save();
+            $invoice->positions()->createMany($invoice->positions);
+            $invoices->push($invoice->fresh('positions'));
         }
 
         event(new InvoicesMassStored($year, $invoices));
