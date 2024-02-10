@@ -34,6 +34,7 @@ use App\Invoice\Actions\InvoiceIndexAction;
 use App\Invoice\Actions\InvoiceUpdateAction;
 use App\Invoice\Actions\MassPostPdfAction;
 use App\Invoice\Actions\MassStoreAction as InvoiceMassStoreAction;
+use App\Invoice\Actions\MemberNewInvoiceAction;
 use App\Invoice\Actions\PaymentPositionIndexAction;
 use App\Maildispatcher\Actions\CreateAction;
 use App\Maildispatcher\Actions\DestroyAction;
@@ -114,6 +115,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/invoice/{invoice}/pdf', DisplayPdfAction::class)->name('invoice.pdf');
     Route::get('/invoice/{invoice}/rememberpdf', DisplayRememberpdfAction::class)->name('invoice.rememberpdf');
     Route::get('/invoice/masspdf', MassPostPdfAction::class)->name('invoice.masspdf');
+    Route::post('/member/{member}/new-invoice', MemberNewInvoiceAction::class)->name('member.new-invoice');
 
 
     // ----------------------------- invoice-position ------------------------------

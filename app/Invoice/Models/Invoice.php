@@ -8,6 +8,7 @@ use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\InvoiceDocument;
 use App\Invoice\RememberDocument;
 use App\Member\Member;
+use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,8 +45,9 @@ class Invoice extends Model
     /**
      * @param Collection<int, Member> $members
      */
-    public static function createForMember(Member $member, Collection $members, int $year): self
+    public static function createForMember(Member $member, Collection $members, int $year, Subscription $subscription = null): self
     {
+        $subscription = $subscription ?: $member->subscription;
         $invoice = new self([
             'to' => [
                 'name' => 'Familie ' . $member->lastname,
@@ -62,7 +64,7 @@ class Invoice extends Model
 
         $positions = collect([]);
         foreach ($members as $member) {
-            foreach ($member->subscription->children as $child) {
+            foreach ($subscription->children as $child) {
                 $positions->push([
                     'description' => str($child->name)->replace('{name}', $member->firstname . ' ' . $member->lastname)->replace('{year}', (string) $year),
                     'price' => $child->amount,
