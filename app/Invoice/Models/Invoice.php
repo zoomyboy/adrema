@@ -46,7 +46,7 @@ class Invoice extends Model
      */
     public static function createForMember(Member $member, Collection $members, int $year): self
     {
-        $invoice = new static([
+        $invoice = new self([
             'to' => [
                 'name' => 'Familie ' . $member->lastname,
                 'address' => $member->address,
