@@ -7,6 +7,7 @@ use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use App\Lib\HasMeta;
 use App\Member\Member;
+use App\Payment\Subscription;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -59,6 +60,7 @@ class InvoiceResource extends JsonResource
             'vias' => BillKind::forSelect(),
             'statuses' => InvoiceStatus::forSelect(),
             'members' => Member::forSelect(),
+            'subscriptions' => Subscription::forSelect(),
             'default' => [
                 'to' => [
                     'name' => '',

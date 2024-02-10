@@ -7,6 +7,7 @@ use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
+use App\Payment\Subscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -18,6 +19,7 @@ class InvoiceIndexActionTest extends TestCase
     public function testItDisplaysInvoices(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
+        $subscription = Subscription::factory()->name('Beitrag')->create();
         $member = Member::factory()->defaults()->create(['firstname' => 'Aaaa', 'lastname' => 'Aaab']);
         $invoice = Invoice::factory()
             ->has(InvoicePosition::factory()->price(1100)->for($member)->state(['description' => 'lala']), 'positions')
@@ -52,6 +54,7 @@ class InvoiceIndexActionTest extends TestCase
             ->assertInertiaPath('data.meta.vias.0', ['id' => 'E-Mail', 'name' => 'E-Mail'])
             ->assertInertiaPath('data.meta.statuses.0', ['id' => 'Neu', 'name' => 'Neu'])
             ->assertInertiaPath('data.meta.members.0', ['id' => $member->id, 'name' => 'Aaaa Aaab'])
+            ->assertInertiaPath('data.meta.subscriptions.0', ['name' => 'Beitrag', 'id' => $subscription->id])
             ->assertInertiaPath('data.meta.default', [
                 'to' => [
                     'name' => '',
