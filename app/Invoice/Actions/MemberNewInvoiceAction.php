@@ -21,6 +21,7 @@ class MemberNewInvoiceAction
         return [
             'year' => 'required|integer|gte:0',
             'subscription_id' => 'required|exists:subscriptions,id',
+            'member_id' => 'required|exists:members,id',
         ];
     }
 
@@ -40,7 +41,7 @@ class MemberNewInvoiceAction
 
     public function asController(ActionRequest $request, Member $member): JsonResponse
     {
-        $payload = $this->handle($member, Subscription::find($request->input('subscription_id')), $request->input('year'));
+        $payload = $this->handle(Member::find($request->member_id), Subscription::find($request->input('subscription_id')), $request->input('year'));
         return response()->json($payload);
     }
 }

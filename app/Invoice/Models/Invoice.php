@@ -69,6 +69,7 @@ class Invoice extends Model
                     'description' => str($child->name)->replace('{name}', $member->firstname . ' ' . $member->lastname)->replace('{year}', (string) $year),
                     'price' => $child->amount,
                     'member_id' => $member->id,
+                    'id' => null,
                 ]);
             }
         }

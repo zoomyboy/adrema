@@ -36,7 +36,13 @@
         </ui-popup>
         <ui-popup v-if="single !== null" :heading="`Rechnung ${single.id ? 'bearbeiten' : 'erstellen'}`" inner-width="max-w-4xl" @close="cancel">
             <form class="grid grid-cols-2 gap-3 mt-4" @submit.prevent="submit">
-                <ui-box heading="Empfänger" container-class="grid grid-cols-2 gap-3 col-span-full">
+                <ui-box heading="Für Mitglied anlegen" container-class="flex space-x-3" class="col-span-full">
+                    <f-select id="forMemberMember" v-model="forMember.member_id" name="forMemberMember" :options="meta.members" label="Mitglied"></f-select>
+                    <f-select id="forMemberSubscription" v-model="forMember.subscription_id" name="forMemberSubscription" :options="meta.subscriptions" label="Beitrag"></f-select>
+                    <f-text id="forMemberYear" v-model="forMember.year" name="forMemberYear" label="Jahr"></f-text>
+                    <ui-icon-button class="btn-primary self-end mb-2" icon="save" @click="saveForMember">Speichern</ui-icon-button>
+                </ui-box>
+                <ui-box heading=" Empfänger" container-class="grid grid-cols-2 gap-3 col-span-full">
                     <f-text id="to_name" v-model="single.to.name" name="to_name" label="Name" class="col-span-full" required></f-text>
                     <f-text id="to_address" v-model="single.to.address" name="to_address" label="Adresse" class="col-span-full" required></f-text>
                     <f-text id="to_zip" v-model="single.to.zip" name="to_zip" label="PLZ" required></f-text>
@@ -113,6 +119,11 @@ const props = defineProps(indexProps);
 var {axios, meta, data, reloadPage, create, single, edit, cancel, submit, remove} = useIndex(props.data, 'invoice');
 const massstore = ref(null);
 const deleting = ref(null);
+const forMember = ref({member_id: null, subscription_id: null, year: null});
+
+async function saveForMember() {
+    single.value = (await axios.post(meta.value.links.newInvoiceAttributes, forMember.value)).data;
+}
 
 async function sendMassstore() {
     await axios.post(meta.value.links['mass-store'], massstore.value);

@@ -115,7 +115,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/invoice/{invoice}/pdf', DisplayPdfAction::class)->name('invoice.pdf');
     Route::get('/invoice/{invoice}/rememberpdf', DisplayRememberpdfAction::class)->name('invoice.rememberpdf');
     Route::get('/invoice/masspdf', MassPostPdfAction::class)->name('invoice.masspdf');
-    Route::post('/member/{member}/new-invoice', MemberNewInvoiceAction::class)->name('member.new-invoice');
+    Route::post('/invoice/new-invoice-attributes', MemberNewInvoiceAction::class)->name('invoice.new-invoice-attributes');
 
 
     // ----------------------------- invoice-position ------------------------------

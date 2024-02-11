@@ -30,7 +30,7 @@ class MemberNewInvoiceActionTest extends TestCase
             ->emailBillKind()
             ->create(['firstname' => 'Max', 'lastname' => 'Muster', 'address' => 'Maxstr 4', 'zip' => '33445', 'location' => 'Solingen', 'email' => 'lala@b.de']);
 
-        $this->post(route('member.new-invoice', ['member' => $member]), ['year' => 2019, 'subscription_id' => $subscription->id])
+        $this->post(route('invoice.new-invoice-attributes'), ['member_id' => $member->id, 'year' => 2019, 'subscription_id' => $subscription->id])
             ->assertOk()
             ->assertJsonPath('greeting', 'Liebe Familie Muster')
             ->assertJsonPath('to.address', 'Maxstr 4')
