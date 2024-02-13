@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Enums\NamiField;
 use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Lib\Events\Succeeded;
@@ -37,7 +38,7 @@ class FormStoreActionTest extends TestCase
             ->mailTop('Guten Tag')
             ->mailBottom('Viele Grüße')
             ->headerImage('htzz.jpg')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::type(TextField::class)])])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::type(TextField::class)->namiField(NamiField::BIRTHDAY)])])
             ->fake();
 
         $this->postJson(route('form.store'))->assertOk();
@@ -53,6 +54,7 @@ class FormStoreActionTest extends TestCase
         $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));
         $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
         $this->assertEquals('2023-07-08', $form->to->format('Y-m-d'));
+        $this->assertEquals('Geburtstag', $form->config['sections'][0]['fields'][0]['nami_field']);
         $this->assertCount(1, $form->getMedia('headerImage'));
         $this->assertEquals('formname.jpg', $form->getMedia('headerImage')->first()->file_name);
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Veranstaltung gespeichert.');

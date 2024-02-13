@@ -22,6 +22,7 @@
                 <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
                 <column-selector v-model="singleField.model.columns"></column-selector>
                 <component :is="fields[singleField.model.type]" v-model="singleField.model" :payload="inner.sections" :meta="props.meta"></component>
+                <f-select id="nami_field" v-model="singleField.model.nami_field" :options="meta.namiFields" label="NaMi-Feld" size="sm" name="nami_field"></f-select>
             </asideform>
         </div>
         <ui-box heading="Vorschau" container-class="grid gap-3" class="w-[800px]">

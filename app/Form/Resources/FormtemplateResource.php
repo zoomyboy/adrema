@@ -2,6 +2,7 @@
 
 namespace App\Form\Resources;
 
+use App\Form\Enums\NamiField;
 use App\Form\Fields\Field;
 use App\Form\Models\Formtemplate;
 use App\Group;
@@ -42,6 +43,7 @@ class FormtemplateResource extends JsonResource
             'base_url' => url(''),
             'groups' => Group::forSelect(),
             'fields' => Field::asMeta(),
+            'namiFields' => NamiField::forSelect(),
             'links' => [
                 'store' => route('formtemplate.store'),
                 'form_index' => route('form.index'),

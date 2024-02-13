@@ -129,6 +129,7 @@ abstract class Field extends Data
                 'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                 'default' => static::default(),
                 'required' => false,
+                'nami_field' => null,
                 ...collect(static::meta())->mapWithKeys(fn ($meta) => [$meta['key'] => $meta['default']])->toArray(),
             ],
         ];
