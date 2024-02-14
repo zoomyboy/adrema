@@ -5,6 +5,7 @@ namespace App\Form\Enums;
 enum NamiField: string
 {
     case FIRSTNAME = 'Vorname';
+    case LASTNAME = 'Nachname';
     case BIRTHDAY = 'Geburtstag';
 
     /**
