@@ -73,6 +73,9 @@ class CheckboxesField extends Field
         return app(EnumPresenter::class);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterRegistration(Form $form, Participant $participant, array $input): void
     {
     }

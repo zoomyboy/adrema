@@ -3,6 +3,7 @@
 namespace Tests\Feature\Form;
 
 use App\Form\Fields\Field;
+use App\Form\Enums\NamiType;
 use Worksome\RequestFactories\RequestFactory;
 
 /**
@@ -16,6 +17,7 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self maxToday(bool $maxToday)
  * @method self parentGroup(int $groupId)
  * @method self parentField(string $fieldKey)
+ * @method self namiType(?NamiType $type)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {

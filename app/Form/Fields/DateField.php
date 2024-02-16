@@ -83,6 +83,9 @@ class DateField extends Field
         return app(DatePresenter::class);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterRegistration(Form $form, Participant $participant, array $input): void
     {
     }

@@ -66,6 +66,9 @@ class CheckboxField extends Field
         return [];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterRegistration(Form $form, Participant $participant, array $input): void
     {
     }

@@ -20,6 +20,9 @@ abstract class Field extends Data
     public string $name;
     public ?NamiType $namiType = null;
 
+    /**
+     * @param array<array-key, mixed> $input
+     */
     abstract public function afterRegistration(Form $form, Participant $participant, array $input): void;
 
     abstract public static function name(): string;

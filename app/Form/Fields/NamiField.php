@@ -20,6 +20,9 @@ class NamiField extends Field
         return [];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function default(): array
     {
         return [];

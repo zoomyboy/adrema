@@ -6,7 +6,7 @@ class EnumPresenter extends Presenter
 {
 
     /**
-     * @param array<int, string> $value
+     * @param ?array<int, string> $value
      */
     public function present($value): string
     {
