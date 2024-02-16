@@ -56,16 +56,14 @@ class NamiField extends Field
 
     public function afterRegistration(Form $form, Participant $participant, array $input): void
     {
-        $memberIds = array_column($input[$this->key], 'id');
-
-        foreach ($memberIds as $memberId) {
-            $member = Member::firstWhere(['mitgliedsnr' => $memberId]);
+        foreach ($input[$this->key] as $memberData) {
+            $member = Member::firstWhere(['mitgliedsnr' => $memberData['id']]);
             $data = [];
             foreach ($form->getFields() as $field) {
                 $field = Field::fromConfig($field);
 
                 $data[$field->key] = $field->namiType === null
-                    ? $field->default()
+                    ? data_get($memberData, $field->key, $field->default())
                     : $field->namiType->getMemberAttribute($member);
             }
 

@@ -290,11 +290,10 @@ class FormRegisterActionTest extends TestCase
                 FormtemplateFieldRequest::type(NamiField::class)->key('members'),
                 FormtemplateFieldRequest::type(TextField::class)->key('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
                 FormtemplateFieldRequest::type(DateField::class)->key('birthday')->required(true)->namiType(NamiType::BIRTHDAY),
-                FormtemplateFieldRequest::type(TextField::class)->key('other')->namiType(null),
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['firstname' => 'Aaaa', 'birthday' => '2021-04-05', 'other' => 'ooo', 'members' => [['id' => '5505'], ['id' => '5506']]])
+        $this->postJson(route('form.register', ['form' => $form]), ['firstname' => 'Aaaa', 'birthday' => '2021-04-05', 'members' => [['id' => '5505'], ['id' => '5506']]])
             ->assertOk();
         $this->assertCount(3, $form->participants()->get());
         $this->assertEquals('Aaaa', $form->participants->get(0)->data['firstname']);
@@ -306,8 +305,24 @@ class FormRegisterActionTest extends TestCase
         $this->assertEquals([['id' => '5505'], ['id' => '5506']], $form->participants->get(0)->data['members']);
         $this->assertEquals([], $form->participants->get(1)->data['members']);
         $this->assertEquals([], $form->participants->get(2)->data['members']);
+    }
+
+    public function testItAddsOtherFieldsOfMember(): void
+    {
+        $this->login()->loginNami();
+        Member::factory()->defaults()->create(['mitgliedsnr' => '5505']);
+        Member::factory()->defaults()->create(['mitgliedsnr' => '5506']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
+                FormtemplateFieldRequest::type(TextField::class)->key('other')->namiType(null),
+            ])])
+            ->create();
+
+        $this->postJson(route('form.register', ['form' => $form]), ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => 'O1'], ['id' => '5506', 'other' => 'O2']]])
+            ->assertOk();
         $this->assertEquals('ooo', $form->participants->get(0)->data['other']);
-        $this->assertEquals('', $form->participants->get(1)->data['other']);
-        $this->assertEquals('', $form->participants->get(2)->data['other']);
+        $this->assertEquals('O1', $form->participants->get(1)->data['other']);
+        $this->assertEquals('O2', $form->participants->get(2)->data['other']);
     }
 }
