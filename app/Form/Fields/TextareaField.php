@@ -2,6 +2,8 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Models\Form;
+use App\Form\Models\Participant;
 use Faker\Generator;
 
 class TextareaField extends Field
@@ -56,5 +58,9 @@ class TextareaField extends Field
     public function getRegistrationMessages(): array
     {
         return [];
+    }
+
+    public function afterRegistration(Form $form, Participant $participant, array $input): void
+    {
     }
 }

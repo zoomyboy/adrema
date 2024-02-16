@@ -2,6 +2,8 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Models\Form;
+use App\Form\Models\Participant;
 use App\Form\Presenters\GroupPresenter;
 use App\Form\Presenters\Presenter;
 use App\Group;
@@ -83,5 +85,9 @@ class GroupField extends Field
     public function getPresenter(): Presenter
     {
         return app(GroupPresenter::class);
+    }
+
+    public function afterRegistration(Form $form, Participant $participant, array $input): void
+    {
     }
 }

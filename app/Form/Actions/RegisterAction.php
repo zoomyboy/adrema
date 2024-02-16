@@ -2,6 +2,7 @@
 
 namespace App\Form\Actions;
 
+use App\Form\Fields\Field;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Illuminate\Http\JsonResponse;
@@ -17,9 +18,13 @@ class RegisterAction
      */
     public function handle(Form $form, array $input): Participant
     {
-        return $form->participants()->create([
+        $participant = $form->participants()->create([
             'data' => $input
         ]);
+
+        $form->getFields()->each(fn ($field) => Field::fromConfig($field)->afterRegistration($form, $participant, $input));
+
+        return $participant;
     }
 
     /**

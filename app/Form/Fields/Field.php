@@ -2,6 +2,9 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Enums\NamiType;
+use App\Form\Models\Form;
+use App\Form\Models\Participant;
 use App\Form\Presenters\DefaultPresenter;
 use App\Form\Presenters\Presenter;
 use Faker\Generator;
@@ -15,6 +18,9 @@ abstract class Field extends Data
 
     public string $key;
     public string $name;
+    public ?NamiType $namiType = null;
+
+    abstract public function afterRegistration(Form $form, Participant $participant, array $input): void;
 
     abstract public static function name(): string;
 
@@ -129,7 +135,7 @@ abstract class Field extends Data
                 'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                 'default' => static::default(),
                 'required' => false,
-                'nami_field' => null,
+                'nami_type' => null,
                 ...collect(static::meta())->mapWithKeys(fn ($meta) => [$meta['key'] => $meta['default']])->toArray(),
             ],
         ];

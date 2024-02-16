@@ -2,16 +2,20 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Enums\NamiField as EnumsNamiField;
+use App\Form\Enums\NamiType;
 use App\Form\Fields\CheckboxesField;
 use App\Form\Fields\CheckboxField;
 use App\Form\Fields\DateField;
 use App\Form\Fields\DropdownField;
 use App\Form\Fields\GroupField;
+use App\Form\Fields\NamiField;
 use App\Form\Fields\RadioField;
 use App\Form\Fields\TextareaField;
 use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Group;
+use App\Member\Member;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -274,5 +278,36 @@ class FormRegisterActionTest extends TestCase
             ->assertJsonValidationErrors(['group' => 'Der gewählte Wert für Gruppe ist ungültig.']);
         $this->postJson(route('form.register', ['form' => $form]), ['parentgroup' => $group->children->first()->id, 'group' => $group->children->first()->children->first()->id])
             ->assertOk();
+    }
+
+    public function testItAddsMembersViaNami(): void
+    {
+        $this->login()->loginNami();
+        Member::factory()->defaults()->create(['mitgliedsnr' => '5505', 'firstname' => 'Abc', 'birthday' => '2023-01-05']);
+        Member::factory()->defaults()->create(['mitgliedsnr' => '5506', 'firstname' => 'Def', 'birthday' => '2023-01-06']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
+                FormtemplateFieldRequest::type(TextField::class)->key('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
+                FormtemplateFieldRequest::type(DateField::class)->key('birthday')->required(true)->namiType(NamiType::BIRTHDAY),
+                FormtemplateFieldRequest::type(TextField::class)->key('other')->namiType(null),
+            ])])
+            ->create();
+
+        $this->postJson(route('form.register', ['form' => $form]), ['firstname' => 'Aaaa', 'birthday' => '2021-04-05', 'other' => 'ooo', 'members' => [['id' => '5505'], ['id' => '5506']]])
+            ->assertOk();
+        $this->assertCount(3, $form->participants()->get());
+        $this->assertEquals('Aaaa', $form->participants->get(0)->data['firstname']);
+        $this->assertEquals('Abc', $form->participants->get(1)->data['firstname']);
+        $this->assertEquals('Def', $form->participants->get(2)->data['firstname']);
+        $this->assertEquals('2021-04-05', $form->participants->get(0)->data['birthday']);
+        $this->assertEquals('2023-01-05', $form->participants->get(1)->data['birthday']);
+        $this->assertEquals('2023-01-06', $form->participants->get(2)->data['birthday']);
+        $this->assertEquals([['id' => '5505'], ['id' => '5506']], $form->participants->get(0)->data['members']);
+        $this->assertEquals([], $form->participants->get(1)->data['members']);
+        $this->assertEquals([], $form->participants->get(2)->data['members']);
+        $this->assertEquals('ooo', $form->participants->get(0)->data['other']);
+        $this->assertEquals('', $form->participants->get(1)->data['other']);
+        $this->assertEquals('', $form->participants->get(2)->data['other']);
     }
 }
