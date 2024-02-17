@@ -16,6 +16,7 @@ use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Group;
 use App\Member\Member;
+use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -65,6 +66,7 @@ class FormRegisterActionTest extends TestCase
      */
     public function testItValidatesInput(FormtemplateFieldRequest $fieldGenerator, array $payload, ?array $messages): void
     {
+        Carbon::setTestNow(Carbon::parse('2024-02-15 06:00:00'));
         $this->login()->loginNami();
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([$fieldGenerator])])
@@ -95,13 +97,13 @@ class FormRegisterActionTest extends TestCase
 
         yield [
             FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->maxToday(true)->key('birthday'),
-            ['birthday' => now()->addDay()->format('Y-m-d')],
-            ['birthday' => 'Geburtsdatum muss ein Datum vor oder gleich dem ' . now()->format('d.m.Y') . ' sein.'],
+            ['birthday' => '2024-02-16'],
+            ['birthday' => 'Geburtsdatum muss ein Datum vor oder gleich dem 15.02.2024 sein.'],
         ];
 
         yield [
             FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->maxToday(true)->key('birthday'),
-            ['birthday' => now()->format('Y-m-d')],
+            ['birthday' => '2024-02-15'],
             null,
         ];
 
