@@ -42,7 +42,11 @@ class NamiField extends Field
         $rules = [];
         $fields = request()->route('form')->getFields();
 
-        $c = collect($fields)->filter(fn ($field) => $field['nami_type'] === null)->filter(fn ($field) => $field['type'] !== class_basename(static::class))->map(fn ($field) => Field::fromConfig($field)->getRegistrationRules());
+        $c = collect($fields)
+            ->filter(fn ($field) => $field['for_members'] === true)
+            ->filter(fn ($field) => $field['nami_type'] === null)
+            ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
+            ->map(fn ($field) => Field::fromConfig($field)->getRegistrationRules());
 
         foreach ($c as $field) {
             foreach ($field as $ruleKey => $rule) {
@@ -65,7 +69,10 @@ class NamiField extends Field
         $fields = request()->route('form')->getFields();
         $inputMembers = request($this->key);
 
-        $c = collect($fields)->filter(fn ($field) => $field['type'] !== class_basename(static::class))->map(fn ($field) => Field::fromConfig($field));
+        $c = collect($fields)
+            ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
+            ->filter(fn ($field) => $field['for_members'] === true)
+            ->map(fn ($field) => Field::fromConfig($field));
 
         foreach ($c as $field) {
             foreach ($field->getRegistrationRules() as $ruleKey => $rule) {

@@ -370,4 +370,22 @@ class FormRegisterActionTest extends TestCase
         $this->postJson(route('form.register', ['form' => $form]), ['other' => [], 'members' => [['id' => '5505', 'other' => ['A', 'missing']]]])
             ->assertJsonValidationErrors(['members.0.other.1' => 'Der gewählte Wert für Andere für Mitglied Nr 5505 ist ungültig.']);
     }
+
+    public function testItSetsDefaultValueForFieldsThatAreNotNamiFillable(): void
+    {
+        $this->login()->loginNami();
+        Member::factory()->defaults()->create(['mitgliedsnr' => '5505', 'firstname' => 'Paula']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
+                FormtemplateFieldRequest::type(TextField::class)->key('other')->required(true)->namiType(null)->forMembers(false)->options(['A', 'B']),
+                FormtemplateFieldRequest::type(TextField::class)->key('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
+            ])])
+            ->create();
+
+        $this->postJson(route('form.register', ['form' => $form]), ['firstname' => 'A', 'other' => 'B', 'members' => [['id' => '5505']]])
+            ->assertOk();
+        $this->assertEquals('Paula', $form->participants->get(1)->data['firstname']);
+        $this->assertEquals('', $form->participants->get(1)->data['other']);
+    }
 }
