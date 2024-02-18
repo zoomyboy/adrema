@@ -281,7 +281,9 @@ class FormRegisterActionTest extends TestCase
             ->assertOk();
     }
 
-    public function testItAddsMembersViaNami(): void
+    // --------------------------- NamiField Tests ---------------------------
+    // ***********************************************************************
+    public function testItAddsMembersViaNamiFromNamiField(): void
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Abc', 'birthday' => '2023-01-05']);
