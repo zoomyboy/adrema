@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Form;
 
-use App\Form\Enums\NamiField as EnumsNamiField;
 use App\Form\Enums\NamiType;
 use App\Form\Fields\CheckboxesField;
 use App\Form\Fields\CheckboxField;
@@ -313,18 +312,62 @@ class FormRegisterActionTest extends TestCase
     {
         $this->login()->loginNami();
         Member::factory()->defaults()->create(['mitgliedsnr' => '5505']);
-        Member::factory()->defaults()->create(['mitgliedsnr' => '5506']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 FormtemplateFieldRequest::type(NamiField::class)->key('members'),
-                FormtemplateFieldRequest::type(TextField::class)->key('other')->namiType(null),
+                FormtemplateFieldRequest::type(TextField::class)->key('other')->namiType(null)->required(false),
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => 'O1'], ['id' => '5506', 'other' => 'O2']]])
+        $this->postJson(route('form.register', ['form' => $form]), ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => 'O1']]])
             ->assertOk();
         $this->assertEquals('ooo', $form->participants->get(0)->data['other']);
         $this->assertEquals('O1', $form->participants->get(1)->data['other']);
-        $this->assertEquals('O2', $form->participants->get(2)->data['other']);
+    }
+
+    public function testItValidatesMembersFields(): void
+    {
+        $this->login()->loginNami();
+        Member::factory()->defaults()->create(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
+        Member::factory()->defaults()->create(['mitgliedsnr' => '5506', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
+                FormtemplateFieldRequest::type(TextField::class)->name('Andere')->key('other')->namiType(null)->required(true),
+            ])])
+            ->create();
+
+        $this->postJson(route('form.register', ['form' => $form]), ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => ''], ['id' => '5506', 'other' => '']]])
+            ->assertJsonValidationErrors(['members.0.other' => 'Andere für Mitglied Nr 5505 ist erforderlich.'])
+            ->assertJsonValidationErrors(['members.1.other' => 'Andere für Mitglied Nr 5506 ist erforderlich.']);
+    }
+
+    public function testItValidatesIfMemberExists(): void
+    {
+        $this->login()->loginNami();
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
+                FormtemplateFieldRequest::type(TextField::class)->name('Andere')->key('other')->namiType(null)->required(true),
+            ])])
+            ->create();
+
+        $this->postJson(route('form.register', ['form' => $form]), ['other' => 'ooo', 'members' => [['id' => '9999', 'other' => 'other']]])
+            ->assertJsonValidationErrors(['members.0.id' => 'Mitglied Nr 9999 ist nicht vorhanden.']);
+    }
+
+    public function testItValidatesMembersCheckboxesOptions(): void
+    {
+        $this->login()->loginNami();
+        Member::factory()->defaults()->create(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
+                FormtemplateFieldRequest::type(CheckboxesField::class)->name('Andere')->key('other')->namiType(null)->options(['A', 'B']),
+            ])])
+            ->create();
+
+        $this->postJson(route('form.register', ['form' => $form]), ['other' => [], 'members' => [['id' => '5505', 'other' => ['A', 'missing']]]])
+            ->assertJsonValidationErrors(['members.0.other.1' => 'Der gewählte Wert für Andere für Mitglied Nr 5505 ist ungültig.']);
     }
 }

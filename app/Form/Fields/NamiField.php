@@ -6,6 +6,7 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Member\Member;
 use Faker\Generator;
+use Generator as LazyGenerator;
 
 class NamiField extends Field
 {
@@ -38,7 +39,21 @@ class NamiField extends Field
      */
     public function getRegistrationRules(): array
     {
-        return [$this->key => []];
+        $rules = [];
+        $fields = request()->route('form')->getFields();
+
+        $c = collect($fields)->filter(fn ($field) => $field['nami_type'] === null)->filter(fn ($field) => $field['type'] !== class_basename(static::class))->map(fn ($field) => Field::fromConfig($field)->getRegistrationRules());
+
+        foreach ($c as $field) {
+            foreach ($field as $ruleKey => $rule) {
+                $rules[$this->key . '.*.' . $ruleKey] = $rule;
+            }
+        }
+
+        return [
+            $this->key . '.*.id' => ['required', 'numeric', 'exists:members,mitgliedsnr'],
+            ...$rules,
+        ];
     }
 
     /**
@@ -46,7 +61,34 @@ class NamiField extends Field
      */
     public function getRegistrationAttributes(): array
     {
-        return [$this->key => $this->name];
+        $rules = [];
+        $fields = request()->route('form')->getFields();
+        $inputMembers = request($this->key);
+
+        $c = collect($fields)->filter(fn ($field) => $field['type'] !== class_basename(static::class))->map(fn ($field) => Field::fromConfig($field));
+
+        foreach ($c as $field) {
+            foreach ($field->getRegistrationRules() as $ruleKey => $rule) {
+                foreach ($inputMembers as $memberIndex => $inputMember) {
+                    if (str($ruleKey)->contains('*')) {
+                        foreach (request($this->key . '.' . $memberIndex . '.' . $field->key) as $i => $k) {
+                            $rules[$this->key . '.' . $memberIndex . '.' . str($ruleKey)->replace('*', $i)] = $field->name . ' für Mitglied Nr ' . $inputMember['id'];
+                        }
+                    } else {
+                        $rules[$this->key . '.' . $memberIndex . '.' . $ruleKey] = $field->name . ' für Mitglied Nr ' . $inputMember['id'];
+                    }
+                }
+            }
+        }
+
+        foreach ($inputMembers as $memberIndex => $inputMember) {
+            $rules[$this->key . '.' . $memberIndex . '.id'] = 'Mitglied Nr ' . $inputMember['id'];
+        }
+
+        return [
+            $this->key => $this->name,
+            ...$rules,
+        ];
     }
 
     /**
