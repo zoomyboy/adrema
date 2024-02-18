@@ -284,8 +284,8 @@ class FormRegisterActionTest extends TestCase
     public function testItAddsMembersViaNami(): void
     {
         $this->login()->loginNami();
-        Member::factory()->defaults()->create(['mitgliedsnr' => '5505', 'firstname' => 'Abc', 'birthday' => '2023-01-05']);
-        Member::factory()->defaults()->create(['mitgliedsnr' => '5506', 'firstname' => 'Def', 'birthday' => '2023-01-06']);
+        $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Abc', 'birthday' => '2023-01-05']);
+        $this->createMember(['mitgliedsnr' => '5506', 'firstname' => 'Def', 'birthday' => '2023-01-06']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 FormtemplateFieldRequest::type(NamiField::class)->key('members'),
@@ -311,7 +311,7 @@ class FormRegisterActionTest extends TestCase
     public function testItAddsOtherFieldsOfMember(): void
     {
         $this->login()->loginNami();
-        Member::factory()->defaults()->create(['mitgliedsnr' => '5505']);
+        $this->createMember(['mitgliedsnr' => '5505']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 FormtemplateFieldRequest::type(NamiField::class)->key('members'),
@@ -328,8 +328,8 @@ class FormRegisterActionTest extends TestCase
     public function testItValidatesMembersFields(): void
     {
         $this->login()->loginNami();
-        Member::factory()->defaults()->create(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
-        Member::factory()->defaults()->create(['mitgliedsnr' => '5506', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
+        $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
+        $this->createMember(['mitgliedsnr' => '5506', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 FormtemplateFieldRequest::type(NamiField::class)->key('members'),
@@ -359,7 +359,7 @@ class FormRegisterActionTest extends TestCase
     public function testItValidatesMembersCheckboxesOptions(): void
     {
         $this->login()->loginNami();
-        Member::factory()->defaults()->create(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
+        $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 FormtemplateFieldRequest::type(NamiField::class)->key('members'),
@@ -374,7 +374,7 @@ class FormRegisterActionTest extends TestCase
     public function testItSetsDefaultValueForFieldsThatAreNotNamiFillable(): void
     {
         $this->login()->loginNami();
-        Member::factory()->defaults()->create(['mitgliedsnr' => '5505', 'firstname' => 'Paula']);
+        $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Paula']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 FormtemplateFieldRequest::type(NamiField::class)->key('members'),
@@ -387,5 +387,10 @@ class FormRegisterActionTest extends TestCase
             ->assertOk();
         $this->assertEquals('Paula', $form->participants->get(1)->data['firstname']);
         $this->assertEquals('', $form->participants->get(1)->data['other']);
+    }
+
+    protected function createMember(array $attributes): Member
+    {
+        return Member::factory()->defaults()->create($attributes);
     }
 }
