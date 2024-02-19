@@ -22,6 +22,7 @@ class FormtemplateIndexActionTest extends TestCase
         $this->get(route('formtemplate.index'))
             ->assertInertiaPath('data.data.0.links', [
                 'update' => route('formtemplate.update', ['formtemplate' => $formtemplate]),
+                'destroy' => route('formtemplate.destroy', ['formtemplate' => $formtemplate]),
             ])
             ->assertInertiaPath('data.data.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.meta.groups', [

@@ -29,6 +29,7 @@ class FormtemplateResource extends JsonResource
             ...parent::toArray($request),
             'links' => [
                 'update' => route('formtemplate.update', ['formtemplate' => $this->getModel()]),
+                'destroy' => route('formtemplate.destroy', ['formtemplate' => $this->getModel()]),
             ]
         ];
     }
@@ -42,7 +43,7 @@ class FormtemplateResource extends JsonResource
             'base_url' => url(''),
             'groups' => Group::forSelect(),
             'fields' => Field::asMeta(),
-            'namiFields' => NamiType::forSelect(),
+            'namiTypes' => NamiType::forSelect(),
             'links' => [
                 'store' => route('formtemplate.store'),
                 'form_index' => route('form.index'),
