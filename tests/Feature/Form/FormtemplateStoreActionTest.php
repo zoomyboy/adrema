@@ -2,16 +2,13 @@
 
 namespace Tests\Feature\Form;
 
-use App\Form\Fields\TextareaField;
-use App\Form\Fields\TextField;
 use App\Form\Models\Formtemplate;
 use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
-use Tests\TestCase;
 use Generator;
 
-class FormtemplateStoreActionTest extends TestCase
+class FormtemplateStoreActionTest extends FormTestCase
 {
 
     use DatabaseTransactions;
@@ -22,8 +19,8 @@ class FormtemplateStoreActionTest extends TestCase
         $this->login()->loginNami()->withoutExceptionHandling();
         FormtemplateRequest::new()->name('testname')->sections([
             FormtemplateSectionRequest::new()->name('Persönliches')->fields([
-                FormtemplateFieldRequest::type(TextField::class)->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false)->default('zuzu'),
-                FormtemplateFieldRequest::type(TextareaField::class)->name('lala2')->required(false)->rows(10),
+                $this->textField('a')->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false)->default('zuzu'),
+                $this->textareaField('b')->name('lala2')->required(false)->rows(10),
             ]),
         ])->fake();
 
@@ -47,7 +44,7 @@ class FormtemplateStoreActionTest extends TestCase
         yield [FormtemplateRequest::new()->name(''), ['name' => 'Name ist erforderlich.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->name('')]), ['config.sections.0.name' => 'Sektionsname ist erforderlich.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
-            FormtemplateFieldRequest::type(TextField::class)->name(''),
+            $this->textField()->name(''),
         ])]), ['config.sections.0.fields.0.name' => 'Feldname ist erforderlich.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
             FormtemplateFieldRequest::type('')
@@ -56,13 +53,13 @@ class FormtemplateStoreActionTest extends TestCase
             FormtemplateFieldRequest::type('aaaaa'),
         ])]), ['config.sections.0.fields.0.type' => 'Feldtyp ist ungültig.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
-            FormtemplateFieldRequest::type(TextField::class)->key(''),
+            $this->textField(''),
         ])]), ['config.sections.0.fields.0.key' => 'Feldkey ist erforderlich.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
-            FormtemplateFieldRequest::type(TextField::class)->key('a b'),
+            $this->textField('a b'),
         ])]), ['config.sections.0.fields.0.key' => 'Feldkey Format ist ungültig.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
-            FormtemplateFieldRequest::type(TextField::class)->required('la')
+            $this->textField()->required('la')
         ])]), ['config.sections.0.fields.0.required' => 'Erforderlich muss ein Wahrheitswert sein.']];
     }
 

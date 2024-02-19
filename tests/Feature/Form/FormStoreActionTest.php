@@ -2,19 +2,16 @@
 
 namespace Tests\Feature\Form;
 
-use App\Form\Enums\NamiField;
 use App\Form\Enums\NamiType;
-use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
-use Tests\TestCase;
 use Generator;
 use Illuminate\Support\Facades\Storage;
 use Tests\RequestFactories\EditorRequestFactory;
 
-class FormStoreActionTest extends TestCase
+class FormStoreActionTest extends FormTestCase
 {
 
     use DatabaseTransactions;
@@ -39,7 +36,7 @@ class FormStoreActionTest extends TestCase
             ->mailTop('Guten Tag')
             ->mailBottom('Viele Grüße')
             ->headerImage('htzz.jpg')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::type(TextField::class)->namiType(NamiType::BIRTHDAY)])])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()->namiType(NamiType::BIRTHDAY)])])
             ->fake();
 
         $this->postJson(route('form.store'))->assertOk();

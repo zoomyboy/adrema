@@ -3,25 +3,15 @@
 namespace Tests\Feature\Form;
 
 use App\Form\Enums\NamiType;
-use App\Form\Fields\CheckboxesField;
-use App\Form\Fields\CheckboxField;
-use App\Form\Fields\DateField;
-use App\Form\Fields\DropdownField;
-use App\Form\Fields\GroupField;
-use App\Form\Fields\NamiField;
-use App\Form\Fields\RadioField;
-use App\Form\Fields\TextareaField;
-use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Group;
 use App\Member\Member;
 use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Storage;
 
-class FormRegisterActionTest extends TestCase
+class FormRegisterActionTest extends FormTestCase
 {
 
     use DatabaseTransactions;
@@ -39,11 +29,11 @@ class FormRegisterActionTest extends TestCase
         $form = Form::factory()
             ->sections([
                 FormtemplateSectionRequest::new()->fields([
-                    FormtemplateFieldRequest::type(TextField::class)->key('vorname'),
-                    FormtemplateFieldRequest::type(TextField::class)->key('nachname'),
+                    $this->textField('vorname'),
+                    $this->textField('nachname'),
                 ]),
                 FormtemplateSectionRequest::new()->fields([
-                    FormtemplateFieldRequest::type(TextField::class)->key('spitzname'),
+                    $this->textField('spitzname'),
                 ]),
             ])
             ->create();
@@ -83,151 +73,151 @@ class FormRegisterActionTest extends TestCase
     public function validationDataProvider(): Generator
     {
         yield [
-            FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->maxToday(false)->key('birthday'),
+            $this->dateField('birthday')->name('Geburtsdatum')->maxToday(false),
             ['birthday' => 'aa'],
             ['birthday' => 'Geburtsdatum muss ein gültiges Datum sein.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->maxToday(false)->key('birthday'),
+            $this->dateField('birthday')->name('Geburtsdatum')->maxToday(false),
             ['birthday' => '2021-05-06'],
             null,
         ];
 
         yield [
-            FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->maxToday(true)->key('birthday'),
+            $this->dateField('birthday')->name('Geburtsdatum')->maxToday(true),
             ['birthday' => '2024-02-16'],
             ['birthday' => 'Geburtsdatum muss ein Datum vor oder gleich dem 15.02.2024 sein.'],
         ];
 
         yield [
-            FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->maxToday(true)->key('birthday'),
+            $this->dateField('birthday')->name('Geburtsdatum')->maxToday(true),
             ['birthday' => '2024-02-15'],
             null,
         ];
 
         yield [
-            FormtemplateFieldRequest::type(TextField::class)->name('Vorname der Mutter')->required(true)->key('vorname'),
+            $this->textField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => ''],
             ['vorname' => 'Vorname der Mutter ist erforderlich.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(TextField::class)->name('Vorname der Mutter')->required(true)->key('vorname'),
+            $this->textField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => 5],
             ['vorname' => 'Vorname der Mutter muss ein String sein.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(RadioField::class)->name('Ja oder Nein')->required(true)->key('yes_or_no'),
+            $this->radioField('yes_or_no')->name('Ja oder Nein')->required(true),
             ['yes_or_no' => null],
             ['yes_or_no' => 'Ja oder Nein ist erforderlich.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(RadioField::class)->name('Buchstabe')->options(['A', 'B'])->required(false)->key('letter'),
+            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(RadioField::class)->name('Buchstabe')->options(['A', 'B'])->required(true)->key('letter'),
+            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(RadioField::class)->name('Buchstabe')->options(['A', 'B'])->required(true)->key('letter'),
+            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true),
             ['letter' => 'A'],
             null
         ];
 
         yield [
-            FormtemplateFieldRequest::type(CheckboxesField::class)->name('Buchstabe')->options(['A', 'B'])->key('letter'),
+            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => ['Z']],
             ['letter.0' => 'Der gewählte Wert für Buchstabe ist ungültig.'],
         ];
 
         yield [
-            FormtemplateFieldRequest::type(CheckboxesField::class)->name('Buchstabe')->options(['A', 'B'])->key('letter'),
+            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => 77],
             ['letter' => 'Buchstabe muss ein Array sein.'],
         ];
 
         yield [
-            FormtemplateFieldRequest::type(CheckboxesField::class)->name('Buchstabe')->options(['A', 'B'])->key('letter'),
+            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => ['A']],
             null,
         ];
 
         yield [
-            FormtemplateFieldRequest::type(CheckboxesField::class)->name('Buchstabe')->options(['A', 'B'])->key('letter'),
+            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => []],
             null,
         ];
 
         yield [
-            FormtemplateFieldRequest::type(CheckboxField::class)->name('Datenschutz')->required(false)->key('data'),
+            $this->checkboxField('data')->name('Datenschutz')->required(false),
             ['data' => 5],
             ['data' => 'Datenschutz muss ein Wahrheitswert sein.'],
         ];
 
         yield [
-            FormtemplateFieldRequest::type(CheckboxField::class)->name('Datenschutz')->required(false)->key('data'),
+            $this->checkboxField('data')->name('Datenschutz')->required(false),
             ['data' => false],
             null
         ];
 
         yield [
-            FormtemplateFieldRequest::type(CheckboxField::class)->name('Datenschutz')->required(true)->key('data'),
+            $this->checkboxField('data')->name('Datenschutz')->required(true),
             ['data' => false],
             ['data' => 'Datenschutz muss akzeptiert werden.'],
         ];
 
         yield [
-            FormtemplateFieldRequest::type(CheckboxField::class)->name('Datenschutz')->required(true)->key('data'),
+            $this->checkboxField('data')->name('Datenschutz')->required(true),
             ['data' => true],
             null,
         ];
 
         yield [
-            FormtemplateFieldRequest::type(DropdownField::class)->name('Ja oder Nein')->required(true)->key('yes_or_no'),
+            $this->dropdownField('yes_or_no')->name('Ja oder Nein')->required(true),
             ['yes_or_no' => null],
             ['yes_or_no' => 'Ja oder Nein ist erforderlich.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(DropdownField::class)->name('Buchstabe')->options(['A', 'B'])->required(false)->key('letter'),
+            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(DropdownField::class)->name('Buchstabe')->options(['A', 'B'])->required(true)->key('letter'),
+            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(DropdownField::class)->name('Buchstabe')->options(['A', 'B'])->required(true)->key('letter'),
+            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true),
             ['letter' => 'A'],
             null
         ];
 
         yield [
-            FormtemplateFieldRequest::type(TextareaField::class)->name('Vorname der Mutter')->required(true)->key('vorname'),
+            $this->textareaField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => ''],
             ['vorname' => 'Vorname der Mutter ist erforderlich.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(TextareaField::class)->name('Vorname der Mutter')->required(true)->key('vorname'),
+            $this->textareaField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => 5],
             ['vorname' => 'Vorname der Mutter muss ein String sein.']
         ];
 
         yield [
-            FormtemplateFieldRequest::type(TextareaField::class)->name('Vorname der Mutter')->required(true)->key('vorname'),
+            $this->textareaField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => 5],
             ['vorname' => 'Vorname der Mutter muss ein String sein.']
         ];
@@ -240,7 +230,7 @@ class FormRegisterActionTest extends TestCase
         $foreignGroup = Group::factory()->create();
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(GroupField::class)->name('Gruppe')->parentGroup($group->id)->required(true)->key('group')
+                $this->groupField('group')->name('Gruppe')->parentGroup($group->id)->required(true)
             ])])
             ->create();
 
@@ -250,12 +240,12 @@ class FormRegisterActionTest extends TestCase
             ->assertJsonValidationErrors(['group' => 'Der gewählte Wert für Gruppe ist ungültig.']);
     }
 
-    public function testGroupCanBeNull(): void
+    public function testGroupFieldCanBeNullWhenNotRequired(): void
     {
         $this->login()->loginNami();
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(GroupField::class)->parentGroup(Group::factory()->create()->id)->required(false)->key('group')
+                $this->groupField('group')->parentGroup(Group::factory()->create()->id)->required(false)
             ])])
             ->create();
 
@@ -270,8 +260,8 @@ class FormRegisterActionTest extends TestCase
         $foreignGroup = Group::factory()->create();
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(GroupField::class)->name('Übergeordnete Gruppe')->parentGroup($group->id)->required(true)->key('parentgroup'),
-                FormtemplateFieldRequest::type(GroupField::class)->name('Gruppe')->parentField('parentgroup')->required(true)->key('group')
+                $this->groupField('parentgroup')->name('Übergeordnete Gruppe')->parentGroup($group->id)->required(true),
+                $this->groupField('group')->name('Gruppe')->parentField('parentgroup')->required(true),
             ])])
             ->create();
 
@@ -290,9 +280,9 @@ class FormRegisterActionTest extends TestCase
         $this->createMember(['mitgliedsnr' => '5506', 'firstname' => 'Def', 'birthday' => '2023-01-06']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
-                FormtemplateFieldRequest::type(TextField::class)->key('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
-                FormtemplateFieldRequest::type(DateField::class)->key('birthday')->required(true)->namiType(NamiType::BIRTHDAY),
+                $this->namiField('members'),
+                $this->textField('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
+                $this->dateField('birthday')->required(true)->namiType(NamiType::BIRTHDAY),
             ])])
             ->create();
 
@@ -316,8 +306,8 @@ class FormRegisterActionTest extends TestCase
         $this->createMember(['mitgliedsnr' => '5505']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
-                FormtemplateFieldRequest::type(TextField::class)->key('other')->namiType(null)->required(false),
+                $this->namiField('members'),
+                $this->textField('other')->namiType(null)->required(false),
             ])])
             ->create();
 
@@ -334,8 +324,8 @@ class FormRegisterActionTest extends TestCase
         $this->createMember(['mitgliedsnr' => '5506', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
-                FormtemplateFieldRequest::type(TextField::class)->name('Andere')->key('other')->namiType(null)->required(true),
+                $this->namiField('members'),
+                $this->textField('other')->name('Andere')->namiType(null)->required(true),
             ])])
             ->create();
 
@@ -349,8 +339,8 @@ class FormRegisterActionTest extends TestCase
         $this->login()->loginNami();
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
-                FormtemplateFieldRequest::type(TextField::class)->name('Andere')->key('other')->namiType(null)->required(true),
+                $this->namiField('members'),
+                $this->textField('other')->name('Andere')->namiType(null)->required(true),
             ])])
             ->create();
 
@@ -364,8 +354,8 @@ class FormRegisterActionTest extends TestCase
         $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
-                FormtemplateFieldRequest::type(CheckboxesField::class)->name('Andere')->key('other')->namiType(null)->options(['A', 'B']),
+                $this->namiField('members'),
+                $this->checkboxesField('other')->name('Andere')->namiType(null)->options(['A', 'B']),
             ])])
             ->create();
 
@@ -379,9 +369,9 @@ class FormRegisterActionTest extends TestCase
         $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Paula']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(NamiField::class)->key('members'),
-                FormtemplateFieldRequest::type(TextField::class)->key('other')->required(true)->namiType(null)->forMembers(false)->options(['A', 'B']),
-                FormtemplateFieldRequest::type(TextField::class)->key('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
+                $this->namiField('members'),
+                $this->textField('other')->required(true)->namiType(null)->forMembers(false)->options(['A', 'B']),
+                $this->textField('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
             ])])
             ->create();
 

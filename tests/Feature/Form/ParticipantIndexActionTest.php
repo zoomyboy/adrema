@@ -2,18 +2,13 @@
 
 namespace Tests\Feature\Form;
 
-use App\Form\Fields\CheckboxesField;
-use App\Form\Fields\DateField;
-use App\Form\Fields\DropdownField;
-use App\Form\Fields\GroupField;
 use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Group;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 
-class ParticipantIndexActionTest extends TestCase
+class ParticipantIndexActionTest extends FormTestCase
 {
 
     use DatabaseTransactions;
@@ -26,14 +21,14 @@ class ParticipantIndexActionTest extends TestCase
             ->has(Participant::factory()->data(['vorname' => 'Max', 'select' => ['A', 'B'], 'stufe' => 'Pfadfinder', 'test1' => '', 'test2' => '', 'test3' => '', 'birthday' => '1991-04-20', 'bezirk' => $group->id]))
             ->sections([
                 FormtemplateSectionRequest::new()->fields([
-                    FormtemplateFieldRequest::type(TextField::class)->name('Vorname')->key('vorname'),
-                    FormtemplateFieldRequest::type(CheckboxesField::class)->key('select')->options(['A', 'B', 'C']),
-                    FormtemplateFieldRequest::type(DropdownField::class)->key('stufe')->options(['Wölfling', 'Jungpfadfinder', 'Pfadfinder']),
-                    FormtemplateFieldRequest::type(TextField::class)->name('Test 1')->key('test1'),
-                    FormtemplateFieldRequest::type(TextField::class)->name('Test 2')->key('test2'),
-                    FormtemplateFieldRequest::type(TextField::class)->name('Test 3')->key('test3'),
-                    FormtemplateFieldRequest::type(DateField::class)->name('Geburtsdatum')->key('birthday'),
-                    FormtemplateFieldRequest::type(GroupField::class)->name('bezirk')->key('bezirk'),
+                    $this->textField('vorname')->name('Vorname'),
+                    $this->checkboxesField('select')->options(['A', 'B', 'C']),
+                    $this->dropdownField('stufe')->options(['Wölfling', 'Jungpfadfinder', 'Pfadfinder']),
+                    $this->textField('test1')->name('Test 1'),
+                    $this->textField('test2')->name('Test 2'),
+                    $this->textField('test3')->name('Test 3'),
+                    $this->dateField('birthday')->name('Geburtsdatum'),
+                    $this->groupField('bezirk')->name('bezirk'),
                 ]),
             ])
             ->create();

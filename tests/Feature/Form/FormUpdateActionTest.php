@@ -2,13 +2,11 @@
 
 namespace Tests\Feature\Form;
 
-use App\Form\Fields\DateField;
 use App\Form\Models\Form;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Storage;
 
-class FormUpdateActionTest extends TestCase
+class FormUpdateActionTest extends FormTestCase
 {
 
     use DatabaseTransactions;
@@ -26,7 +24,7 @@ class FormUpdateActionTest extends TestCase
         $form = Form::factory()->create();
         $payload = FormRequest::new()->sections([
             FormtemplateSectionRequest::new()->fields([
-                FormtemplateFieldRequest::type(DateField::class)->state(['max_today' => true]),
+                $this->dateField()->state(['max_today' => true]),
             ])
         ])->create();
 
