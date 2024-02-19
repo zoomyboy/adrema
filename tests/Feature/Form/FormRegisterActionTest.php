@@ -400,6 +400,31 @@ class FormRegisterActionTest extends FormTestCase
         $this->assertEquals('', $form->participants->get(1)->data['other']);
     }
 
+    public function testNamiFieldCanBeEmptyArray(): void
+    {
+        $this->login()->loginNami();
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->namiField('members'),
+            ])])
+            ->create();
+
+        $this->register($form, ['members' => []])->assertOk();
+        $this->assertDatabaseCount('participants', 1);
+    }
+
+    public function testNamiFieldMustBeArray(): void
+    {
+        $this->login()->loginNami();
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->namiField('members'),
+            ])])
+            ->create();
+
+        $this->register($form, ['members' => null])->assertJsonValidationErrors(['members']);
+    }
+
     /**
      * @param array<string, mixed> $attributes
      */

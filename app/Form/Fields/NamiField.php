@@ -7,6 +7,7 @@ use App\Form\Models\Participant;
 use App\Member\Member;
 use Faker\Generator;
 use Generator as LazyGenerator;
+use Illuminate\Validation\Factory;
 
 class NamiField extends Field
 {
@@ -39,7 +40,7 @@ class NamiField extends Field
      */
     public function getRegistrationRules(Form $form): array
     {
-        $rules = [];
+        $rules = [$this->key => 'present|array'];
 
         $c = collect($form->getFields())
             ->filter(fn ($field) => $field['for_members'] === true)
@@ -66,6 +67,10 @@ class NamiField extends Field
     {
         $rules = [];
         $inputMembers = request($this->key);
+
+        if (!is_array($inputMembers)) {
+            return [];
+        }
 
         $c = collect($form->getFields())
             ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
