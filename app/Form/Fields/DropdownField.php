@@ -42,7 +42,7 @@ class DropdownField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationRules(): array
+    public function getRegistrationRules(Form $form): array
     {
         return [
             $this->key => $this->required ? ['required', 'string', Rule::in($this->options)] : ['nullable', 'string', Rule::in($this->options)],
@@ -52,7 +52,7 @@ class DropdownField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationAttributes(): array
+    public function getRegistrationAttributes(Form $form): array
     {
         return [$this->key => $this->name];
     }
@@ -60,7 +60,7 @@ class DropdownField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationMessages(): array
+    public function getRegistrationMessages(Form $form): array
     {
         return [];
     }

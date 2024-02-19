@@ -74,7 +74,7 @@ class Form extends Model implements HasMedia
 
             return [
                 ...$carry,
-                ...$field->getRegistrationRules(),
+                ...$field->getRegistrationRules($this),
             ];
         }, []);
     }
@@ -89,7 +89,7 @@ class Form extends Model implements HasMedia
 
             return [
                 ...$carry,
-                ...$field->getRegistrationMessages(),
+                ...$field->getRegistrationMessages($this),
             ];
         }, []);
     }
@@ -104,7 +104,7 @@ class Form extends Model implements HasMedia
 
             return [
                 ...$carry,
-                ...$field->getRegistrationAttributes(),
+                ...$field->getRegistrationAttributes($this),
             ];
         }, []);
     }

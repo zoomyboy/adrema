@@ -34,13 +34,13 @@ abstract class Field extends Data
     abstract public static function default();
 
     /** @return array<string, mixed> */
-    abstract public function getRegistrationRules(): array;
+    abstract public function getRegistrationRules(Form $form): array;
 
     /** @return array<string, mixed> */
-    abstract public function getRegistrationAttributes(): array;
+    abstract public function getRegistrationAttributes(Form $form): array;
 
     /** @return array<string, mixed> */
-    abstract public function getRegistrationMessages(): array;
+    abstract public function getRegistrationMessages(Form $form): array;
 
     /** @return array<string, mixed> */
     abstract public static function fake(Generator $faker): array;

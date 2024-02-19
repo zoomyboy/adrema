@@ -41,7 +41,7 @@ class CheckboxField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationRules(): array
+    public function getRegistrationRules(Form $form): array
     {
         return [
             $this->key => $this->required ? ['boolean', 'accepted'] : ['present', 'boolean'],
@@ -51,7 +51,7 @@ class CheckboxField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationAttributes(): array
+    public function getRegistrationAttributes(Form $form): array
     {
         return [
             $this->key => $this->name,
@@ -61,7 +61,7 @@ class CheckboxField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationMessages(): array
+    public function getRegistrationMessages(Form $form): array
     {
         return [];
     }

@@ -37,16 +37,15 @@ class NamiField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationRules(): array
+    public function getRegistrationRules(Form $form): array
     {
         $rules = [];
-        $fields = request()->route('form')->getFields();
 
-        $c = collect($fields)
+        $c = collect($form->getFields())
             ->filter(fn ($field) => $field['for_members'] === true)
             ->filter(fn ($field) => $field['nami_type'] === null)
             ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
-            ->map(fn ($field) => Field::fromConfig($field)->getRegistrationRules());
+            ->map(fn ($field) => Field::fromConfig($field)->getRegistrationRules($form));
 
         foreach ($c as $field) {
             foreach ($field as $ruleKey => $rule) {
@@ -63,20 +62,20 @@ class NamiField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationAttributes(): array
+    public function getRegistrationAttributes(Form $form): array
     {
         $rules = [];
-        $fields = request()->route('form')->getFields();
         $inputMembers = request($this->key);
 
-        $c = collect($fields)
+        $c = collect($form->getFields())
             ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
             ->filter(fn ($field) => $field['for_members'] === true)
             ->map(fn ($field) => Field::fromConfig($field));
 
         foreach ($c as $field) {
-            foreach ($field->getRegistrationRules() as $ruleKey => $rule) {
+            foreach ($field->getRegistrationRules($form) as $ruleKey => $rule) {
                 foreach ($inputMembers as $memberIndex => $inputMember) {
+
                     $message = $field->name . ' für ein Mitglied';
                     $rules = array_merge(
                         $rules,
@@ -103,7 +102,7 @@ class NamiField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationMessages(): array
+    public function getRegistrationMessages(Form $form): array
     {
         return [];
     }

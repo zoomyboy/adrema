@@ -18,6 +18,7 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self parentGroup(int $groupId)
  * @method self parentField(string $fieldKey)
  * @method self namiType(?NamiType $type)
+ * @method self forMembers(bool $forMembers)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {

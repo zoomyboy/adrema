@@ -41,7 +41,7 @@ class CheckboxesField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationRules(): array
+    public function getRegistrationRules(Form $form): array
     {
         return [
             $this->key => 'array',
@@ -52,7 +52,7 @@ class CheckboxesField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationAttributes(): array
+    public function getRegistrationAttributes(Form $form): array
     {
         return [
             ...collect($this->options)->mapWithKeys(fn ($option, $key) => [$this->key . '.' . $key => $this->name])->toArray(),
@@ -63,7 +63,7 @@ class CheckboxesField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationMessages(): array
+    public function getRegistrationMessages(Form $form): array
     {
         return [];
     }

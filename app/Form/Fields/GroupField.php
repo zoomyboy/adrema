@@ -48,7 +48,7 @@ class GroupField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationRules(): array
+    public function getRegistrationRules(Form $form): array
     {
 
         $rules = [$this->required ? 'required' : 'nullable'];
@@ -69,7 +69,7 @@ class GroupField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationAttributes(): array
+    public function getRegistrationAttributes(Form $form): array
     {
         return [$this->key => $this->name];
     }
@@ -77,7 +77,7 @@ class GroupField extends Field
     /**
      * @inheritdoc
      */
-    public function getRegistrationMessages(): array
+    public function getRegistrationMessages(Form $form): array
     {
         return [];
     }
