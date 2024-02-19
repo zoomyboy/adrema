@@ -22,9 +22,9 @@
                 <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
                 <column-selector v-model="singleField.model.columns"></column-selector>
                 <component :is="fields[singleField.model.type]" v-model="singleField.model" :payload="inner.sections" :meta="props.meta"></component>
-                <f-select id="nami_field" v-model="singleField.model.nami_field" :options="meta.namiFields" label="NaMi-Feld" size="sm" name="nami_field"></f-select>
+                <f-select id="nami_type" v-model="singleField.model.nami_type" :options="meta.namiTypes" label="NaMi-Feld" size="sm" name="nami_type"></f-select>
                 <f-switch
-                    v-show="singleField.model.nami_field === null"
+                    v-show="singleField.model.nami_type === null"
                     id="for_members"
                     v-model="singleField.model.for_members"
                     label="Für Unter-Mitglieder zusätzlich abfragen"
