@@ -330,8 +330,8 @@ class FormRegisterActionTest extends FormTestCase
             ->create();
 
         $this->register($form, ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => ''], ['id' => '5506', 'other' => '']]])
-            ->assertJsonValidationErrors(['members.0.other' => 'Andere für Mitglied Nr 5505 ist erforderlich.'])
-            ->assertJsonValidationErrors(['members.1.other' => 'Andere für Mitglied Nr 5506 ist erforderlich.']);
+            ->assertJsonValidationErrors(['members.0.other' => 'Andere für ein Mitglied ist erforderlich.'])
+            ->assertJsonValidationErrors(['members.1.other' => 'Andere für ein Mitglied ist erforderlich.']);
     }
 
     public function testItValidatesIfMemberExists(): void
@@ -362,7 +362,24 @@ class FormRegisterActionTest extends FormTestCase
         $this->register($form, ['other' => [], 'members' => [
             ['id' => '5505', 'other' => ['A', 'missing']]
         ]])
-            ->assertJsonValidationErrors(['members.0.other.1' => 'Der gewählte Wert für Andere für Mitglied Nr 5505 ist ungültig.']);
+            ->assertJsonValidationErrors(['members.0.other.1' => 'Der gewählte Wert für Andere für ein Mitglied ist ungültig.']);
+    }
+
+    public function testItValidatesMembersCheckboxesAsArray(): void
+    {
+        $this->login()->loginNami();
+        $this->createMember(['mitgliedsnr' => '5505']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->namiField('members'),
+                $this->checkboxesField('other')->name('Andere')->options(['A', 'B']),
+            ])])
+            ->create();
+
+        $this->register($form, ['other' => [], 'members' => [
+            ['id' => '5505', 'other' => 'lala']
+        ]])
+            ->assertJsonValidationErrors(['members.0.other' => 'Andere für ein Mitglied muss ein Array sein.']);
     }
 
     public function testItSetsDefaultValueForFieldsThatAreNotNamiFillable(): void

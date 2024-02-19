@@ -77,13 +77,15 @@ class NamiField extends Field
         foreach ($c as $field) {
             foreach ($field->getRegistrationRules() as $ruleKey => $rule) {
                 foreach ($inputMembers as $memberIndex => $inputMember) {
-                    if (str($ruleKey)->contains('*')) {
-                        foreach (request($this->key . '.' . $memberIndex . '.' . $field->key) as $i => $k) {
-                            $rules[$this->key . '.' . $memberIndex . '.' . str($ruleKey)->replace('*', $i)] = $field->name . ' für Mitglied Nr ' . $inputMember['id'];
-                        }
-                    } else {
-                        $rules[$this->key . '.' . $memberIndex . '.' . $ruleKey] = $field->name . ' für Mitglied Nr ' . $inputMember['id'];
-                    }
+                    $message = $field->name . ' für ein Mitglied';
+                    $rules = array_merge(
+                        $rules,
+                        str($ruleKey)->contains('*')
+                            ? collect(request($this->key . '.' . $memberIndex . '.' . $field->key))
+                            ->mapWithKeys(fn ($value, $key) => [$this->key . '.' . $memberIndex . '.' . str($ruleKey)->replace('*', $key) => $message])
+                            ->toArray()
+                            : [$this->key . '.' . $memberIndex . '.' . $ruleKey => $message]
+                    );
                 }
             }
         }
