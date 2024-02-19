@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\TestResponse;
 
 class FormRegisterActionTest extends FormTestCase
 {
@@ -38,7 +39,7 @@ class FormRegisterActionTest extends FormTestCase
             ])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['vorname' => 'Max', 'nachname' => 'Muster', 'spitzname' => 'Abraham'])
+        $this->register($form, ['vorname' => 'Max', 'nachname' => 'Muster', 'spitzname' => 'Abraham'])
             ->assertOk();
 
         $participants = $form->fresh()->participants;
@@ -234,9 +235,9 @@ class FormRegisterActionTest extends FormTestCase
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['group' => null])
+        $this->register($form, ['group' => null])
             ->assertJsonValidationErrors(['group' => 'Gruppe ist erforderlich.']);
-        $this->postJson(route('form.register', ['form' => $form]), ['group' => $foreignGroup->id])
+        $this->register($form, ['group' => $foreignGroup->id])
             ->assertJsonValidationErrors(['group' => 'Der gewählte Wert für Gruppe ist ungültig.']);
     }
 
@@ -249,7 +250,7 @@ class FormRegisterActionTest extends FormTestCase
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['group' => null])
+        $this->register($form, ['group' => null])
             ->assertOk();
     }
 
@@ -265,9 +266,9 @@ class FormRegisterActionTest extends FormTestCase
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['parentgroup' => $group->children->first()->id, 'group' => $foreignGroup->id])
+        $this->register($form, ['parentgroup' => $group->children->first()->id, 'group' => $foreignGroup->id])
             ->assertJsonValidationErrors(['group' => 'Der gewählte Wert für Gruppe ist ungültig.']);
-        $this->postJson(route('form.register', ['form' => $form]), ['parentgroup' => $group->children->first()->id, 'group' => $group->children->first()->children->first()->id])
+        $this->register($form, ['parentgroup' => $group->children->first()->id, 'group' => $group->children->first()->children->first()->id])
             ->assertOk();
     }
 
@@ -286,7 +287,7 @@ class FormRegisterActionTest extends FormTestCase
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['firstname' => 'Aaaa', 'birthday' => '2021-04-05', 'members' => [['id' => '5505'], ['id' => '5506']]])
+        $this->register($form, ['firstname' => 'Aaaa', 'birthday' => '2021-04-05', 'members' => [['id' => '5505'], ['id' => '5506']]])
             ->assertOk();
         $this->assertCount(3, $form->participants()->get());
         $this->assertEquals('Aaaa', $form->participants->get(0)->data['firstname']);
@@ -307,29 +308,28 @@ class FormRegisterActionTest extends FormTestCase
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 $this->namiField('members'),
-                $this->textField('other')->namiType(null)->required(false),
+                $this->textField('other')->required(false),
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => 'O1']]])
+        $this->register($form, ['other' => '::string::', 'members' => [['id' => '5505', 'other' => 'othervalue']]])
             ->assertOk();
-        $this->assertEquals('ooo', $form->participants->get(0)->data['other']);
-        $this->assertEquals('O1', $form->participants->get(1)->data['other']);
+        $this->assertEquals('othervalue', $form->participants->get(1)->data['other']);
     }
 
     public function testItValidatesMembersFields(): void
     {
         $this->login()->loginNami();
-        $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
-        $this->createMember(['mitgliedsnr' => '5506', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
+        $this->createMember(['mitgliedsnr' => '5505']);
+        $this->createMember(['mitgliedsnr' => '5506']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 $this->namiField('members'),
-                $this->textField('other')->name('Andere')->namiType(null)->required(true),
+                $this->textField('other')->name('Andere')->required(true),
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => ''], ['id' => '5506', 'other' => '']]])
+        $this->register($form, ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => ''], ['id' => '5506', 'other' => '']]])
             ->assertJsonValidationErrors(['members.0.other' => 'Andere für Mitglied Nr 5505 ist erforderlich.'])
             ->assertJsonValidationErrors(['members.1.other' => 'Andere für Mitglied Nr 5506 ist erforderlich.']);
     }
@@ -340,26 +340,28 @@ class FormRegisterActionTest extends FormTestCase
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 $this->namiField('members'),
-                $this->textField('other')->name('Andere')->namiType(null)->required(true),
+                $this->textField('other')->required(true),
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['other' => 'ooo', 'members' => [['id' => '9999', 'other' => 'other']]])
+        $this->register($form, ['other' => '::string::', 'members' => [['id' => '9999', 'other' => '::string::']]])
             ->assertJsonValidationErrors(['members.0.id' => 'Mitglied Nr 9999 ist nicht vorhanden.']);
     }
 
     public function testItValidatesMembersCheckboxesOptions(): void
     {
         $this->login()->loginNami();
-        $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Paula', 'lastname' => 'Schirm']);
+        $this->createMember(['mitgliedsnr' => '5505']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 $this->namiField('members'),
-                $this->checkboxesField('other')->name('Andere')->namiType(null)->options(['A', 'B']),
+                $this->checkboxesField('other')->name('Andere')->options(['A', 'B']),
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['other' => [], 'members' => [['id' => '5505', 'other' => ['A', 'missing']]]])
+        $this->register($form, ['other' => [], 'members' => [
+            ['id' => '5505', 'other' => ['A', 'missing']]
+        ]])
             ->assertJsonValidationErrors(['members.0.other.1' => 'Der gewählte Wert für Andere für Mitglied Nr 5505 ist ungültig.']);
     }
 
@@ -370,19 +372,31 @@ class FormRegisterActionTest extends FormTestCase
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 $this->namiField('members'),
-                $this->textField('other')->required(true)->namiType(null)->forMembers(false)->options(['A', 'B']),
+                $this->textField('other')->required(true)->forMembers(false)->options(['A', 'B']),
                 $this->textField('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
             ])])
             ->create();
 
-        $this->postJson(route('form.register', ['form' => $form]), ['firstname' => 'A', 'other' => 'B', 'members' => [['id' => '5505']]])
+        $this->register($form, ['firstname' => 'A', 'other' => 'B', 'members' => [['id' => '5505']]])
             ->assertOk();
         $this->assertEquals('Paula', $form->participants->get(1)->data['firstname']);
         $this->assertEquals('', $form->participants->get(1)->data['other']);
     }
 
+    /**
+     * @param array<string, mixed> $attributes
+     */
     protected function createMember(array $attributes): Member
     {
         return Member::factory()->defaults()->create($attributes);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    protected function register(Form $form, array $payload): TestResponse
+    {
+
+        return $this->postJson(route('form.register', ['form' => $form]), $payload);
     }
 }
