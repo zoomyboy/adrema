@@ -39,6 +39,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'default' => null,
                     'required' => false,
                     'nami_type' => null,
+                    'for_members' => true,
                     'options' => [],
                 ]
             ])
@@ -52,6 +53,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'default' => '',
                     'required' => false,
                     'nami_type' => null,
+                    'for_members' => true,
                 ]
             ])
             ->assertInertiaPath('data.meta.fields.8', [
@@ -64,6 +66,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'default' => '',
                     'required' => false,
                     'nami_type' => null,
+                    'for_members' => true,
                     'rows' => 5,
                 ]
             ])

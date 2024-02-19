@@ -36,7 +36,7 @@ class FormStoreActionTest extends FormTestCase
             ->mailTop('Guten Tag')
             ->mailBottom('Viele Grüße')
             ->headerImage('htzz.jpg')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()->namiType(NamiType::BIRTHDAY)])])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()->namiType(NamiType::BIRTHDAY)->forMembers(false)])])
             ->fake();
 
         $this->postJson(route('form.store'))->assertOk();
@@ -53,6 +53,7 @@ class FormStoreActionTest extends FormTestCase
         $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
         $this->assertEquals('2023-07-08', $form->to->format('Y-m-d'));
         $this->assertEquals('Geburtstag', $form->config['sections'][0]['fields'][0]['nami_type']);
+        $this->assertFalse($form->config['sections'][0]['fields'][0]['for_members']);
         $this->assertCount(1, $form->getMedia('headerImage'));
         $this->assertEquals('formname.jpg', $form->getMedia('headerImage')->first()->file_name);
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Veranstaltung gespeichert.');

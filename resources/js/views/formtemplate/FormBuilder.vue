@@ -23,6 +23,14 @@
                 <column-selector v-model="singleField.model.columns"></column-selector>
                 <component :is="fields[singleField.model.type]" v-model="singleField.model" :payload="inner.sections" :meta="props.meta"></component>
                 <f-select id="nami_field" v-model="singleField.model.nami_field" :options="meta.namiFields" label="NaMi-Feld" size="sm" name="nami_field"></f-select>
+                <f-switch
+                    v-show="singleField.model.nami_field === null"
+                    id="for_members"
+                    v-model="singleField.model.for_members"
+                    label="Für Unter-Mitglieder zusätzlich abfragen"
+                    size="sm"
+                    name="for_members"
+                ></f-switch>
             </asideform>
         </div>
         <ui-box heading="Vorschau" container-class="grid gap-3" class="w-[800px]">

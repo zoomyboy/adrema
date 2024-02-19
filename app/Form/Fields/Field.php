@@ -139,6 +139,7 @@ abstract class Field extends Data
                 'default' => static::default(),
                 'required' => false,
                 'nami_type' => null,
+                'for_members' => true,
                 ...collect(static::meta())->mapWithKeys(fn ($meta) => [$meta['key'] => $meta['default']])->toArray(),
             ],
         ];
