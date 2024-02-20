@@ -30,7 +30,7 @@ class FormApiListActionTest extends EndToEndTestCase
             ->description('desc')
             ->from('2023-05-05')
             ->to('2023-06-07')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::type(TextField::class)])])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')])
             ->create();
 
         sleep(1);
