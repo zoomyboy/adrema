@@ -2,16 +2,13 @@
 
 namespace Tests\EndToEnd\Form;
 
-use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
 use App\Form\Models\Participant;
 use Carbon\Carbon;
-use Tests\EndToEndTestCase;
-use Tests\Feature\Form\FormtemplateFieldRequest;
 use Tests\Feature\Form\FormtemplateSectionRequest;
 
-class FormIndexActionTest extends EndToEndTestCase
+class FormIndexActionTest extends FormTestCase
 {
 
     public function testItDisplaysForms(): void
@@ -29,7 +26,7 @@ class FormIndexActionTest extends EndToEndTestCase
             ->mailBottom('Cheers')
             ->registrationFrom('2023-05-06 04:00:00')
             ->registrationUntil('2023-04-01 05:00:00')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([FormtemplateFieldRequest::type(TextField::class)])])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()])])
             ->has(Participant::factory()->count(5))
             ->create();
 
