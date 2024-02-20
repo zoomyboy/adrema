@@ -425,6 +425,20 @@ class FormRegisterActionTest extends FormTestCase
         $this->register($form, ['members' => null])->assertJsonValidationErrors(['members']);
     }
 
+    public function testParticipantsHaveRelationToActualMember(): void
+    {
+        $this->login()->loginNami();
+        $member = $this->createMember(['mitgliedsnr' => '5505']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->namiField('members'),
+            ])])
+            ->create();
+
+        $this->register($form, ['members' => [['id' => '5505']]])->assertOk();
+        $this->assertEquals('5505', $form->participants->get(1)->mitgliedsnr);
+    }
+
     /**
      * @param array<string, mixed> $attributes
      */
