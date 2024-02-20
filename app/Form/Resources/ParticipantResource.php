@@ -36,15 +36,14 @@ class ParticipantResource extends JsonResource
     {
         return [
             'active_columns' => $form->active_columns,
-            'columns' => $form->getFields()->map(function ($field) {
-                $field = Field::fromConfig($field);
-                return [
+            'columns' => $form->getFields()
+                ->map(fn ($field) => Field::fromConfig($field))
+                ->map(fn ($field) => [
                     'name' => $field->name,
                     'base_type' => class_basename($field),
                     'id' => $field->key,
                     'display_attribute' => $field->getdisplayAttribute(),
-                ];
-            })
+                ])
         ];
     }
 }
