@@ -4,10 +4,10 @@ namespace App\Form\Fields;
 
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
+use App\Form\Presenters\NamiPresenter;
+use App\Form\Presenters\Presenter;
 use App\Member\Member;
 use Faker\Generator;
-use Generator as LazyGenerator;
-use Illuminate\Validation\Factory;
 
 class NamiField extends Field
 {
@@ -128,5 +128,10 @@ class NamiField extends Field
             $data[$this->key] = [];
             $form->participants()->create(['data' => $data, 'mitgliedsnr' => $memberData['id']]);
         }
+    }
+
+    public function getPresenter(): Presenter
+    {
+        return app(NamiPresenter::class);
     }
 }

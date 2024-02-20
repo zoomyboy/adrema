@@ -6,6 +6,7 @@ use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Group;
+use App\Member\Member;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ParticipantIndexActionTest extends FormTestCase
@@ -50,5 +51,23 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('meta.columns.6.display_attribute', 'birthday_display')
             ->assertJsonPath('meta.columns.0.display_attribute', 'vorname_display')
             ->assertJsonPath('meta.active_columns', ['vorname', 'select', 'stufe', 'test1']);
+    }
+
+    public function testItPresentsNamiField(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()
+            ->has(Participant::factory()->data(['mitglieder' => [['id' => 393], ['id' => 394]]]))
+            ->has(Participant::factory()->nr(393)->data(['mitglieder' => []]))
+            ->has(Participant::factory()->nr(394)->data(['mitglieder' => []]))
+            ->sections([
+                FormtemplateSectionRequest::new()->fields([
+                    $this->namiField('mitglieder'),
+                ]),
+            ])
+            ->create();
+
+        $this->callFilter('form.participant.index', [], ['form' => $form])
+            ->assertJsonPath('data.0.mitglieder_display', '393, 394');
     }
 }
