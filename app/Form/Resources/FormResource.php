@@ -65,7 +65,7 @@ class FormResource extends JsonResource
                 'formtemplate_index' => route('formtemplate.index'),
             ],
             'templates' => FormtemplateResource::collection(Formtemplate::get()),
-            'namiFields' => NamiType::forSelect(),
+            'namiTypes' => NamiType::forSelect(),
             'default' => [
                 'description' => [],
                 'name' => '',
