@@ -18,9 +18,9 @@ class NamiSearchAction
      *
      * @return LengthAwarePaginator<MemberEntry>
      */
-    public function handle(Api $api, int $page, array $params): LengthAwarePaginator
+    public function handle(Api $api, int $page, array $params, int $perPage = 10): LengthAwarePaginator
     {
-        return $api->pageSearch($params, $page, 10);
+        return $api->pageSearch($params, $page, $perPage);
     }
 
     /**
