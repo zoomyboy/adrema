@@ -39,5 +39,5 @@ var {meta, data, reload, reloadPage} = useApiIndex(props.url, 'participant');
 
 await reload();
 
-const activeColumns = computed(() => meta.value.columns.filter((c) => meta.value.active_columns.includes(c.id)));
+const activeColumns = computed(() => meta.value.columns.filter((c) => meta.value.form_meta.active_columns.includes(c.id)));
 </script>

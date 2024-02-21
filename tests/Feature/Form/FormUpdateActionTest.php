@@ -11,13 +11,6 @@ class FormUpdateActionTest extends FormTestCase
 
     use DatabaseTransactions;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Storage::fake('temp');
-    }
-
     public function testItSetsCustomAttributesOfFields(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->text('description');
+            $table->json('description');
             $table->text('excerpt');
             $table->json('config');
             $table->date('from');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->dateTime('registration_until')->nullable();
             $table->text('mail_top')->nullable();
             $table->text('mail_bottom')->nullable();
-            $table->json('active_columns');
+            $table->json('meta');
             $table->timestamps();
         });
     }

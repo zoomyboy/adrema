@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->json('data');
             $table->foreignId('form_id');
+            $table->string('mitgliedsnr')->nullable();
             $table->timestamps();
         });
     }

@@ -10,20 +10,12 @@ use App\Member\Member;
 use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
 
 class FormRegisterActionTest extends FormTestCase
 {
 
     use DatabaseTransactions;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Storage::fake('temp');
-    }
 
     public function testItSavesParticipantAsModel(): void
     {

@@ -27,7 +27,7 @@ class Form extends Model implements HasMedia
 
     public $casts = [
         'config' => 'json',
-        'active_columns' => 'json',
+        'meta' => 'json',
         'description' => 'json',
     ];
 
@@ -138,8 +138,11 @@ class Form extends Model implements HasMedia
     public static function booted(): void
     {
         static::saving(function (self $model) {
-            if (is_null($model->active_columns)) {
-                $model->setAttribute('active_columns', $model->getFields()->take(4)->pluck('key')->toArray());
+            if (is_null($model->meta)) {
+                $model->setAttribute('meta', [
+                    'active_columns' => $model->getFields()->take(4)->pluck('key')->toArray(),
+                    'sorting' => [$model->getFields()->first()['key'], 'asc'],
+                ]);
             }
         });
     }

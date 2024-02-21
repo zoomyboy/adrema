@@ -16,13 +16,6 @@ class FormStoreActionTest extends FormTestCase
 
     use DatabaseTransactions;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Storage::fake('temp');
-    }
-
     public function testItStoresForm(): void
     {
         Event::fake([Succeeded::class]);

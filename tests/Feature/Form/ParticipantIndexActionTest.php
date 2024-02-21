@@ -50,7 +50,8 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('meta.columns.0.id', 'vorname')
             ->assertJsonPath('meta.columns.6.display_attribute', 'birthday_display')
             ->assertJsonPath('meta.columns.0.display_attribute', 'vorname_display')
-            ->assertJsonPath('meta.active_columns', ['vorname', 'select', 'stufe', 'test1']);
+            ->assertJsonPath('meta.form_meta.active_columns', ['vorname', 'select', 'stufe', 'test1'])
+            ->assertJsonPath('meta.form_meta.sorting', ['vorname', 'asc']);
     }
 
     public function testItPresentsNamiField(): void
