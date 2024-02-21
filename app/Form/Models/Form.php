@@ -140,8 +140,8 @@ class Form extends Model implements HasMedia
         static::saving(function (self $model) {
             if (is_null($model->meta)) {
                 $model->setAttribute('meta', [
-                    'active_columns' => $model->getFields()->take(4)->pluck('key')->toArray(),
-                    'sorting' => [$model->getFields()->first()['key'], 'asc'],
+                    'active_columns' => $model->getFields()->count() ? $model->getFields()->take(4)->pluck('key')->toArray() : null,
+                    'sorting' => $model->getFields()->count() ? [$model->getFields()->first()['key'], 'asc'] : null,
                 ]);
             }
         });
