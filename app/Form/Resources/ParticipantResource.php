@@ -35,7 +35,10 @@ class ParticipantResource extends JsonResource
     public static function meta(Form $form): array
     {
         return [
-            'active_columns' => $form->active_columns,
+            'form_meta' => $form->meta,
+            'links' => [
+                'update_form_meta' => route('form.update-meta', ['form' => $form]),
+            ],
             'columns' => $form->getFields()
                 ->map(fn ($field) => Field::fromConfig($field))
                 ->map(fn ($field) => [

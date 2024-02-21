@@ -1,5 +1,8 @@
 <template>
     <div class="mt-5">
+        <page-filter breakpoint="lg">
+            <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm" name="active_columns"></f-multipleselect>
+        </page-filter>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
                 <th v-for="column in activeColumns" :key="column.id" v-text="column.name"></th>
@@ -25,7 +28,6 @@
 <script setup>
 import {ref, computed} from 'vue';
 import {useApiIndex} from '../../composables/useApiIndex.js';
-import FormBuilder from '../formtemplate/FormBuilder.vue';
 
 const props = defineProps({
     url: {
@@ -35,9 +37,21 @@ const props = defineProps({
     },
 });
 
-var {meta, data, reload, reloadPage} = useApiIndex(props.url, 'participant');
-
-await reload();
+var {meta, data, reload, reloadPage, axios} = useApiIndex(props.url, 'participant');
 
 const activeColumns = computed(() => meta.value.columns.filter((c) => meta.value.form_meta.active_columns.includes(c.id)));
+
+const activeColumnsConfig = computed({
+    get: () => meta.value.form_meta.active_columns,
+    set: async (v) => {
+        const response = await axios.patch(meta.value.links.update_form_meta, {
+            ...meta.value.form_meta,
+            active_columns: v,
+        });
+
+        meta.value.form_meta = response.data;
+    },
+});
+
+await reload();
 </script>

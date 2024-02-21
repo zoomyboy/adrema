@@ -50,6 +50,7 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('meta.columns.6.display_attribute', 'birthday_display')
             ->assertJsonPath('meta.columns.0.display_attribute', 'vorname_display')
             ->assertJsonPath('meta.form_meta.active_columns', ['vorname', 'select', 'stufe', 'test1'])
+            ->assertJsonPath('meta.links.update_form_meta', route('form.update-meta', ['form' => $form]))
             ->assertJsonPath('meta.form_meta.sorting', ['vorname', 'asc']);
     }
 
