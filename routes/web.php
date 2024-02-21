@@ -29,6 +29,7 @@ use App\Form\Actions\FormtemplateIndexAction;
 use App\Form\Actions\FormtemplateStoreAction;
 use App\Form\Actions\FormtemplateUpdateAction;
 use App\Form\Actions\FormUpdateAction;
+use App\Form\Actions\FormUpdateMetaAction;
 use App\Form\Actions\ParticipantIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
@@ -157,5 +158,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::patch('/formtemplate/{formtemplate}', FormtemplateUpdateAction::class)->name('formtemplate.update');
     Route::delete('/formtemplate/{formtemplate}', FormtemplateDestroyAction::class)->name('formtemplate.destroy');
     Route::post('/form', FormStoreAction::class)->name('form.store');
+    Route::patch('/form/{form}/meta', FormUpdateMetaAction::class)->name('form.update-meta');
     Route::get('/form/{form}/participants', ParticipantIndexAction::class)->name('form.participant.index');
 });
