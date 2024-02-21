@@ -6,7 +6,6 @@ use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Group;
-use App\Member\Member;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ParticipantIndexActionTest extends FormTestCase
