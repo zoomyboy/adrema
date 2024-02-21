@@ -5,6 +5,7 @@ namespace Tests\Feature\Form;
 use App\Form\Enums\NamiType;
 use App\Form\Models\Form;
 use App\Group;
+use App\Group\Enums\Level;
 use App\Member\Member;
 use Carbon\Carbon;
 use Generator;
@@ -428,7 +429,7 @@ class FormRegisterActionTest extends FormTestCase
     public function testParticipantsHaveRelationToActualMember(): void
     {
         $this->login()->loginNami();
-        $member = $this->createMember(['mitgliedsnr' => '5505']);
+        $this->createMember(['mitgliedsnr' => '5505']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 $this->namiField('members'),
@@ -437,6 +438,41 @@ class FormRegisterActionTest extends FormTestCase
 
         $this->register($form, ['members' => [['id' => '5505']]])->assertOk();
         $this->assertEquals('5505', $form->participants->get(1)->mitgliedsnr);
+    }
+
+    public function testItSetsRegionIdAndGroupIdOfParentGroup(): void
+    {
+        $this->login()->loginNami();
+        $bezirk = Group::factory()->level(Level::REGION)->create();
+        $stamm = Group::factory()->for($bezirk, 'parent')->level(Level::GROUP)->create();
+        $this->createMember(['mitgliedsnr' => '5505', 'group_id' => $stamm->id]);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->namiField('members'),
+                $this->groupField('bezirk')->forMembers(false)->namiType(NamiType::REGION),
+                $this->groupField('stamm')->forMembers(false)->namiType(NamiType::STAMM),
+            ])])
+            ->create();
+
+        $this->register($form, ['bezirk' => $bezirk->id, 'stamm' => $stamm->id, 'members' => [['id' => '5505']]])->assertOk();
+        $this->assertEquals($bezirk->id, $form->participants->get(1)->data['bezirk']);
+        $this->assertEquals($stamm->id, $form->participants->get(1)->data['stamm']);
+    }
+
+    public function testItSetsRegionIfMemberIsDirectRegionMember(): void
+    {
+        $this->login()->loginNami();
+        $bezirk = Group::factory()->level(Level::REGION)->create();
+        $this->createMember(['mitgliedsnr' => '5505', 'group_id' => $bezirk->id]);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->namiField('members'),
+                $this->groupField('bezirk')->forMembers(false)->namiType(NamiType::REGION),
+            ])])
+            ->create();
+
+        $this->register($form, ['bezirk' => $bezirk->id, 'members' => [['id' => '5505']]])->assertOk();
+        $this->assertEquals($bezirk->id, $form->participants->get(1)->data['bezirk']);
     }
 
     /**
@@ -452,7 +488,6 @@ class FormRegisterActionTest extends FormTestCase
      */
     protected function register(Form $form, array $payload): TestResponse
     {
-
         return $this->postJson(route('form.register', ['form' => $form]), $payload);
     }
 }
