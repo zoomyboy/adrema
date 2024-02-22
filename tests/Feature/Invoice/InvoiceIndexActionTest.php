@@ -19,7 +19,7 @@ class InvoiceIndexActionTest extends TestCase
     public function testItDisplaysInvoices(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $subscription = Subscription::factory()->name('Beitrag')->create();
+        $subscription = Subscription::factory()->forFee()->name('Beitrag')->create();
         $member = Member::factory()->defaults()->create(['firstname' => 'Aaaa', 'lastname' => 'Aaab']);
         $invoice = Invoice::factory()
             ->has(InvoicePosition::factory()->price(1100)->for($member)->state(['description' => 'lala']), 'positions')

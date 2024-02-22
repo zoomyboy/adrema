@@ -27,7 +27,7 @@ class PullCoursesActionTest extends TestCase
     {
         parent::setUp();
 
-        Subscription::factory()->name('test')->for(Fee::factory()->inNami(300))->create();
+        Subscription::factory()->name('test')->forFee(300)->create();
         Gender::factory()->inNami(303)->create();
         Country::factory()->inNami(302)->create();
         Nationality::factory()->inNami(1054)->create();

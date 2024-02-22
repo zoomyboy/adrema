@@ -16,7 +16,7 @@ class UpdateTest extends TestCase
     public function testItUpdatesASubscription(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->create();
+        $subscription = Subscription::factory()->name('hi')->forFee()->create();
         $fee = Fee::factory()->create();
 
         $response = $this->from("/subscription/{$subscription->id}")->patch(
@@ -35,7 +35,7 @@ class UpdateTest extends TestCase
     public function testItUpdatesChildren(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->children([
+        $subscription = Subscription::factory()->name('hi')->forFee()->children([
             new Child('a', 1400),
             new Child('b', 1500),
         ])->create();
@@ -59,7 +59,7 @@ class UpdateTest extends TestCase
     public function testItValidatesRequest(): void
     {
         $this->login()->loginNami();
-        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->create();
+        $subscription = Subscription::factory()->name('hi')->forFee()->create();
 
         $response = $this->from("/subscription/{$subscription->id}")->patch(
             "/subscription/{$subscription->id}",

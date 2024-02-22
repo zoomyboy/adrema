@@ -21,7 +21,7 @@ class MemberNewInvoiceActionTest extends TestCase
 
     public function testItReturnsNewInvoiceOfMember(): void
     {
-        $subscription = Subscription::factory()->children([
+        $subscription = Subscription::factory()->forFee()->children([
             new Child('beitrag {name}', 4466),
             new Child('beitrag2 für {name} für {year}', 2290),
         ])->create();

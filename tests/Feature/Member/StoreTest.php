@@ -36,7 +36,7 @@ class StoreTest extends TestCase
         $nationality = Nationality::factory()->create();
         $activity = Activity::factory()->inNami(89)->create();
         $subactivity = Subactivity::factory()->inNami(90)->create();
-        $subscription = Subscription::factory()->create();
+        $subscription = Subscription::factory()->forFee()->create();
         $confesstion = Confession::factory()->create(['is_null' => true]);
         PullMemberAction::shouldRun();
         PullMembershipsAction::shouldRun();
@@ -225,7 +225,7 @@ class StoreTest extends TestCase
     {
         $country = Country::factory()->create();
         $nationality = Nationality::factory()->create();
-        $subscription = Subscription::factory()->create();
+        $subscription = Subscription::factory()->forFee()->create();
 
         return [
             'address' => 'Bavert 50',

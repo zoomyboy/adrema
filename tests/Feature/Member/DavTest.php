@@ -17,7 +17,7 @@ class DavTest extends TestCase
     public function testItCanStoreAMemberFromAVcard(): void
     {
         Nationality::factory()->create(['name' => 'englisch']);
-        $subscription = Subscription::factory()->create(['name' => 'Voll']);
+        $subscription = Subscription::factory()->forFee()->create(['name' => 'Voll']);
         $nationality = Nationality::factory()->create(['name' => 'deutsch']);
         $group = Group::factory()->create();
         NamiSettings::fake(['default_group_id' => $group->id]);

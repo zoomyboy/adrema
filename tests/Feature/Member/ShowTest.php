@@ -39,7 +39,7 @@ class ShowTest extends TestCase
             ->for(Region::factory()->name('NRW'))
             ->postBillKind()
             ->inNami(123)
-            ->for(Subscription::factory()->name('Sub')->for(Fee::factory()))
+            ->for(Subscription::factory()->name('Sub')->forFee())
             ->has(CourseMember::factory()->for(Course::factory()->name('  Baustein 2e - Gewalt gegen Kinder und Jugendliche: Vertiefung, Prävention  '))->state(['organizer' => 'DPSG', 'event_name' => 'Wochenende', 'completed_at' => '2022-03-03']), 'courses')
             ->create([
                 'birthday' => '1991-04-20',
@@ -143,7 +143,7 @@ class ShowTest extends TestCase
         $member = Member::factory()
             ->for(Group::factory())
             ->for(Nationality::factory()->name('deutsch'))
-            ->for(Subscription::factory()->for(Fee::factory()))
+            ->for(Subscription::factory()->forFee())
             ->create(['firstname' => 'Max', 'lastname' => 'Muster']);
 
         $response = $this->get("/member/{$member->id}");

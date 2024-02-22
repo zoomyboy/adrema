@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Subscription;
 
-use App\Fee;
 use App\Payment\Subscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\Child;
@@ -15,7 +14,7 @@ class DestroyTest extends TestCase
     public function testItDeletesChildrenWithSubscription(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        $subscription = Subscription::factory()->name('hi')->for(Fee::factory())->children([
+        $subscription = Subscription::factory()->name('hi')->forFee()->children([
             new Child('a', 1400),
             new Child('b', 1500),
         ])->create();

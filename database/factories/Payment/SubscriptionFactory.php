@@ -19,8 +19,14 @@ class SubscriptionFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'fee_id' => Fee::factory()->createOne()->id,
         ];
+    }
+
+    public function forFee(?int $namiId = null): self
+    {
+        $namiId = $namiId ?: $this->faker->numberBetween(600, 800);
+
+        return $this->for(Fee::factory()->inNami($namiId));
     }
 
     public function name(string $name): self

@@ -22,7 +22,7 @@ class PullMemberActionTest extends TestCase
     {
         parent::setUp();
 
-        Subscription::factory()->name('test')->for(Fee::factory()->inNami(300))->create();
+        Subscription::factory()->name('test')->forFee(300)->create();
         Gender::factory()->inNami(303)->create();
         Country::factory()->inNami(302)->create();
         Nationality::factory()->inNami(1054)->create();
@@ -97,9 +97,7 @@ class PullMemberActionTest extends TestCase
     public function testItSetsFirstSubscriptionFromFee(): void
     {
         Region::factory()->inNami(999)->name('nicht-de')->create(['is_null' => true]);
-        Subscription::factory()->for(Fee::factory()->inNami(54))->create();
-        $should = Subscription::factory()->for(Fee::factory()->inNami(55))->create();
-        Subscription::factory()->for(Fee::factory()->inNami(56))->create();
+        $should = Subscription::factory()->forFee(55)->create();
         app(MemberFake::class)->shows(1000, 1001, [
             'beitragsartId' => 55,
         ]);

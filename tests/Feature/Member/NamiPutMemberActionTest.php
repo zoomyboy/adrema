@@ -33,7 +33,7 @@ class NamiPutMemberActionTest extends TestCase
         $country = Country::factory()->create();
         $region = Region::factory()->create();
         $nationality = Nationality::factory()->inNami(565)->create();
-        $subscription = Subscription::factory()->create();
+        $subscription = Subscription::factory()->forFee()->create();
         $group = Group::factory()->inNami(55)->create();
         $confession = Confession::factory()->inNami(567)->create(['is_null' => true]);
         app(MemberFake::class)->stores(55, 993);

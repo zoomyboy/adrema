@@ -52,7 +52,7 @@ class MemberFactory extends Factory
             : Nationality::factory()->create();
         $subscription = Subscription::count()
             ? Subscription::get()->random()
-            : Subscription::factory()->for(Fee::factory())->create();
+            : Subscription::factory()->forFee()->create();
 
         return $this
             ->for($country)

@@ -46,7 +46,7 @@ class MassStoreActionTest extends TestCase
     public function testItCreatesPayments(): void
     {
         $member = Member::factory()->defaults()
-            ->for(Subscription::factory()->children([
+            ->for(Subscription::factory()->forFee()->children([
                 new Child('beitrag {name}', 4466),
                 new Child('beitrag2 für {name} für {year}', 2290),
             ]))->emailBillKind()->create(['firstname' => 'Max', 'lastname' => 'Muster', 'address' => 'Maxstr 4', 'zip' => '33445', 'location' => 'Solingen', 'email' => 'lala@b.de']);
@@ -82,7 +82,7 @@ class MassStoreActionTest extends TestCase
 
     public function testItCreatesOneInvoiceForFamilyMember(): void
     {
-        $subscription = Subscription::factory()->children([new Child('beitrag {name}', 4466)])->create();
+        $subscription = Subscription::factory()->forFee()->children([new Child('beitrag {name}', 4466)])->create();
         $member = Member::factory()->defaults()->for($subscription)->emailBillKind()->create(['firstname' => 'Max', 'lastname' => 'Muster']);
         Member::factory()->defaults()->for($subscription)->sameFamilyAs($member)->emailBillKind()->create(['firstname' => 'Jane']);
 
@@ -96,7 +96,7 @@ class MassStoreActionTest extends TestCase
 
     public function testItSeparatesBillKinds(): void
     {
-        $subscription = Subscription::factory()->children([new Child('beitrag {name]', 4466)])->create();
+        $subscription = Subscription::factory()->forFee()->children([new Child('beitrag {name]', 4466)])->create();
         $member = Member::factory()->defaults()->for($subscription)->emailBillKind()->create();
         Member::factory()->defaults()->for($subscription)->sameFamilyAs($member)->postBillKind()->create();
 

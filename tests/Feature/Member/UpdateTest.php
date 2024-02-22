@@ -197,7 +197,7 @@ class UpdateTest extends TestCase
             ->for(Group::factory()->state(['nami_id' => 10]))
             ->for(Confession::factory())
             ->for(Nationality::factory())
-            ->for(Subscription::factory()->for(Fee::factory()))
+            ->for(Subscription::factory()->forFee())
             ->for(Country::factory())
             ->create(['nami_id' => 135, ...$overwrites]);
     }
