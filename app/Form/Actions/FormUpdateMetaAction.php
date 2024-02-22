@@ -6,6 +6,7 @@ use App\Form\Models\Form;
 use Illuminate\Validation\Rule;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class FormUpdateMetaAction
 {
@@ -36,7 +37,7 @@ class FormUpdateMetaAction
         $form->update(['meta' => $input]);
     }
 
-    public function asController(Form $form, ActionRequest $request)
+    public function asController(Form $form, ActionRequest $request): JsonResponse
     {
         $this->handle($form, $request->validated());
 
