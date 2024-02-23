@@ -2,14 +2,13 @@
 
 namespace Tests\EndToEnd\Form;
 
-use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
+use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
 use Tests\EndToEndTestCase;
-use Tests\Feature\Form\FormtemplateFieldRequest;
 use Tests\Feature\Form\FormtemplateSectionRequest;
 
 class FormApiListActionTest extends EndToEndTestCase
@@ -47,7 +46,21 @@ class FormApiListActionTest extends EndToEndTestCase
             ->assertJsonPath('data.0.from_human', '05.05.2023')
             ->assertJsonPath('data.0.to_human', '07.06.2023')
             ->assertJsonPath('meta.per_page', 15)
+            ->assertJsonPath('meta.base_url', url(''))
             ->assertJsonPath('meta.total', 1);
+    }
+
+    public function testItDisplaysRemoteGroups(): void
+    {
+        $this->loginNami()->withoutExceptionHandling();
+        Subactivity::factory()->inNami(1)->name('Wölfling')->ageGroup(true)->create();
+        Subactivity::factory()->inNami(50)->name('Biber')->ageGroup(false)->create();
+        Subactivity::factory()->name('Lager')->ageGroup(true)->create();
+
+        sleep(1);
+        $this->get('/api/form?perPage=15')
+            ->assertJsonPath('meta.agegroups.0', ['id' => 1, 'name' => 'Wölfling'])
+            ->assertJsonCount(1, 'meta.agegroups');
     }
 
     public function testItDisplaysDailyForms(): void

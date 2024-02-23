@@ -4,6 +4,7 @@ namespace App\Form\Resources;
 
 use App\Form\Models\Form;
 use App\Lib\HasMeta;
+use App\Subactivity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -42,6 +43,8 @@ class FormApiResource extends JsonResource
     {
         return [
             'base_url' => url(''),
+            'agegroups' => Subactivity::remote()->where('is_age_group', true)->get()
+                ->map(fn ($subactivity) => ['id' => $subactivity->nami_id, 'name' => $subactivity->name]),
         ];
     }
 }
