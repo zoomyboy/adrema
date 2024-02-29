@@ -36,8 +36,8 @@ class RemoteSearchTest extends TestCase
 
         $this->postJson(route('remote.nami.search'), [], ['Authorization' => 'Bearer ' . $accessToken])
             ->assertOk()
-            ->assertJsonPath('0.id', 56)
-            ->assertJsonPath('0.name', 'Max Muster');
+            ->assertJsonPath('data.0.id', 56)
+            ->assertJsonPath('data.0.name', 'Max Muster');
     }
 
     protected function loginRemotely(?int $mglnr = 90100, ?string $password = 'secret'): TestResponse

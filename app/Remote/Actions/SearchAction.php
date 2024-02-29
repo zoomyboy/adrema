@@ -23,7 +23,8 @@ class SearchAction
 
         $api = Nami::login($credentials->mglnr, $credentials->password);
 
-        $results = NamiSearchAction::run($api, $request->input('page', 1), [], 50);
-        return $results->map(fn ($member) => ['id' => $member->memberId, 'name' => $member->firstname . ' ' . $member->lastname]);
+        $results = NamiSearchAction::run($api, $request->input('page', 1), $request->input(), 50);
+        $results->transform(fn ($member) => ['id' => $member->memberId, 'name' => $member->firstname . ' ' . $member->lastname]);
+        return $results;
     }
 }
