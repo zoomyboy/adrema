@@ -28,4 +28,24 @@ class FormUpdateActionTest extends FormTestCase
 
         $this->assertTrue(data_get($form->config, 'sections.0.fields.0.max_today'));
     }
+
+    public function testItUpdatesActiveColumnsWhenFieldRemoved(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->textField('firstname'),
+                $this->textField('geb'),
+                $this->textField('lastname'),
+            ])])
+            ->create();
+        $payload = FormRequest::new()->sections([
+            FormtemplateSectionRequest::new()->fields([
+                $this->textField('firstname'),
+            ])
+        ])->create();
+
+        $this->patchJson(route('form.update', ['form' => $form]), $payload)->assertSessionDoesntHaveErrors()->assertOk();
+        $this->assertEquals(['firstname'], $form->fresh()->meta['active_columns']);
+    }
 }

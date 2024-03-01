@@ -7,6 +7,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Manipulations;
@@ -142,6 +143,13 @@ class Form extends Model implements HasMedia
                 $model->setAttribute('meta', [
                     'active_columns' => $model->getFields()->count() ? $model->getFields()->take(4)->pluck('key')->toArray() : null,
                     'sorting' => $model->getFields()->count() ? [$model->getFields()->first()['key'], 'asc'] : null,
+                ]);
+            }
+
+            if (is_array(data_get($model->meta, 'active_columns'))) {
+                $model->setAttribute('meta', [
+                    ...$model->meta,
+                    'active_columns' => array_diff($model->getFields()->pluck('key')->toArray(), $model->meta['active_columns']),
                 ]);
             }
         });
