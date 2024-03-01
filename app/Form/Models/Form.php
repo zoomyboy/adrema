@@ -149,7 +149,7 @@ class Form extends Model implements HasMedia
             if (is_array(data_get($model->meta, 'active_columns'))) {
                 $model->setAttribute('meta', [
                     ...$model->meta,
-                    'active_columns' => array_diff($model->getFields()->pluck('key')->toArray(), $model->meta['active_columns']),
+                    'active_columns' => array_values(array_intersect($model->getFields()->pluck('key')->toArray(), $model->meta['active_columns'])),
                 ]);
             }
         });
