@@ -42,7 +42,7 @@ class NamiField extends Field
     {
         $rules = [$this->key => 'present|array'];
 
-        $c = collect($form->getFields())
+        $c = $form->getFields()
             ->filter(fn ($field) => $field['for_members'] === true)
             ->filter(fn ($field) => $field['nami_type'] === null)
             ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
@@ -72,7 +72,7 @@ class NamiField extends Field
             return [];
         }
 
-        $c = collect($form->getFields())
+        $c = $form->getFields()
             ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
             ->filter(fn ($field) => $field['for_members'] === true)
             ->map(fn ($field) => Field::fromConfig($field));
