@@ -23,7 +23,7 @@ class ParticipantResource extends JsonResource
         $attributes = collect([]);
 
         foreach ($this->form->getFields() as $field) {
-            $attributes = $attributes->merge(Field::fromConfig($field)->presentValue($this->data[$field['key']]));
+            $attributes = $attributes->merge($field->presentValue($this->data[$field->key]));
         }
 
         return $attributes->toArray();
@@ -40,12 +40,11 @@ class ParticipantResource extends JsonResource
                 'update_form_meta' => route('form.update-meta', ['form' => $form]),
             ],
             'columns' => $form->getFields()
-                ->map(fn ($field) => Field::fromConfig($field))
                 ->map(fn ($field) => [
                     'name' => $field->name,
                     'base_type' => class_basename($field),
                     'id' => $field->key,
-                    'display_attribute' => $field->getdisplayAttribute(),
+                    'display_attribute' => $field->getDisplayAttribute(),
                 ])
         ];
     }

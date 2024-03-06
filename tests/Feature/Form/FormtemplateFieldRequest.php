@@ -31,7 +31,6 @@ class FormtemplateFieldRequest extends RequestFactory
             'name' => $this->faker->words(5, true),
             'key' => str($this->faker->words(5, true))->snake()->toString(),
             'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
-            'default' => '',
             'nami_type' => null,
             'for_members' => true,
         ];

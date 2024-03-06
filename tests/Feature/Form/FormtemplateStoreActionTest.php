@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Fields\TextareaField;
+use App\Form\Fields\TextField;
+use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
 use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,7 +22,7 @@ class FormtemplateStoreActionTest extends FormTestCase
         $this->login()->loginNami()->withoutExceptionHandling();
         FormtemplateRequest::new()->name('testname')->sections([
             FormtemplateSectionRequest::new()->name('Persönliches')->fields([
-                $this->textField('a')->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false)->default('zuzu'),
+                $this->textField('a')->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false),
                 $this->textareaField('b')->name('lala2')->required(false)->rows(10),
             ]),
         ])->fake();
@@ -27,15 +30,14 @@ class FormtemplateStoreActionTest extends FormTestCase
         $this->postJson(route('formtemplate.store'))->assertOk();
 
         $formtemplate = Formtemplate::latest()->first();
-        $this->assertEquals('Persönliches', $formtemplate->config['sections'][0]['name']);
-        $this->assertEquals('lala1', $formtemplate->config['sections'][0]['fields'][0]['name']);
-        $this->assertEquals('TextField', $formtemplate->config['sections'][0]['fields'][0]['type']);
-        $this->assertEquals('zuzu', $formtemplate->config['sections'][0]['fields'][0]['default']);
-        $this->assertEquals('TextareaField', $formtemplate->config['sections'][0]['fields'][1]['type']);
-        $this->assertEquals(false, $formtemplate->config['sections'][0]['fields'][1]['required']);
-        $this->assertEquals(['mobile' => 2, 'tablet' => 2, 'desktop' => 1], $formtemplate->config['sections'][0]['fields'][0]['columns']);
-        $this->assertEquals(10, $formtemplate->config['sections'][0]['fields'][1]['rows']);
-        $this->assertFalse($formtemplate->config['sections'][0]['fields'][0]['required']);
+        $this->assertEquals('Persönliches', $formtemplate->config->sections->get(0)->name);
+        $this->assertEquals('lala1', $formtemplate->config->sections->get(0)->fields->get(0)->name);
+        $this->assertInstanceOf(TextField::class, $formtemplate->config->sections->get(0)->fields->get(0));
+        $this->assertInstanceOf(TextareaField::class, $formtemplate->config->sections->get(0)->fields->get(1));
+        $this->assertEquals(false, $formtemplate->config->sections->get(0)->fields->get(1)->required);
+        $this->assertEquals(['mobile' => 2, 'tablet' => 2, 'desktop' => 1], $formtemplate->config->sections->get(0)->fields->get(0)->columns->toArray());
+        $this->assertEquals(10, $formtemplate->config->sections->get(0)->fields->get(1)->rows);
+        $this->assertFalse($formtemplate->config->sections->get(0)->fields->get(0)->required);
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Vorlage gespeichert.');
     }
 

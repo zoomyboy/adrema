@@ -35,7 +35,7 @@ class FormStoreActionTest extends FormTestCase
         $this->postJson(route('form.store'))->assertOk();
 
         $form = Form::latest()->first();
-        $this->assertEquals('sname', $form->config['sections'][0]['name']);
+        $this->assertEquals('sname', $form->config->sections->get(0)->name);
         $this->assertEquals('formname', $form->name);
         $this->assertEquals('avff', $form->excerpt);
         $this->assertEquals($description->paragraphBlock(10, 'Lorem'), $form->description);
@@ -45,8 +45,8 @@ class FormStoreActionTest extends FormTestCase
         $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));
         $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
         $this->assertEquals('2023-07-08', $form->to->format('Y-m-d'));
-        $this->assertEquals('Geburtstag', $form->config['sections'][0]['fields'][0]['nami_type']);
-        $this->assertFalse($form->config['sections'][0]['fields'][0]['for_members']);
+        $this->assertEquals('Geburtstag', $form->config->sections->get(0)->fields->get(0)->namiType->value);
+        $this->assertFalse($form->config->sections->get(0)->fields->get(0)->forMembers);
         $this->assertCount(1, $form->getMedia('headerImage'));
         $this->assertEquals('formname.jpg', $form->getMedia('headerImage')->first()->file_name);
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Veranstaltung gespeichert.');

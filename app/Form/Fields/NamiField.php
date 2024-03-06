@@ -42,11 +42,9 @@ class NamiField extends Field
     {
         $rules = [$this->key => 'present|array'];
 
-        $c = $form->getFields()
-            ->filter(fn ($field) => $field['for_members'] === true)
-            ->filter(fn ($field) => $field['nami_type'] === null)
-            ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
-            ->map(fn ($field) => Field::fromConfig($field)->getRegistrationRules($form));
+        $c = $form->getFields()->forMembers()->noNamiType()->noNamiField()
+            ->map(fn ($field) => $field->getRegistrationRules($form))
+            ->toArray();
 
         foreach ($c as $field) {
             foreach ($field as $ruleKey => $rule) {
@@ -72,10 +70,7 @@ class NamiField extends Field
             return [];
         }
 
-        $c = $form->getFields()
-            ->filter(fn ($field) => $field['type'] !== class_basename(static::class))
-            ->filter(fn ($field) => $field['for_members'] === true)
-            ->map(fn ($field) => Field::fromConfig($field));
+        $c = $form->getFields()->noNamiField()->forMembers();
 
         foreach ($c as $field) {
             foreach ($field->getRegistrationRules($form) as $ruleKey => $rule) {
@@ -118,8 +113,6 @@ class NamiField extends Field
             $member = Member::firstWhere(['mitgliedsnr' => $memberData['id']]);
             $data = [];
             foreach ($form->getFields() as $field) {
-                $field = Field::fromConfig($field);
-
                 $data[$field->key] = $field->namiType === null
                     ? data_get($memberData, $field->key, $field->default())
                     : $field->namiType->getMemberAttribute($member);

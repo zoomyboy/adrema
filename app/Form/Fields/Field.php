@@ -2,6 +2,7 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Data\ColumnData;
 use App\Form\Enums\NamiType;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
@@ -10,15 +11,19 @@ use App\Form\Presenters\Presenter;
 use Faker\Generator;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapInputName;
+use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 #[MapInputName(SnakeCaseMapper::class)]
+#[MapOutputName(SnakeCaseMapper::class)]
 abstract class Field extends Data
 {
 
     public string $key;
     public string $name;
     public ?NamiType $namiType = null;
+    public ColumnData $columns;
+    public bool $forMembers;
 
     /**
      * @param array<array-key, mixed> $input
@@ -74,14 +79,6 @@ abstract class Field extends Data
         }
 
         return $fieldClass;
-    }
-
-    /**
-     * @param array<string, mixed> $config
-     */
-    public static function fromConfig(array $config): static
-    {
-        return static::classFromType($config['type'])::withoutMagicalCreationFrom($config);
     }
 
     /**

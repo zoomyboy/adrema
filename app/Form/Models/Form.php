@@ -2,6 +2,8 @@
 
 namespace App\Form\Models;
 
+use App\Form\Data\FieldCollection;
+use App\Form\Data\FormConfigData;
 use App\Form\Fields\Field;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,7 +29,7 @@ class Form extends Model implements HasMedia
     public $guarded = [];
 
     public $casts = [
-        'config' => 'json',
+        'config' => FormConfigData::class,
         'meta' => 'json',
         'description' => 'json',
     ];
@@ -70,14 +72,10 @@ class Form extends Model implements HasMedia
      */
     public function getRegistrationRules(): array
     {
-        return $this->getFields()->reduce(function ($carry, $current) {
-            $field = Field::fromConfig($current);
-
-            return [
-                ...$carry,
-                ...$field->getRegistrationRules($this),
-            ];
-        }, []);
+        return $this->getFields()->reduce(fn ($carry, $field) => [
+            ...$carry,
+            ...$field->getRegistrationRules($this),
+        ], []);
     }
 
     /**
@@ -85,14 +83,10 @@ class Form extends Model implements HasMedia
      */
     public function getRegistrationMessages(): array
     {
-        return $this->getFields()->reduce(function ($carry, $current) {
-            $field = Field::fromConfig($current);
-
-            return [
-                ...$carry,
-                ...$field->getRegistrationMessages($this),
-            ];
-        }, []);
+        return $this->getFields()->reduce(fn ($carry, $field) => [
+            ...$carry,
+            ...$field->getRegistrationMessages($this),
+        ], []);
     }
 
     /**
@@ -100,22 +94,15 @@ class Form extends Model implements HasMedia
      */
     public function getRegistrationAttributes(): array
     {
-        return $this->getFields()->reduce(function ($carry, $current) {
-            $field = Field::fromConfig($current);
-
-            return [
-                ...$carry,
-                ...$field->getRegistrationAttributes($this),
-            ];
-        }, []);
+        return $this->getFields()->reduce(fn ($carry, $field) => [
+            ...$carry,
+            ...$field->getRegistrationAttributes($this),
+        ], []);
     }
 
-    /**
-     * @return Collection<string, mixed>
-     */
-    public function getFields(): Collection
+    public function getFields(): FieldCollection
     {
-        return collect($this->config['sections'])->reduce(fn ($carry, $current) => $carry->merge($current['fields']), collect([]));
+        return $this->config->fields();
     }
 
 
@@ -142,7 +129,7 @@ class Form extends Model implements HasMedia
             if (is_null($model->meta)) {
                 $model->setAttribute('meta', [
                     'active_columns' => $model->getFields()->count() ? $model->getFields()->take(4)->pluck('key')->toArray() : null,
-                    'sorting' => $model->getFields()->count() ? [$model->getFields()->first()['key'], 'asc'] : null,
+                    'sorting' => $model->getFields()->count() ? [$model->getFields()->first()->key, 'asc'] : null,
                 ]);
             }
 

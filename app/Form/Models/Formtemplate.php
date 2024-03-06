@@ -2,9 +2,13 @@
 
 namespace App\Form\Models;
 
+use App\Form\Data\FormConfigData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property FormConfigData $config
+ */
 class Formtemplate extends Model
 {
     use HasFactory;
@@ -12,6 +16,6 @@ class Formtemplate extends Model
     public $guarded = [];
 
     public $casts = [
-        'config' => 'json',
+        'config' => FormConfigData::class,
     ];
 }

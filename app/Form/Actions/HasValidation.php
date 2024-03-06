@@ -22,7 +22,6 @@ trait HasValidation
             'config.sections.*.fields.*.name' => 'required|string',
             'config.sections.*.fields.*.type' => ['required', 'string', Rule::in(array_column(Field::asMeta(), 'id'))],
             'config.sections.*.fields.*.key' => ['required', 'string', 'regex:/^[a-zA-Z_]*$/'],
-            'config.sections.*.fields.*.default' => 'present',
             'config.sections.*.fields.*.columns' => 'required|array',
             'config.sections.*.fields.*.*' => '',
             'config.sections.*.fields.*.columns.mobile' => 'required|numeric|gt:0|lte:2',
@@ -41,7 +40,6 @@ trait HasValidation
             'config.sections.*.fields.*.name' => 'Feldname',
             'config.sections.*.fields.*.type' => 'Feldtyp',
             'config.sections.*.fields.*.key' => 'Feldkey',
-            'config.sections.*.fields.*.default' => 'Standardwert',
         ];
     }
 

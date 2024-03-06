@@ -22,7 +22,7 @@ class RegisterAction
             'data' => $input
         ]);
 
-        $form->getFields()->each(fn ($field) => Field::fromConfig($field)->afterRegistration($form, $participant, $input));
+        $form->getFields()->each(fn ($field) => $field->afterRegistration($form, $participant, $input));
 
         return $participant;
     }

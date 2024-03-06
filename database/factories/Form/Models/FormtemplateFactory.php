@@ -24,7 +24,9 @@ class FormtemplateFactory extends Factory
     {
         return [
             'name' => $this->faker->words(4, true),
-            'config' => [],
+            'config' => [
+                'sections' => [],
+            ],
         ];
     }
 

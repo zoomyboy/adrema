@@ -541,16 +541,6 @@ parameters:
         -
             message: "#^Unable to resolve the template type TKey in call to function collect$#"
             count: 1
-            path: app/Form/Models/Form.php
-
-        -
-            message: "#^Unable to resolve the template type TValue in call to function collect$#"
-            count: 1
-            path: app/Form/Models/Form.php
-
-        -
-            message: "#^Unable to resolve the template type TKey in call to function collect$#"
-            count: 1
             path: app/Form/Fields/NamiField.php
 
         -

@@ -26,7 +26,7 @@ class FormUpdateActionTest extends FormTestCase
 
         $form = $form->fresh();
 
-        $this->assertTrue(data_get($form->config, 'sections.0.fields.0.max_today'));
+        $this->assertTrue($form->config->sections->get(0)->fields->get(0)->maxToday);
     }
 
     public function testItUpdatesActiveColumnsWhenFieldRemoved(): void
