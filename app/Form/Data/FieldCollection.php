@@ -17,6 +17,11 @@ class FieldCollection extends Collection
         return $this->filter(fn ($field) => $field->forMembers === true);
     }
 
+    public function withNamiType(): self
+    {
+        return $this->filter(fn ($field) => $field->namiType !== null);
+    }
+
     public function noNamiType(): self
     {
         return $this->filter(fn ($field) => $field->namiType === null);

@@ -10,7 +10,6 @@ use App\Member\Member;
 use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Arr;
 use Illuminate\Testing\TestResponse;
 
 class FormRegisterActionTest extends FormTestCase
@@ -269,7 +268,7 @@ class FormRegisterActionTest extends FormTestCase
     public function testItSetsMitgliedsnrForMainMember(): void
     {
         $this->login()->loginNami();
-        $this->createMember(['mitgliedsnr' => '9966']);
+        $this->createMember(['mitgliedsnr' => '9966', 'email' => 'max@muster.de', 'firstname' => 'Max', 'lastname' => 'Muster']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
                 $this->textField('email')->namiType(NamiType::EMAIL),
@@ -280,6 +279,35 @@ class FormRegisterActionTest extends FormTestCase
 
         $this->register($form, ['email' => 'max@muster.de', 'firstname' => 'Max', 'lastname' => 'Muster'])->assertOk();
         $this->assertEquals('9966', $form->participants->first()->mitgliedsnr);
+    }
+
+    public function testItDoesntSetMitgliedsnrWhenFieldDoesntHaveType(): void
+    {
+        $this->login()->loginNami();
+        $this->createMember(['mitgliedsnr' => '9966', 'email' => 'max@muster.de']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->textField('email'),
+            ])])
+            ->create();
+
+        $this->register($form, ['email' => 'max@muster.de'])->assertOk();
+        $this->assertNull($form->participants->first()->mitgliedsnr);
+    }
+
+    public function testItDoesntSyncMembersWhenTwoMembersMatch(): void
+    {
+        $this->login()->loginNami();
+        $this->createMember(['mitgliedsnr' => '9966', 'email' => 'max@muster.de']);
+        $this->createMember(['mitgliedsnr' => '9967', 'email' => 'max@muster.de']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->textField('email')->namiType(NamiType::EMAIL),
+            ])])
+            ->create();
+
+        $this->register($form, ['email' => 'max@muster.de'])->assertOk();
+        $this->assertNull($form->participants->first()->mitgliedsnr);
     }
 
     // --------------------------- NamiField Tests ---------------------------

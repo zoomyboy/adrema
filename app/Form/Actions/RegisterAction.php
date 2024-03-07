@@ -5,6 +5,7 @@ namespace App\Form\Actions;
 use App\Form\Fields\Field;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
+use App\Member\Member;
 use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -18,8 +19,12 @@ class RegisterAction
      */
     public function handle(Form $form, array $input): Participant
     {
+        $memberQuery = $form->getFields()->withNamiType()->reduce(fn ($query, $field) => $field->namiType->performQuery($query, data_get($input, $field->key)), (new Member())->newQuery());
+        $mglnr = $form->getFields()->withNamiType()->count() && $memberQuery->count() === 1 ? $memberQuery->first()->mitgliedsnr : null;
+
         $participant = $form->participants()->create([
-            'data' => $input
+            'data' => $input,
+            'mitgliedsnr' => $mglnr,
         ]);
 
         $form->getFields()->each(fn ($field) => $field->afterRegistration($form, $participant, $input));

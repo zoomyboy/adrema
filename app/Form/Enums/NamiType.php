@@ -4,6 +4,7 @@ namespace App\Form\Enums;
 
 use App\Group\Enums\Level;
 use App\Member\Member;
+use Illuminate\Database\Eloquent\Builder;
 
 enum NamiType: string
 {
@@ -33,6 +34,22 @@ enum NamiType: string
             static::REGION => $this->matchRegion($member),
             static::STAMM => $this->matchGroup($member),
             static::EMAIL => $member->email,
+        };
+    }
+
+    /**
+     * @param Builder<Member> $query
+     * @return Builder<Member>
+     */
+    public function performQuery(Builder $query, mixed $value): Builder
+    {
+        return match ($this) {
+            static::FIRSTNAME => $query->where('firstname', $value),
+            static::LASTNAME => $query->where('lastname', $value),
+            static::BIRTHDAY => $query->where('birthday', $value),
+            static::REGION => $query,
+            static::STAMM => $query,
+            static::EMAIL => $query->where('email', $value),
         };
     }
 
