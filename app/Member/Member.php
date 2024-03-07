@@ -156,7 +156,7 @@ class Member extends Model implements Geolocatable
 
     public function getEfzLink(): ?string
     {
-        return $this->isLeader() && $this->address && $this->zip && $this->location && $this->birthday
+        return $this->address && $this->zip && $this->location && $this->birthday
             ? route('efz', ['member' => $this])
             : null;
     }

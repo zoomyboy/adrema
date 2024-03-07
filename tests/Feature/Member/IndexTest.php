@@ -84,7 +84,7 @@ class IndexTest extends TestCase
             ->defaults()
             ->has(Membership::factory()->in('€ Mitglied', 456, 'Pfadfinder', 16))
             ->create(['lastname' => 'B']);
-        Member::factory()
+        $emptyMember = Member::factory()
             ->defaults()
             ->create(['lastname' => 'C']);
 
@@ -92,8 +92,7 @@ class IndexTest extends TestCase
         $response = $this->get('/member');
 
         $this->assertInertiaHas(url("/member/{$member->id}/efz"), $response, 'data.data.0.efz_link');
-        $this->assertInertiaHas(null, $response, 'data.data.1.efz_link');
-        $this->assertInertiaHas(null, $response, 'data.data.2.efz_link');
+        $this->assertInertiaHas(url("/member/{$emptyMember->id}/efz"), $response, 'data.data.2.efz_link');
         $this->assertInertiaHas(true, $response, 'data.data.0.is_leader');
         $this->assertInertiaHas(false, $response, 'data.data.1.is_leader');
         $this->assertInertiaHas(false, $response, 'data.data.2.is_leader');
