@@ -10,6 +10,7 @@ use App\Member\Member;
 use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Arr;
 use Illuminate\Testing\TestResponse;
 
 class FormRegisterActionTest extends FormTestCase
@@ -265,33 +266,88 @@ class FormRegisterActionTest extends FormTestCase
             ->assertOk();
     }
 
-    // --------------------------- NamiField Tests ---------------------------
-    // ***********************************************************************
-    public function testItAddsMembersViaNamiFromNamiField(): void
+    public function testItSetsMitgliedsnrForMainMember(): void
     {
         $this->login()->loginNami();
-        $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Abc', 'birthday' => '2023-01-05']);
-        $this->createMember(['mitgliedsnr' => '5506', 'firstname' => 'Def', 'birthday' => '2023-01-06']);
+        $this->createMember(['mitgliedsnr' => '9966']);
         $form = Form::factory()
             ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->textField('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
-                $this->dateField('birthday')->required(true)->namiType(NamiType::BIRTHDAY),
+                $this->textField('email')->namiType(NamiType::EMAIL),
+                $this->textField('firstname')->namiType(NamiType::FIRSTNAME),
+                $this->textField('lastname')->namiType(NamiType::LASTNAME),
             ])])
             ->create();
 
-        $this->register($form, ['firstname' => 'Aaaa', 'birthday' => '2021-04-05', 'members' => [['id' => '5505'], ['id' => '5506']]])
+        $this->register($form, ['email' => 'max@muster.de', 'firstname' => 'Max', 'lastname' => 'Muster'])->assertOk();
+        $this->assertEquals('9966', $form->participants->first()->mitgliedsnr);
+    }
+
+    // --------------------------- NamiField Tests ---------------------------
+    // ***********************************************************************
+    public function testItAddsMitgliedsnrFromMembers(): void
+    {
+        $this->login()->loginNami();
+        $this->createMember(['mitgliedsnr' => '5505']);
+        $this->createMember(['mitgliedsnr' => '5506']);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->namiField('members'),
+            ])])
+            ->create();
+
+        $this->register($form, ['members' => [['id' => '5505'], ['id' => '5506']]])
             ->assertOk();
         $this->assertCount(3, $form->participants()->get());
-        $this->assertEquals('Aaaa', $form->participants->get(0)->data['firstname']);
-        $this->assertEquals('Abc', $form->participants->get(1)->data['firstname']);
-        $this->assertEquals('Def', $form->participants->get(2)->data['firstname']);
-        $this->assertEquals('2021-04-05', $form->participants->get(0)->data['birthday']);
-        $this->assertEquals('2023-01-05', $form->participants->get(1)->data['birthday']);
-        $this->assertEquals('2023-01-06', $form->participants->get(2)->data['birthday']);
         $this->assertEquals([['id' => '5505'], ['id' => '5506']], $form->participants->get(0)->data['members']);
         $this->assertEquals([], $form->participants->get(1)->data['members']);
         $this->assertEquals([], $form->participants->get(2)->data['members']);
+    }
+
+    protected function memberMatchingDataProvider(): Generator
+    {
+        yield [
+            ['email' => 'max@muster.de'],
+            NamiType::EMAIL,
+            'max@muster.de',
+        ];
+
+        yield [
+            ['firstname' => 'Philipp'],
+            NamiType::FIRSTNAME,
+            'Philipp'
+        ];
+
+        yield [
+            ['lastname' => 'Muster'],
+            NamiType::LASTNAME,
+            'Muster'
+        ];
+
+        yield [
+            ['birthday' => '2023-06-06'],
+            NamiType::BIRTHDAY,
+            '2023-06-06'
+        ];
+    }
+
+    /**
+     * @dataProvider memberMatchingDataProvider
+     * @param array<string, string> $memberAttributes
+     * @param mixed $participantValue
+     */
+    public function testItSynchsMemberAttributes(array $memberAttributes, NamiType $type, mixed $participantValue): void
+    {
+        $this->login()->loginNami();
+        $this->createMember(['mitgliedsnr' => '5505', ...$memberAttributes]);
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->fields([
+                $this->namiField('members'),
+                $this->textField('other')->required(true)->namiType($type),
+            ])])
+            ->create();
+
+        $this->register($form, ['other' => '::other::', 'members' => [['id' => '5505']]])->assertOk();
+        $this->assertEquals($participantValue, $form->participants->get(1)->data['other']);
     }
 
     public function testItAddsOtherFieldsOfMember(): void

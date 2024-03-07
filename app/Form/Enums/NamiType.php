@@ -12,6 +12,7 @@ enum NamiType: string
     case BIRTHDAY = 'Geburtstag';
     case REGION = 'Bezirk';
     case STAMM = 'Stamm';
+    case EMAIL = 'E-Mail-Adresse';
 
     /**
      * @return array<int, array{name: string, id: string}>
@@ -31,6 +32,7 @@ enum NamiType: string
             static::BIRTHDAY => $member->birthday?->format('Y-m-d'),
             static::REGION => $this->matchRegion($member),
             static::STAMM => $this->matchGroup($member),
+            static::EMAIL => $member->email,
         };
     }
 
