@@ -155,7 +155,7 @@ class MemberRequest extends FormRequest
         $request = request();
         /** @var Member */
         $member = request()->route('member');
-        $when = fn () => true === $request->input('has_nami') && (!$member || !$member->has_nami);
+        $when = fn () => true === $request->input('has_nami') && ($member !== null || !$member->has_nami);
         $validator->sometimes($attribute, $rules, $when);
     }
 }
