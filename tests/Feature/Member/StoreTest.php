@@ -2,7 +2,10 @@
 
 namespace Tests\Feature\Member;
 
+use App\Actions\PullMemberAction;
+use App\Actions\PullMembershipsAction;
 use App\Activity;
+use App\Confession;
 use App\Country;
 use App\Fee;
 use App\Gender;
@@ -15,6 +18,7 @@ use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\Lib\MergesAttributes;
 use Tests\TestCase;
+use Zoomyboy\LaravelNami\Fakes\MemberFake;
 
 class StoreTest extends TestCase
 {
@@ -23,16 +27,19 @@ class StoreTest extends TestCase
 
     public function testItCanStoreAMember(): void
     {
+        app(MemberFake::class)->stores(55, 103);
         Fee::factory()->create();
         $this->withoutExceptionHandling()->login()->loginNami();
         $country = Country::factory()->create();
         $gender = Gender::factory()->create();
         $region = Region::factory()->create();
         $nationality = Nationality::factory()->create();
-        $activity = Activity::factory()->create();
-        $subactivity = Subactivity::factory()->create();
+        $activity = Activity::factory()->inNami(89)->create();
+        $subactivity = Subactivity::factory()->inNami(90)->create();
         $subscription = Subscription::factory()->create();
-        NamiPutMemberAction::allowToRun();
+        $confesstion = Confession::factory()->create(['is_null' => true]);
+        PullMemberAction::shouldRun();
+        PullMembershipsAction::shouldRun();
 
         $response = $this
             ->from('/member/create')
@@ -75,11 +82,11 @@ class StoreTest extends TestCase
             'salutation' => 'Doktor',
             'comment' => 'Lorem bla',
         ]);
-        NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(
-            fn (Member $memberParam, Activity $activityParam, Subactivity $subactivityParam) => $memberParam->is($member)
-                && $activityParam->is($activity)
-                && $subactivityParam->is($subactivity)
-        )->once();
+
+        app(MemberFake::class)->assertStored(55, [
+            'ersteTaetigkeitId' => 89,
+            'ersteUntergliederungId' => 90,
+        ]);
     }
 
     public function testItCanStoreAMemberWithoutNami(): void
