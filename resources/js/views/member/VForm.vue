@@ -77,7 +77,8 @@
                             label="Eintrittsdatum" size="sm" required></f-text>
                         <f-textarea id="comment" v-model="inner.comment" rows="3" class="col-span-2" label="Kommentar"
                             size="sm"></f-textarea>
-                        <div v-if="mode === 'create'" class="contents">
+                        <div v-if="mode === 'create' || (original.has_nami === false && inner.has_nami === true)"
+                            class="contents">
                             <f-select id="first_activity_id" v-model="inner.first_activity_id"
                                 :options="meta.formCreateActivities" label="Erste Tätigkeit" name="first_activity_id"
                                 size="sm" required></f-select>
@@ -163,6 +164,7 @@ export default {
     },
     data: function () {
         return {
+            original: { ...this.data },
             inner: { ...this.data },
             active: 0,
         };

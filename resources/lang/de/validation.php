@@ -188,6 +188,7 @@ return [
         'nationality_id' => 'Staatsangehörigkeit',
         'first_group_id' => 'Erste Untertätigkeit',
         'first_activity_id' => 'Erste Tätigkeit',
+        'first_subactivity_id' => 'Erste Untergliederung',
         'fee_id' => 'Beitragsart',
         'course_id' => 'Baustein',
         'completed_at' => 'Datum',

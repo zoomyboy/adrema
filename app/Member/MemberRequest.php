@@ -95,13 +95,18 @@ class MemberRequest extends FormRequest
         $member->updatePhoneNumbers()->save();
 
         if ($this->input('has_nami')) {
-            NamiPutMemberAction::run(
-                $member,
-                Activity::findOrFail($this->input('first_activity_id')),
-                Subactivity::find($this->input('first_subactivity_id')),
-            );
+            $this->storeFreshMemberInNami($member);
         }
         ResyncAction::dispatch();
+    }
+
+    protected function storeFreshMemberInNami(Member $member): void
+    {
+        NamiPutMemberAction::run(
+            $member->fresh(),
+            Activity::findOrFail($this->input('first_activity_id')),
+            Subactivity::find($this->input('first_subactivity_id')),
+        );
     }
 
     public function persistUpdate(Member $member): void
@@ -113,7 +118,7 @@ class MemberRequest extends FormRequest
         $member->save();
 
         if ($this->input('has_nami') && null === $member->nami_id) {
-            NamiPutMemberAction::run($member->fresh(), null, null);
+            $this->storeFreshMemberInNami($member);
         }
         if ($this->input('has_nami') && null !== $member->nami_id && $namiSync) {
             NamiPutMemberAction::run($member->fresh(), null, null);
@@ -132,14 +137,25 @@ class MemberRequest extends FormRequest
         $this->namiIfElse($validator, 'zip', 'required|numeric');
         $this->namiIfElse($validator, 'location', 'required|max:255');
         $this->namiIfElse($validator, 'joined_at', 'date|required');
+        $this->namiIfStoring($validator, 'first_activity_id', 'required|exclude|exists:activities,id');
+        $this->namiIfStoring($validator, 'first_subactivity_id', 'required|exclude|exists:subactivities,id');
     }
 
-    public function namiIfElse(Validator $validator, string $attribute, string $rules): void
+    private function namiIfElse(Validator $validator, string $attribute, string $rules): void
     {
         $request = request();
         $when = fn () => true === $request->input('has_nami');
         $notWhen = fn () => true !== $request->input('has_nami');
         $validator->sometimes($attribute, $rules, $when);
         $validator->sometimes($attribute, 'present', $notWhen);
+    }
+
+    private function namiIfStoring(Validator $validator, string $attribute, string $rules): void
+    {
+        $request = request();
+        /** @var Member */
+        $member = request()->route('member');
+        $when = fn () => true === $request->input('has_nami') && (!$member || !$member->has_nami);
+        $validator->sometimes($attribute, $rules, $when);
     }
 }

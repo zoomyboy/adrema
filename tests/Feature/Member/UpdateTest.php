@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Member;
 
+use App\Actions\PullMemberAction;
+use App\Actions\PullMembershipsAction;
 use App\Activity;
 use App\Confession;
 use App\Country;
@@ -15,6 +17,7 @@ use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
+use Zoomyboy\LaravelNami\Fakes\MemberFake;
 
 class UpdateTest extends TestCase
 {
@@ -103,6 +106,50 @@ class UpdateTest extends TestCase
             ]));
 
         $this->assertEquals('englisch', $member->fresh()->other_country);
+    }
+
+    public function testItCreatesMemberWithFirstActivityId(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $member = Member::factory()->defaults()->create();
+        app(MemberFake::class)->stores($member->group->nami_id, 103);
+        $activity = Activity::factory()->inNami(89)->create();
+        $subactivity = Subactivity::factory()->inNami(90)->create();
+        Confession::factory()->create(['is_null' => true]);
+        PullMemberAction::shouldRun();
+        PullMembershipsAction::shouldRun();
+
+        $this->patch("/member/{$member->id}", [
+            ...$member->getAttributes(),
+            'has_nami' => true,
+            'first_activity_id' => $activity->id,
+            'first_subactivity_id' => $subactivity->id,
+        ])->assertSessionHasNoErrors();
+
+        app(MemberFake::class)->assertStored($member->group->nami_id, [
+            'ersteTaetigkeitId' => 89,
+            'ersteUntergliederungId' => 90,
+        ]);
+    }
+
+    public function testItRequiresFirstActivityId(): void
+    {
+        $this->login()->loginNami();
+        $member = Member::factory()->defaults()->create();
+        app(MemberFake::class)->stores($member->group->nami_id, 103);
+        Confession::factory()->create(['is_null' => true]);
+        PullMemberAction::shouldRun();
+        PullMembershipsAction::shouldRun();
+
+        $this->patch("/member/{$member->id}", [
+            ...$member->getAttributes(),
+            'has_nami' => true,
+            'first_activity_id' => null,
+            'first_subactivity_id' => null,
+        ])->assertSessionHasErrors([
+            'first_activity_id' => 'Erste Tätigkeit ist erforderlich.',
+            'first_subactivity_id' => 'Erste Untergliederung ist erforderlich.',
+        ]);
     }
 
     public function testItUpdatesCriminalRecord(): void

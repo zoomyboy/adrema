@@ -36,7 +36,7 @@ class NamiPutMemberActionTest extends TestCase
         $subscription = Subscription::factory()->create();
         $group = Group::factory()->inNami(55)->create();
         $confession = Confession::factory()->inNami(567)->create(['is_null' => true]);
-        app(MemberFake::class)->createsSuccessfully(55, 993);
+        app(MemberFake::class)->stores(55, 993);
         $activity = Activity::factory()->hasAttached(Subactivity::factory()->name('Biber')->inNami(55))->name('Leiter')->inNami(6)->create();
         $subactivity = $activity->subactivities->first();
 
@@ -51,7 +51,7 @@ class NamiPutMemberActionTest extends TestCase
 
         NamiPutMemberAction::run($member, $activity, $subactivity);
 
-        app(MemberFake::class)->assertCreated(55, [
+        app(MemberFake::class)->assertStored(55, [
             'ersteTaetigkeitId' => 6,
             'ersteUntergliederungId' => 55,
             'konfessionId' => 567,
