@@ -2,22 +2,22 @@
 
 namespace App\Lib;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Builder;
 use Spatie\LaravelData\Data;
 
 /**
  * @template T of Model
  * @property Builder $query
  */
-abstract class Filter extends Data
+abstract class ScoutFilter extends Data
 {
 
     /**
-     * @param Builder<T> $query
-     * @return Builder<T>
+     * @return Builder
      */
-    abstract public function apply(Builder $query): Builder;
+    abstract public function getQuery(): Builder;
+    protected Builder $query;
 
     /**
      * @param array<string, mixed>|string|null $request

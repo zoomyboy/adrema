@@ -54,6 +54,30 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('meta.form_meta.sorting', ['vorname', 'asc']);
     }
 
+    public function testItShowsOnlyRootMembers(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+        Participant::factory()->for($form)->count(2)
+            ->has(Participant::factory()->count(3)->for($form), 'children')
+            ->create();
+
+        $this->callFilter('form.participant.index', ['parent' => -1], ['form' => $form])->assertJsonCount(2, 'data');
+        $this->callFilter('form.participant.index', ['parent' => null], ['form' => $form])->assertJsonCount(8, 'data');
+    }
+
+    public function testItShowsChildrenOfParent(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+        $parents = Participant::factory()->for($form)->count(2)
+            ->has(Participant::factory()->count(3)->for($form), 'children')
+            ->create();
+
+        $this->callFilter('form.participant.index', ['parent' => $parents->get(0)->id], ['form' => $form])->assertJsonCount(3, 'data');
+        $this->callFilter('form.participant.index', ['parent' => $parents->get(1)->id], ['form' => $form])->assertJsonCount(3, 'data');
+    }
+
     public function testItPresentsNamiField(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();

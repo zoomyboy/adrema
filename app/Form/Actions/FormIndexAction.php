@@ -2,7 +2,7 @@
 
 namespace App\Form\Actions;
 
-use App\Form\FilterScope;
+use App\Form\Scopes\FormFilterScope;
 use App\Form\Models\Form;
 use App\Form\Resources\FormResource;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -20,7 +20,7 @@ class FormIndexAction
      */
     public function handle(string $filter): LengthAwarePaginator
     {
-        return FilterScope::fromRequest($filter)->getQuery()->query(fn ($query) => $query->withCount('participants'))->paginate(15);
+        return FormFilterScope::fromRequest($filter)->getQuery()->query(fn ($query) => $query->withCount('participants'))->paginate(15);
     }
 
     public function asController(ActionRequest $request): Response

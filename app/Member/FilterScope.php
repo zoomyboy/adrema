@@ -5,8 +5,8 @@ namespace App\Member;
 use App\Activity;
 use App\Group;
 use App\Invoice\BillKind;
-use App\Lib\Filter;
 use App\Subactivity;
+use App\Lib\ScoutFilter;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -14,11 +14,11 @@ use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 /**
- * @extends Filter<Member>
+ * @extends ScoutFilter<Member>
  */
 #[MapInputName(SnakeCaseMapper::class)]
 #[MapOutputName(SnakeCaseMapper::class)]
-class FilterScope extends Filter
+class FilterScope extends ScoutFilter
 {
     /**
      * @param array<int, int> $activityIds

@@ -4,7 +4,7 @@ namespace App\Form\Resources;
 
 use App\Form\Enums\NamiType;
 use App\Form\Fields\Field;
-use App\Form\FilterScope;
+use App\Form\Scopes\FormFilterScope;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
 use App\Group;
@@ -59,7 +59,7 @@ class FormResource extends JsonResource
             'base_url' => url(''),
             'groups' => Group::forSelect(),
             'fields' => Field::asMeta(),
-            'filter' => FilterScope::fromRequest(request()->input('filter', '')),
+            'filter' => FormFilterScope::fromRequest(request()->input('filter', '')),
             'links' => [
                 'store' => route('form.store'),
                 'formtemplate_index' => route('formtemplate.index'),

@@ -2,7 +2,7 @@
 
 namespace App\Form\Actions;
 
-use App\Form\FilterScope;
+use App\Form\Scopes\FormFilterScope;
 use App\Form\Models\Form;
 use App\Form\Resources\FormApiResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -20,7 +20,7 @@ class FormApiListAction
      */
     public function handle(string $filter, int $perPage): LengthAwarePaginator
     {
-        return FilterScope::fromRequest($filter)->getQuery()->paginate($perPage);
+        return FormFilterScope::fromRequest($filter)->getQuery()->paginate($perPage);
     }
 
     public function asController(ActionRequest $request): AnonymousResourceCollection

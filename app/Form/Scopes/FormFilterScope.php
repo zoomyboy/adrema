@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Scopes;
 
 use Laravel\Scout\Builder;
 use App\Form\Models\Form;
-use App\Lib\Filter;
+use App\Lib\ScoutFilter;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 /**
- * @extends Filter<Form>
+ * @extends ScoutFilter<Form>
  */
 #[MapInputName(SnakeCaseMapper::class)]
 #[MapOutputName(SnakeCaseMapper::class)]
-class FilterScope extends Filter
+class FormFilterScope extends ScoutFilter
 {
     public function __construct(
         public ?string $search = '',
