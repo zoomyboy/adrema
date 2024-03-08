@@ -308,6 +308,7 @@ class FormRegisterActionTest extends FormTestCase
 
         $this->register($form, ['email' => 'max@muster.de'])->assertOk();
         $this->assertNull($form->participants->first()->mitgliedsnr);
+        $this->assertNull($form->participants->first()->parent_id);
     }
 
     // --------------------------- NamiField Tests ---------------------------
@@ -329,6 +330,8 @@ class FormRegisterActionTest extends FormTestCase
         $this->assertEquals([['id' => '5505'], ['id' => '5506']], $form->participants->get(0)->data['members']);
         $this->assertEquals([], $form->participants->get(1)->data['members']);
         $this->assertEquals([], $form->participants->get(2)->data['members']);
+        $this->assertEquals($form->participants->get(0)->id, $form->participants->get(2)->parent_id);
+        $this->assertEquals($form->participants->get(0)->id, $form->participants->get(1)->parent_id);
     }
 
     protected function memberMatchingDataProvider(): Generator

@@ -119,7 +119,7 @@ class NamiField extends Field
             }
 
             $data[$this->key] = [];
-            $form->participants()->create(['data' => $data, 'mitgliedsnr' => $memberData['id']]);
+            $form->participants()->create(['data' => $data, 'mitgliedsnr' => $memberData['id'], 'parent_id' => $participant->id]);
         }
     }
 
