@@ -153,7 +153,7 @@ class MemberRequest extends FormRequest
     private function namiIfStoring(Validator $validator, string $attribute, string $rules): void
     {
         $request = request();
-        /** @var Member */
+        /** @var ?Member */
         $member = request()->route('member');
         $when = fn () => true === $request->input('has_nami') && ($member === null || !$member->has_nami);
         $validator->sometimes($attribute, $rules, $when);
