@@ -2,8 +2,11 @@
 
 namespace App\Member;
 
+use App\Activity;
+use App\Group;
 use App\Invoice\BillKind;
 use App\Lib\Filter;
+use App\Subactivity;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -139,6 +142,9 @@ class FilterScope extends Filter
      */
     protected function possibleValuesForMembership(array $membership): Collection
     {
+        $membership['group_ids'] = count($membership['group_ids']) === 0 ? Group::pluck('id')->toArray() : $membership['group_ids'];
+        $membership['activity_ids'] = count($membership['activity_ids']) === 0 ? Activity::pluck('id')->toArray() : $membership['activity_ids'];
+        $membership['subactivity_ids'] = count($membership['subactivity_ids']) === 0 ? Subactivity::pluck('id')->toArray() : $membership['subactivity_ids'];
         return $this->combinations($membership['group_ids'], $membership['activity_ids'], $membership['subactivity_ids'])
             ->map(fn ($combination) => collect($combination)->implode('|'));
     }

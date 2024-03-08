@@ -199,6 +199,26 @@ class MemberIndexTest extends EndToEndTestCase
         ]])->assertInertiaCount('data.data', 1);
     }
 
+    public function testGroupOfMembershipsFilterCanBeEmpty(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $mitglied = Activity::factory()->create();
+        $woelfling = Subactivity::factory()->create();
+        $group = Group::factory()->create();
+        Member::factory()->defaults()->has(Membership::factory()->for($mitglied)->for($woelfling)->for($group))->create();
+
+        sleep(1);
+        $this->callFilter('member.index', ['memberships' => [
+            ['group_ids' => [], 'activity_ids' => [$mitglied->id], 'subactivity_ids' => [$woelfling->id]],
+        ]])->assertInertiaCount('data.data', 1);
+        $this->callFilter('member.index', ['memberships' => [
+            ['group_ids' => [$group->id], 'activity_ids' => [], 'subactivity_ids' => [$woelfling->id]],
+        ]])->assertInertiaCount('data.data', 1);
+        $this->callFilter('member.index', ['memberships' => [
+            ['group_ids' => [$group->id], 'activity_ids' => [$mitglied->id], 'subactivity_ids' => []],
+        ]])->assertInertiaCount('data.data', 1);
+    }
+
     public function testItFiltersForSearchButNotForPayments(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
