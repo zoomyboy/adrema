@@ -4,13 +4,17 @@ namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
 use App\Country;
+use App\Invoice\InvoiceSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
 class CityFrankfurtMainDocument extends ContributionDocument
 {
+    public string $fromName;
+
     /**
      * @param Collection<int, Collection<int, MemberData>> $members
      */
@@ -20,9 +24,11 @@ class CityFrankfurtMainDocument extends ContributionDocument
         public string $zipLocation,
         public ?Country $country,
         public Collection $members,
+        public string $eventName,
         public ?string $filename = '',
         public string $type = 'F',
     ) {
+        $this->fromName = app(InvoiceSettings::class)->from_long;
     }
 
     /**
@@ -36,6 +42,7 @@ class CityFrankfurtMainDocument extends ContributionDocument
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
             members: MemberData::fromModels($request['members'])->chunk(15),
+            eventName: $request['eventName'],
         );
     }
 
@@ -50,6 +57,7 @@ class CityFrankfurtMainDocument extends ContributionDocument
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
             members: MemberData::fromApi($request['member_data'])->chunk(15),
+            eventName: $request['eventName'],
         );
     }
 
@@ -96,7 +104,7 @@ class CityFrankfurtMainDocument extends ContributionDocument
 
     public function basename(): string
     {
-        return 'zuschuesse-frankfurt';
+        return 'zuschuesse-frankfurt-' . Str::slug($this->eventName);
     }
 
     public function view(): string

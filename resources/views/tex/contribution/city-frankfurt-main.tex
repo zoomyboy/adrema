@@ -15,8 +15,8 @@
 
     @foreach($members as $i => $chunk)
         \begin{tikzpicture}[remember picture,overlay,yscale=-1]
-            %\node[anchor=base west, text width=205.3mm] at (52.9mm,31.0mm) {\bfseries{\large{}}};   %Feld: Jugendverband/-Gruppe
-            %\node[anchor=base west, text width=215.9mm] at (41.3mm,38.8mm) {\bfseries{\large{}}};   %Feld: Art der Maßnahme
+            \node[anchor=base west, text width=205.3mm] at (52.9mm,31.0mm) {\bfseries{\large{<<<!!$fromName!!>>>}}};   %Feld: Jugendverband/-Gruppe
+            \node[anchor=base west, text width=215.9mm] at (41.3mm,38.8mm) {\bfseries{\large{<<<!!$eventName!!>>>}}};   %Feld: Art der Maßnahme
             \node[anchor=base west, text width=104.8mm] at (17.5mm,47.0mm) {\bfseries{\large{<<<!!$zipLocation!!>>>, <<<!!$countryName!!>>>}}};
             \node[anchor=base west, text width=41.3mm, align=center] at (170.7mm,47.0mm) {\bfseries{\large{<<<!!$dateFromHuman()!!>>>}}};
             \node[anchor=base west, text width=38.4mm, align=center] at (219.9mm,47.0mm) {\bfseries{\large{<<<!!$dateUntilHuman()!!>>>}}};
