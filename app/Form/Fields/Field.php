@@ -25,6 +25,9 @@ abstract class Field extends Data
     public ColumnData $columns;
     public bool $forMembers;
 
+    /** @var mixed */
+    public $value;
+
     /**
      * @param array<array-key, mixed> $input
      */
@@ -133,7 +136,7 @@ abstract class Field extends Data
                 'name' => '',
                 'type' => static::type(),
                 'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
-                'default' => static::default(),
+                'value' => static::default(),
                 'required' => false,
                 'nami_type' => null,
                 'for_members' => true,

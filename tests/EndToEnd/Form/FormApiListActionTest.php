@@ -3,7 +3,6 @@
 namespace Tests\EndToEnd\Form;
 
 use App\Form\Models\Form;
-use App\Form\Models\Formtemplate;
 use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -11,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Tests\EndToEndTestCase;
 use Tests\Feature\Form\FormtemplateSectionRequest;
 
-class FormApiListActionTest extends EndToEndTestCase
+class FormApiListActionTest extends FormTestCase
 {
 
     use DatabaseTransactions;
@@ -21,7 +20,6 @@ class FormApiListActionTest extends EndToEndTestCase
         Carbon::setTestNow(Carbon::parse('2023-03-02'));
         Storage::fake('temp');
         $this->loginNami()->withoutExceptionHandling();
-        Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')])->create();
         $form = Form::factory()
             ->name('lala 2')
             ->excerpt('fff')
@@ -48,6 +46,18 @@ class FormApiListActionTest extends EndToEndTestCase
             ->assertJsonPath('meta.per_page', 15)
             ->assertJsonPath('meta.base_url', url(''))
             ->assertJsonPath('meta.total', 1);
+    }
+
+    public function testItDisplaysDefaultValueOfField(): void
+    {
+        Storage::fake('temp');
+        $this->loginNami()->withoutExceptionHandling();
+        Form::factory()->withImage('headerImage', 'lala-2.jpg')
+            ->sections([FormtemplateSectionRequest::new()->fields([$this->textField()])])
+            ->create();
+
+        sleep(1);
+        $this->get('/api/form?perPage=15')->assertJsonPath('data.0.config.sections.0.fields.0.value', '');
     }
 
     public function testItDisplaysRemoteGroups(): void

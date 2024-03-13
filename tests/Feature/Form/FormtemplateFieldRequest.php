@@ -48,6 +48,7 @@ class FormtemplateFieldRequest extends RequestFactory
 
         return self::new([
             'type' => $field::type(),
+            'value' => $field::default(),
             ...$field::fake((new static())->faker),
         ]);
     }
