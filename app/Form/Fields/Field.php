@@ -4,6 +4,7 @@ namespace App\Form\Fields;
 
 use App\Form\Data\ColumnData;
 use App\Form\Enums\NamiType;
+use App\Form\Enums\SpecialType;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Form\Presenters\DefaultPresenter;
@@ -24,6 +25,7 @@ abstract class Field extends Data
     public ?NamiType $namiType = null;
     public ColumnData $columns;
     public bool $forMembers;
+    public ?SpecialType $specialType = null;
 
     /** @var mixed */
     public $value;
@@ -140,6 +142,7 @@ abstract class Field extends Data
                 'required' => false,
                 'nami_type' => null,
                 'for_members' => true,
+                'special_type' => null,
                 ...collect(static::meta())->mapWithKeys(fn ($meta) => [$meta['key'] => $meta['default']])->toArray(),
             ],
         ];

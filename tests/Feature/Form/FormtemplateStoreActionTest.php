@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Enums\SpecialType;
 use App\Form\Fields\TextareaField;
 use App\Form\Fields\TextField;
-use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
 use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -23,7 +23,7 @@ class FormtemplateStoreActionTest extends FormTestCase
         FormtemplateRequest::new()->name('testname')->sections([
             FormtemplateSectionRequest::new()->name('Persönliches')->fields([
                 $this->textField('a')->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false),
-                $this->textareaField('b')->name('lala2')->required(false)->rows(10),
+                $this->textareaField('b')->name('lala2')->required(false)->specialType(SpecialType::FIRSTNAME)->rows(10),
             ]),
         ])->fake();
 
@@ -32,9 +32,11 @@ class FormtemplateStoreActionTest extends FormTestCase
         $formtemplate = Formtemplate::latest()->first();
         $this->assertEquals('Persönliches', $formtemplate->config->sections->get(0)->name);
         $this->assertEquals('lala1', $formtemplate->config->sections->get(0)->fields->get(0)->name);
+        $this->assertNull($formtemplate->config->sections->get(0)->fields->get(0)->specialType);
         $this->assertInstanceOf(TextField::class, $formtemplate->config->sections->get(0)->fields->get(0));
         $this->assertInstanceOf(TextareaField::class, $formtemplate->config->sections->get(0)->fields->get(1));
         $this->assertEquals(false, $formtemplate->config->sections->get(0)->fields->get(1)->required);
+        $this->assertEquals(SpecialType::FIRSTNAME, $formtemplate->config->sections->get(0)->fields->get(1)->specialType);
         $this->assertEquals(['mobile' => 2, 'tablet' => 2, 'desktop' => 1], $formtemplate->config->sections->get(0)->fields->get(0)->columns->toArray());
         $this->assertEquals(10, $formtemplate->config->sections->get(0)->fields->get(1)->rows);
         $this->assertFalse($formtemplate->config->sections->get(0)->fields->get(0)->required);
