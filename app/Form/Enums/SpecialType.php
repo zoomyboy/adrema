@@ -2,10 +2,6 @@
 
 namespace App\Form\Enums;
 
-use App\Group\Enums\Level;
-use App\Member\Member;
-use Illuminate\Database\Eloquent\Builder;
-
 enum SpecialType: string
 {
     case FIRSTNAME = 'Vorname';

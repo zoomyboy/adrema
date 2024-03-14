@@ -5,6 +5,7 @@ namespace Tests\Feature\Form;
 use App\Form\Fields\Field;
 use App\Form\Enums\NamiType;
 use Worksome\RequestFactories\RequestFactory;
+use App\Form\Enums\SpecialType;
 
 /**
  * @method self name(string $name)
@@ -19,6 +20,7 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self parentField(string $fieldKey)
  * @method self namiType(?NamiType $type)
  * @method self forMembers(bool $forMembers)
+ * @method self specialType(SpecialType $specialType)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {

@@ -2,6 +2,7 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Data\FieldCollection;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Form\Presenters\NamiPresenter;
@@ -112,9 +113,9 @@ class NamiField extends Field
         foreach ($input[$this->key] as $memberData) {
             $member = Member::firstWhere(['mitgliedsnr' => $memberData['id']]);
             $data = [];
-            foreach ($form->getFields() as $field) {
+            foreach (FieldCollection::fromRequest($form, $memberData) as $field) {
                 $data[$field->key] = $field->namiType === null
-                    ? data_get($memberData, $field->key, $field->default())
+                    ? $field->value
                     : $field->namiType->getMemberAttribute($member);
             }
 

@@ -2,7 +2,6 @@
 
 namespace App\Form\Resources;
 
-use App\Form\Fields\Field;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,13 +19,7 @@ class ParticipantResource extends JsonResource
      */
     public function toArray($request)
     {
-        $attributes = collect([]);
-
-        foreach ($this->form->getFields() as $field) {
-            $attributes = $attributes->merge($field->presentValue($this->data[$field->key]));
-        }
-
-        return $attributes->toArray();
+        return $this->getModel()->getFields()->present();
     }
 
     /**

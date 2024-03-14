@@ -2,6 +2,7 @@
 
 namespace App\Form\Models;
 
+use App\Form\Data\FieldCollection;
 use App\Form\Scopes\ParticipantFilterScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,5 +43,10 @@ class Participant extends Model
     public function scopeWithFilter(Builder $query, ParticipantFilterScope $filter): Builder
     {
         return $filter->apply($query);
+    }
+
+    public function getFields(): FieldCollection
+    {
+        return FieldCollection::fromRequest($this->form, $this->data);
     }
 }

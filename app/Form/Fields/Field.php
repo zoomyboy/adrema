@@ -87,14 +87,13 @@ abstract class Field extends Data
     }
 
     /**
-     * @param mixed $value
      * @return mixed
      */
-    public function presentValue($value)
+    public function present()
     {
         return [
-            $this->key => $value,
-            $this->getDisplayAttribute() => $this->getPresenter()->present($value),
+            $this->key => $this->value,
+            $this->getDisplayAttribute() => $this->getPresenter()->present($this->value),
         ];
     }
 

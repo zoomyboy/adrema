@@ -2,7 +2,7 @@
 
 namespace App\Form\Actions;
 
-use App\Form\Fields\Field;
+use App\Form\Data\FieldCollection;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Member\Member;
@@ -19,7 +19,9 @@ class RegisterAction
      */
     public function handle(Form $form, array $input): Participant
     {
-        $memberQuery = $form->getFields()->withNamiType()->reduce(fn ($query, $field) => $field->namiType->performQuery($query, data_get($input, $field->key)), (new Member())->newQuery());
+        $memberQuery = FieldCollection::fromRequest($form, $input)
+            ->withNamiType()
+            ->reduce(fn ($query, $field) => $field->namiType->performQuery($query, $field->value), (new Member())->newQuery());
         $mglnr = $form->getFields()->withNamiType()->count() && $memberQuery->count() === 1 ? $memberQuery->first()->mitgliedsnr : null;
 
         $participant = $form->participants()->create([
