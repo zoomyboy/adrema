@@ -3,6 +3,7 @@
 namespace App\Form\Resources;
 
 use App\Form\Enums\NamiType;
+use App\Form\Enums\SpecialType;
 use App\Form\Fields\Field;
 use App\Form\Scopes\FormFilterScope;
 use App\Form\Models\Form;
@@ -66,6 +67,7 @@ class FormResource extends JsonResource
             ],
             'templates' => FormtemplateResource::collection(Formtemplate::get()),
             'namiTypes' => NamiType::forSelect(),
+            'specialTypes' => SpecialType::forSelect(),
             'default' => [
                 'description' => [],
                 'name' => '',

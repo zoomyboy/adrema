@@ -23,6 +23,7 @@
                 <column-selector v-model="singleField.model.columns"></column-selector>
                 <component :is="fields[singleField.model.type]" v-model="singleField.model" :payload="inner.sections" :meta="props.meta"></component>
                 <f-select id="nami_type" v-model="singleField.model.nami_type" :options="meta.namiTypes" label="NaMi-Feld" size="sm" name="nami_type"></f-select>
+                <f-select id="special_type" v-model="singleField.model.special_type" :options="meta.specialTypes" label="Bedeutung" size="sm" name="special_type"></f-select>
                 <f-switch
                     v-show="singleField.model.nami_type === null"
                     id="for_members"
