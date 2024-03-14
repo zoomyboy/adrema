@@ -3,12 +3,14 @@
 namespace App\Form\Models;
 
 use App\Form\Data\FieldCollection;
+use App\Form\Mails\ConfirmRegistrationMail;
 use App\Form\Scopes\ParticipantFilterScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Mail;
 
 class Participant extends Model
 {
@@ -48,5 +50,14 @@ class Participant extends Model
     public function getFields(): FieldCollection
     {
         return FieldCollection::fromRequest($this->form, $this->data);
+    }
+
+    public function sendConfirmationMail(): void
+    {
+        if (!$this->getFields()->getMailRecipient()) {
+            return;
+        }
+
+        Mail::to($this->getFields()->getMailRecipient())->queue(new ConfirmRegistrationMail());
     }
 }

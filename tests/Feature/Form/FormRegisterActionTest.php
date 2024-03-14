@@ -3,6 +3,8 @@
 namespace Tests\Feature\Form;
 
 use App\Form\Enums\NamiType;
+use App\Form\Enums\SpecialType;
+use App\Form\Mails\ConfirmRegistrationMail;
 use App\Form\Models\Form;
 use App\Group;
 use App\Group\Enums\Level;
@@ -10,12 +12,19 @@ use App\Member\Member;
 use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\TestResponse;
 
 class FormRegisterActionTest extends FormTestCase
 {
 
     use DatabaseTransactions;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        Mail::fake();
+    }
 
     public function testItSavesParticipantAsModel(): void
     {
@@ -40,6 +49,43 @@ class FormRegisterActionTest extends FormTestCase
         $this->assertEquals('Max', $participants->first()->data['vorname']);
         $this->assertEquals('Muster', $participants->first()->data['nachname']);
         $this->assertEquals('Abraham', $participants->first()->data['spitzname']);
+    }
+
+    public function testItSendsEmailToParticipant(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()
+            ->sections([
+                FormtemplateSectionRequest::new()->fields([
+                    $this->textField('vorname')->specialType(SpecialType::FIRSTNAME),
+                    $this->textField('nachname')->specialType(SpecialType::LASTNAME),
+                    $this->textField('email')->specialType(SpecialType::EMAIL),
+                ]),
+            ])
+            ->create();
+
+        $this->register($form, ['vorname' => 'Lala', 'nachname' => 'GG', 'email' => 'example@test.test'])
+            ->assertOk();
+
+        Mail::assertQueued(ConfirmRegistrationMail::class, fn ($message) => $message->hasTo('example@test.test', 'Lala GG'));
+    }
+
+    public function testItDoesntSendEmailWhenNoMailFieldGiven(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()
+            ->sections([
+                FormtemplateSectionRequest::new()->fields([
+                    $this->textField('vorname')->specialType(SpecialType::FIRSTNAME),
+                    $this->textField('nachname')->specialType(SpecialType::LASTNAME),
+                ]),
+            ])
+            ->create();
+
+        $this->register($form, ['vorname' => 'Lala', 'nachname' => 'GG'])
+            ->assertOk();
+
+        Mail::assertNotQueued(ConfirmRegistrationMail::class);
     }
 
     /**

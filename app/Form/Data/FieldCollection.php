@@ -2,10 +2,12 @@
 
 namespace App\Form\Data;
 
+use App\Form\Enums\SpecialType;
 use App\Form\Fields\Field;
 use App\Form\Fields\NamiField;
 use App\Form\Models\Form;
 use Illuminate\Support\Collection;
+use stdClass;
 
 /**
  * @extends Collection<int, Field>
@@ -34,6 +36,22 @@ class FieldCollection extends Collection
     }
 
     /**
+     * @return stdClass
+     */
+    public function getMailRecipient(): ?stdClass
+    {
+        $firstname = $this->findBySpecialType(SpecialType::FIRSTNAME)?->value;
+        $lastname = $this->findBySpecialType(SpecialType::LASTNAME)?->value;
+        $email = $this->findBySpecialType(SpecialType::EMAIL)?->value;
+
+        return $firstname && $lastname && $email
+            ? (object) [
+                'name' => "$firstname $lastname",
+                "email" => $email,
+            ] : null;
+    }
+
+    /**
      * @param array<string, mixed> $input
      */
     public static function fromRequest(Form $form, array $input): self
@@ -53,5 +71,10 @@ class FieldCollection extends Collection
         }
 
         return $attributes->toArray();
+    }
+
+    private function findBySpecialType(SpecialType $specialType): ?Field
+    {
+        return $this->first(fn ($field) => $field->specialType === $specialType);
     }
 }
