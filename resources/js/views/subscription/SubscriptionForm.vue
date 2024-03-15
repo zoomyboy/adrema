@@ -22,7 +22,7 @@
                             <ui-sprite src="trash" class="w-5 h-5"></ui-sprite>
                         </a>
                     </div>
-                    <a href="#" class="btn btn-sm flex btn-primary flex self-start mt-4" @click.prevent="inner.children.push({name: 'Beitrag {year} für {name} (' + inner.name + ')', amount: 0})">
+                    <a href="#" class="btn btn-sm flex btn-primary flex self-start mt-4" @click.prevent="inner.children.push({name: defaultChildName, amount: 0})">
                         <ui-sprite src="plus" class="w-5 h-5"></ui-sprite>
                         Position hinzufügen
                     </a>
@@ -44,6 +44,12 @@ export default {
         return {
             inner: {...this.data},
         };
+    },
+
+    computed: {
+        defaultChildName() {
+            return this.inner.name ? `Beitrag {year} für {name} (${this.inner.name})` : 'Beitrag {year} für {name}';
+        },
     },
 
     methods: {
