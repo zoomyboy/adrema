@@ -5,6 +5,7 @@ namespace Database\Factories\Form\Models;
 use App\Form\Models\Form;
 use Database\Factories\Traits\FakesMedia;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tests\Feature\Form\FormtemplateFieldRequest;
 use Tests\Feature\Form\FormtemplateSectionRequest;
 
 /**
@@ -57,6 +58,14 @@ class FormFactory extends Factory
     public function sections(array $sections): self
     {
         return $this->state(['config' => ['sections' => array_map(fn ($section) => $section->create(), $sections)]]);
+    }
+
+    /**
+     * @param array<int, FormtemplateFieldRequest> $sections
+     */
+    public function fields(array $fields): self
+    {
+        return $this->sections([FormtemplateSectionRequest::new()->fields($fields)]);
     }
 
     /**

@@ -55,15 +55,11 @@ class FormRegisterActionTest extends FormTestCase
     public function testItSendsEmailToParticipant(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $form = Form::factory()
-            ->sections([
-                FormtemplateSectionRequest::new()->fields([
-                    $this->textField('vorname')->specialType(SpecialType::FIRSTNAME),
-                    $this->textField('nachname')->specialType(SpecialType::LASTNAME),
-                    $this->textField('email')->specialType(SpecialType::EMAIL),
-                ]),
-            ])
-            ->name('Ver2')
+        $form = Form::factory()->name('Ver2')->fields([
+            $this->textField('vorname')->specialType(SpecialType::FIRSTNAME),
+            $this->textField('nachname')->specialType(SpecialType::LASTNAME),
+            $this->textField('email')->specialType(SpecialType::EMAIL),
+        ])
             ->create();
 
         $this->register($form, ['vorname' => 'Lala', 'nachname' => 'GG', 'email' => 'example@test.test'])
@@ -75,13 +71,10 @@ class FormRegisterActionTest extends FormTestCase
     public function testItDoesntSendEmailWhenNoMailFieldGiven(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $form = Form::factory()
-            ->sections([
-                FormtemplateSectionRequest::new()->fields([
-                    $this->textField('vorname')->specialType(SpecialType::FIRSTNAME),
-                    $this->textField('nachname')->specialType(SpecialType::LASTNAME),
-                ]),
-            ])
+        $form = Form::factory()->fields([
+            $this->textField('vorname')->specialType(SpecialType::FIRSTNAME),
+            $this->textField('nachname')->specialType(SpecialType::LASTNAME),
+        ])
             ->create();
 
         $this->register($form, ['vorname' => 'Lala', 'nachname' => 'GG'])
@@ -99,9 +92,7 @@ class FormRegisterActionTest extends FormTestCase
     {
         Carbon::setTestNow(Carbon::parse('2024-02-15 06:00:00'));
         $this->login()->loginNami();
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([$fieldGenerator])])
-            ->create();
+        $form = Form::factory()->fields([$fieldGenerator])->create();
 
         $response = $this->postJson(route('form.register', ['form' => $form]), $payload);
 
@@ -270,10 +261,9 @@ class FormRegisterActionTest extends FormTestCase
         $this->login()->loginNami();
         $group = Group::factory()->has(Group::factory()->count(3), 'children')->create();
         $foreignGroup = Group::factory()->create();
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->groupField('group')->name('Gruppe')->parentGroup($group->id)->required(true)
-            ])])
+        $form = Form::factory()->fields([
+            $this->groupField('group')->name('Gruppe')->parentGroup($group->id)->required(true)
+        ])
             ->create();
 
         $this->register($form, ['group' => null])
@@ -285,10 +275,9 @@ class FormRegisterActionTest extends FormTestCase
     public function testGroupFieldCanBeNullWhenNotRequired(): void
     {
         $this->login()->loginNami();
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->groupField('group')->parentGroup(Group::factory()->create()->id)->required(false)
-            ])])
+        $form = Form::factory()->fields([
+            $this->groupField('group')->parentGroup(Group::factory()->create()->id)->required(false)
+        ])
             ->create();
 
         $this->register($form, ['group' => null])
@@ -300,11 +289,10 @@ class FormRegisterActionTest extends FormTestCase
         $this->login()->loginNami();
         $group = Group::factory()->has(Group::factory()->has(Group::factory()->count(3), 'children'), 'children')->create();
         $foreignGroup = Group::factory()->create();
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->groupField('parentgroup')->name('Übergeordnete Gruppe')->parentGroup($group->id)->required(true),
-                $this->groupField('group')->name('Gruppe')->parentField('parentgroup')->required(true),
-            ])])
+        $form = Form::factory()->fields([
+            $this->groupField('parentgroup')->name('Übergeordnete Gruppe')->parentGroup($group->id)->required(true),
+            $this->groupField('group')->name('Gruppe')->parentField('parentgroup')->required(true),
+        ])
             ->create();
 
         $this->register($form, ['parentgroup' => $group->children->first()->id, 'group' => $foreignGroup->id])
@@ -317,12 +305,11 @@ class FormRegisterActionTest extends FormTestCase
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '9966', 'email' => 'max@muster.de', 'firstname' => 'Max', 'lastname' => 'Muster']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->textField('email')->namiType(NamiType::EMAIL),
-                $this->textField('firstname')->namiType(NamiType::FIRSTNAME),
-                $this->textField('lastname')->namiType(NamiType::LASTNAME),
-            ])])
+        $form = Form::factory()->fields([
+            $this->textField('email')->namiType(NamiType::EMAIL),
+            $this->textField('firstname')->namiType(NamiType::FIRSTNAME),
+            $this->textField('lastname')->namiType(NamiType::LASTNAME),
+        ])
             ->create();
 
         $this->register($form, ['email' => 'max@muster.de', 'firstname' => 'Max', 'lastname' => 'Muster'])->assertOk();
@@ -333,10 +320,9 @@ class FormRegisterActionTest extends FormTestCase
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '9966', 'email' => 'max@muster.de']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->textField('email'),
-            ])])
+        $form = Form::factory()->fields([
+            $this->textField('email'),
+        ])
             ->create();
 
         $this->register($form, ['email' => 'max@muster.de'])->assertOk();
@@ -348,10 +334,9 @@ class FormRegisterActionTest extends FormTestCase
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '9966', 'email' => 'max@muster.de']);
         $this->createMember(['mitgliedsnr' => '9967', 'email' => 'max@muster.de']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->textField('email')->namiType(NamiType::EMAIL),
-            ])])
+        $form = Form::factory()->fields([
+            $this->textField('email')->namiType(NamiType::EMAIL),
+        ])
             ->create();
 
         $this->register($form, ['email' => 'max@muster.de'])->assertOk();
@@ -366,10 +351,9 @@ class FormRegisterActionTest extends FormTestCase
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505']);
         $this->createMember(['mitgliedsnr' => '5506']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+        ])
             ->create();
 
         $this->register($form, ['members' => [['id' => '5505'], ['id' => '5506']]])
@@ -418,11 +402,10 @@ class FormRegisterActionTest extends FormTestCase
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505', ...$memberAttributes]);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->textField('other')->required(true)->namiType($type),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->textField('other')->required(true)->namiType($type),
+        ])
             ->create();
 
         $this->register($form, ['other' => '::other::', 'members' => [['id' => '5505']]])->assertOk();
@@ -433,11 +416,10 @@ class FormRegisterActionTest extends FormTestCase
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->textField('other')->required(false),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->textField('other')->required(false),
+        ])
             ->create();
 
         $this->register($form, ['other' => '::string::', 'members' => [['id' => '5505', 'other' => 'othervalue']]])
@@ -450,11 +432,10 @@ class FormRegisterActionTest extends FormTestCase
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505']);
         $this->createMember(['mitgliedsnr' => '5506']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->textField('other')->name('Andere')->required(true),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->textField('other')->name('Andere')->required(true),
+        ])
             ->create();
 
         $this->register($form, ['other' => 'ooo', 'members' => [['id' => '5505', 'other' => ''], ['id' => '5506', 'other' => '']]])
@@ -465,11 +446,10 @@ class FormRegisterActionTest extends FormTestCase
     public function testItValidatesIfMemberExists(): void
     {
         $this->login()->loginNami();
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->textField('other')->required(true),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->textField('other')->required(true),
+        ])
             ->create();
 
         $this->register($form, ['other' => '::string::', 'members' => [['id' => '9999', 'other' => '::string::']]])
@@ -480,11 +460,10 @@ class FormRegisterActionTest extends FormTestCase
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->checkboxesField('other')->name('Andere')->options(['A', 'B']),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->checkboxesField('other')->name('Andere')->options(['A', 'B']),
+        ])
             ->create();
 
         $this->register($form, ['other' => [], 'members' => [
@@ -497,11 +476,10 @@ class FormRegisterActionTest extends FormTestCase
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->checkboxesField('other')->name('Andere')->options(['A', 'B']),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->checkboxesField('other')->name('Andere')->options(['A', 'B']),
+        ])
             ->create();
 
         $this->register($form, ['other' => [], 'members' => [
@@ -514,12 +492,11 @@ class FormRegisterActionTest extends FormTestCase
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505', 'firstname' => 'Paula']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->textField('other')->required(true)->forMembers(false)->options(['A', 'B']),
-                $this->textField('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->textField('other')->required(true)->forMembers(false)->options(['A', 'B']),
+            $this->textField('firstname')->required(true)->namiType(NamiType::FIRSTNAME),
+        ])
             ->create();
 
         $this->register($form, ['firstname' => 'A', 'other' => 'B', 'members' => [['id' => '5505']]])
@@ -531,10 +508,9 @@ class FormRegisterActionTest extends FormTestCase
     public function testNamiFieldCanBeEmptyArray(): void
     {
         $this->login()->loginNami();
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+        ])
             ->create();
 
         $this->register($form, ['members' => []])->assertOk();
@@ -544,10 +520,9 @@ class FormRegisterActionTest extends FormTestCase
     public function testNamiFieldMustBeArray(): void
     {
         $this->login()->loginNami();
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+        ])
             ->create();
 
         $this->register($form, ['members' => null])->assertJsonValidationErrors(['members']);
@@ -557,10 +532,9 @@ class FormRegisterActionTest extends FormTestCase
     {
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505']);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+        ])
             ->create();
 
         $this->register($form, ['members' => [['id' => '5505']]])->assertOk();
@@ -573,12 +547,11 @@ class FormRegisterActionTest extends FormTestCase
         $bezirk = Group::factory()->level(Level::REGION)->create();
         $stamm = Group::factory()->for($bezirk, 'parent')->level(Level::GROUP)->create();
         $this->createMember(['mitgliedsnr' => '5505', 'group_id' => $stamm->id]);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->groupField('bezirk')->forMembers(false)->namiType(NamiType::REGION),
-                $this->groupField('stamm')->forMembers(false)->namiType(NamiType::STAMM),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->groupField('bezirk')->forMembers(false)->namiType(NamiType::REGION),
+            $this->groupField('stamm')->forMembers(false)->namiType(NamiType::STAMM),
+        ])
             ->create();
 
         $this->register($form, ['bezirk' => $bezirk->id, 'stamm' => $stamm->id, 'members' => [['id' => '5505']]])->assertOk();
@@ -591,11 +564,10 @@ class FormRegisterActionTest extends FormTestCase
         $this->login()->loginNami();
         $bezirk = Group::factory()->level(Level::REGION)->create();
         $this->createMember(['mitgliedsnr' => '5505', 'group_id' => $bezirk->id]);
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->namiField('members'),
-                $this->groupField('bezirk')->forMembers(false)->namiType(NamiType::REGION),
-            ])])
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->groupField('bezirk')->forMembers(false)->namiType(NamiType::REGION),
+        ])
             ->create();
 
         $this->register($form, ['bezirk' => $bezirk->id, 'members' => [['id' => '5505']]])->assertOk();
