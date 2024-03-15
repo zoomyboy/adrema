@@ -31,14 +31,6 @@ class ParticipantFactory extends Factory
     }
 
     /**
-     * @param array<int, FormtemplateSectionRequest> $sections
-     */
-    public function sections(array $sections): self
-    {
-        return $this->state(['config' => ['sections' => array_map(fn ($section) => $section->create(), $sections)]]);
-    }
-
-    /**
      * @param array<string, mixed> $data
      */
     public function data(array $data): self

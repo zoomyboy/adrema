@@ -93,8 +93,16 @@ abstract class Field extends Data
     {
         return [
             $this->key => $this->value,
-            $this->getDisplayAttribute() => $this->getPresenter()->present($this->value),
+            $this->getDisplayAttribute() => $this->presentRaw(),
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function presentRaw()
+    {
+        return $this->getPresenter()->present($this->value);
     }
 
     /**

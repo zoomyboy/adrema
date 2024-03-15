@@ -3,6 +3,7 @@
 namespace App\Form\Models;
 
 use App\Form\Data\FieldCollection;
+use App\Form\Data\FormConfigData;
 use App\Form\Mails\ConfirmRegistrationMail;
 use App\Form\Scopes\ParticipantFilterScope;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,6 +51,17 @@ class Participant extends Model
     public function getFields(): FieldCollection
     {
         return FieldCollection::fromRequest($this->form, $this->data);
+    }
+
+    public function getConfig(): FormConfigData
+    {
+        return tap($this->form->config, function ($config) {
+            $config->sections->each(function ($section) {
+                $section->fields->each(function ($field) {
+                    $field->value = $this->getFields()->find($field)->value;
+                });
+            });
+        });
     }
 
     public function sendConfirmationMail(): void

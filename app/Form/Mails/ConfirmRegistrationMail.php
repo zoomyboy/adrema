@@ -2,6 +2,8 @@
 
 namespace App\Form\Mails;
 
+use App\Form\Data\FormConfigData;
+use App\Form\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,6 +15,9 @@ class ConfirmRegistrationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public string $fullname;
+    public FormConfigData $config;
+
     /**
      * Create a new message instance.
      *
@@ -20,7 +25,8 @@ class ConfirmRegistrationMail extends Mailable
      */
     public function __construct(public Participant $participant)
     {
-        //
+        $this->fullname = $participant->getFields()->getFullname();
+        $this->config = $participant->getConfig();
     }
 
     /**
@@ -43,7 +49,7 @@ class ConfirmRegistrationMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            markdown: 'mail.form.confirm-registration',
         );
     }
 

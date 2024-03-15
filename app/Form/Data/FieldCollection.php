@@ -40,15 +40,21 @@ class FieldCollection extends Collection
      */
     public function getMailRecipient(): ?stdClass
     {
-        $firstname = $this->findBySpecialType(SpecialType::FIRSTNAME)?->value;
-        $lastname = $this->findBySpecialType(SpecialType::LASTNAME)?->value;
         $email = $this->findBySpecialType(SpecialType::EMAIL)?->value;
 
-        return $firstname && $lastname && $email
+        return $this->getFullname() && $email
             ? (object) [
-                'name' => "$firstname $lastname",
+                'name' => $this->getFullname(),
                 "email" => $email,
             ] : null;
+    }
+
+    public function getFullname(): ?string
+    {
+        $firstname = $this->findBySpecialType(SpecialType::FIRSTNAME)?->value;
+        $lastname = $this->findBySpecialType(SpecialType::LASTNAME)?->value;
+
+        return $firstname && $lastname ? "$firstname $lastname" : null;
     }
 
     /**
@@ -57,6 +63,11 @@ class FieldCollection extends Collection
     public static function fromRequest(Form $form, array $input): self
     {
         return $form->getFields()->each(fn ($field) => $field->value = array_key_exists($field->key, $input) ? $input[$field->key] : $field->default());
+    }
+
+    public function find(Field $givenField): ?Field
+    {
+        return $this->first(fn ($field) => $field->key === $givenField->key);
     }
 
     /**
