@@ -6,6 +6,7 @@ use App\Form\Enums\NamiType;
 use App\Form\Enums\SpecialType;
 use App\Form\Mails\ConfirmRegistrationMail;
 use App\Form\Models\Form;
+use App\Form\Models\Participant;
 use App\Group;
 use App\Group\Enums\Level;
 use App\Member\Member;
@@ -62,12 +63,13 @@ class FormRegisterActionTest extends FormTestCase
                     $this->textField('email')->specialType(SpecialType::EMAIL),
                 ]),
             ])
+            ->name('Ver2')
             ->create();
 
         $this->register($form, ['vorname' => 'Lala', 'nachname' => 'GG', 'email' => 'example@test.test'])
             ->assertOk();
 
-        Mail::assertQueued(ConfirmRegistrationMail::class, fn ($message) => $message->hasTo('example@test.test', 'Lala GG'));
+        Mail::assertQueued(ConfirmRegistrationMail::class, fn ($message) => $message->hasTo('example@test.test', 'Lala GG') && $message->hasSubject('Deine Anmeldung zu Ver2'));
     }
 
     public function testItDoesntSendEmailWhenNoMailFieldGiven(): void

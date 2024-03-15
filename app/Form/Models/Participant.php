@@ -58,6 +58,6 @@ class Participant extends Model
             return;
         }
 
-        Mail::to($this->getFields()->getMailRecipient())->queue(new ConfirmRegistrationMail());
+        Mail::to($this->getFields()->getMailRecipient())->queue(new ConfirmRegistrationMail($this));
     }
 }

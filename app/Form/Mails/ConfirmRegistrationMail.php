@@ -18,7 +18,7 @@ class ConfirmRegistrationMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public Participant $participant)
     {
         //
     }
@@ -31,7 +31,7 @@ class ConfirmRegistrationMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Confirm Registration Mail',
+            subject: 'Deine Anmeldung zu ' . $this->participant->form->name,
         );
     }
 
