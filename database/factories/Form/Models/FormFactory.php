@@ -61,7 +61,7 @@ class FormFactory extends Factory
     }
 
     /**
-     * @param array<int, FormtemplateFieldRequest> $sections
+     * @param array<int, FormtemplateFieldRequest> $fields
      */
     public function fields(array $fields): self
     {

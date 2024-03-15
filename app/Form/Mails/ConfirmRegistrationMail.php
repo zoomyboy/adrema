@@ -56,7 +56,7 @@ class ConfirmRegistrationMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function attachments()
     {
