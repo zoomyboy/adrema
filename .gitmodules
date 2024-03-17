@@ -7,9 +7,9 @@
 [submodule "packages/tex"]
 	path = packages/tex
 	url = https://git.zoomyboy.de/pille/tex
-[submodule "packages/adrema-plugin"]
-	path = packages/adrema-plugin
-	url = https://git.zoomyboy.de/silva/adrema-plugin.git
+[submodule "packages/oc-adrema-plugin"]
+	path = packages/oc-adrema-plugin
+	url = https://git.zoomyboy.de/silva/oc-adrema-plugin.git
 [submodule "packages/medialibrary-helper"]
 	path = packages/medialibrary-helper
 	url = https://git.zoomyboy.de/zoomyboy/medialibrary-helper.git
