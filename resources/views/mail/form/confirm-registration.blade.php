@@ -2,7 +2,8 @@
 # Hallo {{$fullname}},
 
 {{ $participant->form->mail_top }}
-{{ $participant->form->mail_bottom }}
+
+# Deine Daten
 
 @foreach($config->sections as $section)
 ## {{$section->name}}
@@ -11,13 +12,6 @@
 @endforeach
 @endforeach
 
-Im Anhang findet ihr die aktuelle Rechnung des Stammes Silva für das laufende Jahr. Bitte begleicht diese bis zum angegebenen Datum.
-
-@component('mail::subcopy')
-
-Herzliche Grüße und gut Pfad
-
-Der Stammesvorstand
-@endcomponent
+{{ $participant->form->mail_bottom }}
 
 @endcomponent
