@@ -387,6 +387,24 @@ class FormRegisterActionTest extends FormTestCase
         ];
 
         yield [
+            ['address' => 'Maxstr 5'],
+            NamiType::ADDRESS,
+            'Maxstr 5'
+        ];
+
+        yield [
+            ['zip' => 44444],
+            NamiType::ZIP,
+            '44444'
+        ];
+
+        yield [
+            ['location' => 'Hilden'],
+            NamiType::LOCATION,
+            'Hilden'
+        ];
+
+        yield [
             ['birthday' => '2023-06-06'],
             NamiType::BIRTHDAY,
             '2023-06-06'

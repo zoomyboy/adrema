@@ -14,6 +14,9 @@ enum NamiType: string
     case REGION = 'Bezirk';
     case STAMM = 'Stamm';
     case EMAIL = 'E-Mail-Adresse';
+    case ADDRESS = 'Adresse';
+    case ZIP = 'PLZ';
+    case LOCATION = 'Ort';
 
     /**
      * @return array<int, array{name: string, id: string}>
@@ -34,6 +37,9 @@ enum NamiType: string
             static::REGION => $this->matchRegion($member),
             static::STAMM => $this->matchGroup($member),
             static::EMAIL => $member->email,
+            static::ADDRESS => $member->address,
+            static::ZIP => $member->zip,
+            static::LOCATION => $member->location,
         };
     }
 
@@ -47,9 +53,8 @@ enum NamiType: string
             static::FIRSTNAME => $query->where('firstname', $value),
             static::LASTNAME => $query->where('lastname', $value),
             static::BIRTHDAY => $query->where('birthday', $value),
-            static::REGION => $query,
-            static::STAMM => $query,
             static::EMAIL => $query->where('email', $value),
+            default => $query,
         };
     }
 
