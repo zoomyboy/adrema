@@ -70,7 +70,7 @@ abstract class Field extends Data
     {
         return collect(glob(base_path('app/Form/Fields/*.php')))
             ->filter(fn ($fieldClass) => preg_match('/[A-Za-z]Field\.php$/', $fieldClass) === 1)
-            ->map(fn ($fieldClass) => str($fieldClass)->replace(base_path(''), '')->replace('/app', '/App')->replace('.php', '')->replace('/', '\\')->toString())
+            ->map(fn ($fieldClass) => str($fieldClass)->replaceFirst(base_path(''), '')->replace('/app', '/App')->replace('.php', '')->replace('/', '\\')->toString())
             ->values()
             ->toArray();
     }
