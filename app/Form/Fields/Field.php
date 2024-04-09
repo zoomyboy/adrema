@@ -26,7 +26,7 @@ abstract class Field extends Data
     public ColumnData $columns;
     public bool $forMembers;
     public ?SpecialType $specialType = null;
-    public string $hint;
+    public ?string $hint;
 
     /** @var mixed */
     public $value;
