@@ -21,6 +21,7 @@ use App\Form\Enums\SpecialType;
  * @method self namiType(?NamiType $type)
  * @method self forMembers(bool $forMembers)
  * @method self specialType(SpecialType $specialType)
+ * @method self hint(string $hint)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {
@@ -35,6 +36,7 @@ class FormtemplateFieldRequest extends RequestFactory
             'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
             'nami_type' => null,
             'for_members' => true,
+            'hint' => '',
         ];
     }
 

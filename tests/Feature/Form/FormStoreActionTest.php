@@ -29,7 +29,7 @@ class FormStoreActionTest extends FormTestCase
             ->mailTop('Guten Tag')
             ->mailBottom('Viele Grüße')
             ->headerImage('htzz.jpg')
-            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()->namiType(NamiType::BIRTHDAY)->forMembers(false)])])
+            ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()->namiType(NamiType::BIRTHDAY)->forMembers(false)->hint('hhh')])])
             ->fake();
 
         $this->postJson(route('form.store'))->assertOk();
@@ -46,6 +46,7 @@ class FormStoreActionTest extends FormTestCase
         $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
         $this->assertEquals('2023-07-08', $form->to->format('Y-m-d'));
         $this->assertEquals('Geburtstag', $form->config->sections->get(0)->fields->get(0)->namiType->value);
+        $this->assertEquals('hhh', $form->config->sections->get(0)->fields->get(0)->hint);
         $this->assertFalse($form->config->sections->get(0)->fields->get(0)->forMembers);
         $this->assertCount(1, $form->getMedia('headerImage'));
         $this->assertEquals('formname.jpg', $form->getMedia('headerImage')->first()->file_name);

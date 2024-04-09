@@ -22,7 +22,7 @@ class FormtemplateStoreActionTest extends FormTestCase
         $this->login()->loginNami()->withoutExceptionHandling();
         FormtemplateRequest::new()->name('testname')->sections([
             FormtemplateSectionRequest::new()->name('Persönliches')->fields([
-                $this->textField('a')->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false),
+                $this->textField('a')->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false)->hint('hhh'),
                 $this->textareaField('b')->name('lala2')->required(false)->specialType(SpecialType::FIRSTNAME)->rows(10),
             ]),
         ])->fake();
@@ -33,6 +33,7 @@ class FormtemplateStoreActionTest extends FormTestCase
         $this->assertEquals('Persönliches', $formtemplate->config->sections->get(0)->name);
         $this->assertEquals('lala1', $formtemplate->config->sections->get(0)->fields->get(0)->name);
         $this->assertNull($formtemplate->config->sections->get(0)->fields->get(0)->specialType);
+        $this->assertEquals('hhh', $formtemplate->config->sections->get(0)->fields->get(0)->hint);
         $this->assertInstanceOf(TextField::class, $formtemplate->config->sections->get(0)->fields->get(0));
         $this->assertInstanceOf(TextareaField::class, $formtemplate->config->sections->get(0)->fields->get(1));
         $this->assertEquals(false, $formtemplate->config->sections->get(0)->fields->get(1)->required);

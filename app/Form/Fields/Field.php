@@ -26,6 +26,7 @@ abstract class Field extends Data
     public ColumnData $columns;
     public bool $forMembers;
     public ?SpecialType $specialType = null;
+    public string $hint;
 
     /** @var mixed */
     public $value;
@@ -150,6 +151,7 @@ abstract class Field extends Data
                 'nami_type' => null,
                 'for_members' => true,
                 'special_type' => null,
+                'hint' => '',
                 ...collect(static::meta())->mapWithKeys(fn ($meta) => [$meta['key'] => $meta['default']])->toArray(),
             ],
         ];
