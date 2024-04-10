@@ -503,8 +503,8 @@ class Member extends Model implements Geolocatable
             'group_id' => $this->group->id,
             'group_name' => $this->group->inner_name ?: $this->group->name,
             'links' => [
-                'show' => route('member.show', ['member' => $this]),
-                'edit' => route('member.edit', ['member' => $this]),
+                'show' => route('member.show', ['member' => $this], false),
+                'edit' => route('member.edit', ['member' => $this], false),
             ],
             'age_group_icon' => $this->ageGroupMemberships->first()?->subactivity->slug,
             'is_leader' => $this->leaderMemberships()->count() > 0,
