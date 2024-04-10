@@ -8,6 +8,7 @@ export default function useSearch() {
             {
                 q: text,
                 filter: filters,
+                sort: ['lastname:asc', 'firstname:asc'],
                 ...options,
             },
             {headers: {Authorization: 'Bearer ' + document.querySelector('meta[name="meilisearch_key"]').content}}
