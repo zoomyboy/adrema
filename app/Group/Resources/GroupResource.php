@@ -24,7 +24,7 @@ class GroupResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->name,
+            'name' => $request->has('prefer_inner') && $this->inner_name ? $this->inner_name : $this->name,
             'inner_name' => $this->inner_name,
             'parent_id' => $this->parent_id,
             'id' => $this->id,

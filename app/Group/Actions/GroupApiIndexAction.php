@@ -6,8 +6,6 @@ use App\Group;
 use App\Group\Resources\GroupResource;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Inertia\Inertia;
-use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class GroupApiIndexAction

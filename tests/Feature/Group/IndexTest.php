@@ -36,6 +36,17 @@ class IndexTest extends TestCase
             ->assertJsonPath('meta.links.bulkstore', route('group.bulkstore'));
     }
 
+    public function testItPrefersInnerName(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        $group = Group::factory()->create(['name' => 'Afff', 'inner_name' => 'Gruppe', 'level' => Level::REGION]);
+
+        $this->get('/api/group?prefer_inner')
+            ->assertJsonPath('data.1.name', 'Gruppe')
+            ->assertJsonPath('data.1.id', $group->id);
+    }
+
     public function testItDisplaysGroupsForParent(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
