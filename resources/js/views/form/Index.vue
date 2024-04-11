@@ -112,9 +112,11 @@
                     <div v-text="form.participants_count"></div>
                 </td>
                 <td>
-                    <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(form)"><ui-sprite src="pencil"></ui-sprite></a>
-                    <a v-tooltip="`Teilnehmende anzeigen`" href="#" class="ml-2 inline-flex btn btn-info btn-sm" @click.prevent="showParticipants(form)"><ui-sprite src="user"></ui-sprite></a>
-                    <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = form"><ui-sprite src="trash"></ui-sprite></a>
+                    <div class="flex space-x-2">
+                        <ui-action-button tooltip="Bearbeiten" class="btn-warning" icon="pencil" @click.prevent="edit(form)"></ui-action-button>
+                        <ui-action-button tooltip="Teilnehmende anzeigen" class="btn-info" icon="user" @click.prevent="showParticipants(form)"></ui-action-button>
+                        <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="deleting = form"></ui-action-button>
+                    </div>
                 </td>
             </tr>
         </table>

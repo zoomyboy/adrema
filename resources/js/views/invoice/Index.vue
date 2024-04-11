@@ -99,10 +99,12 @@
                     <div v-text="invoice.via"></div>
                 </td>
                 <td>
-                    <a v-tooltip="`Anschauen`" :href="invoice.links.pdf" target="_BLANK" class="inline-flex btn btn-info btn-sm"><ui-sprite src="eye"></ui-sprite></a>
-                    <a v-tooltip="`Erinnerung anschauen`" :href="invoice.links.rememberpdf" target="_BLANK" class="ml-2 inline-flex btn btn-info btn-sm"><ui-sprite src="document"></ui-sprite></a>
-                    <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(invoice)"><ui-sprite src="pencil"></ui-sprite></a>
-                    <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = invoice"><ui-sprite src="trash"></ui-sprite></a>
+                    <div class="flex space-x-2">
+                        <ui-action-button tooltip="Anschauen" :href="invoice.links.pdf" class="btn-info" icon="eye" blank></ui-action-button>
+                        <ui-action-button tooltip="Erinnerung anschauen" :href="invoice.links.rememberpdf" class="btn-info" icon="document" blank></ui-action-button>
+                        <ui-action-button tooltip="Bearbeiten" class="btn-warning" icon="pencil" @click.prevent="edit(invoice)"></ui-action-button>
+                        <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="deleting = invoice"></ui-action-button>
+                    </div>
                 </td>
             </tr>
         </table>
