@@ -25,7 +25,7 @@ class FormUpdateMetaAction
             'sorting.0' => 'required|string',
             'sorting.1' => 'required|string|in:asc,desc',
             'active_columns' => 'array',
-            'active_columns.*' => ['string', Rule::in($form->getFields()->pluck('key')->toArray())]
+            'active_columns.*' => ['string', Rule::in([...$form->getFields()->pluck('key')->toArray(), 'created_at'])]
         ];
     }
 

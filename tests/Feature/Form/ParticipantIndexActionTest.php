@@ -6,6 +6,7 @@ use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Group;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ParticipantIndexActionTest extends FormTestCase
@@ -94,5 +95,28 @@ class ParticipantIndexActionTest extends FormTestCase
 
         $this->callFilter('form.participant.index', [], ['form' => $form])
             ->assertJsonPath('data.0.mitglieder_display', '393, 394');
+    }
+
+    public function testItShowsRegisteredAtColumnAndAttribute(): void
+    {
+        Carbon::setTestNow(Carbon::parse('2023-03-05 06:00:00'));
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()
+            ->has(Participant::factory()->data(['vorname' => 'Max']))
+            ->sections([
+                FormtemplateSectionRequest::new()->fields([
+                    $this->textField('vorname')->name('Vorname'),
+                ]),
+            ])
+            ->create();
+
+        $this->callFilter('form.participant.index', [], ['form' => $form])
+            ->assertJsonPath('data.0.vorname', 'Max')
+            ->assertJsonPath('data.0.vorname_display', 'Max')
+            ->assertJsonPath('data.0.created_at', '2023-03-05 06:00:00')
+            ->assertJsonPath('data.0.created_at_display', '05.03.2023')
+            ->assertJsonPath('meta.columns.1.name', 'Registriert am')
+            ->assertJsonPath('meta.columns.1.id', 'created_at')
+            ->assertJsonPath('meta.columns.1.display_attribute', 'created_at_display');
     }
 }

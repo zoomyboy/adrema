@@ -19,7 +19,11 @@ class ParticipantResource extends JsonResource
      */
     public function toArray($request)
     {
-        return $this->getModel()->getFields()->present();
+        return [
+            ...$this->getModel()->getFields()->present(),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'created_at_display' => $this->created_at->format('d.m.Y'),
+        ];
     }
 
     /**
@@ -38,6 +42,11 @@ class ParticipantResource extends JsonResource
                     'base_type' => class_basename($field),
                     'id' => $field->key,
                     'display_attribute' => $field->getDisplayAttribute(),
+                ])
+                ->push([
+                    'name' => 'Registriert am',
+                    'id' => 'created_at',
+                    'display_attribute' => 'created_at_display'
                 ])
         ];
     }
