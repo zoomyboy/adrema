@@ -38,12 +38,12 @@ class FormtemplateIndexActionTest extends TestCase
                     'type' => 'DropdownField',
                     'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                     'value' => null,
-                    'required' => false,
                     'nami_type' => null,
                     'for_members' => true,
                     'special_type' => null,
                     'hint' => '',
                     'options' => [],
+                    'required' => true,
                 ]
             ])
             ->assertInertiaPath('data.meta.fields.7', [
@@ -54,11 +54,11 @@ class FormtemplateIndexActionTest extends TestCase
                     'type' => 'TextField',
                     'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                     'value' => '',
-                    'required' => false,
                     'nami_type' => null,
                     'for_members' => true,
                     'special_type' => null,
                     'hint' => '',
+                    'required' => true,
                 ]
             ])
             ->assertInertiaPath('data.meta.fields.8', [
@@ -69,12 +69,12 @@ class FormtemplateIndexActionTest extends TestCase
                     'type' => 'TextareaField',
                     'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                     'value' => '',
-                    'required' => false,
                     'nami_type' => null,
                     'for_members' => true,
                     'special_type' => null,
                     'hint' => '',
                     'rows' => 5,
+                    'required' => true,
                 ]
             ])
             ->assertInertiaPath('data.meta.default', [

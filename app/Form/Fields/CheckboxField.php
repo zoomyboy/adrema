@@ -21,7 +21,7 @@ class CheckboxField extends Field
     {
         return [
             ['key' => 'description', 'default' => '', 'rules' => ['description' => 'required|string'], 'label' => 'Beschreibung'],
-            ['key' => 'required', 'default' => false, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
+            ['key' => 'required', 'default' => true, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
         ];
     }
 

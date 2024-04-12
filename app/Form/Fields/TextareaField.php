@@ -20,7 +20,7 @@ class TextareaField extends Field
     {
         return [
             ['key' => 'rows', 'default' => 5, 'rules' => ['rows' => 'present|integer|gt:0'], 'label' => 'Zeilen'],
-            ['key' => 'required', 'default' => false, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
+            ['key' => 'required', 'default' => true, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
         ];
     }
 

@@ -19,7 +19,7 @@ class TextField extends Field
     public static function meta(): array
     {
         return [
-            ['key' => 'required', 'default' => false, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
+            ['key' => 'required', 'default' => true, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
         ];
     }
 

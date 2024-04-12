@@ -25,7 +25,7 @@ class GroupField extends Field
     public static function meta(): array
     {
         return [
-            ['key' => 'required', 'default' => false, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
+            ['key' => 'required', 'default' => true, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
             ['key' => 'parent_field', 'default' => null, 'rules' => ['parent_field' => 'present|nullable|string'], 'label' => 'Übergeordnetes Feld'],
             ['key' => 'parent_group', 'default' => null, 'rules' => ['parent_group' => ['present', 'nullable', Rule::in(Group::pluck('id')->toArray())]], 'label' => 'Übergeordnete Gruppierung'],
         ];

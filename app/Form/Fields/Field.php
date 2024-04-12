@@ -147,7 +147,6 @@ abstract class Field extends Data
                 'type' => static::type(),
                 'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
                 'value' => static::default(),
-                'required' => false,
                 'nami_type' => null,
                 'for_members' => true,
                 'special_type' => null,
