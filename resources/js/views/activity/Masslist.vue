@@ -15,6 +15,7 @@
                 ></f-select>
                 <f-select v-model="meta.subactivity_id" :options="props.subactivities[meta.activity_id]" name="subactivity_id" label="Untertätigkeit" size="sm"></f-select>
                 <f-select v-model="meta.group_id" :options="props.groups" label="Gruppierung" size="sm" name="group_id"></f-select>
+                <f-text id="search_text" v-model="searchText" label="Suchen …" size="sm" name="search_text"></f-text>
             </div>
             <div class="grid gap-2 grid-cols-6 mt-4">
                 <f-switch v-for="member in members.hits" :id="`member-${member.id}`" :key="member.id" v-model="selected" :value="member.id" :label="member.fullname" size="sm"></f-switch>
@@ -52,6 +53,11 @@ const props = defineProps({
     },
 });
 
+const searchText = ref('');
+watch(searchText, (newValue) => {
+    reloadReal(1);
+});
+
 const meta = ref({
     activity_id: null,
     subactivity_id: null,
@@ -77,7 +83,7 @@ watch(meta, async (newValue) => {
 }, { deep: true });
 
 async function reloadReal(page) {
-    const results = await search('', [], { page: page, hitsPerPage: 80 });
+    const results = await search(searchText.value, [], { page: page, hitsPerPage: 80 });
     members.value = results;
 }
 reloadReal(1);
