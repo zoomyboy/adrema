@@ -141,12 +141,18 @@ return [
                 'searchableAttributes' => ['fullname', 'address'],
                 'sortableAttributes' => ['lastname', 'firstname'],
                 'displayedAttributes' => ['age_group_icon', 'group_name', 'links', 'is_leader', 'lastname', 'firstname', 'fullname', 'address', 'ausstand', 'birthday', 'id', 'memberships', 'bill_kind', 'group_id'],
+                'pagination' => [
+                    'maxTotalHits' => 1000000,
+                ]
             ],
             Form::class => [
                 'filterableAttributes' => ['to'],
                 'searchableAttributes' => ['name'],
                 'sortableAttributes' => ['from',],
                 'displayedAttributes' => ['from', 'name', 'id', 'to'],
+                'pagination' => [
+                    'maxTotalHits' => 1000000,
+                ]
             ]
         ],
     ],
