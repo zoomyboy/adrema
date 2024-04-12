@@ -4,6 +4,8 @@ namespace App\Form\Fields;
 
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
+use App\Form\Presenters\BooleanPresenter;
+use App\Form\Presenters\Presenter;
 use Faker\Generator;
 use Illuminate\Validation\Rule;
 
@@ -71,5 +73,10 @@ class CheckboxField extends Field
      */
     public function afterRegistration(Form $form, Participant $participant, array $input): void
     {
+    }
+
+    public function getPresenter(): Presenter
+    {
+        return app(BooleanPresenter::class);
     }
 }

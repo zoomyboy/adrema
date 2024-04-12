@@ -62,7 +62,10 @@ class FieldCollection extends Collection
      */
     public static function fromRequest(Form $form, array $input): self
     {
-        return $form->getFields()->each(fn ($field) => $field->value = array_key_exists($field->key, $input) ? $input[$field->key] : $field->default());
+        return $form->getFields()->map(function ($field) use ($input) {
+            $field->value = array_key_exists($field->key, $input) ? $input[$field->key] : $field->default();
+            return $field;
+        });
     }
 
     public function find(Field $givenField): ?Field
