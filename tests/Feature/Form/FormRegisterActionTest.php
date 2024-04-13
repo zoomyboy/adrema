@@ -254,6 +254,18 @@ class FormRegisterActionTest extends FormTestCase
             ['vorname' => 5],
             ['vorname' => 'Vorname der Mutter muss ein String sein.']
         ];
+
+        yield [
+            $this->emailField('email')->name('Mail')->required(true),
+            ['email' => 'alaaa'],
+            ['email' => 'Mail muss eine gültige E-Mail-Adresse sein.']
+        ];
+
+        yield [
+            $this->emailField('email')->name('Mail')->required(false),
+            ['email' => 'alaaa'],
+            ['email' => 'Mail muss eine gültige E-Mail-Adresse sein.']
+        ];
     }
 
     public function testItValidatesGroupFieldWithParentGroupField(): void

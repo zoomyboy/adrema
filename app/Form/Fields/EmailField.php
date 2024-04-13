@@ -17,6 +17,6 @@ class EmailField extends TextField
      */
     public function getRegistrationRules(Form $form): array
     {
-        return [$this->key => $this->required ? ['required', 'string', 'email'] : ['nullable', 'string']];
+        return [$this->key => $this->required ? ['required', 'string', 'email'] : ['nullable', 'email', 'string']];
     }
 }

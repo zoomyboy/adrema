@@ -6,6 +6,7 @@ use App\Form\Fields\CheckboxesField;
 use App\Form\Fields\CheckboxField;
 use App\Form\Fields\DateField;
 use App\Form\Fields\DropdownField;
+use App\Form\Fields\EmailField;
 use App\Form\Fields\GroupField;
 use App\Form\Fields\NamiField;
 use App\Form\Fields\RadioField;
@@ -24,6 +25,11 @@ trait CreatesFormFields
     protected function textField(?string $key = null): FormtemplateFieldRequest
     {
         return FormtemplateFieldRequest::type(TextField::class)->key($key ?? $this->randomKey());
+    }
+
+    protected function emailField(?string $key = null): FormtemplateFieldRequest
+    {
+        return FormtemplateFieldRequest::type(EmailField::class)->key($key ?? $this->randomKey());
     }
 
     protected function checkboxesField(?string $key = null): FormtemplateFieldRequest
@@ -63,6 +69,6 @@ trait CreatesFormFields
 
     protected function randomKey(): string
     {
-        return preg_replace('/[\-0-9]/', '', str()->uuid().str()->uuid());
+        return preg_replace('/[\-0-9]/', '', str()->uuid() . str()->uuid());
     }
 }
