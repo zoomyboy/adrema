@@ -80,6 +80,7 @@ class FormResource extends JsonResource
                 'mail_bottom' => null,
                 'config' => null,
                 'header_image' => null,
+                'mailattachments' => [],
                 'id' => null,
             ],
             'section_default' => [

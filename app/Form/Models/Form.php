@@ -4,13 +4,10 @@ namespace App\Form\Models;
 
 use App\Form\Data\FieldCollection;
 use App\Form\Data\FormConfigData;
-use App\Form\Fields\Field;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
@@ -65,6 +62,7 @@ class Form extends Model implements HasMedia
             ->registerMediaConversions(function (Media $media) {
                 $this->addMediaConversion('square')->fit(Manipulations::FIT_CROP, 400, 400);
             });
+        $this->addMediaCollection('mailattachments');
     }
 
     /**

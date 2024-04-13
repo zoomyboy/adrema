@@ -38,7 +38,7 @@
         <ui-popup v-if="single !== null && single.config !== null" :heading="`Veranstaltung ${single.id ? 'bearbeiten' : 'erstellen'}`" full @close="cancel">
             <div class="flex flex-col mt-3">
                 <ui-tabs v-model="active" :entries="tabs"></ui-tabs>
-                <div v-if="active === 0" class="grid grid-cols-2 gap-3">
+                <div v-show="active === 0" class="grid grid-cols-2 gap-3">
                     <f-text id="name" v-model="single.name" name="name" label="Name" required></f-text>
                     <f-singlefile
                         id="header_image"
@@ -63,17 +63,28 @@
                     ></f-textarea>
                     <f-editor id="description" v-model="single.description" name="description" label="Beschreibung" rows="10" required></f-editor>
                 </div>
-                <div v-if="active === 1">
+                <div v-show="active === 1">
                     <ui-note class="mt-2"> Sobald sich der erste Teilnehmer für die Veranstaltung angemeldet hat, kann dieses Formular nicht mehr geändert werden. </ui-note>
                     <form-builder v-model="single.config" :meta="meta"></form-builder>
                 </div>
-                <div v-if="active === 2" class="grid gap-3">
-                    <ui-note class="mt-2">
+                <div v-show="active === 2" class="grid grid-cols-[1fr_300px] gap-3">
+                    <ui-note class="mt-2 col-span-full">
                         Hier kannst du die E-Mail anpassen, die nach der Anmeldung an den Teilnehmer verschickt wird.<br />
                         Es gibt dafür einen ersten E-Mail-Teil und einen zweiten E-Mail-Teil. Dazwischen werden die Daten des Teilnehmers aufgelistet.<br />
-                        Die Anrede ("Hallo Max Mustermann") wird automatisch an den Anfang gesetzt.</ui-note
-                    >
+                        Die Anrede ("Hallo Max Mustermann") wird automatisch an den Anfang gesetzt.<br />
+                        Außerdem kannst du Dateien hochladen, die automatisch mit angehangen werden.
+                    </ui-note>
                     <f-textarea id="mail_top" v-model="single.mail_top" name="mail_top" label="E-Mail-Teil 1" rows="8" required></f-textarea>
+                    <f-multiplefiles
+                        id="mailattachments"
+                        v-model="single.mailattachments"
+                        label="Anhänge"
+                        name="mailattachments"
+                        parent-name="form"
+                        :parent-id="single.id"
+                        collection="mailattachments"
+                        class="row-span-2"
+                    ></f-multiplefiles>
                     <f-textarea id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" rows="8" required></f-textarea>
                 </div>
             </div>

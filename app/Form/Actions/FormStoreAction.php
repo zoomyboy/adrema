@@ -39,10 +39,10 @@ class FormStoreAction
      */
     public function handle(array $attributes): Form
     {
-        return tap(
-            Form::create($attributes),
-            fn ($form) => $form->setDeferredUploads(request()->input('header_image'))
-        );
+        return tap(Form::create($attributes), function ($form) {
+            $form->setDeferredUploads(request()->input('header_image'));
+            $form->setDeferredUploads(request()->input('mailattachments'));
+        });
     }
 
     /**
