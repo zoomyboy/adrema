@@ -42,14 +42,16 @@ class FormRegisterMailTest extends FormTestCase
             FormtemplateSectionRequest::new()->name('Persönliches')->fields([
                 $this->textField('vorname')->name('Vorname')->specialType(SpecialType::FIRSTNAME),
                 $this->textField('nachname')->specialType(SpecialType::LASTNAME),
+                $this->checkboxField('fullyear')->name('Volljährig'),
             ])
         ]))
-            ->data(['vorname' => 'Max', 'nachname' => 'Muster'])
+            ->data(['vorname' => 'Max', 'nachname' => 'Muster', 'fullyear' => true])
             ->create();
 
         $mail = new ConfirmRegistrationMail($participant);
         $mail->assertSeeInText('# Hallo Max Muster');
         $mail->assertSeeInText('## Persönliches');
         $mail->assertSeeInText('* Vorname: Max');
+        $mail->assertSeeInText('* Volljährig: Ja');
     }
 }
