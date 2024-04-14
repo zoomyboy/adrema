@@ -21,4 +21,18 @@ trait FakesMedia
                 ->toMediaCollection($collection);
         });
     }
+
+    public function withDocument(string $collection, string $filename, string $content = ''): self
+    {
+        return $this->afterCreating(function (HasMedia $model) use ($filename, $collection, $content) {
+            $pathinfo = pathinfo($filename);
+
+            UploadedFile::fake()->create($filename, $content, 'application/pdf')->storeAs('media-library', $filename, 'temp');
+
+            $model->addMediaFromDisk('media-library/' . $filename, 'temp')
+                ->usingName($pathinfo['filename'])
+                ->usingFileName($pathinfo['basename'])
+                ->toMediaCollection($collection);
+        });
+    }
 }

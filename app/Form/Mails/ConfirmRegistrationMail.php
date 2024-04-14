@@ -5,11 +5,12 @@ namespace App\Form\Mails;
 use App\Form\Data\FormConfigData;
 use App\Form\Models\Participant;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class ConfirmRegistrationMail extends Mailable
 {
@@ -56,10 +57,12 @@ class ConfirmRegistrationMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, mixed>
+     * @return array<int, Attachment>
      */
     public function attachments()
     {
-        return [];
+        return $this->participant->form->getMedia('mailattachments')
+            ->map(fn ($media) => Attachment::fromStorageDisk($media->disk, $media->getPathRelativeToRoot()))
+            ->all();
     }
 }

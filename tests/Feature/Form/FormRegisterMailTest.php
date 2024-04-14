@@ -54,4 +54,24 @@ class FormRegisterMailTest extends FormTestCase
         $mail->assertSeeInText('* Vorname: Max');
         $mail->assertSeeInText('* Volljährig: Ja');
     }
+
+    public function testItAttachesMailAttachments(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $participant = Participant::factory()->for(
+            Form::factory()
+                ->fields([
+                    $this->textField('vorname')->name('Vorname')->specialType(SpecialType::FIRSTNAME),
+                    $this->textField('nachname')->specialType(SpecialType::LASTNAME),
+                ])
+                ->withDocument('mailattachments', 'beispiel.pdf', 'content1')
+                ->withDocument('mailattachments', 'beispiel2.pdf', 'content2')
+        )
+            ->data(['vorname' => 'Max', 'nachname' => 'Muster'])
+            ->create();
+
+        $mail = new ConfirmRegistrationMail($participant);
+        $mail->assertHasAttachedData('content1', 'beispiel.pdf', ['mime' => 'application/pdf']);
+        $mail->assertHasAttachedData('content2', 'beispiel2.pdf', ['mime' => 'application/pdf']);
+    }
 }
