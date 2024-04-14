@@ -2,59 +2,55 @@
     <form class="grid gap-3 mt-4 grid-cols-[1fr_max-content] items-start" @submit.prevent="submit">
         <div class="grid gap-3">
             <slot name="meta"></slot>
-            <asideform v-if="singleSection !== null" :heading="`Sektion ${singleSection.index !== null ? 'bearbeiten' : 'erstellen'}`" @close="singleSection = null" @submit="storeSection">
-                <f-text :id="`sectionform-name`" v-model="singleSection.model.name" label="Name" :name="`sectionform-name`"></f-text>
-                <f-textarea :id="`sectionform-intro`" v-model="singleSection.model.intro" label="Einleitung" :name="`sectionform-intro`"></f-textarea>
+            <asideform v-if="singleSection !== null"
+                :heading="`Sektion ${singleSection.index !== null ? 'bearbeiten' : 'erstellen'}`"
+                @close="singleSection = null" @submit="storeSection">
+                <f-text :id="`sectionform-name`" v-model="singleSection.model.name" label="Name"
+                    :name="`sectionform-name`"></f-text>
+                <f-textarea :id="`sectionform-intro`" v-model="singleSection.model.intro" label="Einleitung"
+                    :name="`sectionform-intro`"></f-textarea>
             </asideform>
-            <asideform v-if="singleSection === null && singleField === null" heading="Feld erstellen" :closeable="false" :storeable="false" @submit="storeField">
+            <asideform v-if="singleSection === null && singleField === null" heading="Feld erstellen" :closeable="false"
+                :storeable="false" @submit="storeField">
                 <div class="mt-3 grid gap-3">
-                    <a v-for="(field, index) in props.meta.fields" :key="index" class="py-2 px-3 border rounded bg-zinc-800 hover:bg-zinc-700 transition" href="#" @click.prevent="addField(field)">
+                    <a v-for="(field, index) in props.meta.fields" :key="index"
+                        class="py-2 px-3 border rounded bg-zinc-800 hover:bg-zinc-700 transition" href="#"
+                        @click.prevent="addField(field)">
                         <span v-text="field.name"></span>
                     </a>
                 </div>
             </asideform>
-            <asideform
-                v-if="singleSection === null && singleField !== null"
-                :heading="`Feld ${singleField.index !== null ? 'bearbeiten' : 'erstellen'}`"
-                @close="singleField = null"
-                @submit="storeField"
-            >
+            <asideform v-if="singleSection === null && singleField !== null"
+                :heading="`Feld ${singleField.index !== null ? 'bearbeiten' : 'erstellen'}`" @close="singleField = null"
+                @submit="storeField">
                 <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
                 <column-selector v-model="singleField.model.columns"></column-selector>
-                <component :is="fields[singleField.model.type]" v-model="singleField.model" :payload="inner.sections" :meta="props.meta"></component>
-                <f-select id="nami_type" v-model="singleField.model.nami_type" :options="meta.namiTypes" label="NaMi-Feld" size="sm" name="nami_type"></f-select>
-                <f-select id="special_type" v-model="singleField.model.special_type" :options="meta.specialTypes" label="Bedeutung" size="sm" name="special_type"></f-select>
+                <component :is="fields[singleField.model.type]" v-model="singleField.model" :payload="inner.sections"
+                    :meta="props.meta"></component>
+                <f-select id="nami_type" v-model="singleField.model.nami_type" :options="meta.namiTypes" label="NaMi-Feld"
+                    size="sm" name="nami_type"></f-select>
+                <f-select id="special_type" v-model="singleField.model.special_type" :options="meta.specialTypes"
+                    label="Bedeutung" size="sm" name="special_type"></f-select>
                 <f-textarea id="hint" v-model="singleField.model.hint" label="Hinweis" size="sm" name="hint"></f-textarea>
-                <f-switch
-                    v-show="singleField.model.nami_type === null"
-                    id="for_members"
-                    v-model="singleField.model.for_members"
-                    label="Für Unter-Mitglieder zusätzlich abfragen"
-                    size="sm"
-                    name="for_members"
-                ></f-switch>
+                <f-switch v-show="singleField.model.nami_type === null" id="for_members"
+                    v-model="singleField.model.for_members" label="Für Unter-Mitglieder zusätzlich abfragen" size="sm"
+                    name="for_members"></f-switch>
             </asideform>
         </div>
         <ui-box heading="Vorschau" container-class="grid gap-3" class="w-[800px]">
-            <event-form
-                editable
+            <event-form editable
                 style="--primary: hsl(181, 75%, 26%); --secondary: hsl(181, 75%, 35%); --font: hsl(181, 84%, 78%); --circle: hsl(181, 86%, 16%)"
-                :base-url="meta.base_url"
-                :value="previewString"
-                @editSection="editSection($event.detail[0])"
-                @addSection="addSection"
-                @editField="editField($event.detail[0], $event.detail[1])"
+                :base-url="meta.base_url" :value="previewString" @editSection="editSection($event.detail[0])"
+                @addSection="addSection" @editField="editField($event.detail[0], $event.detail[1])"
                 @deleteField="deleteField($event.detail[0], $event.detail[1])"
-                @deleteSection="deleteSection($event.detail[0])"
-                @active="updateActive($event.detail[0])"
-            ></event-form>
+                @deleteSection="deleteSection($event.detail[0])" @active="updateActive($event.detail[0])"></event-form>
         </ui-box>
     </form>
 </template>
 
 <script setup>
-import {watch, computed, ref} from 'vue';
-import {snakeCase} from 'change-case';
+import { watch, computed, ref } from 'vue';
+import { snakeCase } from 'change-case';
 import '!/adrema-form/dist/main.js';
 import Asideform from './Asideform.vue';
 import TextareaField from './TextareaField.vue';
@@ -63,6 +59,7 @@ import DateField from './DateField.vue';
 import DropdownField from './RadioField.vue';
 import RadioField from './RadioField.vue';
 import GroupField from './GroupField.vue';
+import NumberField from './NumberField.vue';
 import CheckboxField from './CheckboxField.vue';
 import CheckboxesField from './CheckboxesField.vue';
 import ColumnSelector from './ColumnSelector.vue';
@@ -93,11 +90,12 @@ const fields = {
     CheckboxField: CheckboxField,
     CheckboxesField: CheckboxesField,
     GroupField: GroupField,
+    NumberField: NumberField,
 };
 
 function editSection(sectionIndex) {
     singleSection.value = {
-        model: {...inner.value.sections[sectionIndex]},
+        model: { ...inner.value.sections[sectionIndex] },
         index: sectionIndex,
     };
 }

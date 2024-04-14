@@ -9,6 +9,7 @@ use App\Form\Fields\DropdownField;
 use App\Form\Fields\EmailField;
 use App\Form\Fields\GroupField;
 use App\Form\Fields\NamiField;
+use App\Form\Fields\NumberField;
 use App\Form\Fields\RadioField;
 use App\Form\Fields\TextareaField;
 use App\Form\Fields\TextField;
@@ -25,6 +26,11 @@ trait CreatesFormFields
     protected function textField(?string $key = null): FormtemplateFieldRequest
     {
         return FormtemplateFieldRequest::type(TextField::class)->key($key ?? $this->randomKey());
+    }
+
+    protected function numberField(?string $key = null): FormtemplateFieldRequest
+    {
+        return FormtemplateFieldRequest::type(NumberField::class)->key($key ?? $this->randomKey());
     }
 
     protected function emailField(?string $key = null): FormtemplateFieldRequest

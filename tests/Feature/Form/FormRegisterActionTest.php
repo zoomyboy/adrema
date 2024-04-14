@@ -266,6 +266,30 @@ class FormRegisterActionTest extends FormTestCase
             ['email' => 'alaaa'],
             ['email' => 'Mail muss eine gültige E-Mail-Adresse sein.']
         ];
+
+        yield [
+            $this->numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
+            ['numb' => 21],
+            ['numb' => 'Nummer muss kleiner oder gleich 20 sein.']
+        ];
+
+        yield [
+            $this->numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
+            ['numb' => 9],
+            ['numb' => 'Nummer muss größer oder gleich 10 sein.']
+        ];
+
+        yield [
+            $this->numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
+            ['numb' => 'asss'],
+            ['numb' => 'Nummer muss eine ganze Zahl sein.']
+        ];
+
+        yield [
+            $this->numberField('numb')->name('Nummer')->required(true),
+            ['numb' => ''],
+            ['numb' => 'Nummer ist erforderlich.']
+        ];
     }
 
     public function testItValidatesGroupFieldWithParentGroupField(): void
