@@ -46,7 +46,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'required' => true,
                 ]
             ])
-            ->assertInertiaPath('data.meta.fields.7', [
+            ->assertInertiaPath('data.meta.fields.9', [
                 'id' => 'TextField',
                 'name' => 'Text',
                 'default' => [
@@ -61,7 +61,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'required' => true,
                 ]
             ])
-            ->assertInertiaPath('data.meta.fields.8', [
+            ->assertInertiaPath('data.meta.fields.10', [
                 'id' => 'TextareaField',
                 'name' => 'Textarea',
                 'default' => [
