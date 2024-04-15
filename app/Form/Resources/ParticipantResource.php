@@ -5,6 +5,7 @@ namespace App\Form\Resources;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin Participant
@@ -31,23 +32,24 @@ class ParticipantResource extends JsonResource
      */
     public static function meta(Form $form): array
     {
+        /** @var Collection<int, array<string, mixed>> */
+        $fieldData = $form->getFields()
+            ->map(fn ($field) => [
+                'name' => $field->name,
+                'base_type' => class_basename($field),
+                'id' => $field->key,
+                'display_attribute' => $field->getDisplayAttribute(),
+            ]);
         return [
             'form_meta' => $form->meta,
             'links' => [
                 'update_form_meta' => route('form.update-meta', ['form' => $form]),
             ],
-            'columns' => $form->getFields()
-                ->map(fn ($field) => [
-                    'name' => $field->name,
-                    'base_type' => class_basename($field),
-                    'id' => $field->key,
-                    'display_attribute' => $field->getDisplayAttribute(),
-                ])
-                ->push([
-                    'name' => 'Registriert am',
-                    'id' => 'created_at',
-                    'display_attribute' => 'created_at_display'
-                ])
+            'columns' => $fieldData->push([
+                'name' => 'Registriert am',
+                'id' => 'created_at',
+                'display_attribute' => 'created_at_display'
+            ])
         ];
     }
 }

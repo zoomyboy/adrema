@@ -22,6 +22,8 @@ use App\Form\Enums\SpecialType;
  * @method self forMembers(bool $forMembers)
  * @method self specialType(SpecialType $specialType)
  * @method self hint(string $hint)
+ * @method self min(int $min)
+ * @method self max(int $max)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {
