@@ -31,6 +31,7 @@ class FormStoreAction
             'mail_top' => 'nullable|string',
             'mail_bottom' => 'nullable|string',
             'header_image' => 'required|exclude',
+            'mailattachments' => 'present|array|exclude',
         ];
     }
 

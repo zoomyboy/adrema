@@ -42,7 +42,8 @@ class FormRequest extends RequestFactory
             'registration_until' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
             'mail_top' => $this->faker->text(),
             'mail_bottom' => $this->faker->text(),
-            'header_image' => $this->getHeaderImagePayload(str()->uuid() . '.jpg')
+            'header_image' => $this->getHeaderImagePayload(str()->uuid() . '.jpg'),
+            'mailattachments' => [],
         ];
     }
 
