@@ -4,7 +4,6 @@ namespace App\Form\Fields;
 
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
-use App\Form\Presenters\Presenter;
 use Faker\Generator;
 use Illuminate\Validation\Rule;
 
@@ -13,6 +12,7 @@ class RadioField extends Field
     public bool $required;
     /** @var array<int, string> */
     public array $options;
+    public bool $allowcustom;
 
     public static function name(): string
     {
@@ -24,6 +24,7 @@ class RadioField extends Field
         return [
             ['key' => 'options', 'default' => [], 'rules' => ['options' => 'present|array', 'options.*' => 'required|string'], 'label' => 'Optionen'],
             ['key' => 'required', 'default' => true, 'rules' => ['required' => 'present|boolean'], 'label' => 'Erforderlich'],
+            ['key' => 'allowcustom', 'default' => false, 'rules' => ['required' => 'present|boolean'], 'label' => 'Eigene Option erlauben'],
         ];
     }
 
@@ -37,6 +38,7 @@ class RadioField extends Field
         return [
             'options' => $faker->words(4),
             'required' => $faker->boolean(),
+            'allowcustom' => $faker->boolean(),
         ];
     }
 
@@ -45,8 +47,14 @@ class RadioField extends Field
      */
     public function getRegistrationRules(Form $form): array
     {
+        $rules = $this->required ? ['required', 'string'] : ['nullable', 'string'];
+
+        if (!$this->allowcustom) {
+            $rules[] = Rule::in($this->options);
+        }
+
         return [
-            $this->key => $this->required ? ['required', 'string', Rule::in($this->options)] : ['nullable', 'string', Rule::in($this->options)],
+            $this->key => $rules
         ];
     }
 

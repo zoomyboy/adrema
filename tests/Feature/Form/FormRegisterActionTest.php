@@ -6,7 +6,6 @@ use App\Form\Enums\NamiType;
 use App\Form\Enums\SpecialType;
 use App\Form\Mails\ConfirmRegistrationMail;
 use App\Form\Models\Form;
-use App\Form\Models\Participant;
 use App\Group;
 use App\Group\Enums\Level;
 use App\Member\Member;
@@ -172,6 +171,12 @@ class FormRegisterActionTest extends FormTestCase
         ];
 
         yield [
+            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->allowcustom(true),
+            ['letter' => 'Z'],
+            null,
+        ];
+
+        yield [
             $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => 77],
             ['letter' => 'Buchstabe muss ein Array sein.'],
@@ -220,19 +225,19 @@ class FormRegisterActionTest extends FormTestCase
         ];
 
         yield [
-            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false),
+            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false)->allowcustom(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true),
+            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true),
+            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
             ['letter' => 'A'],
             null
         ];

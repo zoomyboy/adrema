@@ -28,6 +28,15 @@
         inline
         @update:modelValue="$emit('update:modelValue', {...modelValue, required: $event})"
     ></f-switch>
+    <f-switch
+        id="allowcustom"
+        :model-value="modelValue.allowcustom"
+        label="Eigene Option erlauben"
+        size="sm"
+        name="allowcustom"
+        inline
+        @update:modelValue="$emit('update:modelValue', {...modelValue, allowcustom: $event})"
+    ></f-switch>
 </template>
 
 <script setup>
