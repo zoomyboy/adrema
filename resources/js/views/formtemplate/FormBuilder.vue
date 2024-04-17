@@ -2,13 +2,27 @@
     <form class="grid gap-3 mt-4 grid-cols-[1fr_max-content] items-start" @submit.prevent="submit">
         <div class="grid gap-3">
             <slot name="meta"></slot>
-            <asideform v-if="singleSection !== null"
+            <asideform v-if="singleSection !== null && singleSection.mode === 'edit'"
                 :heading="`Sektion ${singleSection.index !== null ? 'bearbeiten' : 'erstellen'}`"
                 @close="singleSection = null" @submit="storeSection">
                 <f-text :id="`sectionform-name`" v-model="singleSection.model.name" label="Name"
                     :name="`sectionform-name`"></f-text>
                 <f-textarea :id="`sectionform-intro`" v-model="singleSection.model.intro" label="Einleitung"
                     :name="`sectionform-intro`"></f-textarea>
+            </asideform>
+            <asideform v-if="singleSection !== null && singleSection.mode === 'reorder'" heading="Felder ordnen"
+                @close="singleSection = null" @submit="storeSection">
+                <draggable item-key="key" :component-data="{ class: 'mt-3 grid gap-3' }" v-model="singleSection.model.fields">
+                    <template #item="{ element }">
+                        <div
+                            class="py-2 px-3 border rounded bg-zinc-800 hover:bg-zinc-700 transition justify-between flex items-center">
+                            <span v-text="element.name"></span>
+                            <a href="#">
+                                <ui-sprite class="w-5 h-5" v-tooltip="`Umordnen`" src="menu"></ui-sprite>
+                            </a>
+                        </div>
+                    </template>
+                </draggable>
             </asideform>
             <asideform v-if="singleSection === null && singleField === null" heading="Feld erstellen" :closeable="false"
                 :storeable="false" @submit="storeField">
@@ -43,7 +57,8 @@
                 :base-url="meta.base_url" :value="previewString" @editSection="editSection($event.detail[0])"
                 @addSection="addSection" @editField="editField($event.detail[0], $event.detail[1])"
                 @deleteField="deleteField($event.detail[0], $event.detail[1])"
-                @deleteSection="deleteSection($event.detail[0])" @active="updateActive($event.detail[0])"></event-form>
+                @editFields="startReordering($event.detail[0])" @deleteSection="deleteSection($event.detail[0])"
+                @active="updateActive($event.detail[0])"></event-form>
         </ui-box>
     </form>
 </template>
@@ -63,10 +78,18 @@ import NumberField from './NumberField.vue';
 import CheckboxField from './CheckboxField.vue';
 import CheckboxesField from './CheckboxesField.vue';
 import ColumnSelector from './ColumnSelector.vue';
+import Draggable from 'vuedraggable';
 
 const singleSection = ref(null);
 const singleField = ref(null);
 const active = ref(null);
+
+async function onReorder() {
+    var order = this.inner.map((f) => f.id);
+    this.loading = true;
+    this.inner = (await this.axios.patch(`/mediaupload/${this.parentName}/${this.parentId}/${this.collection}`, { order })).data;
+    this.loading = false;
+}
 
 function updateActive(a) {
     active.value = a;
@@ -97,6 +120,15 @@ function editSection(sectionIndex) {
     singleSection.value = {
         model: { ...inner.value.sections[sectionIndex] },
         index: sectionIndex,
+        mode: 'edit',
+    };
+}
+
+function startReordering(index) {
+    singleSection.value = {
+        model: { ...inner.value.sections[index] },
+        index: index,
+        mode: 'reorder',
     };
 }
 
@@ -111,6 +143,7 @@ function addSection() {
     singleSection.value = {
         model: JSON.parse(JSON.stringify(innerMeta.value.section_default)),
         index: null,
+        mode: 'edit',
     };
 }
 
