@@ -17,6 +17,7 @@ import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import Paragraph from '@editorjs/paragraph';
 import NestedList from '@editorjs/nested-list';
+import Alert from 'editorjs-alert';
 import useFieldSize from '../../composables/useFieldSize.js';
 const emit = defineEmits(['update:modelValue']);
 
@@ -69,6 +70,13 @@ onMounted(async () => {
                 config: {
                     preserveBlank: true,
                     placeholder: 'Absatz',
+                },
+            },
+            alert: {
+                class: Alert,
+                inlineToolbar: true,
+                config: {
+                    defaultType: 'primary',
                 },
             },
             heading: {
