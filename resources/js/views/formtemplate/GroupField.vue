@@ -8,6 +8,24 @@
         inline
         @update:modelValue="$emit('update:modelValue', {...modelValue, required: $event})"
     ></f-switch>
+    <f-switch
+        id="has_empty_option"
+        v-model="modelValue.has_empty_option"
+        label="Leere Option erlauben"
+        size="sm"
+        name="has_empty_option"
+        inline
+        @update:modelValue="$emit('update:modelValue', {...modelValue, has_empty_option: $event})"
+    ></f-switch>
+    <f-text
+        v-if="modelValue.has_empty_option"
+        id="empty_option_value"
+        v-model="modelValue.empty_option_value"
+        label="Wert der leeren Option"
+        size="sm"
+        name="empty_option_value"
+        @update:modelValue="$emit('update:modelValue', {...modelValue, empty_option_value: $event})"
+    ></f-text>
     <f-select
         id="parent_field"
         :options="fieldOptions"
