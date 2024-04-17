@@ -147,19 +147,25 @@ class FormRegisterActionTest extends FormTestCase
         ];
 
         yield [
-            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false),
+            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false)->allowcustom(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true),
+            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true),
+            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(true),
+            ['letter' => 'lalalaa'],
+            null,
+        ];
+
+        yield [
+            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
             ['letter' => 'A'],
             null
         ];

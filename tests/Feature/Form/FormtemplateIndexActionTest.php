@@ -44,6 +44,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'hint' => '',
                     'options' => [],
                     'required' => true,
+                    'allowcustom' => false,
                 ]
             ])
             ->assertInertiaPath('data.meta.fields.9', [
