@@ -19,7 +19,7 @@ Homestead.json
 # User data files
 /data/
 /.app.env
-.config/psysh	
+.config/psysh
 
 # Development files
 /docker-compose.yml
@@ -37,3 +37,4 @@ Homestead.json
 /resources/img/sprite.svg
 /public/sprite.svg
 /.php-cs-fixer.cache
+/groups.sql
