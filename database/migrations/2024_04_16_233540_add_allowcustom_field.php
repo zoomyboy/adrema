@@ -19,8 +19,8 @@ return new class extends Migration
                 /** @var Collection<int, mixed> */
                 $fields = $section->fields;
                 $section->fields = collect($fields)->map(function ($field) {
-                    if ($field->type === 'DropdownField' || $field->type === 'RadioField') {
-                        $field->allowcustom = false;
+                    if ($field->type === 'GroupField') {
+                        $field->hasEmptyOption = false;
                     }
                     return $field;
                 })->all();
@@ -36,8 +36,8 @@ return new class extends Migration
                 /** @var Collection<int, mixed> */
                 $fields = $section->fields;
                 $section->fields = collect($fields)->map(function ($field) {
-                    if ($field->type === 'DropdownField' || $field->type === 'RadioField') {
-                        $field->allowcustom = false;
+                    if ($field->type === 'GroupField') {
+                        $field->hasEmptyOption = false;
                     }
                     return $field;
                 })->all();
