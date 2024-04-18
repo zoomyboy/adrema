@@ -84,7 +84,14 @@
                         :parent-id="single.id"
                         collection="mailattachments"
                         class="row-span-2"
-                    ></f-multiplefiles>
+                    >
+                        <template #buttons="{file, buttonClass, iconClass}">
+                            <a v-tooltip="`Bedingungen`" href="#" :class="[buttonClass, 'bg-blue-200', 'relative']" @click.prevent="fileSettingPopup = file">
+                                <div v-if="file.properties.conditions.length" class="absolute w-2 h-2 -mt-[0.05rem] -ml-[0.05rem] flex-none bg-red-900 rounded-full top-0 left-0"></div>
+                                <ui-sprite src="setting" :class="[iconClass, 'text-blue-800']"></ui-sprite>
+                            </a>
+                        </template>
+                    </f-multiplefiles>
                     <f-textarea id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" rows="8" required></f-textarea>
                 </div>
             </div>
@@ -93,6 +100,10 @@
                     <ui-sprite src="save" class="text-zinc-400 w-6 h-6"></ui-sprite>
                 </a>
             </template>
+        </ui-popup>
+
+        <ui-popup v-if="fileSettingPopup !== null" heading="Bedingungen bearbeiten" @close="fileSettingPopup = null">
+            <file-settings @close="fileSettingPopup = null" :single="single" :value="fileSettingPopup"></file-settings>
         </ui-popup>
 
         <page-filter breakpoint="xl">
@@ -142,6 +153,7 @@ import {ref} from 'vue';
 import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from '../formtemplate/FormBuilder.vue';
 import Participants from './Participants.vue';
+import FileSettings from './FileSettings.vue';
 
 const props = defineProps(indexProps);
 var {meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter} = useIndex(props.data, 'form');
@@ -149,6 +161,7 @@ var {meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFi
 const active = ref(0);
 const deleting = ref(null);
 const showing = ref(null);
+const fileSettingPopup = ref(null);
 
 const tabs = [{title: 'Allgemeines'}, {title: 'Formular'}, {title: 'E-Mail'}, {title: 'Export'}];
 

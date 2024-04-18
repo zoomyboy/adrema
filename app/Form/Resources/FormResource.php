@@ -47,6 +47,7 @@ class FormResource extends JsonResource
                 'participant_index' => route('form.participant.index', ['form' => $this->getModel()]),
                 'update' => route('form.update', ['form' => $this->getModel()]),
                 'destroy' => route('form.destroy', ['form' => $this->getModel()]),
+                'is_dirty' => route('form.is-dirty', ['form' => $this->getModel()]),
             ]
         ];
     }

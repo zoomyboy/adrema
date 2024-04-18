@@ -62,7 +62,16 @@ class Form extends Model implements HasMedia
             ->registerMediaConversions(function (Media $media) {
                 $this->addMediaConversion('square')->fit(Manipulations::FIT_CROP, 400, 400);
             });
-        $this->addMediaCollection('mailattachments');
+        $this->addMediaCollection('mailattachments')
+            ->withDefaultProperties(fn () => [
+                'conditions' => [],
+            ])
+            ->withPropertyValidation(fn () => [
+                'conditions' => 'array',
+                'conditions.*.field' => 'required',
+                'conditions.*.comparator' => 'required',
+                'conditions.*.value' => 'present',
+            ]);
     }
 
     /**
