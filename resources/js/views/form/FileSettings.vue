@@ -1,5 +1,5 @@
 <template>
-    <ui-note class="mt-2" type="danger" v-if="locked">
+    <ui-note v-if="locked" class="mt-2" type="danger">
         Dieses Formular wurde bereits bearbeitet.<br />
         Bitte speichere es erst ab und editiere dann die Bedingungen.
     </ui-note>
@@ -8,29 +8,29 @@
         <div class="mt-2">Datei: {{ value.name }}</div>
         <ui-icon-button class="mt-4 mb-2" icon="plus" @click="addCondition">Bedingung einfügen</ui-icon-button>
 
-        <div v-for="(condition, index) in conditions" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
-            <f-select :options="fieldOptions" v-model="condition.field" :id="`field-${index}`" :name="`field-${index}`" label="Feld"></f-select>
+        <div v-for="(condition, index) in conditions" :key="index" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
+            <f-select :id="`field-${index}`" v-model="condition.field" :options="fieldOptions" :name="`field-${index}`" label="Feld"></f-select>
             <f-select
+                :id="`comparator-${index}`"
                 :options="comparatorOptions"
                 :model-value="condition.comparator"
-                @update:model-value="updateComparator(condition, $event)"
-                :id="`comparator-${index}`"
                 :name="`comparator-${index}`"
                 label="Vergleich"
+                @update:model-value="updateComparator(condition, $event)"
             ></f-select>
             <f-select
                 v-if="condition.field && ['isEqual', 'isNotEqual'].includes(condition.comparator)"
-                :options="getOptions(condition.field)"
-                v-model="condition.value"
                 :id="`value-${index}`"
+                v-model="condition.value"
+                :options="getOptions(condition.field)"
                 :name="`value-${index}`"
                 label="Wert"
             ></f-select>
             <f-multipleselect
                 v-if="condition.field && ['isIn', 'isNotIn'].includes(condition.comparator)"
-                :options="getOptions(condition.field)"
-                v-model="condition.value"
                 :id="`value-${index}`"
+                v-model="condition.value"
+                :options="getOptions(condition.field)"
                 :name="`value-${index}`"
                 label="Wert"
             ></f-multipleselect>
