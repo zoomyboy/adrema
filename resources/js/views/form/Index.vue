@@ -74,7 +74,19 @@
                         Die Anrede ("Hallo Max Mustermann") wird automatisch an den Anfang gesetzt.<br />
                         Außerdem kannst du Dateien hochladen, die automatisch mit angehangen werden.
                     </ui-note>
-                    <f-textarea id="mail_top" v-model="single.mail_top" name="mail_top" label="E-Mail-Teil 1" rows="8" required></f-textarea>
+                    <div>
+                        <ui-tabs v-model="activeMailTab" :entries="mailTabs"></ui-tabs>
+                        <f-editor v-if="activeMailTab === 0" id="mail_top" v-model="single.mail_top" name="mail_top" label="E-Mail-Teil 1" rows="8" conditions required>
+                            <template #conditions="{data, resolve}">
+                                <conditions :single="single" :value="data" @save="resolve"> </conditions>
+                            </template>
+                        </f-editor>
+                        <f-editor v-if="activeMailTab === 1" id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" rows="8" conditions required>
+                            <template #conditions="{data, resolve}">
+                                <conditions :single="single" :value="data" @save="resolve"> </conditions>
+                            </template>
+                        </f-editor>
+                    </div>
                     <f-multiplefiles
                         id="mailattachments"
                         v-model="single.mailattachments"
@@ -92,7 +104,6 @@
                             </a>
                         </template>
                     </f-multiplefiles>
-                    <f-textarea id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" rows="8" required></f-textarea>
                 </div>
             </div>
             <template #actions>
@@ -102,8 +113,8 @@
             </template>
         </ui-popup>
 
-        <ui-popup v-if="fileSettingPopup !== null" heading="Bedingungen bearbeiten" @close="fileSettingPopup = null">
-            <file-settings @close="fileSettingPopup = null" :single="single" :value="fileSettingPopup"></file-settings>
+        <ui-popup v-if="fileSettingPopup !== null" :heading="`Bedingungen für Datei ${fileSettingPopup.name}`" @close="fileSettingPopup = null">
+            <conditions :single="single" :value="fileSettingPopup.properties.conditions" @save="saveFileConditions"> </conditions>
         </ui-popup>
 
         <page-filter breakpoint="xl">
@@ -149,25 +160,42 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, inject} from 'vue';
 import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from '../formtemplate/FormBuilder.vue';
 import Participants from './Participants.vue';
-import FileSettings from './FileSettings.vue';
+import Conditions from './Conditions.vue';
+import {useToast} from 'vue-toastification';
 
 const props = defineProps(indexProps);
 var {meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter} = useIndex(props.data, 'form');
+const axios = inject('axios');
+const toast = useToast();
 
 const active = ref(0);
+const activeMailTab = ref(0);
 const deleting = ref(null);
 const showing = ref(null);
 const fileSettingPopup = ref(null);
 
 const tabs = [{title: 'Allgemeines'}, {title: 'Formular'}, {title: 'E-Mail'}, {title: 'Export'}];
+const mailTabs = [{title: 'vor Daten'}, {title: 'nach Daten'}];
 
 function setTemplate(template) {
     active.value = 0;
     single.value.config = template.config;
+}
+
+async function saveFileConditions(conditions) {
+    await axios.patch(`/mediaupload/${fileSettingPopup.value.id}`, {
+        properties: {
+            ...fileSettingPopup.value.properties,
+            conditions: conditions,
+        },
+    });
+
+    fileSettingPopup.value = null;
+    toast.success('Datei aktualisiert');
 }
 
 function showParticipants(form) {

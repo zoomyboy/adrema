@@ -5,7 +5,6 @@
     </ui-note>
 
     <div v-else>
-        <div class="mt-2">Datei: {{ value.name }}</div>
         <ui-icon-button class="mt-4 mb-2" icon="plus" @click="addCondition">Bedingung einfügen</ui-icon-button>
 
         <div v-for="(condition, index) in conditions" :key="index" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
@@ -44,7 +43,7 @@
 <script setup>
 import {ref, inject, computed} from 'vue';
 const axios = inject('axios');
-const emit = defineEmits(['close']);
+const emit = defineEmits(['save']);
 
 const props = defineProps({
     value: {
@@ -96,7 +95,7 @@ const fieldOptions = computed(() =>
     })
 );
 
-const conditions = ref('conditions' in props.value.properties ? props.value.properties.conditions : []);
+const conditions = ref(JSON.parse(JSON.stringify(props.value)));
 
 const locked = ref(false);
 
@@ -109,14 +108,7 @@ function addCondition() {
 }
 
 async function save() {
-    await axios.patch(`/mediaupload/${props.value.id}`, {
-        properties: {
-            ...props.value.properties,
-            conditions: conditions.value,
-        },
-    });
-
-    emit('close');
+    emit('save', conditions.value);
 }
 
 async function checkIfDirty() {
