@@ -54,7 +54,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'name' => '',
                     'type' => 'TextField',
                     'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
-                    'value' => '',
+                    'value' => null,
                     'nami_type' => null,
                     'for_members' => true,
                     'special_type' => null,

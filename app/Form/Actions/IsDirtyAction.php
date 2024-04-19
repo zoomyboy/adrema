@@ -11,6 +11,13 @@ class IsDirtyAction
 {
     use AsAction;
 
+    public function rules(): array
+    {
+        return [
+            'config' => 'array|present',
+        ];
+    }
+
     public function handle(Form $form, ActionRequest $request): JsonResponse
     {
         $form->config = $request->input('config');

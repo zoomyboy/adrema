@@ -39,7 +39,7 @@ class FormtemplateFieldRequest extends RequestFactory
             'columns' => ['mobile' => 2, 'tablet' => 4, 'desktop' => 6],
             'nami_type' => null,
             'for_members' => true,
-            'hint' => '',
+            'hint' => null,
         ];
     }
 
