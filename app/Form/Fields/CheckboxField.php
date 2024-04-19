@@ -2,6 +2,8 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Matchers\BooleanMatcher;
+use App\Form\Matchers\Matcher;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Form\Presenters\BooleanPresenter;
@@ -78,5 +80,10 @@ class CheckboxField extends Field
     public function getPresenter(): Presenter
     {
         return app(BooleanPresenter::class);
+    }
+
+    public function getMatcher(): Matcher
+    {
+        return app(BooleanMatcher::class);
     }
 }

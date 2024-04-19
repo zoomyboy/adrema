@@ -2,6 +2,8 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Matchers\Matcher;
+use App\Form\Matchers\SingleValueMatcher;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Faker\Generator;
@@ -79,5 +81,10 @@ class RadioField extends Field
      */
     public function afterRegistration(Form $form, Participant $participant, array $input): void
     {
+    }
+
+    public function getMatcher(): Matcher
+    {
+        return app(SingleValueMatcher::class);
     }
 }

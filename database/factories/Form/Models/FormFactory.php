@@ -7,16 +7,15 @@ use Database\Factories\Traits\FakesMedia;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Tests\Feature\Form\FormtemplateFieldRequest;
 use Tests\Feature\Form\FormtemplateSectionRequest;
+use Tests\RequestFactories\EditorRequestFactory;
 
 /**
  * @extends Factory<Form>
  * @method self name(string $name)
  * @method self from(string $from)
  * @method self to(string $to)
- * @method self mailTop(string $content)
- * @method self mailBottom(string $content)
  * @method self excerpt(string $excerpt)
- * @method self description(string $description)
+ * @method self description(EditorRequestFactory $description)
  * @method self registrationFrom(string|null $date)
  * @method self registrationUntil(string|null $date)
  */
@@ -40,15 +39,15 @@ class FormFactory extends Factory
     {
         return [
             'name' => $this->faker->words(4, true),
-            'description' => $this->faker->text(),
+            'description' => EditorRequestFactory::new()->create(),
             'excerpt' => $this->faker->words(10, true),
             'config' => ['sections' => []],
             'from' => $this->faker->dateTimeBetween('+1 week', '+4 weeks')->format('Y-m-d H:i:s'),
             'to' => $this->faker->dateTimeBetween('+1 week', '+4 weeks')->format('Y-m-d H:i:s'),
             'registration_from' => $this->faker->dateTimeBetween('-2 weeks', 'now')->format('Y-m-d H:i:s'),
             'registration_until' => $this->faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d H:i:s'),
-            'mail_top' => $this->faker->text(),
-            'mail_bottom' => $this->faker->text(),
+            'mail_top' => EditorRequestFactory::new()->create(),
+            'mail_bottom' => EditorRequestFactory::new()->create(),
         ];
     }
 
@@ -74,5 +73,15 @@ class FormFactory extends Factory
     public function __call($method, $parameters): self
     {
         return $this->state([str($method)->snake()->toString() => $parameters[0]]);
+    }
+
+    public function mailTop(EditorRequestFactory $factory): self
+    {
+        return $this->state(['mail_top' => $factory->create()]);
+    }
+
+    public function mailBottom(EditorRequestFactory $factory): self
+    {
+        return $this->state(['mail_bottom' => $factory->create()]);
     }
 }

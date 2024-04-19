@@ -3,6 +3,7 @@
 namespace App\Form\Mails;
 
 use App\Form\Data\FormConfigData;
+use App\Form\Editor\FormConditionResolver;
 use App\Form\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Attachment;
@@ -10,7 +11,6 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
 
 class ConfirmRegistrationMail extends Mailable
 {
@@ -18,6 +18,10 @@ class ConfirmRegistrationMail extends Mailable
 
     public string $fullname;
     public FormConfigData $config;
+    /** @var array<string, mixed> */
+    public array $topText;
+    /** @var array<string, mixed> */
+    public array $bottomText;
 
     /**
      * Create a new message instance.
@@ -26,8 +30,11 @@ class ConfirmRegistrationMail extends Mailable
      */
     public function __construct(public Participant $participant)
     {
+        $conditionResolver = app(FormConditionResolver::class)->forParticipant($participant);
         $this->fullname = $participant->getFields()->getFullname();
         $this->config = $participant->getConfig();
+        $this->topText = $conditionResolver->make($participant->form->mail_top);
+        $this->bottomText = $conditionResolver->make($participant->form->mail_bottom);
     }
 
     /**

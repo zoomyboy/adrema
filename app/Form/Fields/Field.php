@@ -165,4 +165,9 @@ abstract class Field extends Data
     {
         return $this->key . '_display';
     }
+
+    public function matches(string $comparator, mixed $value): bool
+    {
+        return $this->getMatcher()->setValue($this->value)->matches($comparator, $value);
+    }
 }

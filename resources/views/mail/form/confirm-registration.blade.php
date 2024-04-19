@@ -1,9 +1,8 @@
-@component('mail::message')
+<x-mail::message>
+
 # Hallo {{$fullname}},
 
-{{ $participant->form->mail_top }}
-
-# Deine Daten
+<x-mail-view::editor :content="$topText"></x-mail-view::editor>
 
 @foreach($config->sections as $section)
 ## {{$section->name}}
@@ -12,6 +11,6 @@
 @endforeach
 @endforeach
 
-{{ $participant->form->mail_bottom }}
+<x-mail-view::editor :content="$bottomText"></x-mail-view::editor>
 
-@endcomponent
+</x-mail::message>

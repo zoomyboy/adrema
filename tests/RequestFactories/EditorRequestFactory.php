@@ -20,21 +20,28 @@ class EditorRequestFactory extends RequestFactory
         ];
     }
 
-    public function text(int $id, string $text): self
+    public function text(int $id, string $text, array $conditions = ['mode' => 'all', 'ifs' => []]): self
     {
-        return $this->state($this->paragraphBlock($id, $text));
+        return $this->state($this->paragraphBlock($id, $text, $conditions));
     }
 
     /**
      * @return array<string, mixed>
      */
-    public function paragraphBlock(int $id, string $text): array
+    public function paragraphBlock(int $id, string $text, array $conditions = ['mode' => 'all', 'ifs' => []]): array
     {
         return [
             'time' => 1,
             'version' => '1.0',
             'blocks' => [
-                ['id' => $id, 'type' => 'paragraph', 'data' => ['text' => $text]]
+                [
+                    'id' => $id,
+                    'type' => 'paragraph',
+                    'data' => ['text' => $text],
+                    'tunes' => [
+                        'condition' => $conditions
+                    ]
+                ]
             ],
         ];
     }

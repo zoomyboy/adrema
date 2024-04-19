@@ -7,6 +7,7 @@ use App\Mailgateway\Types\LocalType;
 use App\Mailgateway\Types\MailmanType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\Telescope;
 
@@ -36,6 +37,8 @@ class AppServiceProvider extends ServiceProvider
         ]));
 
         app()->extend('media-library-helpers', fn ($p) => $p->put('form', Form::class));
+
+        Blade::componentNamespace('App\\View\\Mail', 'mail-view');
     }
 
     /**
