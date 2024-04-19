@@ -99,7 +99,7 @@
                     >
                         <template #buttons="{file, buttonClass, iconClass}">
                             <a v-tooltip="`Bedingungen`" href="#" :class="[buttonClass, 'bg-blue-200', 'relative']" @click.prevent="fileSettingPopup = file">
-                                <div v-if="file.properties.conditions.length" class="absolute w-2 h-2 -mt-[0.05rem] -ml-[0.05rem] flex-none bg-red-900 rounded-full top-0 left-0"></div>
+                                <div v-if="file.properties.conditions.ifs.length" class="absolute w-2 h-2 -mt-[0.05rem] -ml-[0.05rem] flex-none bg-red-900 rounded-full top-0 left-0"></div>
                                 <ui-sprite src="setting" :class="[iconClass, 'text-blue-800']"></ui-sprite>
                             </a>
                         </template>

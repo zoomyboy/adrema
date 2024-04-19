@@ -66,13 +66,17 @@ class Form extends Model implements HasMedia
             });
         $this->addMediaCollection('mailattachments')
             ->withDefaultProperties(fn () => [
-                'conditions' => [],
+                'conditions' => [
+                    'mode' => 'all',
+                    'ifs' => []
+                ],
             ])
             ->withPropertyValidation(fn () => [
-                'conditions' => 'array',
-                'conditions.*.field' => 'required',
-                'conditions.*.comparator' => 'required',
-                'conditions.*.value' => 'present',
+                'conditions.mode' => 'required|string|in:all,any',
+                'conditions.ifs' => 'array',
+                'conditions.ifs.*.field' => 'required',
+                'conditions.ifs.*.comparator' => 'required',
+                'conditions.ifs.*.value' => 'present',
             ]);
     }
 

@@ -7,7 +7,7 @@
     <div v-else>
         <ui-icon-button class="mt-4 mb-2" icon="plus" @click="addCondition">Bedingung einfügen</ui-icon-button>
 
-        <div v-for="(condition, index) in conditions" :key="index" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
+        <div v-for="(condition, index) in inner.ifs" :key="index" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
             <f-select :id="`field-${index}`" v-model="condition.field" :options="fieldOptions" :name="`field-${index}`" label="Feld"></f-select>
             <f-select
                 :id="`comparator-${index}`"
@@ -33,7 +33,7 @@
                 :name="`value-${index}`"
                 label="Wert"
             ></f-multipleselect>
-            <ui-action-button tooltip="Löschen" icon="trash" class="btn-danger self-end h-8" @click="conditions.splice(index, 1)"></ui-action-button>
+            <ui-action-button tooltip="Löschen" icon="trash" class="btn-danger self-end h-8" @click="inner.ifs.splice(index, 1)"></ui-action-button>
         </div>
 
         <ui-icon-button class="mt-4 mb-2" icon="save" @click="save">Speichern</ui-icon-button>
@@ -95,12 +95,12 @@ const fieldOptions = computed(() =>
     })
 );
 
-const conditions = ref(JSON.parse(JSON.stringify(props.value)));
+const inner = ref(JSON.parse(JSON.stringify(props.value)));
 
 const locked = ref(false);
 
 function addCondition() {
-    conditions.value.push({
+    inner.value.ifs.push({
         field: null,
         comparator: null,
         value: null,
@@ -108,7 +108,7 @@ function addCondition() {
 }
 
 async function save() {
-    emit('save', conditions.value);
+    emit('save', inner.value);
 }
 
 async function checkIfDirty() {

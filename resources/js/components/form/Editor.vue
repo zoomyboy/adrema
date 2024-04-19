@@ -74,13 +74,13 @@ const props = defineProps({
 const editor = ref(null);
 const condition = ref(null);
 
-async function openPopup(conditions) {
+async function openPopup(data) {
     return new Promise((resolve, reject) => {
         new Promise((innerResolve, innerReject) => {
             condition.value = {
                 resolve: innerResolve,
                 reject: innerReject,
-                data: conditions,
+                data: data,
             };
         }).then((data) => {
             resolve(data);
@@ -93,7 +93,8 @@ class ConditionTune {
     constructor({api, data, config, block}) {
         this.api = api;
         this.data = data || {
-            conditions: [],
+            mode: 'all',
+            ifs: [],
         };
         this.config = config;
         this.block = block;
@@ -111,8 +112,12 @@ class ConditionTune {
         return this.wrapper;
     }
 
+    hasData() {
+        return this.data.ifs.length > 0;
+    }
+
     styleWrapper() {
-        if (this.data.conditions.length > 0) {
+        if (this.hasData()) {
             this.wrapper.className = 'relative mt-6 mb-6 p-1 border border-blue-200 rounded';
             if (!this.wrapper.querySelector('.condition-description')) {
                 var tooltip = document.createElement('div');
@@ -134,7 +139,7 @@ class ConditionTune {
             closeOnActivate: true,
             toggle: true,
             onActivate: async () => {
-                this.data.conditions = await openPopup(this.data.conditions);
+                this.data = await openPopup(this.data);
                 this.styleWrapper();
                 this.block.dispatchChange();
             },
