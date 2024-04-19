@@ -5,6 +5,8 @@
     </ui-note>
 
     <div v-else>
+        <f-select id="mode" v-model="inner.mode" :options="modeOptions" name="mode" label="Modus"></f-select>
+
         <ui-icon-button class="mt-4 mb-2" icon="plus" @click="addCondition">Bedingung einfügen</ui-icon-button>
 
         <div v-for="(condition, index) in inner.ifs" :key="index" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
@@ -59,6 +61,11 @@ const comparatorOptions = ref([
     {id: 'isNotEqual', name: 'ist ungleich', defaultValue: null},
     {id: 'isIn', name: 'ist in', defaultValue: []},
     {id: 'isNotIn', name: 'ist nicht in', defaultValue: []},
+]);
+
+const modeOptions = ref([
+    {id: 'all', name: 'alle Bedingungen müssen zutreffen'},
+    {id: 'any', name: 'mindestens eine Bedingung muss zutreffen'},
 ]);
 
 const fields = computed(() => {
