@@ -282,6 +282,46 @@ img {
     padding-bottom: 0;
 }
 
+.panel.panel-danger {
+    border-left: #cf3917 solid 4px;
+}
+.panel.panel-danger .panel-content {
+    background-color: #ff8282;
+}
+.panel.panel-danger .panel-content p {
+    color: #250000;
+}
+
+.panel.panel-warning {
+    border-left: #cfb017 solid 4px;
+}
+.panel.panel-warning .panel-content {
+    background-color: #ffeb82;
+}
+.panel.panel-warning .panel-content p {
+    color: #252100;
+}
+
+.panel.panel-success {
+    border-left: #19cf17 solid 4px;
+}
+.panel.panel-success .panel-content {
+    background-color: #82ff87;
+}
+.panel.panel-success .panel-content p {
+    color: #002500;
+}
+
+.panel.panel-info {
+    border-left: #3417cf solid 4px;
+}
+.panel.panel-info .panel-content {
+    background-color: #9082ff;
+}
+.panel.panel-info .panel-content p {
+    color: #050025;
+}
+
 /* Utilities */
 
 .break-all {
