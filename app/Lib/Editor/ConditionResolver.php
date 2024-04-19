@@ -16,6 +16,6 @@ abstract class ConditionResolver
      */
     public function make(array $content): array
     {
-        return array_filter($content['blocks'], fn ($block) => $this->filterBlock($block));
+        return array_filter(data_get($content, 'blocks', []), fn ($block) => $this->filterBlock($block));
     }
 }
