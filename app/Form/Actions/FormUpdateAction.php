@@ -29,8 +29,8 @@ class FormUpdateAction
             'to' => 'required|date',
             'registration_from' => 'present|nullable|date',
             'registration_until' => 'present|nullable|date',
-            'mail_top' => 'nullable|string',
-            'mail_bottom' => 'nullable|string',
+            'mail_top' => 'array',
+            'mail_bottom' => 'array',
         ];
     }
 

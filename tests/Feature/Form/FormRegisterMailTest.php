@@ -7,6 +7,7 @@ use App\Form\Mails\ConfirmRegistrationMail;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\EditorRequestFactory;
 
 class FormRegisterMailTest extends FormTestCase
 {
@@ -25,7 +26,7 @@ class FormRegisterMailTest extends FormTestCase
                 ])
             ])
 
-                ->mailTop('mail top')->mailBottom('mail bottom')
+                ->mailTop(EditorRequestFactory::new()->text(10, 'mail top'))->mailBottom(EditorRequestFactory::new()->text(11, 'mail bottom'))
         )
             ->data(['vorname' => 'Max', 'nachname' => 'Muster'])
             ->create();

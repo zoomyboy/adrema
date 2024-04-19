@@ -29,6 +29,8 @@ class Form extends Model implements HasMedia
         'config' => FormConfigData::class,
         'meta' => 'json',
         'description' => 'json',
+        'mail_top' => 'json',
+        'mail_bottom' => 'json',
     ];
 
     /** @var array<int, string> */

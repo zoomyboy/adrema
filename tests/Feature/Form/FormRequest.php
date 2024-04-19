@@ -12,8 +12,8 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self from(string $date)
  * @method self to(string $date)
  * @method self description(?EditorRequestFactory $description)
- * @method self mailTop(string $content)
- * @method self mailBottom(string $content)
+ * @method self mailTop(?EditorRequestFactory $content)
+ * @method self mailBottom(?EditorRequestFactory $content)
  * @method self excerpt(string $description)
  * @method self registrationFrom(string|null $date)
  * @method self registrationUntil(string|null $date)
@@ -40,8 +40,8 @@ class FormRequest extends RequestFactory
             'to' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
             'registration_from' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
             'registration_until' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
-            'mail_top' => $this->faker->text(),
-            'mail_bottom' => $this->faker->text(),
+            'mail_top' => EditorRequestFactory::new()->create(),
+            'mail_bottom' => EditorRequestFactory::new()->create(),
             'header_image' => $this->getHeaderImagePayload(str()->uuid() . '.jpg'),
             'mailattachments' => [],
         ];

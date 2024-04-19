@@ -26,8 +26,8 @@ class FormStoreActionTest extends FormTestCase
             ->description($description)
             ->excerpt('avff')
             ->registrationFrom('2023-05-04 01:00:00')->registrationUntil('2023-07-07 01:00:00')->from('2023-07-07')->to('2023-07-08')
-            ->mailTop('Guten Tag')
-            ->mailBottom('Viele Grüße')
+            ->mailTop(EditorRequestFactory::new()->text(11, 'lala'))
+            ->mailBottom(EditorRequestFactory::new()->text(12, 'lalab'))
             ->headerImage('htzz.jpg')
             ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()->namiType(NamiType::BIRTHDAY)->forMembers(false)->hint('hhh')])])
             ->fake();
@@ -39,8 +39,8 @@ class FormStoreActionTest extends FormTestCase
         $this->assertEquals('formname', $form->name);
         $this->assertEquals('avff', $form->excerpt);
         $this->assertEquals($description->paragraphBlock(10, 'Lorem'), $form->description);
-        $this->assertEquals('Guten Tag', $form->mail_top);
-        $this->assertEquals('Viele Grüße', $form->mail_bottom);
+        $this->assertEquals(json_decode('{"time":1,"blocks":[{"id":11,"type":"paragraph","data":{"text":"lala"}}],"version":"1.0"}', true), $form->mail_top);
+        $this->assertEquals(json_decode('{"time":1,"blocks":[{"id":12,"type":"paragraph","data":{"text":"lalab"}}],"version":"1.0"}', true), $form->mail_bottom);
         $this->assertEquals('2023-05-04 01:00', $form->registration_from->format('Y-m-d H:i'));
         $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));
         $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
