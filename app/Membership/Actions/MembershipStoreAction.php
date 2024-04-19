@@ -33,7 +33,7 @@ class MembershipStoreAction
 
         $subactivity = $subactivity ?: new Subactivity(['nami_id' => null, 'id' => null]);
 
-        if ($activity->hasNami && ($subactivity->id === null || $subactivity->hasNami)) {
+        if ($this->syncable($member, $activity, $subactivity)) {
             try {
                 $namiId = app(NamiSettings::class)->login()->putMembership($member->nami_id, NamiMembership::from([
                     'startsAt' => $from,
@@ -55,13 +55,18 @@ class MembershipStoreAction
             'nami_id' => $namiId ?? null,
         ]);
 
-        if ($activity->hasNami && ($subactivity->id === null || $subactivity->hasNami)) {
+        if ($this->syncable($member, $activity, $subactivity)) {
             $member->syncVersion();
         }
 
         ResyncAction::dispatch();
 
         return $membership;
+    }
+
+    protected function syncable(Member $member, Activity $activity, ?Subactivity $subactivity): bool
+    {
+        return $activity->hasNami && ($subactivity->id === null || $subactivity->hasNami) && $member->hasNami;
     }
 
     /**

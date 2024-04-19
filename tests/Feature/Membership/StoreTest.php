@@ -247,6 +247,18 @@ class StoreTest extends TestCase
         ]);
     }
 
+    public function testItStoresNamiActivityAndSubactivityForNonNamiMember(): void
+    {
+        $this->withoutExceptionHandling();
+        $member = Member::factory()->defaults()->create();
+        $activity = Activity::factory()->hasAttached(Subactivity::factory()->inNami(7))->inNami(6)->create();
+
+        $this->post(
+            "/member/{$member->id}/membership",
+            MembershipRequestFactory::new()->in($activity, $activity->subactivities->first())->group($member->group)->create()
+        )->assertOk();
+    }
+
     /**
      * @testWith ["namierror<br>", "namierror&lt;br&gt;"]
      *           ["", "Erstellen der Mitgliedschaft fehlgeschlagen"]
