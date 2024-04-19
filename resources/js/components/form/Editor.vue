@@ -207,7 +207,7 @@ onMounted(async () => {
             const data = await editor.value.save();
             console.log(data);
             emit('update:modelValue', data);
-        }, 500),
+        }, 200),
         onPopup: () => {
             console.log('opened');
         },
