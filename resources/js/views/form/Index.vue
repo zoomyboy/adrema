@@ -63,7 +63,7 @@
                     ></f-textarea>
                     <f-editor id="description" v-model="single.description" name="description" label="Beschreibung" rows="10" required></f-editor>
                 </div>
-                <div v-show="active === 1">
+                <div v-if="active === 1">
                     <ui-note class="mt-2"> Sobald sich der erste Teilnehmer für die Veranstaltung angemeldet hat, kann dieses Formular nicht mehr geändert werden. </ui-note>
                     <form-builder v-model="single.config" :meta="meta"></form-builder>
                 </div>
