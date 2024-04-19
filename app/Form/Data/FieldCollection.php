@@ -70,7 +70,12 @@ class FieldCollection extends Collection
 
     public function find(Field $givenField): ?Field
     {
-        return $this->first(fn ($field) => $field->key === $givenField->key);
+        return $this->findByKey($givenField->key);
+    }
+
+    public function findByKey(string $key): ?Field
+    {
+        return $this->first(fn ($field) => $field->key === $key);
     }
 
     /**
