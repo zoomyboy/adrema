@@ -57,7 +57,7 @@ class FormApiListActionTest extends FormTestCase
             ->create();
 
         sleep(1);
-        $this->get('/api/form?perPage=15')->assertJsonPath('data.0.config.sections.0.fields.0.value', '');
+        $this->get('/api/form?perPage=15')->assertJsonPath('data.0.config.sections.0.fields.0.value', null);
     }
 
     public function testItDisplaysRemoteGroups(): void
