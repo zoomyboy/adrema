@@ -7,6 +7,7 @@ use App\Form\Models\Formtemplate;
 use App\Form\Models\Participant;
 use Carbon\Carbon;
 use Tests\Feature\Form\FormtemplateSectionRequest;
+use Tests\RequestFactories\EditorRequestFactory;
 
 class FormIndexActionTest extends FormTestCase
 {
@@ -19,11 +20,11 @@ class FormIndexActionTest extends FormTestCase
         $form = Form::factory()
             ->name('lala')
             ->excerpt('fff')
-            ->description('desc')
+            ->description(EditorRequestFactory::new()->text(10, 'desc'))
             ->from('2023-05-05')
             ->to('2023-06-07')
-            ->mailTop('Guten Tag')
-            ->mailBottom('Cheers')
+            ->mailTop(EditorRequestFactory::new()->text(10, 'Guten Tag'))
+            ->mailBottom(EditorRequestFactory::new()->text(10, 'Cheers'))
             ->registrationFrom('2023-05-06 04:00:00')
             ->registrationUntil('2023-04-01 05:00:00')
             ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()])])
@@ -37,9 +38,9 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.data.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.data.0.id', $form->id)
             ->assertInertiaPath('data.data.0.excerpt', 'fff')
-            ->assertInertiaPath('data.data.0.description', 'desc')
-            ->assertInertiaPath('data.data.0.mail_top', 'Guten Tag')
-            ->assertInertiaPath('data.data.0.mail_bottom', 'Cheers')
+            ->assertInertiaPath('data.data.0.description.blocks.0.data.text', 'desc')
+            ->assertInertiaPath('data.data.0.mail_top.blocks.0.data.text', 'Guten Tag')
+            ->assertInertiaPath('data.data.0.mail_bottom.blocks.0.data.text', 'Cheers')
             ->assertInertiaPath('data.data.0.from_human', '05.05.2023')
             ->assertInertiaPath('data.data.0.to_human', '07.06.2023')
             ->assertInertiaPath('data.data.0.from', '2023-05-05')

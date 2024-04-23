@@ -15,7 +15,6 @@ use Tests\RequestFactories\EditorRequestFactory;
  * @method self from(string $from)
  * @method self to(string $to)
  * @method self excerpt(string $excerpt)
- * @method self description(EditorRequestFactory $description)
  * @method self registrationFrom(string|null $date)
  * @method self registrationUntil(string|null $date)
  */
@@ -83,5 +82,10 @@ class FormFactory extends Factory
     public function mailBottom(EditorRequestFactory $factory): self
     {
         return $this->state(['mail_bottom' => $factory->create()]);
+    }
+
+    public function description(EditorRequestFactory $factory): self
+    {
+        return $this->state(['description' => $factory->create()]);
     }
 }
