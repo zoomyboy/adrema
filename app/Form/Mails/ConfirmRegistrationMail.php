@@ -33,8 +33,8 @@ class ConfirmRegistrationMail extends Mailable
         $conditionResolver = app(FormConditionResolver::class)->forParticipant($participant);
         $this->fullname = $participant->getFields()->getFullname();
         $this->config = $participant->getConfig();
-        $this->topText = $conditionResolver->make($participant->form->mail_top);
-        $this->bottomText = $conditionResolver->make($participant->form->mail_bottom);
+        $this->topText = $conditionResolver->makeBlocks($participant->form->mail_top);
+        $this->bottomText = $conditionResolver->makeBlocks($participant->form->mail_bottom);
     }
 
     /**
@@ -68,7 +68,13 @@ class ConfirmRegistrationMail extends Mailable
      */
     public function attachments()
     {
+        $conditionResolver = app(FormConditionResolver::class)->forParticipant($this->participant);
+
         return $this->participant->form->getMedia('mailattachments')
+            ->filter(fn ($media) => $conditionResolver->filterCondition(
+                data_get($media->getCustomProperty('conditions'), 'mode', 'all'),
+                data_get($media->getCustomProperty('conditions'), 'ifs', []),
+            ))
             ->map(fn ($media) => Attachment::fromStorageDisk($media->disk, $media->getPathRelativeToRoot()))
             ->all();
     }

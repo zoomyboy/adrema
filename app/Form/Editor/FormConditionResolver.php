@@ -20,11 +20,8 @@ class FormConditionResolver extends ConditionResolver
     /**
      * @inheritdoc
      */
-    public function filterBlock(array $block): bool
+    public function filterCondition($mode, $ifs): bool
     {
-        $mode = data_get($block, 'tunes.condition.mode', 'any');
-        $ifs = data_get($block, 'tunes.condition.ifs', []);
-
         if (count($ifs) === 0) {
             return true;
         }

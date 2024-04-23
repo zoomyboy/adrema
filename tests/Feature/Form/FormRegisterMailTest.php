@@ -214,6 +214,8 @@ class FormRegisterMailTest extends FormTestCase
 
     /**
      * @dataProvider blockDataProvider
+     * @param array<string, mixed> $conditions
+     * @param array<string, mixed> $participantValues
      */
     public function testItFiltersForBlockConditions(array $conditions, FormtemplateFieldRequest $field, array $participantValues, bool $result): void
     {
@@ -255,5 +257,35 @@ class FormRegisterMailTest extends FormTestCase
 
         $mail = new ConfirmRegistrationMail($participant);
         $mail->assertSeeInText('Max');
+    }
+
+    /**
+     * @dataProvider blockDataProvider
+     * @param array<string, mixed> $conditions
+     * @param array<string, mixed> $participantValues
+     */
+    public function testItFiltersForAttachments(array $conditions, FormtemplateFieldRequest $field, array $participantValues, bool $result): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        $participant = Participant::factory()->for(
+            Form::factory()
+                ->fields([
+                    $field,
+                    $this->textField('firstname')->specialType(SpecialType::FIRSTNAME),
+                    $this->textField('lastname')->specialType(SpecialType::LASTNAME),
+                ])
+                ->withDocument('mailattachments', 'beispiel.pdf', 'content', ['conditions' => $conditions])
+        )
+            ->data(['firstname' => 'Max', 'lastname' => 'Muster', ...$participantValues])
+            ->create();
+
+        $mail = new ConfirmRegistrationMail($participant);
+        $mail->assertSeeInHtml('Daten');
+        if ($result) {
+            $this->assertTrue($mail->hasAttachedData('content', 'beispiel.pdf', ['mime' => 'application/pdf']));
+        } else {
+            $this->assertFalse($mail->hasAttachedData('content', 'beispiel.pdf', ['mime' => 'application/pdf']));
+        }
     }
 }
