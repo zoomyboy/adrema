@@ -238,4 +238,22 @@ class FormRegisterMailTest extends FormTestCase
             $mail->assertDontSeeInText('::content::');
         }
     }
+
+    public function testItSendsEmailWhenMailTopIsEmpty(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        $participant = Participant::factory()->for(
+            Form::factory()
+                ->fields([
+                    $this->textField('firstname')->specialType(SpecialType::FIRSTNAME),
+                    $this->textField('lastname')->specialType(SpecialType::LASTNAME),
+                ])->state(['mail_top' => []])
+        )
+            ->data(['firstname' => 'Max', 'lastname' => 'Muster'])
+            ->create();
+
+        $mail = new ConfirmRegistrationMail($participant);
+        $mail->assertSeeInText('Max');
+    }
 }
