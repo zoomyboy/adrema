@@ -139,11 +139,12 @@ class Form extends Model implements HasMedia
     public static function booted(): void
     {
         static::saving(function (self $model) {
-            if (is_null($model->meta)) {
+            if (is_null(data_get($model->meta, 'active_columns'))) {
                 $model->setAttribute('meta', [
                     'active_columns' => $model->getFields()->count() ? $model->getFields()->take(4)->pluck('key')->toArray() : null,
                     'sorting' => $model->getFields()->count() ? [$model->getFields()->first()->key, 'asc'] : null,
                 ]);
+                return;
             }
 
             if (is_array(data_get($model->meta, 'active_columns'))) {
@@ -151,6 +152,7 @@ class Form extends Model implements HasMedia
                     ...$model->meta,
                     'active_columns' => array_values(array_intersect([...$model->getFields()->pluck('key')->toArray(), 'created_at'], $model->meta['active_columns'])),
                 ]);
+                return;
             }
         });
     }
