@@ -4,6 +4,8 @@
 
 <x-mail-view::editor :content="$topText"></x-mail-view::editor>
 
+# Deine Daten
+
 @foreach($config->sections as $section)
 ## {{$section->name}}
 @foreach ($section->fields as $field)
