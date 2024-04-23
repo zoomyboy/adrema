@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
 use Tests\EndToEndTestCase;
 use Tests\Feature\Form\FormtemplateSectionRequest;
+use Tests\RequestFactories\EditorRequestFactory;
 
 class FormApiListActionTest extends FormTestCase
 {
@@ -24,7 +25,7 @@ class FormApiListActionTest extends FormTestCase
             ->name('lala 2')
             ->excerpt('fff')
             ->withImage('headerImage', 'lala-2.jpg')
-            ->description('desc')
+            ->description(EditorRequestFactory::new()->text(10, 'desc'))
             ->from('2023-05-05')
             ->to('2023-06-07')
             ->sections([FormtemplateSectionRequest::new()->name('sname')])
@@ -37,7 +38,7 @@ class FormApiListActionTest extends FormTestCase
             ->assertJsonPath('data.0.config.sections.0.name', 'sname')
             ->assertJsonPath('data.0.id', $form->id)
             ->assertJsonPath('data.0.excerpt', 'fff')
-            ->assertJsonPath('data.0.description', 'desc')
+            ->assertJsonPath('data.0.description.blocks.0.data.text', 'desc')
             ->assertJsonPath('data.0.slug', 'lala-2')
             ->assertJsonPath('data.0.image', $form->getMedia('headerImage')->first()->getFullUrl('square'))
             ->assertJsonPath('data.0.dates', '05.05.2023 - 07.06.2023')
