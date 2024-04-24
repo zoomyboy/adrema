@@ -20,7 +20,7 @@ class FormConditionResolver extends ConditionResolver
     /**
      * @inheritdoc
      */
-    public function filterCondition($mode, $ifs): bool
+    public function filterCondition(string $mode, array $ifs): bool
     {
         if (count($ifs) === 0) {
             return true;
@@ -41,8 +41,6 @@ class FormConditionResolver extends ConditionResolver
             return false;
         }
 
-        if ($mode === 'all') {
-            return true;
-        }
+        return true;
     }
 }

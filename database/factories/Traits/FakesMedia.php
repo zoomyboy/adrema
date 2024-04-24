@@ -22,6 +22,9 @@ trait FakesMedia
         });
     }
 
+    /**
+     * @param array<string, mixed> $properties
+     */
     public function withDocument(string $collection, string $filename, string $content = '', array $properties = []): self
     {
         return $this->afterCreating(function (HasMedia $model) use ($filename, $collection, $content, $properties) {

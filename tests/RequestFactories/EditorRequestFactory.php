@@ -20,12 +20,16 @@ class EditorRequestFactory extends RequestFactory
         ];
     }
 
+    /**
+     * @param array<string, mixed> $conditions
+     */
     public function text(int $id, string $text, array $conditions = ['mode' => 'all', 'ifs' => []]): self
     {
         return $this->state($this->paragraphBlock($id, $text, $conditions));
     }
 
     /**
+     * @param array<string, mixed> $conditions
      * @return array<string, mixed>
      */
     public function paragraphBlock(int $id, string $text, array $conditions = ['mode' => 'all', 'ifs' => []]): array

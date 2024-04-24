@@ -20,7 +20,7 @@ abstract class ConditionResolver
     }
 
     /**
-     * @inheritdoc
+     * @param array<string, mixed> $block
      */
     public function filterBlock(array $block): bool
     {

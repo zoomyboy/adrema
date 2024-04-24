@@ -5,6 +5,8 @@ namespace App\Form\Fields;
 use App\Form\Data\ColumnData;
 use App\Form\Enums\NamiType;
 use App\Form\Enums\SpecialType;
+use App\Form\Matchers\Matcher;
+use App\Form\Matchers\SingleValueMatcher;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Form\Presenters\DefaultPresenter;
@@ -169,5 +171,10 @@ abstract class Field extends Data
     public function matches(string $comparator, mixed $value): bool
     {
         return $this->getMatcher()->setValue($this->value)->matches($comparator, $value);
+    }
+
+    public function getMatcher(): Matcher
+    {
+        return app(SingleValueMatcher::class);
     }
 }
