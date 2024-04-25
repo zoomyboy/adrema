@@ -17,7 +17,7 @@ class GroupField extends Field
     public ?string $parentField = null;
     public ?int $parentGroup = null;
     public bool $hasEmptyOption;
-    public string $emptyOptionValue;
+    public ?string $emptyOptionValue;
 
     public static function name(): string
     {
@@ -31,7 +31,7 @@ class GroupField extends Field
             ['key' => 'parent_field', 'default' => null, 'rules' => ['parent_field' => 'present|nullable|string'], 'label' => 'Übergeordnetes Feld'],
             ['key' => 'parent_group', 'default' => null, 'rules' => ['parent_group' => ['present', 'nullable', Rule::in(Group::pluck('id')->toArray())]], 'label' => 'Übergeordnete Gruppierung'],
             ['key' => 'has_empty_option', 'default' => false, 'rules' => ['has_empty_option' => ['present', 'boolean']], 'label' => 'Leere Option erlauben'],
-            ['key' => 'empty_option_value', 'default' => '', 'rules' => ['empty_option_value' => ['present', 'string']], 'label' => 'Leere Option'],
+            ['key' => 'empty_option_value', 'default' => '', 'rules' => ['empty_option_value' => ['present', 'nullable', 'string']], 'label' => 'Leere Option'],
         ];
     }
 
