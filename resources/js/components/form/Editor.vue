@@ -132,7 +132,7 @@ class ConditionTune {
         if (this.hasData()) {
             this.wrapper.querySelector('[data-content]').className = 'p-1 border border-blue-100 rounded';
             this.wrapper.querySelector('[data-tooltip]').className =
-                'inline-block tracking-wider font-semibold ml-2 px-2 py-1 items-center text-xs leading-none bg-blue-100 text-blue-900 rounded-t-lg';
+                'mt-1 inline-block tracking-wider font-semibold ml-2 mr-2 px-2 py-1 items-center text-xs leading-none bg-blue-100 text-blue-900 rounded-t-lg';
             this.wrapper.querySelector('[data-tooltip]').innerHTML = this.descriptionName();
         } else {
             this.wrapper.querySelector('[data-content]').className = '';
@@ -162,6 +162,10 @@ class ConditionTune {
 
                     if (Array.isArray(i.value)) {
                         parts.push(i.value.join(', '));
+                    }
+
+                    if (typeof i.value === 'boolean') {
+                        parts.push(i.value ? 'An' : 'Aus');
                     }
 
                     return parts.join(' ');
