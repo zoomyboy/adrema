@@ -31,6 +31,7 @@ use App\Form\Actions\FormtemplateUpdateAction;
 use App\Form\Actions\FormUpdateAction;
 use App\Form\Actions\FormUpdateMetaAction;
 use App\Form\Actions\IsDirtyAction;
+use App\Form\Actions\ParticipantDestroyAction;
 use App\Form\Actions\ParticipantIndexAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
@@ -162,4 +163,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::patch('/form/{form}/meta', FormUpdateMetaAction::class)->name('form.update-meta');
     Route::get('/form/{form}/participants', ParticipantIndexAction::class)->name('form.participant.index');
     Route::post('/form/{form}/is-dirty', IsDirtyAction::class)->name('form.is-dirty');
+    Route::delete('/participant/{participant}', ParticipantDestroyAction::class)->name('participant.destroy');
 });

@@ -1,5 +1,14 @@
 <template>
     <div class="mt-5">
+        <ui-popup v-if="deleting !== null" heading="Teilnehmer*in löschen?" @close="deleting = null">
+            <div>
+                <p class="mt-4">Den*Die Teilnehmer*in löschen?</p>
+                <div class="grid grid-cols-2 gap-3 mt-6">
+                    <a href="#" class="text-center btn btn-danger" @click.prevent="handleDelete">Mitglied loschen</a>
+                    <a href="#" class="text-center btn btn-primary" @click.prevent="deleting = null">Abbrechen</a>
+                </div>
+            </div>
+        </ui-popup>
         <page-filter breakpoint="lg">
             <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm" name="active_columns"></f-multipleselect>
         </page-filter>
@@ -9,13 +18,13 @@
                 <th></th>
             </thead>
 
-            <tr v-for="(form, index) in data" :key="index">
+            <tr v-for="(participant, index) in data" :key="index">
                 <td v-for="column in activeColumns" :key="column.id">
-                    <div v-text="form[column.display_attribute]"></div>
+                    <div v-text="participant[column.display_attribute]"></div>
                 </td>
                 <td>
-                    <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(form)"><ui-sprite src="pencil"></ui-sprite></a>
-                    <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = form"><ui-sprite src="trash"></ui-sprite></a>
+                    <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(participant)"><ui-sprite src="pencil"></ui-sprite></a>
+                    <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = participant"><ui-sprite src="trash"></ui-sprite></a>
                 </td>
             </tr>
         </table>
@@ -29,6 +38,8 @@
 import {ref, computed} from 'vue';
 import {useApiIndex} from '../../composables/useApiIndex.js';
 
+const deleting = ref(null);
+
 const props = defineProps({
     url: {
         type: String,
@@ -37,7 +48,7 @@ const props = defineProps({
     },
 });
 
-var {meta, data, reload, reloadPage, axios} = useApiIndex(props.url, 'participant');
+var {meta, data, reload, reloadPage, axios, remove} = useApiIndex(props.url, 'participant');
 
 const activeColumns = computed(() => meta.value.columns.filter((c) => meta.value.form_meta.active_columns.includes(c.id)));
 
@@ -52,6 +63,11 @@ const activeColumnsConfig = computed({
         meta.value.form_meta = response.data;
     },
 });
+
+async function handleDelete() {
+    await remove(deleting.value);
+    deleting.value = null;
+}
 
 await reload();
 </script>
