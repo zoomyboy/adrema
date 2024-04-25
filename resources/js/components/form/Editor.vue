@@ -107,8 +107,20 @@ class ConditionTune {
 
     wrap(blockContent) {
         this.wrapper = document.createElement('div');
-        this.wrapper.appendChild(blockContent);
+
+        var tooltip = document.createElement('div');
+        tooltip.setAttribute('data-tooltip', '');
+
+        var content = document.createElement('div');
+        content.setAttribute('data-content', '');
+
+        content.appendChild(blockContent);
+
+        this.wrapper.appendChild(tooltip);
+        this.wrapper.appendChild(content);
+
         this.styleWrapper();
+
         return this.wrapper;
     }
 
@@ -118,18 +130,13 @@ class ConditionTune {
 
     styleWrapper() {
         if (this.hasData()) {
-            this.wrapper.className = 'relative mt-6 mb-6 p-1 border border-blue-200 rounded';
-            if (!this.wrapper.querySelector('.condition-description')) {
-                var tooltip = document.createElement('div');
-                tooltip.className = 'condition-description absolute top-0 left-0 -mt-4 ml-1 h-4 flex px-2 items-center text-xs leading-none bg-blue-200 text-blue-900 rounded-t-lg';
-                tooltip.innerHTML = 'Bedingung';
-                this.wrapper.appendChild(tooltip);
-            }
+            this.wrapper.querySelector('[data-content]').className = 'p-1 border border-blue-200 rounded';
+            this.wrapper.querySelector('[data-tooltip]').className = 'inline-block ml-2 px-2 py-1 items-center text-xs leading-none bg-blue-200 text-blue-900 rounded-t-lg';
+            this.wrapper.querySelector('[data-tooltip]').innerHTML = 'Bedingung';
         } else {
-            this.wrapper.className = '';
-            if (this.wrapper.querySelector('.condition-description')) {
-                this.wrapper.removeChild(this.wrapper.querySelector('.condition-description'));
-            }
+            this.wrapper.querySelector('[data-content]').className = '';
+            this.wrapper.querySelector('[data-tooltip]').className = '';
+            this.wrapper.querySelector('[data-tooltip]').innerHTML = '';
         }
     }
 
