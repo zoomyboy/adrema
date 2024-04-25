@@ -130,14 +130,44 @@ class ConditionTune {
 
     styleWrapper() {
         if (this.hasData()) {
-            this.wrapper.querySelector('[data-content]').className = 'p-1 border border-blue-200 rounded';
-            this.wrapper.querySelector('[data-tooltip]').className = 'inline-block ml-2 px-2 py-1 items-center text-xs leading-none bg-blue-200 text-blue-900 rounded-t-lg';
-            this.wrapper.querySelector('[data-tooltip]').innerHTML = 'Bedingung';
+            this.wrapper.querySelector('[data-content]').className = 'p-1 border border-blue-100 rounded';
+            this.wrapper.querySelector('[data-tooltip]').className =
+                'inline-block tracking-wider font-semibold ml-2 px-2 py-1 items-center text-xs leading-none bg-blue-100 text-blue-900 rounded-t-lg';
+            this.wrapper.querySelector('[data-tooltip]').innerHTML = this.descriptionName();
         } else {
             this.wrapper.querySelector('[data-content]').className = '';
             this.wrapper.querySelector('[data-tooltip]').className = '';
             this.wrapper.querySelector('[data-tooltip]').innerHTML = '';
         }
+    }
+
+    descriptionName() {
+        return (
+            'Bedingung ' +
+            this.data.ifs
+                .map((i) => {
+                    var parts = [i.field];
+
+                    if (i.comparator === 'isEqual' || i.comparator === 'isIn') {
+                        parts.push('=');
+                    }
+
+                    if (i.comparator === 'isNotEqual' || i.comparator === 'isNotIn') {
+                        parts.push('&ne;');
+                    }
+
+                    if (typeof i.value === 'string') {
+                        parts.push(i.value);
+                    }
+
+                    if (Array.isArray(i.value)) {
+                        parts.push(i.value.join(', '));
+                    }
+
+                    return parts.join(' ');
+                })
+                .join(', ')
+        );
     }
 
     render() {
