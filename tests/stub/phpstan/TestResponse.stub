@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @method self assertInertiaPath(string $path, mixed $value)
  * @method self assertPdfPageCount(int $count)
  * @method self assertPdfName(string $filename)
+ * @method self asseertHasJsonPath(string $path)
  * @method File getFile()
  */
 class TestResponse

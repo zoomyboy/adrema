@@ -18,6 +18,9 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 #[MapOutputName(SnakeCaseMapper::class)]
 class ParticipantFilterScope extends Filter
 {
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         public ?int $parent = null,
         public array $data = [],
