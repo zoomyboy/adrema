@@ -85,8 +85,8 @@ export default {
             return Array.isArray(this.options)
                 ? this.options
                 : map(this.options, (value, key) => {
-                      return {name: value, id: key};
-                  });
+                    return { name: value, id: key };
+                });
         },
     },
     mounted() {
@@ -103,15 +103,6 @@ export default {
         trigger(v) {
             this.$emit('update:modelValue', /^[0-9]+$/.test(v.target.value) ? parseInt(v.target.value) : v.target.value ? v.target.value : null);
         },
-        clear() {
-            this.$emit('update:modelValue', null);
-        },
     },
 };
 </script>
-
-<style scope>
-.inset-bg {
-    background: linear-gradient(to bottom, hsl(247.5, 66.7%, 97.6%) 0%, hsl(247.5, 66.7%, 97.6%) 41%, hsl(0deg 0% 100%) 41%, hsl(180deg 0% 100%) 100%);
-}
-</style>
