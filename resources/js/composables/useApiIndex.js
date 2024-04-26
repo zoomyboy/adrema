@@ -11,9 +11,10 @@ export function useApiIndex(url, siteName) {
         meta: ref({}),
     };
 
-    async function reload(resetPage = true) {
+    async function reload(resetPage = true, p = {}) {
         var params = {
             page: resetPage ? 1 : inner.meta.value.current_page,
+            ...p,
         };
 
         var response = (await axios.get(url, {params})).data;
@@ -47,6 +48,10 @@ export function useApiIndex(url, siteName) {
 
     function can(permission) {
         return inner.meta.value.can[permission];
+    }
+
+    function toFilterString(data) {
+        return btoa(encodeURIComponent(JSON.stringify(data)));
     }
 
     function requestCallback(successMessage, failureMessage) {
@@ -85,5 +90,6 @@ export function useApiIndex(url, siteName) {
         remove,
         cancel,
         axios,
+        toFilterString,
     };
 }

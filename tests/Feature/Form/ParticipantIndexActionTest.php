@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Fields\CheckboxField;
 use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
+use App\Form\Scopes\ParticipantFilterScope;
 use App\Group;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -54,6 +56,75 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('meta.form_meta.active_columns', ['vorname', 'select', 'stufe', 'test1'])
             ->assertJsonPath('meta.links.update_form_meta', route('form.update-meta', ['form' => $form]))
             ->assertJsonPath('meta.form_meta.sorting', ['vorname', 'asc']);
+    }
+
+    public function testItShowsEmptyFilters(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->fields([$this->checkboxField('check')->name('Checked')])->create();
+
+        $this->callFilter('form.participant.index', [], ['form' => $form])
+            ->assertOk()
+            ->assertJsonPath('meta.filters.0.name', 'Checked')
+            ->assertJsonPath('meta.filters.0.key', 'check')
+            ->assertJsonPath('meta.filters.0.base_type', 'CheckboxField')
+            ->assertJsonPath('meta.default_filter_value', ParticipantFilterScope::$nan);
+
+        $this->callFilter('form.participant.index', ['data' => ['check' => null]], ['form' => $form])->assertHasJsonPath('meta.filter.data.check')->assertJsonPath('meta.filter.data.check', null);
+        $this->callFilter('form.participant.index', ['data' => ['check' => 'A']], ['form' => $form])->assertJsonPath('meta.filter.data.check', 'A');
+        $this->callFilter('form.participant.index', ['data' => []], ['form' => $form])->assertJsonPath('meta.filter.data.check', ParticipantFilterScope::$nan);
+    }
+
+    public function testItFiltersParticipantsByCheckboxValue(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->fields([$this->checkboxField('check')])
+            ->has(Participant::factory()->data(['check' => true])->count(1))
+            ->has(Participant::factory()->data(['check' => false])->count(2))
+            ->create();
+
+        $this->callFilter('form.participant.index', ['data' => ['check' => ParticipantFilterScope::$nan]], ['form' => $form])
+            ->assertJsonCount(3, 'data');
+        $this->callFilter('form.participant.index', ['data' => ['check' => true]], ['form' => $form])
+            ->assertJsonCount(1, 'data');
+        $this->callFilter('form.participant.index', ['data' => ['check' => false]], ['form' => $form])
+            ->assertJsonCount(2, 'data');
+    }
+
+    public function testItFiltersParticipantsByDropdownValue(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->fields([$this->dropdownField('drop')->options(['A', 'B'])])
+            ->has(Participant::factory()->data(['drop' => null])->count(1))
+            ->has(Participant::factory()->data(['drop' => 'A'])->count(2))
+            ->has(Participant::factory()->data(['drop' => 'B'])->count(4))
+            ->create();
+
+        $this->callFilter('form.participant.index', ['data' => ['drop' => ParticipantFilterScope::$nan]], ['form' => $form])
+            ->assertJsonCount(7, 'data');
+        $this->callFilter('form.participant.index', ['data' => ['drop' => null]], ['form' => $form])
+            ->assertJsonCount(1, 'data');
+        $this->callFilter('form.participant.index', ['data' => ['drop' => 'A']], ['form' => $form])
+            ->assertJsonCount(2, 'data');
+        $this->callFilter('form.participant.index', ['data' => ['drop' => 'B']], ['form' => $form])
+            ->assertJsonCount(4, 'data');
+    }
+
+    public function testItFiltersParticipantsByRadioValue(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->fields([$this->radioField('drop')->options(['A', 'B'])])
+            ->has(Participant::factory()->data(['drop' => null])->count(1))
+            ->has(Participant::factory()->data(['drop' => 'A'])->count(2))
+            ->has(Participant::factory()->data(['drop' => 'B'])->count(4))
+            ->create();
+
+        $this->callFilter('form.participant.index', ['data' => ['drop' => ParticipantFilterScope::$nan]], ['form' => $form])
+            ->assertJsonCount(7, 'data');
+        $this->callFilter('form.participant.index', ['data' => ['drop' => 'A']], ['form' => $form])
+            ->assertJsonCount(2, 'data');
+        $this->callFilter('form.participant.index', ['data' => ['drop' => 'B']], ['form' => $form])
+            ->assertJsonCount(4, 'data');
     }
 
     public function testItShowsOnlyRootMembers(): void

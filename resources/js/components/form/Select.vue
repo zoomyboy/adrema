@@ -5,8 +5,8 @@
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
         <div class="real-field-wrap" :class="`size-${size}`">
-            <select :disabled="disabled" :name="name" :value="modelValue" @change="trigger">
-                <option v-if="placeholder" value="">{{ placeholder }}</option>
+            <select v-model="inner" :disabled="disabled" :name="name">
+                <option v-if="placeholder" :value="def">{{ placeholder }}</option>
 
                 <option v-for="option in parsedOptions" :key="option.id" :value="option.id">{{ option.name }}</option>
             </select>
@@ -25,84 +25,83 @@
     </label>
 </template>
 
-<script>
+<script setup>
+import {computed, ref} from 'vue';
 import map from 'lodash/map';
 
-export default {
-    props: {
-        disabled: {
-            type: Boolean,
-            default: function () {
-                return false;
-            },
-        },
-        id: {},
-        inset: {
-            type: Boolean,
-            default: false,
-        },
-        size: {
-            default: function () {
-                return 'base';
-            },
-        },
-        emptyLabel: {
-            default: false,
-            type: Boolean,
-        },
-        modelValue: {
-            default: undefined,
-        },
-        label: {
-            default: null,
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        placeholder: {
-            default: '--kein--',
-            type: String,
-        },
-        def: {
-            required: false,
-            type: Number,
-            default: -1,
-        },
-        name: {
-            required: true,
-        },
-        hint: {},
-        options: {
-            default: function () {
-                return [];
-            },
-        },
-    },
-    emits: ['update:modelValue'],
-    computed: {
-        parsedOptions() {
-            return Array.isArray(this.options)
-                ? this.options
-                : map(this.options, (value, key) => {
-                    return { name: value, id: key };
-                });
-        },
-    },
-    mounted() {
-        if (this.def !== -1 && typeof this.modelValue === 'undefined') {
-            this.$emit('update:modelValue', this.def);
-            return;
-        }
+const emit = defineEmits(['update:modelValue']);
 
-        if (this.placeholder && typeof this.modelValue === 'undefined') {
-            this.$emit('update:modelValue', null);
-        }
+const props = defineProps({
+    nullValue: {
+        required: false,
+        default: () => null,
     },
-    methods: {
-        trigger(v) {
-            this.$emit('update:modelValue', /^[0-9]+$/.test(v.target.value) ? parseInt(v.target.value) : v.target.value ? v.target.value : null);
+    disabled: {
+        type: Boolean,
+        default: function () {
+            return false;
         },
     },
-};
+    id: {},
+    inset: {
+        type: Boolean,
+        default: false,
+    },
+    size: {
+        default: function () {
+            return 'base';
+        },
+    },
+    emptyLabel: {
+        default: false,
+        type: Boolean,
+    },
+    modelValue: {
+        default: undefined,
+    },
+    label: {
+        default: null,
+    },
+    required: {
+        type: Boolean,
+        default: false,
+    },
+    placeholder: {
+        default: '--kein--',
+        type: String,
+    },
+    def: {
+        required: false,
+        type: Number,
+        default: -1,
+    },
+    name: {
+        required: true,
+    },
+    hint: {},
+    options: {
+        default: function () {
+            return [];
+        },
+    },
+});
+
+const parsedOptions = computed(() => {
+    return Array.isArray(props.options)
+        ? props.options
+        : map(props.options, (value, key) => {
+              return {name: value, id: key};
+          });
+});
+
+const def = ref('iu1Feixah5AeKai3ewooJahjeaegee0eiD4maeth1oul4Hei7u');
+
+const inner = computed({
+    get: () => {
+        return props.modelValue === props.nullValue ? def.value : props.modelValue;
+    },
+    set: (v) => {
+        emit('update:modelValue', v === def.value ? props.nullValue : v);
+    },
+});
 </script>

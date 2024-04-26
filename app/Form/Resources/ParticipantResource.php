@@ -4,6 +4,7 @@ namespace App\Form\Resources;
 
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
+use App\Form\Scopes\ParticipantFilterScope;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
@@ -43,7 +44,17 @@ class ParticipantResource extends JsonResource
                 'id' => $field->key,
                 'display_attribute' => $field->getDisplayAttribute(),
             ]);
+
+        $filterData = $form->getFields()
+            ->map(fn ($field) => [
+                ...$field->toArray(),
+                'base_type' => class_basename($field),
+            ]);
+
         return [
+            'filter' => ParticipantFilterScope::fromRequest(request()->input('filter', ''))->setForm($form),
+            'default_filter_value' => ParticipantFilterScope::$nan,
+            'filters' => $filterData,
             'form_meta' => $form->meta,
             'links' => [
                 'update_form_meta' => route('form.update-meta', ['form' => $form]),

@@ -8,6 +8,7 @@ use App\Setting\NamiSettings;
 use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
@@ -150,6 +151,14 @@ abstract class TestCase extends BaseTestCase
             /** @var TestResponse */
             $response = $this;
             Assert::assertEquals($filename, $response->getFile()->getFilename());
+
+            return $this;
+        });
+
+        TestResponse::macro('assertHasJsonPath', function (string $path) {
+            /** @var TestResponse */
+            $response = $this;
+            Assert::assertTrue(Arr::has($response->json(), $path), 'Failed that key ' . $path . ' is in Response.');
 
             return $this;
         });

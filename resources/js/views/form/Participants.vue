@@ -11,6 +11,39 @@
         </ui-popup>
         <page-filter breakpoint="lg">
             <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm" name="active_columns"></f-multipleselect>
+
+            <template v-for="(filter, index) in meta.filters">
+                <f-select
+                    v-if="filter.base_type === 'CheckboxField'"
+                    :id="`filter-field-${index}`"
+                    :key="`filter-field-${index}`"
+                    v-model="innerFilter.data[filter.key]"
+                    :null-value="meta.default_filter_value"
+                    :name="`filter-field-${index}`"
+                    :options="checkboxFilterOptions"
+                    :label="filter.name"
+                ></f-select>
+                <f-select
+                    v-if="filter.base_type === 'DropdownField'"
+                    :id="`filter-field-${index}`"
+                    :key="`filter-field-${index}`"
+                    v-model="innerFilter.data[filter.key]"
+                    :null-value="meta.default_filter_value"
+                    :name="`filter-field-${index}`"
+                    :options="dropdownFilterOptions(filter)"
+                    :label="filter.name"
+                ></f-select>
+                <f-select
+                    v-if="filter.base_type === 'RadioField'"
+                    :id="`filter-field-${index}`"
+                    :key="`filter-field-${index}`"
+                    v-model="innerFilter.data[filter.key]"
+                    :null-value="meta.default_filter_value"
+                    :name="`filter-field-${index}`"
+                    :options="dropdownFilterOptions(filter)"
+                    :label="filter.name"
+                ></f-select>
+            </template>
         </page-filter>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
@@ -35,7 +68,7 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue';
+import {watch, ref, computed} from 'vue';
 import {useApiIndex} from '../../composables/useApiIndex.js';
 
 const deleting = ref(null);
@@ -48,7 +81,7 @@ const props = defineProps({
     },
 });
 
-var {meta, data, reload, reloadPage, axios, remove} = useApiIndex(props.url, 'participant');
+var {meta, data, reload, reloadPage, axios, remove, toFilterString} = useApiIndex(props.url, 'participant');
 
 const activeColumns = computed(() => meta.value.columns.filter((c) => meta.value.form_meta.active_columns.includes(c.id)));
 
@@ -70,4 +103,30 @@ async function handleDelete() {
 }
 
 await reload();
+
+const innerFilter = ref(JSON.parse(JSON.stringify(meta.value.filter)));
+
+watch(
+    innerFilter,
+    async function (newValue) {
+        await reload(true, {
+            filter: toFilterString(newValue),
+        });
+    },
+    {deep: true}
+);
+
+const checkboxFilterOptions = ref([
+    {id: true, name: 'Ja'},
+    {id: false, name: 'Nein'},
+]);
+
+function dropdownFilterOptions(filter) {
+    return [
+        {id: null, name: 'keine Auswahl'},
+        ...filter.options.map((f) => {
+            return {id: f, name: f};
+        }),
+    ];
+}
 </script>
