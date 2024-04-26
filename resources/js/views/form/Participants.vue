@@ -22,6 +22,7 @@
                     :name="`filter-field-${index}`"
                     :options="checkboxFilterOptions"
                     :label="filter.name"
+                    size="sm"
                 ></f-select>
                 <f-select
                     v-if="filter.base_type === 'DropdownField'"
@@ -32,6 +33,7 @@
                     :name="`filter-field-${index}`"
                     :options="dropdownFilterOptions(filter)"
                     :label="filter.name"
+                    size="sm"
                 ></f-select>
                 <f-select
                     v-if="filter.base_type === 'RadioField'"
@@ -42,6 +44,7 @@
                     :name="`filter-field-${index}`"
                     :options="dropdownFilterOptions(filter)"
                     :label="filter.name"
+                    size="sm"
                 ></f-select>
             </template>
         </page-filter>
