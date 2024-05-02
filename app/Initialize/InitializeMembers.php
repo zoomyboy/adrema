@@ -3,6 +3,7 @@
 namespace App\Initialize;
 
 use App\Member\Actions\InsertFullMemberAction;
+use Log;
 use App\Member\Data\FullMember;
 use App\Member\Member;
 use App\Nami\Api\FullMemberAction;
@@ -26,7 +27,13 @@ class InitializeMembers
         Redis::delete('members');
 
         $memberIds = $api->search($settings->search_params)->map(fn ($member) => $member->id)->toArray();
-        Member::remote()->whereNotIn('nami_id', $memberIds)->get()->each->delete();
+        foreach (Member::remote()->whereNotIn('nami_id', $memberIds)->get() as $member) {
+            if ($member->efz !== null || $member->ps_at !== null  || $member->more_ps_at !== null) {
+                Log::error('Mitglied ' . $member->id . ' wird nicht gelöscht werden.');
+                continue;
+            }
+            $member->delete();
+        }
 
         $jobs = $api->search($settings->search_params)->map(function (NamiMemberEntry $member) use ($api) {
             return FullMemberAction::makeJob($api, $member->groupId, $member->id, 'members');
