@@ -6,6 +6,7 @@ use App\Member\FilterScope;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Scout\EngineManager;
 use League\Csv\Writer;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -43,7 +44,7 @@ class ExportAction
 
     public function asController(ActionRequest $request): StreamedResponse
     {
-        $members = FilterScope::fromRequest($request->input('filter'))->withOptions(['hitsPerPage' => 20000])->getQuery()->get();
+        $members = FilterScope::fromRequest($request->input('filter'))->noPageLimit()->getQuery()->get();
         $contents = $this->handle($members);
 
         Storage::disk('temp')->put('mitglieder.csv', $contents);

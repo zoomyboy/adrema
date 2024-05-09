@@ -59,6 +59,13 @@ class FilterScope extends ScoutFilter
         return $this;
     }
 
+    public function noPageLimit(): self
+    {
+        return $this->withOptions([
+            'hitsPerPage' => config('scout.meilisearch.index-settings.' . Member::class . '.pagination.maxTotalHits')
+        ]);
+    }
+
     public function getQuery(): Builder
     {
         $this->search = $this->search ?: '';
