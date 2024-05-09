@@ -27,6 +27,19 @@ class ExportCsvActionTest extends EndToEndTestCase
         $this->assertFalse(str_contains($contents, 'Max'));
     }
 
+    public function testItExportsAllMembers(): void
+    {
+        Storage::fake('temp');
+
+        $this->withoutExceptionHandling()->login()->loginNami();
+        Member::factory()->defaults()->count(40)->create();
+
+        sleep(1);
+        $this->callFilter('member-export', [])->assertDownload('mitglieder.csv');
+        $contents = Storage::disk('temp')->get('mitglieder.csv');
+        $this->assertCount(42, explode("\n", $contents));
+    }
+
     public function testItOrdersByLastname(): void
     {
         Storage::fake('temp');

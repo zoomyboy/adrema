@@ -20,6 +20,12 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 #[MapOutputName(SnakeCaseMapper::class)]
 class FilterScope extends ScoutFilter
 {
+
+    /**
+     * @var array<string, mixed>
+     */
+    public array $options = [];
+
     /**
      * @param array<int, int> $activityIds
      * @param array<int, int> $subactivityIds
@@ -41,6 +47,16 @@ class FilterScope extends ScoutFilter
         public ?bool $hasFullAddress = null,
         public ?bool $hasBirthday = null,
     ) {
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function withOptions(array $options): self
+    {
+        $this->options = $options;
+
+        return $this;
     }
 
     public function getQuery(): Builder
@@ -97,7 +113,7 @@ class FilterScope extends ScoutFilter
             $options['filter'] = $this->implode(collect([$andFilter])->push($this->inExpression('id', $this->include)), 'OR');
             $options['sort'] = ['lastname:asc', 'firstname:asc'];
 
-            return $engine->search($query, $options);
+            return $engine->search($query, [...$this->options, ...$options]);
         });
     }
 
