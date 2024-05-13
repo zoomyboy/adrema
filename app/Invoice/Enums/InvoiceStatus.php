@@ -19,6 +19,23 @@ enum InvoiceStatus: string
     }
 
     /**
+     * @return Collection<int, string>
+     */
+    public static function defaultVisibleValues(): Collection
+    {
+        return collect(static::cases())->filter(fn ($value) => $value->defaultVisible())->map(fn ($case) => $case->value);
+    }
+
+    public function defaultVisible(): bool
+    {
+        return match ($this) {
+            static::NEW => true,
+            static::SENT => true,
+            static::PAID => false
+        };
+    }
+
+    /**
      * @return array<int, array{id: string, name: string}>
      */
     public static function forSelect(): array

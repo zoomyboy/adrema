@@ -72,6 +72,17 @@
                 </section>
             </form>
         </ui-popup>
+        <page-filter breakpoint="xl">
+            <f-multipleselect
+                id="statuses"
+                :options="meta.statuses"
+                :model-value="getFilter('statuses')"
+                label="Status"
+                size="sm"
+                name="group_ids"
+                @update:model-value="setFilter('statuses', $event)"
+            ></f-multipleselect>
+        </page-filter>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
                 <th>Empfänger</th>
@@ -118,7 +129,7 @@
 import {ref} from 'vue';
 import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
 const props = defineProps(indexProps);
-var {axios, meta, data, reloadPage, create, single, edit, cancel, submit, remove} = useIndex(props.data, 'invoice');
+var {axios, meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter} = useIndex(props.data, 'invoice');
 const massstore = ref(null);
 const deleting = ref(null);
 const forMember = ref({member_id: null, subscription_id: null, year: null});

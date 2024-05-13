@@ -5,6 +5,7 @@ namespace App\Invoice\Resources;
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
+use App\Invoice\Scopes\InvoiceFilterScope;
 use App\Lib\HasMeta;
 use App\Member\Member;
 use App\Payment\Subscription;
@@ -62,6 +63,7 @@ class InvoiceResource extends JsonResource
             'statuses' => InvoiceStatus::forSelect(),
             'members' => Member::forSelect(),
             'subscriptions' => Subscription::forSelect(),
+            'filter' => InvoiceFilterScope::fromRequest(request()->input('filter', '')),
             'default' => [
                 'to' => [
                     'name' => '',

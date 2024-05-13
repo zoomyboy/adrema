@@ -36,6 +36,11 @@ abstract class Filter extends Data
      */
     public static function fromPost(?array $post = null): static
     {
-        return static::withoutMagicalCreationFrom($post ?: []);
+        return static::withoutMagicalCreationFrom($post ?: [])->toDefault();
+    }
+
+    public function toDefault(): self
+    {
+        return $this;
     }
 }

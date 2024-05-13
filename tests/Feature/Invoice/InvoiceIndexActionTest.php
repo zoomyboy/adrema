@@ -56,6 +56,7 @@ class InvoiceIndexActionTest extends TestCase
             ->assertInertiaPath('data.meta.statuses.0', ['id' => 'Neu', 'name' => 'Neu'])
             ->assertInertiaPath('data.meta.members.0', ['id' => $member->id, 'name' => 'Aaaa Aaab'])
             ->assertInertiaPath('data.meta.subscriptions.0', ['name' => 'Beitrag', 'id' => $subscription->id])
+            ->assertInertiaPath('data.meta.filter.statuses', ['Neu', 'Rechnung gestellt'])
             ->assertInertiaPath('data.meta.default', [
                 'to' => [
                     'name' => '',
@@ -85,5 +86,19 @@ class InvoiceIndexActionTest extends TestCase
 
         $this->get(route('invoice.index'))
             ->assertInertiaPath('data.data.0.sent_at_human', '');
+    }
+
+    public function testItFiltersForInvoiceStatus(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        Invoice::factory()->status(InvoiceStatus::NEW)->create();
+        Invoice::factory()->status(InvoiceStatus::SENT)->count(2)->create();
+        Invoice::factory()->status(InvoiceStatus::PAID)->count(3)->create();
+
+        $this->callFilter('invoice.index', [])->assertInertiaCount('data.data', 3);
+        $this->callFilter('invoice.index', ['statuses' => []])->assertInertiaCount('data.data', 0);
+        $this->callFilter('invoice.index', ['statuses' => ['Neu']])->assertInertiaCount('data.data', 1);
+        $this->callFilter('invoice.index', ['statuses' => ['Neu', 'Rechnung beglichen']])->assertInertiaCount('data.data', 4);
+        $this->callFilter('invoice.index', ['statuses' => ['Neu', 'Rechnung beglichen', 'Rechnung gestellt']])->assertInertiaCount('data.data', 6);
     }
 }

@@ -7,6 +7,7 @@ use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\InvoiceDocument;
 use App\Invoice\RememberDocument;
+use App\Invoice\Scopes\InvoiceFilterScope;
 use App\Member\Member;
 use App\Payment\Subscription;
 use Illuminate\Database\Eloquent\Builder;
@@ -117,6 +118,15 @@ class Invoice extends Model
             ->whereNotNull('sent_at')
             ->whereNotNull('last_remembered_at')
             ->where('last_remembered_at', '<=', now()->subMonths(3));
+    }
+
+    /**
+     * @param  Builder<self> $query
+     * @return Builder<self>
+     */
+    public function scopeWithFilter(Builder $query, InvoiceFilterScope $filter): Builder
+    {
+        return $filter->apply($query);
     }
 
     public function getMailRecipient(): stdClass
