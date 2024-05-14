@@ -39,6 +39,9 @@ abstract class Filter extends Data
         return static::withoutMagicalCreationFrom($post ?: [])->toDefault();
     }
 
+    /**
+     * @return static(self<T>)
+     */
     public function toDefault(): self
     {
         return $this;
