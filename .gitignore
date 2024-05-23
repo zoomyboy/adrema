@@ -8,6 +8,7 @@ yarn-error.log
 /public/build
 /public/vendor
 storage/*.key
+/storage/media-library/*
 /vendor/
 Homestead.yaml
 Homestead.json
