@@ -1,21 +1,16 @@
 <template>
     <page-layout page-class="pb-6">
         <template #toolbar>
-            <page-toolbar-button :href="meta.links.create" color="primary" icon="plus">Mitglied
-                anlegen</page-toolbar-button>
-            <page-toolbar-button v-if="hasModule('bill')" :href="meta.links.allpayment" color="primary"
-                icon="invoice">Rechnungen erstellen</page-toolbar-button>
+            <page-toolbar-button :href="meta.links.create" color="primary" icon="plus">Mitglied anlegen</page-toolbar-button>
+            <page-toolbar-button v-if="hasModule('bill')" :href="meta.links.allpayment" color="primary" icon="invoice">Rechnungen erstellen</page-toolbar-button>
         </template>
         <ui-popup v-if="deleting !== null" heading="Mitglied löschen?" @close="deleting.reject()">
             <div>
                 <p class="mt-4">Das Mitglied "{{ deleting.member.fullname }}" löschen?</p>
-                <p class="mt-2">Alle Zuordnungen (Ausbildungen, Rechnungen, Zahlungen, Tätigkeiten) werden ebenfalls
-                    entfernt.</p>
-                <ui-note v-if="!deleting.member.has_nami" class="mt-5" type="warning"> Dieses Mitglied ist nicht in NaMi
-                    vorhanden und wird daher nur in der AdReMa gelöscht werden. </ui-note>
+                <p class="mt-2">Alle Zuordnungen (Ausbildungen, Rechnungen, Zahlungen, Tätigkeiten) werden ebenfalls entfernt.</p>
+                <ui-note v-if="!deleting.member.has_nami" class="mt-5" type="warning"> Dieses Mitglied ist nicht in NaMi vorhanden und wird daher nur in der AdReMa gelöscht werden. </ui-note>
                 <ui-note v-if="deleting.member.has_nami" class="mt-5" type="danger">
-                    Dieses Mitglied ist in NaMi vorhanden und wird daher in NaMi abgemeldet werden. Sofern
-                    "Datenweiterverwendung" eingeschaltet ist, wird das Mitglied auf inaktiv gesetzt.
+                    Dieses Mitglied ist in NaMi vorhanden und wird daher in NaMi abgemeldet werden. Sofern "Datenweiterverwendung" eingeschaltet ist, wird das Mitglied auf inaktiv gesetzt.
                 </ui-note>
                 <div class="grid grid-cols-2 gap-3 mt-6">
                     <a href="#" class="text-center btn btn-danger" @click.prevent="deleting.resolve">Mitglied loschen</a>
@@ -23,39 +18,62 @@
                 </div>
             </div>
         </ui-popup>
-        <ui-popup v-if="membershipFilters !== null" heading="Nach Mitgliedschaften filtern" full
-            @close="membershipFilters = null">
-            <button class="btn btn-primary label mt-2"
-                @click.prevent="membershipFilters.push({ ...meta.default_membership_filter })">
+        <ui-popup v-if="membershipFilters !== null" heading="Nach Mitgliedschaften filtern" full @close="membershipFilters = null">
+            <button class="btn btn-primary label mt-2" @click.prevent="membershipFilters.push({...meta.default_membership_filter})">
                 <ui-sprite class="w-3 h-3 xl:mr-2" src="plus"></ui-sprite>
                 <span class="hidden xl:inline">Hinzufügen</span>
             </button>
             <div v-for="(filter, index) in membershipFilters" :key="index" class="flex space-x-2 mt-2">
-                <f-multipleselect id="group_id" v-model="filter.group_ids" :options="meta.groups" label="Gruppierung"
-                    size="sm" name="group_id"></f-multipleselect>
-                <f-multipleselect id="activity_ids" v-model="filter.activity_ids" :options="meta.filterActivities"
-                    label="Tätigkeiten" size="sm" name="activity_ids"></f-multipleselect>
-                <f-multipleselect id="subactivity_ids" v-model="filter.subactivity_ids" :options="meta.filterSubactivities"
-                    label="Untertätigkeiten" size="sm" name="subactivity_ids"></f-multipleselect>
+                <f-multipleselect :id="`group_ids-${index}`" v-model="filter.group_ids" :options="meta.groups" label="Gruppierung" size="sm" :name="`group_ids-${index}`"></f-multipleselect>
+                <f-multipleselect
+                    :id="`activity_ids-${index}`"
+                    v-model="filter.activity_ids"
+                    :options="meta.filterActivities"
+                    label="Tätigkeiten"
+                    size="sm"
+                    :name="`activity_ids-${index}`"
+                ></f-multipleselect>
+                <f-multipleselect
+                    :id="`subactivity_ids-${index}`"
+                    v-model="filter.subactivity_ids"
+                    :options="meta.filterSubactivities"
+                    label="Untertätigkeiten"
+                    size="sm"
+                    :name="`subactivity_ids-${index}`"
+                ></f-multipleselect>
             </div>
-            <button class="btn btn-primary label mt-3" @click.prevent="
-                setFilter('memberships', membershipFilters);
-            membershipFilters = null;
-                                ">
+            <button
+                class="btn btn-primary label mt-3"
+                @click.prevent="
+                    setFilter('memberships', membershipFilters);
+                    membershipFilters = null;
+                "
+            >
                 <span class="hidden xl:inline">Anwenden</span>
             </button>
         </ui-popup>
         <page-filter breakpoint="xl">
-            <f-text id="search" :model-value="getFilter('search')" name="search" label="Suchen …" size="sm"
-                @update:model-value="setFilter('search', $event)"></f-text>
-            <f-switch v-show="hasModule('bill')" id="ausstand" :model-value="getFilter('ausstand')" label="Nur Ausstände"
-                size="sm" @update:model-value="setFilter('ausstand', $event)"></f-switch>
-            <f-multipleselect id="group_ids" :options="meta.groups" :model-value="getFilter('group_ids')"
-                label="Gruppierungen" size="sm" name="group_ids"
-                @update:model-value="setFilter('group_ids', $event)"></f-multipleselect>
-            <f-select v-show="hasModule('bill')" id="billKinds" name="billKinds" :options="meta.billKinds"
-                :model-value="getFilter('bill_kind')" label="Rechnung" size="sm"
-                @update:model-value="setFilter('bill_kind', $event)"></f-select>
+            <f-text id="search" :model-value="getFilter('search')" name="search" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
+            <f-switch v-show="hasModule('bill')" id="ausstand" :model-value="getFilter('ausstand')" label="Nur Ausstände" size="sm" @update:model-value="setFilter('ausstand', $event)"></f-switch>
+            <f-multipleselect
+                id="group_ids"
+                :options="meta.groups"
+                :model-value="getFilter('group_ids')"
+                label="Gruppierungen"
+                size="sm"
+                name="group_ids"
+                @update:model-value="setFilter('group_ids', $event)"
+            ></f-multipleselect>
+            <f-select
+                v-show="hasModule('bill')"
+                id="billKinds"
+                name="billKinds"
+                :options="meta.billKinds"
+                :model-value="getFilter('bill_kind')"
+                label="Rechnung"
+                size="sm"
+                @update:model-value="setFilter('bill_kind', $event)"
+            ></f-select>
             <button class="btn btn-primary label mr-2" @click.prevent="membershipFilters = getFilter('memberships')">
                 <ui-sprite class="w-3 h-3 xl:mr-2" src="filter"></ui-sprite>
                 <span class="hidden xl:inline">Mitgliedschaften</span>
@@ -108,14 +126,11 @@
                 <div class="text-xs text-gray-200" v-text="member.full_address"></div>
                 <div class="flex items-center mt-1 space-x-4">
                     <tags :member="member"></tags>
-                    <ui-label v-show="hasModule('bill')" class="text-gray-100 block" :value="member.pending_payment"
-                        fallback=""></ui-label>
+                    <ui-label v-show="hasModule('bill')" class="text-gray-100 block" :value="member.pending_payment" fallback=""></ui-label>
                 </div>
-                <actions class="mt-2" :member="member" @sidebar="openSidebar($event, member)" @remove="remove(member)">
-                </actions>
+                <actions class="mt-2" :member="member" @sidebar="openSidebar($event, member)" @remove="remove(member)"> </actions>
                 <div class="absolute right-0 top-0 h-full flex items-center mr-2">
-                    <i-link v-tooltip="`Details`" :href="member.links.show"><ui-sprite src="chevron"
-                            class="w-6 h-6 text-teal-100 -rotate-90"></ui-sprite></i-link>
+                    <i-link v-tooltip="`Details`" :href="member.links.show"><ui-sprite src="chevron" class="w-6 h-6 text-teal-100 -rotate-90"></ui-sprite></i-link>
                 </div>
             </ui-box>
         </div>
@@ -125,12 +140,9 @@
         </div>
 
         <ui-sidebar v-if="single !== null" @close="closeSidebar">
-            <member-invoice-positions v-if="single.type === 'invoicePosition'"
-                :url="single.model.links.invoiceposition_index" @close="closeSidebar"></member-invoice-positions>
-            <member-memberships v-if="single.type === 'membership'" :url="single.model.links.membership_index"
-                @close="closeSidebar"></member-memberships>
-            <member-courses v-if="single.type === 'courses'" :url="single.model.links.course_index"
-                @close="closeSidebar"></member-courses>
+            <member-invoice-positions v-if="single.type === 'invoicePosition'" :url="single.model.links.invoiceposition_index" @close="closeSidebar"></member-invoice-positions>
+            <member-memberships v-if="single.type === 'membership'" :url="single.model.links.membership_index" @close="closeSidebar"></member-memberships>
+            <member-courses v-if="single.type === 'courses'" :url="single.model.links.course_index" @close="closeSidebar"></member-courses>
         </ui-sidebar>
     </page-layout>
 </template>
@@ -141,15 +153,15 @@ import MemberMemberships from './MemberMemberships.vue';
 import MemberCourses from './MemberCourses.vue';
 import Tags from './Tags.vue';
 import Actions from './index/Actions.vue';
-import { indexProps, useIndex } from '../../composables/useIndex.js';
-import { ref, defineProps } from 'vue';
+import {indexProps, useIndex} from '../../composables/useIndex.js';
+import {ref, defineProps} from 'vue';
 
 const single = ref(null);
 const deleting = ref(null);
 const membershipFilters = ref(null);
 
 const props = defineProps(indexProps);
-var { router, data, meta, getFilter, setFilter, filterString, reloadPage } = useIndex(props.data, 'member');
+var {router, data, meta, getFilter, setFilter, filterString, reloadPage} = useIndex(props.data, 'member');
 
 function exportMembers() {
     window.open(`/member-export?filter=${filterString.value}`);
@@ -157,7 +169,7 @@ function exportMembers() {
 
 async function remove(member) {
     new Promise((resolve, reject) => {
-        deleting.value = { resolve, reject, member };
+        deleting.value = {resolve, reject, member};
     })
         .then(() => {
             router.delete(`/member/${member.id}`);
