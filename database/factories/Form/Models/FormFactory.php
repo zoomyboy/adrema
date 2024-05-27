@@ -47,6 +47,8 @@ class FormFactory extends Factory
             'registration_until' => $this->faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d H:i:s'),
             'mail_top' => EditorRequestFactory::new()->create(),
             'mail_bottom' => EditorRequestFactory::new()->create(),
+            'is_active' => true,
+            'is_private' => false,
         ];
     }
 

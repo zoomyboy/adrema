@@ -32,6 +32,7 @@ class FormUpdateAction
             'mail_top' => 'array',
             'mail_bottom' => 'array',
             'is_active' => 'boolean',
+            'is_private' => 'boolean',
         ];
     }
 

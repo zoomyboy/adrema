@@ -59,6 +59,17 @@ class FormUpdateActionTest extends FormTestCase
         $this->assertTrue($form->fresh()->is_active);
     }
 
+    public function testItUpdatesPrivateState(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+
+        $this->patchJson(route('form.update', ['form' => $form]), FormRequest::new()->isPrivate(false)->create())->assertSessionDoesntHaveErrors()->assertOk();
+        $this->assertFalse($form->fresh()->is_private);
+        $this->patchJson(route('form.update', ['form' => $form]), FormRequest::new()->isPrivate(true)->create())->assertSessionDoesntHaveErrors()->assertOk();
+        $this->assertTrue($form->fresh()->is_private);
+    }
+
     public function testItUpdatesActiveColumnsWhenFieldsAdded(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();

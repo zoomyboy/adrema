@@ -74,6 +74,19 @@ class FormApiListActionTest extends FormTestCase
             ->assertJsonCount(1, 'meta.agegroups');
     }
 
+    public function testItDoesntDisplayInactiveForms(): void
+    {
+        $this->loginNami()->withoutExceptionHandling();
+
+        Form::factory()->isActive(false)->withImage('headerImage', 'lala-2.jpg')->count(1)->create();
+        Form::factory()->isActive(true)->withImage('headerImage', 'lala-2.jpg')->count(2)->create();
+
+        sleep(1);
+        $this->get('/api/form?perPage=15&filter=' . $this->filterString(['inactive' => true]))->assertJsonCount(3, 'data');
+        $this->get('/api/form?perPage=15&filter=' . $this->filterString(['inactive' => false]))->assertJsonCount(2, 'data');
+        $this->get('/api/form?perPage=15&filter=' . $this->filterString([]))->assertJsonCount(2, 'data');
+    }
+
     public function testItDisplaysDailyForms(): void
     {
         Carbon::setTestNow(Carbon::parse('2023-03-02'));

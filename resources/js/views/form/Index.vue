@@ -42,6 +42,7 @@
                     <div class="flex space-x-3">
                         <f-text id="name" v-model="single.name" class="grow" name="name" label="Name" required></f-text>
                         <f-switch id="is_active" v-model="single.is_active" name="is_active" label="Aktiv"></f-switch>
+                        <f-switch id="is_private" v-model="single.is_private" name="is_private" label="Privat"></f-switch>
                     </div>
                     <f-singlefile
                         id="header_image"

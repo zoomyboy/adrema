@@ -146,7 +146,7 @@ return [
                 ]
             ],
             Form::class => [
-                'filterableAttributes' => ['to', 'is_active'],
+                'filterableAttributes' => ['to', 'is_active', 'is_private'],
                 'searchableAttributes' => ['name'],
                 'sortableAttributes' => ['from'],
                 'displayedAttributes' => ['from', 'name', 'id', 'to'],

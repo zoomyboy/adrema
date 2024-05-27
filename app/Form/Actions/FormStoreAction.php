@@ -33,6 +33,7 @@ class FormStoreAction
             'header_image' => 'required|exclude',
             'mailattachments' => 'present|array|exclude',
             'is_active' => 'boolean',
+            'is_private' => 'boolean',
         ];
     }
 

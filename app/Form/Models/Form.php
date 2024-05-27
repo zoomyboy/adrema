@@ -32,6 +32,7 @@ class Form extends Model implements HasMedia
         'mail_top' => 'json',
         'mail_bottom' => 'json',
         'is_active' => 'boolean',
+        'is_private' => 'boolean',
     ];
 
     /** @var array<int, string> */
@@ -135,6 +136,7 @@ class Form extends Model implements HasMedia
             'to' => $this->to->timestamp,
             'name' => $this->name,
             'is_active' => $this->is_active,
+            'is_private' => $this->is_private,
         ];
     }
 

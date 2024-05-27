@@ -44,6 +44,7 @@ class FormResource extends JsonResource
             'config' => $this->config,
             'participants_count' => $this->participants_count,
             'is_active' => $this->is_active,
+            'is_private' => $this->is_private,
             'links' => [
                 'participant_index' => route('form.participant.index', ['form' => $this->getModel()]),
                 'update' => route('form.update', ['form' => $this->getModel()]),
@@ -73,6 +74,7 @@ class FormResource extends JsonResource
             'default' => [
                 'description' => [],
                 'is_active' => true,
+                'is_private' => false,
                 'name' => '',
                 'excerpt' => '',
                 'from' => null,
