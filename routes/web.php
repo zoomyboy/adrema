@@ -19,6 +19,7 @@ use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
+use App\Form\Actions\ExportAction as ActionsExportAction;
 use App\Form\Actions\FormDestroyAction;
 use App\Form\Actions\FormIndexAction;
 use App\Group\Actions\GroupBulkstoreAction;
@@ -153,6 +154,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
 
     // ------------------------------------ form -----------------------------------
     Route::get('/formtemplate', FormtemplateIndexAction::class)->name('formtemplate.index');
+    Route::get('/form/{form}/export', ActionsExportAction::class)->name('form.export');
     Route::get('/form', FormIndexAction::class)->name('form.index');
     Route::patch('/form/{form}', FormUpdateAction::class)->name('form.update');
     Route::delete('/form/{form}', FormDestroyAction::class)->name('form.destroy');

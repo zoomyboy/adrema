@@ -92,6 +92,22 @@ class FieldCollection extends Collection
         return $attributes->toArray();
     }
 
+    /**
+     * @return array<int, string>
+     */
+    public function names(): array
+    {
+        return $this->map(fn ($field) => $field->name)->toArray();
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function presentValues(): array
+    {
+        return $this->map(fn ($field) => $field->presentRaw())->toArray();
+    }
+
     private function findBySpecialType(SpecialType $specialType): ?Field
     {
         return $this->first(fn ($field) => $field->specialType === $specialType);
