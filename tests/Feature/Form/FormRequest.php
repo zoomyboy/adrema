@@ -17,6 +17,8 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self excerpt(string $description)
  * @method self registrationFrom(string|null $date)
  * @method self registrationUntil(string|null $date)
+ * @method self isActive(bool $isActive)
+ * @method self isPrivate(bool $isPrivate)
  */
 class FormRequest extends RequestFactory
 {

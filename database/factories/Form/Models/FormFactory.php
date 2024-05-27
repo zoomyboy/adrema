@@ -17,6 +17,8 @@ use Tests\RequestFactories\EditorRequestFactory;
  * @method self excerpt(string $excerpt)
  * @method self registrationFrom(string|null $date)
  * @method self registrationUntil(string|null $date)
+ * @method self isActive(bool $isActive)
+ * @method self isPrivate(bool $isPrivate)
  */
 class FormFactory extends Factory
 {
