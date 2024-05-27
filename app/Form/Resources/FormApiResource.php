@@ -33,6 +33,8 @@ class FormApiResource extends JsonResource
             'slug' => $this->slug,
             'dates' => $this->from->equalTo($this->to) ? $this->from->format('d.m.Y') : $this->from->format('d.m.Y') . ' - ' . $this->to->format('d.m.Y'),
             'image' => $this->getMedia('headerImage')->first()->getFullUrl('square'),
+            'is_active' => $this->is_active,
+            'is_private' => $this->is_private,
         ];
     }
 

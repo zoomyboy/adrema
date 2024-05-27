@@ -84,7 +84,9 @@ class FormApiListActionTest extends FormTestCase
         sleep(1);
         $this->get('/api/form?perPage=15&filter=' . $this->filterString(['inactive' => true]))->assertJsonCount(3, 'data');
         $this->get('/api/form?perPage=15&filter=' . $this->filterString(['inactive' => false]))->assertJsonCount(2, 'data');
-        $this->get('/api/form?perPage=15&filter=' . $this->filterString([]))->assertJsonCount(2, 'data');
+        $this->get('/api/form?perPage=15&filter=' . $this->filterString([]))->assertJsonCount(2, 'data')
+            ->assertJsonPath('data.0.is_active', true)
+            ->assertJsonPath('data.0.is_private', false);
     }
 
     public function testItDisplaysDailyForms(): void
