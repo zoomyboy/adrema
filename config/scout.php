@@ -146,9 +146,9 @@ return [
                 ]
             ],
             Form::class => [
-                'filterableAttributes' => ['to'],
+                'filterableAttributes' => ['to', 'is_active'],
                 'searchableAttributes' => ['name'],
-                'sortableAttributes' => ['from',],
+                'sortableAttributes' => ['from'],
                 'displayedAttributes' => ['from', 'name', 'id', 'to'],
                 'pagination' => [
                     'maxTotalHits' => 1000000,

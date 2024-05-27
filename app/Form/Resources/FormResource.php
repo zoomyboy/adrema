@@ -43,6 +43,7 @@ class FormResource extends JsonResource
             'registration_until' => $this->registration_until?->format('Y-m-d H:i:s'),
             'config' => $this->config,
             'participants_count' => $this->participants_count,
+            'is_active' => $this->is_active,
             'links' => [
                 'participant_index' => route('form.participant.index', ['form' => $this->getModel()]),
                 'update' => route('form.update', ['form' => $this->getModel()]),
@@ -71,6 +72,7 @@ class FormResource extends JsonResource
             'specialTypes' => SpecialType::forSelect(),
             'default' => [
                 'description' => [],
+                'is_active' => true,
                 'name' => '',
                 'excerpt' => '',
                 'from' => null,

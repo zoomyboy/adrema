@@ -32,6 +32,7 @@ class FormStoreAction
             'mail_bottom' => 'array',
             'header_image' => 'required|exclude',
             'mailattachments' => 'present|array|exclude',
+            'is_active' => 'boolean',
         ];
     }
 

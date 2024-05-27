@@ -46,6 +46,7 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.data.0.from', '2023-05-05')
             ->assertInertiaPath('data.data.0.participants_count', 5)
             ->assertInertiaPath('data.data.0.to', '2023-06-07')
+            ->assertInertiaPath('data.data.0.is_active', true)
             ->assertInertiaPath('data.data.0.registration_from', '2023-05-06 04:00:00')
             ->assertInertiaPath('data.data.0.registration_until', '2023-04-01 05:00:00')
             ->assertInertiaPath('data.data.0.links.participant_index', route('form.participant.index', ['form' => $form]))
@@ -56,6 +57,7 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.meta.default.name', '')
             ->assertInertiaPath('data.meta.default.description', [])
             ->assertInertiaPath('data.meta.default.excerpt', '')
+            ->assertInertiaPath('data.meta.default.is_active', true)
             ->assertInertiaPath('data.meta.default.mailattachments', [])
             ->assertInertiaPath('data.meta.default.config', null)
             ->assertInertiaPath('data.meta.base_url', url(''))
@@ -75,6 +77,18 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaCount('data.data', 1);
         $this->callFilter('form.index', [])
             ->assertInertiaCount('data.data', 2);
+    }
+
+    public function testItDoesntReturnInactiveForms(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        Form::factory()->isActive(false)->count(1)->create();
+        Form::factory()->isActive(true)->count(2)->create();
+
+        sleep(1);
+        $this->callFilter('form.index', [])->assertInertiaCount('data.data', 2);
+        $this->callFilter('form.index', ['inactive' => true])->assertInertiaCount('data.data', 3);
+        $this->callFilter('form.index', ['inactive' => false])->assertInertiaCount('data.data', 2);
     }
 
     public function testItOrdersByStartDateDesc(): void

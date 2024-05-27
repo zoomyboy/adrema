@@ -31,6 +31,7 @@ class FormUpdateAction
             'registration_until' => 'present|nullable|date',
             'mail_top' => 'array',
             'mail_bottom' => 'array',
+            'is_active' => 'boolean',
         ];
     }
 

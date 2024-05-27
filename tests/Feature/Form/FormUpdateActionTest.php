@@ -48,6 +48,17 @@ class FormUpdateActionTest extends FormTestCase
         $this->assertEquals(['firstname'], $form->fresh()->meta['active_columns']);
     }
 
+    public function testItUpdatesActiveState(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+
+        $this->patchJson(route('form.update', ['form' => $form]), FormRequest::new()->isActive(false)->create())->assertSessionDoesntHaveErrors()->assertOk();
+        $this->assertFalse($form->fresh()->is_active);
+        $this->patchJson(route('form.update', ['form' => $form]), FormRequest::new()->isActive(true)->create())->assertSessionDoesntHaveErrors()->assertOk();
+        $this->assertTrue($form->fresh()->is_active);
+    }
+
     public function testItUpdatesActiveColumnsWhenFieldsAdded(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();

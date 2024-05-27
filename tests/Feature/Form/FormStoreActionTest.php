@@ -8,7 +8,6 @@ use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use Generator;
-use Illuminate\Support\Facades\Storage;
 use Tests\RequestFactories\EditorRequestFactory;
 
 class FormStoreActionTest extends FormTestCase
@@ -42,6 +41,7 @@ class FormStoreActionTest extends FormTestCase
         $this->assertEquals(json_decode('{"time":1,"blocks":[{"id":11,"type":"paragraph","data":{"text":"lala"},"tunes":{"condition":{"mode":"all","ifs":[]}}}],"version":"1.0"}', true), $form->mail_top);
         $this->assertEquals(json_decode('{"time":1,"blocks":[{"id":12,"type":"paragraph","data":{"text":"lalab"},"tunes":{"condition":{"mode":"all","ifs":[]}}}],"version":"1.0"}', true), $form->mail_bottom);
         $this->assertEquals('2023-05-04 01:00', $form->registration_from->format('Y-m-d H:i'));
+        $this->assertEquals(true, $form->is_active);
         $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));
         $this->assertEquals('2023-07-07', $form->from->format('Y-m-d'));
         $this->assertEquals('2023-07-08', $form->to->format('Y-m-d'));

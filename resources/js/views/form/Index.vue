@@ -39,7 +39,10 @@
             <div class="flex flex-col mt-3">
                 <ui-tabs v-model="active" :entries="tabs"></ui-tabs>
                 <div v-show="active === 0" class="grid grid-cols-2 gap-3">
-                    <f-text id="name" v-model="single.name" name="name" label="Name" required></f-text>
+                    <div class="flex space-x-3">
+                        <f-text id="name" v-model="single.name" class="grow" name="name" label="Name" required></f-text>
+                        <f-switch id="is_active" v-model="single.is_active" name="is_active" label="Aktiv"></f-switch>
+                    </div>
                     <f-singlefile
                         id="header_image"
                         v-model="single.header_image"
@@ -120,6 +123,7 @@
         <page-filter breakpoint="xl">
             <f-text id="search" :model-value="getFilter('search')" name="search" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
             <f-switch id="past" :model-value="getFilter('past')" label="vergangene zeigen" size="sm" @update:model-value="setFilter('past', $event)"></f-switch>
+            <f-switch id="inactive" :model-value="getFilter('inactive')" label="inaktive zeigen" size="sm" @update:model-value="setFilter('inactive', $event)"></f-switch>
         </page-filter>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">

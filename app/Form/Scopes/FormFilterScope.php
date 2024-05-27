@@ -19,6 +19,7 @@ class FormFilterScope extends ScoutFilter
     public function __construct(
         public ?string $search = '',
         public bool $past = false,
+        public bool $inactive = false,
     ) {
     }
 
@@ -33,6 +34,10 @@ class FormFilterScope extends ScoutFilter
 
             if ($this->past === false) {
                 $filters->push('to > ' . now()->timestamp);
+            }
+
+            if ($this->inactive === false) {
+                $filters->push('is_active = true');
             }
 
             $options['filter'] = $filters->implode(' AND ');
