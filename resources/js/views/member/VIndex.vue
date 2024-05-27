@@ -24,22 +24,29 @@
                 <span class="hidden xl:inline">Hinzufügen</span>
             </button>
             <div v-for="(filter, index) in membershipFilters" :key="index" class="flex space-x-2 mt-2">
-                <f-multipleselect :id="`group_ids-${index}`" v-model="filter.group_ids" :options="meta.groups" label="Gruppierung" size="sm" :name="`group_ids-${index}`"></f-multipleselect>
                 <f-multipleselect
-                    :id="`activity_ids-${index}`"
+                    :id="`group_ids-multiple-${index}`"
+                    v-model="filter.group_ids"
+                    :options="meta.groups"
+                    label="Gruppierung"
+                    size="sm"
+                    :name="`group_ids-multiple-${index}`"
+                ></f-multipleselect>
+                <f-multipleselect
+                    :id="`activity_ids-multiple-${index}`"
                     v-model="filter.activity_ids"
                     :options="meta.filterActivities"
                     label="Tätigkeiten"
                     size="sm"
-                    :name="`activity_ids-${index}`"
+                    :name="`activity_ids-multiple-${index}`"
                 ></f-multipleselect>
                 <f-multipleselect
-                    :id="`subactivity_ids-${index}`"
+                    :id="`subactivity_ids-multiple-${index}`"
                     v-model="filter.subactivity_ids"
                     :options="meta.filterSubactivities"
                     label="Untertätigkeiten"
                     size="sm"
-                    :name="`subactivity_ids-${index}`"
+                    :name="`subactivity_ids-multiple-${index}`"
                 ></f-multipleselect>
             </div>
             <button
