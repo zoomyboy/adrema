@@ -5,6 +5,7 @@ namespace App\Form\Resources;
 use App\Form\Enums\NamiType;
 use App\Form\Enums\SpecialType;
 use App\Form\Fields\Field;
+use App\Form\FormSettings;
 use App\Form\Scopes\FormFilterScope;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
@@ -50,6 +51,7 @@ class FormResource extends JsonResource
                 'update' => route('form.update', ['form' => $this->getModel()]),
                 'destroy' => route('form.destroy', ['form' => $this->getModel()]),
                 'is_dirty' => route('form.is-dirty', ['form' => $this->getModel()]),
+                'frontend' => str(app(FormSettings::class)->registerUrl)->replace('{slug}', $this->slug)
             ]
         ];
     }

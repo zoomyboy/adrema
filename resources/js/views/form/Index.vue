@@ -153,6 +153,7 @@
                     <div class="flex space-x-2">
                         <ui-action-button tooltip="Bearbeiten" class="btn-warning" icon="pencil" @click.prevent="edit(form)"></ui-action-button>
                         <ui-action-button tooltip="Teilnehmende anzeigen" class="btn-info" icon="user" @click.prevent="showParticipants(form)"></ui-action-button>
+                        <ui-action-button :href="form.links.frontend" target="_BLANK" tooltip="zur Anmeldeseite" class="btn-info" icon="eye"></ui-action-button>
                         <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="deleting = form"></ui-action-button>
                     </div>
                 </td>

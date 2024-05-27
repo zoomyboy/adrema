@@ -2,6 +2,7 @@
 
 namespace Tests\EndToEnd\Form;
 
+use App\Form\FormSettings;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
 use App\Form\Models\Participant;
@@ -79,6 +80,16 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaCount('data.data', 1);
         $this->callFilter('form.index', [])
             ->assertInertiaCount('data.data', 2);
+    }
+
+    public function testItDisplaysRegisterUrl(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        FormSettings::fake(['registerUrl' => 'https://example.com/form/{slug}/register']);
+        Form::factory()->to(now()->addYear())->name('ZEM 2024')->create();
+
+        sleep(1);
+        $this->callFilter('form.index', [])->assertInertiaPath('data.data.0.links.frontend', 'https://example.com/form/zem-2024/register');
     }
 
     public function testItDoesntReturnInactiveForms(): void
