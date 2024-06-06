@@ -154,6 +154,7 @@ abstract class Field extends Data
                 'for_members' => true,
                 'special_type' => null,
                 'hint' => '',
+                'intro' => '',
                 ...collect(static::meta())->mapWithKeys(fn ($meta) => [$meta['key'] => $meta['default']])->toArray(),
             ],
         ];
