@@ -29,6 +29,7 @@ abstract class Field extends Data
     public bool $forMembers;
     public ?SpecialType $specialType = null;
     public ?string $hint;
+    public ?string $intro;
 
     /** @var mixed */
     public $value;
