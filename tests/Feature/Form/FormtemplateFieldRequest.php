@@ -25,6 +25,7 @@ use App\Form\Enums\SpecialType;
  * @method self min(int $min)
  * @method self max(int $max)
  * @method self allowcustom(bool $allowcustom)
+ * @method self intro(string $intro)
  */
 class FormtemplateFieldRequest extends RequestFactory
 {

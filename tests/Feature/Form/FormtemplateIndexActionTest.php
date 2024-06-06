@@ -42,6 +42,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'for_members' => true,
                     'special_type' => null,
                     'hint' => '',
+                    'intro' => '',
                     'options' => [],
                     'required' => true,
                     'allowcustom' => false,
@@ -59,6 +60,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'for_members' => true,
                     'special_type' => null,
                     'hint' => '',
+                    'intro' => '',
                     'required' => true,
                 ]
             ])
@@ -74,6 +76,7 @@ class FormtemplateIndexActionTest extends TestCase
                     'for_members' => true,
                     'special_type' => null,
                     'hint' => '',
+                    'intro' => '',
                     'rows' => 5,
                     'required' => true,
                 ]
