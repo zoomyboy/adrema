@@ -10,6 +10,7 @@ enum NamiType: string
 {
     case FIRSTNAME = 'Vorname';
     case LASTNAME = 'Nachname';
+    case NICKNAME = 'Spitzname';
     case BIRTHDAY = 'Geburtstag';
     case REGION = 'Bezirk';
     case STAMM = 'Stamm';
@@ -40,6 +41,7 @@ enum NamiType: string
             static::ADDRESS => $member->address,
             static::ZIP => $member->zip,
             static::LOCATION => $member->location,
+            static::NICKNAME => $member->nickname,
         };
     }
 
