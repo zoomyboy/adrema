@@ -185,7 +185,7 @@ const deleting = ref(null);
 const showing = ref(null);
 const fileSettingPopup = ref(null);
 
-const tabs = [{title: 'Allgemeines'}, {title: 'Formular'}, {title: 'E-Mail'}, {title: 'Export'}];
+const tabs = [{title: 'Allgemeines'}, {title: 'Formular'}, {title: 'Bestätigungs-E-Mail'}, {title: 'Export'}];
 const mailTabs = [{title: 'vor Daten'}, {title: 'nach Daten'}];
 
 function setTemplate(template) {
