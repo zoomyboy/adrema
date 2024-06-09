@@ -42,6 +42,9 @@ class FormUpdateAction
     public function handle(Form $form, array $attributes): Form
     {
         $form->update($attributes);
+
+        ClearFrontendCacheAction::run();
+
         return $form;
     }
 

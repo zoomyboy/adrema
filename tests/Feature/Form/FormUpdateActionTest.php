@@ -4,6 +4,7 @@ namespace Tests\Feature\Form;
 
 use App\Form\Models\Form;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Http;
 
 class FormUpdateActionTest extends FormTestCase
 {
@@ -26,6 +27,16 @@ class FormUpdateActionTest extends FormTestCase
         $form = $form->fresh();
 
         $this->assertTrue($form->config->sections->get(0)->fields->get(0)->maxToday);
+    }
+
+    public function testItClearsFrontendCacheWhenFormUpdated(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+
+        $this->patchJson(route('form.update', ['form' => $form]), FormRequest::new()->create());
+
+        $this->assertFrontendCacheCleared();
     }
 
     public function testItUpdatesActiveColumnsWhenFieldRemoved(): void

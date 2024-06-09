@@ -20,6 +20,7 @@ class SettingStoreAction
 
         $settings->fill([
             'registerUrl' => $input['register_url'],
+            'clearCacheUrl' => $input['clear_cache_url'],
         ]);
 
         $settings->save();
@@ -32,6 +33,7 @@ class SettingStoreAction
     {
         return [
             'register_url' => 'present|string',
+            'clear_cache_url' => 'present|string',
         ];
     }
 

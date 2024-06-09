@@ -14,6 +14,8 @@ class FormDestroyAction
     {
         $form->delete();
 
+        ClearFrontendCacheAction::run();
+
         Succeeded::message('Veranstaltung gelöscht.')->dispatch();
     }
 }

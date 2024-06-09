@@ -51,6 +51,7 @@ class FormStoreActionTest extends FormTestCase
         $this->assertCount(1, $form->getMedia('headerImage'));
         $this->assertEquals('formname.jpg', $form->getMedia('headerImage')->first()->file_name);
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Veranstaltung gespeichert.');
+        $this->assertFrontendCacheCleared();
     }
 
     public function testRegistrationDatesCanBeNull(): void

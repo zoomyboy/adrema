@@ -11,6 +11,7 @@ use App\Setting\LocalSettings;
 class FormSettings extends LocalSettings implements Indexable, Storeable
 {
     public string $registerUrl;
+    public string $clearCacheUrl;
 
     public static function group(): string
     {

@@ -19,6 +19,7 @@ class SettingIndexAction
         return [
             'data' => [
                 'register_url' => $settings->registerUrl,
+                'clear_cache_url' => $settings->clearCacheUrl,
             ],
         ];
     }

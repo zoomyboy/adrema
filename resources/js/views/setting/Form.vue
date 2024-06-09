@@ -10,6 +10,7 @@
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <f-text id="register_url" v-model="inner.register_url" label="Formular-Link" name="register_url"></f-text>
+                    <f-text id="clear_cache_url" v-model="inner.clear_cache_url" label="Frontend-Cache-Url" name="clear_cache_url"></f-text>
                 </div>
             </form>
         </setting-layout>
