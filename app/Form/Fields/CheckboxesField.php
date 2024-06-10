@@ -13,6 +13,8 @@ class CheckboxesField extends Field
 {
     /** @var array<int, string> */
     public array $options;
+    public ?int $min;
+    public ?int $max;
 
     public static function name(): string
     {
@@ -23,6 +25,8 @@ class CheckboxesField extends Field
     {
         return [
             ['key' => 'options', 'default' => [], 'rules' => ['options' => 'array', 'options.*' => 'required|string'], 'label' => 'Optionen'],
+            ['key' => 'min', 'default' => null, 'rules' => ['min' => 'present'], 'label' => 'minimale Anzahl'],
+            ['key' => 'max', 'default' => null, 'rules' => ['max' => 'present'], 'label' => 'maximale Anzahl'],
         ];
     }
 
@@ -35,6 +39,8 @@ class CheckboxesField extends Field
     {
         return [
             'options' => $faker->words(4),
+            'min' => null,
+            'max' => null,
         ];
     }
 
@@ -43,8 +49,18 @@ class CheckboxesField extends Field
      */
     public function getRegistrationRules(Form $form): array
     {
+        $globalRules = ['array'];
+
+        if ($this->min > 0) {
+            $globalRules[] = 'min:' . $this->min;
+        }
+
+        if ($this->max > 0) {
+            $globalRules[] = 'max:' . $this->max;
+        }
+
         return [
-            $this->key => 'array',
+            $this->key => $globalRules,
             $this->key . '.*' => ['string', Rule::in($this->options)],
         ];
     }

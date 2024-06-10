@@ -18,6 +18,24 @@
             ></ui-action-button>
         </div>
         <ui-icon-button icon="plus" @click="$emit('update:modelValue', {...modelValue, options: addOption(modelValue.options)})">Option einfügen</ui-icon-button>
+        <f-text
+            id="min"
+            type="number"
+            size="sm"
+            name="min"
+            label="Minimale Anzahl Elemente"
+            :model-value="modelValue.min"
+            @update:model-value="$emit('update:modelValue', {...modelValue, min: $event})"
+        ></f-text>
+        <f-text
+            id="max"
+            type="number"
+            size="sm"
+            name="max"
+            label="Maximale Anzahl Elemente"
+            :model-value="modelValue.max"
+            @update:model-value="$emit('update:modelValue', {...modelValue, max: $event})"
+        ></f-text>
     </div>
 </template>
 

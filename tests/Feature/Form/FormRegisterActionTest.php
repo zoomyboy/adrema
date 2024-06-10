@@ -201,6 +201,30 @@ class FormRegisterActionTest extends FormTestCase
         ];
 
         yield [
+            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(0)->max(2),
+            ['letter' => ['A', 'B', 'C']],
+            ['letter' => 'Buchstabe darf maximal 2 Elemente haben.'],
+        ];
+
+        yield [
+            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(2)->max(0),
+            ['letter' => ['A']],
+            ['letter' => 'Buchstabe muss mindestens 2 Elemente haben.'],
+        ];
+
+        yield [
+            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(1)->max(0),
+            ['letter' => []],
+            ['letter' => 'Buchstabe muss mindestens 1 Elemente haben.'],
+        ];
+
+        yield [
+            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(0)->max(1),
+            ['letter' => ['A', 'B']],
+            ['letter' => 'Buchstabe darf maximal 1 Elemente haben.'],
+        ];
+
+        yield [
             $this->checkboxField('data')->name('Datenschutz')->required(false),
             ['data' => 5],
             ['data' => 'Datenschutz muss ein Wahrheitswert sein.'],
