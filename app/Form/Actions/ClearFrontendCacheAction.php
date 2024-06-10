@@ -10,7 +10,7 @@ class ClearFrontendCacheAction
 {
     use AsAction;
 
-    public function handle()
+    public function handle(): void
     {
         Http::get(app(FormSettings::class)->clearCacheUrl);
     }
