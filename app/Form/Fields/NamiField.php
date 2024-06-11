@@ -116,7 +116,7 @@ class NamiField extends Field
             foreach (FieldCollection::fromRequest($form, $memberData) as $field) {
                 $data[$field->key] = $field->namiType === null
                     ? $field->value
-                    : $field->namiType->getMemberAttribute($member);
+                    : $field->namiType->getMemberAttribute($member, $form);
             }
 
             $data[$this->key] = [];

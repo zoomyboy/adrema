@@ -494,6 +494,24 @@ class FormRegisterActionTest extends FormTestCase
             NamiType::GENDER,
             '',
         ];
+
+        yield [
+            ['birthday' => '1991-10-02'],
+            NamiType::AGE,
+            '31'
+        ];
+
+        yield [
+            ['birthday' => '1991-05-04'],
+            NamiType::AGE,
+            '32'
+        ];
+
+        yield [
+            ['birthday' => '1991-08-15'],
+            NamiType::AGEEVENT,
+            '32'
+        ];
     }
 
     /**
@@ -503,12 +521,14 @@ class FormRegisterActionTest extends FormTestCase
      */
     public function testItSynchsMemberAttributes(array $memberAttributes, NamiType $type, mixed $participantValue, ?callable $factory = null): void
     {
+        Carbon::setTestNow(Carbon::parse('2023-05-04'));
         $this->login()->loginNami();
         $this->createMember(['mitgliedsnr' => '5505', ...$memberAttributes], $factory);
         $form = Form::factory()->fields([
             $this->namiField('members'),
             $this->textField('other')->required(true)->namiType($type),
         ])
+            ->from('2023-08-15')
             ->create();
 
         $this->register($form, ['other' => '::other::', 'members' => [['id' => '5505']]])->assertOk();

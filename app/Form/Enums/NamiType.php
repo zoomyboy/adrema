@@ -2,6 +2,7 @@
 
 namespace App\Form\Enums;
 
+use App\Form\Models\Form;
 use App\Group\Enums\Level;
 use App\Member\Member;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,8 @@ enum NamiType: string
     case ZIP = 'PLZ';
     case LOCATION = 'Ort';
     case GENDER = 'Geschlecht';
+    case AGE = 'Alter (zum Zeitpunkt der Anmeldung)';
+    case AGEEVENT = 'Alter (zum Zeitpunkt der Veranstaltung)';
 
     /**
      * @return array<int, array{name: string, id: string}>
@@ -30,7 +33,7 @@ enum NamiType: string
             ->toArray();
     }
 
-    public function getMemberAttribute(Member $member): ?string
+    public function getMemberAttribute(Member $member, Form $form): ?string
     {
         return match ($this) {
             static::FIRSTNAME => $member->firstname,
@@ -44,6 +47,8 @@ enum NamiType: string
             static::LOCATION => $member->location,
             static::NICKNAME => $member->nickname,
             static::GENDER => $member->gender?->name,
+            static::AGE => $member->birthday->diffInYears(now()),
+            static::AGEEVENT => $member->birthday->diffInYears($form->from),
         };
     }
 
