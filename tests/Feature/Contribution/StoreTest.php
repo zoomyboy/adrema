@@ -36,8 +36,8 @@ class StoreTest extends TestCase
         $this->withoutExceptionHandling();
         Tex::spy();
         $this->login()->loginNami();
-        $member1 = Member::factory()->defaults()->for(Gender::factory())->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
-        $member2 = Member::factory()->defaults()->for(Gender::factory())->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
+        $member1 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
+        $member2 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
 
         $response = $this->call('GET', '/contribution-generate', [
             'payload' => ContributionRequestFactory::new()->type($type)->state([
@@ -72,8 +72,8 @@ class StoreTest extends TestCase
     {
         $this->withoutExceptionHandling();
         Tex::spy();
-        Gender::factory()->create(['name' => 'Weiblich']);
-        Gender::factory()->create(['name' => 'Männlich']);
+        Gender::factory()->female()->create();
+        Gender::factory()->male()->create();
         Passport::actingAsClient(Client::factory()->create(), ['contribution-generate']);
         $country = Country::factory()->create();
         Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);

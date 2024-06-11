@@ -28,6 +28,16 @@ class GenderFactory extends Factory
         return $this->state(['name' => $name]);
     }
 
+    public function male(): self
+    {
+        return $this->name('Männlich');
+    }
+
+    public function female(): self
+    {
+        return $this->name('Weiblich');
+    }
+
     public function inNami(int $namiId): self
     {
         return $this->state(['nami_id' => $namiId]);

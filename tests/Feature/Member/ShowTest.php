@@ -35,7 +35,7 @@ class ShowTest extends TestCase
             ->for(Group::factory()->name('Stamm Beispiel'))
             ->has(Membership::factory()->promise(now())->in('€ LeiterIn', 5, 'Jungpfadfinder', 88)->from('2022-11-19'))
             ->has(InvoicePosition::factory()->for(Invoice::factory())->price(1050)->description('uu'))
-            ->for(Gender::factory()->name('Männlich'))
+            ->for(Gender::factory()->male())
             ->for(Region::factory()->name('NRW'))
             ->postBillKind()
             ->inNami(123)
