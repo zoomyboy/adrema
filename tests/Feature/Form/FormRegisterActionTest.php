@@ -512,6 +512,12 @@ class FormRegisterActionTest extends FormTestCase
             NamiType::AGEEVENT,
             '32'
         ];
+
+        yield [
+            ['mobile_phone' => '+49 7776666'],
+            NamiType::MOBILEPHONE,
+            '+49 7776666'
+        ];
     }
 
     /**

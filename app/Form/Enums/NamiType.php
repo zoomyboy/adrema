@@ -20,6 +20,7 @@ enum NamiType: string
     case ZIP = 'PLZ';
     case LOCATION = 'Ort';
     case GENDER = 'Geschlecht';
+    case MOBILEPHONE = 'Handynummer';
     case AGE = 'Alter (zum Zeitpunkt der Anmeldung)';
     case AGEEVENT = 'Alter (zum Zeitpunkt der Veranstaltung)';
 
@@ -49,6 +50,7 @@ enum NamiType: string
             static::GENDER => $member->gender?->name,
             static::AGE => $member->birthday->diffInYears(now()),
             static::AGEEVENT => $member->birthday->diffInYears($form->from),
+            static::MOBILEPHONE => $member->mobile_phone,
         };
     }
 
