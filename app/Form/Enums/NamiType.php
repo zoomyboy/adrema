@@ -18,6 +18,7 @@ enum NamiType: string
     case ADDRESS = 'Adresse';
     case ZIP = 'PLZ';
     case LOCATION = 'Ort';
+    case GENDER = 'Geschlecht';
 
     /**
      * @return array<int, array{name: string, id: string}>
@@ -42,6 +43,7 @@ enum NamiType: string
             static::ZIP => $member->zip,
             static::LOCATION => $member->location,
             static::NICKNAME => $member->nickname,
+            static::GENDER => $member->gender?->name,
         };
     }
 

@@ -10,6 +10,7 @@ use App\Group;
 use App\Group\Enums\Level;
 use App\Member\Member;
 use Carbon\Carbon;
+use Database\Factories\Member\MemberFactory;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
@@ -480,6 +481,19 @@ class FormRegisterActionTest extends FormTestCase
             NamiType::BIRTHDAY,
             '2023-06-06'
         ];
+
+        yield [
+            [],
+            NamiType::GENDER,
+            'Männlich',
+            fn (MemberFactory $factory) => $factory->male(),
+        ];
+
+        yield [
+            ['gender_id' => null],
+            NamiType::GENDER,
+            '',
+        ];
     }
 
     /**
@@ -487,10 +501,10 @@ class FormRegisterActionTest extends FormTestCase
      * @param array<string, string> $memberAttributes
      * @param mixed $participantValue
      */
-    public function testItSynchsMemberAttributes(array $memberAttributes, NamiType $type, mixed $participantValue): void
+    public function testItSynchsMemberAttributes(array $memberAttributes, NamiType $type, mixed $participantValue, ?callable $factory = null): void
     {
         $this->login()->loginNami();
-        $this->createMember(['mitgliedsnr' => '5505', ...$memberAttributes]);
+        $this->createMember(['mitgliedsnr' => '5505', ...$memberAttributes], $factory);
         $form = Form::factory()->fields([
             $this->namiField('members'),
             $this->textField('other')->required(true)->namiType($type),
@@ -666,9 +680,10 @@ class FormRegisterActionTest extends FormTestCase
     /**
      * @param array<string, mixed> $attributes
      */
-    protected function createMember(array $attributes): Member
+    protected function createMember(array $attributes, ?callable $factoryCallback = null): Member
     {
-        return Member::factory()->defaults()->create($attributes);
+        return call_user_func($factoryCallback ?: fn ($factory) => $factory, Member::factory()->defaults())
+            ->create($attributes);
     }
 
     /**

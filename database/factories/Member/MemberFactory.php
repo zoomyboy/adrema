@@ -3,7 +3,7 @@
 namespace Database\Factories\Member;
 
 use App\Country;
-use App\Fee;
+use App\Gender;
 use App\Group;
 use App\Invoice\BillKind;
 use App\Member\Member;
@@ -66,6 +66,16 @@ class MemberFactory extends Factory
         return $this->state([
             'bill_kind' => BillKind::POST,
         ]);
+    }
+
+    public function male(): self
+    {
+        return $this->for(Gender::factory()->male());
+    }
+
+    public function female(): self
+    {
+        return $this->for(Gender::factory()->female());
     }
 
     public function emailBillKind(): self
