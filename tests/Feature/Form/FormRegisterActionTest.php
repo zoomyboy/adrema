@@ -556,6 +556,21 @@ class FormRegisterActionTest extends FormTestCase
         $this->assertEquals('othervalue', $form->participants->get(1)->data['other']);
     }
 
+    public function testItAddsMemberForNonNami(): void
+    {
+        $this->login()->loginNami();
+        $this->createMember(['mitgliedsnr' => '5505']);
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->textField('other')->required(false),
+        ])
+            ->create();
+
+        $this->register($form, ['other' => '::string::', 'members' => [['id' => null, 'other' => 'othervalue']]])
+            ->assertOk();
+        $this->assertEquals('othervalue', $form->participants->get(1)->data['other']);
+    }
+
     public function testItValidatesMembersFields(): void
     {
         $this->login()->loginNami();

@@ -54,7 +54,7 @@ class NamiField extends Field
         }
 
         return [
-            $this->key . '.*.id' => ['required', 'numeric', 'exists:members,mitgliedsnr'],
+            $this->key . '.*.id' => ['nullable', 'numeric', 'exists:members,mitgliedsnr'],
             ...$rules,
         ];
     }
