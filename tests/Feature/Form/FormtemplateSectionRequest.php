@@ -16,7 +16,7 @@ class FormtemplateSectionRequest extends RequestFactory
     {
         return [
             'name' => $this->faker->words(5, true),
-            'intro' => '',
+            'intro' => null,
             'fields' => [],
         ];
     }
