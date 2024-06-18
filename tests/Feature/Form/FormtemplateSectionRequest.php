@@ -16,6 +16,7 @@ class FormtemplateSectionRequest extends RequestFactory
     {
         return [
             'name' => $this->faker->words(5, true),
+            'intro' => '',
             'fields' => [],
         ];
     }
@@ -26,6 +27,11 @@ class FormtemplateSectionRequest extends RequestFactory
     public function fields(array $fields): self
     {
         return $this->state(['fields' => $fields]);
+    }
+
+    public function intro(string $intro): self
+    {
+        return $this->state(['intro' => $intro]);
     }
 
     /**

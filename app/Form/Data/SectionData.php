@@ -15,7 +15,8 @@ class SectionData extends Data
         public string $name,
         #[WithCast(FieldCollectionCast::class)]
         #[WithTransformer(FieldCollectionTransformer::class)]
-        public FieldCollection $fields
+        public FieldCollection $fields,
+        public ?string $intro
     ) {
     }
 }

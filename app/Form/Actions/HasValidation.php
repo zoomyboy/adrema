@@ -18,6 +18,7 @@ trait HasValidation
             'name' => 'required|string|max:255',
             'config' => 'array',
             'config.sections.*.name' => 'required',
+            'config.sections.*.intro' => 'nullable|string',
             'config.sections.*.fields' => 'array',
             'config.sections.*.fields.*.name' => 'required|string',
             'config.sections.*.fields.*.type' => ['required', 'string', Rule::in(array_column(Field::asMeta(), 'id'))],

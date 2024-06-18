@@ -59,6 +59,20 @@ class FormUpdateActionTest extends FormTestCase
         $this->assertEquals(['firstname'], $form->fresh()->meta['active_columns']);
     }
 
+    public function testItUpdatesIntroOfSections(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()
+            ->sections([FormtemplateSectionRequest::new()->intro('aaa')])
+            ->create();
+        $payload = FormRequest::new()->sections([
+            FormtemplateSectionRequest::new()->intro('aaa')
+        ])->create();
+
+        $this->patchJson(route('form.update', ['form' => $form]), $payload)->assertSessionDoesntHaveErrors()->assertOk();
+        $this->assertEquals('aaa', $form->fresh()->config->sections[0]->intro);
+    }
+
     public function testItUpdatesActiveState(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
