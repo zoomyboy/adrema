@@ -43,13 +43,11 @@ class NamiField extends Field
     {
         $rules = [$this->key => 'present|array'];
 
-        $c = $form->getFields()->forMembers()->noNamiType()->noNamiField()
-            ->map(fn ($field) => $field->getRegistrationRules($form))
-            ->toArray();
+        foreach ($form->getFields()->forMembers()->noNamiField() as $field) {
+            $r = $field->getRegistrationRules($form);
 
-        foreach ($c as $field) {
-            foreach ($field as $ruleKey => $rule) {
-                $rules[$this->key . '.*.' . $ruleKey] = $rule;
+            foreach ($r as $ruleKey => $rule) {
+                $rules[$this->key . '.*.' . $ruleKey] = $field->namiType === null ? $rule : '';
             }
         }
 
@@ -114,7 +112,7 @@ class NamiField extends Field
             $member = Member::firstWhere(['mitgliedsnr' => $memberData['id']]);
             $data = [];
             foreach (FieldCollection::fromRequest($form, $memberData) as $field) {
-                $data[$field->key] = $field->namiType === null
+                $data[$field->key] = $field->namiType === null || $member === null
                     ? $field->value
                     : $field->namiType->getMemberAttribute($member, $form);
             }
