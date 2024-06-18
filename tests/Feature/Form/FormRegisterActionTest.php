@@ -344,6 +344,22 @@ class FormRegisterActionTest extends FormTestCase
             ->assertJsonValidationErrors(['group' => 'Der gewählte Wert für Gruppe ist ungültig.']);
     }
 
+    public function testGroupFieldCanBeUnsetWhenGiven(): void
+    {
+        $this->login()->loginNami();
+        $group = Group::factory()->has(Group::factory(), 'children')->create();
+        $form = Form::factory()->fields([
+            $this->groupField('region')->emptyOptionValue('kein Bezirk')->parentGroup($group->id)->required(false),
+            $this->groupField('stamm')->name('Gruppe')->emptyOptionValue('kein Stamm')->parentField('region')->required(true)
+        ])
+            ->create();
+
+        $this->register($form, ['region' => -1, 'stamm' => -1])->assertOk();
+        $participants = $form->fresh()->participants;
+        $this->assertEquals(-1, $participants->first()->data['region']);
+        $this->assertEquals(-1, $participants->first()->data['stamm']);
+    }
+
     public function testGroupFieldCanBeNullWhenNotRequired(): void
     {
         $this->login()->loginNami();

@@ -65,7 +65,7 @@ class GroupField extends Field
             $rules[] = Rule::in(Group::find($this->parentGroup)->children()->pluck('id')->push(-1));
         }
 
-        if ($this->parentField && request()->input($this->parentField)) {
+        if ($this->parentField && request()->input($this->parentField) && request()->input($this->parentField) !== -1) {
             $rules[] = Rule::in(Group::find(request()->input($this->parentField))->children()->pluck('id')->push(-1));
         }
 
