@@ -22,7 +22,6 @@ class ParticipantFilterScope extends Filter
      * @param array<string, mixed> $data
      */
     public function __construct(
-        public ?int $parent = null,
         public array $data = [],
     ) {
     }
@@ -45,14 +44,6 @@ class ParticipantFilterScope extends Filter
      */
     public function apply(Builder $query): Builder
     {
-        if ($this->parent === -1) {
-            $query = $query->whereNull('parent_id');
-        }
-
-        if (!is_null($this->parent) && $this->parent > 0) {
-            $query = $query->where('parent_id', $this->parent);
-        }
-
         foreach ($this->data as $key => $value) {
             if ($value === static::$nan) {
                 continue;

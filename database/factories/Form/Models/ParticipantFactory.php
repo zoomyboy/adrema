@@ -27,6 +27,7 @@ class ParticipantFactory extends Factory
     {
         return [
             'data' => [],
+            'parent_id' => null,
         ];
     }
 

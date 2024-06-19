@@ -25,6 +25,7 @@ class ParticipantResource extends JsonResource
             ...$this->getModel()->getFields()->present(),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'created_at_display' => $this->created_at->format('d.m.Y'),
+            'children_count' => $this->children_count,
             'links' => [
                 'destroy' => route('participant.destroy', ['participant' => $this->getModel()]),
             ]

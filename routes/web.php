@@ -163,7 +163,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::delete('/formtemplate/{formtemplate}', FormtemplateDestroyAction::class)->name('formtemplate.destroy');
     Route::post('/form', FormStoreAction::class)->name('form.store');
     Route::patch('/form/{form}/meta', FormUpdateMetaAction::class)->name('form.update-meta');
-    Route::get('/form/{form}/participants', ParticipantIndexAction::class)->name('form.participant.index');
+    Route::get('/form/{form}/participants/{parent?}', ParticipantIndexAction::class)->name('form.participant.index');
     Route::post('/form/{form}/is-dirty', IsDirtyAction::class)->name('form.is-dirty');
     Route::delete('/participant/{participant}', ParticipantDestroyAction::class)->name('participant.destroy');
 });

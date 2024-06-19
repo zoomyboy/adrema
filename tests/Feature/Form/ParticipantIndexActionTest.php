@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Form;
 
-use App\Form\Fields\CheckboxField;
 use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
@@ -127,30 +126,6 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonCount(4, 'data');
     }
 
-    public function testItShowsOnlyRootMembers(): void
-    {
-        $this->login()->loginNami()->withoutExceptionHandling();
-        $form = Form::factory()->create();
-        Participant::factory()->for($form)->count(2)
-            ->has(Participant::factory()->count(3)->for($form), 'children')
-            ->create();
-
-        $this->callFilter('form.participant.index', ['parent' => -1], ['form' => $form])->assertJsonCount(2, 'data');
-        $this->callFilter('form.participant.index', ['parent' => null], ['form' => $form])->assertJsonCount(8, 'data');
-    }
-
-    public function testItShowsChildrenOfParent(): void
-    {
-        $this->login()->loginNami()->withoutExceptionHandling();
-        $form = Form::factory()->create();
-        $parents = Participant::factory()->for($form)->count(2)
-            ->has(Participant::factory()->count(3)->for($form), 'children')
-            ->create();
-
-        $this->callFilter('form.participant.index', ['parent' => $parents->get(0)->id], ['form' => $form])->assertJsonCount(3, 'data');
-        $this->callFilter('form.participant.index', ['parent' => $parents->get(1)->id], ['form' => $form])->assertJsonCount(3, 'data');
-    }
-
     public function testItPresentsNamiField(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
@@ -190,5 +165,35 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('meta.columns.1.name', 'Registriert am')
             ->assertJsonPath('meta.columns.1.id', 'created_at')
             ->assertJsonPath('meta.columns.1.display_attribute', 'created_at_display');
+    }
+
+    public function testItShowsOnlyParentParticipantsWhenFilterEnabled(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+        $participant = Participant::factory()
+            ->has(Participant::factory()->for($form)->count(2), 'children')
+            ->for($form)
+            ->create();
+
+        $this->callFilter('form.participant.index', [], ['form' => $form])->assertJsonCount(3, 'data');
+        $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => -1])->assertJsonCount(1, 'data');
+        $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => $participant->id])->assertJsonCount(2, 'data');
+    }
+
+    public function testItShowsChildrenCount(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+        $participant = Participant::factory()
+            ->has(Participant::factory()->for($form)->count(2), 'children')
+            ->for($form)
+            ->create();
+        Participant::factory()->for($form)->create();
+
+        $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => -1])
+            ->assertJsonPath('data.0.children_count', 2)
+            ->assertJsonPath('data.1.children_count', 0);
+        $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => $participant->id])->assertJsonPath('data.0.children_count', 0);
     }
 }
