@@ -46,7 +46,7 @@
                 <template v-for="child in childrenOf('null')" :key="child.id">
                     <tr>
                         <td>
-                            <ui-table-toggle-button :children-count="child.children_count" :text="child.name" :level="0" :active="isOpen(child.id)" @toggle="toggle(child)"></ui-table-toggle-button>
+                            <ui-table-toggle-button :value="child" :text="child.name" :level="0" :active="isOpen(child.id)" @toggle="toggle(child)"></ui-table-toggle-button>
                         </td>
                         <td v-text="child.inner_name"></td>
                         <td v-text="child.level"></td>
@@ -57,13 +57,7 @@
                     <template v-for="subchild in childrenOf(child.id)" :key="subchild.id">
                         <tr>
                             <td>
-                                <ui-table-toggle-button
-                                    :children-count="subchild.children_count"
-                                    :text="subchild.name"
-                                    :level="1"
-                                    :active="isOpen(subchild.id)"
-                                    @toggle="toggle(subchild)"
-                                ></ui-table-toggle-button>
+                                <ui-table-toggle-button :value="subchild" :text="subchild.name" :level="1" :active="isOpen(subchild.id)" @toggle="toggle(subchild)"></ui-table-toggle-button>
                             </td>
                             <td v-text="subchild.inner_name"></td>
                             <td v-text="subchild.level"></td>
@@ -76,13 +70,7 @@
                         <template v-for="subsubchild in childrenOf(subchild.id)" :key="subchild.id">
                             <tr>
                                 <td>
-                                    <ui-table-toggle-button
-                                        :children-count="subsubchild.children_count"
-                                        :text="subsubchild.name"
-                                        :level="2"
-                                        :active="isOpen(subsubchild.id)"
-                                        @toggle="toggle(subsubchild)"
-                                    ></ui-table-toggle-button>
+                                    <ui-table-toggle-button :value="subsubchild" :text="subsubchild.name" :level="2" :active="isOpen(subsubchild.id)"></ui-table-toggle-button>
                                 </td>
                                 <td v-text="subsubchild.inner_name"></td>
                                 <td v-text="subsubchild.level"></td>
@@ -101,7 +89,7 @@
 </template>
 
 <script setup>
-import {computed, ref, reactive} from 'vue';
+import {ref, reactive} from 'vue';
 import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
 const props = defineProps(indexProps);
 var {axios, meta, data} = useIndex(props.data, 'invoice');

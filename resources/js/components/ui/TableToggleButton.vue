@@ -1,7 +1,7 @@
 <template>
     <div class="flex space-x-2" :class="levelMap[level]">
         <a
-            v-if="childrenCount > 0"
+            v-if="value.children_count > 0"
             v-tooltip="active ? 'Schließen' : 'Öffnen'"
             href="#"
             class="inline-flex items-center justify-center bg-blue-700 text-blue-100 rounded w-5 h-5"
@@ -27,8 +27,8 @@ const props = defineProps({
         required: true,
         type: String,
     },
-    childrenCount: {
-        type: Number,
+    value: {
+        type: Object,
         required: true,
     },
     active: {
