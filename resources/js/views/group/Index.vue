@@ -46,13 +46,7 @@
                 <template v-for="child in childrenOf('null')" :key="child.id">
                     <tr>
                         <td>
-                            <div class="flex space-x-2">
-                                <a v-if="!isOpen(child.id)" v-tooltip="`Öffnen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="toggle(child)"><ui-sprite src="plus"></ui-sprite></a>
-                                <a v-if="isOpen(child.id)" v-tooltip="`Schließen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="toggle(child)"
-                                    ><ui-sprite src="close"></ui-sprite
-                                ></a>
-                                <span v-text="child.name"></span>
-                            </div>
+                            <ui-table-toggle-button :children-count="child.children_count" :text="child.name" :level="0" :active="isOpen(child.id)" @toggle="toggle(child)"></ui-table-toggle-button>
                         </td>
                         <td v-text="child.inner_name"></td>
                         <td v-text="child.level"></td>
@@ -62,20 +56,15 @@
                     </tr>
                     <template v-for="subchild in childrenOf(child.id)" :key="subchild.id">
                         <tr>
-                            <div class="pl-12 flex space-x-2">
-                                <a v-if="subchild.children_count !== 0 && !isOpen(subchild.id)" v-tooltip="`Öffnen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="toggle(subchild)"
-                                    ><ui-sprite src="plus"></ui-sprite
-                                ></a>
-                                <a
-                                    v-if="subchild.children_count !== 0 && isOpen(subchild.id)"
-                                    v-tooltip="`Schließen`"
-                                    href="#"
-                                    class="inline-flex btn btn-info btn-sm"
-                                    @click.prevent="toggle(subchild)"
-                                    ><ui-sprite src="close"></ui-sprite
-                                ></a>
-                                <span v-text="subchild.name"></span>
-                            </div>
+                            <td>
+                                <ui-table-toggle-button
+                                    :children-count="subchild.children_count"
+                                    :text="subchild.name"
+                                    :level="1"
+                                    :active="isOpen(subchild.id)"
+                                    @toggle="toggle(subchild)"
+                                ></ui-table-toggle-button>
+                            </td>
                             <td v-text="subchild.inner_name"></td>
                             <td v-text="subchild.level"></td>
                             <td>
@@ -86,25 +75,15 @@
                         </tr>
                         <template v-for="subsubchild in childrenOf(subchild.id)" :key="subchild.id">
                             <tr>
-                                <div class="pl-24 flex space-x-2">
-                                    <a
-                                        v-if="subsubchild.children_count !== 0 && !isOpen(subsubchild.id)"
-                                        v-tooltip="`Öffnen`"
-                                        href="#"
-                                        class="inline-flex btn btn-info btn-sm"
-                                        @click.prevent="toggle(subsubchild)"
-                                        ><ui-sprite src="plus"></ui-sprite
-                                    ></a>
-                                    <a
-                                        v-if="subsubchild.children_count !== 0 && isOpen(subsubchild.id)"
-                                        v-tooltip="`Schließen`"
-                                        href="#"
-                                        class="inline-flex btn btn-info btn-sm"
-                                        @click.prevent="toggle(subsubchild)"
-                                        ><ui-sprite src="close"></ui-sprite
-                                    ></a>
-                                    <span v-text="subsubchild.name"></span>
-                                </div>
+                                <td>
+                                    <ui-table-toggle-button
+                                        :children-count="subsubchild.children_count"
+                                        :text="subsubchild.name"
+                                        :level="2"
+                                        :active="isOpen(subsubchild.id)"
+                                        @toggle="toggle(subsubchild)"
+                                    ></ui-table-toggle-button>
+                                </td>
                                 <td v-text="subsubchild.inner_name"></td>
                                 <td v-text="subsubchild.level"></td>
                                 <td>
