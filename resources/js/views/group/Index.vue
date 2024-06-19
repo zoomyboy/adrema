@@ -47,8 +47,8 @@
                     <tr>
                         <td>
                             <div class="flex space-x-2">
-                                <a v-if="!isOpen(child.id)" v-tooltip="`Öffnen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="open(child)"><ui-sprite src="plus"></ui-sprite></a>
-                                <a v-if="isOpen(child.id)" v-tooltip="`Schließen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="close(child)"
+                                <a v-if="!isOpen(child.id)" v-tooltip="`Öffnen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="toggle(child)"><ui-sprite src="plus"></ui-sprite></a>
+                                <a v-if="isOpen(child.id)" v-tooltip="`Schließen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="toggle(child)"
                                     ><ui-sprite src="close"></ui-sprite
                                 ></a>
                                 <span v-text="child.name"></span>
@@ -63,10 +63,15 @@
                     <template v-for="subchild in childrenOf(child.id)" :key="subchild.id">
                         <tr>
                             <div class="pl-12 flex space-x-2">
-                                <a v-if="subchild.children_count !== 0 && !isOpen(subchild.id)" v-tooltip="`Öffnen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="open(subchild)"
+                                <a v-if="subchild.children_count !== 0 && !isOpen(subchild.id)" v-tooltip="`Öffnen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="toggle(subchild)"
                                     ><ui-sprite src="plus"></ui-sprite
                                 ></a>
-                                <a v-if="subchild.children_count !== 0 && isOpen(subchild.id)" v-tooltip="`Schließen`" href="#" class="inline-flex btn btn-info btn-sm" @click.prevent="close(subchild)"
+                                <a
+                                    v-if="subchild.children_count !== 0 && isOpen(subchild.id)"
+                                    v-tooltip="`Schließen`"
+                                    href="#"
+                                    class="inline-flex btn btn-info btn-sm"
+                                    @click.prevent="toggle(subchild)"
                                     ><ui-sprite src="close"></ui-sprite
                                 ></a>
                                 <span v-text="subchild.name"></span>
@@ -87,7 +92,7 @@
                                         v-tooltip="`Öffnen`"
                                         href="#"
                                         class="inline-flex btn btn-info btn-sm"
-                                        @click.prevent="open(subsubchild)"
+                                        @click.prevent="toggle(subsubchild)"
                                         ><ui-sprite src="plus"></ui-sprite
                                     ></a>
                                     <a
@@ -95,7 +100,7 @@
                                         v-tooltip="`Schließen`"
                                         href="#"
                                         class="inline-flex btn btn-info btn-sm"
-                                        @click.prevent="close(subsubchild)"
+                                        @click.prevent="toggle(subsubchild)"
                                         ><ui-sprite src="close"></ui-sprite
                                     ></a>
                                     <span v-text="subsubchild.name"></span>
@@ -128,10 +133,12 @@ const children = reactive({
 
 var editing = ref(null);
 
-async function open(parent) {
-    const result = (await axios.get(parent.links.children)).data;
-
-    children[parent.id] = result.data;
+async function toggle(parent) {
+    if (isOpen(parent.id)) {
+        delete children[parent.id];
+    } else {
+        children[parent.id] = (await axios.get(parent.links.children)).data.data;
+    }
 }
 
 async function edit(parent) {
@@ -139,10 +146,6 @@ async function edit(parent) {
         parent: parent,
         children: (await axios.get(parent.links.children)).data.data,
     };
-}
-
-function close(parent) {
-    delete children[parent.id];
 }
 
 function isOpen(child) {
