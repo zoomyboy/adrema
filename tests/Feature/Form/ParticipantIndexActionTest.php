@@ -21,17 +21,15 @@ class ParticipantIndexActionTest extends FormTestCase
         $group = Group::factory()->innerName('Stamm')->create();
         $form = Form::factory()
             ->has(Participant::factory()->data(['vorname' => 'Max', 'select' => ['A', 'B'], 'stufe' => 'Pfadfinder', 'test1' => '', 'test2' => '', 'test3' => '', 'birthday' => '1991-04-20', 'bezirk' => $group->id]))
-            ->sections([
-                FormtemplateSectionRequest::new()->fields([
-                    $this->textField('vorname')->name('Vorname'),
-                    $this->checkboxesField('select')->options(['A', 'B', 'C']),
-                    $this->dropdownField('stufe')->options(['Wölfling', 'Jungpfadfinder', 'Pfadfinder']),
-                    $this->textField('test1')->name('Test 1'),
-                    $this->textField('test2')->name('Test 2'),
-                    $this->textField('test3')->name('Test 3'),
-                    $this->dateField('birthday')->name('Geburtsdatum'),
-                    $this->groupField('bezirk')->name('bezirk'),
-                ]),
+            ->fields([
+                $this->textField('vorname')->name('Vorname'),
+                $this->checkboxesField('select')->options(['A', 'B', 'C']),
+                $this->dropdownField('stufe')->options(['Wölfling', 'Jungpfadfinder', 'Pfadfinder']),
+                $this->textField('test1')->name('Test 1'),
+                $this->textField('test2')->name('Test 2'),
+                $this->textField('test3')->name('Test 3'),
+                $this->dateField('birthday')->name('Geburtsdatum'),
+                $this->groupField('bezirk')->name('bezirk'),
             ])
             ->create();
 
@@ -133,10 +131,8 @@ class ParticipantIndexActionTest extends FormTestCase
             ->has(Participant::factory()->data(['mitglieder' => [['id' => 393], ['id' => 394]]]))
             ->has(Participant::factory()->nr(393)->data(['mitglieder' => []]))
             ->has(Participant::factory()->nr(394)->data(['mitglieder' => []]))
-            ->sections([
-                FormtemplateSectionRequest::new()->fields([
-                    $this->namiField('mitglieder'),
-                ]),
+            ->fields([
+                $this->namiField('mitglieder'),
             ])
             ->create();
 
@@ -150,10 +146,8 @@ class ParticipantIndexActionTest extends FormTestCase
         $this->login()->loginNami()->withoutExceptionHandling();
         $form = Form::factory()
             ->has(Participant::factory()->data(['vorname' => 'Max']))
-            ->sections([
-                FormtemplateSectionRequest::new()->fields([
-                    $this->textField('vorname')->name('Vorname'),
-                ]),
+            ->fields([
+                $this->textField('vorname')->name('Vorname'),
             ])
             ->create();
 
