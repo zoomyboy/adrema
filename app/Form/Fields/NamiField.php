@@ -42,12 +42,13 @@ class NamiField extends Field
     public function getRegistrationRules(Form $form): array
     {
         $rules = [$this->key => 'present|array'];
+        $inputMembers = request($this->key);
 
-        foreach ($form->getFields()->forMembers()->noNamiField() as $field) {
-            $r = $field->getRegistrationRules($form);
-
-            foreach ($r as $ruleKey => $rule) {
-                $rules[$this->key . '.*.' . $ruleKey] = $field->namiType === null ? $rule : '';
+        foreach ($form->getFields()->noNamiField()->forMembers() as $field) {
+            foreach ($field->getRegistrationRules($form) as $ruleKey => $rule) {
+                foreach ($inputMembers as $memberIndex => $inputMember) {
+                    $rules[$this->key . '.' . $memberIndex . '.' . $ruleKey] = !$inputMember['id'] || $field->namiType === null ? $rule : '';
+                }
             }
         }
 
@@ -69,12 +70,9 @@ class NamiField extends Field
             return [];
         }
 
-        $c = $form->getFields()->noNamiField()->forMembers();
-
-        foreach ($c as $field) {
+        foreach ($form->getFields()->noNamiField()->forMembers() as $field) {
             foreach ($field->getRegistrationRules($form) as $ruleKey => $rule) {
                 foreach ($inputMembers as $memberIndex => $inputMember) {
-
                     $message = $field->name . ' für ein Mitglied';
                     $rules = array_merge(
                         $rules,

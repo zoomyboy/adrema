@@ -575,7 +575,6 @@ class FormRegisterActionTest extends FormTestCase
     public function testItAddsMemberForNonNami(): void
     {
         $this->login()->loginNami();
-        $this->createMember(['mitgliedsnr' => '5505']);
         $form = Form::factory()->fields([
             $this->namiField('members'),
             $this->textField('gender')->namiType(NamiType::GENDER)->required(false),
@@ -587,6 +586,19 @@ class FormRegisterActionTest extends FormTestCase
             ->assertOk();
         $this->assertEquals('othervalue', $form->participants->get(1)->data['other']);
         $this->assertEquals('Herr', $form->participants->get(1)->data['gender']);
+    }
+
+    public function testItValidatesNamiTypeFieldsForNonMembers(): void
+    {
+        $this->login()->loginNami();
+        $form = Form::factory()->fields([
+            $this->namiField('members'),
+            $this->textField('gender')->name('Geschlecht')->namiType(NamiType::GENDER)->required(true),
+        ])
+            ->create();
+
+        $this->register($form, ['gender' => 'Herr', 'members' => [['id' => null, 'gender' => null]]])
+            ->assertJsonValidationErrors(['members.0.gender' => 'Geschlecht für ein Mitglied ist erforderlich.']);
     }
 
     public function testItValidatesMembersFields(): void
