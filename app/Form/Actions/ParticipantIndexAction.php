@@ -37,7 +37,7 @@ class ParticipantIndexAction
 
         $data = match ($parent) {
             null => $this->handle($form, $filter),
-            -1 => $this->getQuery($form, $filter)->where('parent_id', null)->get(),
+            -1 => $this->getQuery($form, $filter)->where('parent_id', null)->paginate(15),
             default => $this->getQuery($form, $filter)->where('parent_id', $parent)->get(),
         };
 
