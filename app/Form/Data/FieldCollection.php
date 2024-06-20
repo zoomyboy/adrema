@@ -35,6 +35,11 @@ class FieldCollection extends Collection
         return $this->filter(fn ($field) => !is_a($field, NamiField::class));
     }
 
+    public function hasNamiField(): bool
+    {
+        return $this->first(fn ($field) => is_a($field, NamiField::class)) !== null;
+    }
+
     /**
      * @return stdClass
      */

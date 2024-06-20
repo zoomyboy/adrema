@@ -83,6 +83,18 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaCount('data.data', 2);
     }
 
+    public function testItDisplaysParentLinkForFormWithNamiFields(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $form = Form::factory()->fields([$this->namiField('mitglieder')])->create();
+
+        sleep(1);
+        $this->callFilter('form.index', [])
+            ->assertInertiaPath('data.data.0.has_nami_field', true)
+            ->assertInertiaPath('data.data.0.links.participant_root_index', route('form.participant.index', ['form' => $form, 'parent' => -1]))
+            ->assertInertiaPath('data.data.0.links.participant_index', route('form.participant.index', ['form' => $form, 'parent' => null]));
+    }
+
     public function testItDisplaysRegisterUrl(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();

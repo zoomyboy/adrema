@@ -46,8 +46,10 @@ class FormResource extends JsonResource
             'participants_count' => $this->participants_count,
             'is_active' => $this->is_active,
             'is_private' => $this->is_private,
+            'has_nami_field' => $this->getFields()->hasNamiField(),
             'links' => [
-                'participant_index' => route('form.participant.index', ['form' => $this->getModel()]),
+                'participant_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => null]),
+                'participant_root_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => -1]),
                 'update' => route('form.update', ['form' => $this->getModel()]),
                 'destroy' => route('form.destroy', ['form' => $this->getModel()]),
                 'is_dirty' => route('form.is-dirty', ['form' => $this->getModel()]),
