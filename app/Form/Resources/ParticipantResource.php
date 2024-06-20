@@ -57,6 +57,7 @@ class ParticipantResource extends JsonResource
             'default_filter_value' => ParticipantFilterScope::$nan,
             'filters' => $filterData,
             'form_meta' => $form->meta,
+            'has_nami_field' => $form->getFields()->hasNamiField(),
             'links' => [
                 'update_form_meta' => route('form.update-meta', ['form' => $form]),
             ],

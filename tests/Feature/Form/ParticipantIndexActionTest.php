@@ -51,6 +51,7 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('meta.columns.6.display_attribute', 'birthday_display')
             ->assertJsonPath('meta.columns.0.display_attribute', 'vorname_display')
             ->assertJsonPath('meta.form_meta.active_columns', ['vorname', 'select', 'stufe', 'test1'])
+            ->assertJsonPath('meta.has_nami_field', false)
             ->assertJsonPath('meta.links.update_form_meta', route('form.update-meta', ['form' => $form]))
             ->assertJsonPath('meta.form_meta.sorting', ['vorname', 'asc']);
     }
@@ -70,6 +71,13 @@ class ParticipantIndexActionTest extends FormTestCase
         $this->callFilter('form.participant.index', ['data' => ['check' => null]], ['form' => $form])->assertHasJsonPath('meta.filter.data.check')->assertJsonPath('meta.filter.data.check', null);
         $this->callFilter('form.participant.index', ['data' => ['check' => 'A']], ['form' => $form])->assertJsonPath('meta.filter.data.check', 'A');
         $this->callFilter('form.participant.index', ['data' => []], ['form' => $form])->assertJsonPath('meta.filter.data.check', ParticipantFilterScope::$nan);
+    }
+
+    public function testItDisplaysHasNamiField(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->fields([$this->namiField('mitglieder')])->create();
+        $this->callFilter('form.participant.index', [], ['form' => $form])->assertJsonPath('meta.has_nami_field', true);
     }
 
     public function testItFiltersParticipantsByCheckboxValue(): void
