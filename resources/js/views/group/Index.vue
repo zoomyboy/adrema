@@ -89,38 +89,21 @@
 </template>
 
 <script setup>
-import {ref, reactive} from 'vue';
+import {ref} from 'vue';
 import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
+import useTableToggle from '../../composables/useTableToggle.js';
+
 const props = defineProps(indexProps);
 var {axios, meta, data} = useIndex(props.data, 'invoice');
-
-const children = reactive({
-    null: data.value,
-});
+const {isOpen, toggle, childrenOf} = useTableToggle({null: data.value});
 
 var editing = ref(null);
-
-async function toggle(parent) {
-    if (isOpen(parent.id)) {
-        delete children[parent.id];
-    } else {
-        children[parent.id] = (await axios.get(parent.links.children)).data.data;
-    }
-}
 
 async function edit(parent) {
     editing.value = {
         parent: parent,
         children: (await axios.get(parent.links.children)).data.data,
     };
-}
-
-function isOpen(child) {
-    return child in children;
-}
-
-function childrenOf(parent) {
-    return children[parent] ? children[parent] : [];
 }
 
 async function store() {
