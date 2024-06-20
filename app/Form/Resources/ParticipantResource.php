@@ -23,6 +23,7 @@ class ParticipantResource extends JsonResource
     {
         return [
             ...$this->getModel()->getFields()->present(),
+            'id' => $this->id,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'created_at_display' => $this->created_at->format('d.m.Y'),
             'children_count' => $this->children_count,

@@ -35,6 +35,7 @@ class ParticipantIndexActionTest extends FormTestCase
 
         $this->callFilter('form.participant.index', [], ['form' => $form])
             ->assertOk()
+            ->assertJsonPath('data.0.id', $form->participants->first()->id)
             ->assertJsonPath('data.0.vorname', 'Max')
             ->assertJsonPath('data.0.vorname_display', 'Max')
             ->assertJsonPath('data.0.stufe', 'Pfadfinder')
