@@ -32,7 +32,7 @@
         </ui-popup>
 
         <ui-popup v-if="showing !== null" :heading="`Teilnehmende für ${showing.name}`" full @close="showing = null">
-            <participants :url="showing.links.participant_index"></participants>
+            <participants :has-nami-field="showing.has_nami_field" :root-url="showing.links.participant_root_index" :url="showing.links.participant_index"> </participants>
         </ui-popup>
 
         <ui-popup v-if="single !== null && single.config !== null" :heading="`Veranstaltung ${single.id ? 'bearbeiten' : 'erstellen'}`" full @close="cancel">

@@ -82,6 +82,15 @@ const props = defineProps({
         required: true,
         validator: (value) => value.startsWith('http'),
     },
+    rootUrl: {
+        type: String,
+        required: true,
+        validator: (value) => value.startsWith('http'),
+    },
+    hasNamiField: {
+        type: Boolean,
+        required: true,
+    },
 });
 
 var {meta, data, reload, reloadPage, axios, remove, toFilterString} = useApiIndex(props.url, 'participant');
