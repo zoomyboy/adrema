@@ -2,10 +2,12 @@ import {ref, inject, onBeforeUnmount} from 'vue';
 import {router} from '@inertiajs/vue3';
 import useQueueEvents from './useQueueEvents.js';
 
-export function useApiIndex(url, siteName) {
+export function useApiIndex(firstUrl, siteName) {
     const axios = inject('axios');
     const {startListener, stopListener} = useQueueEvents(siteName, () => reload());
     const single = ref(null);
+
+    const url = ref(firstUrl);
     const inner = {
         data: ref([]),
         meta: ref({}),
@@ -17,7 +19,7 @@ export function useApiIndex(url, siteName) {
             ...p,
         };
 
-        var response = (await axios.get(url, {params})).data;
+        var response = (await axios.get(url.value, {params})).data;
         inner.data.value = response.data;
         inner.meta.value = response.meta;
     }
@@ -72,6 +74,10 @@ export function useApiIndex(url, siteName) {
         single.value = null;
     }
 
+    function updateUrl(newUrl) {
+        url.value = newUrl;
+    }
+
     startListener();
     onBeforeUnmount(() => stopListener());
 
@@ -91,5 +97,7 @@ export function useApiIndex(url, siteName) {
         cancel,
         axios,
         toFilterString,
+        updateUrl,
+        url,
     };
 }

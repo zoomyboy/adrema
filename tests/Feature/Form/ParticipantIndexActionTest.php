@@ -197,6 +197,7 @@ class ParticipantIndexActionTest extends FormTestCase
         $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => -1])
             ->assertJsonPath('data.0.children_count', 2)
             ->assertJsonPath('data.1.children_count', 0)
+            ->assertJsonPath('data.0.links.children', route('form.participant.index', ['form' => $form, 'parent' => $participant->id]))
             ->assertJsonPath('meta.current_page', 1);
         $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => $participant->id])->assertJsonPath('data.0.children_count', 0);
     }

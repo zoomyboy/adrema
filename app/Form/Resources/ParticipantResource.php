@@ -29,6 +29,7 @@ class ParticipantResource extends JsonResource
             'children_count' => $this->children_count,
             'links' => [
                 'destroy' => route('participant.destroy', ['participant' => $this->getModel()]),
+                'children' => route('form.participant.index', ['form' => $this->form, 'parent' => $this->id])
             ]
         ];
     }

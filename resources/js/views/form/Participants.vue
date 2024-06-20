@@ -10,6 +10,7 @@
             </div>
         </ui-popup>
         <page-filter breakpoint="lg">
+            <f-switch v-if="meta.has_nami_field" id="group_participants" v-model="groupParticipants" label="Gruppieren" size="sm" name="group_participants"></f-switch>
             <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm" name="active_columns"></f-multipleselect>
 
             <template v-for="(filter, index) in meta.filters">
@@ -54,15 +55,44 @@
                 <th></th>
             </thead>
 
-            <tr v-for="(participant, index) in data" :key="index">
-                <td v-for="column in activeColumns" :key="column.id">
-                    <div v-text="participant[column.display_attribute]"></div>
-                </td>
-                <td>
-                    <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(participant)"><ui-sprite src="pencil"></ui-sprite></a>
-                    <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = participant"><ui-sprite src="trash"></ui-sprite></a>
-                </td>
-            </tr>
+            <template v-for="(participant, index) in data" :key="index">
+                <tr>
+                    <td v-for="(column, columnindex) in activeColumns" :key="column.id">
+                        <ui-table-toggle-button
+                            v-if="columnindex === 0 && groupParticipants"
+                            :value="participant"
+                            :text="participant[column.display_attribute]"
+                            :level="0"
+                            :active="isOpen(participant.id)"
+                            @toggle="toggle(participant)"
+                        ></ui-table-toggle-button>
+                        <div v-else v-text="participant[column.display_attribute]"></div>
+                    </td>
+                    <td>
+                        <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(participant)"><ui-sprite src="pencil"></ui-sprite></a>
+                        <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = participant"><ui-sprite src="trash"></ui-sprite></a>
+                    </td>
+                </tr>
+                <template v-for="child in childrenOf(participant.id)" :key="child.id">
+                    <tr>
+                        <td v-for="(column, columnindex) in activeColumns" :key="column.id">
+                            <ui-table-toggle-button
+                                v-if="columnindex === 0 && groupParticipants"
+                                :value="child"
+                                :text="child[column.display_attribute]"
+                                :level="1"
+                                :active="isOpen(child.id)"
+                                @toggle="toggle(child)"
+                            ></ui-table-toggle-button>
+                            <div v-else v-text="child[column.display_attribute]"></div>
+                        </td>
+                        <td>
+                            <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(child)"><ui-sprite src="pencil"></ui-sprite></a>
+                            <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = child"><ui-sprite src="trash"></ui-sprite></a>
+                        </td>
+                    </tr>
+                </template>
+            </template>
         </table>
         <div class="px-6">
             <ui-pagination class="mt-4" :value="meta" @reload="reloadPage"></ui-pagination>
@@ -73,8 +103,10 @@
 <script setup>
 import {watch, ref, computed} from 'vue';
 import {useApiIndex} from '../../composables/useApiIndex.js';
+import useTableToggle from '../../composables/useTableToggle.js';
 
 const deleting = ref(null);
+const {isOpen, toggle, childrenOf, clearToggle} = useTableToggle({});
 
 const props = defineProps({
     url: {
@@ -92,8 +124,20 @@ const props = defineProps({
         required: true,
     },
 });
+const groupParticipants = computed({
+    get() {
+        return url.value === props.rootUrl;
+    },
+    async set(v) {
+        updateUrl(v ? props.rootUrl : props.url);
+        if (!v) {
+            clearToggle();
+        }
+        await reload();
+    },
+});
 
-var {meta, data, reload, reloadPage, axios, remove, toFilterString} = useApiIndex(props.url, 'participant');
+var {meta, data, reload, reloadPage, axios, remove, toFilterString, url, updateUrl} = useApiIndex(props.hasNamiField ? props.rootUrl : props.url, 'participant');
 
 const activeColumns = computed(() => meta.value.columns.filter((c) => meta.value.form_meta.active_columns.includes(c.id)));
 
