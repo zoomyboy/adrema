@@ -19,6 +19,7 @@ use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
+use App\Fileshare\Actions\FileshareStoreAction;
 use App\Form\Actions\ExportAction as ActionsExportAction;
 use App\Form\Actions\FormDestroyAction;
 use App\Form\Actions\FormIndexAction;
@@ -166,4 +167,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/form/{form}/participants/{parent?}', ParticipantIndexAction::class)->name('form.participant.index');
     Route::post('/form/{form}/is-dirty', IsDirtyAction::class)->name('form.is-dirty');
     Route::delete('/participant/{participant}', ParticipantDestroyAction::class)->name('participant.destroy');
+
+    // ------------------------------------ fileshare -----------------------------------
+    Route::post('/fileshare', FileshareStoreAction::class)->name('fileshare.store');
 });

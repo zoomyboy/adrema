@@ -10,6 +10,8 @@ class FileshareConnection extends Model
 {
     use HasFactory;
 
+    public $guarded = [];
+
     public $casts = [
         'type' => ConnectionType::class,
     ];

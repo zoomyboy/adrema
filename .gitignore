@@ -16,6 +16,7 @@ Homestead.json
 .phpunit.result.cache
 /storage/temp/
 /storage/debugbar/
+/tests/Fileshare/oc_tmp/*
 
 # User data files
 /data/
