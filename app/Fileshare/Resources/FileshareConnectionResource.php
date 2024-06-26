@@ -17,6 +17,9 @@ class FileshareConnectionResource extends JsonResource
         return [
             'name' => $this->name,
             'is_active' => $this->type->check(),
+            'type' => get_class($this->type),
+            'config' => $this->type->toArray(),
+            'id' => $this->id,
         ];
     }
 }
