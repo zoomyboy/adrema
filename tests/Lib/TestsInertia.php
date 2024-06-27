@@ -22,11 +22,6 @@ trait TestsInertia
         $this->assertInertiaDeepNest($bindings, $viewData);
     }
 
-    public function assertComponent(string $component, TestResponse $response): void
-    {
-        PHPUnit::assertEquals($component, $response->viewData('page')['component']);
-    }
-
     /**
      * @param mixed $should
      * @param mixed $is

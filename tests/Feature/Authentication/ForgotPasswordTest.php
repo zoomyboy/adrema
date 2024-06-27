@@ -15,9 +15,7 @@ class ForgotPasswordTest extends TestCase
     public function testItShowsResetForm(): void
     {
         $this->withoutExceptionHandling();
-        $response = $this->get('/password/reset');
-
-        $this->assertComponent('authentication/PasswordReset', $response);
+        $this->get('/password/reset')->assertComponent('authentication/PasswordReset');
     }
 
     public function testItRequiresAnEmailAddress(): void

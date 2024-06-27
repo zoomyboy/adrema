@@ -33,4 +33,11 @@ class FileshareIndexActionTest extends FileshareTestCase
             ->assertInertiaPath('data.meta.types.0.defaults.base_url', '')
             ->assertInertiaPath('data.meta.types.0.fields.1', ['label' => 'Benutzer', 'key' => 'user', 'type' => 'text']);
     }
+
+    public function testItRendersComponent(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+
+        $this->get('/setting/fileshare')->assertComponent('fileshareconnection/Index');
+    }
 }

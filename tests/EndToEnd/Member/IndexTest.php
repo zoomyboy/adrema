@@ -25,9 +25,8 @@ class IndexTest extends EndToEndTestCase
             ]);
 
         sleep(1);
-        $response = $this->get('/member');
+        $response = $this->get('/member')->assertComponent('member/VIndex');
 
-        $this->assertComponent('member/VIndex', $response);
         $this->assertInertiaHas('::firstname::', $response, 'data.data.0.firstname');
         $this->assertInertiaHas(false, $response, 'data.data.0.has_nami');
         $this->assertInertiaHas('Kölner Str 3, 33333 Hilden', $response, 'data.data.0.full_address');

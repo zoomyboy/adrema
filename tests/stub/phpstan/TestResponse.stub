@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @method self assertPdfPageCount(int $count)
  * @method self assertPdfName(string $filename)
  * @method self assertHasJsonPath(string $path)
+ * @method self assertComponnet(string $component)
  * @method File getFile()
  */
 class TestResponse

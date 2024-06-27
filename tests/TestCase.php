@@ -133,6 +133,13 @@ abstract class TestCase extends BaseTestCase
             return $this;
         });
 
+        TestResponse::macro('assertComponent', function (string $component) {
+            /** @var TestResponse */
+            $response = $this;
+            Assert::assertEquals($component, data_get($response->viewData('page'), 'component'));
+            return $this;
+        });
+
         TestResponse::macro('assertPdfPageCount', function (int $count) {
             /** @var TestResponse */
             $response = $this;
