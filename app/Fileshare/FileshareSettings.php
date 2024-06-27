@@ -2,7 +2,7 @@
 
 namespace App\Fileshare;
 
-use App\Fileshare\Actions\FileshareConnectionIndexAction;
+use App\Fileshare\Actions\FileshareIndexAction;
 use App\Setting\Contracts\Indexable;
 use App\Setting\LocalSettings;
 
@@ -20,7 +20,7 @@ class FileshareSettings extends LocalSettings implements Indexable
 
     public static function indexAction(): string
     {
-        return FileshareConnectionIndexAction::class;
+        return FileshareIndexAction::class;
     }
 
     public static function title(): string

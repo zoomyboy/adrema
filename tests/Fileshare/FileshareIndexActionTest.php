@@ -6,7 +6,7 @@ use App\Fileshare\ConnectionTypes\OwncloudConnection;
 use App\Fileshare\Models\FileshareConnection;
 use Tests\FileshareTestCase;
 
-class FileshareConnectionIndexActionTest extends FileshareTestCase
+class FileshareIndexActionTest extends FileshareTestCase
 {
     public function testItListsOwncloudConnectionsThatAreActive(): void
     {
@@ -25,6 +25,7 @@ class FileshareConnectionIndexActionTest extends FileshareTestCase
             ->assertInertiaPath('data.data.0.id', $connection->id)
             ->assertInertiaPath('data.data.0.is_active', true)
             ->assertInertiaPath('data.data.0.type_human', 'Owncloud')
+            ->assertInertiaPath('data.data.0.links.update', route('fileshare.update', ['fileshare' => $connection]))
             ->assertInertiaPath('data.meta.default.name', '')
             ->assertInertiaPath('data.meta.links.store', route('fileshare.store'))
             ->assertInertiaPath('data.meta.types.0.id', OwncloudConnection::class)

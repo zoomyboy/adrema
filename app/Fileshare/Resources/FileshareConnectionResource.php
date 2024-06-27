@@ -30,6 +30,9 @@ class FileshareConnectionResource extends JsonResource
             'config' => $this->type->toArray(),
             'id' => $this->id,
             'type_human' => $this->type::title(),
+            'links' => [
+                'update' => route('fileshare.update', ['fileshare' => $this->getModel()]),
+            ]
         ];
     }
 

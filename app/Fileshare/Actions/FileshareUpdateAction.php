@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class FileshareConnectionStoreAction
+class FileshareUpdateAction
 {
     use AsAction;
 
@@ -23,16 +23,15 @@ class FileshareConnectionStoreAction
         ];
     }
 
-    public function asController(ActionRequest $request): void
+    public function handle(ActionRequest $request, FileshareConnection $fileshare): void
     {
-
         $type = $request->input('type')::from($request->input('config'));
 
         if (!$type->check()) {
             throw ValidationException::withMessages(['type' => 'Verbindung fehlgeschlagen']);
         }
 
-        FileshareConnection::create([
+        $fileshare->update([
             ...$request->validated(),
             'type' => $type,
         ]);

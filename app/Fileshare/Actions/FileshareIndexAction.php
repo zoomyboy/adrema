@@ -8,7 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class FileshareConnectionIndexAction
+class FileshareIndexAction
 {
     use AsAction;
 
