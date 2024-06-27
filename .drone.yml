@@ -68,6 +68,7 @@ steps:
           XELATEX_BIN: /usr/bin/xelatex
           SCOUT_DRIVER: database
           MEILI_MASTER_KEY: abc
+          TEST_OWNCLOUD_DOMAIN: http://owncloudserver:8080
 
     - name: docker_app_push
       image: plugins/docker
