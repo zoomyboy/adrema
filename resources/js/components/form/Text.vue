@@ -5,20 +5,9 @@
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
         <div class="real-field-wrap size-sm" :class="sizes[size].field">
-            <input
-                :name="name"
-                :type="type"
-                :value="transformedValue"
-                :disabled="disabled"
-                :placeholder="placeholder"
-                :min="min"
-                :max="max"
-                @keypress="$emit('keypress', $event)"
-                @input="onInput"
-                @change="onChange"
-                @focus="onFocus"
-                @blur="onBlur"
-            />
+            <input :name="name" :type="type" :value="transformedValue" :disabled="disabled" :placeholder="placeholder"
+                :min="min" :max="max" @keypress="$emit('keypress', $event)" @input="onInput" @change="onChange"
+                @focus="onFocus" @blur="onBlur" />
             <div v-if="hint" class="info-wrap">
                 <div v-tooltip="hint">
                     <ui-sprite src="info-button" class="info-button"></ui-sprite>
@@ -33,129 +22,36 @@ import wNumb from 'wnumb';
 
 var numb = {
     natural: wNumb({
-        mark: ',',
-        thousand: '.',
-        decimals: 0,
-        decoder(a) {
-            return a * 100;
-        },
-        encoder(a) {
-            return a / 100;
-        },
-    }),
-    naturalRaw: wNumb({
         mark: '',
         thousand: '',
         decimals: 0,
-        decoder(a) {
-            return a * 100;
-        },
-        encoder(a) {
-            return a / 100;
-        },
-    }),
-    naturalDetailRaw: wNumb({
-        mark: '',
-        thousand: '',
-        decimals: 0,
-        decoder(a) {
-            return a * 10000;
-        },
-        encoder(a) {
-            return a / 10000;
-        },
+        decoder: (a) => a * 100,
+        encoder: (a) => a / 100,
     }),
     area: wNumb({
         mark: ',',
-        thousand: '.',
-        decimals: 2,
-        decoder(a) {
-            return a * 100;
-        },
-        encoder(a) {
-            return a / 100;
-        },
-    }),
-    areaDetail: wNumb({
-        mark: ',',
-        thousand: '.',
-        decimals: 4,
-        decoder(a) {
-            return a * 10000;
-        },
-        encoder(a) {
-            return a / 10000;
-        },
-    }),
-    twoDecimalRaw: wNumb({
-        mark: ',',
         thousand: '',
         decimals: 2,
-        decoder(a) {
-            return a * 100;
-        },
-        encoder(a) {
-            return a / 100;
-        },
-    }),
-    fourDecimalRaw: wNumb({
-        mark: ',',
-        thousand: '',
-        decimals: 4,
-        decoder(a) {
-            return a * 10000;
-        },
-        encoder(a) {
-            return a / 10000;
-        },
+        decoder: (a) => a * 100,
+        encoder: (a) => a / 100,
     }),
 };
 
 var transformers = {
     none: {
         display: {
-            to(v) {
-                return v;
-            },
-            from(v) {
-                return v;
-            },
+            to: (v) => v,
+            from: (v) => v,
         },
         edit: {
-            to(v) {
-                return v;
-            },
-            from(v) {
-                return v;
-            },
-        },
-    },
-    natural: {
-        display: {
-            to(v) {
-                return isNaN(parseInt(v)) ? '' : numb.natural.to(v);
-            },
-            from(v) {
-                return v === '' ? null : numb.natural.from(v);
-            },
-        },
-        edit: {
-            to(v) {
-                return isNaN(parseInt(v)) ? '' : numb.naturalRaw.to(v);
-            },
-            from(v) {
-                return v === '' ? null : numb.naturalRaw.from(v);
-            },
+            to: (v) => v,
+            from: (v) => v,
         },
     },
     area: {
         display: {
-            to(v) {
-                return v === null ? '' : numb.area.to(v);
-            },
-            from(v) {
-                return v === '' ? null : numb.area.from(v);
-            },
+            to: (v) => (v === null ? '' : numb.area.to(v)),
+            from: (v) => (v === '' ? null : numb.area.from(v)),
         },
         edit: {
             to(v) {
@@ -163,81 +59,19 @@ var transformers = {
                     return '';
                 }
                 if (Math.round(v / 100) * 100 === v) {
-                    return numb.naturalRaw.to(v);
+                    return numb.natural.to(v);
                 }
-                return numb.twoDecimalRaw.to(v);
+                return numb.area.to(v);
             },
             from(v) {
                 if (v === '') {
                     return null;
                 }
                 if (v.indexOf(',') === -1) {
-                    return numb.naturalRaw.from(v);
+                    return numb.natural.from(v);
                 }
 
-                return numb.twoDecimalRaw.from(v);
-            },
-        },
-    },
-    currency: {
-        display: {
-            to(v) {
-                return v === null ? '' : numb.area.to(v);
-            },
-            from(v) {
-                return v === '' ? null : numb.area.from(v);
-            },
-        },
-        edit: {
-            to(v) {
-                if (v === null) {
-                    return '';
-                }
-                if (Math.round(v / 100) * 100 === v) {
-                    return numb.naturalRaw.to(v);
-                }
-                return numb.twoDecimalRaw.to(v);
-            },
-            from(v) {
-                if (v === '') {
-                    return null;
-                }
-                if (v.indexOf(',') === -1) {
-                    return numb.naturalRaw.from(v);
-                }
-
-                return numb.twoDecimalRaw.from(v);
-            },
-        },
-    },
-    currencyDetail: {
-        display: {
-            to(v) {
-                return v === null ? '' : numb.areaDetail.to(v);
-            },
-            from(v) {
-                return v === '' ? null : numb.areaDetail.from(v);
-            },
-        },
-        edit: {
-            to(v) {
-                if (v === null) {
-                    return '';
-                }
-                if (Math.round(v / 10000) * 10000 === v) {
-                    return numb.naturalDetailRaw.to(v);
-                }
-                return numb.fourDecimalRaw.to(v);
-            },
-            from(v) {
-                if (v === '') {
-                    return null;
-                }
-                if (v.indexOf(',') === -1) {
-                    return numb.naturalDetailRaw.from(v);
-                }
-
-                return numb.fourDecimalRaw.from(v);
+                return numb.area.from(v);
             },
         },
     },
