@@ -3,7 +3,7 @@
 namespace Tests\Fileshare;
 
 use App\Fileshare\ConnectionTypes\OwncloudConnection;
-use App\Fileshare\Models\FileshareConnection;
+use App\Fileshare\Models\Fileshare;
 use Tests\FileshareTestCase;
 
 class FileshareIndexActionTest extends FileshareTestCase
@@ -11,7 +11,7 @@ class FileshareIndexActionTest extends FileshareTestCase
     public function testItListsOwncloudConnectionsThatAreActive(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami()->withOwncloudUser('badenpowell', 'secret');
-        $connection = FileshareConnection::factory()
+        $connection = Fileshare::factory()
             ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
             ->name('lokaler Server')
             ->create();

@@ -2,7 +2,7 @@
 
 namespace App\Fileshare\Actions;
 
-use App\Fileshare\Models\FileshareConnection;
+use App\Fileshare\Models\Fileshare;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -31,7 +31,7 @@ class FileshareStoreAction
             throw ValidationException::withMessages(['type' => 'Verbindung fehlgeschlagen']);
         }
 
-        FileshareConnection::create([
+        Fileshare::create([
             ...$request->validated(),
             'type' => $type,
         ]);

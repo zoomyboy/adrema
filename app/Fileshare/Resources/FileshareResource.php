@@ -3,14 +3,14 @@
 namespace App\Fileshare\Resources;
 
 use App\Fileshare\ConnectionTypes\ConnectionType;
-use App\Fileshare\Models\FileshareConnection;
+use App\Fileshare\Models\Fileshare;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin FileshareConnection
  */
-class FileshareConnectionResource extends JsonResource
+class FileshareResource extends JsonResource
 {
 
     use HasMeta;

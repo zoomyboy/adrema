@@ -6,7 +6,7 @@ use App\Fileshare\ConnectionTypes\ConnectionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FileshareConnection extends Model
+class Fileshare extends Model
 {
     use HasFactory;
 

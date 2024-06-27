@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('fileshare_connections', function (Blueprint $table) {
+        Schema::create('fileshares', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->json('type');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fileshare_connections');
+        Schema::dropIfExists('fileshares');
     }
 };

@@ -2,7 +2,7 @@
 
 namespace App\Fileshare\Actions;
 
-use App\Fileshare\Models\FileshareConnection;
+use App\Fileshare\Models\Fileshare;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -23,7 +23,7 @@ class FileshareUpdateAction
         ];
     }
 
-    public function handle(ActionRequest $request, FileshareConnection $fileshare): void
+    public function handle(ActionRequest $request, Fileshare $fileshare): void
     {
         $type = $request->input('type')::from($request->input('config'));
 

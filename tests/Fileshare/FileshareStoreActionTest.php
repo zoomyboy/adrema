@@ -3,7 +3,7 @@
 namespace Tests\Fileshare;
 
 use App\Fileshare\ConnectionTypes\OwncloudConnection;
-use App\Fileshare\Models\FileshareConnection;
+use App\Fileshare\Models\Fileshare;
 use Tests\FileshareTestCase;
 
 class FileshareStoreActionTest extends FileshareTestCase
@@ -22,7 +22,7 @@ class FileshareStoreActionTest extends FileshareTestCase
             ]
         ])->assertOk();
 
-        $connection = FileshareConnection::firstOrFail();
+        $connection = Fileshare::firstOrFail();
         $this->assertEquals('badenpowell', $connection->type->user);
         $this->assertEquals('secret', $connection->type->password);
         $this->assertEquals(env('TEST_OWNCLOUD_DOMAIN'), $connection->type->baseUrl);
