@@ -3,6 +3,7 @@
 namespace App\Fileshare\Actions;
 
 use App\Fileshare\Models\Fileshare;
+use App\Lib\Events\Succeeded;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -35,5 +36,7 @@ class FileshareUpdateAction
             ...$request->validated(),
             'type' => $type,
         ]);
+
+        Succeeded::message('Verbindung bearbeitet.')->dispatch();
     }
 }

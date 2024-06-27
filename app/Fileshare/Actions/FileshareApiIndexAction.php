@@ -4,21 +4,18 @@ namespace App\Fileshare\Actions;
 
 use App\Fileshare\Models\Fileshare;
 use App\Fileshare\Resources\FileshareResource;
-use Inertia\Inertia;
-use Inertia\Response;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class FileshareIndexAction
+class FileshareApiIndexAction
 {
     use AsAction;
 
-    public function handle(): Response
+    public function handle(): AnonymousResourceCollection
     {
         session()->put('menu', 'setting');
         session()->put('title', 'Datei-Verbindungen');
 
-        return Inertia::render('fileshare/Index', [
-            'data' => FileshareResource::collection(Fileshare::paginate(15)),
-        ]);
+        return FileshareResource::collection(Fileshare::paginate(15));
     }
 }

@@ -16,28 +16,28 @@ class FileshareIndexActionTest extends FileshareTestCase
             ->name('lokaler Server')
             ->create();
 
-        $this->get('/setting/fileshare')
-            ->assertInertiaPath('data.data.0.name', 'lokaler Server')
-            ->assertInertiaPath('data.data.0.type', OwncloudConnection::class)
-            ->assertInertiaPath('data.data.0.config.user', 'badenpowell')
-            ->assertInertiaPath('data.data.0.config.password', 'secret')
-            ->assertInertiaPath('data.data.0.config.base_url', env('TEST_OWNCLOUD_DOMAIN'))
-            ->assertInertiaPath('data.data.0.id', $connection->id)
-            ->assertInertiaPath('data.data.0.is_active', true)
-            ->assertInertiaPath('data.data.0.type_human', 'Owncloud')
-            ->assertInertiaPath('data.data.0.links.update', route('fileshare.update', ['fileshare' => $connection]))
-            ->assertInertiaPath('data.meta.default.name', '')
-            ->assertInertiaPath('data.meta.links.store', route('fileshare.store'))
-            ->assertInertiaPath('data.meta.types.0.id', OwncloudConnection::class)
-            ->assertInertiaPath('data.meta.types.0.name', 'Owncloud')
-            ->assertInertiaPath('data.meta.types.0.defaults.base_url', '')
-            ->assertInertiaPath('data.meta.types.0.fields.1', ['label' => 'Benutzer', 'key' => 'user', 'type' => 'text']);
+        $this->get('/api/fileshare')
+            ->assertJsonPath('data.0.name', 'lokaler Server')
+            ->assertJsonPath('data.0.type', OwncloudConnection::class)
+            ->assertJsonPath('data.0.config.user', 'badenpowell')
+            ->assertJsonPath('data.0.config.password', 'secret')
+            ->assertJsonPath('data.0.config.base_url', env('TEST_OWNCLOUD_DOMAIN'))
+            ->assertJsonPath('data.0.id', $connection->id)
+            ->assertJsonPath('data.0.is_active', true)
+            ->assertJsonPath('data.0.type_human', 'Owncloud')
+            ->assertJsonPath('data.0.links.update', route('fileshare.update', ['fileshare' => $connection]))
+            ->assertJsonPath('meta.default.name', '')
+            ->assertJsonPath('meta.links.store', route('fileshare.store'))
+            ->assertJsonPath('meta.types.0.id', OwncloudConnection::class)
+            ->assertJsonPath('meta.types.0.name', 'Owncloud')
+            ->assertJsonPath('meta.types.0.defaults.base_url', '')
+            ->assertJsonPath('meta.types.0.fields.1', ['label' => 'Benutzer', 'key' => 'user', 'type' => 'text']);
     }
 
     public function testItRendersComponent(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
 
-        $this->get('/setting/fileshare')->assertComponent('fileshareconnection/Index');
+        $this->get('/setting/fileshare')->assertComponent('fileshare/Index');
     }
 }

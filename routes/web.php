@@ -19,6 +19,7 @@ use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
+use App\Fileshare\Actions\FileshareApiIndexAction;
 use App\Fileshare\Actions\FileshareStoreAction;
 use App\Fileshare\Actions\FileshareUpdateAction;
 use App\Form\Actions\ExportAction as ActionsExportAction;
@@ -172,4 +173,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     // ------------------------------------ fileshare -----------------------------------
     Route::post('/fileshare', FileshareStoreAction::class)->name('fileshare.store');
     Route::patch('/fileshare/{fileshare}', FileshareUpdateAction::class)->name('fileshare.update');
+    Route::get('/api/fileshare', FileshareApiIndexAction::class)->name('api.fileshare.index');
 });
