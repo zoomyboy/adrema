@@ -21,6 +21,16 @@ steps:
       commands:
           - while ! mysqladmin ping -h db -u db -pdb --silent; do sleep 1; done
 
+    - name: ocdb_healthcheck
+      image: mysql:oracle
+      commands:
+          - while ! mysqladmin ping -h ownclouddb -u owncloud -powncloud --silent; do sleep 1; done
+
+    - name: oc_healthcheck
+      image: zoomyboy/adrema-base:latest
+      commands:
+          - while ! curl  --silent 'http://owncloudserver:8080/ocs/v1.php/cloud/capabilities?format=json' -u admin:admin | grep '"status":"ok"'; do sleep 1; done
+
     - name: node
       image: node:18.13.0-slim
       commands:
@@ -160,6 +170,29 @@ services:
       image: getmeili/meilisearch:v1.6
       commands:
           - meilisearch --master-key="abc"
+    - name: ownclouddb
+      image: mariadb:10.11
+      environment:
+          MYSQL_ROOT_PASSWORD: owncloud
+          MYSQL_USER: owncloud
+          MYSQL_PASSWORD: owncloud
+          MYSQL_DATABASE: owncloud
+          MARIADB_AUTO_UPGRADE: 1
+    - name: owncloudserver
+      image: owncloud/server:10.10.0
+      environment:
+          OWNCLOUD_DOMAIN: http://owncloudserver:8080
+          OWNCLOUD_TRUSTED_DOMAINS: owncloudserver
+          OWNCLOUD_DB_TYPE: mysql
+          OWNCLOUD_DB_NAME: owncloud
+          OWNCLOUD_DB_USERNAME: owncloud
+          OWNCLOUD_DB_PASSWORD: owncloud
+          OWNCLOUD_DB_HOST: ownclouddb
+          OWNCLOUD_ADMIN_USERNAME: admin
+          OWNCLOUD_ADMIN_PASSWORD: admin
+          OWNCLOUD_MYSQL_UTF8MB4: true
+          OWNCLOUD_REDIS_ENABLED: false
+          OWNCLOUD_REDIS_HOST: false
 
 trigger:
     event:
