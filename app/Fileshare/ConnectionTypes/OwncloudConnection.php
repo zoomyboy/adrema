@@ -29,4 +29,33 @@ class OwncloudConnection extends ConnectionType
             return false;
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function defaults(): array
+    {
+        return [
+            'user' => '',
+            'password' => '',
+            'base_url' => '',
+        ];
+    }
+
+    public static function title(): string
+    {
+        return 'Owncloud';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function fields(): array
+    {
+        return [
+            ['label' => 'URL', 'key' => 'base_url', 'type' => 'text'],
+            ['label' => 'Benutzer', 'key' => 'user', 'type' => 'text'],
+            ['label' => 'Passwort', 'key' => 'password', 'type' => 'password'],
+        ];
+    }
 }

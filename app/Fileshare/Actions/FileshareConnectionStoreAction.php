@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class FileshareStoreAction
+class FileshareConnectionStoreAction
 {
     use AsAction;
 

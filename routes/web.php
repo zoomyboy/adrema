@@ -19,7 +19,7 @@ use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
 use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
-use App\Fileshare\Actions\FileshareStoreAction;
+use App\Fileshare\Actions\FileshareConnectionStoreAction;
 use App\Form\Actions\ExportAction as ActionsExportAction;
 use App\Form\Actions\FormDestroyAction;
 use App\Form\Actions\FormIndexAction;
@@ -169,5 +169,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::delete('/participant/{participant}', ParticipantDestroyAction::class)->name('participant.destroy');
 
     // ------------------------------------ fileshare -----------------------------------
-    Route::post('/fileshare', FileshareStoreAction::class)->name('fileshare.store');
+    Route::post('/fileshare', FileshareConnectionStoreAction::class)->name('fileshare.store');
 });
