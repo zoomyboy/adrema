@@ -34,7 +34,7 @@ abstract class TestCase extends BaseTestCase
         $this->initInertiaTestcase();
     }
 
-    public function loginNami(int $mglnr = 12345, string $password = 'password', int|Group $groupId = 55): self
+    public function loginNami(int $mglnr = 12345, string $password = 'password', int|Group $groupId = 55): static
     {
         Auth::success($mglnr, $password);
         $group = is_int($groupId)
@@ -57,7 +57,7 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
-    public function login(): self
+    public function login(): static
     {
         $this->be($user = User::factory()->create());
         $this->me = $user;

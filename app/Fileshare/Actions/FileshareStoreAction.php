@@ -11,6 +11,9 @@ class FileshareStoreAction
 {
     use AsAction;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         return [
@@ -20,7 +23,7 @@ class FileshareStoreAction
         ];
     }
 
-    public function asController(ActionRequest $request)
+    public function asController(ActionRequest $request): void
     {
 
         $type = $request->input('type')::from($request->input('config'));

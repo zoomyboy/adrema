@@ -10,8 +10,8 @@ abstract class FileshareTestCase extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $adminUser = 'admin';
-    protected $adminPassword = 'admin';
+    protected string $adminUser = 'admin';
+    protected string $adminPassword = 'admin';
 
     public function setUp(): void
     {

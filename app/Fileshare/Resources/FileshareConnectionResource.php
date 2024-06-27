@@ -2,8 +2,12 @@
 
 namespace App\Fileshare\Resources;
 
+use App\Fileshare\Models\FileshareConnection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin FileshareConnection
+ */
 class FileshareConnectionResource extends JsonResource
 {
     /**
