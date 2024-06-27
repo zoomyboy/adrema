@@ -6,7 +6,7 @@ use App\Fileshare\ConnectionTypes\OwncloudConnection;
 use App\Fileshare\Models\FileshareConnection;
 use Tests\FileshareTestCase;
 
-class ConnectionIndexActionTest extends FileshareTestCase
+class IndexActionTest extends FileshareTestCase
 {
     public function testItListsOwncloudConnectionsThatAreActive(): void
     {

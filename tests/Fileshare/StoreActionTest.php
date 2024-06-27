@@ -6,7 +6,7 @@ use App\Fileshare\ConnectionTypes\OwncloudConnection;
 use App\Fileshare\Models\FileshareConnection;
 use Tests\FileshareTestCase;
 
-class ConnectionStoreActionTest extends FileshareTestCase
+class StoreActionTest extends FileshareTestCase
 {
     public function testItStoresAConnection(): void
     {
