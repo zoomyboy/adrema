@@ -1,0 +1,22 @@
+#!/bin/bash
+
+tmux new-session -d -s test
+tmux send-keys -t test "a serve" Enter
+
+tmux new-window -t test
+tmux send-keys -t test "SS start docker && duu meilisearch" Enter
+
+tmux new-window -t test
+tmux send-keys -t test "SS start docker && duu socketi" Enter
+
+tmux new-window -t test
+tmux send-keys -t test "nrh" Enter
+
+tmux new-window -t test
+tmux send-keys -t test "ggwdk && cd plugins/silva/adrema/assets/vendor/adrema-form && nrd" Enter
+
+tmux new-window -t test
+tmux send-keys -t test "cd tests/Fileshare && docker compose up" Enter
+
+tmux attach-session -t test
+
