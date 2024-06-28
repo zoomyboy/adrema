@@ -1,9 +1,6 @@
 <template>
     <label class="flex flex-col group" :for="id" :class="sizes[size]">
-        <span v-if="label" class="font-semibold leading-none text-gray-400 group-[.field-base]:text-sm group-[.field-sm]:text-xs">
-            {{ label }}
-            <span v-show="required" class="text-red-800">&nbsp;*</span>
-        </span>
+        <f-label :required="required" :value="label"></f-label>
         <div class="relative flex-none flex">
             <input
                 :id="id"
@@ -13,17 +10,14 @@
                 placeholder=""
                 :min="min"
                 :max="max"
-                class="group-[.field-base]:h-[35px] group-[.field-sm]:h-[23px] group-[.field-base]:border-2 group-[.field-sm]:border border-gray-600 border-solid text-gray-300 bg-gray-700 leading-none rounded-lg group-[.field-base]:text-sm group-[.field-sm]:text-xs py-0 group-[.field-base]:px-2 group-[.field-sm]:px-1 w-full"
+                :class="[fieldHeight, fieldAppearance, paddingX]"
+                class="w-full"
                 @input="onInput"
                 @change="onChange"
                 @focus="focus = true"
                 @blur="focus = false"
             />
-            <div v-if="hint" class="h-full items-center flex absolute top-0 right-0">
-                <div v-tooltip="hint">
-                    <ui-sprite src="info-button" class="text-primary-700"></ui-sprite>
-                </div>
-            </div>
+            <f-hint v-if="hint" :value="hint"></f-hint>
         </div>
     </label>
 </template>
@@ -31,6 +25,9 @@
 <script setup>
 import wNumb from 'wnumb';
 import {ref, computed} from 'vue';
+import useFieldSize from '../../composables/useFieldSize';
+
+const {fieldHeight, fieldAppearance, paddingX} = useFieldSize();
 
 const emit = defineEmits(['update:modelValue']);
 
