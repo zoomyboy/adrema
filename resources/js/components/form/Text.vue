@@ -14,11 +14,10 @@
                 :min="min"
                 :max="max"
                 class="group-[.field-base]:h-[35px] group-[.field-sm]:h-[23px] group-[.field-base]:border-2 group-[.field-sm]:border border-gray-600 border-solid text-gray-300 bg-gray-700 leading-none rounded-lg group-[.field-base]:text-sm group-[.field-sm]:text-xs py-0 group-[.field-base]:px-2 group-[.field-sm]:px-1 w-full"
-                @keypress="$emit('keypress', $event)"
                 @input="onInput"
                 @change="onChange"
-                @focus="onFocus"
-                @blur="onBlur"
+                @focus="focus = true"
+                @blur="focus = false"
             />
             <div v-if="hint" class="h-full items-center flex absolute top-0 right-0">
                 <div v-tooltip="hint">
@@ -29,8 +28,11 @@
     </label>
 </template>
 
-<script>
+<script setup>
 import wNumb from 'wnumb';
+import {ref, computed} from 'vue';
+
+const emit = defineEmits(['update:modelValue']);
 
 var numb = {
     natural: wNumb({
@@ -89,117 +91,76 @@ var transformers = {
     },
 };
 
-export default {
-    props: {
-        default: {},
-        mode: {
-            default: function () {
-                return 'none';
-            },
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        inset: {
-            default: function () {
-                return null;
-            },
-        },
-        size: {
-            default: function () {
-                return 'base';
-            },
-        },
-        id: {
-            required: true,
-        },
-        hint: {
-            default: null,
-        },
-        modelValue: {},
-        mask: {
-            default: undefined,
-        },
-        label: {
-            default: false,
-        },
-        type: {
-            required: false,
-            default: function () {
-                return 'text';
-            },
-        },
-        disabled: {
-            default: false,
-            type: Boolean,
-        },
-        min: {
-            default: () => '',
-        },
-        max: {
-            default: () => '',
-        },
-        name: {},
+const props = defineProps({
+    mode: {
+        type: String,
+        default: () => 'none',
     },
-    data: function () {
-        return {
-            focus: false,
-            sizes: {
-                sm: 'field-sm',
-                base: 'field-base',
-                lg: 'field-lg',
-            },
-        };
+    required: {
+        type: Boolean,
+        default: () => false,
     },
-    computed: {
-        transformedValue: {
-            get() {
-                return transformers[this.mode][this.focus ? 'edit' : 'display'].to(this.modelValue);
-            },
-            set(v) {
-                this.$emit('update:modelValue', transformers[this.mode][this.focus ? 'edit' : 'display'].from(v));
-            },
-        },
-        insetClass() {
-            if (this.inset === '') {
-                return 'bg-inset';
-            }
-            if (this.inset === undefined) {
-                return null;
-            }
+    size: {
+        type: String,
+        default: () => 'base',
+    },
+    id: {
+        type: String,
+        required: true,
+    },
+    hint: {
+        type: String,
+        default: () => '',
+    },
+    modelValue: {
+        type: String,
+        default: () => '',
+    },
+    label: {
+        type: String,
+        default: () => '',
+    },
+    type: {
+        type: String,
+        default: () => 'text',
+    },
+    disabled: {
+        default: () => false,
+        type: Boolean,
+    },
+    min: {
+        type: Number,
+        default: () => undefined,
+    },
+    max: {
+        type: Number,
+        default: () => undefined,
+    },
+    name: {
+        required: true,
+        type: String,
+    },
+});
 
-            return `bg-${this.inset}`;
-        },
-    },
-    created() {
-        if (typeof this.modelValue === 'undefined') {
-            this.$emit('update:modelValue', this.default === undefined ? '' : this.default);
-        }
-    },
-    methods: {
-        onFocus() {
-            this.focus = true;
-        },
-        onBlur() {
-            this.focus = false;
-        },
-        onChange(v) {
-            if (this.mode !== 'none') {
-                this.transformedValue = v.target.value;
-            }
-        },
-        onInput(v) {
-            if (this.mode === 'none') {
-                this.transformedValue = v.target.value;
-            }
-        },
-    },
-};
-</script>
+const focus = ref(false);
+const sizes = ref({
+    sm: 'field-sm',
+    base: 'field-base',
+    lg: 'field-lg',
+});
 
-<style scope>
-.bg-inset {
-    background: linear-gradient(to bottom, hsl(247.5, 66.7%, 97.6%) 0%, hsl(247.5, 66.7%, 97.6%) 41%, hsl(0deg 0% 100%) 41%, hsl(180deg 0% 100%) 100%);
+const transformedValue = computed({
+    get: () => transformers[props.mode][focus.value ? 'edit' : 'display'].to(props.modelValue),
+    set: (v) => emit('update:modelValue', transformers[props.mode][focus.value ? 'edit' : 'display'].from(v)),
+});
+function onChange(v) {
+    if (props.mode !== 'none') {
+        transformedValue.value = v.target.value;
+    }
 }
-</style>
+function onInput(v) {
+    if (props.mode === 'none') {
+        transformedValue.value = v.target.value;
+    }
+}
+</script>
