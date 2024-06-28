@@ -79,7 +79,6 @@
                 :model-value="getFilter('statuses')"
                 label="Status"
                 size="sm"
-                name="group_ids"
                 @update:model-value="setFilter('statuses', $event)"
             ></f-multipleselect>
         </page-filter>

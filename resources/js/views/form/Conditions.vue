@@ -39,7 +39,6 @@
                 :id="`value-${index}`"
                 v-model="condition.value"
                 :options="getOptions(condition.field)"
-                :name="`value-${index}`"
                 label="Wert"
             ></f-multipleselect>
             <f-switch

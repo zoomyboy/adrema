@@ -18,7 +18,6 @@
                     <f-multipleselect
                         id="activity_ids"
                         v-model="model.filter.activity_ids"
-                        name="activity_ids"
                         :options="members.meta.filterActivities"
                         label="Tätigkeit"
                         size="sm"
@@ -27,7 +26,6 @@
                     <f-multipleselect
                         id="subactivity_ids"
                         v-model="model.filter.subactivity_ids"
-                        name="subactivity_ids"
                         :options="members.meta.filterSubactivities"
                         label="Unterttätigkeit"
                         size="sm"
@@ -36,7 +34,6 @@
                     <f-multipleselect
                         id="include"
                         v-model="model.filter.include"
-                        name="include"
                         :options="members.meta.members"
                         label="Zusätzliche Mitglieder"
                         size="sm"
@@ -45,21 +42,12 @@
                     <f-multipleselect
                         id="exclude"
                         v-model="model.filter.exclude"
-                        name="exclude"
                         :options="members.meta.members"
                         label="Mitglieder ausschließen"
                         size="sm"
                         @update:model-value="reload(1)"
                     ></f-multipleselect>
-                    <f-multipleselect
-                        id="groupIds"
-                        v-model="model.filter.group_ids"
-                        name="groupIds"
-                        :options="members.meta.groups"
-                        label="Gruppierungen"
-                        size="sm"
-                        @update:model-value="reload(1)"
-                    ></f-multipleselect>
+                    <f-multipleselect id="groupIds" v-model="model.filter.group_ids" :options="members.meta.groups" label="Gruppierungen" size="sm" @update:model-value="reload(1)"></f-multipleselect>
                 </div>
             </ui-box>
             <ui-box v-if="members !== null" heading="Mitglieder">

@@ -24,30 +24,9 @@
                 <span class="hidden xl:inline">Hinzufügen</span>
             </button>
             <div v-for="(filter, index) in membershipFilters" :key="index" class="flex space-x-2 mt-2">
-                <f-multipleselect
-                    :id="`group_ids-multiple-${index}`"
-                    v-model="filter.group_ids"
-                    :options="meta.groups"
-                    label="Gruppierung"
-                    size="sm"
-                    :name="`group_ids-multiple-${index}`"
-                ></f-multipleselect>
-                <f-multipleselect
-                    :id="`activity_ids-multiple-${index}`"
-                    v-model="filter.activity_ids"
-                    :options="meta.filterActivities"
-                    label="Tätigkeiten"
-                    size="sm"
-                    :name="`activity_ids-multiple-${index}`"
-                ></f-multipleselect>
-                <f-multipleselect
-                    :id="`subactivity_ids-multiple-${index}`"
-                    v-model="filter.subactivity_ids"
-                    :options="meta.filterSubactivities"
-                    label="Untertätigkeiten"
-                    size="sm"
-                    :name="`subactivity_ids-multiple-${index}`"
-                ></f-multipleselect>
+                <f-multipleselect :id="`group_ids-multiple-${index}`" v-model="filter.group_ids" :options="meta.groups" label="Gruppierung" size="sm"></f-multipleselect>
+                <f-multipleselect :id="`activity_ids-multiple-${index}`" v-model="filter.activity_ids" :options="meta.filterActivities" label="Tätigkeiten" size="sm"></f-multipleselect>
+                <f-multipleselect :id="`subactivity_ids-multiple-${index}`" v-model="filter.subactivity_ids" :options="meta.filterSubactivities" label="Untertätigkeiten" size="sm"></f-multipleselect>
             </div>
             <button
                 class="btn btn-primary label mt-3"
@@ -68,7 +47,6 @@
                 :model-value="getFilter('group_ids')"
                 label="Gruppierungen"
                 size="sm"
-                name="group_ids"
                 @update:model-value="setFilter('group_ids', $event)"
             ></f-multipleselect>
             <f-select

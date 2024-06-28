@@ -11,7 +11,7 @@
         </ui-popup>
         <page-filter breakpoint="lg">
             <f-switch v-if="meta.has_nami_field" id="group_participants" v-model="groupParticipants" label="Gruppieren" size="sm" name="group_participants"></f-switch>
-            <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm" name="active_columns"></f-multipleselect>
+            <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm"></f-multipleselect>
 
             <template v-for="(filter, index) in meta.filters">
                 <f-select

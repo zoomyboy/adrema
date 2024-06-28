@@ -13,6 +13,7 @@ export default function () {
 
     const paddingX = 'group-[.field-base]:px-2 group-[.field-sm]:px-1';
     const paddingY = 'group-[.field-base]:py-2 group-[.field-sm]:py-1';
+    const selectAppearance = 'py-0 pr-8 group-[.field-base]:pl-2 group-[.field-sm]:pl-1 w-full';
 
     return {
         fieldHeight,
@@ -20,5 +21,6 @@ export default function () {
         paddingX,
         paddingY,
         sizeClass,
+        selectAppearance,
     };
 }

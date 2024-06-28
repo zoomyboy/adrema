@@ -1,111 +1,66 @@
 <template>
-    <label class="field-wrap" :for="id" :class="`field-wrap-${size}`">
-        <span v-if="label" class="field-label">
-            {{ label }}
-            <span v-show="required" class="text-red-800">&nbsp;*</span>
-        </span>
-        <div class="relative real-field-wrap" :class="`size-${size}`">
-            <div class="flex items-center border-gray-600 text-gray-300 leading-none border-solid bg-gray-700 w-full appearance-none outline-none rounded-lg size-sm text-xs px-1 border pr-6"
-                @click="visible = !visible" v-text="`${modelValue.length} Einträge ausgewählt`"></div>
-            <div v-show="visible"
-                class="absolute w-[max-content] z-30 max-h-[31rem] overflow-auto shadow-lg bg-gray-600 border border-gray-500 rounded-lg p-2 top-7">
+    <label class="flex flex-col group" :for="id" :class="sizeClass(size)">
+        <f-label v-if="label" :required="false" :value="label"></f-label>
+        <div class="relative flex-none flex">
+            <div
+                :class="[fieldHeight, fieldAppearance, selectAppearance]"
+                class="form-select flex items-center w-full"
+                @click="visible = !visible"
+                v-text="`${modelValue.length} Einträge ausgewählt`"
+            ></div>
+            <div v-show="visible" class="absolute w-[max-content] z-30 max-h-[25rem] overflow-auto shadow-lg bg-gray-600 border border-gray-500 rounded-lg p-2 top-7">
                 <div v-for="(option, index) in parsedOptions" :key="index" class="flex items-center space-x-2">
-                    <f-switch :id="`${id}-${index}`" size="sm" :model-value="modelValue.includes(option.id)"
-                        :value="option.id" @update:modelValue="trigger(option, $event)"></f-switch>
+                    <f-switch :id="`${id}-${index}`" size="sm" :model-value="modelValue.includes(option.id)" :value="option.id" @update:modelValue="trigger(option, $event)"></f-switch>
                     <div class="text-sm text-gray-200" v-text="option.name"></div>
-                </div>
-            </div>
-
-            <div class="info-wrap">
-                <div v-if="hint" v-tooltip="hint">
-                    <ui-sprite src="info-button" class="info-button"></ui-sprite>
-                </div>
-                <div v-if="size != 'xs'" class="px-1 relative">
-                    <ui-sprite class="chevron w-3 h-3 fill-current" src="chevron"></ui-sprite>
-                </div>
-                <div v-if="size == 'xs'" class="px-1 relative">
-                    <ui-sprite class="chevron w-2 h-2 fill-current" src="chevron"></ui-sprite>
                 </div>
             </div>
         </div>
     </label>
 </template>
 
-<script>
+<script setup>
 import map from 'lodash/map';
+import {ref, computed} from 'vue';
+import useFieldSize from '../../composables/useFieldSize';
 
-export default {
-    props: {
-        disabled: {
-            type: Boolean,
-            default: function () {
-                return false;
-            },
-        },
-        id: {},
-        inset: {
-            type: Boolean,
-            default: false,
-        },
-        size: {
-            default: function () {
-                return 'base';
-            },
-        },
-        emptyLabel: {
-            default: false,
-            type: Boolean,
-        },
-        modelValue: {
-            default: undefined,
-        },
-        label: {
-            default: null,
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        name: {
-            required: true,
-        },
-        hint: {},
-        options: {
-            default: function () {
-                return [];
-            },
-        },
-    },
-    emits: ['update:modelValue'],
-    data: function () {
-        return {
-            visible: false,
-        };
-    },
-    computed: {
-        parsedOptions() {
-            return Array.isArray(this.options)
-                ? this.options
-                : map(this.options, (value, key) => {
-                    return { name: value, id: key };
-                });
-        },
-    },
-    methods: {
-        trigger(option, v) {
-            var value = [...this.modelValue];
+const {fieldHeight, fieldAppearance, paddingX, sizeClass, selectAppearance} = useFieldSize();
 
-            this.$emit('update:modelValue', value.includes(option.id) ? value.filter((cv) => cv !== option.id) : [...value, option.id]);
-        },
-        clear() {
-            this.$emit('update:modelValue', null);
-        },
-    },
-};
-</script>
+const emit = defineEmits(['update:modelValue']);
 
-<style scope>
-.inset-bg {
-    background: linear-gradient(to bottom, hsl(247.5, 66.7%, 97.6%) 0%, hsl(247.5, 66.7%, 97.6%) 41%, hsl(0deg 0% 100%) 41%, hsl(180deg 0% 100%) 100%);
+const props = defineProps({
+    id: {
+        type: String,
+        required: true,
+    },
+    size: {
+        type: String,
+        default: () => 'base',
+    },
+    modelValue: {
+        validator: (v) => Array.isArray(v),
+        required: true,
+    },
+    label: {
+        type: String,
+        default: () => '',
+    },
+    options: {
+        validator: (v) => Array.isArray(v),
+        default: () => [],
+    },
+});
+
+const visible = ref(false);
+const parsedOptions = computed(() =>
+    Array.isArray(props.options)
+        ? props.options
+        : map(props.options, (value, key) => {
+              return {name: value, id: key};
+          })
+);
+function trigger(option, v) {
+    var value = JSON.parse(JSON.stringify(props.modelValue));
+
+    emit('update:modelValue', value.includes(option.id) ? value.filter((cv) => cv !== option.id) : [...value, option.id]);
 }
-</style>
+</script>
