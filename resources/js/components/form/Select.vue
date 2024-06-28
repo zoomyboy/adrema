@@ -1,24 +1,23 @@
 <template>
-    <label class="field-wrap" :for="id" :class="`field-wrap-${size}`">
-        <span v-if="label" class="field-label">
+    <label class="flex flex-col group" :for="id" :class="sizes[size]">
+        <span v-if="label" class="font-semibold leading-none text-gray-400 group-[.field-base]:text-sm group-[.field-sm]:text-xs">
             {{ label }}
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
-        <div class="real-field-wrap" :class="`size-${size}`">
-            <select v-model="inner" :disabled="disabled" :name="name">
+        <div class="relative flex-none flex">
+            <select
+                v-model="inner"
+                :disabled="disabled"
+                :name="name"
+                class="group-[.field-base]:h-[35px] group-[.field-sm]:h-[23px] group-[.field-base]:border-2 group-[.field-sm]:border border-gray-600 border-solid text-gray-300 bg-gray-700 leading-none rounded-lg group-[.field-base]:text-sm group-[.field-sm]:text-xs py-0 pr-8 group-[.field-base]:pl-2 group-[.field-sm]:pl-1 w-full"
+            >
                 <option v-if="placeholder" :value="def">{{ placeholder }}</option>
 
                 <option v-for="option in parsedOptions" :key="option.id" :value="option.id">{{ option.name }}</option>
             </select>
-            <div class="info-wrap">
+            <div class="h-full items-center flex absolute top-0 right-0">
                 <div v-if="hint" v-tooltip="hint">
                     <ui-sprite src="info-button" class="info-button"></ui-sprite>
-                </div>
-                <div v-if="size != 'xs'" class="px-1 relative">
-                    <ui-sprite class="chevron w-3 h-3 fill-current" src="chevron"></ui-sprite>
-                </div>
-                <div v-if="size == 'xs'" class="px-1 relative">
-                    <ui-sprite class="chevron w-2 h-2 fill-current" src="chevron"></ui-sprite>
                 </div>
             </div>
         </div>
@@ -28,6 +27,12 @@
 <script setup>
 import {computed, ref} from 'vue';
 import map from 'lodash/map';
+
+const sizes = ref({
+    sm: 'field-sm',
+    base: 'field-base',
+    lg: 'field-lg',
+});
 
 const emit = defineEmits(['update:modelValue']);
 

@@ -1,16 +1,28 @@
 <template>
-    <label class="field-wrap field-wrap-sm" :for="id" :class="sizes[size].wrap">
-        <span v-if="label" class="field-label">
+    <label class="flex flex-col group" :for="id" :class="sizes[size]">
+        <span v-if="label" class="font-semibold leading-none text-gray-400 group-[.field-base]:text-sm group-[.field-sm]:text-xs">
             {{ label }}
             <span v-show="required" class="text-red-800">&nbsp;*</span>
         </span>
-        <div class="real-field-wrap size-sm" :class="sizes[size].field">
-            <input :name="name" :type="type" :value="transformedValue" :disabled="disabled" :placeholder="placeholder"
-                :min="min" :max="max" @keypress="$emit('keypress', $event)" @input="onInput" @change="onChange"
-                @focus="onFocus" @blur="onBlur" />
-            <div v-if="hint" class="info-wrap">
+        <div class="relative flex-none flex">
+            <input
+                :name="name"
+                :type="type"
+                :value="transformedValue"
+                :disabled="disabled"
+                placeholder=""
+                :min="min"
+                :max="max"
+                class="group-[.field-base]:h-[35px] group-[.field-sm]:h-[23px] group-[.field-base]:border-2 group-[.field-sm]:border border-gray-600 border-solid text-gray-300 bg-gray-700 leading-none rounded-lg group-[.field-base]:text-sm group-[.field-sm]:text-xs py-0 group-[.field-base]:px-2 group-[.field-sm]:px-1 w-full"
+                @keypress="$emit('keypress', $event)"
+                @input="onInput"
+                @change="onChange"
+                @focus="onFocus"
+                @blur="onBlur"
+            />
+            <div v-if="hint" class="h-full items-center flex absolute top-0 right-0">
                 <div v-tooltip="hint">
-                    <ui-sprite src="info-button" class="info-button"></ui-sprite>
+                    <ui-sprite src="info-button" class="text-primary-700"></ui-sprite>
                 </div>
             </div>
         </div>
@@ -79,11 +91,6 @@ var transformers = {
 
 export default {
     props: {
-        placeholder: {
-            default: function () {
-                return '';
-            },
-        },
         default: {},
         mode: {
             default: function () {
@@ -139,18 +146,9 @@ export default {
         return {
             focus: false,
             sizes: {
-                sm: {
-                    wrap: 'field-wrap-sm',
-                    field: 'size-sm',
-                },
-                base: {
-                    wrap: 'field-wrap-base',
-                    field: 'size-base',
-                },
-                lg: {
-                    wrap: 'field-wrap-lg',
-                    field: 'size-lg',
-                },
+                sm: 'field-sm',
+                base: 'field-base',
+                lg: 'field-lg',
             },
         };
     },
