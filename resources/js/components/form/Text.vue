@@ -113,7 +113,7 @@ const props = defineProps({
         default: () => '',
     },
     modelValue: {
-        type: String,
+        validator: (v) => typeof v === 'string' || v === null,
         required: true,
     },
     label: {
