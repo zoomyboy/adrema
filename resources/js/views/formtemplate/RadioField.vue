@@ -6,7 +6,6 @@
                 :id="`options-${index}`"
                 size="sm"
                 class="grow"
-                :name="`options-${index}`"
                 :model-value="option"
                 @update:modelValue="$emit('update:modelValue', {...props.modelValue, options: setOption(props.modelValue.options, index, $event)})"
             ></f-text>

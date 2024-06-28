@@ -60,7 +60,7 @@
             </button>
         </ui-popup>
         <page-filter breakpoint="xl">
-            <f-text id="search" :model-value="getFilter('search')" name="search" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
+            <f-text id="search" :model-value="getFilter('search')" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
             <f-switch v-show="hasModule('bill')" id="ausstand" :model-value="getFilter('ausstand')" label="Nur Ausstände" size="sm" @update:model-value="setFilter('ausstand', $event)"></f-switch>
             <f-multipleselect
                 id="group_ids"

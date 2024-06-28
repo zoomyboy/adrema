@@ -8,8 +8,8 @@
                 @close="singleSection = null"
                 @submit="storeSection"
             >
-                <f-text :id="`sectionform-name`" v-model="singleSection.model.name" label="Name" :name="`sectionform-name`"></f-text>
-                <f-textarea :id="`sectionform-intro`" v-model="singleSection.model.intro" label="Einleitung" :name="`sectionform-intro`"></f-textarea>
+                <f-text id="sectionform-name" v-model="singleSection.model.name" label="Name"></f-text>
+                <f-textarea id="sectionform-intro" v-model="singleSection.model.intro" label="Einleitung"></f-textarea>
             </asideform>
             <asideform v-if="singleSection !== null && singleSection.mode === 'reorder'" heading="Felder ordnen" @close="singleSection = null" @submit="storeSection">
                 <draggable v-model="singleSection.model.fields" item-key="key" :component-data="{class: 'mt-3 grid gap-3'}">
@@ -36,13 +36,13 @@
                 @close="singleField = null"
                 @submit="storeField"
             >
-                <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm" name="fieldname"></f-text>
-                <f-textarea id="intro" v-model="singleField.model.intro" label="Einleitung" size="sm" name="intro"></f-textarea>
+                <f-text id="fieldname" v-model="singleField.model.name" label="Name" size="sm"></f-text>
+                <f-textarea id="intro" v-model="singleField.model.intro" label="Einleitung" size="sm"></f-textarea>
                 <column-selector v-model="singleField.model.columns"></column-selector>
                 <component :is="fields[singleField.model.type]" v-model="singleField.model" :payload="inner.sections" :meta="props.meta"></component>
                 <f-select id="nami_type" v-model="singleField.model.nami_type" :options="meta.namiTypes" label="NaMi-Feld" size="sm" name="nami_type"></f-select>
                 <f-select id="special_type" v-model="singleField.model.special_type" :options="meta.specialTypes" label="Bedeutung" size="sm" name="special_type"></f-select>
-                <f-textarea id="hint" v-model="singleField.model.hint" label="Hinweis" size="sm" name="hint"></f-textarea>
+                <f-textarea id="hint" v-model="singleField.model.hint" label="Hinweis" size="sm"></f-textarea>
                 <f-switch
                     v-show="singleField.model.nami_type === null"
                     id="for_members"

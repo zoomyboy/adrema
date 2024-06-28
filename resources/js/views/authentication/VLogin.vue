@@ -5,12 +5,11 @@
         </template>
         <form @submit.prevent="submit">
             <div class="grid gap-5">
-                <f-text id="email" v-model="values.email" name="email" label="E-Mail-Adresse"></f-text>
-                <f-text id="password" v-model="values.password" name="password" type="password" label="Passwort"></f-text>
+                <f-text id="email" v-model="values.email" label="E-Mail-Adresse"></f-text>
+                <f-text id="password" v-model="values.password" type="password" label="Passwort"></f-text>
                 <button type="submit" class="btn btn-primary">Login</button>
                 <div class="flex justify-center">
-                    <button type="button" class="text-gray-500 text-sm hover:text-gray-300"
-                        @click.prevent="$inertia.visit('/password/reset')">Passwort vergessen?</button>
+                    <button type="button" class="text-gray-500 text-sm hover:text-gray-300" @click.prevent="$inertia.visit('/password/reset')">Passwort vergessen?</button>
                 </div>
             </div>
         </form>

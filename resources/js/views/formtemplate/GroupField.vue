@@ -23,7 +23,6 @@
         v-model="modelValue.empty_option_value"
         label="Wert der leeren Option"
         size="sm"
-        name="empty_option_value"
         @update:modelValue="$emit('update:modelValue', {...modelValue, empty_option_value: $event})"
     ></f-text>
     <f-select

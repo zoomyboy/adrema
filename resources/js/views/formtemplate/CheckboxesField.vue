@@ -6,7 +6,6 @@
                 :id="`options-${index}`"
                 size="sm"
                 class="grow"
-                :name="`options-${index}`"
                 :model-value="option"
                 @update:modelValue="$emit('update:modelValue', {...props.modelValue, options: setOption(props.modelValue.options, index, $event)})"
             ></f-text>
@@ -18,15 +17,7 @@
             ></ui-action-button>
         </div>
         <ui-icon-button icon="plus" @click="$emit('update:modelValue', {...modelValue, options: addOption(modelValue.options)})">Option einfügen</ui-icon-button>
-        <f-text
-            id="min"
-            type="number"
-            size="sm"
-            name="min"
-            label="Minimale Anzahl Elemente"
-            :model-value="modelValue.min"
-            @update:model-value="$emit('update:modelValue', {...modelValue, min: $event})"
-        ></f-text>
+        <f-text id="min" type="number" size="sm" label="Minimale Anzahl Elemente" :model-value="modelValue.min" @update:model-value="$emit('update:modelValue', {...modelValue, min: $event})"></f-text>
         <f-text
             id="max"
             type="number"

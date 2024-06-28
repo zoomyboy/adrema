@@ -9,7 +9,7 @@
         <ui-popup v-if="massstore !== null" heading="Massenrechnung anlegen" @close="massstore = null">
             <form @submit.prevent="sendMassstore">
                 <section class="grid grid-cols-2 gap-3 mt-6">
-                    <f-text id="year" v-model="massstore.year" name="year" label="Jahr" required></f-text>
+                    <f-text id="year" v-model="massstore.year" label="Jahr" required></f-text>
                 </section>
                 <section class="flex mt-4 space-x-2">
                     <ui-button type="submit" class="btn-danger">Speichern</ui-button>
@@ -39,29 +39,29 @@
                 <ui-box heading="Für Mitglied anlegen" container-class="flex space-x-3" class="col-span-full">
                     <f-select id="forMemberMember" v-model="forMember.member_id" name="forMemberMember" :options="meta.members" label="Mitglied"></f-select>
                     <f-select id="forMemberSubscription" v-model="forMember.subscription_id" name="forMemberSubscription" :options="meta.subscriptions" label="Beitrag"></f-select>
-                    <f-text id="forMemberYear" v-model="forMember.year" name="forMemberYear" label="Jahr"></f-text>
+                    <f-text id="forMemberYear" v-model="forMember.year" label="Jahr"></f-text>
                     <ui-icon-button class="btn-primary self-end mb-2" icon="save" @click="saveForMember">Speichern</ui-icon-button>
                 </ui-box>
                 <ui-box heading=" Empfänger" container-class="grid grid-cols-2 gap-3 col-span-full">
-                    <f-text id="to_name" v-model="single.to.name" name="to_name" label="Name" class="col-span-full" required></f-text>
-                    <f-text id="to_address" v-model="single.to.address" name="to_address" label="Adresse" class="col-span-full" required></f-text>
-                    <f-text id="to_zip" v-model="single.to.zip" name="to_zip" label="PLZ" required></f-text>
-                    <f-text id="to_location" v-model="single.to.location" name="to_location" label="Ort" required></f-text>
-                    <f-text id="mail_email" v-model="single.mail_email" name="mail_email" label="E-Mail-Adresse" class="col-span-full"></f-text>
+                    <f-text id="to_name" v-model="single.to.name" label="Name" class="col-span-full" required></f-text>
+                    <f-text id="to_address" v-model="single.to.address" label="Adresse" class="col-span-full" required></f-text>
+                    <f-text id="to_zip" v-model="single.to.zip" label="PLZ" required></f-text>
+                    <f-text id="to_location" v-model="single.to.location" label="Ort" required></f-text>
+                    <f-text id="mail_email" v-model="single.mail_email" label="E-Mail-Adresse" class="col-span-full"></f-text>
                 </ui-box>
                 <ui-box heading="Status" container-class="grid gap-3">
                     <f-select id="status" v-model="single.status" :options="meta.statuses" name="status" label="Status" required></f-select>
                     <f-select id="via" v-model="single.via" :options="meta.vias" name="via" label="Rechnungsweg" required></f-select>
-                    <f-text id="greeting" v-model="single.greeting" name="greeting" label="Anrede" required></f-text>
-                    <f-text id="usage" v-model="single.usage" name="usage" label="Verwendungszweck" required></f-text>
+                    <f-text id="greeting" v-model="single.greeting" label="Anrede" required></f-text>
+                    <f-text id="usage" v-model="single.usage" label="Verwendungszweck" required></f-text>
                 </ui-box>
                 <ui-box heading="Positionen" class="col-span-full" container-class="grid gap-3">
                     <template #in-title>
                         <ui-icon-button class="ml-3 btn-primary" icon="plus" @click="single.positions.push({...meta.default_position})">Neu</ui-icon-button>
                     </template>
                     <div v-for="(position, index) in single.positions" :key="index" class="flex items-end space-x-3">
-                        <f-text :id="`position-description-${index}`" v-model="position.description" class="grow" :name="`position-description-${index}`" label="Beschreibung" required></f-text>
-                        <f-text :id="`position-price-${index}`" v-model="position.price" mode="area" :name="`position-price-${index}`" label="Preis" required></f-text>
+                        <f-text :id="`position-description-${index}`" v-model="position.description" class="grow" label="Beschreibung" required></f-text>
+                        <f-text :id="`position-price-${index}`" v-model="position.price" mode="area" label="Preis" required></f-text>
                         <f-select :id="`position-member-${index}`" v-model="position.member_id" :options="meta.members" :name="`position-member-${index}`" label="Mitglied" required></f-select>
                         <button type="button" class="btn btn-danger btn-sm h-[35px]" icon="trash" @click="single.positions.splice(index, 1)"><ui-sprite src="trash"></ui-sprite></button>
                     </div>

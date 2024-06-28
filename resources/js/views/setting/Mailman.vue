@@ -19,13 +19,13 @@
                     <ui-sprite :src="stateDisplay.icon" :class="stateDisplay.text" class="w-5 h-5"></ui-sprite>
                     <span class="ml-3" :class="stateDisplay.text" v-text="stateDisplay.label"></span>
                 </div>
-                <f-text label="URL" hint="URL der Mailman Api" name="base_url" id="base_url" v-model="inner.base_url"></f-text>
-                <f-text label="Benutzername" name="username" id="username" v-model="inner.username"></f-text>
-                <f-text type="password" label="Passwort" name="password" id="password" v-model="inner.password"></f-text>
-                <f-select label="Liste für alle Mitglieder" name="all_list" id="all_list" v-model="inner.all_list" :options="lists"></f-select>
-                <f-select label="Liste für Eltern" name="all_parents_list" id="all_parents_list" v-model="inner.all_parents_list" :options="lists"></f-select>
-                <f-select label="Liste für aktive Leiter" name="active_leaders_list" id="active_leaders_list" v-model="inner.active_leaders_list" :options="lists"></f-select>
-                <f-select label="Liste für passive Leiter" name="passive_leaders_list" id="passive_leaders_list" v-model="inner.passive_leaders_list" :options="lists"></f-select>
+                <f-text id="base_url" v-model="inner.base_url" label="URL" hint="URL der Mailman Api"></f-text>
+                <f-text id="username" v-model="inner.username" label="Benutzername"></f-text>
+                <f-text id="password" v-model="inner.password" type="password" label="Passwort"></f-text>
+                <f-select id="all_list" v-model="inner.all_list" label="Liste für alle Mitglieder" name="all_list" :options="lists"></f-select>
+                <f-select id="all_parents_list" v-model="inner.all_parents_list" label="Liste für Eltern" name="all_parents_list" :options="lists"></f-select>
+                <f-select id="active_leaders_list" v-model="inner.active_leaders_list" label="Liste für aktive Leiter" name="active_leaders_list" :options="lists"></f-select>
+                <f-select id="passive_leaders_list" v-model="inner.passive_leaders_list" label="Liste für passive Leiter" name="passive_leaders_list" :options="lists"></f-select>
                 <div></div>
             </form>
         </setting-layout>
@@ -36,15 +36,18 @@
 import SettingLayout from './Layout.vue';
 
 export default {
-    data: function () {
-        return {
-            inner: {...this.data},
-        };
+    components: {
+        SettingLayout,
     },
     props: {
         data: {},
         state: {},
         lists: {},
+    },
+    data: function () {
+        return {
+            inner: {...this.data},
+        };
     },
     computed: {
         stateDisplay() {
@@ -74,14 +77,11 @@ export default {
         submit() {
             this.$inertia.post('/setting/mailman', this.inner, {
                 onSuccess: (page) => {
-                    this.$success('Einstellungen gespeichert.')
+                    this.$success('Einstellungen gespeichert.');
                     this.inner = page.props.data;
                 },
             });
         },
-    },
-    components: {
-        SettingLayout,
     },
 };
 </script>

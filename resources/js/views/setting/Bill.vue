@@ -5,18 +5,18 @@
         </template>
         <setting-layout>
             <form id="billsettingform" class="grow p-6 grid grid-cols-2 gap-3 items-start content-start" @submit.prevent="submit">
-                <f-text label="Absender" hint="Absender-Name in Kurzform, i.d.R. der kurze Stammesname" name="from" id="from" v-model="inner.from"></f-text>
-                <f-text label="Absender (lang)" v-model="inner.from_long" name="from_long" id="from_long" hint="Absender-Name in Langform, i.d.R. der Stammesname"></f-text>
+                <f-text id="from" v-model="inner.from" label="Absender" hint="Absender-Name in Kurzform, i.d.R. der kurze Stammesname"></f-text>
+                <f-text id="from_long" v-model="inner.from_long" label="Absender (lang)" hint="Absender-Name in Langform, i.d.R. der Stammesname"></f-text>
                 <h2 class="text-lg font-semibold text-gray-300 col-span-2 mt-5">Kontaktdaten</h2>
                 <div class="col-span-2 text-gray-300 text-sm">Diese Kontaktdaten stehen im Absender-Bereich auf der Rechnung.</div>
-                <f-text label="Straße" v-model="inner.address" name="address" id="address"></f-text>
-                <f-text label="PLZ" v-model="inner.zip" name="zip" id="zip"></f-text>
-                <f-text label="Ort" v-model="inner.place" name="place" id="place"></f-text>
-                <f-text label="E-Mail-Adresse" v-model="inner.email" name="email" id="email"></f-text>
-                <f-text label="Telefonnummer" v-model="inner.mobile" name="mobile" id="mobile"></f-text>
-                <f-text label="Webseite" v-model="inner.website" name="website" id="website"></f-text>
-                <f-text label="IBAN" v-model="inner.iban" name="iban" id="iban"></f-text>
-                <f-text label="BIC" v-model="inner.bic" name="bic" id="bic"></f-text>
+                <f-text id="address" v-model="inner.address" label="Straße"></f-text>
+                <f-text id="zip" v-model="inner.zip" label="PLZ"></f-text>
+                <f-text id="place" v-model="inner.place" label="Ort"></f-text>
+                <f-text id="email" v-model="inner.email" label="E-Mail-Adresse"></f-text>
+                <f-text id="mobile" v-model="inner.mobile" label="Telefonnummer"></f-text>
+                <f-text id="website" v-model="inner.website" label="Webseite"></f-text>
+                <f-text id="iban" v-model="inner.iban" label="IBAN"></f-text>
+                <f-text id="bic" v-model="inner.bic" label="BIC"></f-text>
             </form>
         </setting-layout>
     </page-layout>
@@ -26,23 +26,23 @@
 import SettingLayout from './Layout.vue';
 
 export default {
+    components: {
+        SettingLayout,
+    },
+    props: {
+        data: {},
+    },
     data: function () {
         return {
             inner: {...this.data},
         };
     },
-    props: {
-        data: {},
-    },
     methods: {
         submit() {
             this.$inertia.post('/setting/bill', this.inner, {
-                onSuccess: () => this.$success('Einstellungen gespeichert.')
+                onSuccess: () => this.$success('Einstellungen gespeichert.'),
             });
         },
-    },
-    components: {
-        SettingLayout,
     },
 };
 </script>

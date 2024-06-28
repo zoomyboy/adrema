@@ -5,15 +5,15 @@
             <div class="prose prose-invert">
                 <p>Bitte gib deine NaMi-Zugangsdaten ein,<br />um eine erste Synchronisation durchzuführen.</p>
             </div>
-            <form @submit.prevent="check" class="grid gap-3 mt-5">
-                <f-text v-model="values.mglnr" label="Mitgliedsnummer" name="mglnr" id="mglnr" type="tel" required></f-text>
-                <f-text v-model="values.password" type="password" label="Passwort" name="password" id="password" required></f-text>
+            <form class="grid gap-3 mt-5" @submit.prevent="check">
+                <f-text id="mglnr" v-model="values.mglnr" label="Mitgliedsnummer" type="tel" required></f-text>
+                <f-text id="password" v-model="values.password" type="password" label="Passwort" required></f-text>
                 <ui-button class="mt-6" :is-loading="loading" type="submit">Weiter</ui-button>
             </form>
         </div>
         <div v-if="step === 1" class="grid grid-cols-5 w-full gap-3">
             <page-full-heading class="col-span-full !mb-0">Suchkriterien festlegen</page-full-heading>
-            <form @submit.prevent="storeSearch" class="border-2 border-primary-800 border-solid p-3 rounded-lg grid gap-3 col-span-2">
+            <form class="border-2 border-primary-800 border-solid p-3 rounded-lg grid gap-3 col-span-2" @submit.prevent="storeSearch">
                 <div class="prose prose-invert max-w-none col-span-full">
                     <p>
                         Lege hier die Suchkriterien für den Abruf der Mitglieder-Daten fest. Mit diesen Suchkriterien wird im Anschluss eine Mitgliedersuche in NaMi durchgeführt. Alle Mitglieder, die
@@ -21,71 +21,71 @@
                     </p>
                 </div>
                 <f-select
+                    id="gruppierung1Id"
                     v-model="values.params.gruppierung1Id"
                     label="Diözesan-Gruppierung"
                     name="gruppierung1Id"
-                    id="gruppierung1Id"
                     size="sm"
                     :options="searchLayerOptions[0]"
-                    @update:modelValue="loadSearchLayer(1, $event, search)"
                     hint="Gruppierungs-Nummer einer Diözese, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deiner Diözese. Entspricht dem Feld '1. Ebene' in der NaMi Suche."
+                    @update:modelValue="loadSearchLayer(1, $event, search)"
                 ></f-select>
                 <f-select
+                    id="gruppierung2Id"
                     v-model="values.params.gruppierung2Id"
                     label="Bezirks-Gruppierung"
                     name="gruppierung2Id"
-                    id="gruppierung2Id"
                     hint="Gruppierungs-Nummer eines Bezirks, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deines Bezirks. Entspricht dem Feld '2. Ebene' in der NaMi Suche. Fülle dieses Feld aus, um Mitglieder auf einen bestimmten Bezirk zu begrenzen."
                     :disabled="!values.params.gruppierung1Id"
-                    @update:modelValue="loadSearchLayer(2, $event, search)"
                     size="sm"
                     :options="searchLayerOptions[1]"
+                    @update:modelValue="loadSearchLayer(2, $event, search)"
                 ></f-select>
                 <f-select
+                    id="gruppierung3Id"
                     v-model="values.params.gruppierung3Id"
                     label="Stammes-Gruppierung"
                     name="gruppierung3Id"
-                    id="gruppierung3Id"
                     size="sm"
-                    @update:modelValue="search"
                     hint="Gruppierungs-Nummer deines Stammes, auf die die Mitglieder passen sollen. I.d.R. ist das die Gruppierungsnummer deines Stammes. Entspricht dem Feld '3. Ebene' in der NaMi Suche. Fülle dieses Feld aus, um Mitglieder auf einen bestimmten Stamm zu beschränken."
                     :disabled="!values.params.gruppierung1Id || !values.params.gruppierung2Id"
                     :options="searchLayerOptions[2]"
+                    @update:modelValue="search"
                 ></f-select>
                 <f-select
+                    id="mglStatusId"
                     v-model="values.params.mglStatusId"
                     label="Mitglieds-Status"
                     name="mglStatusId"
-                    id="mglStatusId"
                     size="sm"
-                    @update:modelValue="search"
                     :options="states"
                     hint="Wähle hier etwas aus, um nur aktive oder nur inaktive Mitglieder zu synchronisieren. Wir empfehlen dir, dies so zu belassen und Mitglieder ohne 'Datenweiterverwendung' gänzlich zu löschen, um Karteileichen zu entfernen."
+                    @update:modelValue="search"
                 ></f-select>
                 <f-switch
+                    id="inGrp"
                     v-model="values.params.inGrp"
                     label="In Gruppierung suchen"
                     name="inGrp"
-                    id="inGrp"
-                    @update:modelValue="search"
                     hint="Mitglieder finden, die direktes Mitglied in der kleinsten befüllten Gruppierung sind."
                     size="sm"
+                    @update:modelValue="search"
                 ></f-switch>
                 <f-switch
+                    id="unterhalbGrp"
                     v-model="values.params.unterhalbGrp"
                     label="Unterhalb Gruppierung suchen"
                     name="unterhalbGrp"
-                    id="unterhalbGrp"
-                    @update:modelValue="search"
                     hint="Mitglieder finden, die direktes Mitglied in einer Untergruppe der kleinsten befüllten Gruppierung sind."
                     size="sm"
+                    @update:modelValue="search"
                 ></f-switch>
                 <div class="col-span-full flex justify-center">
                     <ui-button :is-loading="loading" class="!px-10" type="submit">Weiter</ui-button>
                 </div>
             </form>
 
-            <section class="col-span-3 text-sm col-span-3" v-if="preview !== null && preview.data.length">
+            <section v-if="preview !== null && preview.data.length" class="col-span-3 text-sm col-span-3">
                 <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm hidden md:table">
                     <thead>
                         <th>GruppierungsNr</th>
@@ -108,7 +108,7 @@
                     <ui-pagination class="mt-4" :value="preview" @reload="reloadPage"></ui-pagination>
                 </div>
             </section>
-            <section class="col-span-3 items-center justify-center flex text-xl text-gray-200 border-2 border-primary-800 border-solid p-3 rounded-lg mt-4" v-else>Keine Mitglieder gefunden</section>
+            <section v-else class="col-span-3 items-center justify-center flex text-xl text-gray-200 border-2 border-primary-800 border-solid p-3 rounded-lg mt-4">Keine Mitglieder gefunden</section>
         </div>
         <div v-if="step === 2">
             <page-full-heading>Standard-Gruppierung</page-full-heading>
@@ -117,8 +117,8 @@
                 <p>Dieser Gruppierung werden Mitglieder automatisch zugeordnet,<br />falls nichts anderes angegeben wurde.</p>
                 <p>I.d.R. ist das z.B. die Nummer deines Stammes, wenn du als StaVo mit Adrema Daten verwaltest.</p>
             </div>
-            <form @submit.prevent="submit" class="grid grid-cols-2 gap-3 mt-5">
-                <f-text v-model="values.group_id" label="Gruppierungs-Nummer" name="groupId" id="groupId" type="tel" class="col-span-full" required></f-text>
+            <form class="grid grid-cols-2 gap-3 mt-5" @submit.prevent="submit">
+                <f-text id="groupId" v-model="values.group_id" label="Gruppierungs-Nummer" type="tel" class="col-span-full" required></f-text>
                 <ui-button class="btn-secondary" @click.prevent="step--">Zurück</ui-button>
                 <ui-button type="submit">Weiter</ui-button>
             </form>
@@ -141,9 +141,9 @@ import hasFlash from '../../mixins/hasFlash.js';
 import debounce from 'lodash/debounce';
 
 export default {
-    layout: FullLayout,
 
     mixins: [hasFlash],
+    layout: FullLayout,
 
     data: function () {
         return {

@@ -12,7 +12,6 @@
         id="description"
         label="Beschreibung"
         size="sm"
-        name="description"
         :model-value="modelValue.description"
         @update:modelValue="$emit('update:modelValue', {...modelValue, description: $event})"
     ></f-textarea>

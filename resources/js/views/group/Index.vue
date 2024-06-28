@@ -10,7 +10,7 @@
                 </a>
             </template>
             <div class="flex space-x-3">
-                <f-text id="parent-inner_name" v-model="editing.parent.inner_name" label="Interner Name" name="parent-inner_name"></f-text>
+                <f-text id="parent-inner_name" v-model="editing.parent.inner_name" label="Interner Name"></f-text>
                 <f-select id="parent-level" v-model="editing.parent.level" label="Ebene" name="parent-level" :options="meta.levels"></f-select>
             </div>
             <div>
@@ -25,7 +25,7 @@
                             <span v-text="child.name"></span>
                         </td>
                         <td>
-                            <f-text :id="`inner_name-${child.id}`" v-model="child.inner_name" label="" size="sm" :name="`inner_name-${child.id}`"></f-text>
+                            <f-text :id="`inner_name-${child.id}`" v-model="child.inner_name" label="" size="sm"></f-text>
                         </td>
                         <td>
                             <f-select :id="`level-${child.id}`" v-model="child.level" label="" size="sm" :name="`level-${child.id}`" :options="meta.levels"></f-select>

@@ -1,5 +1,5 @@
 <template>
-    <f-text id="rows" label="Zeilen" size="sm" name="rows" :model-value="modelValue.rows" type="number" min="1" @update:modelValue="$emit('update:modelValue', {...modelValue, rows: $event})"></f-text>
+    <f-text id="rows" label="Zeilen" size="sm" :model-value="modelValue.rows" type="number" min="1" @update:modelValue="$emit('update:modelValue', {...modelValue, rows: $event})"></f-text>
     <f-switch
         id="fieldrequired"
         v-model="modelValue.required"

@@ -5,8 +5,8 @@
         </template>
         <form @submit.prevent="submit">
             <div class="grid gap-5">
-                <f-text id="email" name="email" label="E-Mail-Adresse" v-model="values.email"></f-text>
-                <f-text id="password" name="password" type="password" label="Passwort" v-model="values.password"></f-text>
+                <f-text id="email" v-model="values.email" label="E-Mail-Adresse"></f-text>
+                <f-text id="password" v-model="values.password" type="password" label="Passwort"></f-text>
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
         </form>

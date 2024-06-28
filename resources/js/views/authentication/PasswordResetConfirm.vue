@@ -11,8 +11,8 @@
                     Merke oder notiere dir dieses Passwort, bevor du das Formular absendest.<br />
                     Danach wirst du zum Dashboard weitergeleitet.</span
                 >
-                <f-text id="password" v-model="values.password" type="password" name="password" label="Neues Passwort"></f-text>
-                <f-text id="password_confirmation" v-model="values.password_confirmation" type="password" name="password_confirmation" label="Neues Passwort widerholen"></f-text>
+                <f-text id="password" v-model="values.password" type="password" label="Neues Passwort"></f-text>
+                <f-text id="password_confirmation" v-model="values.password_confirmation" type="password" label="Neues Passwort widerholen"></f-text>
                 <button type="submit" class="btn btn-primary">Passwort zurücksetzen</button>
                 <div class="flex justify-center">
                     <button type="button" class="text-gray-500 text-sm hover:text-gray-300" @click.prevent="$inertia.visit('/login')">Zurück zum Login</button>

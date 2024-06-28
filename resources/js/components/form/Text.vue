@@ -6,7 +6,7 @@
         </span>
         <div class="relative flex-none flex">
             <input
-                :name="name"
+                :id="id"
                 :type="type"
                 :value="transformedValue"
                 :disabled="disabled"
@@ -114,7 +114,7 @@ const props = defineProps({
     },
     modelValue: {
         type: String,
-        default: () => '',
+        required: true,
     },
     label: {
         type: String,
@@ -135,10 +135,6 @@ const props = defineProps({
     max: {
         type: Number,
         default: () => undefined,
-    },
-    name: {
-        required: true,
-        type: String,
     },
 });
 

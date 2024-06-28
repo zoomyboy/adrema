@@ -26,7 +26,7 @@
         <ui-popup v-if="single !== null" :heading="`Vorlage ${single.id ? 'bearbeiten' : 'erstellen'}`" full @close="cancel">
             <form-builder v-model="single.config" :meta="meta">
                 <template #meta>
-                    <f-text id="name" v-model="single.name" name="name" label="Name" required></f-text>
+                    <f-text id="name" v-model="single.name" label="Name" required></f-text>
                 </template>
             </form-builder>
             <template #actions>

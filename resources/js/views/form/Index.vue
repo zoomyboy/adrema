@@ -40,7 +40,7 @@
                 <ui-tabs v-model="active" :entries="tabs"></ui-tabs>
                 <div v-show="active === 0" class="grid grid-cols-2 gap-3">
                     <div class="flex space-x-3">
-                        <f-text id="name" v-model="single.name" class="grow" name="name" label="Name" required></f-text>
+                        <f-text id="name" v-model="single.name" class="grow" label="Name" required></f-text>
                         <f-switch id="is_active" v-model="single.is_active" name="is_active" label="Aktiv"></f-switch>
                         <f-switch id="is_private" v-model="single.is_private" name="is_private" label="Privat"></f-switch>
                     </div>
@@ -54,13 +54,12 @@
                         collection="headerImage"
                         required
                     ></f-singlefile>
-                    <f-text id="from" v-model="single.from" type="date" name="from" label="Von" required></f-text>
-                    <f-text id="to" v-model="single.to" type="date" name="to" label="Bis" required></f-text>
+                    <f-text id="from" v-model="single.from" type="date" label="Von" required></f-text>
+                    <f-text id="to" v-model="single.to" type="date" label="Bis" required></f-text>
                     <f-textarea
                         id="excerpt"
                         v-model="single.excerpt"
                         hint="Gebe hier eine kurze Beschreibung für die Veranstaltungs-Übersicht ein (Maximal 130 Zeichen)."
-                        name="excerpt"
                         label="Auszug"
                         rows="5"
                         required
@@ -122,7 +121,7 @@
         </ui-popup>
 
         <page-filter breakpoint="xl">
-            <f-text id="search" :model-value="getFilter('search')" name="search" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
+            <f-text id="search" :model-value="getFilter('search')" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
             <f-switch id="past" :model-value="getFilter('past')" label="vergangene zeigen" size="sm" @update:model-value="setFilter('past', $event)"></f-switch>
             <f-switch id="inactive" :model-value="getFilter('inactive')" label="inaktive zeigen" size="sm" @update:model-value="setFilter('inactive', $event)"></f-switch>
         </page-filter>

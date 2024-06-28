@@ -9,7 +9,7 @@
         <form id="form" class="p-3 grid gap-3" @submit.prevent="submit">
             <ui-box heading="Metadatem">
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <f-text id="name" v-model="model.name" name="name" label="Name" size="sm" required></f-text>
+                    <f-text id="name" v-model="model.name" label="Name" size="sm" required></f-text>
                     <f-select id="gateway_id" v-model="model.gateway_id" name="gateway_id" :options="meta.gateways" label="Verbindung" size="sm" required></f-select>
                 </div>
             </ui-box>
