@@ -29,6 +29,8 @@ class SubscriptionController extends Controller
             'fees' => Fee::pluck('name', 'id'),
             'mode' => 'create',
             'data' => [
+                'name' => '',
+                'fee_id' => null,
                 'children' => [],
             ],
             'meta' => SubscriptionResource::meta(),
