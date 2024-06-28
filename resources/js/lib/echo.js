@@ -6,6 +6,8 @@ const toast = useToast();
 
 window.Pusher = Pusher;
 
+console.log();
+
 function handleJobEvent(event, type = 'success') {
     if (event.message) {
         toast[type](event.message);
@@ -16,8 +18,8 @@ var echo = new Echo({
     broadcaster: 'pusher',
     key: 'adremakey',
     wsHost: window.location.hostname,
-    wsPort: 80,
-    wssPort: 443,
+    wsPort: import.meta.env.MODE === 'development' ? 6001 : 80,
+    wssPort: import.meta.env.MODE === 'development' ? 6001 : 443,
     forceTLS: false,
     disableStats: true,
     cluster: 'adrema',
