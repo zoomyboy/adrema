@@ -6,8 +6,6 @@ const toast = useToast();
 
 window.Pusher = Pusher;
 
-console.log();
-
 function handleJobEvent(event, type = 'success') {
     if (event.message) {
         toast[type](event.message);
