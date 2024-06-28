@@ -3,10 +3,8 @@
 @import 'tailwindcss/utilities';
 
 @import 'base.css';
-@import 'switch';
 @import 'layout';
 @import 'buttons';
 @import 'table';
 @import 'bool';
-@import 'form';
 @import 'editor';

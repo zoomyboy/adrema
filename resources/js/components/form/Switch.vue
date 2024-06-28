@@ -1,130 +1,102 @@
 <template>
-    <label
-        class="flex relative field-switch cursor-pointer"
-        :for="id"
-        :class="{
-            'items-center flex-row-reverse space-x-3 space-x-reverse justify-end': inline,
-            'flex-col': !inline,
-            [sizes[size].wrap]: true,
-        }"
-    >
-        <span
-            v-if="label"
-            class="font-semibold leading-none text-gray-400"
-            :class="{
-                'text-xs': size == 'sm',
-                'text-sm': size === 'base',
-            }"
-            >{{ label }}</span
-        >
-        <div class="relative flex items-center inner-field mt-1" :class="`h-field-${fieldSize}`">
-            <span>
-                <input :id="id" v-model="v" type="checkbox" :name="name" :value="value" :disabled="disabled" class="absolute peer" @keypress="$emit('keypress', $event)" />
-                <span class="relative cursor-pointer peer-focus:bg-red-500 flex grow display" :class="{'bg-switch': v === true, 'bg-gray-700': v === false}">
-                    <span><ui-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="check"></ui-sprite></span>
-                    <span><ui-sprite class="relative text-gray-400 flex-none" :class="{'w-2 h-2': size === 'sm' || size == 'xs', 'w-4 h-4': size === 'base'}" src="close"></ui-sprite></span>
-                    <var class="absolute overlay bg-gray-400 rounded top-0"></var>
-                </span>
-            </span>
-            <div v-if="hint" class="ml-2 info-wrap">
-                <div v-tooltip="hint">
-                    <ui-sprite src="info-button" class="info-button w-4 h-4 text-primary-700"></ui-sprite>
-                </div>
-            </div>
-        </div>
+    <label class="flex flex-col items-start group" :for="id" :class="sizeClass(size)">
+        <f-label v-if="label" :required="false" :value="label"></f-label>
+        <span class="relative flex-none flex" :class="{'pr-8': hint, [fieldHeight]: true}">
+            <input :id="id" v-model="v" type="checkbox" :name="name" :value="value" :disabled="disabled" class="absolute peer invisible" @keypress="$emit('keypress', $event)" />
+            <span
+                class="relative cursor-pointer h-full rounded peer-focus:bg-red-500 transition-all duration-300 group-[.field-base]:w-[70px] group-[.field-sm]:w-[46px] bg-gray-700 peer-checked:bg-primary-700"
+            ></span>
+            <span class="absolute h-full top-0 left-0 flex-none flex justify-center items-center aspect-square">
+                <ui-sprite
+                    class="relative text-gray-400 flex-none text-white duration-300 group-[.field-base]:w-3 group-[.field-base]:h-3 group-[.field-sm]:w-2 group-[.field-sm]:h-2"
+                    src="check"
+                ></ui-sprite
+            ></span>
+            <span class="absolute h-full top-0 group-[.field-base]:left-[35px] group-[.field-sm]:left-[23px] flex-none flex justify-center items-center aspect-square">
+                <ui-sprite
+                    class="relative text-gray-400 flex-none text-white duration-300 group-[.field-base]:w-3 group-[.field-base]:h-3 group-[.field-sm]:w-2 group-[.field-sm]:h-2"
+                    src="close"
+                ></ui-sprite
+            ></span>
+            <var
+                class="absolute transition-all duration-300 bg-gray-400 rounded group-[.field-base]:top-[3px] group-[.field-base]:left-[3px] group-[.field-sm]:top-[2px] group-[.field-sm]:left-[2px] group-[.field-base]:w-[29px] group-[.field-sm]:w-[19px] group-[.field-base]:h-[29px] group-[.field-sm]:h-[19px] group-[.field-base]:peer-checked:left-[37px] group-[.field-sm]:peer-checked:left-[25px]"
+            ></var>
+            <f-hint v-if="hint" :value="hint"></f-hint>
+        </span>
     </label>
 </template>
 
-<script>
-export default {
-    props: {
-        hint: {
-            default: null,
-        },
-        inline: {
-            default: false,
-            type: Boolean,
-        },
-        size: {
-            default: 'base',
-            required: false,
-        },
-        id: {
-            required: true,
-        },
-        name: {
-            default: '',
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-        value: {
-            default: false,
-        },
-        label: {
-            default: false,
-        },
-        modelValue: {
-            default: undefined,
-        },
+<script setup>
+import {computed} from 'vue';
+import useFieldSize from '../../composables/useFieldSize.js';
+
+const {sizeClass, fieldHeight} = useFieldSize();
+
+const emit = defineEmits(['update:modelValue', 'keypress']);
+
+const props = defineProps({
+    hint: {
+        type: String,
+        default: () => '',
     },
-    emits: ['update:modelValue', 'keypress'],
-    data: function () {
-        return {
-            sizes: {
-                sm: {
-                    wrap: 'field-wrap-sm',
-                    field: 'size-sm',
-                },
-                base: {
-                    wrap: 'field-wrap-base',
-                    field: 'size-base',
-                },
-                lg: {
-                    wrap: 'field-wrap-lg',
-                    field: 'size-lg',
-                },
-            },
-        };
+    size: {
+        type: String,
+        default: () => 'base',
     },
-    computed: {
-        v: {
-            set(v) {
-                if (this.disabled === true) {
-                    return;
-                }
-
-                if (typeof this.modelValue === 'boolean') {
-                    this.$emit('update:modelValue', v);
-                    return;
-                }
-
-                var a = this.modelValue.filter((i) => i !== this.value);
-                if (v) {
-                    a.push(this.value);
-                }
-
-                this.$emit('update:modelValue', a);
-            },
-            get() {
-                if (typeof this.modelValue === 'boolean') {
-                    return this.modelValue;
-                }
-
-                if (typeof this.modelValue === 'undefined') {
-                    return this.$emit('update:modelValue', false);
-                }
-
-                return this.modelValue.indexOf(this.value) !== -1;
-            },
-        },
-        fieldSize() {
-            var sizes = ['xxs', 'xs', 'sm', 'md', 'lg'];
-
-            var sizeIndex = sizes.findIndex((s) => s === this.size);
-            return sizes[sizeIndex - 1];
-        },
+    id: {
+        type: String,
+        required: true,
     },
-};
+    name: {
+        required: true,
+        type: String,
+    },
+    disabled: {
+        type: Boolean,
+        default: () => false,
+    },
+    value: {
+        validator: (v) => true,
+        default: () => undefined,
+    },
+    label: {
+        type: String,
+        default: () => '',
+    },
+    modelValue: {
+        validator: (v) => true,
+        default: () => undefined,
+    },
+});
+
+const v = computed({
+    set: (v) => {
+        if (props.disabled === true) {
+            return;
+        }
+
+        if (typeof props.modelValue === 'boolean') {
+            emit('update:modelValue', v);
+            return;
+        }
+
+        var a = props.modelValue.filter((i) => i !== this.value);
+        if (v) {
+            a.push(this.value);
+        }
+
+        emit('update:modelValue', a);
+    },
+    get() {
+        if (typeof props.modelValue === 'boolean') {
+            return props.modelValue;
+        }
+
+        if (typeof props.modelValue === 'undefined') {
+            return emit('update:modelValue', false);
+        }
+
+        return props.modelValue.indexOf(props.value) !== -1;
+    },
+});
 </script>

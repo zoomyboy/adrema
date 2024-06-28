@@ -8,7 +8,7 @@
                 @click="visible = !visible"
                 v-text="`${modelValue.length} Einträge ausgewählt`"
             ></div>
-            <div v-show="visible" class="absolute w-[max-content] z-30 max-h-[25rem] overflow-auto shadow-lg bg-gray-600 border border-gray-500 rounded-lg p-2 top-7">
+            <div v-show="visible" class="absolute w-[max-content] z-30 max-h-[25rem] overflow-auto shadow-lg bg-gray-600 border border-gray-500 rounded-lg p-2 top-7 space-y-1">
                 <div v-for="(option, index) in parsedOptions" :key="index" class="flex items-center space-x-2">
                     <f-switch :id="`${id}-${index}`" size="sm" :model-value="modelValue.includes(option.id)" :value="option.id" @update:modelValue="trigger(option, $event)"></f-switch>
                     <div class="text-sm text-gray-200" v-text="option.name"></div>
