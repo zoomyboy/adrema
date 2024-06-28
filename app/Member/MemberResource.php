@@ -204,6 +204,7 @@ class MemberResource extends JsonResource
             'ps_at' => null,
             'more_ps_at' => null,
             'without_education_at' => null,
+            'recertified_at' => null,
             'without_efz_at' => null,
             'has_vk' => false,
             'has_svk' => false,
