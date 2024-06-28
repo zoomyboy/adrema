@@ -14,3 +14,6 @@
 	path = packages/medialibrary-helper
 	url = https://git.zoomyboy.de/zoomyboy/medialibrary-helper.git
 	branch = version2
+[submodule "packages/flysystem-webdav"]
+	path = packages/flysystem-webdav
+	url = https://github.com/zoomyboy/flysystem-webdav.git

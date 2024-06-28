@@ -2,7 +2,10 @@
 
 namespace App\Fileshare\ConnectionTypes;
 
+use App\Fileshare\Data\ResourceData;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 
 abstract class ConnectionType extends Data
 {
@@ -14,6 +17,8 @@ abstract class ConnectionType extends Data
     abstract public static function defaults(): array;
 
     abstract public static function title(): string;
+
+    abstract public function getFilesystem(): FilesystemAdapter;
 
     /**
      * @return array<int, array{label: string, key: string, type: string}>
@@ -31,5 +36,15 @@ abstract class ConnectionType extends Data
             ->values()
             ->map(fn ($file) => ['id' => $file, 'name' => $file::title(), 'defaults' => $file::defaults(), 'fields' => $file::fields()])
             ->toArray();
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function getSubDirectories(?string $parent): array
+    {
+        $filesystem = $this->getFilesystem();
+
+        return $filesystem->directories($parent ?: '/');
     }
 }

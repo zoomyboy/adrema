@@ -7,9 +7,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use League\Flysystem\DirectoryAttributes;
 use League\Flysystem\Filesystem;
 use League\Flysystem\WebDAV\WebDAVAdapter;
 use Sabre\DAV\Client;
+use Throwable;
 
 abstract class FileshareTestCase extends TestCase
 {
@@ -55,16 +57,15 @@ abstract class FileshareTestCase extends TestCase
     {
         $adapter = $this->adapter($username);
 
-        foreach ($adapter->directories() as $directory) {
+        foreach ($adapter->directories('/') as $directory) {
             $adapter->deleteDirectory($directory);
         }
-        dd($adapter->directories());
 
-        $adapter->makeDirectory('lala');
-        $adapter->makeDirectory('aa/zz');
-        $adapter->makeDirectory('aa/zz');
-        dd($adapter->directories());
-        // dd(array_map(fn ($d) => str_replace('remote.php/dav/files/' . $username, '', $d), $adapter->directories()));
+        foreach ($dirs as $dir) {
+            $adapter->makeDirectory($dir);
+        }
+
+        return $this;
     }
 
     private function adapter(string $username): FilesystemAdapter

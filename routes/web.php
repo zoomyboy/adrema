@@ -22,6 +22,7 @@ use App\Efz\ShowEfzDocumentAction;
 use App\Fileshare\Actions\FileshareApiIndexAction;
 use App\Fileshare\Actions\FileshareStoreAction;
 use App\Fileshare\Actions\FileshareUpdateAction;
+use App\Fileshare\Actions\ListFilesAction;
 use App\Form\Actions\ExportAction as ActionsExportAction;
 use App\Form\Actions\FormDestroyAction;
 use App\Form\Actions\FormIndexAction;
@@ -174,4 +175,5 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/fileshare', FileshareStoreAction::class)->name('fileshare.store');
     Route::patch('/fileshare/{fileshare}', FileshareUpdateAction::class)->name('fileshare.update');
     Route::get('/api/fileshare', FileshareApiIndexAction::class)->name('api.fileshare.index');
+    Route::post('/api/fileshare/{fileshare}/files', ListFilesAction::class)->name('api.fileshare.files');
 });

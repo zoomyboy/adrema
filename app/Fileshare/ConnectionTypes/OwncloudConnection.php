@@ -2,8 +2,12 @@
 
 namespace App\Fileshare\ConnectionTypes;
 
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use League\Flysystem\Filesystem;
+use League\Flysystem\WebDAV\WebDAVAdapter;
+use Sabre\DAV\Client;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -57,5 +61,16 @@ class OwncloudConnection extends ConnectionType
             ['label' => 'Benutzer', 'key' => 'user', 'type' => 'text'],
             ['label' => 'Passwort', 'key' => 'password', 'type' => 'password'],
         ];
+    }
+
+    public function getFilesystem(): FilesystemAdapter
+    {
+        $adapter = new WebDAVAdapter(new Client([
+            'baseUri' =>  $this->baseUrl . '/remote.php/dav/files/' . $this->user,
+            'userName' => $this->user,
+            'password' => $this->password,
+        ]), '/remote.php/dav/files/' . $this->user);
+
+        return new FilesystemAdapter(new Filesystem($adapter), $adapter);
     }
 }
