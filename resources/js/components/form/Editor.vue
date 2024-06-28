@@ -1,12 +1,10 @@
 <template>
     <div>
-        <div>
-            <span v-if="label" class="font-semibold text-gray-400" :class="labelClass(size)">{{ label }}<span v-show="required" class="text-red-800">&nbsp;*</span></span>
+        <div class="flex flex-col group" :for="id" :class="sizeClass(size)">
+            <f-label v-if="label" :required="required" :value="label"></f-label>
             <div class="relative w-full h-full">
-                <div :id="id" :class="[defaultFieldClass, fieldClass(size)]"></div>
-                <div v-if="hint" v-tooltip="hint" class="absolute right-0 top-0 mr-2 mt-2">
-                    <ui-sprite src="info-button" class="w-5 h-5 text-indigo-200"></ui-sprite>
-                </div>
+                <div :id="id" :class="[fieldAppearance, paddingX, paddingY]"></div>
+                <f-hint v-if="hint" :value="hint"></f-hint>
             </div>
         </div>
 
@@ -34,7 +32,7 @@ import Alert from 'editorjs-alert';
 import useFieldSize from '../../composables/useFieldSize.js';
 const emit = defineEmits(['update:modelValue']);
 
-const {labelClass, fieldClass, defaultFieldClass} = useFieldSize();
+const {fieldAppearance, paddingX, paddingY, sizeClass} = useFieldSize();
 
 const props = defineProps({
     required: {
@@ -42,14 +40,15 @@ const props = defineProps({
         default: false,
     },
     size: {
-        default: null,
+        type: String,
+        default: () => 'base',
     },
     rows: {
-        default: function () {
-            return 4;
-        },
+        type: Number,
+        default: () => 4,
     },
     id: {
+        type: String,
         required: true,
     },
     conditions: {
@@ -58,16 +57,15 @@ const props = defineProps({
         default: () => false,
     },
     hint: {
-        default: null,
+        type: String,
+        default: () => '',
     },
     modelValue: {
         default: undefined,
     },
     label: {
-        default: false,
-    },
-    placeholder: {
-        default: '',
+        type: String,
+        default: () => '',
     },
 });
 

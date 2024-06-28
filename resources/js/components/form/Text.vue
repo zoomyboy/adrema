@@ -1,6 +1,6 @@
 <template>
-    <label class="flex flex-col group" :for="id" :class="sizes[size]">
-        <f-label :required="required" :value="label"></f-label>
+    <label class="flex flex-col group" :for="id" :class="sizeClass(size)">
+        <f-label v-if="label" :required="required" :value="label"></f-label>
         <div class="relative flex-none flex">
             <input
                 :id="id"
@@ -27,7 +27,7 @@ import wNumb from 'wnumb';
 import {ref, computed} from 'vue';
 import useFieldSize from '../../composables/useFieldSize';
 
-const {fieldHeight, fieldAppearance, paddingX} = useFieldSize();
+const {fieldHeight, fieldAppearance, paddingX, sizeClass} = useFieldSize();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -136,11 +136,6 @@ const props = defineProps({
 });
 
 const focus = ref(false);
-const sizes = ref({
-    sm: 'field-sm',
-    base: 'field-base',
-    lg: 'field-lg',
-});
 
 const transformedValue = computed({
     get: () => transformers[props.mode][focus.value ? 'edit' : 'display'].to(props.modelValue),
