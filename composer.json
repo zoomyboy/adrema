@@ -46,6 +46,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "league/csv": "^9.9",
+        "league/flysystem-webdav": "^3.28",
         "lorisleiva/laravel-actions": "^2.4",
         "meilisearch/meilisearch-php": "^1.6",
         "monicahq/laravel-sabre": "^1.6",
@@ -58,10 +59,10 @@
         "spatie/laravel-settings": "^2.2",
         "worksome/request-factories": "^2.5",
         "zoomyboy/laravel-nami": "dev-master",
+        "zoomyboy/medialibrary-helper": "dev-master as 1.0",
         "zoomyboy/osm": "1.0.3",
         "zoomyboy/phone": "^1.0",
-        "zoomyboy/tex": "dev-main as 1.0",
-        "zoomyboy/medialibrary-helper": "dev-master as 1.0"
+        "zoomyboy/tex": "dev-main as 1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

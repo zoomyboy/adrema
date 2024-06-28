@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d221c2d6ea9fc95010870e971768539c",
+    "content-hash": "5fe5f2f1843621f3a3db2733666cc4ff",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4569,6 +4569,54 @@
                 }
             ],
             "time": "2024-01-26T18:25:23+00:00"
+        },
+        {
+            "name": "league/flysystem-webdav",
+            "version": "3.28.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-webdav.git",
+                "reference": "8c862a256522e90c945684204ba37bdc6861059a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-webdav/zipball/8c862a256522e90c945684204ba37bdc6861059a",
+                "reference": "8c862a256522e90c945684204ba37bdc6861059a",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "^3.6.0",
+                "php": "^8.0.2",
+                "sabre/dav": "^4.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\WebDAV\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "WebDAV filesystem adapter for Flysystem.",
+            "keywords": [
+                "Flysystem",
+                "WebDAV",
+                "file",
+                "files",
+                "filesystem"
+            ],
+            "support": {
+                "source": "https://github.com/thephpleague/flysystem-webdav/tree/3.28.0"
+            },
+            "time": "2024-05-06T20:05:52+00:00"
         },
         {
             "name": "league/glide",
@@ -14147,7 +14195,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/tex",
-                "reference": "b4dbd7d3125aca2c16ca9f99ec81c12a46a18e3b"
+                "reference": "48251272de62e3fea044a7ad31e1a411c15eb4c6"
             },
             "type": "library",
             "extra": {
@@ -15849,25 +15897,12 @@
             "time": "2023-05-30T22:51:52+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "zoomyboy/medialibrary-helper",
-            "version": "9999999-dev",
-            "alias": "1.0",
-            "alias_normalized": "1.0.0.0"
-        },
-        {
-            "package": "zoomyboy/tex",
-            "version": "dev-main",
-            "alias": "1.0",
-            "alias_normalized": "1.0.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "zoomyboy/laravel-nami": 20,
-        "zoomyboy/tex": 20,
-        "zoomyboy/medialibrary-helper": 20
+        "zoomyboy/medialibrary-helper": 20,
+        "zoomyboy/tex": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
