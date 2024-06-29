@@ -1,9 +1,7 @@
 <template>
     <div class="fixed z-40 top-0 left-0 w-full h-full flex items-center justify-center p-6">
-        <div
-            class="relative rounded-lg p-8 bg-zinc-800 shadow-2xl shadow-black border border-zinc-700 border-solid w-full max-h-full flex flex-col overflow-auto"
-            :class="full ? 'h-full' : innerWidth"
-        >
+        <div class="relative rounded-lg p-8 bg-zinc-800 shadow-2xl shadow-black border border-zinc-700 border-solid w-full max-h-full flex flex-col overflow-auto"
+            :class="full ? 'h-full' : innerWidth">
             <div class="absolute top-0 right-0 mt-6 mr-6 flex space-x-6">
                 <slot name="actions"></slot>
                 <a href="#" @click.prevent="$emit('close')">
@@ -17,10 +15,7 @@
                         <slot></slot>
                     </div>
                     <template #fallback>
-                        <div class="flex flex-col items-center justify-center h-full">
-                            <ui-spinner class="border-primary-400 w-32 h-32"></ui-spinner>
-                            <div class="text-3xl mt-10">Lade …</div>
-                        </div>
+                        <ui-loading></ui-loading>
                     </template>
                 </suspense>
             </div>
