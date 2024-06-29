@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Data\ExportData;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\RequestFactories\EditorRequestFactory;
@@ -19,6 +20,7 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self registrationUntil(string|null $date)
  * @method self isActive(bool $isActive)
  * @method self isPrivate(bool $isPrivate)
+ * @method self export(ExportData $export)
  */
 class FormRequest extends RequestFactory
 {
