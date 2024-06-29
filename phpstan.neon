@@ -25,17 +25,13 @@ parameters:
         MailgatewayCustomField: 'array{name: string, label: string, type: string, storeValidator: string, updateValidator: string, default: string}'
         MailgatewayParsedCustomField: 'array{name: string, label: string, type: string, storeValidator: string, updateValidator: string, default: string, is_required: bool}'
         SluggableConfig: 'array<string, array{source: array<int, string>}>'
+        AddressBookCard: 'array{lastmodified: int, etag: string, uri: string, id: int, size: int}'
 
     ignoreErrors:
         -
             message: "#^Method App\\\\Activity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Activity.php
-
-        -
-            message: "#^Method App\\\\Dav\\\\AddressBookBackend\\:\\:getCard\\(\\) should return M of array\\{lastmodified\\: int, etag\\: string, uri\\: string, id\\: int, size\\: int\\} but returns false\\.$#"
-            count: 1
-            path: app/Dav/AddressBookBackend.php
 
         -
             message: "#^Method App\\\\Dav\\\\AddressBookBackend\\:\\:getMultipleCards\\(\\) has parameter \\$uris with no value type specified in iterable type array\\.$#"
@@ -161,17 +157,6 @@ parameters:
             message: "#^Method Database\\\\Factories\\\\NationalityFactory\\:\\:definition\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: database/factories/NationalityFactory.php
-
-        -
-            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy.*#"
-
-        -
-            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy.*#"
-
-        -
-            message: "#^PHPDoc tag @param has invalid value \\(\\<class\\-string\\> \\$class\\)\\: Unexpected token \"\\<\", expected type at offset 18$#"
-            count: 1
-            path: tests/TestCase.php
 
         -
             message: "#^Parameter \\#1 \\$api of class App\\\\Initialize\\\\InitializeGroups constructor expects Zoomyboy\\\\LaravelNami\\\\Api, PHPUnit\\\\Framework\\\\MockObject\\\\Stub given\\.$#"
@@ -464,16 +449,6 @@ parameters:
             path: tests/Feature/Member/DavTest.php
 
         -
-            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,class\\-string\\<App\\\\Contribution\\\\Documents\\\\ContributionDocument\\>\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
-            count: 1
-            path: app/Contribution/ContributionFactory.php
-
-        -
-            message: "#^Return type of call to method Illuminate\\\\Support\\\\Collection\\<int,class\\-string\\<App\\\\Setting\\\\LocalSettings\\>\\>\\:\\:map\\(\\) contains unresolvable type\\.$#"
-            count: 1
-            path: app/Setting/SettingFactory.php
-
-        -
             message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$email\\.$#"
             count: 2
             path: app/Maildispatcher/Actions/ResyncAction.php
@@ -542,3 +517,53 @@ parameters:
             message: "#^Unable to resolve the template type TValue in call to function collect$#"
             count: 1
             path: app/Form/Fields/NamiField.php
+
+        -
+            message: "#^Method App\\\\Fileshare\\\\ConnectionTypes\\\\ConnectionType\\:\\:types\\(\\) should return Illuminate\\\\Support\\\\Collection\\<int, class\\-string\\<App\\\\Fileshare\\\\ConnectionTypes\\\\ConnectionType\\>\\> but returns Illuminate\\\\Support\\\\Collection\\<int, string\\>\\.$#"
+            count: 1
+            path: app/Fileshare/ConnectionTypes/ConnectionType.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:check\\(\\)\\.$#"
+            count: 1
+            path: tests/Feature/Mailgateway/IndexTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:setCredentials\\(\\)\\.$#"
+            count: 1
+            path: tests/Feature/Mailgateway/IndexTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:check\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Mailgateway/MailmanTypeTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:setCredentials\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Mailgateway/MailmanTypeTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:setOwner\\(\\)\\.$#"
+            count: 1
+            path: tests/Feature/Mailgateway/MailmanTypeTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:setOwner\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Mailgateway/StoreTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:setParams\\(\\)\\.$#"
+            count: 3
+            path: tests/Feature/Mailgateway/StoreTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:works\\(\\)\\.$#"
+            count: 3
+            path: tests/Feature/Mailgateway/StoreTest.php
+
+        -
+            message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy\\:\\:handle\\(\\)\\.$#"
+            count: 2
+            path: tests/Feature/Member/NamiPutMemberActionTest.php

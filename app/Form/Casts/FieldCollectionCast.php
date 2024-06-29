@@ -10,7 +10,7 @@ use Spatie\LaravelData\Support\DataProperty;
 class FieldCollectionCast implements Cast
 {
     /**
-     * @param array<int, array<string, mixed>> $value
+     * @param array<int, array<string, string>> $value
      * @param array<string, mixed> $context
      * @return FieldCollection
      */

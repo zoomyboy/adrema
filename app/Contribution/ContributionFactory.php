@@ -25,7 +25,7 @@ class ContributionFactory
     ];
 
     /**
-     * @return Collection<int, array{title: mixed, class: mixed}>
+     * @return Collection<int, array{title: string, class: class-string<ContributionDocument>}>
      */
     public function compilerSelect(): Collection
     {

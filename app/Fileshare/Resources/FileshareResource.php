@@ -8,7 +8,7 @@ use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin FileshareConnection
+ * @mixin Fileshare
  */
 class FileshareResource extends JsonResource
 {

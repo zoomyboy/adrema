@@ -8,9 +8,6 @@ use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\DAV\PropPatch;
 use Sabre\VObject\Component\VCard;
 
-/**
- * @template M as array{lastmodified: int, etag: string, uri: string, id: int, size: int}
- */
 class AddressBookBackend extends AbstractBackend
 {
     /**
@@ -115,7 +112,7 @@ class AddressBookBackend extends AbstractBackend
      *
      * @param mixed $addressbookId
      *
-     * @return array<int, M>
+     * @return array<int, AddressBookCard>
      */
     public function getCards($addressbookId): array
     {
@@ -133,7 +130,7 @@ class AddressBookBackend extends AbstractBackend
      * @param mixed  $addressBookId
      * @param string $cardUri
      *
-     * @return M
+     * @return AddressBookCard|bool
      */
     public function getCard($addressBookId, $cardUri)
     {
@@ -248,7 +245,7 @@ class AddressBookBackend extends AbstractBackend
     }
 
     /**
-     * @return M
+     * @return AddressBookCard
      */
     private function cardMeta(Member $member): array
     {

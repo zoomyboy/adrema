@@ -2,10 +2,9 @@
 
 namespace App\Fileshare\ConnectionTypes;
 
-use App\Fileshare\Data\ResourceData;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\DataCollection;
 
 abstract class ConnectionType extends Data
 {
@@ -30,10 +29,7 @@ abstract class ConnectionType extends Data
      */
     public static function forSelect(): array
     {
-        return collect(glob(base_path('app/Fileshare/ConnectionTypes/*')))
-            ->map(fn ($file) => 'App\\Fileshare\\ConnectionTypes\\' . pathinfo($file, PATHINFO_FILENAME))
-            ->filter(fn ($file) => $file !== static::class)
-            ->values()
+        return self::types()
             ->map(fn ($file) => ['id' => $file, 'name' => $file::title(), 'defaults' => $file::defaults(), 'fields' => $file::fields()])
             ->toArray();
     }
@@ -46,5 +42,16 @@ abstract class ConnectionType extends Data
         $filesystem = $this->getFilesystem();
 
         return $filesystem->directories($parent ?: '/');
+    }
+
+    /**
+     * @return Collection<int, class-string<ConnectionType>>
+     */
+    private static function types(): Collection
+    {
+        return collect(glob(base_path('app/Fileshare/ConnectionTypes/*')))
+            ->map(fn ($file) => 'App\\Fileshare\\ConnectionTypes\\' . pathinfo($file, PATHINFO_FILENAME))
+            ->filter(fn ($file) => $file !== static::class)
+            ->values();
     }
 }

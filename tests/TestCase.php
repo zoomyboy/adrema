@@ -93,7 +93,8 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param <class-string> $class
+     * @template M of object
+     * @param class-string<M> $class
      */
     public function stubIo(string $class, callable $mocker): self
     {

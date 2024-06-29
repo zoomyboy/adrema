@@ -7,7 +7,7 @@ use Spatie\LaravelData\Data;
 class ResourceData extends Data
 {
 
-    public function __construct(public $name, public $path, public $parent)
+    public function __construct(public string $name, public string $path, public string $parent)
     {
     }
 

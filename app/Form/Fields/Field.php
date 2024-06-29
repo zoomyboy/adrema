@@ -79,6 +79,9 @@ abstract class Field extends Data
             ->toArray();
     }
 
+    /**
+     * @return class-string<Field>
+     */
     public static function classFromType(string $type): ?string
     {
         /** @var class-string<Field> */
