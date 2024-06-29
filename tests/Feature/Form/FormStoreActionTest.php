@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Form;
 
+use App\Fileshare\Data\FileshareResourceData;
+use App\Form\Data\ExportData;
 use App\Form\Enums\NamiType;
 use App\Form\Models\Form;
 use App\Lib\Events\Succeeded;
@@ -64,6 +66,16 @@ class FormStoreActionTest extends FormTestCase
             'registration_until' => null,
             'registration_from' => null,
         ]);
+    }
+
+    public function testItStoresExport(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        $this->postJson(route('form.store'), FormRequest::new()->export(ExportData::from(['root' => FileshareResourceData::from(['connection_id' => 2, 'resource' => '/dir']), 'group_by' => 'lala', 'to_group_field' => 'abc']))->create())->assertOk();
+
+        $form = Form::first();
+        $this->assertEquals(2, $form->export->root->connectionId);
     }
 
     public function validationDataProvider(): Generator

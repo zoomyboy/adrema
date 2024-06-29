@@ -2,6 +2,7 @@
 
 namespace App\Form\Models;
 
+use App\Form\Data\ExportData;
 use App\Form\Data\FieldCollection;
 use App\Form\Data\FormConfigData;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -33,6 +34,7 @@ class Form extends Model implements HasMedia
         'mail_bottom' => 'json',
         'is_active' => 'boolean',
         'is_private' => 'boolean',
+        'export' => ExportData::class,
     ];
 
     /** @var array<int, string> */

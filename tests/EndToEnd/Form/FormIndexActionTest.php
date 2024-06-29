@@ -2,6 +2,8 @@
 
 namespace Tests\EndToEnd\Form;
 
+use App\Fileshare\Data\FileshareResourceData;
+use App\Form\Data\ExportData;
 use App\Form\FormSettings;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
@@ -63,11 +65,28 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.meta.default.is_active', true)
             ->assertInertiaPath('data.meta.default.is_private', false)
             ->assertInertiaPath('data.meta.default.mailattachments', [])
+            ->assertInertiaPath('data.meta.default.export', ['root' => null, 'group_by' => null, 'to_group_field' => null])
             ->assertInertiaPath('data.meta.default.config', null)
             ->assertInertiaPath('data.meta.base_url', url(''))
             ->assertInertiaPath('data.meta.namiTypes.0', ['id' => 'Vorname', 'name' => 'Vorname'])
             ->assertInertiaPath('data.meta.specialTypes.0', ['id' => 'Vorname', 'name' => 'Vorname'])
             ->assertInertiaPath('data.meta.section_default.name', '');
+    }
+
+    public function testItDisplaysExport(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        Form::factory()
+            ->name('lala')
+            ->export(ExportData::from(['root' => FileshareResourceData::from(['connection_id' => 2, 'resource' => '/dir']), 'group_by' => 'lala', 'to_group_field' => 'abc']))
+            ->create();
+
+        sleep(1);
+        $this->get(route('form.index'))
+            ->assertInertiaPath('data.data.0.export.group_by', 'lala')
+            ->assertInertiaPath('data.data.0.export.root.connection_id', 2)
+            ->assertInertiaPath('data.data.0.export.root.resource', '/dir')
+            ->assertInertiaPath('data.data.0.export.to_group_field', 'abc');
     }
 
     public function testItHandlesFullTextSearch(): void

@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Form\Models;
 
+use App\Form\Data\ExportData;
 use App\Form\Models\Form;
 use Database\Factories\Traits\FakesMedia;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,6 +20,7 @@ use Tests\RequestFactories\EditorRequestFactory;
  * @method self registrationUntil(string|null $date)
  * @method self isActive(bool $isActive)
  * @method self isPrivate(bool $isPrivate)
+ * @method self export(ExportData $data)
  */
 class FormFactory extends Factory
 {

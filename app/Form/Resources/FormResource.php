@@ -2,6 +2,7 @@
 
 namespace App\Form\Resources;
 
+use App\Form\Data\ExportData;
 use App\Form\Enums\NamiType;
 use App\Form\Enums\SpecialType;
 use App\Form\Fields\Field;
@@ -47,6 +48,7 @@ class FormResource extends JsonResource
             'is_active' => $this->is_active,
             'is_private' => $this->is_private,
             'has_nami_field' => $this->getFields()->hasNamiField(),
+            'export' => $this->export,
             'links' => [
                 'participant_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => null]),
                 'participant_root_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => -1]),
@@ -92,6 +94,7 @@ class FormResource extends JsonResource
                 'header_image' => null,
                 'mailattachments' => [],
                 'id' => null,
+                'export' => ExportData::from([]),
             ],
             'section_default' => [
                 'name' => '',

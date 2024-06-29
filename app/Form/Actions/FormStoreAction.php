@@ -34,6 +34,7 @@ class FormStoreAction
             'mailattachments' => 'present|array|exclude',
             'is_active' => 'boolean',
             'is_private' => 'boolean',
+            'export' => 'nullable|array',
         ];
     }
 

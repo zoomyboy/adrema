@@ -33,6 +33,7 @@ class FormUpdateAction
             'mail_bottom' => 'array',
             'is_active' => 'boolean',
             'is_private' => 'boolean',
+            'export' => 'nullable|array',
         ];
     }
 

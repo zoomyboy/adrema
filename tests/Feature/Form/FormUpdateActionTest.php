@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Form;
 
+use App\Fileshare\Data\FileshareResourceData;
+use App\Form\Data\ExportData;
 use App\Form\Models\Form;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
@@ -37,6 +39,16 @@ class FormUpdateActionTest extends FormTestCase
         $this->patchJson(route('form.update', ['form' => $form]), FormRequest::new()->create());
 
         $this->assertFrontendCacheCleared();
+    }
+
+    public function testItUpdatesExport(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        $form = Form::factory()->create();
+        $this->patchJson(route('form.update', ['form' => $form]), FormRequest::new()->export(ExportData::from(['root' => FileshareResourceData::from(['connection_id' => 2, 'resource' => '/dir']), 'group_by' => 'lala', 'to_group_field' => 'abc']))->create());
+
+        $this->assertEquals(2, $form->fresh()->export->root->connectionId);
     }
 
     public function testItUpdatesActiveColumnsWhenFieldRemoved(): void
