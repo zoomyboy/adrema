@@ -19,6 +19,7 @@
                         <th>NaMi-Name</th>
                         <th>Interner Name</th>
                         <th>Ebene</th>
+                        <th>Remote</th>
                     </thead>
                     <tr v-for="child in editing.children" :key="child.id">
                         <td>
@@ -29,6 +30,9 @@
                         </td>
                         <td>
                             <f-select :id="`level-${child.id}`" v-model="child.level" label="" size="sm" :name="`level-${child.id}`" :options="meta.levels"></f-select>
+                        </td>
+                        <td>
+                            <ui-remote-resource :id="`fileshare-${child.id}`" v-model="child.fileshare" size="sm" label=""></ui-remote-resource>
                         </td>
                     </tr>
                 </table>
@@ -108,7 +112,8 @@ async function edit(parent) {
 
 async function store() {
     await axios.post(meta.value.links.bulkstore, [editing.value.parent, ...editing.value.children]);
-    children[editing.value.parent.id] = (await axios.get(editing.value.parent.links.children)).data.data;
+    await toggle(editing.value.parent);
+    await toggle(editing.value.parent);
     editing.value = null;
 }
 </script>

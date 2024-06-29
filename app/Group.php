@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Fileshare\Data\FileshareResourceData;
 use App\Group\Enums\Level;
 use App\Nami\HasNamiField;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,11 +15,12 @@ class Group extends Model
     use HasFactory;
     use HasNamiField;
 
-    public $fillable = ['nami_id', 'name', 'inner_name', 'level', 'parent_id'];
+    public $fillable = ['nami_id', 'name', 'inner_name', 'level', 'parent_id', 'fileshare'];
     public $timestamps = false;
 
     public $casts = [
-        'level' => Level::class
+        'level' => Level::class,
+        'fileshare' => FileshareResourceData::class,
     ];
 
     /**

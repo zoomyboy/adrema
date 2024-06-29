@@ -30,6 +30,7 @@ class GroupResource extends JsonResource
             'id' => $this->id,
             'level' => $this->level?->value,
             'children_count' => $this->children_count,
+            'fileshare' => $this->fileshare,
             'links' => [
                 'children' => route('api.group', ['group' => $this->id]),
             ]

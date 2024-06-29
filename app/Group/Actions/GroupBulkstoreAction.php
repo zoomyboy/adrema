@@ -22,6 +22,9 @@ class GroupBulkstoreAction
             '*.id' => 'required|integer|exists:groups,id',
             '*.inner_name' => 'required|string|max:255',
             '*.level' => ['required', 'string', Rule::in(Level::values())],
+            '*.fileshare' => 'present|nullable',
+            '*.fileshare.connection_id' => 'nullable|numeric|exists:fileshares,id',
+            '*.fileshare.resource' => 'nullable|string',
         ];
     }
 
@@ -31,7 +34,7 @@ class GroupBulkstoreAction
     public function handle(array $groups): void
     {
         foreach ($groups as $payload) {
-            Group::find($payload['id'])->update(['level' => $payload['level'], 'inner_name' => $payload['inner_name']]);
+            Group::find($payload['id'])->update(['level' => $payload['level'], 'inner_name' => $payload['inner_name'], 'fileshare' => $payload['fileshare']]);
         }
     }
 

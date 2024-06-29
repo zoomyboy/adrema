@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Group;
 
+use App\Fileshare\ConnectionTypes\OwncloudConnection;
+use App\Fileshare\Models\Fileshare;
 use App\Group;
 use App\Group\Enums\Level;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -72,5 +74,22 @@ class IndexTest extends TestCase
         $group = Group::factory()->for(Group::first(), 'parent')->create(['level' => null]);
 
         $this->get('/api/group/' . Group::first()->id)->assertJsonPath('data.0.id', $group->id);
+    }
+
+    public function testItDisplaysFileshare(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+
+        $connection = Fileshare::factory()
+            ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
+            ->name('lokaler Server')
+            ->create();
+
+        Group::factory()->for(Group::first(), 'parent')->create(['level' => null, 'fileshare' => [
+            'connection_id' => $connection->id,
+            'resource' => '/abc',
+        ]]);
+
+        $this->get('/api/group/' . Group::first()->id)->assertJsonPath('data.0.fileshare.resource', '/abc');
     }
 }
