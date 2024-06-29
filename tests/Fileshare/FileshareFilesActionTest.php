@@ -64,4 +64,17 @@ class FileshareFilesActionTest extends FileshareTestCase
             ->assertJsonPath('data.0.path', '/lala/dd/ee')
             ->assertJsonPath('data.0.parent', '/lala/dd');
     }
+
+    public function testItGetsFilesWithDot(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami()->withOwncloudUser('badenpowell', 'secret')
+            ->withDirs('badenpowell', ['/1. aa']);
+
+        $connection = Fileshare::factory()
+            ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
+            ->create();
+
+        $this->postJson(route('api.fileshare.files', ['fileshare' => $connection]), ['parent' => '/'])
+            ->assertJsonPath('data.0.name', '1. aa');
+    }
 }

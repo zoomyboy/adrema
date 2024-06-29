@@ -17,7 +17,7 @@ class ResourceData extends Data
 
         return self::from([
             'path' => $dir,
-            'name' => pathinfo($dir, PATHINFO_FILENAME),
+            'name' => pathinfo($dir, PATHINFO_BASENAME),
             'parent' => pathinfo($dir, PATHINFO_DIRNAME),
         ]);
     }
