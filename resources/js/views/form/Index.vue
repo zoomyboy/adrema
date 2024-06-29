@@ -61,10 +61,10 @@
                         v-model="single.excerpt"
                         hint="Gebe hier eine kurze Beschreibung für die Veranstaltungs-Übersicht ein (Maximal 130 Zeichen)."
                         label="Auszug"
-                        rows="5"
+                        :rows="5"
                         required
                     ></f-textarea>
-                    <f-editor id="description" v-model="single.description" name="description" label="Beschreibung" rows="10" required></f-editor>
+                    <f-editor id="description" v-model="single.description" name="description" label="Beschreibung" :rows="10" required></f-editor>
                 </div>
                 <div v-if="active === 1">
                     <ui-note class="mt-2"> Sobald sich der erste Teilnehmer für die Veranstaltung angemeldet hat, kann dieses Formular nicht mehr geändert werden. </ui-note>
@@ -79,12 +79,12 @@
                     </ui-note>
                     <div>
                         <ui-tabs v-model="activeMailTab" :entries="mailTabs"></ui-tabs>
-                        <f-editor v-if="activeMailTab === 0" id="mail_top" v-model="single.mail_top" name="mail_top" label="E-Mail-Teil 1" rows="8" conditions required>
+                        <f-editor v-if="activeMailTab === 0" id="mail_top" v-model="single.mail_top" name="mail_top" label="E-Mail-Teil 1" :rows="8" conditions required>
                             <template #conditions="{data, resolve}">
                                 <conditions :single="single" :value="data" @save="resolve"> </conditions>
                             </template>
                         </f-editor>
-                        <f-editor v-if="activeMailTab === 1" id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" rows="8" conditions required>
+                        <f-editor v-if="activeMailTab === 1" id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" :rows="8" conditions required>
                             <template #conditions="{data, resolve}">
                                 <conditions :single="single" :value="data" @save="resolve"> </conditions>
                             </template>
@@ -108,6 +108,13 @@
                         </template>
                     </f-multiplefiles>
                 </div>
+                <div v-if="active === 3">
+                    <div class="grid gap-3">
+                        <ui-remote-resource id="export" v-model="single.export.root" label="Haupt-Ordner"></ui-remote-resource>
+                        <f-select id="group_by" v-model="single.export.group_by" :options="allFields" label="Gruppieren nach" name="group_by"></f-select>
+                        <f-select id="to_group_field" v-model="single.export.to_group_field" :options="allFields" label="Nach Gruppe schreiben" name="to_group_field"></f-select>
+                    </div>
+                </div>
             </div>
             <template #actions>
                 <a href="#" @click.prevent="submit">
@@ -122,8 +129,8 @@
 
         <page-filter breakpoint="xl">
             <f-text id="search" :model-value="getFilter('search')" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
-            <f-switch id="past" :model-value="getFilter('past')" label="vergangene zeigen" size="sm" @update:model-value="setFilter('past', $event)"></f-switch>
-            <f-switch id="inactive" :model-value="getFilter('inactive')" label="inaktive zeigen" size="sm" @update:model-value="setFilter('inactive', $event)"></f-switch>
+            <f-switch id="past" :model-value="getFilter('past')" label="vergangene zeigen" name="past" size="sm" @update:model-value="setFilter('past', $event)"></f-switch>
+            <f-switch id="inactive" :model-value="getFilter('inactive')" label="inaktive zeigen" name="inactive" size="sm" @update:model-value="setFilter('inactive', $event)"></f-switch>
         </page-filter>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
@@ -166,7 +173,7 @@
 </template>
 
 <script setup>
-import {ref, inject} from 'vue';
+import {ref, inject, computed} from 'vue';
 import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from '../formtemplate/FormBuilder.vue';
 import Participants from './Participants.vue';
@@ -186,6 +193,21 @@ const fileSettingPopup = ref(null);
 
 const tabs = [{title: 'Allgemeines'}, {title: 'Formular'}, {title: 'Bestätigungs-E-Mail'}, {title: 'Export'}];
 const mailTabs = [{title: 'vor Daten'}, {title: 'nach Daten'}];
+
+const allFields = computed(() => {
+    if (!single.value) {
+        return [];
+    }
+
+    var result = [];
+    single.value.config.sections.forEach((section) => {
+        section.fields.forEach((field) => {
+            result.push({id: field.key, name: field.name});
+        });
+    });
+
+    return result;
+});
 
 function setTemplate(template) {
     active.value = 0;
