@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Form;
 
+use App\Form\Actions\ExportAction;
+use App\Form\Actions\ExportSyncAction;
 use App\Form\Enums\NamiType;
 use App\Form\Enums\SpecialType;
 use App\Form\Mails\ConfirmRegistrationMail;
@@ -41,6 +43,7 @@ class FormRegisterActionTest extends FormTestCase
                 ]),
             ])
             ->create();
+        ExportSyncAction::shouldRun()->once()->with($form->id);
 
         $this->register($form, ['vorname' => 'Max', 'nachname' => 'Muster', 'spitzname' => 'Abraham'])
             ->assertOk();

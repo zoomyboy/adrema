@@ -104,10 +104,7 @@ abstract class Field extends Data
         ];
     }
 
-    /**
-     * @return mixed
-     */
-    public function presentRaw()
+    public function presentRaw(): string
     {
         return $this->getPresenter()->present($this->value);
     }

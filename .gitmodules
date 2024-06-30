@@ -17,3 +17,6 @@
 [submodule "packages/flysystem-webdav"]
 	path = packages/flysystem-webdav
 	url = https://github.com/zoomyboy/flysystem-webdav.git
+[submodule "packages/table-document"]
+	path = packages/table-document
+	url = https://git.zoomyboy.de/zoomyboy/table-document.git

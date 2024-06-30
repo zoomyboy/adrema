@@ -16,6 +16,13 @@
         },
         {
             "type": "path",
+            "url": "./packages/table-document",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
             "url": "./packages/flysystem-webdav",
             "options": {
                 "symlink": true
@@ -69,6 +76,7 @@
         "league/flysystem-webdav": "dev-master as 3.28.0",
         "zoomyboy/osm": "1.0.3",
         "zoomyboy/phone": "^1.0",
+        "zoomyboy/table-document": "dev-master as 1.0",
         "zoomyboy/tex": "dev-main as 1.0"
     },
     "require-dev": {

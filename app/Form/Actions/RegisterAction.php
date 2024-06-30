@@ -32,6 +32,7 @@ class RegisterAction
         $form->getFields()->each(fn ($field) => $field->afterRegistration($form, $participant, $input));
 
         $participant->sendConfirmationMail();
+        ExportSyncAction::dispatch($form->id);
 
         return $participant;
     }
