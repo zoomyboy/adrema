@@ -16,6 +16,12 @@ return new class extends Migration
         Schema::table('forms', function (Blueprint $table) {
             $table->json('export')->after('config')->nullable();
         });
+        DB::table('forms')->update([
+            'export' => json_encode(['root' => null, 'group_by' => null, 'to_group_field' => null])
+        ]);
+        Schema::table('forms', function (Blueprint $table) {
+            $table->json('export')->nullable(false)->change();
+        });
     }
 
     /**

@@ -48,6 +48,7 @@ class FormRequest extends RequestFactory
             'mail_bottom' => EditorRequestFactory::new()->create(),
             'header_image' => $this->getHeaderImagePayload(str()->uuid() . '.jpg'),
             'mailattachments' => [],
+            'export' => ExportData::from([])->toArray(),
         ];
     }
 
