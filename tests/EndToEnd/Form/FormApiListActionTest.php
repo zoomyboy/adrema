@@ -7,7 +7,6 @@ use App\Subactivity;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
-use Tests\EndToEndTestCase;
 use Tests\Feature\Form\FormtemplateSectionRequest;
 use Tests\RequestFactories\EditorRequestFactory;
 

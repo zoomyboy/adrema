@@ -53,6 +53,7 @@ class FormFactory extends Factory
             'mail_bottom' => EditorRequestFactory::new()->create(),
             'is_active' => true,
             'is_private' => false,
+            'export' => ExportData::from([]),
         ];
     }
 
