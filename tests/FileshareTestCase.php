@@ -61,6 +61,10 @@ abstract class FileshareTestCase extends TestCase
             $adapter->deleteDirectory($directory);
         }
 
+        foreach ($adapter->files('/') as $file) {
+            $adapter->delete($file);
+        }
+
         foreach ($dirs as $dir) {
             $adapter->makeDirectory($dir);
         }

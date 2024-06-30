@@ -27,6 +27,7 @@ services:
             retries: 5
         volumes:
             - ./oc_tmp/files:/mnt/data
+            - ./08-skeleton.sh:/etc/entrypoint.d/08-skeleton.sh
 
     mariadb:
         image: mariadb:10.11
