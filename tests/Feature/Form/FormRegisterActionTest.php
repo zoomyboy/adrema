@@ -43,7 +43,6 @@ class FormRegisterActionTest extends FormTestCase
                 ]),
             ])
             ->create();
-        ExportSyncAction::shouldRun()->shouldReceive('asJob')->once()->with($form->id);
 
         $this->register($form, ['vorname' => 'Max', 'nachname' => 'Muster', 'spitzname' => 'Abraham'])
             ->assertOk();

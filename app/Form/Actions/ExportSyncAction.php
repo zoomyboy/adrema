@@ -3,6 +3,7 @@
 namespace App\Form\Actions;
 
 use App\Form\Models\Form;
+use App\Form\Models\Participant;
 use App\Group;
 use Illuminate\Support\Collection;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -15,7 +16,7 @@ class ExportSyncAction
 
     public Form $form;
 
-    public function handle(Form $form)
+    public function handle(Form $form): void
     {
         $this->form = $form;
 
@@ -44,6 +45,9 @@ class ExportSyncAction
         $this->handle(Form::find($formId));
     }
 
+    /**
+     * @param Collection<int, Participant> $participants
+     */
     private function allSheet(Collection $participants): TableDocumentData
     {
         $document = TableDocumentData::from(['title' => 'Anmeldungen für ' . $this->form->name, 'sheets' => []]);
