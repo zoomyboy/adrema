@@ -34,6 +34,7 @@ class FormUpdateAction
             'is_active' => 'boolean',
             'is_private' => 'boolean',
             'export' => 'nullable|array',
+            'needs_prevention' => 'present|boolean',
         ];
     }
 

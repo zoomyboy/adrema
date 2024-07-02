@@ -6,7 +6,6 @@ use App\Fileshare\Data\FileshareResourceData;
 use App\Form\Data\ExportData;
 use App\Form\Models\Form;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Http;
 
 class FormUpdateActionTest extends FormTestCase
 {
@@ -123,5 +122,15 @@ class FormUpdateActionTest extends FormTestCase
 
         $this->patchJson(route('form.update', ['form' => $form]), $payload)->assertSessionDoesntHaveErrors()->assertOk();
         $this->assertEquals(['firstname', 'geb', 'lastname'], $form->fresh()->meta['active_columns']);
+    }
+
+    public function testItUpdatesPrevention(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+        $payload = FormRequest::new()->state(['needs_prevention' => true])->create();
+
+        $this->patchJson(route('form.update', ['form' => $form]), $payload);
+        $this->assertTrue($form->fresh()->needs_prevention);
     }
 }

@@ -35,6 +35,7 @@ class Form extends Model implements HasMedia
         'is_active' => 'boolean',
         'is_private' => 'boolean',
         'export' => ExportData::class,
+        'needs_prevention' => 'boolean',
     ];
 
     /** @var array<int, string> */

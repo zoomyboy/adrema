@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Actions\DbMaintainAction;
+use App\Form\Actions\PreventionRememberAction;
 use App\Initialize\InitializeMembers;
 use App\Invoice\Actions\InvoiceSendAction;
 use Illuminate\Console\Scheduling\Schedule;
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
         InvoiceSendAction::class,
         InitializeMembers::class,
         DbMaintainAction::class,
+        PreventionRememberAction::class,
     ];
 
     /**
@@ -30,6 +32,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(DbMaintainAction::class)->daily();
         $schedule->command(InitializeMembers::class)->dailyAt('03:00');
+        $schedule->command(PreventionRememberAction::class)->dailyAt('11:00');
     }
 
     /**

@@ -49,6 +49,7 @@ class FormRequest extends RequestFactory
             'header_image' => $this->getHeaderImagePayload(str()->uuid() . '.jpg'),
             'mailattachments' => [],
             'export' => ExportData::from([])->toArray(),
+            'needs_prevention' => $this->faker->boolean(),
         ];
     }
 

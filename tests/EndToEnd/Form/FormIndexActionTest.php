@@ -52,6 +52,7 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.data.0.is_active', true)
             ->assertInertiaPath('data.data.0.is_private', false)
             ->assertInertiaPath('data.data.0.registration_from', '2023-05-06 04:00:00')
+            ->assertInertiaPath('data.data.0.needs_prevention', false)
             ->assertInertiaPath('data.data.0.registration_until', '2023-04-01 05:00:00')
             ->assertInertiaPath('data.data.0.links.participant_index', route('form.participant.index', ['form' => $form]))
             ->assertInertiaPath('data.data.0.links.export', route('form.export', ['form' => $form]))

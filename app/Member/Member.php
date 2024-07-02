@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Searchable;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
@@ -33,6 +32,7 @@ use Zoomyboy\Osm\Coordinate;
 use Zoomyboy\Osm\Geolocatable;
 use Zoomyboy\Osm\HasGeolocation;
 use Zoomyboy\Phone\HasPhoneNumbers;
+use App\Prevention\Enums\Prevention;
 
 /**
  * @property string $subscription_name
@@ -340,6 +340,37 @@ class Member extends Model implements Geolocatable
     {
         return $query->where('bill_kind', '!=', null)->where('subscription_id', '!=', null);
     }
+
+    /**
+     * @return array<int, Prevention>
+     */
+    public function preventions(?Carbon $date = null): array
+    {
+        $date = $date ?: now();
+        if (!$this->isLeader()) {
+            return [];
+        }
+
+        /** @var array<int, Prevention */
+        $preventions = [];
+
+        if ($this->efz === null || $this->efz->diffInYears($date) >= 5) {
+            $preventions[] = Prevention::EFZ;
+        }
+
+        if ($this->more_ps_at === null) {
+            if ($this->ps_at === null || $this->ps_at->diffInYears($date) >= 5) {
+                $preventions[] = Prevention::PS;
+            }
+        } else {
+            if ($this->more_ps_at === null || $this->more_ps_at->diffInYears($date) >= 5) {
+                $preventions[] = Prevention::MOREPS;
+            }
+        }
+
+        return $preventions;
+    }
+
 
     /**
      * @param Builder<self> $query
