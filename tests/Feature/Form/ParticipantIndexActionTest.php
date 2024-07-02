@@ -20,7 +20,7 @@ class ParticipantIndexActionTest extends FormTestCase
         $this->login()->loginNami()->withoutExceptionHandling();
         $group = Group::factory()->innerName('Stamm')->create();
         $form = Form::factory()
-            ->has(Participant::factory()->data(['vorname' => 'Max', 'select' => ['A', 'B'], 'stufe' => 'Pfadfinder', 'test1' => '', 'test2' => '', 'test3' => '', 'birthday' => '1991-04-20', 'bezirk' => $group->id]))
+            ->has(Participant::factory()->state(['member_id' => 55])->data(['vorname' => 'Max', 'select' => ['A', 'B'], 'stufe' => 'Pfadfinder', 'test1' => '', 'test2' => '', 'test3' => '', 'birthday' => '1991-04-20', 'bezirk' => $group->id]))
             ->fields([
                 $this->textField('vorname')->name('Vorname'),
                 $this->checkboxesField('select')->options(['A', 'B', 'C']),
@@ -40,12 +40,14 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('data.0.vorname_display', 'Max')
             ->assertJsonPath('data.0.stufe', 'Pfadfinder')
             ->assertJsonPath('data.0.bezirk', $group->id)
+            ->assertJsonPath('data.0.member_id', 55)
             ->assertJsonPath('data.0.bezirk_display', 'Stamm')
             ->assertJsonPath('data.0.birthday_display', '20.04.1991')
             ->assertJsonPath('data.0.birthday', '1991-04-20')
             ->assertJsonPath('data.0.select', ['A', 'B'])
             ->assertJsonPath('data.0.select_display', 'A, B')
             ->assertJsonPath('data.0.links.destroy', route('participant.destroy', ['participant' => $form->participants->first()]))
+            ->assertJsonPath('data.0.links.assign', route('participant.assign', ['participant' => $form->participants->first()]))
             ->assertJsonPath('meta.columns.0.name', 'Vorname')
             ->assertJsonPath('meta.columns.0.base_type', class_basename(TextField::class))
             ->assertJsonPath('meta.columns.0.id', 'vorname')

@@ -1,5 +1,8 @@
 <template>
     <div class="mt-5">
+        <ui-popup v-if="assigning !== null" heading="Mitglied zuweisen" closeable @close="assigning = null">
+            <member-assign @assign="assign"></member-assign>
+        </ui-popup>
         <ui-popup v-if="deleting !== null" heading="Teilnehmer*in löschen?" @close="deleting = null">
             <div>
                 <p class="mt-4">Den*Die Teilnehmer*in löschen?</p>
@@ -58,15 +61,20 @@
             <template v-for="(participant, index) in data" :key="index">
                 <tr>
                     <td v-for="(column, columnindex) in activeColumns" :key="column.id">
-                        <ui-table-toggle-button
-                            v-if="columnindex === 0 && groupParticipants"
-                            :value="participant"
-                            :text="participant[column.display_attribute]"
-                            :level="0"
-                            :active="isOpen(participant.id)"
-                            @toggle="toggle(participant)"
-                        ></ui-table-toggle-button>
-                        <div v-else v-text="participant[column.display_attribute]"></div>
+                        <div class="flex items-center space-x-2">
+                            <button v-if="columnindex === 0 && participant.member_id === null" v-tooltip="`kein Mitglied zugewiesen. Per Klick zuweisen`" @click.prevent="assigning = participant">
+                                <ui-sprite src="warning-triangle" class="text-yellow-400 w-5 h-5"></ui-sprite>
+                            </button>
+                            <ui-table-toggle-button
+                                v-if="columnindex === 0 && groupParticipants"
+                                :value="participant"
+                                :text="participant[column.display_attribute]"
+                                :level="0"
+                                :active="isOpen(participant.id)"
+                                @toggle="toggle(participant)"
+                            ></ui-table-toggle-button>
+                            <div v-else v-text="participant[column.display_attribute]"></div>
+                        </div>
                     </td>
                     <td>
                         <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(participant)"><ui-sprite src="pencil"></ui-sprite></a>
@@ -104,9 +112,12 @@
 import {watch, ref, computed} from 'vue';
 import {useApiIndex} from '../../composables/useApiIndex.js';
 import useTableToggle from '../../composables/useTableToggle.js';
+import MemberAssign from './MemberAssign.vue';
 
 const deleting = ref(null);
 const {isOpen, toggle, childrenOf, clearToggle} = useTableToggle({});
+
+const assigning = ref(null);
 
 const props = defineProps({
     url: {
@@ -136,6 +147,12 @@ const groupParticipants = computed({
         await reload();
     },
 });
+
+async function assign(memberId) {
+    await axios.post(assigning.value.links.assign, {member_id: memberId});
+    reload();
+    assigning.value = null;
+}
 
 var {meta, data, reload, reloadPage, axios, remove, toFilterString, url, updateUrl} = useApiIndex(props.hasNamiField ? props.rootUrl : props.url, 'participant');
 
