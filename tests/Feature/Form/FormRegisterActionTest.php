@@ -430,7 +430,7 @@ class FormRegisterActionTest extends FormTestCase
             ->create();
 
         $this->register($form, ['email' => 'max@muster.de'])->assertOk();
-        $this->assertNull($form->participants->first()->mitgliedsnr);
+        $this->assertNull($form->participants->first()->member_id);
         $this->assertNull($form->participants->first()->parent_id);
     }
 
