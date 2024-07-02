@@ -5,6 +5,7 @@ namespace App\Prevention\Mails;
 use App\Invoice\InvoiceSettings;
 use App\Prevention\Contracts\Preventable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -53,9 +54,9 @@ class PreventionRememberMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array
+     * @return array<int, Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [];
     }

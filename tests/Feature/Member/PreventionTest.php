@@ -91,7 +91,7 @@ class PreventionTest extends TestCase
         $this->assertNull($participant->fresh()->last_remembered_at);
     }
 
-    private function attributes(): Generator
+    protected function attributes(): Generator
     {
         yield [
             'attrs' => ['efz' => null, 'ps_at' => now()],
@@ -136,6 +136,7 @@ class PreventionTest extends TestCase
 
     /**
      * @param array<int, Prevention> $preventions
+     * @param array<string, mixed> $memberAttributes
      * @dataProvider attributes
      */
     public function testItRemembersMember(array $memberAttributes, array $preventions): void

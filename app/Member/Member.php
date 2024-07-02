@@ -351,7 +351,7 @@ class Member extends Model implements Geolocatable
             return [];
         }
 
-        /** @var array<int, Prevention */
+        /** @var array<int, Prevention> */
         $preventions = [];
 
         if ($this->efz === null || $this->efz->diffInYears($date) >= 5) {

@@ -52,6 +52,9 @@ class Participant extends Model implements Preventable
         return $filter->apply($query);
     }
 
+    /**
+     * @return BelongsTo<Member, self>
+     */
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
