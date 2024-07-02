@@ -41,6 +41,6 @@ class ParticipantFactory extends Factory
 
     public function nr(int $number): self
     {
-        return $this->state(['mitgliedsnr' => $number]);
+        return $this->state(['member_id' => $number]);
     }
 }
