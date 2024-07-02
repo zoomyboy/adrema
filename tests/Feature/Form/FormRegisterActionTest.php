@@ -394,7 +394,7 @@ class FormRegisterActionTest extends FormTestCase
     public function testItSetsMitgliedsnrForMainMember(): void
     {
         $this->login()->loginNami();
-        $this->createMember(['mitgliedsnr' => '9966', 'email' => 'max@muster.de', 'firstname' => 'Max', 'lastname' => 'Muster']);
+        $member = $this->createMember(['mitgliedsnr' => '9966', 'email' => 'max@muster.de', 'firstname' => 'Max', 'lastname' => 'Muster']);
         $form = Form::factory()->fields([
             $this->textField('email')->namiType(NamiType::EMAIL),
             $this->textField('firstname')->namiType(NamiType::FIRSTNAME),
@@ -403,7 +403,7 @@ class FormRegisterActionTest extends FormTestCase
             ->create();
 
         $this->register($form, ['email' => 'max@muster.de', 'firstname' => 'Max', 'lastname' => 'Muster'])->assertOk();
-        $this->assertEquals('9966', $form->participants->first()->mitgliedsnr);
+        $this->assertEquals($member->id, $form->participants->first()->member_id);
     }
 
     public function testItDoesntSetMitgliedsnrWhenFieldDoesntHaveType(): void
@@ -416,7 +416,7 @@ class FormRegisterActionTest extends FormTestCase
             ->create();
 
         $this->register($form, ['email' => 'max@muster.de'])->assertOk();
-        $this->assertNull($form->participants->first()->mitgliedsnr);
+        $this->assertNull($form->participants->first()->member_id);
     }
 
     public function testItDoesntSyncMembersWhenTwoMembersMatch(): void
@@ -710,14 +710,14 @@ class FormRegisterActionTest extends FormTestCase
     public function testParticipantsHaveRelationToActualMember(): void
     {
         $this->login()->loginNami();
-        $this->createMember(['mitgliedsnr' => '5505']);
+        $member = $this->createMember(['mitgliedsnr' => '5505']);
         $form = Form::factory()->fields([
             $this->namiField('members'),
         ])
             ->create();
 
         $this->register($form, ['members' => [['id' => '5505']]])->assertOk();
-        $this->assertEquals('5505', $form->participants->get(1)->mitgliedsnr);
+        $this->assertEquals($member->id, $form->participants->get(1)->member_id);
     }
 
     public function testItSetsRegionIdAndGroupIdOfParentGroup(): void

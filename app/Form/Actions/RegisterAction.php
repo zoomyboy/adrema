@@ -22,11 +22,11 @@ class RegisterAction
         $memberQuery = FieldCollection::fromRequest($form, $input)
             ->withNamiType()
             ->reduce(fn ($query, $field) => $field->namiType->performQuery($query, $field->value), (new Member())->newQuery());
-        $mglnr = $form->getFields()->withNamiType()->count() && $memberQuery->count() === 1 ? $memberQuery->first()->mitgliedsnr : null;
+        $member = $form->getFields()->withNamiType()->count() && $memberQuery->count() === 1 ? $memberQuery->first() : null;
 
         $participant = $form->participants()->create([
             'data' => $input,
-            'mitgliedsnr' => $mglnr,
+            'member_id' => $member?->id,
         ]);
 
         $form->getFields()->each(fn ($field) => $field->afterRegistration($form, $participant, $input));
