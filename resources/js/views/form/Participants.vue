@@ -150,7 +150,7 @@ const groupParticipants = computed({
 
 async function assign(memberId) {
     await axios.post(assigning.value.links.assign, {member_id: memberId});
-    reload();
+    reload(false);
     assigning.value = null;
 }
 
