@@ -64,7 +64,6 @@ enum NamiType: string
             static::FIRSTNAME => $query->where('firstname', $value),
             static::LASTNAME => $query->where('lastname', $value),
             static::BIRTHDAY => $query->where('birthday', $value),
-            static::EMAIL => $query->where('email', $value),
             default => $query,
         };
     }
