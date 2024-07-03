@@ -14,23 +14,12 @@
                 </div>
             </div>
             <div v-if="results.hits.length" class="mt-5 sm:mt-10 space-y-2">
-                <div v-for="member in results.hits" :key="member.id">
-                    <div class="flex items-center justify-between hover:bg-sky-600/20 transition text-sky-300 px-3 sm:px-6 py-1 sm:py-3 rounded-lg">
-                        <div class="flex space-x-2 items-center">
-                            <div class="w-5 sm:w-16 flex flex-none">
-                                <ui-age-groups icon-class="w-4 h-4 sm:w-6 sm:h-6" class="flex-col sm:flex-row" :member="member"></ui-age-groups>
-                            </div>
-                            <div class="flex items-baseline flex-col md:flex-row">
-                                <span class="text-lg" v-text="member.fullname"></span>
-                                <span class="ml-2 text-xs" v-text="member.group_name"></span>
-                            </div>
-                        </div>
-                        <div class="flex space-x-2">
-                            <i-link v-tooltip="`Details`" :href="member.links.show" class="inline-flex btn btn-primary btn-sm" @click="emit('close')"><ui-sprite src="eye"></ui-sprite></i-link>
-                            <i-link v-tooltip="`Bearbeiten`" :href="member.links.edit" class="inline-flex btn btn-warning btn-sm" @click="emit('close')"><ui-sprite src="pencil"></ui-sprite></i-link>
-                        </div>
-                    </div>
-                </div>
+                <ui-search-result v-for="member in results.hits" :key="member.id" :member="member">
+                    <template #buttons>
+                        <i-link v-tooltip="`Details`" :href="member.links.show" class="inline-flex btn btn-primary btn-sm" @click="emit('close')"><ui-sprite src="eye"></ui-sprite></i-link>
+                        <i-link v-tooltip="`Bearbeiten`" :href="member.links.edit" class="inline-flex btn btn-warning btn-sm" @click="emit('close')"><ui-sprite src="pencil"></ui-sprite></i-link>
+                    </template>
+                </ui-search-result>
             </div>
         </div>
     </div>
