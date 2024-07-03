@@ -9,7 +9,7 @@
             <f-select id="country" v-model="values.country" :options="countries" name="country" label="Land" required></f-select>
 
             <div class="border-gray-200 shadow shadow-primary-700 p-3 shadow-[0_0_4px_gray] col-span-2">
-                <f-text id="search_text" ref="searchInput" v-model="searchText" class="col-span-2" label="Suchen …" size="sm" @keypress.enter.prevent="onSubmitFirstMemberResult"></f-text>
+                <f-text id="search_text" ref="searchInput" v-model="searchString" class="col-span-2" label="Suchen …" size="sm" @keypress.enter.prevent="onSubmitFirstMemberResult"></f-text>
                 <div class="mt-2 grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2 col-span-2">
                     <f-switch
                         v-for="member in results"
@@ -58,7 +58,7 @@ const values = ref({
     ...props.data,
 });
 
-const searchText = computed({
+const searchString = computed({
     get: () => realSearchString.value,
     set: async (v) => {
         realSearchString.value = v;
