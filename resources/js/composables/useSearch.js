@@ -4,7 +4,7 @@ export default function useSearch() {
     const axios = inject('axios');
     async function search(text, filters = [], options = {}) {
         var response = await axios.post(
-            '/indexes/members/search',
+            import.meta.env.MODE === 'development' ? 'http://localhost:7700/indexes/members/search' : '/indexes/members/search',
             {
                 q: text,
                 filter: filters,
