@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <button v-for="(compiler, index) in compilers" class="btn btn-primary mt-3 inline-block" @click.prevent="submit(compiler.class)" v-text="compiler.title"></button>
+            <button v-for="(compiler, index) in compilers" :key="index" class="btn btn-primary mt-3 inline-block" @click.prevent="submit(compiler.class)" v-text="compiler.title"></button>
         </form>
     </page-layout>
 </template>
