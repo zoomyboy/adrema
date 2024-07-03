@@ -37,30 +37,15 @@
 </template>
 
 <script lang="js" setup>
-import { computed, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import useSearch from '../../composables/useSearch.js';
 const emit = defineEmits(['close']);
 
-const { search } = useSearch();
+const { searchString, results } = useSearch(null, { limit: 10 });
 
-const realSearchString = ref('');
-const results = ref({ hits: [] });
 const searchInput = ref(null);
 
 onMounted(() => {
     searchInput.value.focus();
-});
-
-const searchString = computed({
-    get: () => realSearchString.value,
-    set: async (v) => {
-        realSearchString.value = v;
-
-        if (!v.length) {
-            results.value = { hits: [] };
-            return;
-        }
-        results.value = await search(v, [], { limit: 10 });
-    },
 });
 </script>

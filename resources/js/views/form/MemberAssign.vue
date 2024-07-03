@@ -22,25 +22,8 @@
 </template>
 
 <script lang="js" setup>
-import { computed, ref } from 'vue';
 import useSearch from '../../composables/useSearch.js';
 const emit = defineEmits(['assign']);
 
-const { search } = useSearch();
-
-const realSearchString = ref('');
-const results = ref(null);
-
-const searchString = computed({
-    get: () => realSearchString.value,
-    set: async (v) => {
-        realSearchString.value = v;
-
-        if (!v.length) {
-            results.value = null;
-            return;
-        }
-        results.value = await search(v, [], { limit: 10 });
-    },
-});
+const { searchString, results } = useSearch(null, { limit: 10 });
 </script>

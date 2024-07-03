@@ -1,7 +1,12 @@
-import {inject} from 'vue';
+import {inject, computed, ref} from 'vue';
 
-export default function useSearch() {
+export default function useSearch(params = null, options = null) {
+    params = params === null ? [] : params;
+    options = options === null ? {} : options;
     const axios = inject('axios');
+    const results = ref({hits: []});
+    const realSearchString = ref('');
+
     async function search(text, filters = [], options = {}) {
         var response = await axios.post(
             import.meta.env.MODE === 'development' ? 'http://localhost:7700/indexes/members/search' : '/indexes/members/search',
@@ -17,7 +22,28 @@ export default function useSearch() {
         return response.data;
     }
 
+    function clearSearch() {
+        searchString.value = '';
+    }
+
+    const searchString = computed({
+        get: () => realSearchString.value,
+        set: async (v) => {
+            realSearchString.value = v;
+
+            if (!v.length) {
+                results.value = {hits: []};
+                return;
+            }
+
+            results.value = await search(v, params, options);
+        },
+    });
+
     return {
         search,
+        searchString,
+        results,
+        clearSearch,
     };
 }

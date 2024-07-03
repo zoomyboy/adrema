@@ -12,7 +12,7 @@
                 <f-text id="search_text" ref="searchInput" v-model="searchString" class="col-span-2" label="Suchen …" size="sm" @keypress.enter.prevent="onSubmitFirstMemberResult"></f-text>
                 <div class="mt-2 grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2 col-span-2">
                     <f-switch
-                        v-for="member in results"
+                        v-for="member in results.hits"
                         :id="`members-${member.id}`"
                         :key="member.id"
                         v-model="values.members"
@@ -32,11 +32,11 @@
 </template>
 
 <script lang="js" setup>
-import { ref, computed, inject } from 'vue';
+import { ref, inject } from 'vue';
 import useSearch from '../../composables/useSearch.js';
 const axios = inject('axios');
 
-const { search } = useSearch();
+const { searchString, results, clearSearch } = useSearch(['birthday IS NOT NULL', 'address IS NOT EMPTY']);
 
 const props = defineProps({
     data: {},
@@ -44,8 +44,6 @@ const props = defineProps({
     compilers: {},
 });
 
-const realSearchString = ref('');
-const results = ref([]);
 const searchInput = ref([]);
 const values = ref({
     type: null,
@@ -56,15 +54,6 @@ const values = ref({
     zipLocation: '',
     country: null,
     ...props.data,
-});
-
-const searchString = computed({
-    get: () => realSearchString.value,
-    set: async (v) => {
-        realSearchString.value = v;
-
-        results.value = (await search(v, ['birthday IS NOT NULL', 'address IS NOT EMPTY'])).hits;
-    },
 });
 
 async function submit(compiler) {
@@ -80,15 +69,15 @@ function onSubmitMemberResult(selected) {
         values.value.members.push(selected.id);
     }
 
-    realSearchString.value = '';
+    clearSearch();
     searchInput.value.$el.querySelector('input').focus();
 }
 function onSubmitFirstMemberResult() {
-    if (results.value.length === 0) {
-        realSearchString.value = '';
+    if (results.value.hits.length === 0) {
+        clearSearch();
         return;
     }
 
-    onSubmitMemberResult(results.value[0]);
+    onSubmitMemberResult(results.value.hits[0]);
 }
 </script>
