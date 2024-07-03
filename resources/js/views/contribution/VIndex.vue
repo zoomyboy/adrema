@@ -50,7 +50,7 @@ const searchTextField = ref([]);
 const values = ref({
     type: null,
     members: [],
-    event_name: '',
+    eventName: '',
     dateFrom: '',
     dateUntil: '',
     zipLocation: '',
