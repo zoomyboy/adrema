@@ -80,9 +80,9 @@ const v = computed({
             return;
         }
 
-        var a = props.modelValue.filter((i) => i !== this.value);
+        var a = props.modelValue.filter((i) => i !== props.value);
         if (v) {
-            a.push(this.value);
+            a.push(props.value);
         }
 
         emit('update:modelValue', a);
