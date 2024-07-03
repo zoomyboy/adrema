@@ -2,7 +2,7 @@
     <label class="flex flex-col items-start group" :for="id" :class="sizeClass(size)">
         <f-label v-if="label" :required="false" :value="label"></f-label>
         <span class="relative flex-none flex" :class="{'pr-8': hint, [fieldHeight]: true}">
-            <input :id="id" v-model="v" type="checkbox" :name="name" :value="value" :disabled="disabled" class="absolute peer invisible" @keypress="$emit('keypress', $event)" />
+            <input :id="id" v-model="v" type="checkbox" :name="name" :value="value" :disabled="disabled" class="absolute peer opacity-0" @keypress="$emit('keypress', $event)" />
             <span
                 class="relative cursor-pointer h-full rounded peer-focus:bg-red-500 transition-all duration-300 group-[.field-base]:w-[70px] group-[.field-sm]:w-[46px] bg-gray-700 peer-checked:bg-primary-700"
             ></span>
