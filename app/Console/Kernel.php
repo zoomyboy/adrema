@@ -2,11 +2,11 @@
 
 namespace App\Console;
 
+use App\Actions\DbMaintainAction;
 use App\Initialize\InitializeMembers;
 use App\Invoice\Actions\InvoiceSendAction;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Laravel\Telescope\Console\PruneCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         InvoiceSendAction::class,
         InitializeMembers::class,
+        DbMaintainAction::class,
     ];
 
     /**
@@ -27,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(PruneCommand::class, ['--hours' => 168])->daily();     // 168h = 7 Tage
+        $schedule->command(DbMaintainAction::class)->daily();
         $schedule->command(InitializeMembers::class)->dailyAt('03:00');
     }
 
