@@ -172,16 +172,16 @@
     </page-layout>
 </template>
 
-<script setup>
-import {ref, inject, computed} from 'vue';
-import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
+<script lang="js" setup>
+import { ref, inject, computed } from 'vue';
+import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from '../formtemplate/FormBuilder.vue';
 import Participants from './Participants.vue';
 import Conditions from './Conditions.vue';
-import {useToast} from 'vue-toastification';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps(indexProps);
-var {meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter} = useIndex(props.data, 'form');
+var { meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter } = useIndex(props.data, 'form');
 const axios = inject('axios');
 const toast = useToast();
 
@@ -191,8 +191,8 @@ const deleting = ref(null);
 const showing = ref(null);
 const fileSettingPopup = ref(null);
 
-const tabs = [{title: 'Allgemeines'}, {title: 'Formular'}, {title: 'Bestätigungs-E-Mail'}, {title: 'Export'}];
-const mailTabs = [{title: 'vor Daten'}, {title: 'nach Daten'}];
+const tabs = [{ title: 'Allgemeines' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }];
+const mailTabs = [{ title: 'vor Daten' }, { title: 'nach Daten' }];
 
 const allFields = computed(() => {
     if (!single.value) {
@@ -202,7 +202,7 @@ const allFields = computed(() => {
     var result = [];
     single.value.config.sections.forEach((section) => {
         section.fields.forEach((field) => {
-            result.push({id: field.key, name: field.name});
+            result.push({ id: field.key, name: field.name });
         });
     });
 

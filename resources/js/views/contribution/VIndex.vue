@@ -31,12 +31,12 @@
     </page-layout>
 </template>
 
-<script setup>
-import {ref, computed, inject} from 'vue';
+<script lang="js" setup>
+import { ref, computed, inject } from 'vue';
 import useSearch from '../../composables/useSearch.js';
 const axios = inject('axios');
 
-const {search} = useSearch();
+const { search } = useSearch();
 
 const props = defineProps({
     data: {},

@@ -132,21 +132,21 @@
     </page-layout>
 </template>
 
-<script setup>
+<script lang="js" setup>
 import MemberInvoicePositions from './MemberInvoicePositions.vue';
 import MemberMemberships from './MemberMemberships.vue';
 import MemberCourses from './MemberCourses.vue';
 import Tags from './Tags.vue';
 import Actions from './index/Actions.vue';
-import {indexProps, useIndex} from '../../composables/useIndex.js';
-import {ref, defineProps} from 'vue';
+import { indexProps, useIndex } from '../../composables/useIndex.js';
+import { ref, defineProps } from 'vue';
 
 const single = ref(null);
 const deleting = ref(null);
 const membershipFilters = ref(null);
 
 const props = defineProps(indexProps);
-var {router, data, meta, getFilter, setFilter, filterString, reloadPage} = useIndex(props.data, 'member');
+var { router, data, meta, getFilter, setFilter, filterString, reloadPage } = useIndex(props.data, 'member');
 
 function exportMembers() {
     window.open(`/member-export?filter=${filterString.value}`);
@@ -154,7 +154,7 @@ function exportMembers() {
 
 async function remove(member) {
     new Promise((resolve, reject) => {
-        deleting.value = {resolve, reject, member};
+        deleting.value = { resolve, reject, member };
     })
         .then(() => {
             router.delete(`/member/${member.id}`);

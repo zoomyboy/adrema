@@ -45,8 +45,8 @@
     ></f-select>
 </template>
 
-<script setup>
-import {computed} from 'vue';
+<script lang="js" setup>
+import { computed } from 'vue';
 
 const props = defineProps({
     modelValue: {},
@@ -57,7 +57,7 @@ const props = defineProps({
 const fieldOptions = computed(() => {
     return props.payload.reduce((carry, section) => {
         return section.fields.reduce((fcarry, field) => {
-            return field.type === 'GroupField' ? fcarry.concat({id: field.key, name: field.name}) : fcarry;
+            return field.type === 'GroupField' ? fcarry.concat({ id: field.key, name: field.name }) : fcarry;
         }, carry);
     }, []);
 });

@@ -12,7 +12,7 @@
     <f-text id="max" :model-value="modelValue.max" label="maximaler Wert" size="sm" type="number" @update:modelValue="$emit('update:modelValue', {...modelValue, max: parse($event)})"></f-text>
 </template>
 
-<script setup>
+<script lang="js" setup>
 const props = defineProps({
     modelValue: {},
     meta: {},

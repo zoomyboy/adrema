@@ -14,7 +14,7 @@
     </ui-box>
 </template>
 
-<script setup>
+<script lang="js" setup>
 const emit = defineEmits(['close', 'submit']);
 
 const props = defineProps({

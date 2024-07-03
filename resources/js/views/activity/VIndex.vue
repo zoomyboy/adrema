@@ -36,12 +36,12 @@
     </page-layout>
 </template>
 
-<script setup>
-import {ref, defineProps} from 'vue';
-import {indexProps, useIndex} from '../../composables/useIndex.js';
+<script lang="js" setup>
+import { ref, defineProps } from 'vue';
+import { indexProps, useIndex } from '../../composables/useIndex.js';
 
 const props = defineProps(indexProps);
-const {router, data, meta} = useIndex(props.data, 'activity');
+const { router, data, meta } = useIndex(props.data, 'activity');
 const deleting = ref(null);
 
 function remove() {

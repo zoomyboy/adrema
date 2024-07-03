@@ -92,14 +92,14 @@
     </page-layout>
 </template>
 
-<script setup>
-import {ref} from 'vue';
-import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
+<script lang="js" setup>
+import { ref } from 'vue';
+import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 import useTableToggle from '../../composables/useTableToggle.js';
 
 const props = defineProps(indexProps);
-var {axios, meta, data} = useIndex(props.data, 'invoice');
-const {isOpen, toggle, childrenOf} = useTableToggle({null: data.value});
+var { axios, meta, data } = useIndex(props.data, 'invoice');
+const { isOpen, toggle, childrenOf } = useTableToggle({ null: data.value });
 
 var editing = ref(null);
 

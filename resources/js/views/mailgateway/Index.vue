@@ -77,12 +77,12 @@
     </page-layout>
 </template>
 
-<script setup>
-import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
+<script lang="js" setup>
+import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 import SettingLayout from '../setting/Layout.vue';
 
 const props = defineProps(indexProps);
-const {meta, data, create, edit, cancel, single, submit} = useIndex(props.data, 'mailgateway');
+const { meta, data, create, edit, cancel, single, submit } = useIndex(props.data, 'mailgateway');
 
 function getType(type) {
     return meta.value.types.find((t) => t.id === type);

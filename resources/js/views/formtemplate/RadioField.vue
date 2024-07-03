@@ -38,9 +38,9 @@
     ></f-switch>
 </template>
 
-<script setup>
+<script lang="js" setup>
 import useElements from './useElements.js';
-const {addOption, setOption, removeOption} = useElements();
+const { addOption, setOption, removeOption } = useElements();
 
 const props = defineProps({
     modelValue: {},

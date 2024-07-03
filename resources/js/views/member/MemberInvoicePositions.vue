@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script setup>
+<script lang="js" setup>
 defineEmits(['close']);
 import { useApiIndex } from '../../composables/useApiIndex.js';
 

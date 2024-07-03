@@ -10,7 +10,7 @@
     ></f-switch>
 </template>
 
-<script setup>
+<script lang="js" setup>
 const props = defineProps({
     modelValue: {},
     meta: {},

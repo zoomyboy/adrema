@@ -74,9 +74,9 @@
     </page-layout>
 </template>
 
-<script setup>
-import {ref, inject, defineProps} from 'vue';
-import {useIndex} from '../../composables/useIndex.js';
+<script lang="js" setup>
+import { ref, inject, defineProps } from 'vue';
+import { useIndex } from '../../composables/useIndex.js';
 
 const props = defineProps({
     data: {
@@ -85,13 +85,13 @@ const props = defineProps({
     },
     meta: {
         type: Object,
-        default: () => {},
+        default: () => { },
     },
 });
 
-const {router} = useIndex({data: [], meta: {}}, 'maildispatcher');
+const { router } = useIndex({ data: [], meta: {} }, 'maildispatcher');
 
-const model = ref(props.data === undefined ? {...props.meta.default_model} : {...props.data});
+const model = ref(props.data === undefined ? { ...props.meta.default_model } : { ...props.data });
 const members = ref(null);
 const axios = inject('axios');
 

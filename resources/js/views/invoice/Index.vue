@@ -124,14 +124,14 @@
     </page-layout>
 </template>
 
-<script setup>
-import {ref} from 'vue';
-import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
+<script lang="js" setup>
+import { ref } from 'vue';
+import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 const props = defineProps(indexProps);
-var {axios, meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter} = useIndex(props.data, 'invoice');
+var { axios, meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter } = useIndex(props.data, 'invoice');
 const massstore = ref(null);
 const deleting = ref(null);
-const forMember = ref({member_id: null, subscription_id: null, year: null});
+const forMember = ref({ member_id: null, subscription_id: null, year: null });
 
 async function saveForMember() {
     single.value = (await axios.post(meta.value.links.newInvoiceAttributes, forMember.value)).data;

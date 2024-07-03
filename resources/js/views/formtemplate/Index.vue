@@ -58,15 +58,15 @@
     </page-layout>
 </template>
 
-<script setup>
-import {ref} from 'vue';
-import {indexProps, useIndex} from '../../composables/useInertiaApiIndex.js';
+<script lang="js" setup>
+import { ref } from 'vue';
+import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from './FormBuilder.vue';
 
 const deleting = ref(null);
 
 const props = defineProps(indexProps);
-var {meta, data, reloadPage, create, remove, single, edit, cancel, submit} = useIndex(props.data, 'invoice');
+var { meta, data, reloadPage, create, remove, single, edit, cancel, submit } = useIndex(props.data, 'invoice');
 
 function innerSubmit(payload) {
     single.value = payload;

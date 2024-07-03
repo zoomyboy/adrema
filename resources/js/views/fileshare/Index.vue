@@ -75,11 +75,11 @@
     </page-layout>
 </template>
 
-<script setup>
-import {useApiIndex} from '../../composables/useApiIndex.js';
+<script lang="js" setup>
+import { useApiIndex } from '../../composables/useApiIndex.js';
 import SettingLayout from '../setting/Layout.vue';
 
-const {meta, data, reload, create, edit, cancel, single, submit} = useApiIndex('/api/fileshare', 'fileshare');
+const { meta, data, reload, create, edit, cancel, single, submit } = useApiIndex('/api/fileshare', 'fileshare');
 
 function getType(type) {
     if (!type) {

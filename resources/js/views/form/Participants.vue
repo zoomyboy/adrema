@@ -108,14 +108,14 @@
     </div>
 </template>
 
-<script setup>
-import {watch, ref, computed} from 'vue';
-import {useApiIndex} from '../../composables/useApiIndex.js';
+<script lang="js" setup>
+import { watch, ref, computed } from 'vue';
+import { useApiIndex } from '../../composables/useApiIndex.js';
 import useTableToggle from '../../composables/useTableToggle.js';
 import MemberAssign from './MemberAssign.vue';
 
 const deleting = ref(null);
-const {isOpen, toggle, childrenOf, clearToggle} = useTableToggle({});
+const { isOpen, toggle, childrenOf, clearToggle } = useTableToggle({});
 
 const assigning = ref(null);
 
@@ -149,12 +149,12 @@ const groupParticipants = computed({
 });
 
 async function assign(memberId) {
-    await axios.post(assigning.value.links.assign, {member_id: memberId});
+    await axios.post(assigning.value.links.assign, { member_id: memberId });
     reload(false);
     assigning.value = null;
 }
 
-var {meta, data, reload, reloadPage, axios, remove, toFilterString, url, updateUrl} = useApiIndex(props.hasNamiField ? props.rootUrl : props.url, 'participant');
+var { meta, data, reload, reloadPage, axios, remove, toFilterString, url, updateUrl } = useApiIndex(props.hasNamiField ? props.rootUrl : props.url, 'participant');
 
 const activeColumns = computed(() => meta.value.columns.filter((c) => meta.value.form_meta.active_columns.includes(c.id)));
 
@@ -186,19 +186,19 @@ watch(
             filter: toFilterString(newValue),
         });
     },
-    {deep: true}
+    { deep: true }
 );
 
 const checkboxFilterOptions = ref([
-    {id: true, name: 'Ja'},
-    {id: false, name: 'Nein'},
+    { id: true, name: 'Ja' },
+    { id: false, name: 'Nein' },
 ]);
 
 function dropdownFilterOptions(filter) {
     return [
-        {id: null, name: 'keine Auswahl'},
+        { id: null, name: 'keine Auswahl' },
         ...filter.options.map((f) => {
-            return {id: f, name: f};
+            return { id: f, name: f };
         }),
     ];
 }

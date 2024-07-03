@@ -21,12 +21,12 @@
     </div>
 </template>
 
-<script setup>
-import {computed, ref} from 'vue';
+<script lang="js" setup>
+import { computed, ref } from 'vue';
 import useSearch from '../../composables/useSearch.js';
 const emit = defineEmits(['assign']);
 
-const {search} = useSearch();
+const { search } = useSearch();
 
 const realSearchString = ref('');
 const results = ref(null);
@@ -40,7 +40,7 @@ const searchString = computed({
             results.value = null;
             return;
         }
-        results.value = await search(v, [], {limit: 10});
+        results.value = await search(v, [], { limit: 10 });
     },
 });
 </script>

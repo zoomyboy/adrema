@@ -71,9 +71,9 @@
     </form>
 </template>
 
-<script setup>
-import {watch, computed, ref} from 'vue';
-import {snakeCase} from 'change-case';
+<script lang="js" setup>
+import { watch, computed, ref } from 'vue';
+import { snakeCase } from 'change-case';
 import '!/adrema-form/dist/main.js';
 import Asideform from './Asideform.vue';
 import TextareaField from './TextareaField.vue';
@@ -95,7 +95,7 @@ const active = ref(null);
 async function onReorder() {
     var order = this.inner.map((f) => f.id);
     this.loading = true;
-    This.inner = (await this.axios.patch(`/mediaupload/${this.parentName}/${this.parentId}/${this.collection}`, {order})).data;
+    This.inner = (await this.axios.patch(`/mediaupload/${this.parentName}/${this.parentId}/${this.collection}`, { order })).data;
     this.loading = false;
 }
 
@@ -126,7 +126,7 @@ const fields = {
 
 function editSection(sectionIndex) {
     singleSection.value = {
-        model: {...inner.value.sections[sectionIndex]},
+        model: { ...inner.value.sections[sectionIndex] },
         index: sectionIndex,
         mode: 'edit',
     };
@@ -134,7 +134,7 @@ function editSection(sectionIndex) {
 
 function startReordering(index) {
     singleSection.value = {
-        model: {...inner.value.sections[index]},
+        model: { ...inner.value.sections[index] },
         index: index,
         mode: 'reorder',
     };

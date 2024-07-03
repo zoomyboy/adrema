@@ -42,7 +42,7 @@
     </div>
 </template>
 
-<script setup>
+<script lang="js" setup>
 defineEmits(['update:modelValue']);
 
 const props = defineProps({
