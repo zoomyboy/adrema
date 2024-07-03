@@ -14,7 +14,7 @@ class DbMaintainAction
 
     public string $commandSignature = 'db:maintain';
 
-    public function handle()
+    public function handle(): void
     {
         Artisan::call(PruneCommand::class, ['--hours' => 168]);     // 168h = 7 Tage
         DB::select('optimize table telescope_entries');
