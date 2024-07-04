@@ -1,14 +1,15 @@
 <?php
 
+use App\Lib\Editor\EditorData;
+use App\Lib\Editor\EditorDataSettingsCast;
+
 return [
 
     /*
      * Each settings class used in your application must be registered, you can
      * put them (manually) here.
      */
-    'settings' => [
-
-    ],
+    'settings' => [],
 
     /*
      * In these directories settings migrations will be stored and ran when migrating. A settings
@@ -60,7 +61,7 @@ return [
     'global_casts' => [
         DateTimeInterface::class => Spatie\LaravelSettings\SettingsCasts\DateTimeInterfaceCast::class,
         DateTimeZone::class => Spatie\LaravelSettings\SettingsCasts\DateTimeZoneCast::class,
-        Spatie\DataTransferObject\DataTransferObject::class => Spatie\LaravelSettings\SettingsCasts\DtoCast::class,
+        Spatie\LaravelData\Data::class => Spatie\LaravelSettings\SettingsCasts\DataCast::class,
     ],
 
     /*
