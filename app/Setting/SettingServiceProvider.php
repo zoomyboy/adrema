@@ -7,6 +7,7 @@ use App\Form\FormSettings;
 use App\Invoice\InvoiceSettings;
 use App\Mailgateway\MailgatewaySettings;
 use App\Module\ModuleSettings;
+use App\Prevention\PreventionSettings;
 use Illuminate\Support\ServiceProvider;
 
 class SettingServiceProvider extends ServiceProvider
@@ -34,5 +35,6 @@ class SettingServiceProvider extends ServiceProvider
         app(SettingFactory::class)->register(NamiSettings::class);
         app(SettingFactory::class)->register(FormSettings::class);
         app(SettingFactory::class)->register(FileshareSettings::class);
+        app(SettingFactory::class)->register(PreventionSettings::class);
     }
 }

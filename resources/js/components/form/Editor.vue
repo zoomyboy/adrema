@@ -8,22 +8,18 @@
             </div>
         </div>
 
-        <ui-popup
-            v-if="condition !== null"
-            heading="Bedingungen"
-            @close="
-                condition.resolve(condition.data);
-                condition = null;
-            "
-        >
+        <ui-popup v-if="condition !== null" heading="Bedingungen" @close="
+            condition.resolve(condition.data);
+        condition = null;
+                        ">
             <slot name="conditions" :data="condition.data" :resolve="condition.resolve" :reject="condition.reject"></slot>
         </ui-popup>
     </div>
 </template>
 
 <script setup>
-import {debounce} from 'lodash';
-import {onMounted, ref} from 'vue';
+import { debounce } from 'lodash';
+import { onMounted, ref } from 'vue';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import Paragraph from '@editorjs/paragraph';
@@ -32,7 +28,7 @@ import Alert from 'editorjs-alert';
 import useFieldSize from '../../composables/useFieldSize.js';
 const emit = defineEmits(['update:modelValue']);
 
-const {fieldAppearance, paddingX, paddingY, sizeClass} = useFieldSize();
+const { fieldAppearance, paddingX, paddingY, sizeClass } = useFieldSize();
 
 const props = defineProps({
     required: {
@@ -88,7 +84,7 @@ async function openPopup(data) {
 }
 
 class ConditionTune {
-    constructor({api, data, config, block}) {
+    constructor({ api, data, config, block }) {
         this.api = api;
         this.data = data || {
             mode: 'all',
