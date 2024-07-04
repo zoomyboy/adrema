@@ -5,12 +5,14 @@ namespace Tests\Feature\Member;
 use App\Prevention\Enums\Prevention;
 use App\Form\Actions\PreventionRememberAction;
 use App\Form\Enums\NamiType;
+use App\Form\Enums\SpecialType;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Invoice\InvoiceSettings;
 use App\Prevention\Mails\PreventionRememberMail;
 use App\Member\Member;
 use App\Member\Membership;
+use App\Prevention\PreventionSettings;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
@@ -157,6 +159,18 @@ class PreventionTest extends TestCase
         }
     }
 
+    public function testItDoesntRememberParticipantThatHasNoMail(): void
+    {
+        Mail::fake();
+        $form = $this->createForm();
+        $participant = $this->createParticipant($form);
+        $participant->update(['data' => [...$participant->data, 'email' => '']]);
+
+        PreventionRememberAction::run();
+
+        Mail::assertNotSent(PreventionRememberMail::class);
+    }
+
     public function testItRendersMail(): void
     {
         InvoiceSettings::fake(['from_long' => 'Stamm Beispiel']);
@@ -173,12 +187,18 @@ class PreventionTest extends TestCase
     protected function createForm(): Form
     {
         return Form::factory()->fields([
-            $this->textField('vorname')->namiType(NamiType::FIRSTNAME),
+            $this->textField('vorname')->namiType(NamiType::FIRSTNAME)->specialType(SpecialType::FIRSTNAME),
+            $this->textField('nachname')->namiType(NamiType::FIRSTNAME)->specialType(SpecialType::LASTNAME),
+            $this->textField('email')->namiType(NamiType::FIRSTNAME)->specialType(SpecialType::EMAIL),
         ])->create(['needs_prevention' => true]);
     }
 
     protected function createParticipant(Form $form): Participant
     {
-        return Participant::factory()->for($form)->data(['vorname' => 'Max'])->for(Member::factory()->defaults()->has(Membership::factory()->inLocal('€ LeiterIn', 'Wölfling')))->create();
+        return Participant::factory()->for($form)->data([
+            'vorname' => 'Max',
+            'nachname' => 'Muster',
+            'enail' => 'mail@a.de',
+        ])->for(Member::factory()->defaults()->has(Membership::factory()->inLocal('€ LeiterIn', 'Wölfling')))->create();
     }
 }

@@ -26,6 +26,10 @@ class PreventionRememberAction
                 return;
             }
 
+            if ($participant->getFields()->getMailRecipient() === null) {
+                continue;
+            }
+
             Mail::send(new PreventionRememberMail($participant));
 
             $participant->update(['last_remembered_at' => now()]);
