@@ -16,7 +16,7 @@ class SettingTest extends TestCase
     {
         $this->login()->loginNami();
 
-        $this->get('/setting/prevention')->assertComponent('prevention/Index')->assertOk();
+        $this->get('/setting/prevention')->assertComponent('setting/Prevention')->assertOk();
     }
 
     public function testItReceivesSettings(): void
