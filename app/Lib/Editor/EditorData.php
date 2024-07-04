@@ -4,6 +4,7 @@ namespace App\Lib\Editor;
 
 use Spatie\LaravelData\Data;
 
+/** @todo replace blocks with actual block data classes */
 class EditorData extends Data
 {
 

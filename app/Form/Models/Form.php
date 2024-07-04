@@ -16,6 +16,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Zoomyboy\MedialibraryHelper\DefersUploads;
 
+/** @todo replace editor content with EditorData cast */
 class Form extends Model implements HasMedia
 {
     use HasFactory;

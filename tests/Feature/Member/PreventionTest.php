@@ -13,7 +13,6 @@ use App\Prevention\Mails\PreventionRememberMail;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Prevention\PreventionSettings;
-use BillSettings;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;

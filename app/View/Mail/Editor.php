@@ -4,6 +4,7 @@ namespace App\View\Mail;
 
 use Illuminate\View\Component;
 
+/** @todo replace content with EditorData */
 class Editor extends Component
 {
     /**
