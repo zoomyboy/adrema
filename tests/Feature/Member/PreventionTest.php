@@ -198,7 +198,7 @@ class PreventionTest extends TestCase
         return Participant::factory()->for($form)->data([
             'vorname' => 'Max',
             'nachname' => 'Muster',
-            'enail' => 'mail@a.de',
+            'email' => 'mail@a.de',
         ])->for(Member::factory()->defaults()->has(Membership::factory()->inLocal('€ LeiterIn', 'Wölfling')))->create();
     }
 }
