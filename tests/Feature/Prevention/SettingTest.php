@@ -23,7 +23,7 @@ class SettingTest extends TestCase
     {
         $this->login()->loginNami();
 
-        $text = EditorRequestFactory::new()->text(50, 'lorem ipsum')->create();
+        $text = EditorRequestFactory::new()->text(50, 'lorem ipsum')->toData();
         app(PreventionSettings::class)->fill(['formmail' => $text])->save();
 
         $this->get('/api/prevention')
@@ -34,9 +34,7 @@ class SettingTest extends TestCase
     {
         $this->login()->loginNami();
 
-        $text = EditorRequestFactory::new()->text(50, 'new lorem')->create();
-
-        $this->post('/api/prevention', ['formmail' => $text])->assertOk();
-        $this->assertEquals($text, app(PreventionSettings::class)->formmail);
+        $this->post('/api/prevention', ['formmail' => EditorRequestFactory::new()->text(50, 'new lorem')->create()])->assertOk();
+        $this->assertTrue(app(PreventionSettings::class)->formmail->hasAll(['new lorem']));
     }
 }

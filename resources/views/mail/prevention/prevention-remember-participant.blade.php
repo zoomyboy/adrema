@@ -1,11 +1,7 @@
 @component('mail::message')
 # Hallo {{ $preventable->member->fullname }},
 
-Du hast dich für die Veranstaltung __{{$preventable->form->name}}__ angemeldet.
-
-Damit du an der Veranstaltung als leitende oder helfende Person teilnehmen kannst, ist noch folgendes einzureichen oder zu beachten.
-
-{!! $documents !!}
+<x-mail-view::editor :content="$bodyText->toArray()['blocks']"></x-mail-view::editor>
 
 @component('mail::subcopy')
 

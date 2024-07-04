@@ -2,6 +2,7 @@
 
 namespace App\Prevention\Actions;
 
+use App\Lib\Editor\EditorData;
 use App\Lib\Events\Succeeded;
 use App\Prevention\PreventionSettings;
 use Lorisleiva\Actions\ActionRequest;
@@ -20,7 +21,9 @@ class SettingStoreAction
 
     public function handle(ActionRequest $request): void
     {
-        app(PreventionSettings::class)->fill($request->validated())->save();
+        $settings = app(PreventionSettings::class);
+        $settings->formmail = EditorData::from($request->formmail);
+        $settings->save();
 
         Succeeded::message('Einstellungen gespeichert.')->dispatch();
     }

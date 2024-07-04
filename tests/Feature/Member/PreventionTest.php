@@ -13,10 +13,12 @@ use App\Prevention\Mails\PreventionRememberMail;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Prevention\PreventionSettings;
+use BillSettings;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
 use Tests\Lib\CreatesFormFields;
+use Tests\RequestFactories\EditorRequestFactory;
 use Tests\TestCase;
 
 class PreventionTest extends TestCase
@@ -176,12 +178,36 @@ class PreventionTest extends TestCase
         InvoiceSettings::fake(['from_long' => 'Stamm Beispiel']);
         $form = $this->createForm();
         $participant = $this->createParticipant($form);
-        (new PreventionRememberMail($participant))
+        (new PreventionRememberMail($participant, app(PreventionSettings::class)->formmail))
             ->assertSeeInText($participant->member->firstname)
-            ->assertSeeInText($participant->form->name)
-            ->assertSeeInText('erweitertes Führungszeugnis')
-            ->assertSeeInText('Stamm Beispiel')
-            ->assertSeeInText($participant->member->lastname);
+            ->assertSeeInText($participant->member->lastname)
+            ->assertSeeInText('Stamm Beispiel');
+    }
+
+    public function testItRendersSetttingMail(): void
+    {
+        Mail::fake();
+        app(PreventionSettings::class)->fake([
+            'formmail' => EditorRequestFactory::new()->paragraphs(["lorem lala {formname} g", "{wanted}", "bbb"])->toData()
+        ])->save();
+        $form = $this->createForm();
+        $this->createParticipant($form);
+
+        PreventionRememberAction::run();
+
+        Mail::assertSent(PreventionRememberMail::class, fn ($mail) => $mail->bodyText->hasAll([
+            'lorem lala ' . $form->name,
+            'erweitertes'
+        ]));
+    }
+
+    public function testItDisplaysBodyTextInMail(): void
+    {
+        $form = $this->createForm();
+        $participant = $this->createParticipant($form);
+
+        $mail = new PreventionRememberMail($participant, EditorRequestFactory::new()->paragraphs(['ggtt'])->toData());
+        $mail->assertSeeInText('ggtt');
     }
 
     protected function createForm(): Form

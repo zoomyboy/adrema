@@ -2,6 +2,7 @@
 
 namespace Tests\RequestFactories;
 
+use App\Lib\Editor\EditorData;
 use Worksome\RequestFactories\RequestFactory;
 
 class EditorRequestFactory extends RequestFactory
@@ -48,5 +49,29 @@ class EditorRequestFactory extends RequestFactory
                 ]
             ],
         ];
+    }
+
+    /**
+     * @param array<int, string> $paragraphs
+     */
+    public function paragraphs(array $paragraphs): self
+    {
+        return $this->state([
+            'time' => 1,
+            'version' => '1.0',
+            'blocks' => collect($paragraphs)->map(fn ($paragraph) => [
+                'id' => $this->faker->numberBetween([0, 10000]),
+                'type' => 'paragraph',
+                'data' => ['text' => $paragraph],
+                'tunes' => [
+                    'condition' => ['mode' => 'all', 'ifs' => []]
+                ]
+            ])->toArray(),
+        ]);
+    }
+
+    public function toData(): EditorData
+    {
+        return EditorData::from($this->create());
     }
 }

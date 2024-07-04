@@ -4,6 +4,7 @@ namespace App\Form\Actions;
 
 use App\Form\Models\Participant;
 use App\Prevention\Mails\PreventionRememberMail;
+use App\Prevention\PreventionSettings;
 use Illuminate\Support\Facades\Mail;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -26,11 +27,14 @@ class PreventionRememberAction
                 return;
             }
 
+            $body = app(PreventionSettings::class)->formmail
+                ->placeholder('formname', $participant->form->name);
+
             if ($participant->getFields()->getMailRecipient() === null) {
                 continue;
             }
 
-            Mail::send(new PreventionRememberMail($participant));
+            Mail::send(new PreventionRememberMail($participant, $body));
 
             $participant->update(['last_remembered_at' => now()]);
         }

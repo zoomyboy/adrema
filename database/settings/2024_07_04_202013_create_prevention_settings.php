@@ -6,6 +6,6 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('prevention.formmail', ['time' => 1, 'blocks' => []]);
+        $this->migrator->add('prevention.formmail', ['time' => 1, 'blocks' => [], 'version' => '1.0']);
     }
 };

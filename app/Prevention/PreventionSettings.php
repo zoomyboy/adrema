@@ -2,6 +2,7 @@
 
 namespace App\Prevention;
 
+use App\Lib\Editor\EditorData;
 use App\Prevention\Actions\PreventionIndexAction;
 use App\Setting\Contracts\Indexable;
 use App\Setting\LocalSettings;
@@ -9,7 +10,7 @@ use App\Setting\LocalSettings;
 class PreventionSettings extends LocalSettings implements Indexable
 {
 
-    public array $formmail;
+    public EditorData $formmail;
 
     public static function group(): string
     {

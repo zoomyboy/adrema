@@ -3,6 +3,7 @@
 namespace App\Prevention\Mails;
 
 use App\Invoice\InvoiceSettings;
+use App\Lib\Editor\EditorData;
 use App\Prevention\Contracts\Preventable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Attachment;
@@ -16,15 +17,15 @@ class PreventionRememberMail extends Mailable
     use Queueable, SerializesModels;
 
     public InvoiceSettings $settings;
-    public string $documents;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(public Preventable $preventable)
+    public function __construct(public Preventable $preventable, public EditorData $bodyText)
     {
         $this->settings = app(InvoiceSettings::class);
-        $this->documents = collect($preventable->preventions())->map(fn ($prevention) => "* {$prevention->text()}")->implode("\n");
+        $this->bodyText = $this->bodyText
+            ->replaceWithList('wanted', collect($preventable->preventions())->map(fn ($prevention) => $prevention->text())->toArray());
     }
 
     /**
