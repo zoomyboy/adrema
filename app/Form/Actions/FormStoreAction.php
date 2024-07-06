@@ -36,6 +36,7 @@ class FormStoreAction
             'is_private' => 'boolean',
             'export' => 'nullable|array',
             'needs_prevention' => 'present|boolean',
+            'prevention_text' => 'array',
         ];
     }
 

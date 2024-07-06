@@ -5,7 +5,9 @@ namespace Tests\Feature\Form;
 use App\Fileshare\Data\FileshareResourceData;
 use App\Form\Data\ExportData;
 use App\Form\Models\Form;
+use App\Lib\Editor\EditorData;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\RequestFactories\EditorRequestFactory;
 
 class FormUpdateActionTest extends FormTestCase
 {
@@ -128,9 +130,13 @@ class FormUpdateActionTest extends FormTestCase
     {
         $this->login()->loginNami()->withoutExceptionHandling();
         $form = Form::factory()->create();
-        $payload = FormRequest::new()->state(['needs_prevention' => true])->create();
+        $payload = FormRequest::new()
+            ->preventionText(EditorRequestFactory::new()->text(10, 'lorem ipsum')->create())
+            ->state(['needs_prevention' => true])
+            ->create();
 
         $this->patchJson(route('form.update', ['form' => $form]), $payload);
         $this->assertTrue($form->fresh()->needs_prevention);
+        $this->assertEquals('lorem ipsum', $form->fresh()->prevention_text->blocks[0]['data']['text']);
     }
 }

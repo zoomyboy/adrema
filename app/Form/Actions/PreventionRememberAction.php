@@ -28,7 +28,8 @@ class PreventionRememberAction
             }
 
             $body = app(PreventionSettings::class)->formmail
-                ->placeholder('formname', $participant->form->name);
+                ->placeholder('formname', $participant->form->name)
+                ->append($participant->form->prevention_text);
 
             if ($participant->getFields()->getMailRecipient() === null) {
                 continue;

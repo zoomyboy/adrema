@@ -5,6 +5,7 @@ namespace App\Form\Models;
 use App\Form\Data\ExportData;
 use App\Form\Data\FieldCollection;
 use App\Form\Data\FormConfigData;
+use App\Lib\Editor\EditorData;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +38,7 @@ class Form extends Model implements HasMedia
         'is_private' => 'boolean',
         'export' => ExportData::class,
         'needs_prevention' => 'boolean',
+        'prevention_text' => EditorData::class,
     ];
 
     /** @var array<int, string> */

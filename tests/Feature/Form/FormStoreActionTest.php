@@ -26,6 +26,7 @@ class FormStoreActionTest extends FormTestCase
             ->name('formname')
             ->description($description)
             ->excerpt('avff')
+            ->preventionText(EditorRequestFactory::new()->paragraphs(['lorem ipsum']))
             ->registrationFrom('2023-05-04 01:00:00')->registrationUntil('2023-07-07 01:00:00')->from('2023-07-07')->to('2023-07-08')
             ->mailTop(EditorRequestFactory::new()->text(11, 'lala'))
             ->mailBottom(EditorRequestFactory::new()->text(12, 'lalab'))
@@ -38,6 +39,7 @@ class FormStoreActionTest extends FormTestCase
         $form = Form::latest()->first();
         $this->assertEquals('sname', $form->config->sections->get(0)->name);
         $this->assertEquals('formname', $form->name);
+        $this->assertEquals('lorem ipsum', $form->prevention_text->blocks[0]['data']['text']);
         $this->assertEquals('avff', $form->excerpt);
         $this->assertEquals($description->paragraphBlock(10, 'Lorem'), $form->description);
         $this->assertEquals(json_decode('{"time":1,"blocks":[{"id":11,"type":"paragraph","data":{"text":"lala"},"tunes":{"condition":{"mode":"all","ifs":[]}}}],"version":"1.0"}', true), $form->mail_top);
@@ -87,6 +89,7 @@ class FormStoreActionTest extends FormTestCase
         yield [FormRequest::new()->state(['to' => null]), ['to' => 'Ende ist erforderlich']];
         yield [FormRequest::new()->state(['header_image' => null]), ['header_image' => 'Bild ist erforderlich']];
     }
+
 
     /**
      * @dataProvider validationDataProvider

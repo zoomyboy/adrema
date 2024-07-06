@@ -50,6 +50,7 @@ class FormRequest extends RequestFactory
             'mailattachments' => [],
             'export' => ExportData::from([])->toArray(),
             'needs_prevention' => $this->faker->boolean(),
+            'prevention_text' => EditorRequestFactory::new()->create(),
         ];
     }
 

@@ -200,6 +200,23 @@ class PreventionTest extends TestCase
         ]));
     }
 
+    public function testItAppendsTextOfForm(): void
+    {
+        Mail::fake();
+        app(PreventionSettings::class)->fake([
+            'formmail' => EditorRequestFactory::new()->paragraphs(["::first::"])->toData()
+        ])->save();
+        $form = $this->createForm();
+        $form->update(['prevention_text' => EditorRequestFactory::new()->paragraphs(['event'])->toData()]);
+        $this->createParticipant($form);
+
+        PreventionRememberAction::run();
+
+        Mail::assertSent(PreventionRememberMail::class, fn ($mail) => $mail->bodyText->hasAll([
+            'event'
+        ]));
+    }
+
     public function testItDisplaysBodyTextInMail(): void
     {
         $form = $this->createForm();

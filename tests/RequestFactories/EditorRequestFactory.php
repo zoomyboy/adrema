@@ -21,6 +21,11 @@ class EditorRequestFactory extends RequestFactory
         ];
     }
 
+    public function empty(): self
+    {
+        return $this->state(['blocks' => []]);
+    }
+
     /**
      * @param array<string, mixed> $conditions
      */

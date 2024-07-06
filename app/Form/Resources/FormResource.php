@@ -11,6 +11,7 @@ use App\Form\Scopes\FormFilterScope;
 use App\Form\Models\Form;
 use App\Form\Models\Formtemplate;
 use App\Group;
+use App\Lib\Editor\EditorData;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -94,6 +95,7 @@ class FormResource extends JsonResource
                 'config' => null,
                 'header_image' => null,
                 'mailattachments' => [],
+                'prevention_text' => EditorData::default(),
                 'id' => null,
                 'export' => ExportData::from([]),
             ],

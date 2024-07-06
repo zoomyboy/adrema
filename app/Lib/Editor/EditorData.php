@@ -5,7 +5,7 @@ namespace App\Lib\Editor;
 use Spatie\LaravelData\Data;
 
 /** @todo replace blocks with actual block data classes */
-class EditorData extends Data
+class EditorData extends Data implements Editorable
 {
 
     public function __construct(
@@ -29,6 +29,22 @@ class EditorData extends Data
     public function hasAll(array $wanted): bool
     {
         return collect($wanted)->first(fn ($search) => !str(json_encode($this->blocks))->contains($search)) === null;
+    }
+
+    public static function default(): self
+    {
+        return static::from([
+            'version' => '1.0',
+            'blocks' => [],
+            'time' => 0,
+        ]);
+    }
+
+    public function append(Editorable $editorable): self
+    {
+        $this->blocks = array_merge($this->blocks, $editorable->toEditorData()->blocks);
+
+        return $this;
     }
 
     public function replaceWithList(string $blockContent, array $replacements): self
@@ -56,6 +72,11 @@ class EditorData extends Data
         })->toArray();
 
 
+        return $this;
+    }
+
+    public function toEditorData(): EditorData
+    {
         return $this;
     }
 }
