@@ -116,6 +116,16 @@
                         <f-select id="to_group_field" v-model="single.export.to_group_field" :options="allFields" label="Nach Gruppe schreiben" name="to_group_field"></f-select>
                     </div>
                 </div>
+                <div v-show="active === 4" class="grid grid-cols-2 gap-3">
+                    <f-switch id="needs_prevention" v-model="single.needs_prevention" name="needs_prevention" label="Prävention"></f-switch>
+                    <f-editor
+                        id="prevention_text"
+                        v-model="single.prevention_text"
+                        hint="Wird an die Präventions-Email angehangen, die Teilnehmende dieser Veranstaltung erhalten"
+                        :rows="6"
+                        label="Präventions-Hinweis"
+                    ></f-editor>
+                </div>
             </div>
             <template #actions>
                 <a href="#" @click.prevent="submit">
@@ -192,7 +202,7 @@ const deleting = ref(null);
 const showing = ref(null);
 const fileSettingPopup = ref(null);
 
-const tabs = [{ title: 'Allgemeines' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }];
+const tabs = [{ title: 'Allgemeines' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }, { title: 'Prävention' }];
 const mailTabs = [{ title: 'vor Daten' }, { title: 'nach Daten' }];
 
 const allFields = computed(() => {
