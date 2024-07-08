@@ -18,7 +18,7 @@ class EditorData extends Data implements Editorable
     public function placeholder(string $search, string $replacement): self
     {
         $replacedBlocks = str(json_encode($this->blocks))->replace('{' . $search . '}', $replacement);
-        $this->blocks = json_decode($replacedBlocks);
+        $this->blocks = json_decode($replacedBlocks, true);
 
         return $this;
     }
@@ -42,14 +42,15 @@ class EditorData extends Data implements Editorable
 
     public function append(Editorable $editorable): self
     {
-        $this->blocks = array_merge($this->blocks, $editorable->toEditorData()->blocks);
-
-        return $this;
+        return self::from([
+            ...$this->toArray(),
+            'blocks' => array_merge($this->blocks, $editorable->toEditorData()->blocks),
+        ]);
     }
 
     public function replaceWithList(string $blockContent, array $replacements): self
     {
-        $this->blocks = collect($this->blocks)->map(function ($block) use ($blockContent, $replacements) {
+        $blocks = collect($this->blocks)->map(function ($block) use ($blockContent, $replacements) {
             if (data_get($block, 'type') !== 'paragraph') {
                 return $block;
             }
@@ -71,8 +72,10 @@ class EditorData extends Data implements Editorable
             return $block;
         })->toArray();
 
-
-        return $this;
+        return self::from([
+            ...$this->toArray(),
+            'blocks' => $blocks,
+        ]);
     }
 
     public function toEditorData(): EditorData

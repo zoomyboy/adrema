@@ -51,6 +51,7 @@ class FormResource extends JsonResource
             'has_nami_field' => $this->getFields()->hasNamiField(),
             'export' => $this->export,
             'needs_prevention' => $this->needs_prevention,
+            'prevention_text' => $this->prevention_text,
             'links' => [
                 'participant_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => null]),
                 'participant_root_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => -1]),
