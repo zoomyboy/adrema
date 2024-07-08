@@ -12,7 +12,7 @@ class EditorDataTest extends TestCase
     {
         $data = EditorRequestFactory::new()->paragraphs(['{search}'])->toData();
 
-        $data->replaceWithList('search', ['A', 'B']);
+        $data = $data->replaceWithList('search', ['A', 'B']);
 
         $this->assertEquals('A', data_get($data->blocks, '0.data.items.0.content'));
     }
