@@ -136,10 +136,11 @@ class Principal implements PrincipalBackendInterface
      *
      * @param string $principal
      *
-     * @return array
+     * @return array<int, string>|null
      */
     public function getGroupMemberSet($principal)
     {
+        return [];
     }
 
     /**
@@ -147,7 +148,7 @@ class Principal implements PrincipalBackendInterface
      *
      * @param string $principal
      *
-     * @return array
+     * @return array<int, string>|null
      */
     public function getGroupMembership($principal)
     {
@@ -155,7 +156,7 @@ class Principal implements PrincipalBackendInterface
             return null;
         }
 
-        return ['addressbooks/'.$matches[1]];
+        return ['addressbooks/' . $matches[1]];
     }
 
     /**
@@ -164,6 +165,8 @@ class Principal implements PrincipalBackendInterface
      * The principals should be passed as a list of uri's.
      *
      * @param string $principal
+     * @param array<int, string> $members
+     * @return void
      */
     public function setGroupMemberSet($principal, array $members)
     {
@@ -176,7 +179,7 @@ class Principal implements PrincipalBackendInterface
     {
         return [
             '{DAV:}displayname' => $user->name,
-            'uri' => 'principals/'.$user->email,
+            'uri' => 'principals/' . $user->email,
             '{http://sabredav.org/ns}email-address' => $user->email,
         ];
     }

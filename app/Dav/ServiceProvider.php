@@ -9,6 +9,7 @@ use Sabre\CardDAV\AddressBookRoot;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAV\Browser\Plugin as BrowserPlugin;
+use Sabre\DAV\ServerPlugin;
 use Sabre\DAVACL\AbstractPrincipalCollection;
 use Sabre\DAVACL\Plugin as AclPlugin;
 use Sabre\DAVACL\PrincipalCollection;
@@ -50,6 +51,9 @@ class ServiceProvider extends BaseServiceProvider
         ];
     }
 
+    /**
+     * @return array<int, ServerPlugin>
+     */
     private function plugins(): array
     {
         $authBackend = new AuthBackend();

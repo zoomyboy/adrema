@@ -155,8 +155,9 @@ class AddressBookBackend extends AbstractBackend
      * If the backend supports this, it may allow for some speed-ups.
      *
      * @param mixed $addressBookId
+     * @param array<int, string> $uris
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function getMultipleCards($addressBookId, array $uris)
     {
