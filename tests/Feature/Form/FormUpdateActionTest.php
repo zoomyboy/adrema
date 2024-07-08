@@ -131,7 +131,7 @@ class FormUpdateActionTest extends FormTestCase
         $this->login()->loginNami()->withoutExceptionHandling();
         $form = Form::factory()->create();
         $payload = FormRequest::new()
-            ->preventionText(EditorRequestFactory::new()->text(10, 'lorem ipsum')->create())
+            ->preventionText(EditorRequestFactory::new()->text(10, 'lorem ipsum'))
             ->state(['needs_prevention' => true])
             ->create();
 

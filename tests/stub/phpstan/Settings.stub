@@ -1,0 +1,12 @@
+<?php
+
+namespace Illuminate\Testing;
+
+namespace Spatie\LaravelSettings;
+
+/**
+ * @method static refresh()
+ */
+abstract class Settings
+{
+}

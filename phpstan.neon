@@ -6,6 +6,7 @@ parameters:
 
     stubFiles:
         - tests/stub/phpstan/TestResponse.stub
+        - tests/stub/phpstan/Settings.stub
 
     paths:
         - app

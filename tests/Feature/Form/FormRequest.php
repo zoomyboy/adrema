@@ -21,6 +21,7 @@ use Worksome\RequestFactories\RequestFactory;
  * @method self isActive(bool $isActive)
  * @method self isPrivate(bool $isPrivate)
  * @method self export(ExportData $export)
+ * @method self preventionText(EditorRequestFactory $text)
  */
 class FormRequest extends RequestFactory
 {

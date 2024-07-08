@@ -8,6 +8,7 @@ use Spatie\LaravelData\Data;
 class EditorData extends Data implements Editorable
 {
 
+    /** @param array<int, mixed> $blocks */
     public function __construct(
         public string $version,
         public array $blocks,
@@ -47,6 +48,9 @@ class EditorData extends Data implements Editorable
         return $this;
     }
 
+    /**
+     * @param array<int, string> $replacements
+     */
     public function replaceWithList(string $blockContent, array $replacements): self
     {
         $this->blocks = collect($this->blocks)->map(function ($block) use ($blockContent, $replacements) {

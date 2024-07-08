@@ -12,6 +12,9 @@ class SettingStoreAction
 {
     use AsAction;
 
+    /**
+     * @return array<string, string>
+     */
     public function rules(): array
     {
         return [
