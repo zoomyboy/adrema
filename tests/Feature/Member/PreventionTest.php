@@ -186,7 +186,7 @@ class PreventionTest extends TestCase
     public function testItRendersSetttingMail(): void
     {
         Mail::fake();
-        app(PreventionSettings::class)->fake([
+        app(PreventionSettings::class)->fill([
             'formmail' => EditorRequestFactory::new()->paragraphs(["lorem lala {formname} g", "{wanted}", "bbb"])->toData()
         ])->save();
         $form = $this->createForm();
@@ -203,7 +203,7 @@ class PreventionTest extends TestCase
     public function testItAppendsTextOfForm(): void
     {
         Mail::fake();
-        app(PreventionSettings::class)->fake([
+        app(PreventionSettings::class)->fill([
             'formmail' => EditorRequestFactory::new()->paragraphs(["::first::"])->toData()
         ])->save();
         $form = $this->createForm();
@@ -215,6 +215,24 @@ class PreventionTest extends TestCase
         Mail::assertSent(PreventionRememberMail::class, fn ($mail) => $mail->bodyText->hasAll([
             'event'
         ]));
+    }
+
+    public function testItDoesntAppendTextTwice(): void
+    {
+        Mail::fake();
+        app(PreventionSettings::class)->fill(['frommail' => EditorRequestFactory::new()->paragraphs(["::first::"])->toData()])->save();
+        tap($this->createForm(), function ($f) {
+            $f->update(['prevention_text' => EditorRequestFactory::new()->paragraphs(['oberhausen'])->toData()]);
+            $this->createParticipant($f);
+        });
+        tap($this->createForm(), function ($f) {
+            $f->update(['prevention_text' => EditorRequestFactory::new()->paragraphs(['siegburg'])->toData()]);
+            $this->createParticipant($f);
+        });
+
+        PreventionRememberAction::run();
+
+        Mail::assertSent(PreventionRememberMail::class, fn ($mail) => $mail->bodyText->hasAll(['oberhausen']) && !$mail->bodyText->hasAll(['siegburg']));
     }
 
     public function testItDisplaysBodyTextInMail(): void

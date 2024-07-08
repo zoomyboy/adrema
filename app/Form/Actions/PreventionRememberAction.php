@@ -27,7 +27,7 @@ class PreventionRememberAction
                 return;
             }
 
-            $body = app(PreventionSettings::class)->formmail
+            $body = app(PreventionSettings::class)->refresh()->formmail
                 ->placeholder('formname', $participant->form->name)
                 ->append($participant->form->prevention_text);
 
