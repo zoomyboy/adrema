@@ -23,17 +23,13 @@ class PreventionRememberAction
                     ->orWhereNull('last_remembered_at')
             );
         foreach ($query->get() as $participant) {
-            if (count($participant->preventions()) === 0) {
-                return;
+            if ($participant->getFields()->getMailRecipient() === null || count($participant->preventions()) === 0) {
+                continue;
             }
 
             $body = app(PreventionSettings::class)->refresh()->formmail
                 ->placeholder('formname', $participant->form->name)
                 ->append($participant->form->prevention_text);
-
-            if ($participant->getFields()->getMailRecipient() === null) {
-                continue;
-            }
 
             Mail::send(new PreventionRememberMail($participant, $body));
 
