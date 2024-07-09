@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('forms', function (Blueprint $table) {
-            $table->json('prevention_text')->after('description')->default(json_encode(['time' => 4, 'blocks' => [], 'version' => 1.0]));
+            $table->json('prevention_text')->after('description')->default(json_encode(['time' => 4, 'blocks' => [], 'version' => '1.0']));
         });
     }
 
