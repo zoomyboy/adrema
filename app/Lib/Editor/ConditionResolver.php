@@ -5,10 +5,7 @@ namespace App\Lib\Editor;
 abstract class ConditionResolver
 {
 
-    /**
-     * @param array<string, mixed> $ifs
-     */
-    abstract public function filterCondition(string $mode, array $ifs): bool;
+    abstract public function filterCondition(Condition $condition): bool;
 
     /**
      * @param array<string, mixed> $content
@@ -24,9 +21,6 @@ abstract class ConditionResolver
      */
     public function filterBlock(array $block): bool
     {
-        $mode = data_get($block, 'tunes.condition.mode', 'any');
-        $ifs = data_get($block, 'tunes.condition.ifs', []);
-
-        return $this->filterCondition($mode, $ifs);
+        return $this->filterCondition(Condition::fromBlock($block));
     }
 }

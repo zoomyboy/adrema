@@ -2,6 +2,8 @@
 
 namespace App\Form\Matchers;
 
+use App\Lib\Editor\Comparator;
+
 abstract class Matcher
 {
 
@@ -14,5 +16,5 @@ abstract class Matcher
         return $this;
     }
 
-    abstract public function matches(string $comparator, mixed $value): bool;
+    abstract public function matches(Comparator $comparator, mixed $value): bool;
 }

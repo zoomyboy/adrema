@@ -3,6 +3,7 @@
 namespace App\Form\Editor;
 
 use App\Form\Models\Participant;
+use App\Lib\Editor\Condition;
 use App\Lib\Editor\ConditionResolver;
 
 class FormConditionResolver extends ConditionResolver
@@ -20,24 +21,24 @@ class FormConditionResolver extends ConditionResolver
     /**
      * @inheritdoc
      */
-    public function filterCondition(string $mode, array $ifs): bool
+    public function filterCondition(Condition $condition): bool
     {
-        if (count($ifs) === 0) {
+        if (!$condition->hasStatements()) {
             return true;
         }
 
-        foreach ($ifs as $if) {
-            $field = $this->participant->getFields()->findByKey($if['field']);
-            $matches = $field->matches($if['comparator'], $if['value']);
-            if ($matches && $mode === 'any') {
+        foreach ($condition->ifs as $if) {
+            $field = $this->participant->getFields()->findByKey($if->field);
+            $matches = $field->matches($if->comparator, $if->value);
+            if ($matches && $condition->isAny()) {
                 return true;
             }
-            if (!$matches && $mode === 'all') {
+            if (!$matches && $condition->isAll()) {
                 return false;
             }
         }
 
-        if ($mode === 'any') {
+        if ($condition->isAny()) {
             return false;
         }
 

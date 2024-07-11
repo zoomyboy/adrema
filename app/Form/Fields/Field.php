@@ -11,6 +11,7 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Form\Presenters\DefaultPresenter;
 use App\Form\Presenters\Presenter;
+use App\Lib\Editor\Comparator;
 use Faker\Generator;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -170,7 +171,7 @@ abstract class Field extends Data
         return $this->key . '_display';
     }
 
-    public function matches(string $comparator, mixed $value): bool
+    public function matches(Comparator $comparator, mixed $value): bool
     {
         return $this->getMatcher()->setValue($this->value)->matches($comparator, $value);
     }

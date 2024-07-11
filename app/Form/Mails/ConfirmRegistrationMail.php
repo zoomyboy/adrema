@@ -5,6 +5,7 @@ namespace App\Form\Mails;
 use App\Form\Data\FormConfigData;
 use App\Form\Editor\FormConditionResolver;
 use App\Form\Models\Participant;
+use App\Lib\Editor\Condition;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
@@ -71,10 +72,7 @@ class ConfirmRegistrationMail extends Mailable
         $conditionResolver = app(FormConditionResolver::class)->forParticipant($this->participant);
 
         return $this->participant->form->getMedia('mailattachments')
-            ->filter(fn ($media) => $conditionResolver->filterCondition(
-                data_get($media->getCustomProperty('conditions'), 'mode', 'all'),
-                data_get($media->getCustomProperty('conditions'), 'ifs', []),
-            ))
+            ->filter(fn ($media) => $conditionResolver->filterCondition(Condition::fromMedia($media)))
             ->map(fn ($media) => Attachment::fromStorageDisk($media->disk, $media->getPathRelativeToRoot()))
             ->all();
     }

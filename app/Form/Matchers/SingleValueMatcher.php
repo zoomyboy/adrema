@@ -2,24 +2,26 @@
 
 namespace App\Form\Matchers;
 
+use App\Lib\Editor\Comparator;
+
 class SingleValueMatcher extends Matcher
 {
 
-    public function matches(string $comparator, mixed $value): bool
+    public function matches(Comparator $comparator, mixed $value): bool
     {
-        if ($comparator === 'isEqual' && $value === $this->value) {
+        if ($comparator === Comparator::EQUAL && $value === $this->value) {
             return true;
         }
 
-        if ($comparator === 'isNotEqual' && $value !== $this->value) {
+        if ($comparator === Comparator::NOTEQUAL && $value !== $this->value) {
             return true;
         }
 
-        if ($comparator === 'isIn' && in_array($this->value, $value)) {
+        if ($comparator === Comparator::IN && in_array($this->value, $value)) {
             return true;
         }
 
-        if ($comparator === 'isNotIn' && !in_array($this->value, $value)) {
+        if ($comparator === Comparator::NOTIN && !in_array($this->value, $value)) {
             return true;
         }
 
