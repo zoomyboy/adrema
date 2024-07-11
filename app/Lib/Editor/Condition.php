@@ -32,7 +32,6 @@ class Condition extends Data
      */
     public static function fromBlock(array $block): self
     {
-
         return static::withoutMagicalCreationFrom([
             'mode' => data_get($block, 'tunes.condition.mode', 'any'),
             'ifs' =>  data_get($block, 'tunes.condition.ifs', []),
