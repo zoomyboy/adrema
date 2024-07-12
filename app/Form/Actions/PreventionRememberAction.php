@@ -2,6 +2,7 @@
 
 namespace App\Form\Actions;
 
+use App\Form\Editor\FormConditionResolver;
 use App\Form\Models\Participant;
 use App\Prevention\Mails\PreventionRememberMail;
 use App\Prevention\PreventionSettings;
@@ -23,6 +24,10 @@ class PreventionRememberAction
                     ->orWhereNull('last_remembered_at')
             );
         foreach ($query->get() as $participant) {
+            if (!app(FormConditionResolver::class)->forParticipant($participant)->filterCondition($participant->form->prevention_conditions)) {
+                continue;
+            }
+
             if ($participant->getFields()->getMailRecipient() === null || count($participant->preventions()) === 0) {
                 continue;
             }

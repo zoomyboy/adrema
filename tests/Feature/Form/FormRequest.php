@@ -3,6 +3,7 @@
 namespace Tests\Feature\Form;
 
 use App\Form\Data\ExportData;
+use App\Lib\Editor\Condition;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\RequestFactories\EditorRequestFactory;
@@ -52,6 +53,7 @@ class FormRequest extends RequestFactory
             'export' => ExportData::from([])->toArray(),
             'needs_prevention' => $this->faker->boolean(),
             'prevention_text' => EditorRequestFactory::new()->create(),
+            'prevention_conditions' => Condition::defaults(),
         ];
     }
 

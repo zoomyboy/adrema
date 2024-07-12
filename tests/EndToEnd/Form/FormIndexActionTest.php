@@ -61,6 +61,7 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.meta.templates.0.name', 'tname')
             ->assertInertiaPath('data.meta.templates.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.meta.default.name', '')
+            ->assertInertiaPath('data.meta.default.prevention_conditions', ['mode' => 'all', 'ifs' => []])
             ->assertInertiaPath('data.meta.default.prevention_text.version', '1.0')
             ->assertInertiaPath('data.meta.default.description', [])
             ->assertInertiaPath('data.meta.default.excerpt', '')

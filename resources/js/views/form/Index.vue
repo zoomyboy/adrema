@@ -124,6 +124,9 @@
                         :rows="6"
                         label="Präventions-Hinweis"
                     ></f-editor>
+                    <ui-box heading="Bedingung für Präventions-Unterlagen">
+                        <conditions id="prevention_conditions" v-model="single.prevention_conditions" :single="single"> </conditions>
+                    </ui-box>
                 </div>
             </div>
             <template #actions>

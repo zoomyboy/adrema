@@ -4,6 +4,7 @@ namespace Database\Factories\Form\Models;
 
 use App\Form\Data\ExportData;
 use App\Form\Models\Form;
+use App\Lib\Editor\Condition;
 use Database\Factories\Traits\FakesMedia;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Tests\Feature\Form\FormtemplateFieldRequest;
@@ -54,6 +55,7 @@ class FormFactory extends Factory
             'is_active' => true,
             'is_private' => false,
             'export' => ExportData::from([]),
+            'prevention_conditions' => Condition::defaults(),
         ];
     }
 

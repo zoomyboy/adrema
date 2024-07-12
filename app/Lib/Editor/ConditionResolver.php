@@ -21,6 +21,9 @@ abstract class ConditionResolver
      */
     public function filterBlock(array $block): bool
     {
-        return $this->filterCondition(Condition::fromBlock($block));
+        return $this->filterCondition(Condition::withoutMagicalCreationFrom([
+            'mode' => data_get($block, 'tunes.condition.mode', 'any'),
+            'ifs' =>  data_get($block, 'tunes.condition.ifs', []),
+        ]));
     }
 }

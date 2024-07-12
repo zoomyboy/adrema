@@ -20,21 +20,12 @@ class Condition extends Data
 
     public static function fromMedia(Media $media): self
     {
-        return static::withoutMagicalCreationFrom($media->getCustomProperty('conditions') ?: [
-            'mode' => 'any',
-            'ifs' => [],
-        ]);
+        return $media->getCustomProperty('conditions') ? static::withoutMagicalCreationFrom($media->getCustomProperty('conditions')) : static::default();
     }
 
-    /**
-     * @param array<string, mixed> $block
-     */
-    public static function fromBlock(array $block): self
+    public static function defaults(): self
     {
-        return static::withoutMagicalCreationFrom([
-            'mode' => data_get($block, 'tunes.condition.mode', 'any'),
-            'ifs' =>  data_get($block, 'tunes.condition.ifs', []),
-        ]);
+        return static::withoutMagicalCreationFrom(['mode' => 'any', 'ifs' => []]);
     }
 
     public function hasStatements(): bool

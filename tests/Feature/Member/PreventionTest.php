@@ -9,6 +9,7 @@ use App\Form\Enums\SpecialType;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Invoice\InvoiceSettings;
+use App\Lib\Editor\Condition;
 use App\Prevention\Mails\PreventionRememberMail;
 use App\Member\Member;
 use App\Member\Membership;
@@ -35,6 +36,19 @@ class PreventionTest extends TestCase
         PreventionRememberAction::run();
 
         $this->assertEquals(now()->format('Y-m-d'), $participant->fresh()->last_remembered_at->format('Y-m-d'));
+    }
+
+    public function testItDoesntRememberWhenConditionDoesntMatch(): void
+    {
+        Mail::fake();
+        $form = $this->createForm();
+        $form->update(['prevention_conditions' => Condition::from(['mode' => 'all', 'ifs' => [['field' => 'vorname', 'comparator' => 'isEqual', 'value' => 'Max']]])]);
+        $participant = $this->createParticipant($form);
+        $participant->update(['data' => [...$participant->data, 'vorname' => 'Jane']]);
+
+        PreventionRememberAction::run();
+
+        $this->assertNull($participant->fresh()->last_remembered_at);
     }
 
     public function testItRemembersWhenRememberIsDue(): void

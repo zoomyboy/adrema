@@ -37,6 +37,7 @@ class FormStoreAction
             'export' => 'nullable|array',
             'needs_prevention' => 'present|boolean',
             'prevention_text' => 'array',
+            'prevention_conditions' => 'array',
         ];
     }
 
