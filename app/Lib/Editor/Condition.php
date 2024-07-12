@@ -2,7 +2,6 @@
 
 namespace App\Lib\Editor;
 
-use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
