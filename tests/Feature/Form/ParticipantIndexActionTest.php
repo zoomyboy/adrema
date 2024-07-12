@@ -48,6 +48,7 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('data.0.select_display', 'A, B')
             ->assertJsonPath('data.0.links.destroy', route('participant.destroy', ['participant' => $form->participants->first()]))
             ->assertJsonPath('data.0.links.assign', route('participant.assign', ['participant' => $form->participants->first()]))
+            ->assertJsonPath('data.0.links.fields', route('participant.fields', ['participant' => $form->participants->first()]))
             ->assertJsonPath('meta.columns.0.name', 'Vorname')
             ->assertJsonPath('meta.columns.0.base_type', class_basename(TextField::class))
             ->assertJsonPath('meta.columns.0.id', 'vorname')
