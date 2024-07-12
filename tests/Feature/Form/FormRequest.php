@@ -53,7 +53,7 @@ class FormRequest extends RequestFactory
             'export' => ExportData::from([])->toArray(),
             'needs_prevention' => $this->faker->boolean(),
             'prevention_text' => EditorRequestFactory::new()->create(),
-            'prevention_conditions' => Condition::defaults(),
+            'prevention_conditions' => Condition::defaults()->toArray(),
         ];
     }
 
