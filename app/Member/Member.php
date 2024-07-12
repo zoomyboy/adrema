@@ -347,9 +347,6 @@ class Member extends Model implements Geolocatable
     public function preventions(?Carbon $date = null): array
     {
         $date = $date ?: now();
-        if (!$this->isLeader()) {
-            return [];
-        }
 
         /** @var array<int, Prevention> */
         $preventions = [];

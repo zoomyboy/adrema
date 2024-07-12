@@ -96,7 +96,7 @@ class PreventionTest extends TestCase
         $this->assertNull($participant->fresh()->last_remembered_at);
     }
 
-    public function testItDoesntRememberWhenMemberIsNotALeader(): void
+    public function testItRemembersNonLeaders(): void
     {
         Mail::fake();
         $form = $this->createForm();
@@ -105,7 +105,7 @@ class PreventionTest extends TestCase
 
         PreventionRememberAction::run();
 
-        $this->assertNull($participant->fresh()->last_remembered_at);
+        $this->assertNotNull($participant->fresh()->last_remembered_at);
     }
 
     protected function attributes(): Generator
