@@ -81,12 +81,12 @@
                         <ui-tabs v-model="activeMailTab" :entries="mailTabs"></ui-tabs>
                         <f-editor v-if="activeMailTab === 0" id="mail_top" v-model="single.mail_top" name="mail_top" label="E-Mail-Teil 1" :rows="8" conditions required>
                             <template #conditions="{data, resolve}">
-                                <conditions :single="single" :value="data" @save="resolve"> </conditions>
+                                <conditions-form id="mail_top_conditions" :single="single" :value="data" @save="resolve"> </conditions-form>
                             </template>
                         </f-editor>
                         <f-editor v-if="activeMailTab === 1" id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" :rows="8" conditions required>
                             <template #conditions="{data, resolve}">
-                                <conditions :single="single" :value="data" @save="resolve"> </conditions>
+                                <conditions-form id="mail_bottom_conditions" :single="single" :value="data" @save="resolve"> </conditions-form>
                             </template>
                         </f-editor>
                     </div>
@@ -134,7 +134,7 @@
         </ui-popup>
 
         <ui-popup v-if="fileSettingPopup !== null" :heading="`Bedingungen für Datei ${fileSettingPopup.name}`" @close="fileSettingPopup = null">
-            <conditions :single="single" :value="fileSettingPopup.properties.conditions" @save="saveFileConditions"> </conditions>
+            <conditions-form id="filesettings" :single="single" :value="fileSettingPopup.properties.conditions" @save="saveFileConditions"> </conditions-form>
         </ui-popup>
 
         <page-filter breakpoint="xl">
@@ -188,6 +188,7 @@ import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from '../formtemplate/FormBuilder.vue';
 import Participants from './Participants.vue';
 import Conditions from './Conditions.vue';
+import ConditionsForm from './ConditionsForm.vue';
 import { useToast } from 'vue-toastification';
 
 const props = defineProps(indexProps);

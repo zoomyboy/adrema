@@ -5,68 +5,72 @@
     </ui-note>
 
     <div v-else>
-        <f-select id="mode" v-model="inner.mode" :options="modeOptions" name="mode" label="Modus"></f-select>
+        <f-select :id="`mode-${id}`" :name="`mode-${id}`" :model-value="modelValue.mode" :options="modeOptions" label="Modus" @update:model-value="changeMode"></f-select>
 
         <ui-icon-button class="mt-4 mb-2" icon="plus" @click="addCondition">Bedingung einfügen</ui-icon-button>
 
-        <div v-for="(condition, index) in inner.ifs" :key="index" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
+        <div v-for="(condition, index) in modelValue.ifs" :key="index" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
             <f-select
-                :id="`field-${index}`"
+                :id="`field-${index}-${id}`"
                 :model-value="condition.field"
                 :options="fieldOptions"
-                :name="`field-${index}`"
+                :name="`field-${index}-${id}`"
                 label="Feld"
                 @update:model-value="update(index, 'field', $event)"
             ></f-select>
             <f-select
-                :id="`comparator-${index}`"
+                :id="`comparator-${index}-${id}`"
                 :options="comparatorOptions"
                 :model-value="condition.comparator"
-                :name="`comparator-${index}`"
+                :name="`comparator-${index}-${id}`"
                 label="Vergleich"
                 @update:model-value="update(index, 'comparator', $event)"
             ></f-select>
             <f-select
                 v-if="condition.field && ['isEqual', 'isNotEqual'].includes(condition.comparator) && ['RadioField', 'DropdownField'].includes(getField(condition.field).type)"
-                :id="`value-${index}`"
+                :id="`value-${index}-${id}`"
                 v-model="condition.value"
                 :options="getOptions(condition.field)"
-                :name="`value-${index}`"
+                :name="`value-${index}-${id}`"
                 label="Wert"
             ></f-select>
             <f-multipleselect
                 v-if="condition.field && ['isIn', 'isNotIn'].includes(condition.comparator) && ['RadioField', 'DropdownField'].includes(getField(condition.field).type)"
-                :id="`value-${index}`"
+                :id="`value-${index}-${id}`"
                 v-model="condition.value"
                 :options="getOptions(condition.field)"
                 label="Wert"
             ></f-multipleselect>
             <f-switch
                 v-if="condition.field && condition.comparator && ['CheckboxField'].includes(getField(condition.field).type)"
-                :id="`value-${index}`"
+                :id="`value-${index}-${id}`"
                 v-model="condition.value"
-                :name="`value-${index}`"
+                :name="`value-${index}-${id}`"
                 label="Wert"
             ></f-switch>
-            <ui-action-button tooltip="Löschen" icon="trash" class="btn-danger self-end h-8" @click="inner.ifs.splice(index, 1)"></ui-action-button>
+            <ui-action-button tooltip="Löschen" icon="trash" class="btn-danger self-end h-8" @click="remove(index)"></ui-action-button>
         </div>
-
-        <ui-icon-button class="mt-4 mb-2" icon="save" @click="save">Speichern</ui-icon-button>
     </div>
 </template>
 
 <script lang="js" setup>
 import { ref, inject, computed } from 'vue';
 const axios = inject('axios');
-const emit = defineEmits(['save']);
+const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps({
-    value: {
+    modelValue: {
         required: true,
+        type: Object,
     },
     single: {
         required: true,
+        type: Object,
     },
+    id: {
+        required: true,
+        type: String,
+    }
 });
 
 const comparatorOptions = ref([
@@ -94,23 +98,33 @@ const fields = computed(() => {
     return result;
 });
 
+function changeMode(mode) {
+    emit('update:modelValue', {...props.modelValue, mode: mode});
+}
+
 function update(index, key, value) {
+    var inner = {...props.modelValue};
     if (key === 'comparator') {
-        var old = inner.value.ifs[index];
-        inner.value.ifs[index] = {
+        var old = inner.ifs[index];
+        inner.ifs[index] = {
             field: old.field,
             comparator: value,
             value: old.field ? comparatorOptions.value.find((c) => c.id === value).defaultValue[getField(old.field).type] : null,
         };
     }
     if (key === 'field') {
-        var old = inner.value.ifs[index];
-        inner.value.ifs[index] = {
+        var old = inner.ifs[index];
+        inner.ifs[index] = {
             field: value,
             comparator: null,
             value: null,
         };
     }
+    emit('update:modelValue', inner);
+}
+
+function remove(index) {
+    emit('update:modelValue', {...props.modelValue, ifs: props.modelValue.ifs.toSpliced(index, 1)});
 }
 
 function getField(fieldName) {
@@ -129,21 +143,18 @@ const fieldOptions = computed(() =>
     })
 );
 
-const inner = ref(JSON.parse(JSON.stringify(props.value)));
+function addCondition() {
+    emit('update:modelValue', {...props.modelValue, ifs: [
+        ...props.modelValue.ifs,
+        {
+            field: null,
+            comparator: null,
+            value: null,
+        }
+    ]});
+}
 
 const locked = ref(false);
-
-function addCondition() {
-    inner.value.ifs.push({
-        field: null,
-        comparator: null,
-        value: null,
-    });
-}
-
-async function save() {
-    emit('save', inner.value);
-}
 
 async function checkIfDirty() {
     const response = await axios.post(props.single.links.is_dirty, { config: props.single.config });
