@@ -12,6 +12,9 @@ class ParticipantUpdateAction
 {
     use AsAction;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         return [
