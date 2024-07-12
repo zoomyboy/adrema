@@ -20,7 +20,7 @@ class Condition extends Data
 
     public static function fromMedia(Media $media): self
     {
-        return $media->getCustomProperty('conditions') ? static::withoutMagicalCreationFrom($media->getCustomProperty('conditions')) : static::default();
+        return $media->getCustomProperty('conditions') ? static::withoutMagicalCreationFrom($media->getCustomProperty('conditions')) : static::defaults();
     }
 
     public static function defaults(): self
