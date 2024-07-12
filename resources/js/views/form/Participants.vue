@@ -1,5 +1,14 @@
 <template>
     <div class="mt-5">
+        <ui-popup v-if="editing !== null" heading="Mitglied bearbeiten" closeable full @close="editing = null">
+            <event-form
+                :value="editingPreviewString"
+                :base-url="meta.base_url"
+                style="--primary: hsl(181, 75%, 26%); --secondary: hsl(181, 75%, 35%); --font: hsl(181, 84%, 78%); --circle: hsl(181, 86%, 16%)"
+                as-form
+                @save="updateParticipant($event.detail[0])"
+            ></event-form>
+        </ui-popup>
         <ui-popup v-if="assigning !== null" heading="Mitglied zuweisen" closeable @close="assigning = null">
             <member-assign @assign="assign"></member-assign>
         </ui-popup>
@@ -77,7 +86,7 @@
                         </div>
                     </td>
                     <td>
-                        <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(participant)"><ui-sprite src="pencil"></ui-sprite></a>
+                        <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(participant)"><ui-sprite src="pencil"></ui-sprite></a>
                         <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = participant"><ui-sprite src="trash"></ui-sprite></a>
                     </td>
                 </tr>
@@ -95,7 +104,7 @@
                             <div v-else v-text="child[column.display_attribute]"></div>
                         </td>
                         <td>
-                            <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="edit(child)"><ui-sprite src="pencil"></ui-sprite></a>
+                            <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(child)"><ui-sprite src="pencil"></ui-sprite></a>
                             <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = child"><ui-sprite src="trash"></ui-sprite></a>
                         </td>
                     </tr>
@@ -202,4 +211,23 @@ function dropdownFilterOptions(filter) {
         }),
     ];
 }
+
+async function editReal(participant) {
+    const response = await axios.get(participant.links.fields);
+    editing.value = {
+        participant: participant,
+        config: response.data.data.config,
+    };
+}
+
+async function updateParticipant(payload) {
+    await axios.patch(editing.value.participant.links.update, {data: payload});
+
+    await reload();
+
+    editing.value = null;
+}
+
+const editing = ref(null);
+const editingPreviewString = computed(() => editing.value === null ? '' : JSON.stringify(editing.value.config));
 </script>
