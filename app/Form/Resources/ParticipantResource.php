@@ -33,6 +33,7 @@ class ParticipantResource extends JsonResource
                 'destroy' => route('participant.destroy', ['participant' => $this->getModel()]),
                 'children' => route('form.participant.index', ['form' => $this->form, 'parent' => $this->id]),
                 'fields' => route('participant.fields', ['participant' => $this->getModel()]),
+                'update' => route('participant.update', ['participant' => $this->getModel()]),
             ]
         ];
     }
