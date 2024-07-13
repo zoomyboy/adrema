@@ -69,7 +69,7 @@ steps:
           SCOUT_DRIVER: database
           MEILI_MASTER_KEY: abc
           TEST_OWNCLOUD_DOMAIN: http://owncloudserver:8080
-          TEST_NEXTCLOUD_DOMAIN: http://nectcloudserver:80
+          TEST_NEXTCLOUD_DOMAIN: http://nextcloudserver:80
 
     - name: docker_app_push
       image: plugins/docker
