@@ -71,6 +71,7 @@ class Form extends Model implements HasMedia
             ->singleFile()
             ->maxWidth(fn () => 500)
             ->forceFileName(fn (Form $model, string $name) => $model->slug)
+            ->convert(fn () => 'jpg')
             ->registerMediaConversions(function (Media $media) {
                 $this->addMediaConversion('square')->fit(Manipulations::FIT_CROP, 400, 400);
             });
