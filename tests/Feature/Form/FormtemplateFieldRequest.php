@@ -10,7 +10,7 @@ use App\Form\Enums\SpecialType;
 /**
  * @method self name(string $name)
  * @method self key(string $key)
- * @method self required(string|bool $key)
+ * @method self required(bool $isRequired)
  * @method self rows(int $rows)
  * @method self columns(array{mobile: int, tablet: int, desktop: int} $rows)
  * @method self default(mixed $default)
