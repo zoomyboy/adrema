@@ -31,9 +31,9 @@ class ExportSyncActionTest extends FileshareTestCase
 
     public function testItUploadsRootFile(): void
     {
-        $this->withoutExceptionHandling()->withUser('badenpowell', 'secret')->withDirs('badenpowell', ['/abc']);
+        $this->withoutExceptionHandling()->withUser('badenpowell', 'zai8hie3oozaiX5queey0Xa9a')->withDirs('badenpowell', ['/abc']);
         $connection = Fileshare::factory()
-            ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
+            ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'zai8hie3oozaiX5queey0Xa9a', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
             ->create();
         $form = Form::factory()->name('Formular')->fields([
             $this->textField('vorname'),
@@ -49,9 +49,9 @@ class ExportSyncActionTest extends FileshareTestCase
 
     public function testItUploadsGroupFile(): void
     {
-        $this->withoutExceptionHandling()->withUser('badenpowell', 'secret')->withDirs('badenpowell', ['/abc', '/stamm']);
+        $this->withoutExceptionHandling()->withUser('badenpowell', 'Aejahpoopood1Keetaaghoe0Z')->withDirs('badenpowell', ['/abc', '/stamm']);
         $connection = Fileshare::factory()
-            ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
+            ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'Aejahpoopood1Keetaaghoe0Z', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
             ->create();
         $group = Group::factory()->create(['fileshare' => FileshareResourceData::from(['connection_id' => $connection->id, 'resource' => '/stamm'])]);
         $form = Form::factory()->name('Formular')->fields([
