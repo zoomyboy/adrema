@@ -58,7 +58,9 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('meta.form_meta.active_columns', ['vorname', 'select', 'stufe', 'test1'])
             ->assertJsonPath('meta.has_nami_field', false)
             ->assertJsonPath('meta.links.update_form_meta', route('form.update-meta', ['form' => $form]))
-            ->assertJsonPath('meta.form_meta.sorting', ['vorname', 'asc']);
+            ->assertJsonPath('meta.links.store_participant', route('form.participant.store', ['form' => $form]))
+            ->assertJsonPath('meta.form_meta.sorting', ['vorname', 'asc'])
+            ->assertJsonPath('meta.form_config.sections.0.fields.0.key', 'vorname');
     }
 
     public function testItShowsEmptyFilters(): void

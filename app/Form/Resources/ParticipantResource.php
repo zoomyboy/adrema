@@ -60,12 +60,14 @@ class ParticipantResource extends JsonResource
 
         return [
             'filter' => ParticipantFilterScope::fromRequest(request()->input('filter', ''))->setForm($form),
+            'form_config' => $form->config,
             'default_filter_value' => ParticipantFilterScope::$nan,
             'filters' => $filterData,
             'form_meta' => $form->meta,
             'has_nami_field' => $form->getFields()->hasNamiField(),
             'links' => [
                 'update_form_meta' => route('form.update-meta', ['form' => $form]),
+                'store_participant' => route('form.participant.store', ['form' => $form]),
             ],
             'columns' => $fieldData->push([
                 'name' => 'Registriert am',

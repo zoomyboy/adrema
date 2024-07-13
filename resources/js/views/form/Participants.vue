@@ -1,8 +1,8 @@
 <template>
-    <div class="mt-5">
+    <div>
         <ui-popup v-if="editing !== null" heading="Mitglied bearbeiten" closeable full @close="editing = null">
             <event-form
-                :value="editingPreviewString"
+                :value="editing.preview"
                 :base-url="meta.base_url"
                 style="--primary: hsl(181, 75%, 26%); --secondary: hsl(181, 75%, 35%); --font: hsl(181, 84%, 78%); --circle: hsl(181, 86%, 16%)"
                 as-form
@@ -22,6 +22,7 @@
             </div>
         </ui-popup>
         <page-filter breakpoint="lg">
+            <ui-icon-button icon="plus" @click="editing = {participant: null, preview: JSON.stringify(meta.form_config)}">Hinzufügen</ui-icon-button>
             <f-switch v-if="meta.has_nami_field" id="group_participants" v-model="groupParticipants" label="Gruppieren" size="sm" name="group_participants"></f-switch>
             <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm"></f-multipleselect>
 
@@ -216,12 +217,16 @@ async function editReal(participant) {
     const response = await axios.get(participant.links.fields);
     editing.value = {
         participant: participant,
-        config: response.data.data.config,
+        preview: JSON.stringify(response.data.data.config),
     };
 }
 
 async function updateParticipant(payload) {
-    await axios.patch(editing.value.participant.links.update, {data: payload});
+    if (editing.value.participant === null) {
+        await axios.post(meta.value.links.store_participant, payload);
+    } else {
+        await axios.patch(editing.value.participant.links.update, payload);
+    }
 
     await reload();
 
@@ -229,5 +234,4 @@ async function updateParticipant(payload) {
 }
 
 const editing = ref(null);
-const editingPreviewString = computed(() => editing.value === null ? '' : JSON.stringify(editing.value.config));
 </script>

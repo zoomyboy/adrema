@@ -40,6 +40,7 @@ use App\Form\Actions\ParticipantAssignAction;
 use App\Form\Actions\ParticipantDestroyAction;
 use App\Form\Actions\ParticipantFieldsAction;
 use App\Form\Actions\ParticipantIndexAction;
+use App\Form\Actions\ParticipantStoreAction;
 use App\Form\Actions\ParticipantUpdateAction;
 use App\Initialize\Actions\InitializeAction;
 use App\Initialize\Actions\InitializeFormAction;
@@ -176,6 +177,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::post('/participant/{participant}/assign', ParticipantAssignAction::class)->name('participant.assign');
     Route::get('/participant/{participant}/fields', ParticipantFieldsAction::class)->name('participant.fields');
     Route::patch('/participant/{participant}', ParticipantUpdateAction::class)->name('participant.update');
+    Route::post('/form/{form}/participant', ParticipantStoreAction::class)->name('form.participant.store');
 
     // ------------------------------------ fileshare -----------------------------------
     Route::post('/fileshare', FileshareStoreAction::class)->name('fileshare.store');
