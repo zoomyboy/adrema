@@ -19,8 +19,28 @@ export default function (props) {
         }[props.breakpoint];
     });
 
+    const visibleMobileBlock = computed(() => {
+        return {
+            sm: 'block sm:hidden',
+            md: 'block md:hidden',
+            lg: 'block lg:hidden',
+            xl: 'block xl:hidden',
+        }[props.breakpoint];
+    });
+
+    const visibleDesktopBlock = computed(() => {
+        return {
+            sm: 'hidden sm:block',
+            md: 'hidden md:block',
+            lg: 'hidden lg:block',
+            xl: 'hidden xl:block',
+        }[props.breakpoint];
+    });
+
     return {
         visibleMobile,
         visibleDesktop,
+        visibleDesktopBlock,
+        visibleMobileBlock,
     };
 }

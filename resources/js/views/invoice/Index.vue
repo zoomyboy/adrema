@@ -72,15 +72,17 @@
                 </section>
             </form>
         </ui-popup>
-        <page-filter breakpoint="xl">
-            <f-multipleselect
-                id="statuses"
-                :options="meta.statuses"
-                :model-value="getFilter('statuses')"
-                label="Status"
-                size="sm"
-                @update:model-value="setFilter('statuses', $event)"
-            ></f-multipleselect>
+        <page-filter breakpoint="xl" :filterable="false">
+            <template #buttons>
+                <f-multipleselect
+                    id="statuses"
+                    :options="meta.statuses"
+                    :model-value="getFilter('statuses')"
+                    label="Status"
+                    size="sm"
+                    @update:model-value="setFilter('statuses', $event)"
+                ></f-multipleselect>
+            </template>
         </page-filter>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>

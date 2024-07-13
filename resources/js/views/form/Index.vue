@@ -140,10 +140,12 @@
             <conditions-form id="filesettings" :single="single" :value="fileSettingPopup.properties.conditions" @save="saveFileConditions"> </conditions-form>
         </ui-popup>
 
-        <page-filter breakpoint="xl">
-            <f-text id="search" :model-value="getFilter('search')" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
-            <f-switch id="past" :model-value="getFilter('past')" label="vergangene zeigen" name="past" size="sm" @update:model-value="setFilter('past', $event)"></f-switch>
-            <f-switch id="inactive" :model-value="getFilter('inactive')" label="inaktive zeigen" name="inactive" size="sm" @update:model-value="setFilter('inactive', $event)"></f-switch>
+        <page-filter breakpoint="xl" :filterable="false">
+            <template #buttons>
+                <f-text id="search" :model-value="getFilter('search')" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
+                <f-switch id="past" :model-value="getFilter('past')" label="vergangene zeigen" name="past" size="sm" @update:model-value="setFilter('past', $event)"></f-switch>
+                <f-switch id="inactive" :model-value="getFilter('inactive')" label="inaktive zeigen" name="inactive" size="sm" @update:model-value="setFilter('inactive', $event)"></f-switch>
+            </template>
         </page-filter>
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">

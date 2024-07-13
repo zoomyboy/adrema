@@ -22,44 +22,48 @@
             </div>
         </ui-popup>
         <page-filter breakpoint="lg">
-            <ui-icon-button icon="plus" @click="editing = {participant: null, preview: JSON.stringify(meta.form_config)}">Hinzufügen</ui-icon-button>
-            <f-switch v-if="meta.has_nami_field" id="group_participants" v-model="groupParticipants" label="Gruppieren" size="sm" name="group_participants"></f-switch>
-            <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm"></f-multipleselect>
+            <template #buttons>
+                <ui-icon-button icon="plus" @click="editing = {participant: null, preview: JSON.stringify(meta.form_config)}">Hinzufügen</ui-icon-button>
+                <f-switch v-if="meta.has_nami_field" id="group_participants" v-model="groupParticipants" label="Gruppieren" size="sm" name="group_participants"></f-switch>
+                <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm"></f-multipleselect>
+            </template>
 
-            <template v-for="(filter, index) in meta.filters">
-                <f-select
-                    v-if="filter.base_type === 'CheckboxField'"
-                    :id="`filter-field-${index}`"
-                    :key="`filter-field-${index}`"
-                    v-model="innerFilter.data[filter.key]"
-                    :null-value="meta.default_filter_value"
-                    :name="`filter-field-${index}`"
-                    :options="checkboxFilterOptions"
-                    :label="filter.name"
-                    size="sm"
-                ></f-select>
-                <f-select
-                    v-if="filter.base_type === 'DropdownField'"
-                    :id="`filter-field-${index}`"
-                    :key="`filter-field-${index}`"
-                    v-model="innerFilter.data[filter.key]"
-                    :null-value="meta.default_filter_value"
-                    :name="`filter-field-${index}`"
-                    :options="dropdownFilterOptions(filter)"
-                    :label="filter.name"
-                    size="sm"
-                ></f-select>
-                <f-select
-                    v-if="filter.base_type === 'RadioField'"
-                    :id="`filter-field-${index}`"
-                    :key="`filter-field-${index}`"
-                    v-model="innerFilter.data[filter.key]"
-                    :null-value="meta.default_filter_value"
-                    :name="`filter-field-${index}`"
-                    :options="dropdownFilterOptions(filter)"
-                    :label="filter.name"
-                    size="sm"
-                ></f-select>
+            <template #fields>
+                <template v-for="(filter, index) in meta.filters">
+                    <f-select
+                        v-if="filter.base_type === 'CheckboxField'"
+                        :id="`filter-field-${index}`"
+                        :key="`filter-field-${index}`"
+                        v-model="innerFilter.data[filter.key]"
+                        :null-value="meta.default_filter_value"
+                        :name="`filter-field-${index}`"
+                        :options="checkboxFilterOptions"
+                        :label="filter.name"
+                        size="sm"
+                    ></f-select>
+                    <f-select
+                        v-if="filter.base_type === 'DropdownField'"
+                        :id="`filter-field-${index}`"
+                        :key="`filter-field-${index}`"
+                        v-model="innerFilter.data[filter.key]"
+                        :null-value="meta.default_filter_value"
+                        :name="`filter-field-${index}`"
+                        :options="dropdownFilterOptions(filter)"
+                        :label="filter.name"
+                        size="sm"
+                    ></f-select>
+                    <f-select
+                        v-if="filter.base_type === 'RadioField'"
+                        :id="`filter-field-${index}`"
+                        :key="`filter-field-${index}`"
+                        v-model="innerFilter.data[filter.key]"
+                        :null-value="meta.default_filter_value"
+                        :name="`filter-field-${index}`"
+                        :options="dropdownFilterOptions(filter)"
+                        :label="filter.name"
+                        size="sm"
+                    ></f-select>
+                </template>
             </template>
         </page-filter>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
