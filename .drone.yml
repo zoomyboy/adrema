@@ -69,6 +69,7 @@ steps:
           SCOUT_DRIVER: database
           MEILI_MASTER_KEY: abc
           TEST_OWNCLOUD_DOMAIN: http://owncloudserver:8080
+          TEST_NEXTCLOUD_DOMAIN: http://nectcloudserver:80
 
     - name: docker_app_push
       image: plugins/docker
@@ -194,6 +195,24 @@ services:
           OWNCLOUD_MYSQL_UTF8MB4: true
           OWNCLOUD_REDIS_ENABLED: false
           OWNCLOUD_REDIS_HOST: false
+    - name: nextclouddb
+      image: mariadb:10.11
+      environment:
+          MYSQL_ROOT_PASSWORD: nextcloud
+          MYSQL_USER: nextcloud
+          MYSQL_PASSWORD: nextcloud
+          MYSQL_DATABASE: nextcloud
+          MARIADB_AUTO_UPGRADE: 1
+    - name: nextcloudserver
+      image: nextcloud
+      environment:
+          MYSQL_PASSWORD: nextcloud
+          MYSQL_DATABASE: nextcloud
+          MYSQL_USER: nextcloud
+          MYSQL_HOST: nextclouddb
+          NEXTCLOUD_ADMIN_USER: admin
+          NEXTCLOUD_ADMIN_PASSWORD: admin
+          NEXTCLOUD_TRUSTED_DOMAINS:
 
 trigger:
     event:
