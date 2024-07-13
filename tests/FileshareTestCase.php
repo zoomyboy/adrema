@@ -62,9 +62,7 @@ abstract class FileshareTestCase extends TestCase
             return Http::withOptions(['base_uri' => env('TEST_OWNCLOUD_DOMAIN')])->withBasicAuth($this->adminUser, $this->adminPassword)->acceptJson();
         }
 
-        if ($connection === NextcloudConnection::class) {
-            return Http::withOptions(['base_uri' => env('TEST_NEXTCLOUD_DOMAIN')])->withHeaders(['OCS-APIRequest' => 'true'])->withBasicAuth($this->adminUser, $this->adminPassword)->acceptJson();
-        }
+        return Http::withOptions(['base_uri' => env('TEST_NEXTCLOUD_DOMAIN')])->withHeaders(['OCS-APIRequest' => 'true'])->withBasicAuth($this->adminUser, $this->adminPassword)->acceptJson();
     }
 
     /**
@@ -102,9 +100,7 @@ abstract class FileshareTestCase extends TestCase
                 'userName' => $username,
                 'password' => $this->passwords[$username],
             ]), '/remote.php/dav/files/' . $username);
-        }
-
-        if ($connection === NextcloudConnection::class) {
+        } else {
             $adapter = new WebDAVAdapter(new Client([
                 'baseUri' => env('TEST_NEXTCLOUD_DOMAIN') . '/remote.php/dav/files/' . $username,
                 'userName' => $username,
