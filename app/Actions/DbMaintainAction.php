@@ -18,6 +18,6 @@ class DbMaintainAction
     {
         Artisan::call(PruneCommand::class, ['--hours' => 168]);     // 168h = 7 Tage
         DB::select('optimize table telescope_entries');
-        Http::post('https://zoomyboy.de/maintain');
+        Http::post('https://zoomyboy.de/maintain', ['url' => url()->current()]);
     }
 }
