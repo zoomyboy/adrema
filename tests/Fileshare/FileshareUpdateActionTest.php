@@ -10,7 +10,7 @@ class FileshareUpdateActionTest extends FileshareTestCase
 {
     public function testItStoresAConnection(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami()->withOwncloudUser('badenpowell', 'secret');
+        $this->withoutExceptionHandling()->login()->loginNami()->withUser('badenpowell', 'secret');
 
         $connection = Fileshare::factory()
             ->type(OwncloudConnection::from(['user' => 'test', 'password' => 'test', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
@@ -36,7 +36,7 @@ class FileshareUpdateActionTest extends FileshareTestCase
 
     public function testItChecksConnection(): void
     {
-        $this->login()->loginNami()->withOwncloudUser('test', 'test');
+        $this->login()->loginNami()->withUser('test', 'test');
 
         $connection = Fileshare::factory()
             ->type(OwncloudConnection::from(['user' => 'test', 'password' => 'test', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))

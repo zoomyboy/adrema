@@ -31,7 +31,7 @@ class ExportSyncActionTest extends FileshareTestCase
 
     public function testItUploadsRootFile(): void
     {
-        $this->withoutExceptionHandling()->withOwncloudUser('badenpowell', 'secret')->withDirs('badenpowell', ['/abc']);
+        $this->withoutExceptionHandling()->withUser('badenpowell', 'secret')->withDirs('badenpowell', ['/abc']);
         $connection = Fileshare::factory()
             ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
             ->create();
@@ -49,7 +49,7 @@ class ExportSyncActionTest extends FileshareTestCase
 
     public function testItUploadsGroupFile(): void
     {
-        $this->withoutExceptionHandling()->withOwncloudUser('badenpowell', 'secret')->withDirs('badenpowell', ['/abc', '/stamm']);
+        $this->withoutExceptionHandling()->withUser('badenpowell', 'secret')->withDirs('badenpowell', ['/abc', '/stamm']);
         $connection = Fileshare::factory()
             ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
             ->create();

@@ -10,7 +10,7 @@ class FileshareIndexActionTest extends FileshareTestCase
 {
     public function testItListsOwncloudConnectionsThatAreActive(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami()->withOwncloudUser('badenpowell', 'secret');
+        $this->withoutExceptionHandling()->login()->loginNami()->withUser('badenpowell', 'secret');
         $connection = Fileshare::factory()
             ->type(OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')]))
             ->name('lokaler Server')

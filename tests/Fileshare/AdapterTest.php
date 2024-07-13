@@ -10,7 +10,7 @@ class AdapterTest extends FileshareTestCase
 {
     public function testItGetsFilesInRoot(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami()->withOwncloudUser('badenpowell', 'secret')
+        $this->withoutExceptionHandling()->login()->loginNami()->withUser('badenpowell', 'secret')
             ->withDirs('badenpowell', []);
 
         $storage = OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')])->getFilesystem();
@@ -20,7 +20,7 @@ class AdapterTest extends FileshareTestCase
 
     public function testItGetsFilesInSubdirectory(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami()->withOwncloudUser('badenpowell', 'secret')
+        $this->withoutExceptionHandling()->login()->loginNami()->withUser('badenpowell', 'secret')
             ->withDirs('badenpowell', ['/pictures']);
 
         $storage = OwncloudConnection::from(['user' => 'badenpowell', 'password' => 'secret', 'base_url' => env('TEST_OWNCLOUD_DOMAIN')])->getFilesystem();
