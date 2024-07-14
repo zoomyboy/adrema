@@ -8,8 +8,7 @@ abstract class ConditionResolver
     abstract public function filterCondition(Condition $condition): bool;
 
     /**
-     * @param array<string, mixed> $content
-     * @return array<string, mixed>
+     * @return array<int, mixed>
      */
     public function makeBlocks(EditorData $data): array
     {

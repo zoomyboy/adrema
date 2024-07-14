@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Form;
 
+use Tests\RequestFactories\EditorRequestFactory;
 use Worksome\RequestFactories\RequestFactory;
 
 /**
