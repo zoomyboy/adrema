@@ -28,6 +28,8 @@ trait HasValidation
             'config.sections.*.fields.*.columns.mobile' => 'required|numeric|gt:0|lte:2',
             'config.sections.*.fields.*.columns.tablet' => 'required|numeric|gt:0|lte:4',
             'config.sections.*.fields.*.columns.desktop' => 'required|numeric|gt:0|lte:6',
+            'mail_top' => 'array',
+            'mail_bottom' => 'array',
         ];
     }
 

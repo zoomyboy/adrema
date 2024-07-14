@@ -10,6 +10,7 @@ use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use Generator;
+use Tests\RequestFactories\EditorRequestFactory;
 
 class FormtemplateStoreActionTest extends FormTestCase
 {
@@ -20,14 +21,17 @@ class FormtemplateStoreActionTest extends FormTestCase
     {
         Event::fake([Succeeded::class]);
         $this->login()->loginNami()->withoutExceptionHandling();
-        FormtemplateRequest::new()->name('testname')->sections([
+        $payload = FormtemplateRequest::new()->name('testname')->sections([
             FormtemplateSectionRequest::new()->name('Persönliches')->fields([
                 $this->textField('a')->name('lala1')->columns(['mobile' => 2, 'tablet' => 2, 'desktop' => 1])->required(false)->hint('hhh')->intro('intro'),
                 $this->textareaField('b')->name('lala2')->required(false)->specialType(SpecialType::FIRSTNAME)->rows(10),
             ]),
-        ])->fake();
+        ])
+            ->mailTop(EditorRequestFactory::new()->text(10, 'lala'))
+            ->mailBottom(EditorRequestFactory::new()->text(10, 'lblb'))
+            ->create();
 
-        $this->postJson(route('formtemplate.store'))->assertOk();
+        $this->postJson(route('formtemplate.store'), $payload)->assertOk();
 
         $formtemplate = Formtemplate::latest()->first();
         $this->assertEquals('Persönliches', $formtemplate->config->sections->get(0)->name);
@@ -41,6 +45,8 @@ class FormtemplateStoreActionTest extends FormTestCase
         $this->assertEquals(SpecialType::FIRSTNAME, $formtemplate->config->sections->get(0)->fields->get(1)->specialType);
         $this->assertEquals(['mobile' => 2, 'tablet' => 2, 'desktop' => 1], $formtemplate->config->sections->get(0)->fields->get(0)->columns->toArray());
         $this->assertEquals(10, $formtemplate->config->sections->get(0)->fields->get(1)->rows);
+        $this->assertEquals('lala', $formtemplate->mail_top->blocks[0]['data']['text']);
+        $this->assertEquals('lblb', $formtemplate->mail_bottom->blocks[0]['data']['text']);
         $this->assertFalse($formtemplate->config->sections->get(0)->fields->get(0)->required);
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Vorlage gespeichert.');
     }

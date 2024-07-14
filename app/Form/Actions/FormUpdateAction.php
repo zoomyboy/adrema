@@ -30,8 +30,6 @@ class FormUpdateAction
             'to' => 'required|date',
             'registration_from' => 'present|nullable|date',
             'registration_until' => 'present|nullable|date',
-            'mail_top' => 'array',
-            'mail_bottom' => 'array',
             'is_active' => 'boolean',
             'is_private' => 'boolean',
             'export' => 'nullable|array',

@@ -7,6 +7,7 @@ use App\Form\Enums\SpecialType;
 use App\Form\Fields\Field;
 use App\Form\Models\Formtemplate;
 use App\Group;
+use App\Lib\Editor\EditorData;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -52,6 +53,8 @@ class FormtemplateResource extends JsonResource
             ],
             'default' => [
                 'name' => '',
+                'mail_top' => EditorData::default(),
+                'mail_bottom' => EditorData::default(),
                 'config' => [
                     'sections' => [],
                 ]

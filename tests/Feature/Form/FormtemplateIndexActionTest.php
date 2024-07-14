@@ -83,6 +83,16 @@ class FormtemplateIndexActionTest extends TestCase
             ])
             ->assertInertiaPath('data.meta.default', [
                 'name' => '',
+                'mail_top' => [
+                    'version' => '1.0',
+                    'blocks' => [],
+                    'time' => 0,
+                ],
+                'mail_bottom' => [
+                    'version' => '1.0',
+                    'blocks' => [],
+                    'time' => 0,
+                ],
                 'config' => [
                     'sections' => [],
                 ]

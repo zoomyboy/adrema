@@ -6,6 +6,8 @@ use Worksome\RequestFactories\RequestFactory;
 
 /**
  * @method self name(string $name)
+ * @method self mailTop(?EditorRequestFactory $content)
+ * @method self mailBottom(?EditorRequestFactory $content)
  */
 class FormtemplateRequest extends RequestFactory
 {
@@ -33,6 +35,6 @@ class FormtemplateRequest extends RequestFactory
      */
     public function __call(string $method, $args): self
     {
-        return $this->state([$method => $args[0]]);
+        return $this->state([str($method)->snake()->toString() => $args[0]]);
     }
 }
