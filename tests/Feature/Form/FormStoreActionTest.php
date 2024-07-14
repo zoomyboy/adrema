@@ -41,9 +41,9 @@ class FormStoreActionTest extends FormTestCase
         $this->assertEquals('formname', $form->name);
         $this->assertEquals('lorem ipsum', $form->prevention_text->blocks[0]['data']['text']);
         $this->assertEquals('avff', $form->excerpt);
-        $this->assertEquals($description->paragraphBlock(10, 'Lorem'), $form->description);
-        $this->assertEquals(json_decode('{"time":1,"blocks":[{"id":11,"type":"paragraph","data":{"text":"lala"},"tunes":{"condition":{"mode":"all","ifs":[]}}}],"version":"1.0"}', true), $form->mail_top);
-        $this->assertEquals(json_decode('{"time":1,"blocks":[{"id":12,"type":"paragraph","data":{"text":"lalab"},"tunes":{"condition":{"mode":"all","ifs":[]}}}],"version":"1.0"}', true), $form->mail_bottom);
+        $this->assertEquals('Lorem', $form->description->blocks[0]['data']['text']);
+        $this->assertEquals('lala', $form->mail_top->blocks[0]['data']['text']);
+        $this->assertEquals('lalab', $form->mail_bottom->blocks[0]['data']['text']);
         $this->assertEquals('2023-05-04 01:00', $form->registration_from->format('Y-m-d H:i'));
         $this->assertEquals(true, $form->is_active);
         $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));

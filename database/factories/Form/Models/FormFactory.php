@@ -43,15 +43,15 @@ class FormFactory extends Factory
     {
         return [
             'name' => $this->faker->words(4, true),
-            'description' => EditorRequestFactory::new()->create(),
+            'description' => EditorRequestFactory::new()->toData(),
             'excerpt' => $this->faker->words(10, true),
             'config' => ['sections' => []],
             'from' => $this->faker->dateTimeBetween('+1 week', '+4 weeks')->format('Y-m-d H:i:s'),
             'to' => $this->faker->dateTimeBetween('+1 week', '+4 weeks')->format('Y-m-d H:i:s'),
             'registration_from' => $this->faker->dateTimeBetween('-2 weeks', 'now')->format('Y-m-d H:i:s'),
             'registration_until' => $this->faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d H:i:s'),
-            'mail_top' => EditorRequestFactory::new()->create(),
-            'mail_bottom' => EditorRequestFactory::new()->create(),
+            'mail_top' => EditorRequestFactory::new()->toData(),
+            'mail_bottom' => EditorRequestFactory::new()->toData(),
             'is_active' => true,
             'is_private' => false,
             'export' => ExportData::from([]),
@@ -85,16 +85,16 @@ class FormFactory extends Factory
 
     public function mailTop(EditorRequestFactory $factory): self
     {
-        return $this->state(['mail_top' => $factory->create()]);
+        return $this->state(['mail_top' => $factory->toData()]);
     }
 
     public function mailBottom(EditorRequestFactory $factory): self
     {
-        return $this->state(['mail_bottom' => $factory->create()]);
+        return $this->state(['mail_bottom' => $factory->toData()]);
     }
 
     public function description(EditorRequestFactory $factory): self
     {
-        return $this->state(['description' => $factory->create()]);
+        return $this->state(['description' => $factory->toData()]);
     }
 }

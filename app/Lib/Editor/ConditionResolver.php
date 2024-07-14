@@ -11,9 +11,9 @@ abstract class ConditionResolver
      * @param array<string, mixed> $content
      * @return array<string, mixed>
      */
-    public function makeBlocks(array $content): array
+    public function makeBlocks(EditorData $data): array
     {
-        return array_filter(data_get($content, 'blocks', []), fn ($block) => $this->filterBlock($block));
+        return array_filter($data->blocks, fn ($block) => $this->filterBlock($block));
     }
 
     /**

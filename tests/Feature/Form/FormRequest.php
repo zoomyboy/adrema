@@ -73,6 +73,14 @@ class FormRequest extends RequestFactory
         return $this->state([str($method)->snake()->toString() => $args[0]]);
     }
 
+    /**
+     * @param array<int, FormtemplateFieldRequest> $fields
+     */
+    public function fields(array $fields): self
+    {
+        return $this->sections([FormtemplateSectionRequest::new()->fields($fields)]);
+    }
+
     public function headerImage(string $fileName): self
     {
         UploadedFile::fake()->image($fileName, 1000, 1000)->storeAs('media-library', $fileName, 'temp');

@@ -19,10 +19,8 @@ class FormUpdateActionTest extends FormTestCase
     {
         $this->login()->loginNami()->withoutExceptionHandling();
         $form = Form::factory()->create();
-        $payload = FormRequest::new()->sections([
-            FormtemplateSectionRequest::new()->fields([
-                $this->dateField()->state(['max_today' => true]),
-            ])
+        $payload = FormRequest::new()->fields([
+            $this->dateField()->state(['max_today' => true]),
         ])->create();
 
         $this->patchJson(route('form.update', ['form' => $form]), $payload)
@@ -31,6 +29,24 @@ class FormUpdateActionTest extends FormTestCase
         $form = $form->fresh();
 
         $this->assertTrue($form->config->sections->get(0)->fields->get(0)->maxToday);
+    }
+
+    public function testItSetsTexts(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+        $payload = FormRequest::new()->fields([])
+            ->mailTop(EditorRequestFactory::new()->text(11, 'lala'))
+            ->mailBottom(EditorRequestFactory::new()->text(12, 'lalab'))
+            ->description(EditorRequestFactory::new()->text(12, 'desc'))
+            ->create();
+
+        $this->patchJson(route('form.update', ['form' => $form]), $payload)
+            ->assertOk();
+
+        $this->assertEquals('lala', $form->fresh()->mail_top->blocks[0]['data']['text']);
+        $this->assertEquals('lalab', $form->fresh()->mail_bottom->blocks[0]['data']['text']);
+        $this->assertEquals('desc', $form->fresh()->description->blocks[0]['data']['text']);
     }
 
     public function testItClearsFrontendCacheWhenFormUpdated(): void
@@ -56,17 +72,14 @@ class FormUpdateActionTest extends FormTestCase
     public function testItUpdatesActiveColumnsWhenFieldRemoved(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
-        $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([
-                $this->textField('firstname'),
-                $this->textField('geb'),
-                $this->textField('lastname'),
-            ])])
+        $form = Form::factory()->fields([
+            $this->textField('firstname'),
+            $this->textField('geb'),
+            $this->textField('lastname'),
+        ])
             ->create();
-        $payload = FormRequest::new()->sections([
-            FormtemplateSectionRequest::new()->fields([
-                $this->textField('firstname'),
-            ])
+        $payload = FormRequest::new()->fields([
+            $this->textField('firstname'),
         ])->create();
 
         $this->patchJson(route('form.update', ['form' => $form]), $payload)->assertSessionDoesntHaveErrors()->assertOk();
@@ -113,14 +126,12 @@ class FormUpdateActionTest extends FormTestCase
     {
         $this->login()->loginNami()->withoutExceptionHandling();
         $form = Form::factory()
-            ->sections([FormtemplateSectionRequest::new()->fields([])])
+            ->fields([])
             ->create();
-        $payload = FormRequest::new()->sections([
-            FormtemplateSectionRequest::new()->fields([
-                $this->textField('firstname'),
-                $this->textField('geb'),
-                $this->textField('lastname'),
-            ])
+        $payload = FormRequest::new()->fields([
+            $this->textField('firstname'),
+            $this->textField('geb'),
+            $this->textField('lastname'),
         ])->create();
 
         $this->patchJson(route('form.update', ['form' => $form]), $payload)->assertSessionDoesntHaveErrors()->assertOk();

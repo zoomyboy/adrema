@@ -32,9 +32,9 @@ class Form extends Model implements HasMedia
     public $casts = [
         'config' => FormConfigData::class,
         'meta' => 'json',
-        'description' => 'json',
-        'mail_top' => 'json',
-        'mail_bottom' => 'json',
+        'description' => EditorData::class,
+        'mail_top' => EditorData::class,
+        'mail_bottom' => EditorData::class,
         'is_active' => 'boolean',
         'is_private' => 'boolean',
         'export' => ExportData::class,
