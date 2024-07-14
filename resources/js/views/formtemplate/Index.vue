@@ -24,11 +24,33 @@
         </ui-popup>
 
         <ui-popup v-if="single !== null" :heading="`Vorlage ${single.id ? 'bearbeiten' : 'erstellen'}`" full @close="cancel">
-            <form-builder v-model="single.config" :meta="meta">
-                <template #meta>
-                    <f-text id="name" v-model="single.name" label="Name" required></f-text>
-                </template>
-            </form-builder>
+            <div class="flex flex-col mt-3">
+                <ui-tabs v-model="activeTab" :entries="tabs"></ui-tabs>
+                <form-builder v-if="activeTab === 0" v-model="single.config" :meta="meta">
+                    <template #meta>
+                        <f-text id="name" v-model="single.name" label="Name" required></f-text>
+                    </template>
+                </form-builder>
+                <div v-show="activeTab === 1" class="grid gap-3">
+                    <ui-note class="mt-2 col-span-full">
+                        Hier kannst du die E-Mail anpassen, die nach der Anmeldung an den Teilnehmer verschickt wird.<br />
+                        Es gibt dafür einen ersten E-Mail-Teil und einen zweiten E-Mail-Teil. Dazwischen werden die Daten des Teilnehmers aufgelistet.<br />
+                        Die Anrede ("Hallo Max Mustermann") wird automatisch an den Anfang gesetzt.<br />
+                        Außerdem kannst du Dateien hochladen, die automatisch mit angehangen werden.
+                    </ui-note>
+                    <ui-tabs v-model="activeMailTab" :entries="mailTabs"></ui-tabs>
+                    <f-editor v-if="activeMailTab === 0" id="mail_top" v-model="single.mail_top" name="mail_top" label="E-Mail-Teil 1" :rows="8" conditions required>
+                        <template #conditions="{data, resolve}">
+                            <conditions-form id="mail_top_conditions" :single="single" :value="data" @save="resolve"> </conditions-form>
+                        </template>
+                    </f-editor>
+                    <f-editor v-if="activeMailTab === 1" id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" :rows="8" conditions required>
+                        <template #conditions="{data, resolve}">
+                            <conditions-form id="mail_bottom_conditions" :single="single" :value="data" @save="resolve"> </conditions-form>
+                        </template>
+                    </f-editor>
+                </div>
+            </div>
             <template #actions>
                 <a href="#" @click.prevent="submit">
                     <ui-sprite src="save" class="text-zinc-400 w-6 h-6"></ui-sprite>
@@ -62,8 +84,13 @@
 import { ref } from 'vue';
 import { indexProps, useIndex } from '../../composables/useInertiaApiIndex.js';
 import FormBuilder from './FormBuilder.vue';
+import ConditionsForm from '../form/ConditionsForm.vue';
 
 const deleting = ref(null);
+const activeTab = ref(0);
+const activeMailTab = ref(0);
+const tabs = [{ title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }];
+const mailTabs = [{ title: 'vor Daten' }, { title: 'nach Daten' }];
 
 const props = defineProps(indexProps);
 var { meta, data, reloadPage, create, remove, single, edit, cancel, submit } = useIndex(props.data, 'invoice');
