@@ -19,9 +19,9 @@ class ConfirmRegistrationMail extends Mailable
 
     public string $fullname;
     public FormConfigData $config;
-    /** @var array<string, mixed> */
+    /** @var array<int, mixed> */
     public array $topText;
-    /** @var array<string, mixed> */
+    /** @var array<int, mixed> */
     public array $bottomText;
 
     /**
