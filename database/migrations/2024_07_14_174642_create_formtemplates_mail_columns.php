@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('forms', function (Blueprint $table) {
-            $table->json('description')->after('name')->default(json_encode(['time' => 4, 'blocks' => [], 'version' => '1.0']))->change();
-            $table->json('mail_top')->after('name')->default(json_encode(['time' => 4, 'blocks' => [], 'version' => '1.0']))->change();
-            $table->json('mail_bottom')->after('name')->default(json_encode(['time' => 4, 'blocks' => [], 'version' => '1.0']))->change();
+            $table->json('description')->default(json_encode(['time' => 4, 'blocks' => [], 'version' => '1.0']))->change();
+            $table->json('mail_top')->default(json_encode(['time' => 4, 'blocks' => [], 'version' => '1.0']))->nullable(false)->change();
+            $table->json('mail_bottom')->default(json_encode(['time' => 4, 'blocks' => [], 'version' => '1.0']))->nullable(false)->change();
         });
     }
 
@@ -27,9 +27,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('formtemplates', function (Blueprint $table) {
-            $table->dropColumn('mail_top');
-            $table->dropColumn('mail_bottom');
+        Schema::table('forms', function (Blueprint $table) {
+            $table->json('description')->default(null)->change();
+            $table->json('mail_top')->default(null)->nullable(true)->change();
+            $table->json('mail_bottom')->default(null)->nullable(true)->change();
         });
     }
 };
