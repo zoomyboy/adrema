@@ -201,12 +201,12 @@ var { meta, data, reloadPage, create, single, edit, cancel, submit, remove, getF
 const axios = inject('axios');
 const toast = useToast();
 
-const active = ref(0);
-const activeMailTab = ref(0);
 const deleting = ref(null);
 const showing = ref(null);
 const fileSettingPopup = ref(null);
 
+const active = ref(0);
+const activeMailTab = ref(0);
 const tabs = [{ title: 'Allgemeines' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }, { title: 'Prävention' }];
 const mailTabs = [{ title: 'vor Daten' }, { title: 'nach Daten' }];
 
