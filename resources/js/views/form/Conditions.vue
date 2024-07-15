@@ -53,8 +53,8 @@
     </div>
 </template>
 
-<script lang="js" setup>
-import { ref, inject, computed } from 'vue';
+<script setup>
+import {ref, inject, computed} from 'vue';
 const axios = inject('axios');
 const emit = defineEmits(['update:modelValue']);
 
@@ -70,19 +70,19 @@ const props = defineProps({
     id: {
         required: true,
         type: String,
-    }
+    },
 });
 
 const comparatorOptions = ref([
-    { id: 'isEqual', name: 'ist gleich', defaultValue: { DropdownField: null, RadioField: null, CheckboxField: false } },
-    { id: 'isNotEqual', name: 'ist ungleich', defaultValue: { DropdownField: null, RadioField: null, CheckboxField: false } },
-    { id: 'isIn', name: 'ist in', defaultValue: { DropdownField: [], RadioField: [], CheckboxField: false } },
-    { id: 'isNotIn', name: 'ist nicht in', defaultValue: { DropdownField: [], RadioField: [], CheckboxField: false } },
+    {id: 'isEqual', name: 'ist gleich', defaultValue: {DropdownField: null, RadioField: null, CheckboxField: false}},
+    {id: 'isNotEqual', name: 'ist ungleich', defaultValue: {DropdownField: null, RadioField: null, CheckboxField: false}},
+    {id: 'isIn', name: 'ist in', defaultValue: {DropdownField: [], RadioField: [], CheckboxField: false}},
+    {id: 'isNotIn', name: 'ist nicht in', defaultValue: {DropdownField: [], RadioField: [], CheckboxField: false}},
 ]);
 
 const modeOptions = ref([
-    { id: 'all', name: 'alle Bedingungen müssen zutreffen' },
-    { id: 'any', name: 'mindestens eine Bedingung muss zutreffen' },
+    {id: 'all', name: 'alle Bedingungen müssen zutreffen'},
+    {id: 'any', name: 'mindestens eine Bedingung muss zutreffen'},
 ]);
 
 const fields = computed(() => {
@@ -133,31 +133,34 @@ function getField(fieldName) {
 
 function getOptions(fieldName) {
     return getField(fieldName).options.map((o) => {
-        return { id: o, name: o };
+        return {id: o, name: o};
     });
 }
 
 const fieldOptions = computed(() =>
     fields.value.map((field) => {
-        return { id: field.key, name: field.name };
+        return {id: field.key, name: field.name};
     })
 );
 
 function addCondition() {
-    emit('update:modelValue', {...props.modelValue, ifs: [
-        ...props.modelValue.ifs,
-        {
-            field: null,
-            comparator: null,
-            value: null,
-        }
-    ]});
+    emit('update:modelValue', {
+        ...props.modelValue,
+        ifs: [
+            ...props.modelValue.ifs,
+            {
+                field: null,
+                comparator: null,
+                value: null,
+            },
+        ],
+    });
 }
 
 const locked = ref(false);
 
 async function checkIfDirty() {
-    const response = await axios.post(props.single.links.is_dirty, { config: props.single.config });
+    const response = await axios.post(props.single.links.is_dirty, {config: props.single.config});
 
     locked.value = response.data.result;
 }
