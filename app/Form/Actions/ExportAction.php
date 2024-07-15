@@ -15,22 +15,14 @@ class ExportAction
 
     public function handle(Form $form): string
     {
-        $csv = Writer::createFromString();
-
-        $csv->insertOne($form->getFields()->names());
-
-        foreach ($form->participants as $participant) {
-            $csv->insertOne($participant->getFields()->presentValues());
-        }
-
-        return $csv->toString();
+        return CreateExcelDocumentAction::run($form, $form->participants);
     }
 
     public function asController(Form $form, ActionRequest $request): StreamedResponse
     {
         $contents = $this->handle($form);
 
-        $filename = 'tn-' . $form->slug . '.csv';
+        $filename = 'tn-' . $form->slug . '.xlsx';
         Storage::disk('temp')->put($filename, $contents);
 
         return Storage::disk('temp')->download($filename);

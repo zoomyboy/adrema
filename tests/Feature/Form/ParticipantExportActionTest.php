@@ -2,12 +2,8 @@
 
 namespace Tests\Feature\Form;
 
-use App\Form\Fields\TextField;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
-use App\Form\Scopes\ParticipantFilterScope;
-use App\Group;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
 
@@ -32,12 +28,12 @@ class ParticipantExportActionTest extends FormTestCase
             ->name('ZEM 2024')
             ->create();
 
-        $this->get(route('form.export', ['form' => $form]))->assertDownload('tn-zem-2024.csv');
-        $contents = Storage::disk('temp')->get('tn-zem-2024.csv');
-        $this->assertTrue(str_contains($contents, 'Max'));
-        $this->assertTrue(str_contains($contents, 'A, B'));
-        $this->assertTrue(str_contains($contents, 'Pfadfinder'));
-        $this->assertTrue(str_contains($contents, 'Stufe'));
-        $this->assertTrue(str_contains($contents, 'Abcselect'));
+        $this->get(route('form.export', ['form' => $form]))->assertDownload('tn-zem-2024.xlsx');
+        $contents = Storage::disk('temp')->get('tn-zem-2024.xlsx');
+        $this->assertExcelContent('Max', $contents);
+        $this->assertExcelContent('A, B', $contents);
+        $this->assertExcelContent('Pfadfinder', $contents);
+        $this->assertExcelContent('Stufe', $contents);
+        $this->assertExcelContent('Abcselect', $contents);
     }
 }

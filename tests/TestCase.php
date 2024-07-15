@@ -17,12 +17,14 @@ use PHPUnit\Framework\Assert;
 use Tests\Lib\MakesHttpCalls;
 use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
+use Zoomyboy\TableDocument\TestsExcelDocuments;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use TestsInertia;
     use MakesHttpCalls;
+    use TestsExcelDocuments;
 
     protected User $me;
 
