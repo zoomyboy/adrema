@@ -165,5 +165,7 @@ async function checkIfDirty() {
     locked.value = response.data.result;
 }
 
-checkIfDirty();
+if (props.single.links && props.single.links.is_dirty) {
+    checkIfDirty();
+}
 </script>
