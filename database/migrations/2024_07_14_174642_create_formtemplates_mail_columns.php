@@ -14,12 +14,6 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('forms', function (Blueprint $table) {
-            $table->json('description')->default($this->default())->change();
-            $table->json('mail_top')->default($this->default())->nullable(false)->change();
-            $table->json('mail_bottom')->default($this->default())->nullable(false)->change();
-        });
-
         foreach (DB::table('forms')->get() as $form) {
             $mailTop = json_decode($form->mail_top, true);
             if (!$mailTop || !count($mailTop)) {
@@ -34,6 +28,12 @@ return new class extends Migration
                 DB::table('forms')->where('id', $form->id)->update(['description' => $this->default()]);
             }
         }
+
+        Schema::table('forms', function (Blueprint $table) {
+            $table->json('description')->default($this->default())->change();
+            $table->json('mail_top')->default($this->default())->nullable(false)->change();
+            $table->json('mail_bottom')->default($this->default())->nullable(false)->change();
+        });
     }
 
     /**
