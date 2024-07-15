@@ -19,7 +19,6 @@ class FormIndexActionTest extends FormTestCase
     {
         Carbon::setTestNow(Carbon::parse('2023-03-03'));
         $this->login()->loginNami()->withoutExceptionHandling();
-        Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')])->create();
         $form = Form::factory()
             ->name('lala')
             ->excerpt('fff')
@@ -58,8 +57,6 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.data.0.links.export', route('form.export', ['form' => $form]))
             ->assertInertiaPath('data.meta.links.store', route('form.store'))
             ->assertInertiaPath('data.meta.links.formtemplate_index', route('formtemplate.index'))
-            ->assertInertiaPath('data.meta.templates.0.name', 'tname')
-            ->assertInertiaPath('data.meta.templates.0.config.sections.0.name', 'sname')
             ->assertInertiaPath('data.meta.default.name', '')
             ->assertInertiaPath('data.meta.default.prevention_conditions', ['mode' => 'all', 'ifs' => []])
             ->assertInertiaPath('data.meta.default.prevention_text.version', '1.0')
@@ -74,6 +71,27 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.meta.namiTypes.0', ['id' => 'Vorname', 'name' => 'Vorname'])
             ->assertInertiaPath('data.meta.specialTypes.0', ['id' => 'Vorname', 'name' => 'Vorname'])
             ->assertInertiaPath('data.meta.section_default.name', '');
+    }
+
+    public function testFormtemplatesHaveData(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')->fields([
+            $this->textField('vorname')
+        ])])
+            ->mailTop(EditorRequestFactory::new()->text(10, 'lala'))
+            ->mailBottom(EditorRequestFactory::new()->text(10, 'lalb'))
+            ->create();
+
+        sleep(1);
+        $this->get(route('form.index'))
+            ->assertOk()
+            ->assertInertiaPath('data.meta.templates.0.name', 'tname')
+            ->assertInertiaPath('data.meta.templates.0.name', 'tname')
+            ->assertInertiaPath('data.meta.templates.0.config.sections.0.name', 'sname')
+            ->assertInertiaPath('data.meta.templates.0.config.sections.0.fields.0.key', 'vorname')
+            ->assertInertiaPath('data.meta.templates.0.mail_top.blocks.0.data.text', 'lala')
+            ->assertInertiaPath('data.meta.templates.0.mail_bottom.blocks.0.data.text', 'lalb');
     }
 
     public function testItDisplaysExport(): void

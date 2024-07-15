@@ -228,6 +228,8 @@ const allFields = computed(() => {
 function setTemplate(template) {
     active.value = 0;
     single.value.config = template.config;
+    single.value.mail_top = template.mail_top;
+    single.value.mail_bottom = template.mail_bottom;
 }
 
 async function saveFileConditions(conditions) {
