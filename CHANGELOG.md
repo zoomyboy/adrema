@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.10.10
+
+-   Eine Formular-Vorlage kann nun auch Mail-Inhalte enthalten, die für die Formulare übernommen werden
+
 ### 1.10.9
 
 -   Nextcloud als neuen Type bei Datei-Verbindungen angelegt
