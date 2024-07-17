@@ -64,7 +64,7 @@ abstract class InvoiceDocument extends Document
 
     public function template(): Template
     {
-        return Template::make('tex.templates.default');
+        return Template::make('tex.templates.invoice');
     }
 
     public function setFilename(string $filename): self
