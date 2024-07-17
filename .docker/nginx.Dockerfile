@@ -8,7 +8,8 @@ RUN php artisan horizon:publish
 FROM node:20.15.0-slim as node
 WORKDIR /app
 COPY . /app
-RUN npm install && npm run prod && npm run img && rm -R node_modules
+RUN cd packages/adrema-form && npm ci && npm run build && rm -R node_modules && cd ../../
+RUN npm ci && npm run prod && npm run img && rm -R node_modules
 
 FROM nginx:1.21.6-alpine as nginx
 WORKDIR /app
