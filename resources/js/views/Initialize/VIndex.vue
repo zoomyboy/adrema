@@ -67,7 +67,7 @@
                     v-model="values.params.inGrp"
                     label="In Gruppierung suchen"
                     name="inGrp"
-                    hint="Mitglieder finden, die direktes Mitglied in der kleinsten befüllten Gruppierung sind."
+                    hint="Mitglieder finden, die direktes Mitglied in der kleinsten ausgewählten Gruppierung sind."
                     size="sm"
                     @update:modelValue="search"
                 ></f-switch>
@@ -76,7 +76,7 @@
                     v-model="values.params.unterhalbGrp"
                     label="Unterhalb Gruppierung suchen"
                     name="unterhalbGrp"
-                    hint="Mitglieder finden, die direktes Mitglied in einer Untergruppe der kleinsten befüllten Gruppierung sind."
+                    hint="Mitglieder finden, die direktes Mitglied in einer Untergruppe der kleinsten ausgewählten Gruppierung sind."
                     size="sm"
                     @update:modelValue="search"
                 ></f-switch>
@@ -141,7 +141,6 @@ import hasFlash from '../../mixins/hasFlash.js';
 import debounce from 'lodash/debounce';
 
 export default {
-
     mixins: [hasFlash],
     layout: FullLayout,
 
