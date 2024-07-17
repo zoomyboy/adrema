@@ -15,6 +15,11 @@ mkdir -p /app/storage/app/public || true
 chown -R www-data:www-data /app/packages/laravel-nami/.cookies
 chown -R www-data:www-data /app/storage/app
 
+if [ $APP_KEY = "YOUR_APP_KEY" ]; then
+    echo "----------------------- Keinen APP KEY gefunden. Key wird generiert:    $(su www-data -c 'php artisan key:generate --show')   ----------------------- Füge diesen Key als APP_KEY ein ---------------------"
+    exit 1
+fi
+
 if [ $1 == "horizon" ]; then
     wait_for_db
     su www-data -c 'php artisan horizon'
@@ -22,10 +27,6 @@ fi
 
 if [ $1 == "app" ]; then
     # --------------------------- ensure appkey is set ----------------------------
-    if [ $APP_KEY = "YOUR_APP_KEY" ]; then
-        echo "----------------------- Keinen APP KEY gefunden. Key wird generiert:    $(su www-data -c 'php artisan key:generate --show')   ----------------------- Füge diesen Key als APP_KEY ein ---------------------"
-        exit 1
-    fi
     wait_for_db
     php -r '$connection = new PDO("mysql:host='$DB_HOST';dbname='$DB_DATABASE'", "'$DB_USERNAME'", "'$DB_PASSWORD'"); $connection->query("DESCRIBE migrations");' > /dev/null || php artisan migrate --seed --force
     su www-data -c 'php artisan migrate --force'
