@@ -34,6 +34,7 @@ services:
             - ./data/storage:/app/storage/app
             - ./data/plugins:/app/plugins
             - ./data/cookies:/app/packages/laravel-nami/.cookies
+            - ./data/invoice:/app/resources/views/tex/invoice
 
     horizon:
         image: zoomyboy/adrema-app:latest
@@ -57,6 +58,7 @@ services:
             - ./data/storage:/app/storage/app
             - ./data/plugins:/app/plugins
             - ./data/cookies:/app/packages/laravel-nami/.cookies
+            - ./data/invoice:/app/resources/views/tex/invoice
 
     schedule:
         image: zoomyboy/adrema-app:latest
@@ -80,6 +82,7 @@ services:
             - ./data/storage:/app/storage/app
             - ./data/plugins:/app/plugins
             - ./data/cookies:/app/packages/laravel-nami/.cookies
+            - ./data/invoice:/app/resources/views/tex/invoice
 
     db:
         image: mariadb:10.6.5
