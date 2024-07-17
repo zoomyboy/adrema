@@ -85,6 +85,12 @@ Außerdem ist AdReMa auch problemlos auf Handys und Tablets bedienbar ("mobiles 
 
 7. Nach kurzer Zeit ist AdReMa über <http://localhost:8000> erreichbar und es kann sich mit dem zuvor festgelegten Login eingeloggt werden
 
+### Individuelle anpassungen
+
+#### Rechnungswesen
+
+Bei dem Setup wird im Daten-Verzeichniss ein Ordner `./data/setup` angelegt. Hier kann das Logo des Stammes in den Briefkopf eingefügt werden. Zusätzlich kann der Text der Rechnung und der Zahlungserinnerung angepasst werden, dafür ist ein grundlegendes Verständnis für `.tex` Datein erforderlich.
+
 ## Nutzen des Entwicklungssystmes
 
 1. Klonen des Reposetories
