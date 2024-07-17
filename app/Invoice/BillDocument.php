@@ -15,6 +15,6 @@ class BillDocument extends InvoiceDocument
 
     public function view(): string
     {
-        return 'tex.bill';
+        return 'tex.invoice.bill';
     }
 }

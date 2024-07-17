@@ -15,6 +15,6 @@ class RememberDocument extends InvoiceDocument
 
     public function view(): string
     {
-        return 'tex.remember';
+        return 'tex.invoice.remember';
     }
 }
