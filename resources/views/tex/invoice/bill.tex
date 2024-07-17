@@ -1,14 +1,24 @@
-\documentclass[silvaletter,12pt]{scrlttr2}
+\documentclass[dpsgletter,12pt]{scrlttr2}
 
 \setkomavar{subject}{<<< $getSubject >>>}
 \setkomavar{fromname}[<<<$settings->from>>>]{<<<$settings->from_long>>>}
+@if($settings->mobile)
+\KOMAoptions{frommobilephone}
 \setkomavar{frommobilephone}[Mobiltelefon: ]{<<<$settings->mobile>>>}
+@endif
+@if($settings->email)
+\KOMAoptions{fromemail}
 \setkomavar{fromemail}[E-Mail: ]{<<<$settings->email>>>}
+@endif
+@if($settings->website)
+\KOMAoptions{fromurl}
 \setkomavar{fromurl}[Website: ]{<<<$settings->website>>>}
-\setkomavar{fromaddress}{<<<$settings->address>>>}
+@endif
+@if($settings->address && $settings->zip && $settings->place)
+\setkomavar{fromaddress}{<<<$settings->address>>>\\<<<$settings->zip>>> <<<$settings->place>>>}
 \setkomavar{place}{<<<$settings->place>>>}
 \setkomavar{fromzipcode}{<<<$settings->zip>>>}
-\setkomavar{fromlogo}{\includegraphics[width=2cm]{logo.png}}    % stammeslogo
+@endif
 
 \begin{document}
 \begin{letter}{<<< $toName >>>\\<<< $toAddress >>>\\<<< $toZip >>> <<< $toLocation >>>}

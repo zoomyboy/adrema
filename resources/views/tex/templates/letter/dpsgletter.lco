@@ -1,0 +1,43 @@
+\ProvidesFile{dpsgletter.lco}
+
+% ---------------------------- Require packages ----------------------------
+\RequirePackage{xcolor}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[ngerman]{babel}
+\RequirePackage{fp}
+\RequirePackage{booktabs}
+\RequirePackage{ragged2e}
+\RequirePackage{graphicx}
+\RequirePackage{numprint}
+\RequirePackage[gen]{eurosym}
+
+\RequirePackage[condensed,math]{kurier}
+
+% ---------------------------- Color definition ----------------------------
+\definecolor{dpsgblue}{HTML}{003056}
+
+% ----------------------------- font settings ------------------------------
+\addtokomafont{subject}{\large\color{dpsgblue}}
+
+% -------------------------- Calculation of table --------------------------
+\gdef\TotalHT{0}
+\newcommand{\product}[2]{%
+    #1 & \FPmul\temp{#2}{1}\FPround\temp{\temp}{2}\numprint[\euro]{\temp}
+%% Totalize
+\FPadd\total{\TotalHT}{\temp}%
+\FPround\total{\total}{2}%
+\global\let\TotalHT\total%
+\\ }
+\newcommand{\totalttc}{\numprint[\euro]{\TotalHT}
+}
+
+% ---------------------------- Global variables ----------------------------
+\KOMAoptions{DIV=15, pagenumber=no, enlargefirstpage, firstfoot=false, foldmarks, fromlogo, fromalign=right}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+\setkomavar{backaddressseparator}{ $\cdot$ }
+\setkomavar{fromlogo}{\includegraphics[height=3cm]{assets/logo.png}}    % stammeslogo
+\renewcommand*{\raggedsignature}{\raggedright}                  % Signatur links ausrichten
+\setkomavar{signature}{}                                        % Kein From unter Unterschriften-Feld
+

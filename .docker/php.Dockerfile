@@ -20,7 +20,7 @@ RUN php artisan horizon:publish
 USER root
 COPY ./.docker/php /bin
 
-VOLUME ["/app/packages/laravel-nami/.cookies", "/app/storage/app"]
+VOLUME ["/app/packages/laravel-nami/.cookies", "/app/storage/app", "/app/resources/views/tex/invoice"]
 
 EXPOSE 9000
 
