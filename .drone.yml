@@ -32,7 +32,7 @@ steps:
           - while ! curl  --silent 'http://owncloudserver:8080/ocs/v1.php/cloud/capabilities?format=json' -u admin:admin | grep '"status":"ok"'; do sleep 1; done
 
     - name: node
-      image: node:18.13.0-slim
+      image: node:20.15.0-slim
       commands:
           - npm ci && cd packages/adrema-form && npm ci && npm run build && cd ../../ && npm run img && npm run prod && rm -R node_modules
 

@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . /app
 RUN composer install --ignore-platform-reqs --no-dev
 
-FROM node:17.9.0-slim as node
+FROM node:20.15.0-slim as node
 WORKDIR /app
 COPY . /app
 RUN npm install && npm run prod && npm run img && rm -R node_modules
