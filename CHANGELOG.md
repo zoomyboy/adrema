@@ -2,6 +2,10 @@
 
 ### 1.10.10
 
+-   Bei Prävention auch an Verhaltenskodex erinnern
+
+### 1.10.10
+
 -   Eine Formular-Vorlage kann nun auch Mail-Inhalte enthalten, die für die Formulare übernommen werden
 
 ### 1.10.9
