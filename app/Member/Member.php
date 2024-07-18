@@ -355,6 +355,10 @@ class Member extends Model implements Geolocatable
             $preventions[] = Prevention::EFZ;
         }
 
+        if (!$this->has_vk) {
+            $preventions[] = Prevention::VK;
+        }
+
         if ($this->more_ps_at === null) {
             if ($this->ps_at === null || $this->ps_at->diffInYears($date) >= 5) {
                 $preventions[] = Prevention::PS;

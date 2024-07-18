@@ -111,43 +111,48 @@ class PreventionTest extends TestCase
     protected function attributes(): Generator
     {
         yield [
-            'attrs' => ['efz' => null, 'ps_at' => now()],
+            'attrs' => ['has_vk' => true, 'efz' => null, 'ps_at' => now()],
             'preventions' => [Prevention::EFZ]
         ];
 
         yield [
-            'attrs' => ['efz' => now(), 'ps_at' => null],
+            'attrs' => ['has_vk' => true, 'efz' => now(), 'ps_at' => null],
             'preventions' => [Prevention::PS]
         ];
 
         yield [
-            'attrs' => ['efz' => now()->subDay(), 'ps_at' => now()],
+            'attrs' => ['has_vk' => true, 'efz' => now()->subDay(), 'ps_at' => now()],
             'preventions' => []
         ];
 
         yield [
-            'attrs' => ['efz' => now(), 'ps_at' => now()->subDay()],
+            'attrs' => ['has_vk' => true, 'efz' => now(), 'ps_at' => now()->subDay()],
             'preventions' => []
         ];
 
         yield [
-            'attrs' => ['efz' => now()->subYears(5)->subDay(), 'ps_at' => now()],
+            'attrs' => ['has_vk' => true, 'efz' => now()->subYears(5)->subDay(), 'ps_at' => now()],
             'preventions' => [Prevention::EFZ]
         ];
 
         yield [
-            'attrs' => ['efz' => now(), 'ps_at' => now()->subYears(5)->subDay()],
+            'attrs' => ['has_vk' => true, 'efz' => now(), 'ps_at' => now()->subYears(5)->subDay()],
             'preventions' => [Prevention::PS]
         ];
 
         yield [
-            'attrs' => ['efz' => now(), 'ps_at' => now()->subYears(5)->subDay(), 'more_ps_at' => now()],
+            'attrs' => ['has_vk' => true, 'efz' => now(), 'ps_at' => now()->subYears(5)->subDay(), 'more_ps_at' => now()],
             'preventions' => []
         ];
 
         yield [
-            'attrs' => ['efz' => now(), 'ps_at' => now()->subYears(15), 'more_ps_at' => now()->subYears(5)->subDay()],
+            'attrs' => ['has_vk' => true, 'efz' => now(), 'ps_at' => now()->subYears(15), 'more_ps_at' => now()->subYears(5)->subDay()],
             'preventions' => [Prevention::MOREPS],
+        ];
+
+        yield [
+            'attrs' => ['has_vk' => false, 'efz' => now(), 'ps_at' => now()],
+            'preventions' => [Prevention::VK],
         ];
     }
 
