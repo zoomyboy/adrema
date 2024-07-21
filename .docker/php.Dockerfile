@@ -6,8 +6,7 @@ RUN composer install --ignore-platform-reqs --no-dev
 FROM node:20.15.0-slim as node
 WORKDIR /app
 COPY . /app
-RUN cd packages/adrema-form && npm ci && npm run build && rm -R node_modules && cd ../../
-RUN npm ci && npm run prod && npm run img && rm -R node_modules
+RUN npm install && npm run prod && npm run img && rm -R node_modules
 
 FROM zoomyboy/adrema-base:latest as php
 COPY --chown=www-data:www-data . /app
