@@ -5,6 +5,7 @@ namespace App\Form\Resources;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Form\Scopes\ParticipantFilterScope;
+use App\Prevention\Enums\Prevention;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
@@ -28,6 +29,7 @@ class ParticipantResource extends JsonResource
             'created_at_display' => $this->created_at->format('d.m.Y'),
             'children_count' => $this->children_count,
             'member_id' => $this->member_id,
+            'prevention_items' => $this->member ? Prevention::items($this->member->preventions()) : [],
             'links' => [
                 'assign' => route('participant.assign', ['participant' => $this->getModel()]),
                 'destroy' => route('participant.destroy', ['participant' => $this->getModel()]),

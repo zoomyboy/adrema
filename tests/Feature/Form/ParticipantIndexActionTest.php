@@ -7,6 +7,7 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Form\Scopes\ParticipantFilterScope;
 use App\Group;
+use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -206,5 +207,19 @@ class ParticipantIndexActionTest extends FormTestCase
             ->assertJsonPath('data.0.links.children', route('form.participant.index', ['form' => $form, 'parent' => $participant->id]))
             ->assertJsonPath('meta.current_page', 1);
         $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => $participant->id])->assertJsonPath('data.0.children_count', 0);
+    }
+
+    public function testItShowsPreventionState(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $participant = Participant::factory()->data(['vorname' => 'Max'])
+            ->for(Member::factory()->defaults()->state(['efz' => null]))
+            ->for(Form::factory())
+            ->create();
+
+        $this->callFilter('form.participant.index', [], ['form' => $participant->form])
+            ->assertJsonPath('data.0.prevention_items.0.letter', 'F')
+            ->assertJsonPath('data.0.prevention_items.0.value', false)
+            ->assertJsonPath('data.0.prevention_items.0.tooltip', 'erweitertes Führungszeugnis nicht vorhanden');
     }
 }
