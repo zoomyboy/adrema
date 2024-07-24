@@ -1,5 +1,10 @@
 # Letzte Änderungen
 
+### 1.10.13
+
+-   Bei Veranstaltungs-Übersicht alle Veranstaltungen anzeigen
+-   Download von Teilnehmern als Tabellen-Dokument
+
 ### 1.10.11
 
 -   Bei Prävention auch an Verhaltenskodex erinnern
