@@ -27,7 +27,7 @@ class FormApiListAction
     {
         return FormApiResource::collection($this->handle(
             $request->input('filter', ''),
-            $request->input('perPage', 10)
+            $request->input('perPage', 9999)
         ));
     }
 }

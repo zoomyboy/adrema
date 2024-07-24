@@ -117,4 +117,20 @@ class FormApiListActionTest extends FormTestCase
         $this->get('/api/form?filter=' . $this->filterString(['past' => true]))
             ->assertJsonCount(1, 'data');
     }
+
+    public function testItDisplaysAllForms(): void
+    {
+        Carbon::setTestNow(Carbon::parse('2023-03-02'));
+        Storage::fake('temp');
+        $this->loginNami()->withoutExceptionHandling();
+        Form::factory()
+            ->withImage('headerImage', 'lala-2.jpg')
+            ->from('2023-05-05')
+            ->to('2023-06-07')
+            ->count(20)
+            ->create();
+
+        sleep(1);
+        $this->get('/api/form')->assertJsonCount(20, 'data');
+    }
 }
