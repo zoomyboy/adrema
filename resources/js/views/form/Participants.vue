@@ -79,15 +79,14 @@
                             <button v-if="columnindex === 0 && participant.member_id === null" v-tooltip="`kein Mitglied zugewiesen. Per Klick zuweisen`" @click.prevent="assigning = participant">
                                 <ui-sprite src="warning-triangle" class="text-yellow-400 w-5 h-5"></ui-sprite>
                             </button>
-                            <ui-table-toggle-button
-                                v-if="columnindex === 0 && groupParticipants"
-                                :value="participant"
-                                :text="participant[column.display_attribute]"
-                                :level="0"
-                                :active="isOpen(participant.id)"
-                                @toggle="toggle(participant)"
-                            ></ui-table-toggle-button>
-                            <div v-else v-text="participant[column.display_attribute]"></div>
+                            <ui-table-toggle-button v-if="columnindex === 0 && groupParticipants" :value="participant" :level="0" :active="isOpen(participant.id)" @toggle="toggle(participant)">
+                                <prevention v-if="column.display_attribute === 'prevention_display'" :value="participant.prevention_items"></prevention>
+                                <span v-else v-text="participant[column.display_attribute]"></span>
+                            </ui-table-toggle-button>
+                            <div v-else>
+                                <prevention v-if="column.display_attribute === 'prevention_display'" :value="participant.prevention_items"></prevention>
+                                <span v-else v-text="participant[column.display_attribute]"></span>
+                            </div>
                         </div>
                     </td>
                     <td>
@@ -98,15 +97,16 @@
                 <template v-for="child in childrenOf(participant.id)" :key="child.id">
                     <tr>
                         <td v-for="(column, columnindex) in activeColumns" :key="column.id">
-                            <ui-table-toggle-button
-                                v-if="columnindex === 0 && groupParticipants"
-                                :value="child"
-                                :text="child[column.display_attribute]"
-                                :level="1"
-                                :active="isOpen(child.id)"
-                                @toggle="toggle(child)"
-                            ></ui-table-toggle-button>
-                            <div v-else v-text="child[column.display_attribute]"></div>
+                            <div class="flex items-center space-x-2">
+                                <ui-table-toggle-button v-if="columnindex === 0 && groupParticipants" :value="child" :level="1" :active="isOpen(child.id)" @toggle="toggle(child)">
+                                    <prevention v-if="column.display_attribute === 'prevention_display'" :value="child.prevention_items"></prevention>
+                                    <span v-else v-text="child[column.display_attribute]"></span>
+                                </ui-table-toggle-button>
+                                <div v-else>
+                                    <prevention v-if="column.display_attribute === 'prevention_display'" :value="child.prevention_items"></prevention>
+                                    <span v-else v-text="child[column.display_attribute]"></span>
+                                </div>
+                            </div>
                         </td>
                         <td>
                             <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(child)"><ui-sprite src="pencil"></ui-sprite></a>
@@ -127,6 +127,7 @@ import { watch, ref, computed } from 'vue';
 import { useApiIndex } from '../../composables/useApiIndex.js';
 import useTableToggle from '../../composables/useTableToggle.js';
 import MemberAssign from './MemberAssign.vue';
+import Prevention from './Prevention.vue';
 
 const deleting = ref(null);
 const { isOpen, toggle, childrenOf, clearToggle } = useTableToggle({});

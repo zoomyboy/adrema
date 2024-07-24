@@ -75,7 +75,11 @@ class ParticipantResource extends JsonResource
                 'name' => 'Registriert am',
                 'id' => 'created_at',
                 'display_attribute' => 'created_at_display'
-            ])
+            ])->push([
+                'name' => 'Prävention',
+                'id' => 'prevention',
+                'display_attribute' => 'prevention_display'
+            ]),
         ];
     }
 }

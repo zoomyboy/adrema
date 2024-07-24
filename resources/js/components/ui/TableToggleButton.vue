@@ -9,7 +9,8 @@
         >
             <ui-sprite class="w-3 h-3" :src="active ? 'close' : 'plus'"></ui-sprite>
         </a>
-        <span v-text="text"></span>
+        <span v-if="text" v-text="text"></span>
+        <slot></slot>
     </div>
 </template>
 
@@ -24,8 +25,9 @@ const levelMap = {
 
 const props = defineProps({
     text: {
-        required: true,
+        required: false,
         type: String,
+        default: () => '',
     },
     value: {
         type: Object,
