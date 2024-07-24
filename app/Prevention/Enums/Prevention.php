@@ -4,6 +4,7 @@ namespace App\Prevention\Enums;
 
 use App\Member\Member;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 enum Prevention
 {
@@ -39,8 +40,9 @@ enum Prevention
 
     /**
      * @param array<int, self> $preventions
+     * @return Collection<int, array{letter: string, value: bool, tooltip: string}>
      */
-    public static function items(array $preventions)
+    public static function items(array $preventions): Collection
     {
         return collect(static::cases())->map(fn ($case) => [
             'letter' => $case->letter(),

@@ -15,6 +15,9 @@ class CreateExcelDocumentAction
 
     public Form $form;
 
+    /**
+     * @param Collection<int, Participant> $participants
+     */
     public function handle(Form $form, Collection $participants): string
     {
         $this->form = $form;
