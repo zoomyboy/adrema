@@ -4,6 +4,7 @@
 
 -   Bei Veranstaltungs-Übersicht alle Veranstaltungen anzeigen
 -   Download von Teilnehmern als Tabellen-Dokument
+-   Spalte "Prävention" bei TN-Liste eingefügt für benötigte Unterlagen
 
 ### 1.10.11
 
