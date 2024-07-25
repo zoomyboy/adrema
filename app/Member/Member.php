@@ -360,8 +360,10 @@ class Member extends Model implements Geolocatable
         }
 
         if ($this->more_ps_at === null) {
-            if ($this->ps_at === null || $this->ps_at->diffInYears($date) >= 5) {
+            if ($this->ps_at === null) {
                 $preventions[] = Prevention::PS;
+            } else if ($this->ps_at->diffInYears($date) >= 5) {
+                $preventions[] = Prevention::MOREPS;
             }
         } else {
             if ($this->more_ps_at === null || $this->more_ps_at->diffInYears($date) >= 5) {

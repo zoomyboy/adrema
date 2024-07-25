@@ -154,6 +154,11 @@ class PreventionTest extends TestCase
             'attrs' => ['has_vk' => false, 'efz' => now(), 'ps_at' => now()],
             'preventions' => [Prevention::VK],
         ];
+
+        yield [
+            'attrs' => ['has_vk' => true, 'efz' => now(), 'ps_at' => now()->subYears(7)],
+            'preventions' => [Prevention::MOREPS],
+        ];
     }
 
     /**
