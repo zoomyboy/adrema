@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.10.14
+
+-   Fixed: Ist eine Präventionsschulung älter als 5 Jahre, so ist nur eine Auffrischungs-Schulung erforderlich
+
 ### 1.10.13
 
 -   Bei Veranstaltungs-Übersicht alle Veranstaltungen anzeigen
