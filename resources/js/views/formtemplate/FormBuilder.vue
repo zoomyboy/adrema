@@ -43,14 +43,7 @@
                 <f-select id="nami_type" v-model="singleField.model.nami_type" :options="meta.namiTypes" label="NaMi-Feld" size="sm" name="nami_type"></f-select>
                 <f-select id="special_type" v-model="singleField.model.special_type" :options="meta.specialTypes" label="Bedeutung" size="sm" name="special_type"></f-select>
                 <f-textarea id="hint" v-model="singleField.model.hint" label="Hinweis" size="sm"></f-textarea>
-                <f-switch
-                    v-show="singleField.model.nami_type === null"
-                    id="for_members"
-                    v-model="singleField.model.for_members"
-                    label="Für Unter-Mitglieder zusätzlich abfragen"
-                    size="sm"
-                    name="for_members"
-                ></f-switch>
+                <f-switch id="for_members" v-model="singleField.model.for_members" label="Für Unter-Mitglieder zusätzlich abfragen" size="sm" name="for_members"></f-switch>
             </asideform>
         </div>
         <ui-box heading="Vorschau" container-class="grid gap-3" class="w-[800px]">
