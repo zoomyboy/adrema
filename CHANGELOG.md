@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.10.15
+
+-    "Für Mitglieder zusätzlich abfragen" kann nun im Formular auch gesetzt werden, wenn ein NaMi Feld ausgewählt ist.
+
 ### 1.10.14
 
 -   Fixed: Ist eine Präventionsschulung älter als 5 Jahre, so ist nur eine Auffrischungs-Schulung erforderlich
