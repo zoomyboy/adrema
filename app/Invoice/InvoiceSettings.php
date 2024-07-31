@@ -28,6 +28,8 @@ class InvoiceSettings extends LocalSettings implements Indexable, Storeable
 
     public string $bic;
 
+    public int $rememberWeeks;
+
     public static function group(): string
     {
         return 'bill';

@@ -28,6 +28,7 @@ class SettingSaveAction
             'zip' => $input['zip'] ?? '',
             'iban' => $input['iban'] ?? '',
             'bic' => $input['bic'] ?? '',
+            'rememberWeeks' => $input['remember_weeks'] ?? 1,
         ]);
 
         $settings->save();

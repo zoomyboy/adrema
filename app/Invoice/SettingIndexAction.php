@@ -26,6 +26,7 @@ class SettingIndexAction
             'zip' => $settings->zip,
             'iban' => $settings->iban,
             'bic' => $settings->bic,
+            'remember_weeks' => $settings->rememberWeeks,
         ];
     }
 

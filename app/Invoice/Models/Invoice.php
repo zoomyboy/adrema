@@ -6,6 +6,7 @@ use App\Invoice\BillDocument;
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\InvoiceDocument;
+use App\Invoice\InvoiceSettings;
 use App\Invoice\RememberDocument;
 use App\Invoice\Scopes\InvoiceFilterScope;
 use App\Member\Member;
@@ -111,13 +112,14 @@ class Invoice extends Model
      *
      * @return Builder<self>
      */
-    public function scopeWhereNeedsRemember(Builder $query): Builder
+    public function scopeWhereNeedsRemember(Builder $query, ?int $weeks = null): Builder
     {
+        $weeks = $weeks ?: app(InvoiceSettings::class)->rememberWeeks;
         return $query
             ->where('status', InvoiceStatus::SENT)
             ->whereNotNull('sent_at')
             ->whereNotNull('last_remembered_at')
-            ->where('last_remembered_at', '<=', now()->subMonths(3));
+            ->where('last_remembered_at', '<=', now()->subWeeks($weeks));
     }
 
     /**

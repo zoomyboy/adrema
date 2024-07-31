@@ -6,6 +6,7 @@ use App\Invoice\Actions\InvoiceSendAction;
 use App\Invoice\BillDocument;
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
+use App\Invoice\InvoiceSettings;
 use App\Invoice\Mails\BillMail;
 use App\Invoice\Mails\RememberMail;
 use App\Invoice\Models\Invoice;
@@ -74,6 +75,25 @@ class InvoiceSendActionTest extends TestCase
         InvoiceSendAction::run();
 
         Mail::assertNotSent(RememberMail::class);
+    }
+
+    public function testItRemembersWhenWeeksSettingIsReached(): void
+    {
+        Mail::fake();
+        $this->withoutExceptionHandling()->login()->loginNami();
+        Invoice::factory()
+            ->has(InvoicePosition::factory()->withMember(), 'positions')
+            ->via(BillKind::EMAIL)
+            ->status(InvoiceStatus::SENT)
+            ->create(['sent_at' => now()->subYear(), 'last_remembered_at' => now()->subWeeks(5)->subDay()]);
+
+        app(InvoiceSettings::class)->fill(['rememberWeeks' => 6])->save();
+        InvoiceSendAction::run();
+        Mail::assertNotSent(RememberMail::class);
+
+        app(InvoiceSettings::class)->fill(['rememberWeeks' => 5])->save();
+        InvoiceSendAction::run();
+        Mail::assertSent(RememberMail::class);
     }
 
     public function testItDoesntSendPostInvoices(): void

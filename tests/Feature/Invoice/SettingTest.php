@@ -24,6 +24,7 @@ class SettingTest extends TestCase
             'zip' => '12345',
             'iban' => 'DE05',
             'bic' => 'SOLSDE',
+            'rememberWeeks' => 6
         ]);
 
         $response = $this->get('/setting/bill');
@@ -40,6 +41,7 @@ class SettingTest extends TestCase
             'zip' => '12345',
             'iban' => 'DE05',
             'bic' => 'SOLSDE',
+            'remember_weeks' => 6
         ], $response, 'data');
     }
 
@@ -77,6 +79,7 @@ class SettingTest extends TestCase
             'zip' => '12345',
             'iban' => 'DE05',
             'bic' => 'SOLSDE',
+            'remember_weeks' => 10
         ]);
 
         $response->assertRedirect('/setting/bill');
@@ -84,5 +87,6 @@ class SettingTest extends TestCase
         $this->assertEquals('DPSG Stamm Muster', $settings->from_long);
         $this->assertEquals('DE05', $settings->iban);
         $this->assertEquals('SOLSDE', $settings->bic);
+        $this->assertEquals(10, $settings->rememberWeeks);
     }
 }
