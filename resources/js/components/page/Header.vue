@@ -5,7 +5,7 @@
             <page-title>{{ title }}</page-title>
             <slot name="toolbar"></slot>
         </div>
-        <div class="flex items-center space-x-2 ml-2">
+        <div class="flex items-center space-x-4 ml-2">
             <a v-if="$attrs.onClose" href="#" class="btn label btn-primary-light icon" @click.prevent="$emit('close')">
                 <ui-sprite class="w-3 h-3" src="close"></ui-sprite>
             </a>

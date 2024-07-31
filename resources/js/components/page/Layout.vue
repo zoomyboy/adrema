@@ -12,6 +12,12 @@
             </template>
             <template #right>
                 <slot name="right"></slot>
+                <div class="flex items-center space-x-2">
+                    <div class="rounded-full overflow-hidden border-2 border-solid border-gray-300">
+                        <img :src="$page.props.auth.user.avatar_url" class="w-8 h-8 object-cover" />
+                    </div>
+                    <div class="text-gray-300" v-text="`${$page.props.auth.user.firstname} ${$page.props.auth.user.lastname}`"></div>
+                </div>
             </template>
         </page-header>
 

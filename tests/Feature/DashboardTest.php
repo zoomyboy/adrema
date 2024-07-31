@@ -25,6 +25,19 @@ class DashboardTest extends TestCase
         $this->assertInertiaHas('Example', $response, 'blocks.0.title');
         $this->assertInertiaHas('exa', $response, 'blocks.0.component');
     }
+
+    public function testItDisplaysUserAvatar(): void
+    {
+        $this->withoutExceptionHandling();
+
+        $this->login()->loginNami();
+        auth()->user()->update(['firstname' => 'Bob', 'lastname' => 'Dylan', 'email' => 'max@email.com']);
+
+        $this->get('/')
+            ->assertInertiaPath('auth.user.firstname', 'Bob')
+            ->assertInertiaPath('auth.user.avatar_url', 'https://www.gravatar.com/avatar/' . hash('sha256', 'max@email.com'))
+            ->assertInertiaPath('auth.user.lastname', 'Dylan');
+    }
 }
 
 class ExampleBlock extends Block

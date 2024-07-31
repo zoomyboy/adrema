@@ -22,4 +22,9 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPassword($token));
     }
+
+    public function getGravatarUrl(): string
+    {
+        return 'https://www.gravatar.com/avatar/' . hash('sha256', $this->email);
+    }
 }
