@@ -33,6 +33,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(DbMaintainAction::class)->daily();
         $schedule->command(InitializeMembers::class)->dailyAt('03:00');
         $schedule->command(PreventionRememberAction::class)->dailyAt('11:00');
+        $schedule->command(InvoiceSendAction::class)->dailyAt('10:00');
     }
 
     /**
