@@ -1,8 +1,13 @@
 # Letzte Änderungen
 
+### 1.10.16
+
+-   Rechnungen und Erinnerungen werden nun automatisch täglich um 10 Uhr verschickt
+-   Es kann eingestellt werden, nach wie vielen Wochen an Rechnungen erinnert werden soll (Standard: 12)
+
 ### 1.10.15
 
--    "Für Mitglieder zusätzlich abfragen" kann nun im Formular auch gesetzt werden, wenn ein NaMi Feld ausgewählt ist.
+-   "Für Mitglieder zusätzlich abfragen" kann nun im Formular auch gesetzt werden, wenn ein NaMi Feld ausgewählt ist.
 
 ### 1.10.14
 
