@@ -49,17 +49,17 @@
                         <f-text id="email" v-model="inner.email" size="sm" label="E-Mail"></f-text>
                         <f-text id="email_parents" v-model="inner.email_parents" size="sm" label="E-Mail eltern"></f-text>
                         <f-text id="fax" v-model="inner.fax" size="sm" label="Fax"></f-text>
-                        <f-textarea id="letter_address" v-model="inner.letter_address" class="sm:col-span-2" rows="3" label="Brief-Adresse" size="sm"></f-textarea>
+                        <f-textarea id="letter_address" v-model="inner.letter_address" class="sm:col-span-2" :rows="3" label="Brief-Adresse" size="sm"></f-textarea>
                     </div>
                 </ui-box>
                 <ui-box heading="System">
                     <div class="grid gap-3">
                         <f-select id="bill_kind" v-model="inner.bill_kind" :options="meta.billKinds" label="Rechnung versenden über" name="bill_kind" size="sm"></f-select>
                         <f-select id="subscription_id" v-model="inner.subscription_id" :options="meta.subscriptions" label="Beitrag" name="subscription_id" size="sm"></f-select>
-                        <f-switch id="has_nami" v-model="inner.has_nami" size="sm" label="In Nami eintragen"></f-switch>
-                        <f-switch id="send_newspaper" v-model="inner.send_newspaper" label="Mittendrin versenden" size="sm"></f-switch>
+                        <f-switch id="has_nami" v-model="inner.has_nami" name="has_nami" size="sm" label="In Nami eintragen"></f-switch>
+                        <f-switch id="send_newspaper" v-model="inner.send_newspaper" name="send_newspaper" label="Mittendrin versenden" size="sm"></f-switch>
                         <f-text id="joined_at" v-model="inner.joined_at" class="sm:col-span-2" type="date" label="Eintrittsdatum" size="sm" required></f-text>
-                        <f-textarea id="comment" v-model="inner.comment" rows="3" class="col-span-2" label="Kommentar" size="sm"></f-textarea>
+                        <f-textarea id="comment" v-model="inner.comment" :rows="3" class="col-span-2" label="Kommentar" size="sm"></f-textarea>
                         <div v-if="mode === 'create' || (original.has_nami === false && inner.has_nami === true)" class="contents">
                             <f-select
                                 id="first_activity_id"
@@ -86,36 +86,44 @@
                 <ui-box heading="Prävention">
                     <div class="grid sm:grid-cols-[minmax(min-content,max-content)_minmax(min-content,max-content)] gap-2">
                         <div class="grid grid-cols-[minmax(min-content,max-content)_8rem] gap-1">
-                            <f-switch id="has_efz" v-model="hasEfz" size="sm" label="Führungszeugnis eingesehen"></f-switch>
+                            <f-switch id="has_efz" v-model="hasEfz" name="has_efz" size="sm" label="Führungszeugnis eingesehen"></f-switch>
                             <div>
                                 <f-text v-if="inner.efz !== null" id="efz" v-model="inner.efz" type="date" label="am" size="sm"></f-text>
                             </div>
-                            <f-switch id="has_ps" v-model="hasPs" size="sm" label="Hat Präventionsschulung"></f-switch>
+                            <f-switch id="has_ps" v-model="hasPs" name="has_ps" size="sm" label="Hat Präventionsschulung"></f-switch>
                             <div>
                                 <f-text v-if="inner.ps_at !== null" id="ps_at" v-model="inner.ps_at" type="date" label="am" size="sm"></f-text>
                             </div>
-                            <f-switch id="has_more_ps" v-model="hasMorePs" size="sm" label="Hat Vertiefungsschulung"></f-switch>
+                            <f-switch id="has_more_ps" v-model="hasMorePs" name="has_more_ps" size="sm" label="Hat Vertiefungsschulung"></f-switch>
                             <div>
                                 <f-text v-if="inner.more_ps_at !== null" id="more_ps_at" v-model="inner.more_ps_at" type="date" label="am" size="sm"></f-text>
                             </div>
-                            <f-switch id="is_recertified" v-model="isRecertified" size="sm" label="Hat Rezertifizierung"></f-switch>
+                            <f-switch id="is_recertified" v-model="isRecertified" name="is_recertified" size="sm" label="Hat Rezertifizierung"></f-switch>
                             <div>
                                 <f-text v-if="inner.recertified_at !== null" id="recertified_at" v-model="inner.recertified_at" type="date" label="am" size="sm"></f-text>
                             </div>
-                            <f-switch id="has_without_education" v-model="hasWithoutEducation" label="Einsatz ohne Schulung" size="sm"></f-switch>
+                            <f-switch id="has_without_education" v-model="hasWithoutEducation" name="has_without_education" label="Einsatz ohne Schulung" size="sm"></f-switch>
                             <div>
-                                <f-text v-if="inner.without_education_at !== null" id="without_education_at" v-model="inner.without_education_at" type="date" label="am" size="sm"></f-text>
+                                <f-text
+                                    v-if="inner.without_education_at !== null"
+                                    id="without_education_at"
+                                    v-model="inner.without_education_at"
+                                    name="without_education_at"
+                                    type="date"
+                                    label="am"
+                                    size="sm"
+                                ></f-text>
                             </div>
-                            <f-switch id="has_without_efz" v-model="hasWithoutEfz" size="sm" label="Einsatz ohne EFZ"></f-switch>
+                            <f-switch id="has_without_efz" v-model="hasWithoutEfz" name="has_without_efz" size="sm" label="Einsatz ohne EFZ"></f-switch>
                             <div>
                                 <f-text v-if="inner.without_efz_at !== null" id="without_efz_at" v-model="inner.without_efz_at" type="date" label="am" size="sm"></f-text>
                             </div>
                         </div>
                         <div class="grid gap-1">
-                            <f-switch id="has_svk" v-model="inner.has_svk" size="sm" label="SVK unterschrieben"></f-switch>
-                            <f-switch id="has_vk" v-model="inner.has_vk" size="sm" label="Verhaltenskodex unterschrieben"></f-switch>
-                            <f-switch id="multiply_pv" v-model="inner.multiply_pv" label="Multiplikator*in Präventionsschulung" size="sm"></f-switch>
-                            <f-switch id="multiply_more_pv" v-model="inner.multiply_more_pv" label="Multiplikator*in Vertiefungsschulung" size="sm"></f-switch>
+                            <f-switch id="has_svk" v-model="inner.has_svk" name="has_svk" size="sm" label="SVK unterschrieben"></f-switch>
+                            <f-switch id="has_vk" v-model="inner.has_vk" name="has_vk" size="sm" label="Verhaltenskodex unterschrieben"></f-switch>
+                            <f-switch id="multiply_pv" v-model="inner.multiply_pv" name="multiply_pv" label="Multiplikator*in Präventionsschulung" size="sm"></f-switch>
+                            <f-switch id="multiply_more_pv" v-model="inner.multiply_more_pv" name="multiply_more_pv" label="Multiplikator*in Vertiefungsschulung" size="sm"></f-switch>
                         </div>
                     </div>
                 </ui-box>
