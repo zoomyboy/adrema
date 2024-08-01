@@ -4,6 +4,7 @@
 
 -   Rechnungen und Erinnerungen werden nun automatisch täglich um 10 Uhr verschickt
 -   Es kann eingestellt werden, nach wie vielen Wochen an Rechnungen erinnert werden soll (Standard: 12)
+-   Name und Profilbild des angemeldeten Benutzers wird nun oben rechts angezeigt
 
 ### 1.10.15
 
