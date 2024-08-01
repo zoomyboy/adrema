@@ -42,6 +42,6 @@ class FileshareIndexActionTest extends FileshareTestCase
     {
         $this->withoutExceptionHandling()->login()->loginNami();
 
-        $this->get('/setting/fileshare')->assertComponent('fileshare/Index');
+        $this->get('/setting/fileshare')->assertComponent('setting/Fileshare');
     }
 }
