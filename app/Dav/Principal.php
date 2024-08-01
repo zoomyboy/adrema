@@ -178,7 +178,7 @@ class Principal implements PrincipalBackendInterface
     private function userToPrincipal(User $user): array
     {
         return [
-            '{DAV:}displayname' => $user->name,
+            '{DAV:}displayname' => $user->firstname . ' ' . $user->lastname,
             'uri' => 'principals/' . $user->email,
             '{http://sabredav.org/ns}email-address' => $user->email,
         ];
