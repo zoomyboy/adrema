@@ -41,11 +41,6 @@ class NamiSettings extends LocalSettings implements Viewable, Storeable
         return 'nami';
     }
 
-    public static function indexAction(): string
-    {
-        return SettingIndexAction::class;
-    }
-
     public static function storeAction(): string
     {
         return SettingSaveAction::class;
@@ -54,5 +49,19 @@ class NamiSettings extends LocalSettings implements Viewable, Storeable
     public static function title(): string
     {
         return 'NaMi-Login';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function viewData(): array
+    {
+        return [
+            'data' => [
+                'mglnr' => $this->mglnr,
+                'password' => '',
+                'default_group_id' => $this->default_group_id,
+            ]
+        ];
     }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Fileshare;
 
-use App\Fileshare\Actions\FileshareIndexAction;
+use App\Fileshare\Models\Fileshare;
+use App\Fileshare\Resources\FileshareResource;
 use App\Setting\Contracts\Viewable;
 use App\Setting\LocalSettings;
 
@@ -18,13 +19,18 @@ class FileshareSettings extends LocalSettings implements Viewable
         return 'fileshare';
     }
 
-    public static function indexAction(): string
-    {
-        return FileshareIndexAction::class;
-    }
-
     public static function title(): string
     {
         return 'Datei-Verbindungen';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function viewData(): array
+    {
+        return [
+            'data' => FileshareResource::collection(Fileshare::paginate(15))
+        ];
     }
 }

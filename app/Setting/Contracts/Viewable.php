@@ -4,8 +4,14 @@ namespace App\Setting\Contracts;
 
 interface Viewable
 {
+    public static function url(): string;
+
+    public static function title(): string;
+
+    public static function group(): string;
+
     /**
-     * @return class-string
+     * @return array<string, mixed>
      */
-    public static function indexAction(): string;
+    public function viewData(): array;
 }

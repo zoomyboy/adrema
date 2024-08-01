@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Form\Actions\SettingIndexAction;
 use App\Form\Actions\SettingStoreAction;
 use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
@@ -28,13 +27,23 @@ class FormSettings extends LocalSettings implements Viewable, Storeable
         return 'Formulare';
     }
 
-    public static function indexAction(): string
-    {
-        return SettingIndexAction::class;
-    }
-
     public static function storeAction(): string
     {
         return SettingStoreAction::class;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function viewData(): array
+    {
+        return [
+            'data' => [
+                'data' => [
+                    'register_url' => $this->registerUrl,
+                    'clear_cache_url' => $this->clearCacheUrl,
+                ]
+            ]
+        ];
     }
 }

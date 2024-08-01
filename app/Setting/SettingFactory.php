@@ -2,8 +2,9 @@
 
 namespace App\Setting;
 
-use App\Setting\Contracts\Viewable;
+use App\Invoice\InvoiceSettings;
 use App\Setting\Contracts\Storeable;
+use App\Setting\Contracts\Viewable;
 use Illuminate\Routing\Router;
 
 class SettingFactory
@@ -19,10 +20,6 @@ class SettingFactory
     public function register(string $setting): void
     {
         $this->settings[] = $setting;
-
-        if (new $setting() instanceof Viewable) {
-            app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->get($setting::url(), $setting::indexAction());
-        }
 
         if (new $setting() instanceof Storeable) {
             app(Router::class)->middleware(['web', 'auth:web'])->post($setting::url(), $setting::storeAction());
@@ -44,5 +41,12 @@ class SettingFactory
             'title' => $setting::title(),
         ])
             ->toArray();
+    }
+
+    public function resolveGroupName(string $name): Viewable
+    {
+        $settingClass = collect($this->settings)->filter(fn ($setting) => new $setting() instanceof Viewable)->first(fn ($setting) => $setting::group() === $name);
+
+        return app($settingClass);
     }
 }

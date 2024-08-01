@@ -40,9 +40,26 @@ class InvoiceSettings extends LocalSettings implements Viewable, Storeable
         return 'bill';
     }
 
-    public static function indexAction(): string
+    /**
+     * @inheritdoc
+     */
+    public function viewData(): array
     {
-        return SettingIndexAction::class;
+        return [
+            'data' => [
+                'from_long' => $this->from_long,
+                'from' => $this->from,
+                'mobile' => $this->mobile,
+                'email' => $this->email,
+                'website' => $this->website,
+                'address' => $this->address,
+                'place' => $this->place,
+                'zip' => $this->zip,
+                'iban' => $this->iban,
+                'bic' => $this->bic,
+                'remember_weeks' => $this->rememberWeeks,
+            ]
+        ];
     }
 
     public static function storeAction(): string

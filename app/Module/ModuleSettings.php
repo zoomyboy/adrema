@@ -26,11 +26,6 @@ class ModuleSettings extends LocalSettings implements Viewable, Storeable
         return 'Module';
     }
 
-    public static function indexAction(): string
-    {
-        return ModuleIndexAction::class;
-    }
-
     public static function storeAction(): string
     {
         return ModuleStoreAction::class;
@@ -39,5 +34,20 @@ class ModuleSettings extends LocalSettings implements Viewable, Storeable
     public function hasModule(string $module): bool
     {
         return in_array($module, $this->modules);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function viewData(): array
+    {
+        return [
+            'data' => [
+                'data' => [
+                    'modules' => $this->modules,
+                ],
+                'meta' => ['modules' => Module::forSelect()],
+            ]
+        ];
     }
 }

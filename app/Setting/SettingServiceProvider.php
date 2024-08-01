@@ -8,6 +8,8 @@ use App\Invoice\InvoiceSettings;
 use App\Mailgateway\MailgatewaySettings;
 use App\Module\ModuleSettings;
 use App\Prevention\PreventionSettings;
+use App\Setting\Actions\ViewAction;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class SettingServiceProvider extends ServiceProvider
@@ -20,6 +22,8 @@ class SettingServiceProvider extends ServiceProvider
     public function register()
     {
         app()->singleton(SettingFactory::class, fn () => new SettingFactory());
+        app(Router::class)->bind('settingGroup', fn ($param) => app(SettingFactory::class)->resolveGroupName($param));
+        app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->get('/setting/{settingGroup}', ViewAction::class);
     }
 
     /**
