@@ -2,21 +2,15 @@
 
 namespace App\Module;
 
-use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 
-class ModuleSettings extends LocalSettings implements Viewable, Storeable
+class ModuleSettings extends LocalSettings implements Storeable
 {
     /** @var array<int, string> */
     public array $modules;
 
     public static function group(): string
-    {
-        return 'module';
-    }
-
-    public static function slug(): string
     {
         return 'module';
     }

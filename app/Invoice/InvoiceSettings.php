@@ -2,11 +2,10 @@
 
 namespace App\Invoice;
 
-use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 
-class InvoiceSettings extends LocalSettings implements Viewable, Storeable
+class InvoiceSettings extends LocalSettings implements Storeable
 {
     public string $from_long;
 
@@ -31,11 +30,6 @@ class InvoiceSettings extends LocalSettings implements Viewable, Storeable
     public int $rememberWeeks;
 
     public static function group(): string
-    {
-        return 'bill';
-    }
-
-    public static function slug(): string
     {
         return 'bill';
     }

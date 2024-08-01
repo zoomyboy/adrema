@@ -3,14 +3,12 @@
 namespace App\Setting;
 
 use App\Group;
-use App\Nami\Actions\SettingIndexAction;
 use App\Nami\Actions\SettingSaveAction;
-use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Nami;
 
-class NamiSettings extends LocalSettings implements Viewable, Storeable
+class NamiSettings extends LocalSettings implements Storeable
 {
     public int $mglnr;
 
@@ -34,11 +32,6 @@ class NamiSettings extends LocalSettings implements Viewable, Storeable
     public function localGroup(): ?Group
     {
         return Group::firstWhere('nami_id', $this->default_group_id);
-    }
-
-    public static function slug(): string
-    {
-        return 'nami';
     }
 
     public static function storeAction(): string

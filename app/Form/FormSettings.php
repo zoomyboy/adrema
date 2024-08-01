@@ -3,21 +3,15 @@
 namespace App\Form;
 
 use App\Form\Actions\SettingStoreAction;
-use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 
-class FormSettings extends LocalSettings implements Viewable, Storeable
+class FormSettings extends LocalSettings implements Storeable
 {
     public string $registerUrl;
     public string $clearCacheUrl;
 
     public static function group(): string
-    {
-        return 'form';
-    }
-
-    public static function slug(): string
     {
         return 'form';
     }

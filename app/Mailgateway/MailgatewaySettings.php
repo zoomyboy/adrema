@@ -2,20 +2,13 @@
 
 namespace App\Mailgateway;
 
-use App\Mailgateway\Actions\IndexAction;
 use App\Mailgateway\Models\Mailgateway;
 use App\Mailgateway\Resources\MailgatewayResource;
-use App\Setting\Contracts\Viewable;
 use App\Setting\LocalSettings;
 
-class MailgatewaySettings extends LocalSettings implements Viewable
+class MailgatewaySettings extends LocalSettings
 {
     public static function group(): string
-    {
-        return 'mailgateway';
-    }
-
-    public static function slug(): string
     {
         return 'mailgateway';
     }

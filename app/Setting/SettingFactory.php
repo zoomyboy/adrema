@@ -4,7 +4,6 @@ namespace App\Setting;
 
 use App\Invoice\InvoiceSettings;
 use App\Setting\Contracts\Storeable;
-use App\Setting\Contracts\Viewable;
 use Illuminate\Routing\Router;
 
 class SettingFactory
@@ -15,18 +14,18 @@ class SettingFactory
     private array $settings = [];
 
     /**
-     * @param class-string $setting
+     * @param class-string<LocalSettings> $setting
      */
     public function register(string $setting): void
     {
         $this->settings[] = $setting;
 
-        if (new $setting() instanceof Storeable) {
-            app(Router::class)->middleware(['web', 'auth:web'])->post($setting::url(), $setting::storeAction());
+        if (new $setting instanceof Storeable) {
+            $this->registerStoreRoute(new $setting);
         }
 
         if (1 === count($this->settings)) {
-            app(Router::class)->redirect('/setting', '/setting/' . $setting::slug());
+            app(Router::class)->redirect('/setting', '/setting/' . $setting::group());
         }
     }
 
@@ -43,10 +42,15 @@ class SettingFactory
             ->toArray();
     }
 
-    public function resolveGroupName(string $name): Viewable
+    public function resolveGroupName(string $name): LocalSettings
     {
-        $settingClass = collect($this->settings)->filter(fn ($setting) => new $setting() instanceof Viewable)->first(fn ($setting) => $setting::group() === $name);
+        $settingClass = collect($this->settings)->first(fn ($setting) => $setting::group() === $name);
 
         return app($settingClass);
+    }
+
+    protected function registerStoreRoute(Storeable $setting): void
+    {
+        app(Router::class)->middleware(['web', 'auth:web'])->post($setting::url(), $setting::storeAction());
     }
 }

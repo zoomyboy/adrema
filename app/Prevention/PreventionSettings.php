@@ -3,20 +3,14 @@
 namespace App\Prevention;
 
 use App\Lib\Editor\EditorData;
-use App\Setting\Contracts\Viewable;
 use App\Setting\LocalSettings;
 
-class PreventionSettings extends LocalSettings implements Viewable
+class PreventionSettings extends LocalSettings
 {
 
     public EditorData $formmail;
 
     public static function group(): string
-    {
-        return 'prevention';
-    }
-
-    public static function slug(): string
     {
         return 'prevention';
     }

@@ -4,17 +4,11 @@ namespace App\Fileshare;
 
 use App\Fileshare\Models\Fileshare;
 use App\Fileshare\Resources\FileshareResource;
-use App\Setting\Contracts\Viewable;
 use App\Setting\LocalSettings;
 
-class FileshareSettings extends LocalSettings implements Viewable
+class FileshareSettings extends LocalSettings
 {
     public static function group(): string
-    {
-        return 'fileshare';
-    }
-
-    public static function slug(): string
     {
         return 'fileshare';
     }

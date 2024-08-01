@@ -2,7 +2,7 @@
 
 namespace App\Setting\Actions;
 
-use App\Setting\Contracts\Viewable;
+use App\Setting\LocalSettings;
 use Inertia\Inertia;
 use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -11,7 +11,7 @@ class ViewAction
 {
     use AsAction;
 
-    public function handle(Viewable $settingGroup): Response
+    public function handle(LocalSettings $settingGroup): Response
     {
         session()->put('menu', 'setting');
         session()->put('title', $settingGroup::title());
