@@ -23,7 +23,7 @@ class SettingServiceProvider extends ServiceProvider
     {
         app()->singleton(SettingFactory::class, fn () => new SettingFactory());
         app(Router::class)->bind('settingGroup', fn ($param) => app(SettingFactory::class)->resolveGroupName($param));
-        app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->get('/setting/{settingGroup}', ViewAction::class);
+        app(Router::class)->middleware(['web', 'auth:web'])->get('/setting/{settingGroup}', ViewAction::class);
     }
 
     /**
