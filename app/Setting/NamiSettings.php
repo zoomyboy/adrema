@@ -3,8 +3,10 @@
 namespace App\Setting;
 
 use App\Group;
+use App\Initialize\Actions\NamiLoginCheckAction;
 use App\Nami\Actions\SettingSaveAction;
 use App\Setting\Contracts\Storeable;
+use Lorisleiva\Actions\ActionRequest;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Nami;
 
@@ -29,14 +31,29 @@ class NamiSettings extends LocalSettings implements Storeable
         return Nami::login($this->mglnr, $this->password);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function rules(): array
+    {
+        return [
+            'mglnr' => 'required',
+            'password' => 'required',
+            'default_group_id' => 'required',
+        ];
+    }
+
+    public function beforeSave(ActionRequest $request): void
+    {
+        NamiLoginCheckAction::run([
+            'mglnr' => $request->mglnr,
+            'password' => $request->password,
+        ]);
+    }
+
     public function localGroup(): ?Group
     {
         return Group::firstWhere('nami_id', $this->default_group_id);
-    }
-
-    public static function storeAction(): string
-    {
-        return SettingSaveAction::class;
     }
 
     public static function title(): string

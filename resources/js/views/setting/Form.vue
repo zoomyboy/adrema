@@ -9,8 +9,8 @@
                     <p class="text-sm">Hier kannst du Einstellungen für Anmeldeformulare setzen.</p>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <f-text id="register_url" v-model="inner.register_url" label="Formular-Link"></f-text>
-                    <f-text id="clear_cache_url" v-model="inner.clear_cache_url" label="Frontend-Cache-Url"></f-text>
+                    <f-text id="register_url" v-model="inner.registerUrl" label="Formular-Link"></f-text>
+                    <f-text id="clear_cache_url" v-model="inner.clearCacheUrl" label="Frontend-Cache-Url"></f-text>
                 </div>
             </form>
         </setting-layout>

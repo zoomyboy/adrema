@@ -20,10 +20,6 @@ class SettingFactory
     {
         $this->settings[] = $setting;
 
-        if (new $setting instanceof Storeable) {
-            $this->registerStoreRoute(new $setting);
-        }
-
         if (1 === count($this->settings)) {
             app(Router::class)->redirect('/setting', '/setting/' . $setting::group());
         }
@@ -35,8 +31,8 @@ class SettingFactory
     public function getShare(): array
     {
         return collect($this->settings)->map(fn ($setting) => [
-            'url' => $setting::url(),
-            'is_active' => '/' . request()->path() === $setting::url(),
+            'url' => (new $setting)->url(),
+            'is_active' => url(request()->path()) === (new $setting)->url(),
             'title' => $setting::title(),
         ])
             ->toArray();
@@ -47,10 +43,5 @@ class SettingFactory
         $settingClass = collect($this->settings)->first(fn ($setting) => $setting::group() === $name);
 
         return app($settingClass);
-    }
-
-    protected function registerStoreRoute(Storeable $setting): void
-    {
-        app(Router::class)->middleware(['web', 'auth:web'])->post($setting::url(), $setting::storeAction());
     }
 }

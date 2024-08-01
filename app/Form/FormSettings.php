@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Form\Actions\SettingStoreAction;
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
+use Lorisleiva\Actions\ActionRequest;
 
 class FormSettings extends LocalSettings implements Storeable
 {
@@ -21,9 +22,19 @@ class FormSettings extends LocalSettings implements Storeable
         return 'Formulare';
     }
 
-    public static function storeAction(): string
+    /**
+     * @inheritdoc
+     */
+    public function rules(): array
     {
-        return SettingStoreAction::class;
+        return [
+            'registerUrl' => 'present|string',
+            'clearCacheUrl' => 'present|string',
+        ];
+    }
+
+    public function beforeSave(ActionRequest $request): void
+    {
     }
 
     /**
@@ -34,8 +45,8 @@ class FormSettings extends LocalSettings implements Storeable
         return [
             'data' => [
                 'data' => [
-                    'register_url' => $this->registerUrl,
-                    'clear_cache_url' => $this->clearCacheUrl,
+                    'registerUrl' => $this->registerUrl,
+                    'clearCacheUrl' => $this->clearCacheUrl,
                 ]
             ]
         ];

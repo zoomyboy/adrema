@@ -8,9 +8,9 @@ abstract class LocalSettings extends Settings
 {
     abstract public static function title(): string;
 
-    public static function url(): string
+    public function url(): string
     {
-        return '/setting/' . static::group();
+        return route('setting.view', ['settingGroup' => $this->group()]);
     }
 
     /**

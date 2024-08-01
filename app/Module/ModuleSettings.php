@@ -4,6 +4,8 @@ namespace App\Module;
 
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
+use Illuminate\Validation\Rule;
+use Lorisleiva\Actions\ActionRequest;
 
 class ModuleSettings extends LocalSettings implements Storeable
 {
@@ -20,14 +22,24 @@ class ModuleSettings extends LocalSettings implements Storeable
         return 'Module';
     }
 
-    public static function storeAction(): string
-    {
-        return ModuleStoreAction::class;
-    }
-
     public function hasModule(string $module): bool
     {
         return in_array($module, $this->modules);
+    }
+
+    public function beforeSave(ActionRequest $request): void
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules(): array
+    {
+        return [
+            'modules' => 'present|array',
+            'modules.*' => ['string', Rule::in(Module::values())],
+        ];
     }
 
     /**

@@ -17,7 +17,7 @@
                 <f-text id="website" v-model="inner.website" label="Webseite"></f-text>
                 <f-text id="iban" v-model="inner.iban" label="IBAN"></f-text>
                 <f-text id="bic" v-model="inner.bic" label="BIC"></f-text>
-                <f-text id="remember_weeks" v-model="inner.remember_weeks" type="number" label="Erinnerung alle X Wochen versenden"></f-text>
+                <f-text id="remember_weeks" v-model="inner.rememberWeeks" type="number" label="Erinnerung alle X Wochen versenden"></f-text>
             </form>
         </setting-layout>
     </page-layout>

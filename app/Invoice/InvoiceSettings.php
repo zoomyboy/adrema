@@ -4,6 +4,7 @@ namespace App\Invoice;
 
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
+use Lorisleiva\Actions\ActionRequest;
 
 class InvoiceSettings extends LocalSettings implements Storeable
 {
@@ -51,14 +52,33 @@ class InvoiceSettings extends LocalSettings implements Storeable
                 'zip' => $this->zip,
                 'iban' => $this->iban,
                 'bic' => $this->bic,
-                'remember_weeks' => $this->rememberWeeks,
+                'rememberWeeks' => $this->rememberWeeks,
             ]
         ];
     }
 
-    public static function storeAction(): string
+    /**
+     * @inheritdoc
+     */
+    public function rules(): array
     {
-        return SettingSaveAction::class;
+        return [
+            'from_long' => '',
+            'from' => '',
+            'mobile' => '',
+            'email' => '',
+            'website' => '',
+            'address' => '',
+            'place' => '',
+            'zip' => '',
+            'iban' => '',
+            'bic' => '',
+            'rememberWeeks' => '',
+        ];
+    }
+
+    public function beforeSave(ActionRequest $request): void
+    {
     }
 
     public static function title(): string

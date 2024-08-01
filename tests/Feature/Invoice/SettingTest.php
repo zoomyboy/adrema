@@ -10,6 +10,15 @@ class SettingTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function testItDisplaysView(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+
+        $this->get(route('setting.view', ['settingGroup' => 'bill']))
+            ->assertOk()
+            ->assertComponent('setting/Bill');
+    }
+
     public function testDisplaySettings(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
@@ -27,7 +36,7 @@ class SettingTest extends TestCase
             'rememberWeeks' => 6
         ])->save();
 
-        $this->get('/setting/bill')
+        $this->get(route('setting.data', ['settingGroup' => 'bill']))
             ->assertOk()
             ->assertComponent('setting/Bill')
             ->assertInertiaPath('data.from_long', 'DPSG Stamm Muster')
@@ -40,16 +49,16 @@ class SettingTest extends TestCase
             ->assertInertiaPath('data.zip', '12345')
             ->assertInertiaPath('data.iban', 'DE05')
             ->assertInertiaPath('data.bic', 'SOLSDE')
-            ->assertInertiaPath('data.remember_weeks', 6);
+            ->assertInertiaPath('data.rememberWeeks', 6);
     }
 
     public function testItReturnsTabs(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
 
-        $this->get('/setting/bill')
+        $this->get(route('setting.view', ['settingGroup' => 'bill']))
             ->assertInertiaPath('setting_menu.1.title', 'Rechnung')
-            ->assertInertiaPath('setting_menu.1.url', '/setting/bill')
+            ->assertInertiaPath('setting_menu.1.url', url('/setting/bill'))
             ->assertInertiaPath('setting_menu.1.is_active', true)
             ->assertInertiaPath('setting_menu.0.is_active', false);
     }
@@ -69,7 +78,7 @@ class SettingTest extends TestCase
             'zip' => '12345',
             'iban' => 'DE05',
             'bic' => 'SOLSDE',
-            'remember_weeks' => 10
+            'rememberWeeks' => 10
         ]);
 
         $response->assertRedirect('/setting/bill');
