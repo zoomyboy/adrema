@@ -4,10 +4,10 @@ namespace App\Prevention;
 
 use App\Lib\Editor\EditorData;
 use App\Prevention\Actions\PreventionIndexAction;
-use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Viewable;
 use App\Setting\LocalSettings;
 
-class PreventionSettings extends LocalSettings implements Indexable
+class PreventionSettings extends LocalSettings implements Viewable
 {
 
     public EditorData $formmail;

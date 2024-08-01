@@ -2,11 +2,11 @@
 
 namespace App\Module;
 
-use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 
-class ModuleSettings extends LocalSettings implements Indexable, Storeable
+class ModuleSettings extends LocalSettings implements Viewable, Storeable
 {
     /** @var array<int, string> */
     public array $modules;

@@ -3,10 +3,10 @@
 namespace App\Fileshare;
 
 use App\Fileshare\Actions\FileshareIndexAction;
-use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Viewable;
 use App\Setting\LocalSettings;
 
-class FileshareSettings extends LocalSettings implements Indexable
+class FileshareSettings extends LocalSettings implements Viewable
 {
     public static function group(): string
     {

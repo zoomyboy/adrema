@@ -10,10 +10,10 @@ class SettingTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testSettingIndex(): void
+    public function testDisplaySettings(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
-        InvoiceSettings::fake([
+        app(InvoiceSettings::class)->fill([
             'from_long' => 'DPSG Stamm Muster',
             'from' => 'Stamm Muster',
             'mobile' => '+49 176 55555',
@@ -25,43 +25,33 @@ class SettingTest extends TestCase
             'iban' => 'DE05',
             'bic' => 'SOLSDE',
             'rememberWeeks' => 6
-        ]);
+        ])->save();
 
-        $response = $this->get('/setting/bill');
-
-        $response->assertOk();
-        $this->assertInertiaHas([
-            'from_long' => 'DPSG Stamm Muster',
-            'from' => 'Stamm Muster',
-            'mobile' => '+49 176 55555',
-            'email' => 'max@muster.de',
-            'website' => 'https://example.com',
-            'address' => 'Musterstr 4',
-            'place' => 'Solingen',
-            'zip' => '12345',
-            'iban' => 'DE05',
-            'bic' => 'SOLSDE',
-            'remember_weeks' => 6
-        ], $response, 'data');
+        $this->get('/setting/bill')
+            ->assertOk()
+            ->assertComponent('setting/Bill')
+            ->assertInertiaPath('data.from_long', 'DPSG Stamm Muster')
+            ->assertInertiaPath('data.from', 'Stamm Muster')
+            ->assertInertiaPath('data.mobile', '+49 176 55555')
+            ->assertInertiaPath('data.email', 'max@muster.de')
+            ->assertInertiaPath('data.website', 'https://example.com')
+            ->assertInertiaPath('data.address', 'Musterstr 4')
+            ->assertInertiaPath('data.place', 'Solingen')
+            ->assertInertiaPath('data.zip', '12345')
+            ->assertInertiaPath('data.iban', 'DE05')
+            ->assertInertiaPath('data.bic', 'SOLSDE')
+            ->assertInertiaPath('data.remember_weeks', 6);
     }
 
     public function testItReturnsTabs(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
 
-        $response = $this->get('/setting/bill');
-
-        /** @var array<int, array{url: string, title: string, is_active: bool}> */
-        $menus = $this->inertia($response, 'setting_menu');
-        $this->assertTrue(
-            collect($menus)
-                ->pluck('url')
-                ->contains('/setting/bill')
-        );
-
-        $settingMenu = collect($menus)->first(fn ($menu) => '/setting/bill' === $menu['url']);
-        $this->assertTrue($settingMenu['is_active']);
-        $this->assertEquals('Rechnung', $settingMenu['title']);
+        $this->get('/setting/bill')
+            ->assertInertiaPath('setting_menu.1.title', 'Rechnung')
+            ->assertInertiaPath('setting_menu.1.url', '/setting/bill')
+            ->assertInertiaPath('setting_menu.1.is_active', true)
+            ->assertInertiaPath('setting_menu.0.is_active', false);
     }
 
     public function testItCanChangeSettings(): void

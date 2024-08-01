@@ -2,7 +2,7 @@
 
 namespace App\Setting;
 
-use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use Illuminate\Routing\Router;
 
@@ -20,16 +20,16 @@ class SettingFactory
     {
         $this->settings[] = $setting;
 
-        if (new $setting() instanceof Indexable) {
+        if (new $setting() instanceof Viewable) {
             app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->get($setting::url(), $setting::indexAction());
         }
 
         if (new $setting() instanceof Storeable) {
-            app(Router::class)->middleware(['web', 'auth:web', SettingMiddleware::class])->post($setting::url(), $setting::storeAction());
+            app(Router::class)->middleware(['web', 'auth:web'])->post($setting::url(), $setting::storeAction());
         }
 
         if (1 === count($this->settings)) {
-            app(Router::class)->redirect('/setting', '/setting/'.$setting::slug());
+            app(Router::class)->redirect('/setting', '/setting/' . $setting::slug());
         }
     }
 
@@ -40,9 +40,9 @@ class SettingFactory
     {
         return collect($this->settings)->map(fn ($setting) => [
             'url' => $setting::url(),
-            'is_active' => '/'.request()->path() === $setting::url(),
+            'is_active' => '/' . request()->path() === $setting::url(),
             'title' => $setting::title(),
         ])
-        ->toArray();
+            ->toArray();
     }
 }

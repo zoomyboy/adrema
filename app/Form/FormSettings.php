@@ -4,11 +4,11 @@ namespace App\Form;
 
 use App\Form\Actions\SettingIndexAction;
 use App\Form\Actions\SettingStoreAction;
-use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 
-class FormSettings extends LocalSettings implements Indexable, Storeable
+class FormSettings extends LocalSettings implements Viewable, Storeable
 {
     public string $registerUrl;
     public string $clearCacheUrl;

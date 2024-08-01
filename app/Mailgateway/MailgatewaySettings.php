@@ -3,10 +3,10 @@
 namespace App\Mailgateway;
 
 use App\Mailgateway\Actions\IndexAction;
-use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Viewable;
 use App\Setting\LocalSettings;
 
-class MailgatewaySettings extends LocalSettings implements Indexable
+class MailgatewaySettings extends LocalSettings implements Viewable
 {
     public static function group(): string
     {

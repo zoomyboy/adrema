@@ -2,11 +2,11 @@
 
 namespace App\Invoice;
 
-use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 
-class InvoiceSettings extends LocalSettings implements Indexable, Storeable
+class InvoiceSettings extends LocalSettings implements Viewable, Storeable
 {
     public string $from_long;
 

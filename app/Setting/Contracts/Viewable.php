@@ -2,7 +2,7 @@
 
 namespace App\Setting\Contracts;
 
-interface Indexable
+interface Viewable
 {
     /**
      * @return class-string

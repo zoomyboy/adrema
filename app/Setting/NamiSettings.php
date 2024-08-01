@@ -5,12 +5,12 @@ namespace App\Setting;
 use App\Group;
 use App\Nami\Actions\SettingIndexAction;
 use App\Nami\Actions\SettingSaveAction;
-use App\Setting\Contracts\Indexable;
+use App\Setting\Contracts\Viewable;
 use App\Setting\Contracts\Storeable;
 use Zoomyboy\LaravelNami\Api;
 use Zoomyboy\LaravelNami\Nami;
 
-class NamiSettings extends LocalSettings implements Indexable, Storeable
+class NamiSettings extends LocalSettings implements Viewable, Storeable
 {
     public int $mglnr;
 
