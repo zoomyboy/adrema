@@ -25,7 +25,7 @@ return new class extends Migration
 
         foreach (DB::table('users')->get() as $user) {
             [$firstname, $lastname] = explode(' ', $user->name);
-            DB::table('users')->where('id', $user->id)->update(['firstname' => $firstname, 'lastname' => $lastname]);
+            DB::table('users')->where('id', $user->id)->update(['firstname' => $firstname ?? '', 'lastname' => $lastname ?? '']);
         }
 
         Schema::table('users', function (Blueprint $table) {
