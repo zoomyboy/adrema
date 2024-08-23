@@ -27,7 +27,7 @@
                 @update:model-value="update(index, 'comparator', $event)"
             ></f-select>
             <f-select
-                v-if="condition.field && ['isEqual', 'isNotEqual'].includes(condition.comparator) && ['RadioField', 'DropdownField'].includes(getField(condition.field).type)"
+                v-if="condition.field && ['isEqual', 'isNotEqual'].includes(condition.comparator) && ['RadioField', 'DropdownField', 'GroupField'].includes(getField(condition.field).type)"
                 :id="`value-${index}-${id}`"
                 v-model="condition.value"
                 :options="getOptions(condition.field)"
@@ -35,7 +35,7 @@
                 label="Wert"
             ></f-select>
             <f-multipleselect
-                v-if="condition.field && ['isIn', 'isNotIn'].includes(condition.comparator) && ['RadioField', 'DropdownField'].includes(getField(condition.field).type)"
+                v-if="condition.field && ['isIn', 'isNotIn'].includes(condition.comparator) && ['RadioField', 'DropdownField', 'GroupField'].includes(getField(condition.field).type)"
                 :id="`value-${index}-${id}`"
                 v-model="condition.value"
                 :options="getOptions(condition.field)"
@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import {ref, inject, computed} from 'vue';
+import {ref, inject, computed, onMounted} from 'vue';
 const axios = inject('axios');
 const emit = defineEmits(['update:modelValue']);
 
@@ -74,10 +74,10 @@ const props = defineProps({
 });
 
 const comparatorOptions = ref([
-    {id: 'isEqual', name: 'ist gleich', defaultValue: {DropdownField: null, RadioField: null, CheckboxField: false}},
-    {id: 'isNotEqual', name: 'ist ungleich', defaultValue: {DropdownField: null, RadioField: null, CheckboxField: false}},
-    {id: 'isIn', name: 'ist in', defaultValue: {DropdownField: [], RadioField: [], CheckboxField: false}},
-    {id: 'isNotIn', name: 'ist nicht in', defaultValue: {DropdownField: [], RadioField: [], CheckboxField: false}},
+    {id: 'isEqual', name: 'ist gleich', defaultValue: {DropdownField: null, RadioField: null, CheckboxField: false, GroupField: null}},
+    {id: 'isNotEqual', name: 'ist ungleich', defaultValue: {DropdownField: null, RadioField: null, CheckboxField: false, GroupField: null}},
+    {id: 'isIn', name: 'ist in', defaultValue: {DropdownField: [], RadioField: [], CheckboxField: false, GroupField: []}},
+    {id: 'isNotIn', name: 'ist nicht in', defaultValue: {DropdownField: [], RadioField: [], CheckboxField: false, GroupField: []}},
 ]);
 
 const modeOptions = ref([
@@ -89,7 +89,7 @@ const fields = computed(() => {
     const result = [];
     props.single.config.sections.forEach((section) => {
         section.fields.forEach((field) => {
-            if (['DropdownField', 'RadioField', 'CheckboxField'].includes(field.type)) {
+            if (['DropdownField', 'RadioField', 'CheckboxField', 'GroupField'].includes(field.type)) {
                 result.push(field);
             }
         });
@@ -132,6 +132,10 @@ function getField(fieldName) {
 }
 
 function getOptions(fieldName) {
+    if (getField(fieldName).type === 'GroupField') {
+        return groupOptions.value;
+    }
+
     return getField(fieldName).options.map((o) => {
         return {id: o, name: o};
     });
@@ -168,4 +172,10 @@ async function checkIfDirty() {
 if (props.single.links && props.single.links.is_dirty) {
     checkIfDirty();
 }
+
+const groupOptions = ref([]);
+
+onMounted(async () => {
+    groupOptions.value = (await axios.get('/api/group')).data.data;
+});
 </script>
