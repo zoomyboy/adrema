@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.10.17
+
+-   Es können nun auch Bedingungen für Felder vom Typ Gruppierung definiert werden
+
 ### 1.10.16
 
 -   Rechnungen und Erinnerungen werden nun automatisch täglich um 10 Uhr verschickt
