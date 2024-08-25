@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.10.18
+
+-   Fixed: All Gruppen als Option anbieten bei Bedingungen
+
 ### 1.10.17
 
 -   Es können nun auch Bedingungen für Felder vom Typ Gruppierung definiert werden
