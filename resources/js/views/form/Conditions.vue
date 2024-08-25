@@ -176,6 +176,6 @@ if (props.single.links && props.single.links.is_dirty) {
 const groupOptions = ref([]);
 
 onMounted(async () => {
-    groupOptions.value = (await axios.get('/api/group')).data.data;
+    groupOptions.value = (await axios.get('/api/group?all')).data.data;
 });
 </script>
