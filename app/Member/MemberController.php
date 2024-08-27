@@ -2,7 +2,6 @@
 
 namespace App\Member;
 
-use App\Country;
 use App\Http\Controllers\Controller;
 use App\Setting\NamiSettings;
 use Illuminate\Http\RedirectResponse;
@@ -33,7 +32,7 @@ class MemberController extends Controller
         session()->put('menu', 'member');
         session()->put('title', 'Mitglied erstellen');
 
-        return \Inertia::render('member/VForm', [
+        return Inertia::render('member/VForm', [
             'data' => MemberResource::defaultModel(),
             'mode' => 'create',
             'meta' => MemberResource::meta(),
@@ -52,7 +51,7 @@ class MemberController extends Controller
         session()->put('menu', 'member');
         session()->put('title', "Mitglied {$member->firstname} {$member->lastname} bearbeiten");
 
-        return \Inertia::render('member/VForm', [
+        return Inertia::render('member/VForm', [
             'data' => new MemberResource($member),
             'mode' => 'edit',
             'conflict' => '1' === $request->query('conflict', '0'),
