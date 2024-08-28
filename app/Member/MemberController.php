@@ -33,7 +33,6 @@ class MemberController extends Controller
         session()->put('title', 'Mitglied erstellen');
 
         return Inertia::render('member/VForm', [
-            'data' => MemberResource::defaultModel(),
             'mode' => 'create',
             'meta' => MemberResource::meta(),
         ]);

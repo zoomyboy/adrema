@@ -3,6 +3,7 @@
 namespace Tests\EndToEnd;
 
 use App\Activity;
+use App\Country;
 use App\Group;
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
@@ -16,9 +17,15 @@ use Tests\EndToEndTestCase;
 class MemberIndexTest extends EndToEndTestCase
 {
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        Country::factory()->create(['name' => 'Deutschland']);
+        $this->withoutExceptionHandling()->login()->loginNami();
+    }
+
     public function testItHandlesFullTextSearch(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()->defaults()->count(2)->create(['firstname' => 'Alexander']);
         Member::factory()->defaults()->create(['firstname' => 'Heinrich']);
 
@@ -29,9 +36,13 @@ class MemberIndexTest extends EndToEndTestCase
             ->assertInertiaCount('data.data', 1);
     }
 
+    public function testItGetsDefaultCountryFromDefaultModel(): void
+    {
+        $this->callFilter('member.index', [])->assertInertiaPath('data.meta.default.country_id', Country::firstWhere('name', 'Deutschland')->id);
+    }
+
     public function testItHandlesAddress(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()->defaults()->create(['address' => '']);
         Member::factory()->defaults()->create(['zip' => '']);
         Member::factory()->defaults()->create(['location' => '']);
@@ -52,7 +63,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItHandlesBirthday(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()->defaults()->create(['birthday' => null]);
         Member::factory()->defaults()->count(2)->create();
 
@@ -65,7 +75,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItHandlesBillKind(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()->defaults()->postBillKind()->create();
         Member::factory()->defaults()->emailBillKind()->count(2)->create();
 
@@ -80,7 +89,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItHandlesGroupIds(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $group = Group::factory()->create();
         $otherGroup = Group::factory()->create();
         $thirdGroup = Group::factory()->create();
@@ -101,7 +109,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItHandlesActivitiesAndSubactivities(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $mitglied = Activity::factory()->name('€ Mitglied')->create();
         $schnuppermitglied = Activity::factory()->name('Schnuppermitgliedschaft')->create();
         $woelfling = Subactivity::factory()->name('Wölfling')->create();
@@ -127,7 +134,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItHandlesActivityAndSubactivityForSingleMembership(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $mitglied = Activity::factory()->name('€ Mitglied')->create();
         $schnuppermitglied = Activity::factory()->name('Schnuppermitgliedschaft')->create();
         $woelfling = Subactivity::factory()->name('Wölfling')->create();
@@ -144,7 +150,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItIgnoresInactiveMemberships(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $mitglied = Activity::factory()->name('€ Mitglied')->create();
         $woelfling = Subactivity::factory()->name('Wölfling')->create();
         Member::factory()->defaults()->has(Membership::factory()->for($mitglied)->for($woelfling)->ended())->create();
@@ -158,7 +163,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItListensForMembershipDeletion(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $mitglied = Activity::factory()->name('€ Mitglied')->create();
         $member = Member::factory()->defaults()->has(Membership::factory()->for($mitglied))->create();
         $member->memberships->first()->delete();
@@ -171,7 +175,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItFiltersForMemberships(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $mitglied = Activity::factory()->create();
         $woelfling = Subactivity::factory()->create();
         $juffi = Subactivity::factory()->create();
@@ -201,7 +204,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testGroupOfMembershipsFilterCanBeEmpty(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $mitglied = Activity::factory()->create();
         $woelfling = Subactivity::factory()->create();
         $group = Group::factory()->create();
@@ -221,7 +223,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItFiltersForSearchButNotForPayments(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()->defaults()
             ->has(InvoicePosition::factory()->for(Invoice::factory()))
             ->create(['firstname' => 'firstname']);
@@ -234,7 +235,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItIgnoresPaidInvoices(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         Member::factory()->defaults()
             ->has(InvoicePosition::factory()->for(Invoice::factory()->status(InvoiceStatus::PAID)))
             ->create();
@@ -247,7 +247,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItIncludesMembers(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->create(['birthday' => null, 'location' => '']);
 
         sleep(1);
@@ -259,7 +258,6 @@ class MemberIndexTest extends EndToEndTestCase
 
     public function testItExcludesMembers(): void
     {
-        $this->withoutExceptionHandling()->login()->loginNami();
         $member = Member::factory()->defaults()->create(['birthday' => null]);
 
         sleep(1);

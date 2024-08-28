@@ -153,8 +153,8 @@ export default {
     },
     data: function () {
         return {
-            original: {...this.data},
-            inner: {...this.data},
+            original: this.mode === 'create' ? {...this.meta.default} : {...this.data},
+            inner: this.mode === 'create' ? {...this.meta.default} : {...this.data},
             active: 0,
         };
     },
