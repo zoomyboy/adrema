@@ -40,7 +40,15 @@
         </ui-popup>
         <page-filter breakpoint="xl">
             <template #fields>
-                <f-switch v-show="hasModule('bill')" id="ausstand" :model-value="getFilter('ausstand')" label="Nur Ausstände" size="sm" @update:model-value="setFilter('ausstand', $event)"></f-switch>
+                <f-switch
+                    v-show="hasModule('bill')"
+                    id="ausstand"
+                    name="ausstand"
+                    :model-value="getFilter('ausstand')"
+                    label="Nur Ausstände"
+                    size="sm"
+                    @update:model-value="setFilter('ausstand', $event)"
+                ></f-switch>
                 <f-multipleselect
                     id="group_ids"
                     :options="meta.groups"
