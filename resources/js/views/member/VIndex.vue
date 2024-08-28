@@ -2,7 +2,6 @@
     <page-layout page-class="pb-6">
         <template #toolbar>
             <page-toolbar-button :href="meta.links.create" color="primary" icon="plus">Mitglied anlegen</page-toolbar-button>
-            <page-toolbar-button v-if="hasModule('bill')" :href="meta.links.allpayment" color="primary" icon="invoice">Rechnungen erstellen</page-toolbar-button>
         </template>
         <ui-popup v-if="deleting !== null" heading="Mitglied löschen?" @close="deleting.reject()">
             <div>
