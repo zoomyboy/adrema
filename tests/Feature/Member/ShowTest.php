@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Member;
 
+use App\Country;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
-use App\Fee;
 use App\Gender;
 use App\Group;
 use App\Invoice\Models\Invoice;
@@ -12,18 +12,22 @@ use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Nationality;
-use App\Payment\Payment;
 use App\Payment\Subscription;
 use App\Region;
 use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\RequestFactories\Child;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
     use DatabaseTransactions;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        Country::factory()->create(['name' => 'Deutschland']);
+    }
 
     public function testItShowsSingleMember(): void
     {

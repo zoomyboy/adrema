@@ -3,6 +3,7 @@
 namespace Tests\Feature\Member;
 
 use App\Activity;
+use App\Country;
 use App\Member\Member;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -11,6 +12,12 @@ use Tests\TestCase;
 class EditTest extends TestCase
 {
     use DatabaseTransactions;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        Country::factory()->create(['name' => 'Deutschland']);
+    }
 
     public function testItDisplaysEditPage(): void
     {
