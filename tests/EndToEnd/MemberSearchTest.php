@@ -2,11 +2,18 @@
 
 namespace Tests\EndToEnd;
 
+use App\Country;
 use App\Member\Member;
 use Tests\EndToEndTestCase;
 
 class MemberSearchTest extends EndToEndTestCase
 {
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        Country::factory()->create(['name' => 'Deutschland']);
+    }
 
     public function testItHandlesFullTextSearch(): void
     {

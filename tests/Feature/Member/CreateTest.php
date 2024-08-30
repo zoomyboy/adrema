@@ -39,7 +39,7 @@ class CreateTest extends TestCase
             'without_education_at' => null,
             'without_efz_at' => null,
             'address' => '',
-        ], $response, 'data');
+        ], $response, 'meta.default');
     }
 
     public function testItDoesntDisplayActivitiesAndSubactivitiesNotInNami(): void
