@@ -39,6 +39,11 @@ class EfzPendingBlockTest extends TestCase
             ->for($group)
             ->create(['firstname' => 'Joe', 'lastname' => 'Muster', 'efz' => now()->subYears(5)->endOfYear()]);
         Member::factory()
+            ->has(Membership::factory()->in('€ LeiterIn', 1, 'Biber', 2)->ended())
+            ->defaults()
+            ->for($group)
+            ->create(['firstname' => 'Joe', 'lastname' => 'Muster', 'efz' => now()->subYears(5)->endOfYear()]);
+        Member::factory()
             ->has(Membership::factory()->in('€ LeiterIn', 1, 'Biber', 2))
             ->defaults()
             ->for($group)

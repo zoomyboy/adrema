@@ -19,7 +19,7 @@ class EfzPendingBlock extends Block
         })
             ->whereCurrentGroup()
             ->orderByRaw('lastname, firstname')
-            ->whereHas('memberships', fn ($builder) => $builder->isLeader());
+            ->whereHas('memberships', fn ($builder) => $builder->isLeader()->active());
     }
 
     /**

@@ -27,30 +27,30 @@ class PsPendingBlockTest extends TestCase
             ->defaults()
             ->for($group)
             ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
-            ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
             ->create(['firstname' => 'Max', 'lastname' => 'Doe', 'ps_at' => now()->subYears(4)]);
         $validMorePs = Member::factory()
             ->defaults()
             ->for($group)
-            ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
             ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
             ->create(['firstname' => 'Joe', 'lastname' => 'Doe', 'more_ps_at' => now()->subYears(4)]);
         $invalidPs = Member::factory()
             ->defaults()
             ->for($group)
             ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
-            ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
             ->create(['firstname' => 'Mike', 'lastname' => 'Doe', 'ps_at' => now()->subYears(5)]);
         $invalidMorePs = Member::factory()
             ->defaults()
             ->for($group)
             ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
-            ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
+            ->create(['firstname' => 'Nora', 'lastname' => 'Doe', 'more_ps_at' => now()->subYears(5)]);
+        $inactiveMembership = Member::factory()
+            ->defaults()
+            ->for($group)
+            ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8)->ended())
             ->create(['firstname' => 'Nora', 'lastname' => 'Doe', 'more_ps_at' => now()->subYears(5)]);
         $invalidPsButValidMorePs = Member::factory()
             ->defaults()
             ->for($group)
-            ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
             ->has(Membership::factory()->in('€ LeiterIn', 5, 'Wölfling', 8))
             ->create(['firstname' => 'Hey', 'lastname' => 'Doe', 'ps_at' => now()->subYears(10), 'more_ps_at' => now()->subYears(3)]);
         $notALeader = Member::factory()
