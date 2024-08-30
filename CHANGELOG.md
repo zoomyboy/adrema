@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.10.19
+
+-   Fixed: Erweiterte Führungszeugnisse und Präventionsschulungen nur für aktive Mitgliedschaften auf Dashboard anzeigen
+
 ### 1.10.18
 
 -   Fixed: All Gruppen als Option anbieten bei Bedingungen
