@@ -3,15 +3,21 @@
 namespace Tests\EndToEnd\Member;
 
 use App\Activity;
+use App\Country;
 use App\Group;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Subactivity;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\EndToEndTestCase;
 
 class IndexTest extends EndToEndTestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        Country::factory()->create(['name' => 'Deutschland']);
+    }
+
     public function testItGetsMembers(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
