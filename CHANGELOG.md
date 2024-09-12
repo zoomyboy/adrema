@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.10.20
+
+-   Fixed: Bei Textfeldern wird nun die Einleitung dargestellt
+
 ### 1.10.19
 
 -   Fixed: Erweiterte Führungszeugnisse und Präventionsschulungen nur für aktive Mitgliedschaften auf Dashboard anzeigen
