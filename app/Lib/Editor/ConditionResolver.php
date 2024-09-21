@@ -20,7 +20,7 @@ abstract class ConditionResolver
      */
     public function filterBlock(array $block): bool
     {
-        return $this->filterCondition(Condition::withoutMagicalCreationFrom([
+        return $this->filterCondition(Condition::factory()->withoutMagicalCreation()->from([
             'mode' => data_get($block, 'tunes.condition.mode', 'any'),
             'ifs' =>  data_get($block, 'tunes.condition.ifs', []),
         ]));

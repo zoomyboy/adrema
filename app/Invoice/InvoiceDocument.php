@@ -36,7 +36,7 @@ abstract class InvoiceDocument extends Document
 
     public static function fromInvoice(Invoice $invoice): self
     {
-        return static::withoutMagicalCreationFrom([
+        return static::factory()->withoutMagicalCreation()->from([
             'toName' => $invoice->to['name'],
             'toAddress' => $invoice->to['address'],
             'toZip' => $invoice->to['zip'],

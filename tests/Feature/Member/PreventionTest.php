@@ -17,6 +17,7 @@ use App\Prevention\PreventionSettings;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Lib\CreatesFormFields;
 use Tests\RequestFactories\EditorRequestFactory;
 use Tests\TestCase;
@@ -169,8 +170,8 @@ class PreventionTest extends TestCase
     /**
      * @param array<int, Prevention> $preventions
      * @param array<string, mixed> $memberAttributes
-     * @dataProvider attributes
      */
+    #[DataProvider('attributes')]
     public function testItRemembersMember(array $memberAttributes, array $preventions): void
     {
         Mail::fake();

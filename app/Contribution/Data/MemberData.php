@@ -29,7 +29,7 @@ class MemberData extends Data
      */
     public static function fromModels(array $ids): Collection
     {
-        return Member::whereIn('id', $ids)->orderByRaw('lastname, firstname')->get()->map(fn ($member) => self::withoutMagicalCreationFrom([
+        return Member::whereIn('id', $ids)->orderByRaw('lastname, firstname')->get()->map(fn ($member) => self::factory()->withoutMagicalCreation()->from([
             ...$member->toArray(),
             'birthday' => $member->birthday->toAtomString(),
             'isLeader' => $member->isLeader(),
@@ -44,7 +44,7 @@ class MemberData extends Data
      */
     public static function fromApi(array $data): Collection
     {
-        return collect($data)->map(fn ($member) => self::withoutMagicalCreationFrom([
+        return collect($data)->map(fn ($member) => self::factory()->withoutMagicalCreation()->from([
             ...$member,
             'birthday' => Carbon::parse($member['birthday'])->toAtomString(),
             'gender' => Gender::fromString($member['gender']),
@@ -54,22 +54,22 @@ class MemberData extends Data
 
     public function fullname(): string
     {
-        return $this->firstname.' '.$this->lastname;
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     public function separatedName(): string
     {
-        return $this->lastname.', '.$this->firstname;
+        return $this->lastname . ', ' . $this->firstname;
     }
 
     public function fullAddress(): string
     {
-        return $this->address.', '.$this->zip.' '.$this->location;
+        return $this->address . ', ' . $this->zip . ' ' . $this->location;
     }
 
     public function city(): string
     {
-        return $this->zip.' '.$this->location;
+        return $this->zip . ' ' . $this->location;
     }
 
     public function age(): string

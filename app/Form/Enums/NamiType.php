@@ -48,7 +48,7 @@ enum NamiType: string
             static::LOCATION => $member->location,
             static::NICKNAME => $member->nickname,
             static::GENDER => $member->gender?->name,
-            static::AGE => $member->birthday->diffInYears(now()),
+            static::AGE => intVal($member->birthday->diffInYears(now())),
             static::AGEEVENT => $member->birthday->diffInYears($form->from),
             static::MOBILEPHONE => $member->mobile_phone,
         };

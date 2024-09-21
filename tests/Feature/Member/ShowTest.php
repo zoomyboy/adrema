@@ -17,6 +17,7 @@ use App\Region;
 use Carbon\Carbon;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
@@ -177,9 +178,7 @@ class ShowTest extends TestCase
         yield [now()->addDays(2), null, false];
     }
 
-    /**
-     * @dataProvider membershipDataProvider
-     */
+    #[DataProvider('membershipDataProvider')]
     public function testItShowsIfMembershipIsActive(Carbon $from, ?Carbon $to, bool $isActive): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();

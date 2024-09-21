@@ -21,7 +21,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         JsonResource::withoutWrapping();
-        Telescope::ignoreMigrations();
 
         \Inertia::share('search', request()->query('search', ''));
 

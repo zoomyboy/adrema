@@ -10,6 +10,7 @@ use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\RequestFactories\EditorRequestFactory;
 
 class FormtemplateStoreActionTest extends FormTestCase
@@ -51,12 +52,12 @@ class FormtemplateStoreActionTest extends FormTestCase
         Event::assertDispatched(Succeeded::class, fn (Succeeded $event) => $event->message === 'Vorlage gespeichert.');
     }
 
-    public function validationDataProvider(): Generator
+    public static function validationDataProvider(): Generator
     {
         yield [FormtemplateRequest::new()->name(''), ['name' => 'Name ist erforderlich.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->name('')]), ['config.sections.0.name' => 'Sektionsname ist erforderlich.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
-            $this->textField()->name(''),
+            static::textField()->name(''),
         ])]), ['config.sections.0.fields.0.name' => 'Feldname ist erforderlich.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
             FormtemplateFieldRequest::type('')
@@ -65,20 +66,20 @@ class FormtemplateStoreActionTest extends FormTestCase
             FormtemplateFieldRequest::type('aaaaa'),
         ])]), ['config.sections.0.fields.0.type' => 'Feldtyp ist ungültig.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
-            $this->textField(''),
+            static::textField(''),
         ])]), ['config.sections.0.fields.0.key' => 'Feldkey ist erforderlich.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
-            $this->textField('a b'),
+            static::textField('a b'),
         ])]), ['config.sections.0.fields.0.key' => 'Feldkey Format ist ungültig.']];
         yield [FormtemplateRequest::new()->sections([FormtemplateSectionRequest::new()->fields([
-            $this->textField()->required('la')
+            static::textField()->required('la')
         ])]), ['config.sections.0.fields.0.required' => 'Erforderlich muss ein Wahrheitswert sein.']];
     }
 
     /**
-     * @dataProvider validationDataProvider
      * @param array<string, string> $messages
      */
+    #[DataProvider('validationDataProvider')]
     public function testItValidatesRequests(FormtemplateRequest $request, array $messages): void
     {
         $this->login()->loginNami();

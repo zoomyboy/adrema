@@ -13,6 +13,7 @@ use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\RequestFactories\ContributionMemberApiRequestFactory;
 use Tests\RequestFactories\ContributionRequestFactory;
 use Tests\TestCase;
@@ -112,8 +113,8 @@ class StoreTest extends TestCase
     /**
      * @param array<string, string>              $input
      * @param class-string<ContributionDocument> $documentClass
-     * @dataProvider validationDataProvider
      */
+    #[DataProvider('validationDataProvider')]
     public function testItValidatesInput(array $input, string $documentClass, string $errorField): void
     {
         $this->login()->loginNami();
@@ -127,8 +128,8 @@ class StoreTest extends TestCase
     /**
      * @param array<string, string>              $input
      * @param class-string<ContributionDocument> $documentClass
-     * @dataProvider validationDataProvider
      */
+    #[DataProvider('validationDataProvider')]
     public function testItValidatesInputBeforeGeneration(array $input, string $documentClass, string $errorField): void
     {
         $this->login()->loginNami();
@@ -140,7 +141,7 @@ class StoreTest extends TestCase
         ])->assertSessionHasErrors($errorField);
     }
 
-    protected function validationDataProvider(): Generator
+    protected static function validationDataProvider(): Generator
     {
         yield [
             ['type' => 'aaa'],

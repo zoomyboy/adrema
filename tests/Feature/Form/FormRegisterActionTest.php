@@ -17,6 +17,7 @@ use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\TestResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class FormRegisterActionTest extends FormTestCase
 {
@@ -86,10 +87,10 @@ class FormRegisterActionTest extends FormTestCase
     }
 
     /**
-     * @dataProvider validationDataProvider
      * @param array<string, mixed> $payload
      * @param ?array<string, mixed> $messages
      */
+    #[DataProvider('validationDataProvider')]
     public function testItValidatesInput(FormtemplateFieldRequest $fieldGenerator, array $payload, ?array $messages): void
     {
         Carbon::setTestNow(Carbon::parse('2024-02-15 06:00:00'));
@@ -105,226 +106,226 @@ class FormRegisterActionTest extends FormTestCase
         }
     }
 
-    public function validationDataProvider(): Generator
+    public static function validationDataProvider(): Generator
     {
         yield [
-            $this->dateField('birthday')->name('Geburtsdatum')->maxToday(false),
+            static::dateField('birthday')->name('Geburtsdatum')->maxToday(false),
             ['birthday' => 'aa'],
             ['birthday' => 'Geburtsdatum muss ein gültiges Datum sein.']
         ];
 
         yield [
-            $this->dateField('birthday')->name('Geburtsdatum')->maxToday(false),
+            static::dateField('birthday')->name('Geburtsdatum')->maxToday(false),
             ['birthday' => '2021-05-06'],
             null,
         ];
 
         yield [
-            $this->dateField('birthday')->name('Geburtsdatum')->maxToday(true),
+            static::dateField('birthday')->name('Geburtsdatum')->maxToday(true),
             ['birthday' => '2024-02-16'],
             ['birthday' => 'Geburtsdatum muss ein Datum vor oder gleich dem 15.02.2024 sein.'],
         ];
 
         yield [
-            $this->dateField('birthday')->name('Geburtsdatum')->maxToday(true),
+            static::dateField('birthday')->name('Geburtsdatum')->maxToday(true),
             ['birthday' => '2024-02-15'],
             null,
         ];
 
         yield [
-            $this->textField('vorname')->name('Vorname der Mutter')->required(true),
+            static::textField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => ''],
             ['vorname' => 'Vorname der Mutter ist erforderlich.']
         ];
 
         yield [
-            $this->textField('vorname')->name('Vorname der Mutter')->required(true),
+            static::textField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => 5],
             ['vorname' => 'Vorname der Mutter muss ein String sein.']
         ];
 
         yield [
-            $this->radioField('yes_or_no')->name('Ja oder Nein')->required(true),
+            static::radioField('yes_or_no')->name('Ja oder Nein')->required(true),
             ['yes_or_no' => null],
             ['yes_or_no' => 'Ja oder Nein ist erforderlich.']
         ];
 
         yield [
-            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false)->allowcustom(false),
+            static::radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false)->allowcustom(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
+            static::radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(true),
+            static::radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(true),
             ['letter' => 'lalalaa'],
             null,
         ];
 
         yield [
-            $this->radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
+            static::radioField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
             ['letter' => 'A'],
             null
         ];
 
         yield [
-            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
+            static::checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => ['Z']],
             ['letter.0' => 'Der gewählte Wert für Buchstabe ist ungültig.'],
         ];
 
         yield [
-            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->allowcustom(true),
+            static::dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->allowcustom(true),
             ['letter' => 'Z'],
             null,
         ];
 
         yield [
-            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
+            static::checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => 77],
             ['letter' => 'Buchstabe muss ein Array sein.'],
         ];
 
         yield [
-            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
+            static::checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => ['A']],
             null,
         ];
 
         yield [
-            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
+            static::checkboxesField('letter')->name('Buchstabe')->options(['A', 'B']),
             ['letter' => []],
             null,
         ];
 
         yield [
-            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(0)->max(2),
+            static::checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(0)->max(2),
             ['letter' => ['A', 'B', 'C']],
             ['letter' => 'Buchstabe darf maximal 2 Elemente haben.'],
         ];
 
         yield [
-            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(2)->max(0),
+            static::checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(2)->max(0),
             ['letter' => ['A']],
             ['letter' => 'Buchstabe muss mindestens 2 Elemente haben.'],
         ];
 
         yield [
-            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(1)->max(0),
+            static::checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(1)->max(0),
             ['letter' => []],
             ['letter' => 'Buchstabe muss mindestens 1 Elemente haben.'],
         ];
 
         yield [
-            $this->checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(0)->max(1),
+            static::checkboxesField('letter')->name('Buchstabe')->options(['A', 'B', 'C', 'D'])->min(0)->max(1),
             ['letter' => ['A', 'B']],
             ['letter' => 'Buchstabe darf maximal 1 Elemente haben.'],
         ];
 
         yield [
-            $this->checkboxField('data')->name('Datenschutz')->required(false),
+            static::checkboxField('data')->name('Datenschutz')->required(false),
             ['data' => 5],
             ['data' => 'Datenschutz muss ein Wahrheitswert sein.'],
         ];
 
         yield [
-            $this->checkboxField('data')->name('Datenschutz')->required(false),
+            static::checkboxField('data')->name('Datenschutz')->required(false),
             ['data' => false],
             null
         ];
 
         yield [
-            $this->checkboxField('data')->name('Datenschutz')->required(true),
+            static::checkboxField('data')->name('Datenschutz')->required(true),
             ['data' => false],
             ['data' => 'Datenschutz muss akzeptiert werden.'],
         ];
 
         yield [
-            $this->checkboxField('data')->name('Datenschutz')->required(true),
+            static::checkboxField('data')->name('Datenschutz')->required(true),
             ['data' => true],
             null,
         ];
 
         yield [
-            $this->dropdownField('yes_or_no')->name('Ja oder Nein')->required(true),
+            static::dropdownField('yes_or_no')->name('Ja oder Nein')->required(true),
             ['yes_or_no' => null],
             ['yes_or_no' => 'Ja oder Nein ist erforderlich.']
         ];
 
         yield [
-            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false)->allowcustom(false),
+            static::dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(false)->allowcustom(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
+            static::dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
             ['letter' => 'Z'],
             ['letter' => 'Der gewählte Wert für Buchstabe ist ungültig.']
         ];
 
         yield [
-            $this->dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
+            static::dropdownField('letter')->name('Buchstabe')->options(['A', 'B'])->required(true)->allowcustom(false),
             ['letter' => 'A'],
             null
         ];
 
         yield [
-            $this->textareaField('vorname')->name('Vorname der Mutter')->required(true),
+            static::textareaField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => ''],
             ['vorname' => 'Vorname der Mutter ist erforderlich.']
         ];
 
         yield [
-            $this->textareaField('vorname')->name('Vorname der Mutter')->required(true),
+            static::textareaField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => 5],
             ['vorname' => 'Vorname der Mutter muss ein String sein.']
         ];
 
         yield [
-            $this->textareaField('vorname')->name('Vorname der Mutter')->required(true),
+            static::textareaField('vorname')->name('Vorname der Mutter')->required(true),
             ['vorname' => 5],
             ['vorname' => 'Vorname der Mutter muss ein String sein.']
         ];
 
         yield [
-            $this->emailField('email')->name('Mail')->required(true),
+            static::emailField('email')->name('Mail')->required(true),
             ['email' => 'alaaa'],
             ['email' => 'Mail muss eine gültige E-Mail-Adresse sein.']
         ];
 
         yield [
-            $this->emailField('email')->name('Mail')->required(false),
+            static::emailField('email')->name('Mail')->required(false),
             ['email' => 'alaaa'],
             ['email' => 'Mail muss eine gültige E-Mail-Adresse sein.']
         ];
 
         yield [
-            $this->numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
+            static::numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
             ['numb' => 21],
             ['numb' => 'Nummer muss kleiner oder gleich 20 sein.']
         ];
 
         yield [
-            $this->numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
+            static::numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
             ['numb' => 9],
             ['numb' => 'Nummer muss größer oder gleich 10 sein.']
         ];
 
         yield [
-            $this->numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
+            static::numberField('numb')->name('Nummer')->required(false)->min(10)->max(20),
             ['numb' => 'asss'],
             ['numb' => 'Nummer muss eine ganze Zahl sein.']
         ];
 
         yield [
-            $this->numberField('numb')->name('Nummer')->required(true),
+            static::numberField('numb')->name('Nummer')->required(true),
             ['numb' => ''],
             ['numb' => 'Nummer ist erforderlich.']
         ];
@@ -456,7 +457,7 @@ class FormRegisterActionTest extends FormTestCase
         $this->assertEquals($form->participants->get(0)->id, $form->participants->get(1)->parent_id);
     }
 
-    protected function memberMatchingDataProvider(): Generator
+    public static function memberMatchingDataProvider(): Generator
     {
         yield [
             ['email' => 'max@muster.de'],
@@ -539,10 +540,10 @@ class FormRegisterActionTest extends FormTestCase
     }
 
     /**
-     * @dataProvider memberMatchingDataProvider
      * @param array<string, string> $memberAttributes
      * @param mixed $participantValue
      */
+    #[DataProvider('memberMatchingDataProvider')]
     public function testItSynchsMemberAttributes(array $memberAttributes, NamiType $type, mixed $participantValue, ?callable $factory = null): void
     {
         Carbon::setTestNow(Carbon::parse('2023-05-04'));

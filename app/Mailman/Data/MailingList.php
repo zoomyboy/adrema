@@ -26,7 +26,7 @@ class MailingList extends Data
     ) {
     }
 
-    public static function factory(): MailinglistFactory
+    public static function toFactory(): MailinglistFactory
     {
         return MailinglistFactory::new();
     }

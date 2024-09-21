@@ -9,6 +9,7 @@ use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class InvoiceUpdateActionTest extends TestCase
@@ -144,8 +145,8 @@ class InvoiceUpdateActionTest extends TestCase
     /**
      * @param array<string, mixed> $input
      * @param array<string, string> $errors
-     * @dataProvider validationDataProvider
      */
+    #[DataProvider('validationDataProvider')]
     public function testItValidatesInput(array $input, array $errors): void
     {
         $this->login()->loginNami();

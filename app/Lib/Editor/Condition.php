@@ -20,12 +20,12 @@ class Condition extends Data
 
     public static function fromMedia(Media $media): self
     {
-        return $media->getCustomProperty('conditions') ? static::withoutMagicalCreationFrom($media->getCustomProperty('conditions')) : static::defaults();
+        return $media->getCustomProperty('conditions') ? static::factory()->withoutMagicalCreation()->from($media->getCustomProperty('conditions')) : static::defaults();
     }
 
     public static function defaults(): self
     {
-        return static::withoutMagicalCreationFrom(['mode' => 'any', 'ifs' => []]);
+        return static::factory()->withoutMagicalCreation()->from(['mode' => 'any', 'ifs' => []]);
     }
 
     public function hasStatements(): bool

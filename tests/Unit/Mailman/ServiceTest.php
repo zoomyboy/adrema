@@ -7,6 +7,7 @@ use App\Mailman\Exceptions\MailmanServiceException;
 use App\Mailman\Support\MailmanService;
 use Generator;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\RequestFactories\MailmanListRequestFactory;
 use Tests\TestCase;
 
@@ -23,7 +24,7 @@ class ServiceTest extends TestCase
         $this->assertTrue($result);
 
         Http::assertSentCount(1);
-        Http::assertSent(fn ($request) => 'GET' === $request->method() && 'http://mailman.test/api/system/versions' === $request->url() && $request->header('Authorization') === ['Basic '.base64_encode('user:secret')]);
+        Http::assertSent(fn ($request) => 'GET' === $request->method() && 'http://mailman.test/api/system/versions' === $request->url() && $request->header('Authorization') === ['Basic ' . base64_encode('user:secret')]);
     }
 
     public function testItFailsWhenChckingCredentials(): void
@@ -37,7 +38,7 @@ class ServiceTest extends TestCase
         $this->assertFalse($result);
 
         Http::assertSentCount(1);
-        Http::assertSent(fn ($request) => 'GET' === $request->method() && 'http://mailman.test/api/system/versions' === $request->url() && $request->header('Authorization') === ['Basic '.base64_encode('user:secret')]);
+        Http::assertSent(fn ($request) => 'GET' === $request->method() && 'http://mailman.test/api/system/versions' === $request->url() && $request->header('Authorization') === ['Basic ' . base64_encode('user:secret')]);
     }
 
     public function testItGetsMembersFromList(): void
@@ -56,7 +57,7 @@ class ServiceTest extends TestCase
         $this->assertEquals(994, $result->memberId);
         $this->assertEquals('test@example.com', $result->email);
         Http::assertSentCount(1);
-        Http::assertSent(fn ($request) => 'GET' === $request->method() && 'http://mailman.test/api/lists/listid/roster/member?page=1&count=10' === $request->url() && $request->header('Authorization') === ['Basic '.base64_encode('user:secret')]);
+        Http::assertSent(fn ($request) => 'GET' === $request->method() && 'http://mailman.test/api/lists/listid/roster/member?page=1&count=10' === $request->url() && $request->header('Authorization') === ['Basic ' . base64_encode('user:secret')]);
     }
 
     public function testItThrowsExceptionWhenLoginFailed(): void
@@ -94,21 +95,19 @@ class ServiceTest extends TestCase
         foreach (range(3, 40) as $i) {
             yield [
                 collect(range(1, $i))
-                    ->map(fn ($num) => ['email' => 'test'.$num.'@example.com', 'self_link' => 'https://example.com/994'])
+                    ->map(fn ($num) => ['email' => 'test' . $num . '@example.com', 'self_link' => 'https://example.com/994'])
                     ->toArray(),
             ];
         }
     }
 
-    /**
-     * @dataProvider listDataProvider
-     */
+    #[DataProvider('listDataProvider')]
     public function testItReturnsMoreThanOneResult(array $totals): void
     {
         $totals = collect($totals);
         foreach ($totals->chunk(10) as $n => $chunk) {
             Http::fake([
-                'http://mailman.test/api/lists/listid/roster/member?page='.($n + 1).'&count=10' => Http::response(json_encode([
+                'http://mailman.test/api/lists/listid/roster/member?page=' . ($n + 1) . '&count=10' => Http::response(json_encode([
                     'entries' => $chunk,
                     'total_size' => $totals->count(),
                 ]), 200),

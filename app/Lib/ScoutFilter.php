@@ -36,6 +36,6 @@ abstract class ScoutFilter extends Data
      */
     public static function fromPost(?array $post = null): static
     {
-        return static::withoutMagicalCreationFrom($post ?: []);
+        return static::factory()->withoutMagicalCreation()->from($post ?: []);
     }
 }

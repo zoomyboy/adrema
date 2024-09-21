@@ -10,6 +10,7 @@ use App\Lib\Events\Succeeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\RequestFactories\EditorRequestFactory;
 
 class FormStoreActionTest extends FormTestCase
@@ -80,7 +81,7 @@ class FormStoreActionTest extends FormTestCase
         $this->assertEquals(2, $form->export->root->connectionId);
     }
 
-    public function validationDataProvider(): Generator
+    public static function validationDataProvider(): Generator
     {
         yield [FormRequest::new()->name(''), ['name' => 'Name ist erforderlich.']];
         yield [FormRequest::new()->excerpt(''), ['excerpt' => 'Auszug ist erforderlich.']];
@@ -92,9 +93,9 @@ class FormStoreActionTest extends FormTestCase
 
 
     /**
-     * @dataProvider validationDataProvider
      * @param array<string, string> $messages
      */
+    #[DataProvider('validationDataProvider')]
     public function testItValidatesRequests(FormRequest $request, array $messages): void
     {
         $this->login()->loginNami();

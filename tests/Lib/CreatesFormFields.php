@@ -18,62 +18,62 @@ use Tests\Feature\Form\FormtemplateFieldRequest;
 
 trait CreatesFormFields
 {
-    protected function namiField(?string $key = null): FormtemplateFieldRequest
+    protected static function namiField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(NamiField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(NamiField::class)->key($key ?? static::randomKey());
     }
 
-    protected function textField(?string $key = null): FormtemplateFieldRequest
+    protected static function textField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(TextField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(TextField::class)->key($key ?? static::randomKey());
     }
 
-    protected function numberField(?string $key = null): FormtemplateFieldRequest
+    protected static function numberField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(NumberField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(NumberField::class)->key($key ?? static::randomKey());
     }
 
-    protected function emailField(?string $key = null): FormtemplateFieldRequest
+    protected static function emailField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(EmailField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(EmailField::class)->key($key ?? static::randomKey());
     }
 
-    protected function checkboxesField(?string $key = null): FormtemplateFieldRequest
+    protected static function checkboxesField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(CheckboxesField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(CheckboxesField::class)->key($key ?? static::randomKey());
     }
 
-    protected function textareaField(?string $key = null): FormtemplateFieldRequest
+    protected static function textareaField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(TextareaField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(TextareaField::class)->key($key ?? static::randomKey());
     }
 
-    protected function dropdownField(?string $key = null): FormtemplateFieldRequest
+    protected static function dropdownField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(DropdownField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(DropdownField::class)->key($key ?? static::randomKey());
     }
 
-    protected function dateField(?string $key = null): FormtemplateFieldRequest
+    protected static function dateField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(DateField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(DateField::class)->key($key ?? static::randomKey());
     }
 
-    protected function radioField(?string $key = null): FormtemplateFieldRequest
+    protected static function radioField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(RadioField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(RadioField::class)->key($key ?? static::randomKey());
     }
 
-    protected function checkboxField(?string $key = null): FormtemplateFieldRequest
+    protected static function checkboxField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(CheckboxField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(CheckboxField::class)->key($key ?? static::randomKey());
     }
 
-    protected function groupField(?string $key = null): FormtemplateFieldRequest
+    protected static function groupField(?string $key = null): FormtemplateFieldRequest
     {
-        return FormtemplateFieldRequest::type(GroupField::class)->key($key ?? $this->randomKey());
+        return FormtemplateFieldRequest::type(GroupField::class)->key($key ?? static::randomKey());
     }
 
-    protected function randomKey(): string
+    protected static function randomKey(): string
     {
         return preg_replace('/[\-0-9]/', '', str()->uuid() . str()->uuid());
     }

@@ -8,6 +8,7 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\RequestFactories\EditorRequestFactory;
 
 class FormRegisterMailTest extends FormTestCase
@@ -77,25 +78,25 @@ class FormRegisterMailTest extends FormTestCase
         $mail->assertHasAttachedData('content2', 'beispiel2.pdf', ['mime' => 'application/pdf']);
     }
 
-    public function blockDataProvider(): Generator
+    public static function blockDataProvider(): Generator
     {
         yield [
             ['mode' => 'all', 'ifs' => []],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             true,
         ];
 
         yield [
             ['mode' => 'any', 'ifs' => []],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             true,
         ];
 
         yield [
             ['mode' => 'any', 'ifs' => []],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             true,
         ];
@@ -104,7 +105,7 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'any', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'A']
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             true,
         ];
@@ -113,7 +114,7 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'any', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'B']
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             false,
         ];
@@ -123,7 +124,7 @@ class FormRegisterMailTest extends FormTestCase
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'B'],
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'A']
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             true,
         ];
@@ -133,7 +134,7 @@ class FormRegisterMailTest extends FormTestCase
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'B'],
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'A']
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'B'],
             true,
         ];
@@ -143,7 +144,7 @@ class FormRegisterMailTest extends FormTestCase
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'B'],
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'A']
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'B'],
             false,
         ];
@@ -152,7 +153,7 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'all', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => 'B']
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'B'],
             true,
         ];
@@ -161,7 +162,7 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'all', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isNotEqual', 'value' => 'A']
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'B'],
             true,
         ];
@@ -170,7 +171,7 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'all', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isIn', 'value' => ['A']]
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             true,
         ];
@@ -179,7 +180,7 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'all', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isNotIn', 'value' => ['B']]
             ]],
-            $this->dropdownField('fieldkey')->options(['A', 'B']),
+            static::dropdownField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             true,
         ];
@@ -188,7 +189,7 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'all', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isNotIn', 'value' => ['B']]
             ]],
-            $this->radioField('fieldkey')->options(['A', 'B']),
+            static::radioField('fieldkey')->options(['A', 'B']),
             ['fieldkey' => 'A'],
             true,
         ];
@@ -197,7 +198,7 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'all', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => true]
             ]],
-            $this->checkboxField('fieldkey'),
+            static::checkboxField('fieldkey'),
             ['fieldkey' => true],
             true,
         ];
@@ -206,17 +207,17 @@ class FormRegisterMailTest extends FormTestCase
             ['mode' => 'all', 'ifs' => [
                 ['field' => 'fieldkey', 'comparator' => 'isEqual', 'value' => false]
             ]],
-            $this->checkboxField('fieldkey'),
+            static::checkboxField('fieldkey'),
             ['fieldkey' => true],
             false,
         ];
     }
 
     /**
-     * @dataProvider blockDataProvider
      * @param array<string, mixed> $conditions
      * @param array<string, mixed> $participantValues
      */
+    #[DataProvider('blockDataProvider')]
     public function testItFiltersForBlockConditions(array $conditions, FormtemplateFieldRequest $field, array $participantValues, bool $result): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
@@ -242,10 +243,10 @@ class FormRegisterMailTest extends FormTestCase
     }
 
     /**
-     * @dataProvider blockDataProvider
      * @param array<string, mixed> $conditions
      * @param array<string, mixed> $participantValues
      */
+    #[DataProvider('blockDataProvider')]
     public function testItFiltersForAttachments(array $conditions, FormtemplateFieldRequest $field, array $participantValues, bool $result): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();

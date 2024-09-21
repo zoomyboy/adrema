@@ -5,6 +5,7 @@ namespace Tests\Feature\Course;
 use App\Course\Models\Course;
 use App\Member\Member;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Fakes\CourseFake;
 
@@ -15,7 +16,7 @@ class StoreTest extends TestCase
     /**
      * @return array<string, array{payload: array<string, mixed>, errors: array<string, mixed>}>
      */
-    public function validationDataProvider(): array
+    public static function validationDataProvider(): array
     {
         return [
             'course_id_missing' => [
@@ -48,8 +49,8 @@ class StoreTest extends TestCase
     /**
      * @param array<string, string> $payload
      * @param array<string, string> $errors
-     * @dataProvider validationDataProvider
      */
+    #[DataProvider('validationDataProvider')]
     public function testItValidatesInput(array $payload, array $errors): void
     {
         $this->login()->withNamiSettings();

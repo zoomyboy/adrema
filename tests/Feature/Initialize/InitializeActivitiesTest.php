@@ -8,6 +8,7 @@ use App\Setting\NamiSettings;
 use App\Subactivity;
 use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 use Zoomyboy\LaravelNami\Fakes\ActivityFake;
 use Zoomyboy\LaravelNami\Fakes\GroupFake;
@@ -82,11 +83,10 @@ class InitializeActivitiesTest extends TestCase
     }
 
     /**
-     * @dataProvider activityDataProvider
-     *
      * @param array<string, string|null> $activityCheck
      * @param array<string, string|null> $subactivityCheck
      */
+    #[DataProvider('activityDataProvider')]
     public function testItInitsOtherFields(callable $activityFake, array $activityCheck, ?array $subactivityCheck = null): void
     {
         app(GroupFake::class)
