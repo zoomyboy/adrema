@@ -55,7 +55,7 @@ class InitializeActivitiesTest extends TestCase
         ]);
     }
 
-    public function activityDataProvider(): Generator
+    public static function activityDataProvider(): Generator
     {
         yield [
             fn (ActivityFake $fake) => $fake->fetches(1000, [

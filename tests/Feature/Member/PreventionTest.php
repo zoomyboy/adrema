@@ -109,7 +109,7 @@ class PreventionTest extends TestCase
         $this->assertNotNull($participant->fresh()->last_remembered_at);
     }
 
-    protected function attributes(): Generator
+    public static function attributes(): Generator
     {
         yield [
             'attrs' => ['has_vk' => true, 'efz' => null, 'ps_at' => now()],
@@ -172,12 +172,12 @@ class PreventionTest extends TestCase
      * @param array<string, mixed> $memberAttributes
      */
     #[DataProvider('attributes')]
-    public function testItRemembersMember(array $memberAttributes, array $preventions): void
+    public function testItRemembersMember(array $attrs, array $preventions): void
     {
         Mail::fake();
         $form = $this->createForm();
         $participant = $this->createParticipant($form);
-        $participant->member->update($memberAttributes);
+        $participant->member->update($attrs);
 
         PreventionRememberAction::run();
 

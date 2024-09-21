@@ -52,7 +52,7 @@ class ServiceTest extends TestCase
             ]), 200),
         ]);
 
-        $result = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::factory()->id('listid')->toData())->first();
+        $result = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::toFactory()->id('listid')->toData())->first();
 
         $this->assertEquals(994, $result->memberId);
         $this->assertEquals('test@example.com', $result->email);
@@ -67,7 +67,7 @@ class ServiceTest extends TestCase
             'http://mailman.test/api/lists/listid/roster/member?page=1&count=10' => Http::response('', 401),
         ]);
 
-        app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::factory()->id('listid')->toData())->first();
+        app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::toFactory()->id('listid')->toData())->first();
     }
 
     public function testItCanGetLists(): void
@@ -90,7 +90,7 @@ class ServiceTest extends TestCase
         $this->assertEquals('Eltern', $lists[0]->displayName);
     }
 
-    public function listDataProvider(): Generator
+    public static function listDataProvider(): Generator
     {
         foreach (range(3, 40) as $i) {
             yield [
@@ -114,7 +114,7 @@ class ServiceTest extends TestCase
             ]);
         }
 
-        $result = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::factory()->id('listid')->toData());
+        $result = app(MailmanService::class)->setCredentials('http://mailman.test/api/', 'user', 'secret')->members(MailingList::toFactory()->id('listid')->toData());
 
         $this->assertCount($totals->count(), $result->toArray());
         Http::assertSentCount($totals->chunk(10)->count());

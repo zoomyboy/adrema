@@ -171,7 +171,7 @@ class ShowTest extends TestCase
         ], $response, 'data');
     }
 
-    public function membershipDataProvider(): Generator
+    public static function membershipDataProvider(): Generator
     {
         yield [now()->subMonths(2), null, true];
         yield [now()->subMonths(2), now()->subDay(), false];

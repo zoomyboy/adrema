@@ -46,7 +46,7 @@ class IndexTest extends TestCase
             ->assertJsonPath('meta.links.store', route('member.membership.store', ['member' => $member]));
     }
 
-    public function membershipDataProvider(): Generator
+    public static function membershipDataProvider(): Generator
     {
         yield [now()->subMonths(2), null, true];
         yield [now()->subMonths(2), now()->subDay(), false];
