@@ -59,11 +59,6 @@ class Member extends Model implements Geolocatable
     public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug', 'subscription_id'];
 
     /**
-     * @var array<int, string>
-     */
-    public $dates = ['try_created_at', 'recertified_at', 'joined_at', 'birthday', 'efz', 'ps_at', 'more_ps_at', 'without_education_at', 'without_efz_at'];
-
-    /**
      * @var array<string, string>
      */
     public $casts = [
@@ -82,6 +77,16 @@ class Member extends Model implements Geolocatable
         'is_leader' => 'boolean',
         'bill_kind' => BillKind::class,
         'mitgliedsnr' => 'integer',
+
+        'try_created_at' => 'datetime',
+        'recertified_at' => 'datetime',
+        'joined_at' => 'datetime',
+        'birthday' => 'datetime',
+        'efz' => 'datetime',
+        'ps_at' => 'datetime',
+        'more_ps_at' => 'datetime',
+        'without_education_at' => 'datetime',
+        'without_efz_at' => 'datetime',
     ];
 
     /**
