@@ -13,7 +13,7 @@ abstract class EndToEndTestCase extends TestCase
 {
     use DatabaseMigrations;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

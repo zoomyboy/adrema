@@ -14,7 +14,7 @@ class FormTestCase extends TestCase
 
     private string $clearCacheUrl = 'http://event.com/clear-cache';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 uses(DatabaseTransactions::class);
 
 it('testItDisplaysInvoices', function () {
-    login()->loginNami()->withoutExceptionHandling();
+    $this->login()->loginNami()->withoutExceptionHandling();
     $subscription = Subscription::factory()->forFee()->name('Beitrag')->create();
     $member = Member::factory()->defaults()->create(['firstname' => 'Aaaa', 'lastname' => 'Aaab']);
     $invoice = Invoice::factory()
