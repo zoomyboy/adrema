@@ -3,178 +3,210 @@
 namespace Tests\Feature\Activity;
 
 use App\Activity;
+use App\Activity\Actions\ActivityUpdateAction;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 
-class UpdateTest extends TestCase
-{
-    use DatabaseTransactions;
+covers(ActivityUpdateAction::class);
 
-    public function testItCannotUpdateAnActivityFromNami(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->inNami(67)->name('abc')->create();
+uses(DatabaseTransactions::class);
 
-        $response = $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'Lorem',
-            'is_filterable' => false,
-            'subactivities' => [],
-        ]);
+it('testItCannotUpdateAnActivityFromNami', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->inNami(67)->name('abc')->create();
 
-        $response->assertSessionHasErrors(['nami_id' => 'Aktivität ist in NaMi. Update des Namens nicht möglich.']);
-    }
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'Lorem',
+        'is_filterable' => false,
+        'subactivities' => [],
+    ]);
 
-    public function testItCanUpdateSubactivitiesOfNamiActivity(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->inNami(67)->name('abc')->create();
-        $subactivity = Subactivity::factory()->create();
+    $response->assertSessionHasErrors(['nami_id' => 'Aktivität ist in NaMi. Update des Namens nicht möglich.']);
+});
 
-        $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'abc',
-            'is_filterable' => false,
-            'subactivities' => [$subactivity->id],
-        ]);
+it('testItCanUpdateSubactivitiesOfNamiActivity', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->inNami(67)->name('abc')->create();
+    $subactivity = Subactivity::factory()->create();
 
-        $this->assertDatabaseHas('activity_subactivity', ['activity_id' => $activity->id, 'subactivity_id' => $subactivity->id]);
-    }
+    $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'abc',
+        'is_filterable' => false,
+        'subactivities' => [$subactivity->id],
+    ]);
 
-    public function testItCannotRemoveANamiSubactivityFromANamiActivity(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->inNami(67)->name('abc')->has(Subactivity::factory()->inNami(69))->create();
+    $this->assertDatabaseHas('activity_subactivity', ['activity_id' => $activity->id, 'subactivity_id' => $subactivity->id]);
+});
 
-        $response = $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'abc',
-            'is_filterable' => false,
-            'subactivities' => [],
-        ]);
+it('testItCannotRemoveANamiSubactivityFromANamiActivity', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->inNami(67)->name('abc')->has(Subactivity::factory()->inNami(69))->create();
 
-        $response->assertSessionHasErrors(['nami_id' => 'Untertätigkeit kann nicht entfernt werden.']);
-    }
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'abc',
+        'is_filterable' => false,
+        'subactivities' => [],
+    ]);
 
-    public function testItCannotAddANamiSubactivityToANamiActivity(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->inNami(67)->name('abc')->create();
-        $subactivity = Subactivity::factory()->inNami(60)->create();
+    $response->assertSessionHasErrors(['nami_id' => 'Untertätigkeit kann nicht entfernt werden.']);
+});
 
-        $response = $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'abc',
-            'is_filterable' => false,
-            'subactivities' => [$subactivity->id],
-        ]);
+it('testItCannotAddANamiSubactivityToANamiActivity', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->inNami(67)->name('abc')->create();
+    $subactivity = Subactivity::factory()->inNami(60)->create();
 
-        $response->assertSessionHasErrors(['nami_id' => 'Untertätigkeit kann nicht hinzugefügt werden.']);
-    }
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'abc',
+        'is_filterable' => false,
+        'subactivities' => [$subactivity->id],
+    ]);
 
-    public function testItCannotRemoveANamiSubactivityFromANamiActivityAndSetAnother(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->inNami(67)->name('abc')->has(Subactivity::factory()->inNami(69))->create();
-        $otherSubactivity = Subactivity::factory()->create();
+    $response->assertSessionHasErrors(['nami_id' => 'Untertätigkeit kann nicht hinzugefügt werden.']);
+});
 
-        $response = $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'abc',
-            'is_filterable' => false,
-            'subactivities' => [$otherSubactivity->id],
-        ]);
+it('test it cannot set subactivity to a string', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->create();
 
-        $response->assertSessionHasErrors(['nami_id' => 'Untertätigkeit kann nicht entfernt werden.']);
-    }
+    $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'abc',
+        'is_filterable' => false,
+        'subactivities' => ['AAA'],
+    ])->assertSessionHasErrors('subactivities.0');
+});
 
-    public function testNameIsRequired(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->create();
 
-        $response = $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => '',
-            'is_filterable' => true,
-        ]);
+it('testItCannotRemoveANamiSubactivityFromANamiActivityAndSetAnother', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->inNami(67)->name('abc')->has(Subactivity::factory()->inNami(69))->create();
+    $otherSubactivity = Subactivity::factory()->create();
 
-        $response->assertSessionHasErrors(['name' => 'Name ist erforderlich.']);
-        $response->assertSessionHasErrors(['subactivities' => 'Untergliederungen muss vorhanden sein.']);
-    }
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'abc',
+        'is_filterable' => false,
+        'subactivities' => [$otherSubactivity->id],
+    ]);
 
-    public function testItUpdatesName(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->name('UUU')->create();
+    $response->assertSessionHasErrors(['nami_id' => 'Untertätigkeit kann nicht entfernt werden.']);
+});
 
-        $response = $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'Lorem',
-            'is_filterable' => true,
-            'subactivities' => [],
-        ]);
+it('testNameIsRequired', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->create();
 
-        $response->assertRedirect('/activity');
-        $this->assertDatabaseHas('activities', ['name' => 'Lorem', 'is_filterable' => true]);
-    }
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => '',
+        'is_filterable' => true,
+    ]);
 
-    public function testItSetsSubactivities(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->create();
-        $subactivity = Subactivity::factory()->create();
+    $response->assertSessionHasErrors(['name' => 'Name ist erforderlich.']);
+    $response->assertSessionHasErrors(['subactivities' => 'Untergliederungen muss vorhanden sein.']);
+});
 
-        $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'Lorem',
-            'is_filterable' => false,
-            'subactivities' => [$subactivity->id],
-        ]);
+it('testItUpdatesName', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->name('UUU')->create();
 
-        $this->assertDatabaseHas('activity_subactivity', ['activity_id' => $activity->id, 'subactivity_id' => $subactivity->id]);
-    }
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'Lorem',
+        'is_filterable' => true,
+        'subactivities' => [],
+    ]);
 
-    public function testItCannotSetNamiId(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->create();
+    $response->assertRedirect('/activity');
+    $this->assertDatabaseHas('activities', ['name' => 'Lorem', 'is_filterable' => true]);
+});
 
-        $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'Lorem',
-            'nami_id' => 66,
-            'is_filterable' => false,
-            'subactivities' => [],
-        ]);
+it('testItSetsSubactivities', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->create();
+    $subactivity = Subactivity::factory()->create();
 
-        $this->assertDatabaseHas('activities', ['nami_id' => null]);
-    }
+    $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'Lorem',
+        'is_filterable' => false,
+        'subactivities' => [$subactivity->id],
+    ]);
 
-    public function testItUnsetsSubactivities(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()
-            ->hasAttached(Subactivity::factory())
-            ->create();
+    $this->assertDatabaseHas('activity_subactivity', ['activity_id' => $activity->id, 'subactivity_id' => $subactivity->id]);
+});
 
-        $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'Lorem',
-            'is_filterable' => false,
-            'subactivities' => [],
-        ]);
+it('testItCannotSetNamiId', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()->create();
 
-        $this->assertDatabaseEmpty('activity_subactivity');
-    }
+    $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'Lorem',
+        'nami_id' => 66,
+        'is_filterable' => false,
+        'subactivities' => [],
+    ]);
 
-    public function testItCannotSetSubactivityIfItStillHasMembers(): void
-    {
-        $this->login()->loginNami();
-        $activity = Activity::factory()->create();
-        $subactivity = Subactivity::factory()->hasAttached($activity)->create();
-        $newSubactivity = Subactivity::factory()->create();
-        Member::factory()->defaults()->has(Membership::factory()->for($activity)->for($subactivity))->create();
+    $this->assertDatabaseHas('activities', ['nami_id' => null]);
+});
 
-        $response = $this->patch(route('activity.update', ['activity' => $activity]), [
-            'name' => 'abc',
-            'is_filterable' => false,
-            'subactivities' => [$newSubactivity->id],
-        ]);
+it('testItUnsetsSubactivities', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()
+        ->hasAttached(Subactivity::factory())
+        ->create();
 
-        $response->assertSessionHasErrors(['subactivities' => 'Untergliederung hat noch Mitglieder.']);
-    }
-}
+    $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'Lorem',
+        'is_filterable' => false,
+        'subactivities' => [],
+    ]);
+
+    $this->assertDatabaseEmpty('activity_subactivity');
+});
+
+it('testItCannotSetSubactivityIfItStillHasMembers', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()
+        ->hasAttached(Subactivity::factory())
+        ->create();
+    Member::factory()->defaults()->has(Membership::factory()->for($activity)->for($activity->subactivities->first()))->create();
+
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'abc',
+        'is_filterable' => false,
+        'subactivities' => [],
+    ]);
+
+    $response->assertSessionHasErrors(['subactivities' => 'Untergliederung hat noch Mitglieder.']);
+});
+
+it('test it succeeds when membership is not of removing subactivity', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()
+        ->hasAttached(Subactivity::factory())
+        ->create();
+    Member::factory()->defaults()->has(Membership::factory()->for($activity)->for(Subactivity::factory()))->create();
+
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'abc',
+        'is_filterable' => false,
+        'subactivities' => [],
+    ]);
+
+    $response->assertSessionDoesntHaveErrors();
+});
+
+it('test it succeeds when membership is not of removing activity', function () {
+    $this->login()->loginNami();
+    $activity = Activity::factory()
+        ->hasAttached(Subactivity::factory())
+        ->create();
+    Member::factory()->defaults()->has(Membership::factory()->for(Activity::factory())->for($activity->subactivities->first()))->create();
+
+    $response = $this->patch(route('activity.update', ['activity' => $activity]), [
+        'name' => 'abc',
+        'is_filterable' => false,
+        'subactivities' => [],
+    ]);
+
+    $response->assertSessionDoesntHaveErrors();
+});
