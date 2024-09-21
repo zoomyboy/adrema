@@ -10,7 +10,6 @@ parameters:
 
     paths:
         - app
-        - tests
         - database
         - packages/tex/src
         - packages/laravel-nami/src

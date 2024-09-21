@@ -19,7 +19,7 @@ use Tests\Lib\TestsInertia;
 use Zoomyboy\LaravelNami\Authentication\Auth;
 use Zoomyboy\TableDocument\TestsExcelDocuments;
 
-abstract class TestCase extends BaseTestCase
+class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use TestsInertia;
@@ -28,7 +28,7 @@ abstract class TestCase extends BaseTestCase
 
     protected User $me;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         Auth::fake();
