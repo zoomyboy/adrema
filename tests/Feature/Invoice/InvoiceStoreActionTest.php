@@ -55,7 +55,7 @@ class InvoiceStoreActionTest extends TestCase
         ], $invoice->to);
     }
 
-    public function validationDataProvider(): Generator
+    public static function validationDataProvider(): Generator
     {
         yield [
             ['to.address' => ''],

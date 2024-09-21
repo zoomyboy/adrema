@@ -41,10 +41,11 @@ class Form extends Model implements HasMedia
         'needs_prevention' => 'boolean',
         'prevention_text' => EditorData::class,
         'prevention_conditions' => Condition::class,
+        'from' => 'datetime',
+        'to' => 'datetime',
+        'registration_from' => 'datetime',
+        'registration_until' => 'datetime',
     ];
-
-    /** @var array<int, string> */
-    public $dates = ['from', 'to', 'registration_from', 'registration_until'];
 
     /**
      * @return SluggableConfig

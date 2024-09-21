@@ -28,12 +28,8 @@ class Invoice extends Model
         'to' => 'json',
         'status' => InvoiceStatus::class,
         'via' => BillKind::class,
-    ];
-
-    /** @var array<int, string> */
-    public $dates = [
-        'sent_at',
-        'last_remembered_at',
+        'sent_at' => 'datetime',
+        'last_remembered_at' => 'datetime',
     ];
 
     /**

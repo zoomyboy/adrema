@@ -98,7 +98,7 @@ class InvoiceUpdateActionTest extends TestCase
         $this->assertDatabaseCount('invoice_positions', 0);
     }
 
-    public function validationDataProvider(): Generator
+    public static function validationDataProvider(): Generator
     {
         yield [
             ['to.address' => ''],
