@@ -136,7 +136,7 @@ steps:
           event: push
 
     - name: composer_no_dev
-      image: composer:2.2.7
+      image: composer:2.7.9
       commands:
           - composer install --ignore-platform-reqs --no-dev
 
