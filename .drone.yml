@@ -39,6 +39,7 @@ steps:
     - name: tests
       image: zoomyboy/adrema-base:latest
       commands:
+          - touch .env
           - php artisan migrate
           - php artisan test
           - rm -f .env
