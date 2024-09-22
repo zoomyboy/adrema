@@ -23,8 +23,8 @@ class SearchTest extends TestCase
     {
         $this->withoutExceptionHandling();
         app(SearchFake::class)->fetches(1, 0, 10, [
-            MemberEntry::factory()->state(['id' => 2, 'groupId' => 100, 'firstname' => 'Max', 'lastname' => 'Muster', 'birthday' => '2013-07-04 00:00:00'])->toMember(),
-            MemberEntry::factory()->state(['id' => 2, 'groupId' => 150, 'firstname' => 'Jane', 'lastname' => 'Muster', 'birthday' => '2013-07-04 00:00:00'])->toMember(),
+            MemberEntry::toFactory()->state(['id' => 2, 'groupId' => 100, 'firstname' => 'Max', 'lastname' => 'Muster', 'birthday' => '2013-07-04 00:00:00'])->toMember(),
+            MemberEntry::toFactory()->state(['id' => 2, 'groupId' => 150, 'firstname' => 'Jane', 'lastname' => 'Muster', 'birthday' => '2013-07-04 00:00:00'])->toMember(),
         ]);
         Auth::success(333, 'secret');
 
@@ -53,7 +53,7 @@ class SearchTest extends TestCase
     {
         $this->withoutExceptionHandling();
         app(SearchFake::class)->fetches(1, 0, 10, [
-            MemberEntry::factory()->noFirstname()->toMember(),
+            MemberEntry::toFactory()->noFirstname()->toMember(),
         ]);
         Auth::success(333, 'secret');
 
@@ -70,8 +70,8 @@ class SearchTest extends TestCase
     {
         $this->withoutExceptionHandling();
         app(SearchFake::class)->fetches(2, 10, 10, [
-            MemberEntry::factory()->toMember(),
-            MemberEntry::factory()->toMember(),
+            MemberEntry::toFactory()->toMember(),
+            MemberEntry::toFactory()->toMember(),
         ]);
         Auth::success(333, 'secret');
 

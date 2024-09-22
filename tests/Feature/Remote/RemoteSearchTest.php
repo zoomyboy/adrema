@@ -30,7 +30,7 @@ class RemoteSearchTest extends TestCase
     {
         Auth::success(90100, 'secret');
         app(SearchFake::class)->fetches(1, 0, 50, [
-            MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20, 'memberId' => 56, 'firstname' => 'Max', 'lastname' => 'Muster']),
+            MemberEntry::toFactory()->toMember(['groupId' => 100, 'id' => 20, 'memberId' => 56, 'firstname' => 'Max', 'lastname' => 'Muster']),
         ]);
         $accessToken = $this->loginRemotely()->json('access_token');
 

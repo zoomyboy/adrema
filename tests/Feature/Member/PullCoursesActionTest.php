@@ -7,7 +7,6 @@ use App\Activity;
 use App\Country;
 use App\Course\Models\Course;
 use App\Course\Models\CourseMember;
-use App\Fee;
 use App\Gender;
 use App\Group;
 use App\Member\Member;
@@ -48,7 +47,7 @@ class PullCoursesActionTest extends TestCase
         $activity = Activity::factory()->inNami(1003)->name('Tätigkeit')->create();
         $member = Member::factory()->defaults()->for(Group::factory()->inNami(1000)->name('SG Wald'))->inNami(1001)->create();
         $course = Course::factory()->name('BS')->inNami(11)->create();
-        app(CourseFake::class)->fetches(1001, [50])->shows(1001, NamiCourse::factory()->toCourse([
+        app(CourseFake::class)->fetches(1001, [50])->shows(1001, NamiCourse::toFactory()->toCourse([
             'courseId' => 11,
             'organizer' => 'TTT',
             'eventName' => 'Schulung',
@@ -93,7 +92,7 @@ class PullCoursesActionTest extends TestCase
             ->has(CourseMember::factory()->for(Course::factory()->inNami(50))->inNami(55), 'courses')
             ->inNami(1001)
             ->create();
-        app(CourseFake::class)->fetches(1001, [55])->shows(1001, NamiCourse::factory()->toCourse(['id' => 55, 'courseId' => 50, 'organizer' => 'ZZU']));
+        app(CourseFake::class)->fetches(1001, [55])->shows(1001, NamiCourse::toFactory()->toCourse(['id' => 55, 'courseId' => 50, 'organizer' => 'ZZU']));
 
         app(PullCoursesAction::class)->handle($member);
 

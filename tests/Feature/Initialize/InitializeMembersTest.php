@@ -20,7 +20,7 @@ class InitializeMembersTest extends TestCase
         $this->loginNami();
         $api = app(NamiSettings::class)->login();
         app(SearchFake::class)->fetches(1, 0, 100, [
-            MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
+            MemberEntry::toFactory()->toMember(['groupId' => 100, 'id' => 20]),
         ]);
         FullMemberAction::partialMock()->shouldReceive('configureJob')->once();
         FullMemberAction::partialMock()->shouldReceive('handle')->once();
@@ -32,7 +32,7 @@ class InitializeMembersTest extends TestCase
     {
         $this->loginNami();
         app(SearchFake::class)->fetches(1, 0, 100, [
-            MemberEntry::factory()->toMember(['groupId' => 100, 'id' => 20]),
+            MemberEntry::toFactory()->toMember(['groupId' => 100, 'id' => 20]),
         ]);
         FullMemberAction::partialMock()->shouldReceive('configureJob')->once();
         FullMemberAction::partialMock()->shouldReceive('handle')->once();
