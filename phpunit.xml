@@ -10,6 +10,9 @@
     <testsuite name="Fileshare">
       <directory suffix="Test.php">./tests/Fileshare</directory>
     </testsuite>
+    <testsuite name="Arch">
+      <file>tests/Arch.php</file>
+    </testsuite>
     <testsuite name="NamiUnit">
       <directory suffix="Test.php">./packages/laravel-nami/tests/Unit</directory>
     </testsuite>

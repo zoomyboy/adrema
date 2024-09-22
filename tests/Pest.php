@@ -11,6 +11,8 @@
 |
 */
 
+use Symfony\Component\Finder\Finder;
+
 uses(
     Tests\TestCase::class,
     // Illuminate\Foundation\Testing\RefreshDatabase::class,
@@ -41,3 +43,12 @@ uses(
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+function globArch(string $pattern)
+{
+    $files = iterator_to_array(Finder::create()->files()->in(str($pattern)->replaceStart('App', './app')->replace('\\', '/'))->name('*.php'));
+
+    return collect($files)->map(
+        fn ($file) => str($file->getPathname())->replaceStart('./app', 'App')->replace('/', '\\')->replaceEnd('.php', '')->toString()
+    )->values()->toArray();
+}
