@@ -17,7 +17,6 @@ use App\Course\Actions\CourseIndexAction;
 use App\Course\Actions\CourseStoreAction;
 use App\Invoice\Actions\InvoiceStoreAction;
 use App\Course\Actions\CourseUpdateAction;
-use App\Dashboard\Actions\IndexAction as DashboardIndexAction;
 use App\Efz\ShowEfzDocumentAction;
 use App\Fileshare\Actions\FileshareApiIndexAction;
 use App\Fileshare\Actions\FileshareStoreAction;
@@ -84,7 +83,6 @@ Route::group(['namespace' => 'App\\Http\\Controllers'], function (): void {
 });
 
 Route::group(['middleware' => 'auth:web'], function (): void {
-    Route::get('/', DashboardIndexAction::class)->name('home');
     Route::post('/nami/login-check', NamiLoginCheckAction::class)->name('nami.login-check');
     Route::post('/nami/get-search-layer', NamiGetSearchLayerAction::class)->name('nami.get-search-layer');
     Route::post('/nami/search', NamiSearchAction::class)->name('nami.search');
