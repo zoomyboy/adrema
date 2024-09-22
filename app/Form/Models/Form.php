@@ -8,6 +8,7 @@ use App\Form\Data\FormConfigData;
 use App\Lib\Editor\Condition;
 use App\Lib\Editor\EditorData;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Database\Factories\Form\Models\FormFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,7 @@ use Zoomyboy\MedialibraryHelper\DefersUploads;
 /** @todo replace editor content with EditorData cast */
 class Form extends Model implements HasMedia
 {
+    /** @use HasFactory<FormFactory> */
     use HasFactory;
     use Sluggable;
     use InteractsWithMedia;

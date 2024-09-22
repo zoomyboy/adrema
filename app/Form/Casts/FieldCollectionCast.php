@@ -12,7 +12,6 @@ class FieldCollectionCast implements Cast
 {
     /**
      * @param array<int, array<string, string>> $value
-     * @param array<string, mixed> $context
      * @return FieldCollection
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): mixed

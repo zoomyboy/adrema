@@ -3,11 +3,13 @@
 namespace App\Course\Models;
 
 use App\Nami\HasNamiField;
+use Database\Factories\Course\Models\CourseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+    /** @use HasFactory<CourseFactory> */
     use HasFactory;
     use HasNamiField;
 

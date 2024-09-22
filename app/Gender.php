@@ -3,12 +3,15 @@
 namespace App;
 
 use App\Nami\HasNamiField;
+use Database\Factories\GenderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Gender extends Model
 {
     use HasNamiField;
+
+    /** @use HasFactory<GenderFactory> */
     use HasFactory;
 
     public $fillable = ['name', 'nami_id'];

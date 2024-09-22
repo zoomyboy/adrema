@@ -8,6 +8,7 @@ use App\Form\Mails\ConfirmRegistrationMail;
 use App\Form\Scopes\ParticipantFilterScope;
 use App\Member\Member;
 use App\Prevention\Contracts\Preventable;
+use Database\Factories\Form\Models\ParticipantFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,8 @@ use stdClass;
 
 class Participant extends Model implements Preventable
 {
+
+    /** @use HasFactory<ParticipantFactory> */
     use HasFactory;
 
     public $guarded = [];

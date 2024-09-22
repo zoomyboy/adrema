@@ -6,6 +6,7 @@ use App\Activity;
 use App\Group;
 use App\Nami\HasNamiField;
 use App\Subactivity;
+use Database\Factories\Member\MembershipFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Membership extends Model
 {
+    /** @use HasFactory<MembershipFactory> */
     use HasFactory;
     use HasNamiField;
 

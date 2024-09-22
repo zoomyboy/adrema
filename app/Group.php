@@ -5,6 +5,7 @@ namespace App;
 use App\Fileshare\Data\FileshareResourceData;
 use App\Group\Enums\Level;
 use App\Nami\HasNamiField;
+use Database\Factories\GroupFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Group extends Model
 {
+    /** @use HasFactory<GroupFactory> */
     use HasFactory;
     use HasNamiField;
 
@@ -24,11 +26,11 @@ class Group extends Model
     ];
 
     /**
-     * @return BelongsTo<static, self>
+     * @return BelongsTo<self, self>
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(static::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
     /**
@@ -36,7 +38,7 @@ class Group extends Model
      */
     public function children(): HasMany
     {
-        return $this->hasMany(static::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public static function booted(): void

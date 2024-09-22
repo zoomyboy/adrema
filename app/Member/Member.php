@@ -33,6 +33,7 @@ use Zoomyboy\Osm\Geolocatable;
 use Zoomyboy\Osm\HasGeolocation;
 use Zoomyboy\Phone\HasPhoneNumbers;
 use App\Prevention\Enums\Prevention;
+use Database\Factories\Member\MemberFactory;
 
 /**
  * @property string $subscription_name
@@ -42,6 +43,7 @@ class Member extends Model implements Geolocatable
 {
     use Notifiable;
     use HasNamiField;
+    /** @use HasFactory<MemberFactory> */
     use HasFactory;
     use Sluggable;
     use Searchable;
@@ -182,7 +184,7 @@ class Member extends Model implements Geolocatable
 
     public function getAge(): ?int
     {
-        return $this->birthday?->diffInYears(now());
+        return $this->birthday ? intval($this->birthday->diffInYears(now())) : null;
     }
 
     protected function getAusstand(): int
@@ -406,14 +408,14 @@ class Member extends Model implements Geolocatable
         return $query->where('group_id', $group->id);
     }
 
-    public static function fromVcard(string $url, string $data): static
+    public static function fromVcard(string $url, string $data): self
     {
         $settings = app(NamiSettings::class);
         $card = Reader::read($data);
         [$lastname, $firstname] = $card->N->getParts();
         [$deprecated1, $deprecated2, $address, $location, $region, $zip, $country] = $card->ADR->getParts();
 
-        return new static([
+        return new self([
             'joined_at' => now(),
             'send_newspaper' => false,
             'firstname' => $firstname,

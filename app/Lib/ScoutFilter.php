@@ -14,9 +14,11 @@ abstract class ScoutFilter extends Data
 {
 
     /**
-     * @return Builder
+     * @return Builder<T>
      */
     abstract public function getQuery(): Builder;
+
+    /** @var Builder<T> */
     protected Builder $query;
 
     /**

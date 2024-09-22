@@ -74,7 +74,7 @@ class BdkjHesse extends ContributionDocument
 
     public function durationDays(): int
     {
-        return Carbon::parse($this->dateUntil)->diffInDays(Carbon::parse($this->dateFrom)) + 1;
+        return intVal(Carbon::parse($this->dateUntil)->diffInDays(Carbon::parse($this->dateFrom))) + 1;
     }
 
     /**

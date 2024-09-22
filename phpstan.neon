@@ -29,6 +29,11 @@ parameters:
 
     ignoreErrors:
         -
+            message: "#but does not specify its types: TData#"
+
+        -
+            message: "#cast\\(\\) has parameter \\$properties#"
+        -
             message: "#^Method App\\\\Activity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1
             path: app/Activity.php
@@ -55,11 +60,6 @@ parameters:
 
         -
             message: "#^Access to an undefined property Sabre\\\\VObject\\\\Document\\:\\:\\$N\\.$#"
-            count: 1
-            path: app/Member/Member.php
-
-        -
-            message: "#^Unsafe usage of new static\\(\\)\\.$#"
             count: 1
             path: app/Member/Member.php
 
@@ -392,16 +392,6 @@ parameters:
             message: "#^Access to an undefined property Sabre\\\\VObject\\\\Component\\\\VCard\\:\\:\\$UID\\.$#"
             count: 1
             path: tests/Feature/Member/DavTest.php
-
-        -
-            message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$email\\.$#"
-            count: 2
-            path: app/Maildispatcher/Actions/ResyncAction.php
-
-        -
-            message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$email_parents\\.$#"
-            count: 2
-            path: app/Maildispatcher/Actions/ResyncAction.php
 
         -
             message: "#^Unable to resolve the template type TKey in call to function collect$#"

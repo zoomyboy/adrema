@@ -3,11 +3,13 @@
 namespace App;
 
 use App\Nami\HasNamiField;
+use Database\Factories\CountryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
+    /** @use HasFactory<CountryFactory> */
     use HasFactory;
     use HasNamiField;
 

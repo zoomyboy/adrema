@@ -11,6 +11,7 @@ use App\Invoice\RememberDocument;
 use App\Invoice\Scopes\InvoiceFilterScope;
 use App\Member\Member;
 use App\Payment\Subscription;
+use Database\Factories\Invoice\Models\InvoiceFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +21,7 @@ use stdClass;
 
 class Invoice extends Model
 {
+    /** @use HasFactory<InvoiceFactory> */
     use HasFactory;
 
     public $guarded = [];

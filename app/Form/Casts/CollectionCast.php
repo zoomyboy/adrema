@@ -21,7 +21,6 @@ class CollectionCast implements Cast
 
     /**
      * @param array<int, array<string, mixed>> $value
-     * @param array<string, mixed> $context
      * @return Collection<int, Data>
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): mixed

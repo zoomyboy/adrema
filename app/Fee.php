@@ -4,12 +4,14 @@ namespace App;
 
 use App\Nami\HasNamiField;
 use App\Payment\Subscription;
+use Database\Factories\FeeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Fee extends Model
 {
+    /** @use HasFactory<FeeFactory> */
     use HasFactory;
     use HasNamiField;
 

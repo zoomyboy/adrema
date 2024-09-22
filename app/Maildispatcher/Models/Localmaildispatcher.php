@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Localmaildispatcher extends Model
 {
-    use HasFactory;
     use HasUuids;
 
     public $guarded = [];

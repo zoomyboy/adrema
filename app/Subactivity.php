@@ -4,12 +4,14 @@ namespace App;
 
 use App\Nami\HasNamiField;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Subactivity extends Model
 {
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
     use HasNamiField;
     use Sluggable;
