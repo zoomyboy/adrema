@@ -141,7 +141,7 @@ class StoreTest extends TestCase
         ])->assertSessionHasErrors($errorField);
     }
 
-    protected static function validationDataProvider(): Generator
+    public static function validationDataProvider(): Generator
     {
         yield [
             ['type' => 'aaa'],

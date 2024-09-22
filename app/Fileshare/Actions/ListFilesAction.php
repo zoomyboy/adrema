@@ -17,6 +17,6 @@ class ListFilesAction
      */
     public function handle(ActionRequest $request, Fileshare $fileshare): DataCollection
     {
-        return ResourceData::collection($fileshare->type->getSubDirectories($request->input('parent')))->wrap('data');
+        return ResourceData::collect($fileshare->type->getSubDirectories($request->input('parent')))->wrap('data');
     }
 }
