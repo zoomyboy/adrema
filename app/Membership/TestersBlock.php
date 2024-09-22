@@ -13,8 +13,8 @@ class TestersBlock extends Block
      */
     public function query(): Builder
     {
-        return Member::with('memberships', fn ($q) => $q->isTrying())
-            ->whereHas('memberships', fn ($q) => $q->isTrying());
+        return Member::whereHas('memberships', fn ($q) => $q->isTrying())
+            ->with('memberships', fn ($q) => $q->isTrying());
     }
 
     /**

@@ -502,3 +502,8 @@ parameters:
             message: "#^Call to an undefined method Phake\\\\Proxies\\\\VerifierProxy\\:\\:handle\\(\\)\\.$#"
             count: 2
             path: tests/Feature/Member/NamiPutMemberActionTest.php
+
+        -
+            message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\Relation\\<\\*, \\*, \\*\\>\\:\\:isTrying\\(\\)\\.$#"
+            count: 1
+            path: app/Membership/TestersBlock.php
