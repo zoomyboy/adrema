@@ -83,6 +83,7 @@ class MemberRequest extends FormRequest
             'other_country' => '',
             'salutation' => '',
             'comment' => '',
+            'keepdata' => 'boolean',
         ];
     }
 

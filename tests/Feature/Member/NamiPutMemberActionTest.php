@@ -17,12 +17,11 @@ use App\Region;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Phake;
-use Tests\TestCase;
 use Zoomyboy\LaravelNami\Fakes\MemberFake;
 
 uses(DatabaseTransactions::class);
 
-it('testItPutsAMember', function () {
+it('testItPutsAMember', function (array $memberAttributes, array $storedAttributes) {
     Fee::factory()->create();
     $this->stubIo(PullMemberAction::class, fn ($mock) => $mock);
     $this->stubIo(PullMembershipsAction::class, fn ($mock) => $mock);
@@ -44,7 +43,7 @@ it('testItPutsAMember', function () {
         ->for($nationality)
         ->for($group)
         ->emailBillKind()
-        ->create(['email_parents' => 'a@b.de']);
+        ->create($memberAttributes);
 
     NamiPutMemberAction::run($member, $activity, $subactivity);
 
@@ -52,11 +51,21 @@ it('testItPutsAMember', function () {
         'ersteTaetigkeitId' => 6,
         'ersteUntergliederungId' => 55,
         'konfessionId' => 567,
-        'emailVertretungsberechtigter' => 'a@b.de',
+        ...$storedAttributes,
     ]);
     $this->assertDatabaseHas('members', [
         'nami_id' => 993,
     ]);
     Phake::verify(app(PullMemberAction::class))->handle(55, 993);
     Phake::verify(app(PullMembershipsAction::class))->handle($member);
-});
+})->with([
+    [
+        ['email_parents' => 'a@b.de'], ['emailVertretungsberechtigter' => 'a@b.de'],
+    ],
+    [
+        ['keepdata' => true], ['wiederverwendenFlag' => true],
+    ],
+    [
+        ['keepdata' => false], ['wiederverwendenFlag' => false],
+    ],
+]);

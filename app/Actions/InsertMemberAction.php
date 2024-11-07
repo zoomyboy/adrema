@@ -50,6 +50,7 @@ class InsertMemberAction
             'nationality_id' => Nationality::where('nami_id', $member->nationalityId)->firstOrFail()->id,
             'mitgliedsnr' => $member->memberId,
             'version' => $member->version,
+            'keepdata' => $member->keepdata,
         ]);
     }
 

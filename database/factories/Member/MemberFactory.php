@@ -36,6 +36,7 @@ class MemberFactory extends Factory
             'location' => $this->faker->city,
             'email' => $this->faker->safeEmail(),
             'recertified_at' => null,
+            'keepdata' => false,
         ];
     }
 

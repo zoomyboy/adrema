@@ -89,6 +89,35 @@ class StoreTest extends TestCase
         ]);
     }
 
+    public function testItStoresWiederverwendenFlag(): void
+    {
+        app(MemberFake::class)->stores(55, 103);
+        Fee::factory()->create();
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $activity = Activity::factory()->inNami(89)->create();
+        $subactivity = Subactivity::factory()->inNami(90)->create();
+        $subscription = Subscription::factory()->forFee()->create();
+        $confesstion = Confession::factory()->create(['is_null' => true]);
+        PullMemberAction::shouldRun();
+        PullMembershipsAction::shouldRun();
+
+        $this
+            ->from('/member/create')
+            ->post('/member', $this->attributes([
+                'first_activity_id' => $activity->id,
+                'first_subactivity_id' => $subactivity->id,
+                'subscription_id' => $subscription->id,
+                'keepdata' => true,
+            ]))->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('members', [
+            'keepdata' => true,
+        ]);
+        app(MemberFake::class)->assertStored(55, [
+            'wiederverwendenFlag' => true,
+        ]);
+    }
+
     public function testItCanStoreAMemberWithoutNami(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();

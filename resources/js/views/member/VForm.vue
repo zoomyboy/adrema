@@ -58,7 +58,8 @@
                         <f-select id="subscription_id" v-model="inner.subscription_id" :options="meta.subscriptions" label="Beitrag" name="subscription_id" size="sm"></f-select>
                         <f-switch id="has_nami" v-model="inner.has_nami" name="has_nami" size="sm" label="In Nami eintragen"></f-switch>
                         <f-switch id="send_newspaper" v-model="inner.send_newspaper" name="send_newspaper" label="Mittendrin versenden" size="sm"></f-switch>
-                        <f-text id="joined_at" v-model="inner.joined_at" class="sm:col-span-2" type="date" label="Eintrittsdatum" size="sm" required></f-text>
+                        <f-switch id="keepdata" v-model="inner.keepdata" name="keepdata" label="Datenweiterverwendung" size="sm"></f-switch>
+                        <f-text id="joined_at" v-model="inner.joined_at" type="date" label="Eintrittsdatum" size="sm" required></f-text>
                         <f-textarea id="comment" v-model="inner.comment" :rows="3" class="col-span-2" label="Kommentar" size="sm"></f-textarea>
                         <div v-if="mode === 'create' || (original.has_nami === false && inner.has_nami === true)" class="contents">
                             <f-select

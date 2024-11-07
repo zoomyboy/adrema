@@ -58,7 +58,7 @@ class Member extends Model implements Geolocatable
     /**
      * @var array<int, string>
      */
-    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug', 'subscription_id'];
+    public static array $namiFields = ['firstname', 'lastname', 'joined_at', 'birthday', 'send_newspaper', 'address', 'zip', 'location', 'nickname', 'other_country', 'further_address', 'main_phone', 'mobile_phone', 'work_phone', 'fax', 'email', 'email_parents', 'gender_id', 'confession_id', 'region_id', 'country_id', 'fee_id', 'nationality_id', 'slug', 'subscription_id', 'keepdata'];
 
     /**
      * @var array<string, string>
@@ -77,6 +77,7 @@ class Member extends Model implements Geolocatable
         'multiply_pv' => 'boolean',
         'multiply_more_pv' => 'boolean',
         'is_leader' => 'boolean',
+        'keepdata' => 'boolean',
         'bill_kind' => BillKind::class,
         'mitgliedsnr' => 'integer',
 

@@ -77,6 +77,23 @@ class UpdateTest extends TestCase
         ]);
     }
 
+    public function testItUpdatesWiederverwendenFlag(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = $this->member();
+        $this->fakeRequest();
+        NamiPutMemberAction::allowToRun();
+
+        $this->patch("/member/{$member->id}", array_merge($member->getAttributes(), [
+            'keepdata' => true,
+            'has_nami' => true,
+        ]));
+
+        $this->assertDatabaseHas('members', [
+            'keepdata' => true,
+        ]);
+    }
+
     public function testItSetsLocationToNull(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();

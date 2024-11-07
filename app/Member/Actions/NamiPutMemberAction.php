@@ -46,7 +46,7 @@ class NamiPutMemberAction
             'groupId' => $member->group->nami_id,
             'id' => $member->nami_id,
             'version' => $member->version,
-            'keepdata' => false,
+            'keepdata' => $member->keepdata,
         ]);
         $response = $api->putMember($namiMember, $activity ? $activity->nami_id : null, $subactivity ? $subactivity->nami_id : null);
         Member::withoutEvents(function () use ($response, $member) {

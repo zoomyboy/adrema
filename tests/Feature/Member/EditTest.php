@@ -32,6 +32,7 @@ class EditTest extends TestCase
         $this->assertInertiaHas('Biber', $response, "meta.formSubactivities.{$activity->id}.{$subactivity->id}");
         $this->assertInertiaHas('€ Mitglied', $response, "meta.formActivities.{$activity->id}");
         $this->assertInertiaHas('Max', $response, 'data.firstname');
+        $this->assertInertiaHas(false, $response, 'data.keepdata');
         $this->assertInertiaHas('Doktor', $response, 'data.salutation');
         $this->assertInertiaHas('Lorem bla', $response, 'data.comment');
         $this->assertInertiaHas('edit', $response, 'mode');

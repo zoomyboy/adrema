@@ -106,6 +106,7 @@ class MemberResource extends JsonResource
             'lat' => $this->lat,
             'lon' => $this->lon,
             'group_name' => $this->group->name,
+            'keepdata' => $this->keepdata,
             'links' => [
                 'membership_index' => route('member.membership.index', ['member' => $this->getModel()]),
                 'invoiceposition_index' => route('member.invoice-position.index', ['member' => $this->getModel()]),
@@ -202,6 +203,7 @@ class MemberResource extends JsonResource
                 'has_svk' => false,
                 'multiply_pv' => false,
                 'multiply_more_pv' => false,
+                'keepdata' => false,
             ]
         ];
     }
