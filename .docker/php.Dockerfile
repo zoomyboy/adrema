@@ -1,4 +1,4 @@
-FROM composer:2.2.7 as composer
+FROM composer:2.7.9 as composer
 WORKDIR /app
 COPY . /app
 RUN composer install --ignore-platform-reqs --no-dev
