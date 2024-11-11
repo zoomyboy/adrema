@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.11.1
+
+-   Es kann nun auch das Feld "Datenweiterverwendung" über Adrema gepflegt werden.
+
 ### 1.10.20
 
 -   Fixed: Bei Textfeldern wird nun die Einleitung dargestellt
