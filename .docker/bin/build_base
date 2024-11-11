@@ -1,0 +1,6 @@
+#!/bin/bash
+
+docker buildx build -f .docker/base.Dockerfile .
+docker image tag sha256:... zoomyboy/adrema-base
+docker push zoomyboy/adrema-base
+
