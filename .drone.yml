@@ -103,7 +103,7 @@ steps:
           event: tag
 
     - name: deploy
-      image: php:8.1.6
+      image: zoomyboy/adrema-base:latest
       environment:
           SSH_KEY:
               from_secret: deploy_private_key
