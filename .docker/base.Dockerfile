@@ -6,6 +6,7 @@ RUN apt-get install -y rsync libcurl3-dev apt-utils zlib1g-dev libpng-dev libicu
 RUN apt-get install -y --no-install-recommends texlive-base texlive-latex-base texlive-pictures texlive-latex-extra texlive-lang-german texlive-plain-generic texlive-fonts-recommended texlive-fonts-extra texlive-extra-utils
 RUN docker-php-ext-install pdo_mysql curl exif intl mbstring pcntl zip
 RUN pecl install redis && docker-php-ext-enable redis
+RUN pecl install imagick && docker-php-ext-enable imagick
 RUN docker-php-ext-configure gd --with-jpeg
 RUN docker-php-ext-install gd
 RUN usermod -s /bin/bash www-data
