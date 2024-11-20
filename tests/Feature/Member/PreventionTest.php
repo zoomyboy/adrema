@@ -39,6 +39,18 @@ class PreventionTest extends TestCase
         $this->assertEquals(now()->format('Y-m-d'), $participant->fresh()->last_remembered_at->format('Y-m-d'));
     }
 
+    public function testItDoesntRememberPastEvents(): void
+    {
+        Mail::fake();
+        $form = $this->createForm();
+        $participant = $this->createParticipant($form);
+        $form->update(['from' => now()->subDay()]);
+
+        PreventionRememberAction::run();
+
+        $this->assertNull($participant->fresh()->last_remembered_at);
+    }
+
     public function testItDoesntRememberWhenConditionDoesntMatch(): void
     {
         Mail::fake();

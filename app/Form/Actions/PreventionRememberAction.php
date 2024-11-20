@@ -17,7 +17,12 @@ class PreventionRememberAction
 
     public function handle(): void
     {
-        $query = Participant::whereHas('form', fn ($form) => $form->where('needs_prevention', true))
+        $query = Participant::whereHas(
+            'form',
+            fn ($form) => $form
+                ->where('needs_prevention', true)
+                ->where('from', '>=', now())
+        )
             ->where(
                 fn ($q) => $q
                     ->where('last_remembered_at', '<=', now()->subWeeks(2))
