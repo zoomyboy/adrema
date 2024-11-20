@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.11.4
+
+-   Fix: Nicht an Präventions-Unterlagen für vergangene Veranstaltungen erinnern
+
 ### 1.11.1
 
 -   Es kann nun auch das Feld "Datenweiterverwendung" über Adrema gepflegt werden.
