@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.11.5
+
+-   Fix: Synchronisation von NaMi-Mitgliedern
+
 ### 1.11.4
 
 -   Fix: Nicht an Präventions-Unterlagen für vergangene Veranstaltungen erinnern
