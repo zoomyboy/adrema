@@ -91,6 +91,9 @@ it('testItFiltersParticipantsByCheckboxValue', function () {
         ->has(Participant::factory()->data(['check' => false])->count(2))
         ->create();
 
+    sleep(2);
+    $this->callFilter('form.participant.index', ['data' => []], ['form' => $form])
+        ->assertJsonCount(3, 'data');
     $this->callFilter('form.participant.index', ['data' => ['check' => ParticipantFilterScope::$nan]], ['form' => $form])
         ->assertJsonCount(3, 'data');
     $this->callFilter('form.participant.index', ['data' => ['check' => true]], ['form' => $form])
@@ -139,6 +142,8 @@ it('testItFiltersParticipantsByDropdownValue', function () {
         ->assertJsonCount(2, 'data');
     $this->callFilter('form.participant.index', ['data' => ['drop' => 'B']], ['form' => $form])
         ->assertJsonCount(4, 'data');
+    $this->callFilter('form.participant.index', ['data' => ['drop' => 'Z*Z']], ['form' => $form])
+        ->assertJsonCount(0, 'data');
 });
 
 it('testItFiltersParticipantsByRadioValue', function () {

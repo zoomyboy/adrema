@@ -21,7 +21,7 @@ class ParticipantFilterScope extends ScoutFilter
 {
 
     public static string $nan = 'deeb3ef4-d185-44b1-a4bc-0a4e7addebc3d8900c6f-a344-4afb-b54e-065ed483a7ba';
-    public Form $form;
+    private Form $form;
 
     /**
      * @param array<string, mixed> $data
@@ -30,6 +30,7 @@ class ParticipantFilterScope extends ScoutFilter
         public array $data = [],
         public string $search = '',
         public array $options = [],
+        public ?int $parent = null
     ) {
     }
 
@@ -37,7 +38,28 @@ class ParticipantFilterScope extends ScoutFilter
     {
         $this->search = $this->search ?: '';
 
-        return Participant::search($this->search)->within($this->form->participantsSearchableAs());
+        return Participant::search($this->search, function ($engine, string $query, array $options) {
+            $filter = collect([]);
+
+            foreach ($this->form->getFields()->filterables() as $field) {
+                if ($this->data[$field->key] === static::$nan) {
+                    continue;
+                }
+                $filter->push($field->filter($this->data[$field->key]));
+            }
+
+            if ($this->parent === -1) {
+                $filter->push('parent-id IS NULL');
+            }
+
+            if ($this->parent !== null && $this->parent !== -1) {
+                $filter->push('parent-id = ' . $this->parent);
+            }
+
+            $options['filter'] = $filter->map(fn ($expression) => "($expression)")->implode(' AND ');
+
+            return $engine->search($query, [...$this->options, ...$options]);
+        })->within($this->form->participantsSearchableAs());
     }
 
     public function setForm(Form $form): self
@@ -53,18 +75,10 @@ class ParticipantFilterScope extends ScoutFilter
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function apply(Builder $query): Builder
+    public function parent(?int $parent): self
     {
-        foreach ($this->data as $key => $value) {
-            if ($value === static::$nan) {
-                continue;
-            }
-            $query = $query->where('data->' . $key, $value);
-        }
+        $this->parent = $parent;
 
-        return $query;
+        return $this;
     }
 }

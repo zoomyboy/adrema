@@ -8,7 +8,6 @@ use App\Form\Resources\ParticipantResource;
 use App\Form\Scopes\ParticipantFilterScope;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Scout\Builder;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -25,22 +24,14 @@ class ParticipantIndexAction
             ->query(fn ($q) => $q->withCount('children')->with('form'));
     }
 
-    /**
-     * @return LengthAwarePaginator<Participant>
-     */
-    public function handle(Form $form, ParticipantFilterScope $filter): LengthAwarePaginator
-    {
-        return $this->getQuery($form, $filter)->paginate(15);
-    }
-
     public function asController(Form $form, ?int $parent = null): AnonymousResourceCollection
     {
-        $filter = ParticipantFilterScope::fromRequest(request()->input('filter'));
+        $filter = ParticipantFilterScope::fromRequest(request()->input('filter', ''))->parent($parent);
 
         $data = match ($parent) {
-            null => $this->handle($form, $filter),
-            -1 => $this->getQuery($form, $filter)->where('parent_id', null)->paginate(15),
-            default => $this->getQuery($form, $filter)->where('parent_id', $parent)->get(),
+            null => $this->getQuery($form, $filter)->paginate(15),                              // initial all elements - paginate
+            -1 => $this->getQuery($form, $filter)->paginate(15),      // initial root elements - parinate
+            default => $this->getQuery($form, $filter)->get(),     // specific parent element - show all
         };
 
         return ParticipantResource::collection($data)->additional(['meta' => ParticipantResource::meta($form)]);

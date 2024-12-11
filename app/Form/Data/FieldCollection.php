@@ -2,6 +2,7 @@
 
 namespace App\Form\Data;
 
+use App\Form\Contracts\Filterable;
 use App\Form\Enums\SpecialType;
 use App\Form\Fields\Field;
 use App\Form\Fields\NamiField;
@@ -125,7 +126,7 @@ class FieldCollection extends Collection
 
     public function filterables(): self
     {
-        return $this;
+        return $this->filter(fn ($field) => $field instanceof Filterable);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Contracts\Filterable;
 use App\Form\Matchers\BooleanMatcher;
 use App\Form\Matchers\Matcher;
 use App\Form\Models\Form;
@@ -9,9 +10,8 @@ use App\Form\Models\Participant;
 use App\Form\Presenters\BooleanPresenter;
 use App\Form\Presenters\Presenter;
 use Faker\Generator;
-use Illuminate\Validation\Rule;
 
-class CheckboxField extends Field
+class CheckboxField extends Field implements Filterable
 {
     public bool $required;
     public string $description;
@@ -85,5 +85,12 @@ class CheckboxField extends Field
     public function getMatcher(): Matcher
     {
         return app(BooleanMatcher::class);
+    }
+
+    public function filter($value): string
+    {
+        $asString = $value ? 'true' : 'false';
+
+        return "{$this->key} = $asString";
     }
 }

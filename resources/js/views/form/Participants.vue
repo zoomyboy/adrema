@@ -23,6 +23,7 @@
         </ui-popup>
         <page-filter breakpoint="lg">
             <template #buttons>
+                <f-text id="search" v-model="innerFilter.search" name="search" label="Suchen" size="sm"></f-text>
                 <ui-icon-button icon="plus" @click="editing = {participant: null, preview: JSON.stringify(meta.form_config)}">Hinzufügen</ui-icon-button>
                 <f-switch v-if="meta.has_nami_field" id="group_participants" v-model="groupParticipants" label="Gruppieren" size="sm" name="group_participants"></f-switch>
                 <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm"></f-multipleselect>
@@ -117,7 +118,7 @@
             </template>
         </table>
         <div class="px-6">
-            <ui-pagination class="mt-4" :value="meta" @reload="reloadPage"></ui-pagination>
+            <ui-pagination class="mt-4" :value="meta" @reload="reloadPage($event, {filter: toFilterString(innerFilter)})"></ui-pagination>
         </div>
     </div>
 </template>

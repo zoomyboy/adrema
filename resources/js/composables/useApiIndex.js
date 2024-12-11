@@ -28,7 +28,7 @@ export function useApiIndex(firstUrl, siteName = null) {
         inner.meta.value = response.meta;
     }
 
-    async function reloadPage(page) {
+    async function reloadPage(page, p = {}) {
         inner.meta.value.current_page = page;
         await reload(false);
     }

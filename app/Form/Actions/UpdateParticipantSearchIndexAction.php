@@ -14,7 +14,7 @@ class UpdateParticipantSearchIndexAction
         $form->searchableUsing()->updateIndexSettings(
             $form->participantsSearchableAs(),
             [
-                'filterableAttributes' => $form->getFields()->filterables()->getKeys(),
+                'filterableAttributes' => [...$form->getFields()->filterables()->getKeys(), 'parent-id'],
                 'searchableAttributes' => $form->getFields()->searchables()->getKeys(),
                 'sortableAttributes' => [],
                 'displayedAttributes' => [...$form->getFields()->filterables()->getKeys(), ...$form->getFields()->searchables()->getKeys(), 'id'],

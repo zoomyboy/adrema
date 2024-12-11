@@ -111,6 +111,6 @@ class Participant extends Model implements Preventable
 
     public function toSearchableArray(): array
     {
-        return $this->data;
+        return [...$this->data, 'parent-id' => $this->parent_id];
     }
 }

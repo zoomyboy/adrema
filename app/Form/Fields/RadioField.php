@@ -2,6 +2,7 @@
 
 namespace App\Form\Fields;
 
+use App\Form\Contracts\Filterable;
 use App\Form\Matchers\Matcher;
 use App\Form\Matchers\SingleValueMatcher;
 use App\Form\Models\Form;
@@ -9,7 +10,7 @@ use App\Form\Models\Participant;
 use Faker\Generator;
 use Illuminate\Validation\Rule;
 
-class RadioField extends Field
+class RadioField extends Field implements Filterable
 {
     public bool $required;
     /** @var array<int, string> */
@@ -86,5 +87,14 @@ class RadioField extends Field
     public function getMatcher(): Matcher
     {
         return app(SingleValueMatcher::class);
+    }
+
+    public function filter($value): string
+    {
+        if (is_null($value)) {
+            return "{$this->key} IS NULL";
+        }
+
+        return $this->key . ' = \'' . $value . '\'';
     }
 }
