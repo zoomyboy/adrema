@@ -19,6 +19,10 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 #[MapOutputName(SnakeCaseMapper::class)]
 class ParticipantFilterScope extends ScoutFilter
 {
+
+    public static string $nan = 'deeb3ef4-d185-44b1-a4bc-0a4e7addebc3d8900c6f-a344-4afb-b54e-065ed483a7ba';
+    public Form $form;
+
     /**
      * @param array<string, mixed> $data
      */
@@ -28,9 +32,6 @@ class ParticipantFilterScope extends ScoutFilter
         public array $options = [],
     ) {
     }
-
-    public static string $nan = 'deeb3ef4-d185-44b1-a4bc-0a4e7addebc3d8900c6f-a344-4afb-b54e-065ed483a7ba';
-    public Form $form;
 
     public function getQuery(): Builder
     {
