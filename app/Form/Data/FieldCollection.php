@@ -118,6 +118,16 @@ class FieldCollection extends Collection
         return $this->first(fn ($field) => $field->specialType === $specialType);
     }
 
+    public function searchables(): self
+    {
+        return $this;
+    }
+
+    public function filterables(): self
+    {
+        return $this;
+    }
+
     /**
      * @return array<int, string>
      */
