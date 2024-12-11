@@ -11,6 +11,10 @@ class UpdateParticipantSearchIndexAction
 
     public function handle(Form $form): void
     {
+        if (config('scout.driver') !== 'meilisearch') {
+            return;
+        }
+
         $form->searchableUsing()->updateIndexSettings(
             $form->participantsSearchableAs(),
             [
