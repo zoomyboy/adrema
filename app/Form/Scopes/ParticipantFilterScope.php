@@ -5,8 +5,9 @@ namespace App\Form\Scopes;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Lib\Filter;
-use Illuminate\Database\Eloquent\Builder;
+use App\Lib\ScoutFilter;
 use Illuminate\Support\Arr;
+use Laravel\Scout\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -16,20 +17,32 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
  */
 #[MapInputName(SnakeCaseMapper::class)]
 #[MapOutputName(SnakeCaseMapper::class)]
-class ParticipantFilterScope extends Filter
+class ParticipantFilterScope extends ScoutFilter
 {
     /**
      * @param array<string, mixed> $data
      */
     public function __construct(
         public array $data = [],
+        public string $search = '',
+        public array $options = [],
     ) {
     }
 
     public static string $nan = 'deeb3ef4-d185-44b1-a4bc-0a4e7addebc3d8900c6f-a344-4afb-b54e-065ed483a7ba';
+    public Form $form;
+
+    public function getQuery(): Builder
+    {
+        $this->search = $this->search ?: '';
+
+        return Participant::search($this->search)->within($this->form->participantsSearchableAs());
+    }
 
     public function setForm(Form $form): self
     {
+        $this->form = $form;
+
         foreach ($form->getFields() as $field) {
             if (!Arr::has($this->data, $field->key)) {
                 data_set($this->data, $field->key, static::$nan);

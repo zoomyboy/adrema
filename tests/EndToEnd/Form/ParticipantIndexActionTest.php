@@ -99,6 +99,30 @@ it('testItFiltersParticipantsByCheckboxValue', function () {
         ->assertJsonCount(2, 'data');
 });
 
+it('test it handles full text search', function (array $memberAttributes, string $search, bool $includes) {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $form = Form::factory()
+        ->has(Participant::factory()->data(['vorname' => 'Max', 'select' => 'Pfadfinder', ...$memberAttributes]))
+        ->fields([
+            $this->textField('vorname')->name('Vorname'),
+            $this->checkboxesField('select')->options(['Wölflinge', 'Pfadfinder']),
+        ])
+        ->create();
+
+    sleep(2);
+    $this->callFilter('form.participant.index', ['search' => $search], ['form' => $form])
+        ->assertJsonCount($includes ? 1 : 0, 'data');
+})->with([
+    [['vorname' => 'Max'], 'Max', true],
+    [['vorname' => 'Jane'], 'Max', false],
+    [['select' => 'Pfadfinder'], 'Pfadfinder', true],
+    [['select' => 'Pfadfinder'], 'Rov', false],
+    [['select' => 'Wölflinge'], 'Wölflinge', true],
+    [['select' => 'Wölflinge'], 'Wölf', true],
+    [['vorname' => 'Max', 'nachname' => 'Muster'], 'Max Muster', true],
+    [['vorname' => 'Max', 'nachname' => 'Muster'], 'Jane Doe', false],
+]);
+
 it('testItFiltersParticipantsByDropdownValue', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
     $form = Form::factory()->fields([$this->dropdownField('drop')->options(['A', 'B'])])

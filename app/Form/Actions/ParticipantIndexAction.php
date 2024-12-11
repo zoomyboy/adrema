@@ -9,6 +9,7 @@ use App\Form\Scopes\ParticipantFilterScope;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Laravel\Scout\Builder;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ParticipantIndexAction
@@ -18,9 +19,10 @@ class ParticipantIndexAction
     /**
      * @return HasMany<Participant>
      */
-    protected function getQuery(Form $form, ParticipantFilterScope $filter): HasMany
+    protected function getQuery(Form $form, ParticipantFilterScope $filter): Builder
     {
-        return $form->participants()->withFilter($filter)->withCount('children')->with('form');
+        return $filter->setForm($form)->getQuery()
+            ->query(fn ($q) => $q->withCount('children')->with('form'));
     }
 
     /**

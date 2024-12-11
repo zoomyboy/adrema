@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Scout\Searchable;
 use stdClass;
 
 class Participant extends Model implements Preventable
@@ -22,6 +23,7 @@ class Participant extends Model implements Preventable
 
     /** @use HasFactory<ParticipantFactory> */
     use HasFactory;
+    use Searchable;
 
     public $guarded = [];
 
@@ -44,15 +46,6 @@ class Participant extends Model implements Preventable
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
-    }
-
-    /**
-     * @param  Builder<self> $query
-     * @return Builder<self>
-     */
-    public function scopeWithFilter(Builder $query, ParticipantFilterScope $filter): Builder
-    {
-        return $filter->apply($query);
     }
 
     /**
@@ -109,5 +102,15 @@ class Participant extends Model implements Preventable
     public function preventableSubject(): string
     {
         return 'Nachweise erforderlich für deine Anmeldung zu ' . $this->form->name;
+    }
+
+    public function searchableAs()
+    {
+        return $this->form->participantsSearchableAs();
+    }
+
+    public function toSearchableArray(): array
+    {
+        return $this->data;
     }
 }

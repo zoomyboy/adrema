@@ -2,6 +2,7 @@
 
 namespace App\Form\Models;
 
+use App\Form\Actions\UpdateParticipantSearchIndexAction;
 use App\Form\Data\ExportData;
 use App\Form\Data\FieldCollection;
 use App\Form\Data\FormConfigData;
@@ -14,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
-use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -172,5 +172,14 @@ class Form extends Model implements HasMedia
                 return;
             }
         });
+
+        static::saved(function ($model) {
+            UpdateParticipantSearchIndexAction::dispatch($model);
+        });
+    }
+
+    public function participantsSearchableAs(): string
+    {
+        return config('scout.prefix') . 'forms_' . $this->id . '_participants';
     }
 }

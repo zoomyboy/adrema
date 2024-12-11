@@ -117,4 +117,12 @@ class FieldCollection extends Collection
     {
         return $this->first(fn ($field) => $field->specialType === $specialType);
     }
+
+    /**
+     * @return array<int, string>
+     */
+    public function getKeys(): array
+    {
+        return $this->map(fn ($field) => $field->key)->toArray();
+    }
 }
