@@ -13,7 +13,7 @@ use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 /**
- * @extends Filter<Participant>
+ * @extends ScoutFilter<Participant>
  */
 #[MapInputName(SnakeCaseMapper::class)]
 #[MapOutputName(SnakeCaseMapper::class)]
@@ -25,6 +25,7 @@ class ParticipantFilterScope extends ScoutFilter
 
     /**
      * @param array<string, mixed> $data
+     * @param array<string, mixed> $options
      */
     public function __construct(
         public array $data = [],

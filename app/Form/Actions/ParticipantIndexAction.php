@@ -6,7 +6,6 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Form\Resources\ParticipantResource;
 use App\Form\Scopes\ParticipantFilterScope;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Laravel\Scout\Builder;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -16,7 +15,7 @@ class ParticipantIndexAction
     use AsAction;
 
     /**
-     * @return HasMany<Participant>
+     * @return Builder<Participant>
      */
     protected function getQuery(Form $form, ParticipantFilterScope $filter): Builder
     {

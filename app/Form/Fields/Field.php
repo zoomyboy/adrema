@@ -180,4 +180,10 @@ abstract class Field extends Data
     {
         return app(SingleValueMatcher::class);
     }
+
+    /** @param mixed $value */
+    public function filter($value): string
+    {
+        return '';
+    }
 }

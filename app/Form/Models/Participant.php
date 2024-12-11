@@ -104,11 +104,12 @@ class Participant extends Model implements Preventable
         return 'Nachweise erforderlich für deine Anmeldung zu ' . $this->form->name;
     }
 
-    public function searchableAs()
+    public function searchableAs(): string
     {
         return $this->form->participantsSearchableAs();
     }
 
+    /** @return array<string, mixed> */
     public function toSearchableArray(): array
     {
         return [...$this->data, 'parent-id' => $this->parent_id];
