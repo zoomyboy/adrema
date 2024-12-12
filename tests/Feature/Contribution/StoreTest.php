@@ -14,199 +14,179 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Spatie\LaravelData\Data;
 use Tests\RequestFactories\ContributionMemberApiRequestFactory;
 use Tests\RequestFactories\ContributionRequestFactory;
 use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
-class StoreTest extends TestCase
-{
-    use DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    /**
-     * @testWith ["App\\Contribution\\Documents\\CitySolingenDocument", ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]]
-     *  ["App\\Contribution\\Documents\\RdpNrwDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]]
-     *  ["App\\Contribution\\Documents\\CityRemscheidDocument", ["Max", "Muster", "Jane"]]
-     *  ["App\\Contribution\\Documents\\CityFrankfurtMainDocument", ["Max", "Muster", "Jane"]]
-     *  ["App\\Contribution\\Documents\\BdkjHesse", ["Max", "Muster", "Jane"]]
-     *
-     * @param array<int, string> $bodyChecks
-     */
-    public function testItCompilesContributionDocumentsViaRequest(string $type, array $bodyChecks): void
-    {
-        $this->withoutExceptionHandling();
-        Tex::spy();
-        $this->login()->loginNami();
-        $member1 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
-        $member2 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
-
-        $response = $this->call('GET', '/contribution-generate', [
-            'payload' => ContributionRequestFactory::new()->type($type)->state([
-                'dateFrom' => '1991-06-15',
-                'dateUntil' => '1991-06-16',
-                'eventName' => 'Super tolles Lager',
-                'members' => [$member1->id, $member2->id],
-                'type' => $type,
-                'zipLocation' => '42777 SG',
-            ])->toBase64(),
-        ]);
-
-        $response->assertSessionDoesntHaveErrors();
-        $response->assertOk();
-        Tex::assertCompiled($type, fn ($document) => $document->hasAllContent($bodyChecks));
-    }
-
-    public function testItCompilesGroupNameInSolingenDocument(): void
-    {
-        $this->withoutExceptionHandling()->login()->loginNami();
-        Tex::spy();
-        InvoiceSettings::fake(['from_long' => 'Stamm BiPi']);
-
-        $this->call('GET', '/contribution-generate', [
-            'payload' => ContributionRequestFactory::new()->type(CitySolingenDocument::class)->toBase64(),
-        ]);
-
-        Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Stamm BiPi']));
-    }
-
-    public function testItCompilesContributionDocumentsViaApi(): void
-    {
-        $this->withoutExceptionHandling();
-        Tex::spy();
-        Gender::factory()->female()->create();
-        Gender::factory()->male()->create();
-        Passport::actingAsClient(Client::factory()->create(), ['contribution-generate']);
-        $country = Country::factory()->create();
-        Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
-        Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
-
-        $response = $this->postJson('/api/contribution-generate', [
-            'country' => $country->id,
-            'dateFrom' => '1991-06-15',
-            'dateUntil' => '1991-06-16',
-            'eventName' => 'Super tolles Lager',
-            'type' => CitySolingenDocument::class,
-            'zipLocation' => '42777 SG',
-            'member_data' => [
-                ContributionMemberApiRequestFactory::new()->create(),
-                ContributionMemberApiRequestFactory::new()->create(),
-            ],
-        ]);
-
-        $response->assertSessionDoesntHaveErrors();
-        $response->assertOk();
-        Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Super']));
-    }
-
-    /**
-     * @testWith [""]
-     *           ["aaaa"]
-     *           ["YWFhCg=="]
-     */
-    public function testInputShouldBeBase64EncodedJson(string $payload): void
-    {
-        $this->login()->loginNami();
-
-        $this->call('GET', '/contribution-generate', ['payload' => $payload])->assertSessionHasErrors('payload');
-    }
-
-    /**
-     * @param array<string, string>              $input
-     * @param class-string<ContributionDocument> $documentClass
-     */
-    #[DataProvider('validationDataProvider')]
-    public function testItValidatesInput(array $input, string $documentClass, string $errorField): void
-    {
-        $this->login()->loginNami();
-        Country::factory()->create();
-        Member::factory()->defaults()->create();
-
-        $this->postJson('/contribution-validate', ContributionRequestFactory::new()->type($documentClass)->state($input)->create())
-            ->assertJsonValidationErrors($errorField);
-    }
-
-    /**
-     * @param array<string, string>              $input
-     * @param class-string<ContributionDocument> $documentClass
-     */
-    #[DataProvider('validationDataProvider')]
-    public function testItValidatesInputBeforeGeneration(array $input, string $documentClass, string $errorField): void
-    {
-        $this->login()->loginNami();
-        Country::factory()->create();
-        Member::factory()->defaults()->create();
-
-        $this->call('GET', '/contribution-generate', [
-            'payload' => ContributionRequestFactory::new()->type($documentClass)->state($input)->toBase64(),
-        ])->assertSessionHasErrors($errorField);
-    }
-
-    public static function validationDataProvider(): Generator
-    {
-        yield [
+dataset('validation', function () {
+    return [
+        [
             ['type' => 'aaa'],
             CitySolingenDocument::class,
             'type',
-        ];
-        yield [
+        ],
+        [
             ['type' => ''],
             CitySolingenDocument::class,
             'type',
-        ];
-        yield [
+        ],
+        [
             ['dateFrom' => ''],
             CitySolingenDocument::class,
             'dateFrom',
-        ];
-        yield [
+        ],
+        [
             ['dateFrom' => '2022-01'],
             CitySolingenDocument::class,
             'dateFrom',
-        ];
-        yield [
+        ],
+        [
             ['dateUntil' => ''],
             CitySolingenDocument::class,
             'dateUntil',
-        ];
-        yield [
+        ],
+        [
             ['dateUntil' => '2022-01'],
             CitySolingenDocument::class,
             'dateUntil',
-        ];
-        yield [
+        ],
+        [
             ['country' => -1],
             RdpNrwDocument::class,
             'country',
-        ];
-        yield [
+        ],
+        [
             ['country' => 'AAAA'],
             RdpNrwDocument::class,
             'country',
-        ];
-        yield [
+        ],
+        [
             ['members' => 'A'],
             RdpNrwDocument::class,
             'members',
-        ];
-        yield [
+        ],
+        [
             ['members' => [99999]],
             RdpNrwDocument::class,
             'members.0',
-        ];
-        yield [
+        ],
+        [
             ['members' => ['lalala']],
             RdpNrwDocument::class,
             'members.0',
-        ];
-        yield [
+        ],
+        [
             ['eventName' => ''],
             CitySolingenDocument::class,
             'eventName',
-        ];
-        yield [
+        ],
+        [
             ['zipLocation' => ''],
             CitySolingenDocument::class,
             'zipLocation',
-        ];
-    }
-}
+        ],
+    ];
+});
+
+it('compiles documents via api', function (string $type, array $bodyChecks) {
+    $this->withoutExceptionHandling();
+    Tex::spy();
+    $this->login()->loginNami();
+    $member1 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
+    $member2 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
+
+    $response = $this->call('GET', '/contribution-generate', [
+        'payload' => ContributionRequestFactory::new()->type($type)->state([
+            'dateFrom' => '1991-06-15',
+            'dateUntil' => '1991-06-16',
+            'eventName' => 'Super tolles Lager',
+            'members' => [$member1->id, $member2->id],
+            'type' => $type,
+            'zipLocation' => '42777 SG',
+        ])->toBase64(),
+    ]);
+
+    $response->assertSessionDoesntHaveErrors();
+    $response->assertOk();
+    Tex::assertCompiled($type, fn ($document) => $document->hasAllContent($bodyChecks));
+})->with([
+    ["App\\Contribution\\Documents\\CitySolingenDocument", ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]],
+    ["App\\Contribution\\Documents\\RdpNrwDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]],
+    ["App\\Contribution\\Documents\\CityRemscheidDocument", ["Max", "Muster", "Jane"]],
+    ["App\\Contribution\\Documents\\CityFrankfurtMainDocument", ["Max", "Muster", "Jane"]],
+    ["App\\Contribution\\Documents\\BdkjHesse", ["Max", "Muster", "Jane"]],
+    ["App\\Contribution\\Documents\\GallierDocument", ["Max", "Muster", "Jane", "42777 SG", "15.06.1991", "16.06.1991"]],
+]);
+
+it('testItCompilesGroupNameInSolingenDocument', function () {
+    $this->withoutExceptionHandling()->login()->loginNami();
+    Tex::spy();
+    InvoiceSettings::fake(['from_long' => 'Stamm BiPi']);
+
+    $this->call('GET', '/contribution-generate', [
+        'payload' => ContributionRequestFactory::new()->type(CitySolingenDocument::class)->toBase64(),
+    ]);
+
+    Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Stamm BiPi']));
+});
+
+it('testItCompilesContributionDocumentsViaApi', function () {
+    $this->withoutExceptionHandling();
+    Tex::spy();
+    Gender::factory()->female()->create();
+    Gender::factory()->male()->create();
+    Passport::actingAsClient(Client::factory()->create(), ['contribution-generate']);
+    $country = Country::factory()->create();
+    Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
+    Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
+
+    $response = $this->postJson('/api/contribution-generate', [
+        'country' => $country->id,
+        'dateFrom' => '1991-06-15',
+        'dateUntil' => '1991-06-16',
+        'eventName' => 'Super tolles Lager',
+        'type' => CitySolingenDocument::class,
+        'zipLocation' => '42777 SG',
+        'member_data' => [
+            ContributionMemberApiRequestFactory::new()->create(),
+            ContributionMemberApiRequestFactory::new()->create(),
+        ],
+    ]);
+
+    $response->assertSessionDoesntHaveErrors();
+    $response->assertOk();
+    Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Super']));
+});
+
+it('testInputShouldBeBase64EncodedJson', function (string $payload) {
+    $this->login()->loginNami();
+
+    $this->call('GET', '/contribution-generate', ['payload' => $payload])->assertSessionHasErrors('payload');
+})->with([
+    [""],
+    ["aaaa"],
+    ["YWFhCg=="],
+]);
+
+it('testItValidatesInput', function (array $input, string $documentClass, string $errorField) {
+    $this->login()->loginNami();
+    Country::factory()->create();
+    Member::factory()->defaults()->create();
+
+    $this->postJson('/contribution-validate', ContributionRequestFactory::new()->type($documentClass)->state($input)->create())
+        ->assertJsonValidationErrors($errorField);
+})->with('validation');
+
+it('testItValidatesInputBeforeGeneration', function (array $input, string $documentClass, string $errorField) {
+    $this->login()->loginNami();
+    Country::factory()->create();
+    Member::factory()->defaults()->create();
+
+    $this->call('GET', '/contribution-generate', [
+        'payload' => ContributionRequestFactory::new()->type($documentClass)->state($input)->toBase64(),
+    ])->assertSessionHasErrors($errorField);
+})->with('validation');
