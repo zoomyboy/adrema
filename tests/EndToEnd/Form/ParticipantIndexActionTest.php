@@ -239,3 +239,40 @@ it('testItShowsPreventionState', function () {
         ->assertJsonPath('data.0.prevention_items.0.value', false)
         ->assertJsonPath('data.0.prevention_items.0.tooltip', 'erweitertes Führungszeugnis nicht vorhanden');
 });
+
+it('test it orders participants by value', function (array $values, array $sorting, array $expected) {
+    list($key, $direction) = $sorting;
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $form = Form::factory()
+        ->fields([
+            $this->textField('vorname')->name('Vorname'),
+            $this->checkboxesField('select')->options(['Wölflinge', 'Pfadfinder']),
+        ]);
+    foreach ($values as $value) {
+        $form = $form->has(Participant::factory()->data(['vorname' => 'Max', 'select' => 'Pfadfinder', $key => $value]));
+    }
+    $form = $form->create();
+
+    sleep(2);
+    $response = $this->callFilter('form.participant.index', ['sort' => ['by' => $key, 'direction' => $direction]], ['form' => $form]);
+
+    foreach ($expected as $index => $value) {
+        $response->assertJsonPath("data.{$index}.{$key}", $value);
+    }
+})->with([
+    [
+        ['Anna', 'Sarah', 'Ben'],
+        ['vorname', false],
+        ['Anna', 'Ben', 'Sarah'],
+    ],
+    [
+        ['Anna', 'Sarah', 'Ben'],
+        ['vorname', true],
+        ['Sarah', 'Ben', 'Anna'],
+    ],
+    [
+        ['Wölflinge', 'Pfadfinder'],
+        ['select', false],
+        ['Pfadfinder', 'Wölflinge'],
+    ]
+]);

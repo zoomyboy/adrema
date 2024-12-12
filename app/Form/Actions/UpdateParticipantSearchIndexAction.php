@@ -20,7 +20,7 @@ class UpdateParticipantSearchIndexAction
             [
                 'filterableAttributes' => [...$form->getFields()->filterables()->getKeys(), 'parent-id'],
                 'searchableAttributes' => $form->getFields()->searchables()->getKeys(),
-                'sortableAttributes' => [],
+                'sortableAttributes' => $form->getFields()->sortables()->getKeys(),
                 'displayedAttributes' => [...$form->getFields()->filterables()->getKeys(), ...$form->getFields()->searchables()->getKeys(), 'id'],
                 'pagination' => [
                     'maxTotalHits' => 1000000,

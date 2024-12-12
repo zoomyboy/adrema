@@ -8,6 +8,7 @@ use App\Form\Data\FieldCollection;
 use App\Form\Data\FormConfigData;
 use App\Lib\Editor\Condition;
 use App\Lib\Editor\EditorData;
+use App\Lib\Sorting;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Database\Factories\Form\Models\FormFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -181,5 +182,10 @@ class Form extends Model implements HasMedia
     public function participantsSearchableAs(): string
     {
         return config('scout.prefix') . 'forms_' . $this->id . '_participants';
+    }
+
+    public function defaultSorting(): Sorting
+    {
+        return Sorting::by(data_get($this->meta, 'active_columns.0'));
     }
 }

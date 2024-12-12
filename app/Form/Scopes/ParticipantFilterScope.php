@@ -4,8 +4,8 @@ namespace App\Form\Scopes;
 
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
-use App\Lib\Filter;
 use App\Lib\ScoutFilter;
+use App\Lib\Sorting;
 use Illuminate\Support\Arr;
 use Laravel\Scout\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -31,7 +31,8 @@ class ParticipantFilterScope extends ScoutFilter
         public array $data = [],
         public string $search = '',
         public array $options = [],
-        public ?int $parent = null
+        public ?int $parent = null,
+        public ?Sorting $sort = null
     ) {
     }
 
@@ -59,6 +60,8 @@ class ParticipantFilterScope extends ScoutFilter
 
             $options['filter'] = $filter->map(fn ($expression) => "($expression)")->implode(' AND ');
 
+            $options['sort'] = $this->sort->toMeilisearch();
+
             return $engine->search($query, [...$this->options, ...$options]);
         })->within($this->form->participantsSearchableAs());
     }
@@ -66,6 +69,10 @@ class ParticipantFilterScope extends ScoutFilter
     public function setForm(Form $form): self
     {
         $this->form = $form;
+
+        if (is_null($this->sort)) {
+            $this->sort = $this->form->defaultSorting();
+        }
 
         foreach ($form->getFields() as $field) {
             if (!Arr::has($this->data, $field->key)) {

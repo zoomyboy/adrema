@@ -124,6 +124,11 @@ class FieldCollection extends Collection
         return $this;
     }
 
+    public function sortables(): self
+    {
+        return $this;
+    }
+
     public function filterables(): self
     {
         return $this->filter(fn ($field) => $field instanceof Filterable);
