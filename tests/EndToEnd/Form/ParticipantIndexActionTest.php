@@ -255,6 +255,8 @@ it('test it orders participants by value', function (array $values, array $sorti
 
     sleep(2);
     $response = $this->callFilter('form.participant.index', ['sort' => ['by' => $key, 'direction' => $direction]], ['form' => $form]);
+    $response->assertJsonPath('meta.filter.sort.by', $key);
+    $response->assertJsonPath('meta.filter.sort.direction', $direction);
 
     foreach ($expected as $index => $value) {
         $response->assertJsonPath("data.{$index}.{$key}", $value);

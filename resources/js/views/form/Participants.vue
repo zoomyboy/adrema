@@ -69,7 +69,15 @@
         </page-filter>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
-                <th v-for="column in activeColumns" :key="column.id" v-text="column.name"></th>
+                <ui-th
+                    v-for="column in activeColumns"
+                    :key="column.id"
+                    :column="column.id"
+                    :label="column.name"
+                    :value="getSort"
+                    sortable
+                    @update:model-value="setSort(column.id, {filter: toFilterString(innerFilter)})"
+                ></ui-th>
                 <th></th>
             </thead>
 
@@ -173,6 +181,12 @@ async function assign(memberId) {
 var { meta, data, reload, reloadPage, axios, remove, toFilterString, url, updateUrl } = useApiIndex(props.hasNamiField ? props.rootUrl : props.url, 'participant');
 
 const activeColumns = computed(() => meta.value.columns.filter((c) => meta.value.form_meta.active_columns.includes(c.id)));
+
+const getSort = computed(() => innerFilter.value.sort);
+
+async function setSort(column) {
+    innerFilter.value.sort = getSort.value.by === column ? {by: column, direction: !getSort.value.direction} : {by: column, direction: false};
+}
 
 const activeColumnsConfig = computed({
     get: () => meta.value.form_meta.active_columns,
