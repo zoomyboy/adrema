@@ -160,7 +160,7 @@ class Form extends Model implements HasMedia
             if (is_null(data_get($model->meta, 'active_columns'))) {
                 $model->setAttribute('meta', [
                     'active_columns' => $model->getFields()->count() ? $model->getFields()->take(4)->pluck('key')->toArray() : null,
-                    'sorting' => $model->getFields()->count() ? [$model->getFields()->first()->key, 'asc'] : null,
+                    'sorting' => Sorting::by('id'),
                 ]);
                 return;
             }
@@ -186,6 +186,6 @@ class Form extends Model implements HasMedia
 
     public function defaultSorting(): Sorting
     {
-        return Sorting::by(data_get($this->meta, 'active_columns.0', 'id'));
+        return Sorting::from($this->meta['sorting']);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Form\Actions\UpdateParticipantSearchIndexAction;
 use App\Form\Models\Form;
+use App\Lib\Sorting;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
@@ -16,6 +17,7 @@ return new class extends Migration
             foreach ($form->participants as $participant) {
                 $participant->searchable();
             }
+            $form->update(['meta' => [...$form->meta, 'sorting' => Sorting::by('id')]]);
         }
     }
 

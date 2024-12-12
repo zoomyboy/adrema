@@ -80,6 +80,22 @@ it('testItShowsEmptyFilters', function () {
     $this->callFilter('form.participant.index', ['data' => []], ['form' => $form])->assertJsonPath('meta.filter.data.check', ParticipantFilterScope::$nan);
 });
 
+it('sorts by active colums sorting by default', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $form = Form::factory()->fields([
+        $this->checkboxField('check'),
+        $this->checkboxField('vorname'),
+    ])->create();
+    $form->update(['meta' => ['active_columns' => [], 'sorting' => ['by' => 'vorname', 'direction' => true]]]);
+
+    sleep(2);
+    $this->callFilter('form.participant.index', [], ['form' => $form])
+        ->assertOk()
+        ->assertJsonPath('meta.filter.sort.by', 'vorname')
+        ->assertJsonPath('meta.filter.sort.direction', true);
+});
+
+
 it('testItDisplaysHasNamiField', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
     $form = Form::factory()->fields([$this->namiField('mitglieder')])->create();

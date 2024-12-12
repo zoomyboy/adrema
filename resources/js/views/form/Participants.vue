@@ -186,6 +186,7 @@ const getSort = computed(() => innerFilter.value.sort);
 
 async function setSort(column) {
     innerFilter.value.sort = getSort.value.by === column ? {by: column, direction: !getSort.value.direction} : {by: column, direction: false};
+    sortingConfig.value = innerFilter.value.sort;
 }
 
 const activeColumnsConfig = computed({
@@ -194,6 +195,18 @@ const activeColumnsConfig = computed({
         const response = await axios.patch(meta.value.links.update_form_meta, {
             ...meta.value.form_meta,
             active_columns: v,
+        });
+
+        meta.value.form_meta = response.data;
+    },
+});
+
+const sortingConfig = computed({
+    get: () => meta.value.form_meta.sorting,
+    set: async (v) => {
+        const response = await axios.patch(meta.value.links.update_form_meta, {
+            ...meta.value.form_meta,
+            sorting: v,
         });
 
         meta.value.form_meta = response.data;

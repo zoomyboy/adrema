@@ -21,13 +21,13 @@ class FormUpdateMetaActionTest extends FormTestCase
 
         $this->patchJson(route('form.update-meta', ['form' => $form]), [
             'active_columns' => ['textone'],
-            'sorting' => ['textone', 'desc'],
+            'sorting' => ['by' => 'textone', 'direction' => false],
         ])->assertOk()
             ->assertJsonPath('active_columns.0', 'textone')
-            ->assertJsonPath('sorting.1', 'desc');
+            ->assertJsonPath('sorting.by', 'textone');
 
         $form = Form::latest()->first();
-        $this->assertEquals(['textone', 'desc'], $form->meta['sorting']);
+        $this->assertEquals(['by' => 'textone', 'direction' => false], $form->meta['sorting']);
         $this->assertEquals(['textone'], $form->meta['active_columns']);
     }
 
@@ -38,11 +38,11 @@ class FormUpdateMetaActionTest extends FormTestCase
 
         $this->patchJson(route('form.update-meta', ['form' => $form]), [
             'active_columns' => ['created_at'],
-            'sorting' => ['created_at', 'desc'],
+            'sorting' => ['by' => 'textone', 'direction' => false],
         ])->assertOk();
 
         $form = Form::latest()->first();
-        $this->assertEquals(['created_at', 'desc'], $form->fresh()->meta['sorting']);
+        $this->assertEquals(['by' => 'textone', 'direction' => false], $form->fresh()->meta['sorting']);
         $this->assertEquals(['created_at'], $form->fresh()->meta['active_columns']);
     }
 }

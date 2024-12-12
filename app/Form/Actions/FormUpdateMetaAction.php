@@ -22,8 +22,8 @@ class FormUpdateMetaAction
 
         return [
             'sorting' => 'array',
-            'sorting.0' => 'required|string',
-            'sorting.1' => 'required|string|in:asc,desc',
+            'sorting.by' => 'required|string',
+            'sorting.direction' => 'required|boolean',
             'active_columns' => 'array',
             'active_columns.*' => ['string', Rule::in([...$form->getFields()->pluck('key')->toArray(), 'created_at', 'prevention'])]
         ];

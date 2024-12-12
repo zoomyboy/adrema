@@ -59,6 +59,19 @@ class FormStoreActionTest extends FormTestCase
         $this->assertFrontendCacheCleared();
     }
 
+    public function testItStoresDefaultSorting(): void
+    {
+        Event::fake([Succeeded::class]);
+        $this->login()->loginNami()->withoutExceptionHandling();
+        FormRequest::new()->fields([$this->textField()])->fake();
+
+        $this->postJson(route('form.store'))->assertOk();
+
+        $form = Form::latest()->first();
+        $this->assertEquals('id', $form->meta['sorting']['by']);
+        $this->assertFalse(false, $form->meta['sorting']['direction']);
+    }
+
     public function testRegistrationDatesCanBeNull(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();
