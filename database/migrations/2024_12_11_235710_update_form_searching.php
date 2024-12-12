@@ -17,7 +17,7 @@ return new class extends Migration
             foreach ($form->participants as $participant) {
                 $participant->searchable();
             }
-            $form->update(['meta' => [...$form->meta, 'sorting' => Sorting::by('id')]]);
+            $form->updateQuietly(['meta' => [...$form->meta, 'sorting' => Sorting::by('id')]]);
         }
     }
 
