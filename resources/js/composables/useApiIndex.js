@@ -30,7 +30,7 @@ export function useApiIndex(firstUrl, siteName = null) {
 
     async function reloadPage(page, p = {}) {
         inner.meta.value.current_page = page;
-        await reload(false);
+        await reload(false, p);
     }
 
     function create() {
