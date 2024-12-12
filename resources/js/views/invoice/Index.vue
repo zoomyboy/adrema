@@ -114,6 +114,7 @@
                     <div class="flex space-x-2">
                         <ui-action-button tooltip="Anschauen" :href="invoice.links.pdf" class="btn-info" icon="eye" blank></ui-action-button>
                         <ui-action-button tooltip="Erinnerung anschauen" :href="invoice.links.rememberpdf" class="btn-info" icon="document" blank></ui-action-button>
+                        <ui-action-button tooltip="Als Bezahlt markieren" class="btn-warning" icon="money" blank @click.prevent="markAsPaid(invoice)"></ui-action-button>
                         <ui-action-button :data-cy="`edit-button-${invoice.id}`" tooltip="Bearbeiten" class="btn-warning" icon="pencil" @click.prevent="edit(invoice)"></ui-action-button>
                         <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="deleting = invoice"></ui-action-button>
                     </div>
@@ -142,5 +143,10 @@ async function saveForMember() {
 async function sendMassstore() {
     await axios.post(meta.value.links['mass-store'], massstore.value);
     massstore.value = null;
+}
+
+async function markAsPaid(invoice) {
+    await axios.patch(invoice.links.update, {...invoice, status: 'Rechnung beglichen'});
+    await reloadPage();
 }
 </script>
