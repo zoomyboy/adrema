@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.1
+
+-   In Teilnehmer-Liste von Veranstaltungen kann nun sortiert und gefiltert werden.
+
 ### 1.11.5
 
 -   Fix: Synchronisation von NaMi-Mitgliedern
