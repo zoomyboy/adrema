@@ -21,7 +21,6 @@ use Zoomyboy\TableDocument\TestsExcelDocuments;
 
 class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
     use TestsInertia;
     use MakesHttpCalls;
     use TestsExcelDocuments;
