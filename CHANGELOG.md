@@ -3,6 +3,7 @@
 ### 1.12.1
 
 -   In Teilnehmer-Liste von Veranstaltungen kann nun sortiert und gefiltert werden.
+-   Formulare: Feld Registrierung von / bis
 
 ### 1.11.5
 
