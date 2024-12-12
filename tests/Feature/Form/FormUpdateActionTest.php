@@ -5,8 +5,6 @@ namespace Tests\Feature\Form;
 use App\Fileshare\Data\FileshareResourceData;
 use App\Form\Data\ExportData;
 use App\Form\Models\Form;
-use App\Lib\Editor\Condition;
-use App\Lib\Editor\EditorData;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\EditorRequestFactory;
 
@@ -29,6 +27,20 @@ class FormUpdateActionTest extends FormTestCase
         $form = $form->fresh();
 
         $this->assertTrue($form->config->sections->get(0)->fields->get(0)->maxToday);
+    }
+
+    public function testItSetsRegistrationDates(): void
+    {
+        $this->login()->loginNami()->withoutExceptionHandling();
+        $form = Form::factory()->create();
+        $payload = FormRequest::new()->registrationFrom('2023-05-04 01:00:00')->registrationUntil('2023-07-07 01:00:00')->create();
+
+        $this->patchJson(route('form.update', ['form' => $form]), $payload)->assertOk();
+
+        $form = $form->fresh();
+
+        $this->assertEquals('2023-05-04 01:00', $form->registration_from->format('Y-m-d H:i'));
+        $this->assertEquals('2023-07-07 01:00', $form->registration_until->format('Y-m-d H:i'));
     }
 
     public function testItSetsTexts(): void

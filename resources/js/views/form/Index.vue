@@ -56,6 +56,8 @@
                     ></f-singlefile>
                     <f-text id="from" v-model="single.from" type="date" label="Von" required></f-text>
                     <f-text id="to" v-model="single.to" type="date" label="Bis" required></f-text>
+                    <f-text id="registration_from" v-model="single.registration_from" type="datetime-local" label="Registrierung von" required></f-text>
+                    <f-text id="registration_until" v-model="single.registration_until" type="datetime-local" label="Registrierung bis" required></f-text>
                     <f-textarea
                         id="excerpt"
                         v-model="single.excerpt"
