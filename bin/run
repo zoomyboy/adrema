@@ -1,5 +1,17 @@
 #!/bin/bash
 
+set -e
+
+FILESHARE=false
+WEB=false
+
+while getopts f opt; do
+    case $opt in
+        f) FILESHARE=true ;;
+        w) WEB=true ;;
+    esac
+done
+
 tmux new-session -d -s test
 tmux send-keys -t test "a serve" Enter
 
@@ -12,11 +24,11 @@ tmux send-keys -t test "SS start docker && duu socketi" Enter
 tmux new-window -t test
 tmux send-keys -t test "nrh" Enter
 
-tmux new-window -t test
-tmux send-keys -t test "ggwdk && cd plugins/silva/adrema/assets/vendor/adrema-form && nrd" Enter
+$WEB && tmux new-window -t test
+$WEB && tmux send-keys -t test "ggwdk && cd plugins/silva/adrema/assets/vendor/adrema-form && nrd" Enter
 
-tmux new-window -t test
-tmux send-keys -t test "cd tests/Fileshare && docker compose up" Enter
+$FILESHARE && tmux new-window -t test
+$FILESHARE && tmux send-keys -t test "cd tests/Fileshare && docker compose up" Enter
 
 tmux attach-session -t test
 
