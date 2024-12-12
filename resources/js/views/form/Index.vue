@@ -64,13 +64,15 @@
                         :rows="5"
                         required
                     ></f-textarea>
-                    <f-editor id="description" v-model="single.description" name="description" label="Beschreibung" :rows="10" required></f-editor>
                 </div>
                 <div v-if="active === 1">
+                    <f-editor id="description" v-model="single.description" name="description" label="Beschreibung" :rows="10" required></f-editor>
+                </div>
+                <div v-if="active === 2">
                     <ui-note class="mt-2"> Sobald sich der erste Teilnehmer für die Veranstaltung angemeldet hat, kann dieses Formular nicht mehr geändert werden. </ui-note>
                     <form-builder v-model="single.config" :meta="meta"></form-builder>
                 </div>
-                <div v-show="active === 2" class="grid grid-cols-[1fr_300px] gap-3">
+                <div v-show="active === 3" class="grid grid-cols-[1fr_300px] gap-3">
                     <ui-note class="mt-2 col-span-full">
                         Hier kannst du die E-Mail anpassen, die nach der Anmeldung an den Teilnehmer verschickt wird.<br />
                         Es gibt dafür einen ersten E-Mail-Teil und einen zweiten E-Mail-Teil. Dazwischen werden die Daten des Teilnehmers aufgelistet.<br />
@@ -108,14 +110,14 @@
                         </template>
                     </f-multiplefiles>
                 </div>
-                <div v-if="active === 3">
+                <div v-if="active === 4">
                     <div class="grid gap-3">
                         <ui-remote-resource id="export" v-model="single.export.root" label="Haupt-Ordner"></ui-remote-resource>
                         <f-select id="group_by" v-model="single.export.group_by" :options="allFields" label="Gruppieren nach" name="group_by"></f-select>
                         <f-select id="to_group_field" v-model="single.export.to_group_field" :options="allFields" label="Nach Gruppe schreiben" name="to_group_field"></f-select>
                     </div>
                 </div>
-                <div v-show="active === 4" class="grid grid-cols-2 gap-3">
+                <div v-show="active === 5" class="grid grid-cols-2 gap-3">
                     <f-switch id="needs_prevention" v-model="single.needs_prevention" name="needs_prevention" label="Prävention"></f-switch>
                     <f-editor
                         id="prevention_text"
@@ -207,7 +209,7 @@ const fileSettingPopup = ref(null);
 
 const active = ref(0);
 const activeMailTab = ref(0);
-const tabs = [{ title: 'Allgemeines' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }, { title: 'Prävention' }];
+const tabs = [{ title: 'Allgemeines' }, { title: 'Beschreibung' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }, { title: 'Prävention' }];
 const mailTabs = [{ title: 'vor Daten' }, { title: 'nach Daten' }];
 
 const allFields = computed(() => {
