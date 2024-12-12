@@ -32,6 +32,7 @@ it('testItShowsParticipantsAndColumns', function () {
         ])
         ->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $form])
         ->assertOk()
         ->assertJsonPath('data.0.id', $form->participants->first()->id)
@@ -66,6 +67,7 @@ it('testItShowsEmptyFilters', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
     $form = Form::factory()->fields([$this->checkboxField('check')->name('Checked')])->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $form])
         ->assertOk()
         ->assertJsonPath('meta.filters.0.name', 'Checked')
@@ -81,6 +83,7 @@ it('testItShowsEmptyFilters', function () {
 it('testItDisplaysHasNamiField', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
     $form = Form::factory()->fields([$this->namiField('mitglieder')])->create();
+    sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $form])->assertJsonPath('meta.has_nami_field', true);
 });
 
@@ -134,6 +137,7 @@ it('testItFiltersParticipantsByDropdownValue', function () {
         ->has(Participant::factory()->data(['drop' => 'B'])->count(4))
         ->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', ['data' => ['drop' => ParticipantFilterScope::$nan]], ['form' => $form])
         ->assertJsonCount(7, 'data');
     $this->callFilter('form.participant.index', ['data' => ['drop' => null]], ['form' => $form])
@@ -154,6 +158,7 @@ it('testItFiltersParticipantsByRadioValue', function () {
         ->has(Participant::factory()->data(['drop' => 'B'])->count(4))
         ->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', ['data' => ['drop' => ParticipantFilterScope::$nan]], ['form' => $form])
         ->assertJsonCount(7, 'data');
     $this->callFilter('form.participant.index', ['data' => ['drop' => 'A']], ['form' => $form])
@@ -173,6 +178,7 @@ it('testItPresentsNamiField', function () {
         ])
         ->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $form])
         ->assertJsonPath('data.0.mitglieder_display', '393, 394');
 });
@@ -187,6 +193,7 @@ it('testItShowsRegisteredAtColumnAndAttribute', function () {
         ])
         ->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $form])
         ->assertJsonPath('data.0.vorname', 'Max')
         ->assertJsonPath('data.0.vorname_display', 'Max')
@@ -205,6 +212,7 @@ it('testItShowsOnlyParentParticipantsWhenFilterEnabled', function () {
         ->for($form)
         ->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $form])->assertJsonCount(3, 'data');
     $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => -1])->assertJsonCount(1, 'data');
     $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => $participant->id])->assertJsonCount(2, 'data');
@@ -219,6 +227,7 @@ it('testItShowsChildrenCount', function () {
         ->create();
     Participant::factory()->for($form)->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $form, 'parent' => -1])
         ->assertJsonPath('data.0.children_count', 2)
         ->assertJsonPath('data.1.children_count', 0)
@@ -234,6 +243,7 @@ it('testItShowsPreventionState', function () {
         ->for(Form::factory())
         ->create();
 
+    sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $participant->form])
         ->assertJsonPath('data.0.prevention_items.0.letter', 'F')
         ->assertJsonPath('data.0.prevention_items.0.value', false)
