@@ -35,6 +35,7 @@ class FormApiResource extends JsonResource
             'image' => $this->getMedia('headerImage')->first()->getFullUrl('square'),
             'is_active' => $this->is_active,
             'is_private' => $this->is_private,
+            'can_register' => $this->getModel()->canRegister(),
         ];
     }
 

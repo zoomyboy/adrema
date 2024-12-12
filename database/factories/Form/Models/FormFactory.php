@@ -7,6 +7,7 @@ use App\Form\Models\Form;
 use App\Lib\Editor\Condition;
 use Database\Factories\Traits\FakesMedia;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 use Tests\Feature\Form\FormtemplateFieldRequest;
 use Tests\Feature\Form\FormtemplateSectionRequest;
 use Tests\RequestFactories\EditorRequestFactory;
@@ -48,8 +49,8 @@ class FormFactory extends Factory
             'config' => ['sections' => []],
             'from' => $this->faker->dateTimeBetween('+1 week', '+4 weeks')->format('Y-m-d H:i:s'),
             'to' => $this->faker->dateTimeBetween('+1 week', '+4 weeks')->format('Y-m-d H:i:s'),
-            'registration_from' => $this->faker->dateTimeBetween('-2 weeks', 'now')->format('Y-m-d H:i:s'),
-            'registration_until' => $this->faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d H:i:s'),
+            'registration_from' => $this->faker->dateTimeBetween(Carbon::parse('-2 weeks'), now())->format('Y-m-d H:i:s'),
+            'registration_until' => $this->faker->dateTimeBetween(now(), Carbon::parse('+2 weeks'))->format('Y-m-d H:i:s'),
             'mail_top' => EditorRequestFactory::new()->toData(),
             'mail_bottom' => EditorRequestFactory::new()->toData(),
             'is_active' => true,

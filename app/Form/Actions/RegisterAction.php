@@ -7,6 +7,7 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Member\Member;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -19,6 +20,10 @@ class RegisterAction
      */
     public function handle(Form $form, array $input): Participant
     {
+        if (!$form->canRegister()) {
+            throw ValidationException::withMessages(['event' => 'Anmeldung zzt nicht möglich.']);
+        }
+
         $memberQuery = FieldCollection::fromRequest($form, $input)
             ->withNamiType()
             ->reduce(fn ($query, $field) => $field->namiType->performQuery($query, $field->value), (new Member())->newQuery());

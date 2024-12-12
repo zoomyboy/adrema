@@ -55,6 +55,22 @@ class FormRegisterActionTest extends FormTestCase
         $this->assertEquals('Abraham', $participants->first()->data['spitzname']);
     }
 
+    public function testItCannotRegisterWhenRegistrationFromReached(): void
+    {
+        $this->login()->loginNami();
+        $form = Form::factory()->registrationFrom(now()->addDay())->create();
+
+        $this->register($form, [])->assertJsonValidationErrors(['event' => 'Anmeldung zzt nicht möglich.']);
+    }
+
+    public function testItCannotRegisterWhenRegistrationUntilReached(): void
+    {
+        $this->login()->loginNami();
+        $form = Form::factory()->registrationUntil(now()->subDay())->create();
+
+        $this->register($form, [])->assertJsonValidationErrors(['event' => 'Anmeldung zzt nicht möglich.']);
+    }
+
     public function testItSendsEmailToParticipant(): void
     {
         $this->login()->loginNami()->withoutExceptionHandling();

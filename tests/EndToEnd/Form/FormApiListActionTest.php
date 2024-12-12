@@ -3,14 +3,12 @@
 namespace Tests\EndToEnd\Form;
 
 use App\Form\Models\Form;
-use App\Membership\TestersBlock;
 use App\Subactivity;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Tests\Feature\Form\FormtemplateSectionRequest;
 use Tests\RequestFactories\EditorRequestFactory;
-use Tests\TestCase;
 
 uses(FormTestCase::class);
 uses(DatabaseTransactions::class);
@@ -42,9 +40,22 @@ it('testItDisplaysForms', function () {
         ->assertJsonPath('data.0.dates', '05.05.2023 - 07.06.2023')
         ->assertJsonPath('data.0.from_human', '05.05.2023')
         ->assertJsonPath('data.0.to_human', '07.06.2023')
+        ->assertJsonPath('data.0.can_register', true)
         ->assertJsonPath('meta.per_page', 15)
         ->assertJsonPath('meta.base_url', url(''))
         ->assertJsonPath('meta.total', 1);
+});
+
+it('displays registration not possible', function () {
+    Storage::fake('temp');
+    $this->loginNami()->withoutExceptionHandling();
+    Form::factory()
+        ->registrationFrom(now()->addDay())
+        ->withImage('headerImage', 'lala-2.jpg')
+        ->create();
+
+    sleep(1);
+    $this->get('/api/form?perPage=15')->assertJsonPath('data.0.can_register', false);
 });
 
 it('testItDisplaysDefaultValueOfField', function () {
