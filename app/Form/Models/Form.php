@@ -186,6 +186,6 @@ class Form extends Model implements HasMedia
 
     public function defaultSorting(): Sorting
     {
-        return Sorting::by(data_get($this->meta, 'active_columns.0'));
+        return Sorting::by(data_get($this->meta, 'active_columns.0', 'id'));
     }
 }
