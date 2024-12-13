@@ -107,7 +107,6 @@ class CitySolingenDocument extends ContributionDocument
             'dateFrom' => 'required|string|date_format:Y-m-d',
             'dateUntil' => 'required|string|date_format:Y-m-d',
             'zipLocation' => 'required|string',
-            'eventName' => 'required|string',
         ];
     }
 }

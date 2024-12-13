@@ -32,6 +32,7 @@ abstract class ContributionDocument extends Document
     public static function globalRules(): array
     {
         return [
+            'eventName' => 'required|string',
             'members' => 'present|array|min:1',
             'members.*' => 'integer|exists:members,id',
         ];
@@ -56,7 +57,6 @@ abstract class ContributionDocument extends Document
     {
         return Template::make('tex.templates.contribution');
     }
-
 
     public function view(): string
     {

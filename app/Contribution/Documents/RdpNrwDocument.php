@@ -121,7 +121,6 @@ class RdpNrwDocument extends ContributionDocument
             'dateUntil' => 'required|string|date_format:Y-m-d',
             'country' => 'required|integer|exists:countries,id',
             'zipLocation' => 'required|string',
-            'eventName' => 'required|string',
         ];
     }
 }
