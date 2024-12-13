@@ -7,7 +7,6 @@ use App\Invoice\InvoiceSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Zoomyboy\Tex\Engine;
-use Zoomyboy\Tex\Template;
 
 class CitySolingenDocument extends ContributionDocument
 {
@@ -72,11 +71,6 @@ class CitySolingenDocument extends ContributionDocument
     public function niceEventUntil(): string
     {
         return Carbon::parse($this->dateUntil)->format('d.m.Y');
-    }
-
-    public function template(): Template
-    {
-        return Template::make('tex.templates.contribution');
     }
 
     public function checkboxes(): string

@@ -8,7 +8,6 @@ use App\Country;
 use App\Invoice\InvoiceSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Zoomyboy\Tex\Template;
 
 class CityFrankfurtMainDocument extends ContributionDocument
 {
@@ -107,11 +106,6 @@ class CityFrankfurtMainDocument extends ContributionDocument
     public function view(): string
     {
         return 'tex.contribution.city-frankfurt-main';
-    }
-
-    public function template(): Template
-    {
-        return Template::make('tex.templates.contribution');
     }
 
     public function setFilename(string $filename): static

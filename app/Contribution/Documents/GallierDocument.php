@@ -7,7 +7,6 @@ use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Zoomyboy\Tex\Template;
 
 class GallierDocument extends ContributionDocument
 {
@@ -73,11 +72,6 @@ class GallierDocument extends ContributionDocument
     public function view(): string
     {
         return 'tex.contribution.gallier';
-    }
-
-    public function template(): Template
-    {
-        return Template::make('tex.templates.contribution');
     }
 
     public function setFilename(string $filename): static

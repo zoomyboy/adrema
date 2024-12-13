@@ -3,6 +3,7 @@
 namespace App\Contribution\Documents;
 
 use Zoomyboy\Tex\Document;
+use Zoomyboy\Tex\Template;
 
 abstract class ContributionDocument extends Document
 {
@@ -49,5 +50,10 @@ abstract class ContributionDocument extends Document
     public function basename(): string
     {
         return str('Zuschüsse ')->append($this->getName())->append(' ')->append($this->eventName)->slug();
+    }
+
+    public function template(): Template
+    {
+        return Template::make('tex.templates.contribution');
     }
 }
