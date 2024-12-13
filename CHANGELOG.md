@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.2
+
+-   Zuschussliste Gallier
+
 ### 1.12.1
 
 -   In Teilnehmer-Liste von Veranstaltungen kann nun sortiert und gefiltert werden.

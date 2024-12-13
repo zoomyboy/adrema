@@ -4,7 +4,7 @@ namespace Tests\Feature\Contribution;
 
 use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Documents\CitySolingenDocument;
-use App\Contribution\Documents\GallierDocument;
+use App\Contribution\Documents\WuppertalDocument;
 use App\Country;
 use App\Gender;
 use App\Invoice\InvoiceSettings;
@@ -87,17 +87,17 @@ dataset('validation', function () {
         ],
         [
             ['zipLocation' => ''],
-            GallierDocument::class,
+            WuppertalDocument::class,
             'zipLocation',
         ],
         [
             ['dateFrom' => ''],
-            GallierDocument::class,
+            WuppertalDocument::class,
             'dateFrom',
         ],
         [
             ['dateUntil' => ''],
-            GallierDocument::class,
+            WuppertalDocument::class,
             'dateUntil',
         ],
     ];
@@ -130,7 +130,7 @@ it('compiles documents via api', function (string $type, array $bodyChecks) {
     ["App\\Contribution\\Documents\\CityRemscheidDocument", ["Max", "Muster", "Jane"]],
     ["App\\Contribution\\Documents\\CityFrankfurtMainDocument", ["Max", "Muster", "Jane"]],
     ["App\\Contribution\\Documents\\BdkjHesse", ["Max", "Muster", "Jane"]],
-    ["App\\Contribution\\Documents\\GallierDocument", ["Max", "Muster", "Jane", "42777 SG", "15.06.1991", "16.06.1991"]],
+    ["App\\Contribution\\Documents\\WuppertalDocument", ["Max", "Muster", "Jane", "42777 SG", "15.06.1991", "16.06.1991"]],
 ]);
 
 it('testItCompilesGroupNameInSolingenDocument', function () {

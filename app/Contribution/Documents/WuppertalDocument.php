@@ -8,7 +8,7 @@ use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use Illuminate\Support\Collection;
 
-class GallierDocument extends ContributionDocument
+class WuppertalDocument extends ContributionDocument
 {
 
     use HasPdfBackground;
@@ -62,7 +62,7 @@ class GallierDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Gallier';
+        return 'Wuppertal';
     }
 
     /**

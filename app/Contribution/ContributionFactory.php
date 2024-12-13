@@ -8,7 +8,7 @@ use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Documents\CityRemscheidDocument;
 use App\Contribution\Documents\CitySolingenDocument;
 use App\Contribution\Documents\CityFrankfurtMainDocument;
-use App\Contribution\Documents\GallierDocument;
+use App\Contribution\Documents\WuppertalDocument;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
@@ -23,7 +23,7 @@ class ContributionFactory
         CityRemscheidDocument::class,
         CityFrankfurtMainDocument::class,
         BdkjHesse::class,
-        GallierDocument::class,
+        WuppertalDocument::class,
     ];
 
     /**
