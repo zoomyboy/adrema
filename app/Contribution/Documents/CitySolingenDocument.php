@@ -95,11 +95,6 @@ class CitySolingenDocument extends ContributionDocument
         return $firstRow . "\n" . $secondRow;
     }
 
-    public function basename(): string
-    {
-        return 'zuschuesse-solingen-' . Str::slug($this->eventName);
-    }
-
     public function view(): string
     {
         return 'tex.contribution.city-solingen';

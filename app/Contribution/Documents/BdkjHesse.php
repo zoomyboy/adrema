@@ -25,6 +25,7 @@ class BdkjHesse extends ContributionDocument
         public ?string $filename = '',
         public string $type = 'F',
     ) {
+        $this->setEventName($eventName);
     }
 
     public function dateFrom(): string
@@ -112,11 +113,6 @@ class BdkjHesse extends ContributionDocument
     public function memberBirthYear(MemberData $member): string
     {
         return $member->birthYear();
-    }
-
-    public function basename(): string
-    {
-        return 'zuschuesse-bdkj-hessen' . Str::slug($this->eventName);
     }
 
     public function view(): string

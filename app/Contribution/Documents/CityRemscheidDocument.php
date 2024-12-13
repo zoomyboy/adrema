@@ -77,11 +77,6 @@ class CityRemscheidDocument extends ContributionDocument
         );
     }
 
-    public function basename(): string
-    {
-        return 'zuschuesse-remscheid';
-    }
-
     public function view(): string
     {
         return 'tex.contribution.city-remscheid';

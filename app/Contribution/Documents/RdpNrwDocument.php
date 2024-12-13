@@ -98,11 +98,6 @@ class RdpNrwDocument extends ContributionDocument
         return $member->age();
     }
 
-    public function basename(): string
-    {
-        return 'zuschuesse-rdp-nrw';
-    }
-
     public function view(): string
     {
         return 'tex.contribution.rdp-nrw';

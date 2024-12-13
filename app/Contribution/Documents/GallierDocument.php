@@ -67,11 +67,6 @@ class GallierDocument extends ContributionDocument
         );
     }
 
-    public function basename(): string
-    {
-        return 'zuschuesse-gallier';
-    }
-
     public function view(): string
     {
         return 'tex.contribution.gallier';

@@ -45,4 +45,9 @@ abstract class ContributionDocument extends Document
     {
         $this->eventName = $eventName;
     }
+
+    public function basename(): string
+    {
+        return str('Zuschüsse ')->append($this->getName())->append(' ')->append($this->eventName)->slug();
+    }
 }

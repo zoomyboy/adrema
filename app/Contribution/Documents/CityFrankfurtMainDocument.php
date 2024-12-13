@@ -28,6 +28,7 @@ class CityFrankfurtMainDocument extends ContributionDocument
         public ?string $filename = '',
         public string $type = 'F',
     ) {
+        $this->setEventName($eventName);
         $this->fromName = app(InvoiceSettings::class)->from_long;
     }
 
@@ -100,11 +101,6 @@ class CityFrankfurtMainDocument extends ContributionDocument
     public function memberAge(MemberData $member): string
     {
         return $member->age();
-    }
-
-    public function basename(): string
-    {
-        return 'zuschuesse-frankfurt-' . Str::slug($this->eventName);
     }
 
     public function view(): string
