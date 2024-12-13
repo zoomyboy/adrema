@@ -22,7 +22,9 @@ class RdpNrwDocument extends ContributionDocument
         public Collection $members,
         public ?string $filename = '',
         public string $type = 'F',
+        public string $eventName = '',
     ) {
+        $this->setEventName($eventName);
     }
 
     public function dateRange(): string
@@ -43,6 +45,7 @@ class RdpNrwDocument extends ContributionDocument
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
             members: MemberData::fromModels($request['members'])->chunk(17),
+            eventName: $request['eventName'],
         );
     }
 
@@ -57,6 +60,7 @@ class RdpNrwDocument extends ContributionDocument
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
             members: MemberData::fromApi($request['member_data'])->chunk(17),
+            eventName: $request['eventName'],
         );
     }
 
@@ -123,7 +127,7 @@ class RdpNrwDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für RdP NRW erstellen';
+        return 'RdP NRW';
     }
 
     /**

@@ -6,6 +6,8 @@ use Zoomyboy\Tex\Document;
 
 abstract class ContributionDocument extends Document
 {
+    private string $eventName;
+
     abstract public static function getName(): string;
 
     /**
@@ -32,5 +34,15 @@ abstract class ContributionDocument extends Document
             'members' => 'present|array|min:1',
             'members.*' => 'integer|exists:members,id',
         ];
+    }
+
+    public static function buttonName(): string
+    {
+        return 'Für ' . static::getName() . ' erstellen';;
+    }
+
+    public function setEventName(string $eventName): void
+    {
+        $this->eventName = $eventName;
     }
 }

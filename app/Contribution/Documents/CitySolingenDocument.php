@@ -25,6 +25,7 @@ class CitySolingenDocument extends ContributionDocument
         public string $eventName,
         public string $type = 'F',
     ) {
+        $this->setEventName($eventName);
         $this->fromName = app(InvoiceSettings::class)->from_long;
     }
 
@@ -111,7 +112,7 @@ class CitySolingenDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für Stadt Solingen erstellen';
+        return 'Stadt Solingen';
     }
 
     /**

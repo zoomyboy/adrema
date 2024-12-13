@@ -25,7 +25,9 @@ class CityRemscheidDocument extends ContributionDocument
         public Collection $children,
         public ?string $filename = '',
         public string $type = 'F',
+        public string $eventName = '',
     ) {
+        $this->setEventName($eventName);
     }
 
     public function niceDateFrom(): string
@@ -52,6 +54,7 @@ class CityRemscheidDocument extends ContributionDocument
             country: Country::where('id', $request['country'])->firstOrFail(),
             leaders: $leaders->values()->toBase()->chunk(6),
             children: $children->values()->toBase()->chunk(20),
+            eventName: $request['eventName'],
         );
     }
 
@@ -70,6 +73,7 @@ class CityRemscheidDocument extends ContributionDocument
             country: Country::where('id', $request['country'])->firstOrFail(),
             leaders: $leaders->values()->toBase()->chunk(6),
             children: $children->values()->toBase()->chunk(20),
+            eventName: $request['eventName'],
         );
     }
 
@@ -102,7 +106,7 @@ class CityRemscheidDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für Remscheid erstellen';
+        return 'Remscheid';
     }
 
     /**

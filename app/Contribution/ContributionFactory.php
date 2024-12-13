@@ -32,7 +32,7 @@ class ContributionFactory
     public function compilerSelect(): Collection
     {
         return collect($this->documents)->map(fn ($document) => [
-            'title' => $document::getName(),
+            'title' => $document::buttonName(),
             'class' => $document,
         ]);
     }

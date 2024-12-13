@@ -131,7 +131,7 @@ class CityFrankfurtMainDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für Frankfurt erstellen';
+        return 'Frankfurt';
     }
 
     /**

@@ -22,7 +22,9 @@ class GallierDocument extends ContributionDocument
         public Collection $members,
         public ?string $filename = '',
         public string $type = 'F',
+        public string $eventName = '',
     ) {
+        $this->setEventName($eventName);
     }
 
     public function dateFromHuman(): string
@@ -46,6 +48,7 @@ class GallierDocument extends ContributionDocument
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
             members: MemberData::fromModels($request['members'])->chunk(14),
+            eventName: $request['eventName'],
         );
     }
 
@@ -60,6 +63,7 @@ class GallierDocument extends ContributionDocument
             zipLocation: $request['zipLocation'],
             country: Country::where('id', $request['country'])->firstOrFail(),
             members: MemberData::fromApi($request['member_data'])->chunk(14),
+            eventName: $request['eventName'],
         );
     }
 
@@ -92,7 +96,7 @@ class GallierDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für Gallier erstellen';
+        return 'Gallier';
     }
 
     /**
@@ -104,6 +108,7 @@ class GallierDocument extends ContributionDocument
             'dateFrom' => 'required|string|date_format:Y-m-d',
             'dateUntil' => 'required|string|date_format:Y-m-d',
             'zipLocation' => 'required|string',
+            'eventName' => 'required|string',
         ];
     }
 }

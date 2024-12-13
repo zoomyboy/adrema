@@ -143,7 +143,7 @@ class BdkjHesse extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für BDKJ Hessen erstellen';
+        return 'BDKJ Hessen';
     }
 
     /**

@@ -107,8 +107,8 @@ it('compiles documents via api', function (string $type, array $bodyChecks) {
     $this->withoutExceptionHandling();
     Tex::spy();
     $this->login()->loginNami();
-    $member1 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
-    $member2 = Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
+    $member1 = Member::factory()->defaults()->male()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
+    $member2 = Member::factory()->defaults()->female()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
 
     $response = $this->call('GET', '/contribution-generate', [
         'payload' => ContributionRequestFactory::new()->type($type)->state([
