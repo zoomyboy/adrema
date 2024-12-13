@@ -116,11 +116,6 @@ class BdkjHesse extends ContributionDocument
         return $member->birthYear();
     }
 
-    public function view(): string
-    {
-        return 'tex.contribution.bdkj-hesse';
-    }
-
     public function setFilename(string $filename): static
     {
         $this->filename = $filename;

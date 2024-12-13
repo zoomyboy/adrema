@@ -88,11 +88,6 @@ class CitySolingenDocument extends ContributionDocument
         return $firstRow . "\n" . $secondRow;
     }
 
-    public function view(): string
-    {
-        return 'tex.contribution.city-solingen';
-    }
-
     public function getEngine(): Engine
     {
         return Engine::PDFLATEX;

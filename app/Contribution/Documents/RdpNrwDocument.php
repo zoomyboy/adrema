@@ -99,11 +99,6 @@ class RdpNrwDocument extends ContributionDocument
         return $member->age();
     }
 
-    public function view(): string
-    {
-        return 'tex.contribution.rdp-nrw';
-    }
-
     public function setFilename(string $filename): static
     {
         $this->filename = $filename;

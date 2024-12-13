@@ -56,4 +56,10 @@ abstract class ContributionDocument extends Document
     {
         return Template::make('tex.templates.contribution');
     }
+
+
+    public function view(): string
+    {
+        return 'tex.contribution.' . str(class_basename(static::class))->replace('Document', '')->kebab()->toString();
+    }
 }

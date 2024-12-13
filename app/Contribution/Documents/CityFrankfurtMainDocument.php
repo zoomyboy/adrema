@@ -103,11 +103,6 @@ class CityFrankfurtMainDocument extends ContributionDocument
         return $member->age();
     }
 
-    public function view(): string
-    {
-        return 'tex.contribution.city-frankfurt-main';
-    }
-
     public function setFilename(string $filename): static
     {
         $this->filename = $filename;

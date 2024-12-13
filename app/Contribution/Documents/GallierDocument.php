@@ -69,11 +69,6 @@ class GallierDocument extends ContributionDocument
         );
     }
 
-    public function view(): string
-    {
-        return 'tex.contribution.gallier';
-    }
-
     public function setFilename(string $filename): static
     {
         $this->filename = $filename;
