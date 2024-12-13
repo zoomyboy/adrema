@@ -28,7 +28,7 @@
     \node[anchor=center, text width=45.75mm, align=center] at ($(135.35mm, 59.7mm + 9.2mm * <<<$i%14>>>)$) {<<<$member->address>>>};
     \node[anchor=center, text width=26.75mm, align=center] at ($(174.35mm, 59.7mm + 9.2mm * <<<$i%14>>>)$) {<<<$member->city()>>>};
     \node[anchor=center, text width=19.75mm, align=center] at ($(199.35mm, 59.7mm + 9.2mm * <<<$i%14>>>)$) {<<<$member->birthdayHuman()>>>};
-    \node[anchor=center, text width=7.75mm, align=center] at ($(216.35mm, 59.7mm + 9.2mm * <<<$i%14>>>)$) {<<<$member->gender?->short>>>};
+    \node[anchor=center, text width=7.75mm, align=center] at ($(216.35mm, 59.7mm + 9.2mm * <<<$i%14>>>)$) {<<<$member->genderLetter()>>>};
     \node[anchor=center, text width=7.75mm, align=center] at ($(276.35mm, 59.7mm + 9.2mm * <<<$i%14>>>)$) {<<<$member->isLeader ? 'GL' : 'T'>>>};
 @endforeach
 

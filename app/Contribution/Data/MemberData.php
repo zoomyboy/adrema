@@ -81,4 +81,14 @@ class MemberData extends Data
     {
         return (string) $this->birthday->year;
     }
+
+    public function birthdayHuman(): string
+    {
+        return $this->birthday->format('d.m.Y');
+    }
+
+    public function genderLetter(): string
+    {
+        return $this->gender->short;
+    }
 }

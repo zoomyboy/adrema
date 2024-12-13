@@ -25,6 +25,15 @@ class Gender extends Model
         };
     }
 
+    public function getShortAttribute(): string
+    {
+        return match ($this->name) {
+            'Männlich' => 'm',
+            'Weiblich' => 'w',
+            default => ''
+        };
+    }
+
     public static function fromString(string $title): self
     {
         return self::firstWhere('name', $title);

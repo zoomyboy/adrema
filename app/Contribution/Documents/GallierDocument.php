@@ -25,11 +25,14 @@ class GallierDocument extends ContributionDocument
     ) {
     }
 
-    public function dateRange(): string
+    public function dateFromHuman(): string
     {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y')
-            . ' - '
-            . Carbon::parse($this->dateUntil)->format('d.m.Y');
+        return Carbon::parse($this->dateFrom)->format('d.m.Y');
+    }
+
+    public function dateUntilHuman(): string
+    {
+        return Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
     /**
@@ -58,40 +61,6 @@ class GallierDocument extends ContributionDocument
             country: Country::where('id', $request['country'])->firstOrFail(),
             members: MemberData::fromApi($request['member_data'])->chunk(14),
         );
-    }
-
-    public function countryName(): string
-    {
-        return $this->country->name;
-    }
-
-    public function memberShort(MemberData $member): string
-    {
-        return $member->isLeader ? 'L' : '';
-    }
-
-    public function memberName(MemberData $member): string
-    {
-        return $member->separatedName();
-    }
-
-    public function memberAddress(MemberData $member): string
-    {
-        return $member->fullAddress();
-    }
-
-    public function memberGender(MemberData $member): string
-    {
-        if (!$member->gender) {
-            return '';
-        }
-
-        return strtolower(substr($member->gender->name, 0, 1));
-    }
-
-    public function memberAge(MemberData $member): string
-    {
-        return $member->age();
     }
 
     public function basename(): string
@@ -123,7 +92,7 @@ class GallierDocument extends ContributionDocument
 
     public static function getName(): string
     {
-        return 'Für RdP NRW erstellen';
+        return 'Für Gallier erstellen';
     }
 
     /**
@@ -134,9 +103,7 @@ class GallierDocument extends ContributionDocument
         return [
             'dateFrom' => 'required|string|date_format:Y-m-d',
             'dateUntil' => 'required|string|date_format:Y-m-d',
-            'country' => 'required|integer|exists:countries,id',
             'zipLocation' => 'required|string',
-            'eventName' => 'required|string',
         ];
     }
 }

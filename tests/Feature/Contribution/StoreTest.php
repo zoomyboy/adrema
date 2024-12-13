@@ -5,6 +5,7 @@ namespace Tests\Feature\Contribution;
 use App\Contribution\Documents\ContributionDocument;
 use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Documents\CitySolingenDocument;
+use App\Contribution\Documents\GallierDocument;
 use App\Country;
 use App\Gender;
 use App\Invoice\InvoiceSettings;
@@ -88,6 +89,21 @@ dataset('validation', function () {
             ['zipLocation' => ''],
             CitySolingenDocument::class,
             'zipLocation',
+        ],
+        [
+            ['zipLocation' => ''],
+            GallierDocument::class,
+            'zipLocation',
+        ],
+        [
+            ['dateFrom' => ''],
+            GallierDocument::class,
+            'dateFrom',
+        ],
+        [
+            ['dateUntil' => ''],
+            GallierDocument::class,
+            'dateUntil',
         ],
     ];
 });
