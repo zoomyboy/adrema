@@ -3,15 +3,16 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
+use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class GallierDocument extends ContributionDocument
 {
 
     use HasPdfBackground;
+    use FormatsDates;
 
     /**
      * @param Collection<int, Collection<int, MemberData>> $members
@@ -27,16 +28,6 @@ class GallierDocument extends ContributionDocument
         public string $eventName = '',
     ) {
         $this->setEventName($eventName);
-    }
-
-    public function dateFromHuman(): string
-    {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y');
-    }
-
-    public function dateUntilHuman(): string
-    {
-        return Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
     /**

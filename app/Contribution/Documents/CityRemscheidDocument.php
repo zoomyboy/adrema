@@ -3,15 +3,16 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
+use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use App\Member\Member;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class CityRemscheidDocument extends ContributionDocument
 {
     use HasPdfBackground;
+    use FormatsDates;
 
     /**
      * @param Collection<int, Collection<int, Member>> $leaders
@@ -29,16 +30,6 @@ class CityRemscheidDocument extends ContributionDocument
         public string $eventName = '',
     ) {
         $this->setEventName($eventName);
-    }
-
-    public function niceDateFrom(): string
-    {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y');
-    }
-
-    public function niceDateUntil(): string
-    {
-        return Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
     /**

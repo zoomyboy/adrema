@@ -15,8 +15,8 @@
 
 @foreach($members as $chunk)
 \begin{tikzpicture}[remember picture,overlay,yscale=-1]
-\node[anchor=base west] at (17mm,29.62mm) {\bfseries{\small{<<<$dateFromHuman>>>}}};
-\node[anchor=base west] at (34mm,29.62mm) {\bfseries{\small{<<<$dateUntilHuman>>>}}};
+\node[anchor=base west] at (17mm,29.62mm) {\bfseries{\small{<<<$niceDateFrom>>>}}};
+\node[anchor=base west] at (34mm,29.62mm) {\bfseries{\small{<<<$niceDateUntil>>>}}};
 \node[] at (203mm,15.55mm) {\bfseries{\small{<<<$zipLocation>>>}}};
 
 \node[thick, cross out,draw=black,text width=2.4mm, text height=2.4mm, inner sep=0mm] at (17.76mm,47.10mm) {};
