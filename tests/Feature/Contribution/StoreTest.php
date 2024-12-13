@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Contribution;
 
-use App\Contribution\Documents\ContributionDocument;
 use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Documents\CitySolingenDocument;
 use App\Contribution\Documents\GallierDocument;
@@ -10,15 +9,11 @@ use App\Country;
 use App\Gender;
 use App\Invoice\InvoiceSettings;
 use App\Member\Member;
-use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
-use PHPUnit\Framework\Attributes\DataProvider;
-use Spatie\LaravelData\Data;
 use Tests\RequestFactories\ContributionMemberApiRequestFactory;
 use Tests\RequestFactories\ContributionRequestFactory;
-use Tests\TestCase;
 use Zoomyboy\Tex\Tex;
 
 uses(DatabaseTransactions::class);
