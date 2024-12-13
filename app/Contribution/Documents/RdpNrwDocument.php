@@ -99,13 +99,6 @@ class RdpNrwDocument extends ContributionDocument
         return $member->age();
     }
 
-    public function setFilename(string $filename): static
-    {
-        $this->filename = $filename;
-
-        return $this;
-    }
-
     public static function getName(): string
     {
         return 'RdP NRW';

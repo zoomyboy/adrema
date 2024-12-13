@@ -78,13 +78,6 @@ class CityRemscheidDocument extends ContributionDocument
         );
     }
 
-    public function setFilename(string $filename): static
-    {
-        $this->filename = $filename;
-
-        return $this;
-    }
-
     public static function getName(): string
     {
         return 'Remscheid';

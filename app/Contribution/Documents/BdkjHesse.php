@@ -116,13 +116,6 @@ class BdkjHesse extends ContributionDocument
         return $member->birthYear();
     }
 
-    public function setFilename(string $filename): static
-    {
-        $this->filename = $filename;
-
-        return $this;
-    }
-
     public static function getName(): string
     {
         return 'BDKJ Hessen';
