@@ -19,8 +19,6 @@
 \node[anchor=base west] at (34mm,29.62mm) {\bfseries{\small{<<<$niceDateUntil>>>}}};
 \node[] at (203mm,15.55mm) {\bfseries{\small{<<<$zipLocation>>>}}};
 
-\node[thick, cross out,draw=black,text width=2.4mm, text height=2.4mm, inner sep=0mm] at (17.76mm,47.10mm) {};
-
 @foreach($chunk as $i => $member)
     \node[anchor=center, text width=9.75mm, align=center] at ($(19.35mm, 59.7mm + 9.2mm * <<<$i%14>>>)$) {<<<$i+1>>>};
     \node[anchor=center, text width=41.75mm, align=center] at ($(48.35mm, 59.7mm + 9.2mm * <<<$i%14>>>)$) {<<<$member->lastname>>>};
