@@ -23,11 +23,11 @@
 
 @foreach($chunk as $i => $member)
     \node[anchor=base, text width=7.75mm, align=center] at ($(16.35mm, 76.6mm + 7mm * <<<$i % 17>>>)$) {<<<$i+1>>>};
-    \node[anchor=base, text width=18mm, align=center] at ($(32.55mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$memberShort($member)>>>};
-    \node[anchor=base, text width=70mm, align=center] at ($(80.25mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$memberName($member)>>>};
-    \node[anchor=base, text width=118mm, align=center] at ($(178.25mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$memberAddress($member)>>>};
-    \node[anchor=base, text width=16mm, align=center] at ($(249.50mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$memberGender($member)>>>};
-    \node[anchor=base, text width=16mm, align=center] at ($(269.50mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$memberAge($member)>>>};
+    \node[anchor=base, text width=18mm, align=center] at ($(32.55mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$member->isLeader ? 'L' : ''>>>};
+    \node[anchor=base, text width=70mm, align=center] at ($(80.25mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$member->separatedName()>>>};
+    \node[anchor=base, text width=118mm, align=center] at ($(178.25mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$member->fullAddress()>>>};
+    \node[anchor=base, text width=16mm, align=center] at ($(249.50mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$member->genderLetter()>>>};
+    \node[anchor=base, text width=16mm, align=center] at ($(269.50mm, 76.6mm + 7mm * <<<$i%17>>>)$) {<<<$member->age()>>>};
 @endforeach
 
 \end{tikzpicture}

@@ -72,9 +72,9 @@ class MemberData extends Data
         return $this->zip . ' ' . $this->location;
     }
 
-    public function age(): string
+    public function age(): int
     {
-        return $this->birthday ? intval($this->birthday->diffInYears(now())) : '';
+        return intval($this->birthday->diffInYears(now()));
     }
 
     public function birthYear(): string

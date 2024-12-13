@@ -3,14 +3,15 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
+use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class RdpNrwDocument extends ContributionDocument
 {
     use HasPdfBackground;
+    use FormatsDates;
 
     /**
      * @param Collection<int, Collection<int, MemberData>> $members
@@ -26,13 +27,6 @@ class RdpNrwDocument extends ContributionDocument
         public string $eventName = '',
     ) {
         $this->setEventName($eventName);
-    }
-
-    public function dateRange(): string
-    {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y')
-            . ' - '
-            . Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
     /**
@@ -68,35 +62,6 @@ class RdpNrwDocument extends ContributionDocument
     public function countryName(): string
     {
         return $this->country->name;
-    }
-
-    public function memberShort(MemberData $member): string
-    {
-        return $member->isLeader ? 'L' : '';
-    }
-
-    public function memberName(MemberData $member): string
-    {
-        return $member->separatedName();
-    }
-
-    public function memberAddress(MemberData $member): string
-    {
-        return $member->fullAddress();
-    }
-
-    public function memberGender(MemberData $member): string
-    {
-        if (!$member->gender) {
-            return '';
-        }
-
-        return strtolower(substr($member->gender->name, 0, 1));
-    }
-
-    public function memberAge(MemberData $member): string
-    {
-        return $member->age();
     }
 
     public static function getName(): string

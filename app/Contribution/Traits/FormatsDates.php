@@ -16,4 +16,9 @@ trait FormatsDates
     {
         return Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
+
+    public function dateRange(): string
+    {
+        return implode(' - ', [$this->niceDateFrom(), $this->niceDateUntil()]);
+    }
 }
