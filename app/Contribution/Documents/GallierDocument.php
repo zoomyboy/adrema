@@ -3,14 +3,17 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
+use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
 class GallierDocument extends ContributionDocument
 {
+
+    use HasPdfBackground;
+
     /**
      * @param Collection<int, Collection<int, MemberData>> $members
      */
@@ -82,11 +85,6 @@ class GallierDocument extends ContributionDocument
         $this->filename = $filename;
 
         return $this;
-    }
-
-    public function getEngine(): Engine
-    {
-        return Engine::PDFLATEX;
     }
 
     public static function getName(): string

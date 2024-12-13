@@ -6,7 +6,6 @@ use App\Contribution\Data\MemberData;
 use App\Invoice\InvoiceSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 

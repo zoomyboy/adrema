@@ -3,16 +3,17 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
+use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use App\Invoice\InvoiceSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
 class CityFrankfurtMainDocument extends ContributionDocument
 {
+    use HasPdfBackground;
+
     public string $fromName;
 
     /**
@@ -118,11 +119,6 @@ class CityFrankfurtMainDocument extends ContributionDocument
         $this->filename = $filename;
 
         return $this;
-    }
-
-    public function getEngine(): Engine
-    {
-        return Engine::PDFLATEX;
     }
 
     public static function getName(): string

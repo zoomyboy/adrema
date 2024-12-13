@@ -3,15 +3,17 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
+use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use App\Member\Member;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Zoomyboy\Tex\Engine;
 use Zoomyboy\Tex\Template;
 
 class CityRemscheidDocument extends ContributionDocument
 {
+    use HasPdfBackground;
+
     /**
      * @param Collection<int, Collection<int, Member>> $leaders
      * @param Collection<int, Collection<int, Member>> $children
@@ -92,11 +94,6 @@ class CityRemscheidDocument extends ContributionDocument
         $this->filename = $filename;
 
         return $this;
-    }
-
-    public function getEngine(): Engine
-    {
-        return Engine::PDFLATEX;
     }
 
     public static function getName(): string
