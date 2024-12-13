@@ -74,7 +74,7 @@ class MemberData extends Data
 
     public function age(): string
     {
-        return (string) $this->birthday->diffInYears(now()) ?: '';
+        return $this->birthday ? intval($this->birthday->diffInYears(now())) : '';
     }
 
     public function birthYear(): string

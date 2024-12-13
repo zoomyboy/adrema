@@ -3,15 +3,16 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Data\MemberData;
+use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use App\Invoice\InvoiceSettings;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class CityFrankfurtMainDocument extends ContributionDocument
 {
     use HasPdfBackground;
+    use FormatsDates;
 
     public string $fromName;
 
@@ -62,17 +63,6 @@ class CityFrankfurtMainDocument extends ContributionDocument
         );
     }
 
-    public function dateFromHuman(): string
-    {
-        return Carbon::parse($this->dateFrom)->format('d.m.Y');
-    }
-
-    public function dateUntilHuman(): string
-    {
-        return Carbon::parse($this->dateUntil)->format('d.m.Y');
-    }
-
-
     public function countryName(): string
     {
         return $this->country->name;
@@ -81,26 +71,6 @@ class CityFrankfurtMainDocument extends ContributionDocument
     public function pages(): int
     {
         return count($this->members);
-    }
-
-    public function memberShort(MemberData $member): string
-    {
-        return $member->isLeader ? 'L' : '';
-    }
-
-    public function memberName(MemberData $member): string
-    {
-        return $member->separatedName();
-    }
-
-    public function memberAddress(MemberData $member): string
-    {
-        return $member->fullAddress();
-    }
-
-    public function memberAge(MemberData $member): string
-    {
-        return $member->age();
     }
 
     public static function getName(): string
