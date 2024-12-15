@@ -8,27 +8,17 @@ use Lorisleiva\Actions\ActionRequest;
 
 class InvoiceSettings extends LocalSettings implements Storeable
 {
-    public string $from_long;
-
-    public string $from;
-
-    public string $mobile;
-
-    public string $email;
-
-    public string $website;
-
-    public string $address;
-
-    public string $place;
-
-    public string $zip;
-
-    public string $iban;
-
-    public string $bic;
-
-    public int $rememberWeeks;
+    public ?string $from_long;
+    public ?string $from;
+    public ?string $mobile;
+    public ?string $email;
+    public ?string $website;
+    public ?string $address;
+    public ?string $place;
+    public ?string $zip;
+    public ?string $iban;
+    public ?string $bic;
+    public ?int $rememberWeeks;
 
     public static function group(): string
     {
