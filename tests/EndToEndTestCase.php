@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Form\Models\Form;
+use App\Invoice\Models\Invoice;
 use App\Member\Member;
 use Laravel\Scout\Console\FlushCommand;
 use Laravel\Scout\Console\SyncIndexSettingsCommand;
@@ -26,6 +27,7 @@ abstract class EndToEndTestCase extends TestCase
         config()->set('scout.driver', 'meilisearch');
         Artisan::call(FlushCommand::class, ['model' => Member::class]);
         Artisan::call(FlushCommand::class, ['model' => Form::class]);
+        Artisan::call(FlushCommand::class, ['model' => Invoice::class]);
         Artisan::call(SyncIndexSettingsCommand::class);
 
         return $this;

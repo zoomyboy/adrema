@@ -5,7 +5,8 @@ namespace App\Invoice\Scopes;
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
 use App\Lib\Filter;
-use Illuminate\Database\Eloquent\Builder;
+use App\Lib\ScoutFilter;
+use Laravel\Scout\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -15,32 +16,32 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
  */
 #[MapInputName(SnakeCaseMapper::class)]
 #[MapOutputName(SnakeCaseMapper::class)]
-class InvoiceFilterScope extends Filter
+class InvoiceFilterScope extends ScoutFilter
 {
     /**
      * @param array<int, string> $statuses
      */
     public function __construct(
         public ?array $statuses = null,
+        public ?string $search = null
     ) {
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function apply(Builder $query): Builder
-    {
-        $query = $query->whereIn('status',  $this->statuses);
-
-        return $query;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function toDefault(): self
-    {
         $this->statuses = $this->statuses === null ? InvoiceStatus::defaultVisibleValues()->toArray() : $this->statuses;
-        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getQuery(): Builder
+    {
+        $this->search = $this->search ?: '';
+
+        return Invoice::search($this->search, function ($engine, string $query, array $options) {
+            if (empty($this->statuses)) {
+                $filter = 'status = "asa6aeruuni4BahC7Wei6ahm1"';
+            } else {
+                $filter = collect($this->statuses)->map(fn (string $status) => "status = \"$status\"")->join(' OR ');
+            }
+            return $engine->search($query, [...$options, 'filter' => $filter]);
+        });
     }
 }

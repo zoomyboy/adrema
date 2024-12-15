@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Invoice;
+namespace Tests\Feature\EndToEnd;
 
 use App\Invoice\BillKind;
 use App\Invoice\Enums\InvoiceStatus;
@@ -9,8 +9,11 @@ use App\Invoice\Models\InvoicePosition;
 use App\Member\Member;
 use App\Payment\Subscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\EndToEndTestCase;
+use Tests\Feature\Invoice\ReceiverRequestFactory;
 
 uses(DatabaseTransactions::class);
+uses(EndToEndTestCase::class);
 
 it('testItDisplaysInvoices', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
@@ -25,6 +28,7 @@ it('testItDisplaysInvoices', function () {
         ->status(InvoiceStatus::SENT)
         ->create(['usage' => 'Usa', 'mail_email' => 'a@b.de']);
 
+    sleep(2);
     test()->get(route('invoice.index'))
         ->assertInertiaPath('data.data.0.to.name', 'Familie Blabla')
         ->assertInertiaPath('data.data.0.id', $invoice->id)
@@ -78,19 +82,35 @@ it('testValuesCanBeNull', function () {
     test()->login()->loginNami()->withoutExceptionHandling();
     Invoice::factory()->create();
 
+    sleep(2);
     test()->get(route('invoice.index'))
         ->assertInertiaPath('data.data.0.sent_at_human', '');
 });
 
-it('testItFiltersForInvoiceStatus', function () {
+it('filters for invoice status', function (array $filter, int $count) {
     test()->login()->loginNami()->withoutExceptionHandling();
     Invoice::factory()->status(InvoiceStatus::NEW)->create();
     Invoice::factory()->status(InvoiceStatus::SENT)->count(2)->create();
     Invoice::factory()->status(InvoiceStatus::PAID)->count(3)->create();
 
-    test()->callFilter('invoice.index', [])->assertInertiaCount('data.data', 3);
-    test()->callFilter('invoice.index', ['statuses' => []])->assertInertiaCount('data.data', 0);
-    test()->callFilter('invoice.index', ['statuses' => ['Neu']])->assertInertiaCount('data.data', 1);
-    test()->callFilter('invoice.index', ['statuses' => ['Neu', 'Rechnung beglichen']])->assertInertiaCount('data.data', 4);
-    test()->callFilter('invoice.index', ['statuses' => ['Neu', 'Rechnung beglichen', 'Rechnung gestellt']])->assertInertiaCount('data.data', 6);
-});
+    sleep(2);
+    test()->callFilter('invoice.index', $filter)->assertInertiaCount('data.data', $count);
+})->with([
+    [[], 3],
+    [['statuses' => []], 0],
+    [['statuses' => ['Neu']], 1],
+    [['statuses' => ['Neu', 'Rechnung beglichen']], 4],
+    [['statuses' => ['Neu', 'Rechnung beglichen', 'Rechnung gestellt']], 6],
+]);
+
+it('searches invoice usage', function (array $filter, int $count) {
+    test()->login()->loginNami()->withoutExceptionHandling();
+    Invoice::factory()->status(InvoiceStatus::NEW)->create(['usage' => 'Kein Zweck']);
+    Invoice::factory()->status(InvoiceStatus::NEW)->create(['usage' => 'Mitgliedsbeitrag']);
+
+    sleep(2);
+    test()->callFilter('invoice.index', $filter)->assertInertiaCount('data.data', $count);
+})->with([
+    [['search' => 'Mitgliedsbeitrag'], 1],
+    [['search' => 'Kein'], 1],
+]);

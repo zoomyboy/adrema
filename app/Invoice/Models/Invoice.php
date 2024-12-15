@@ -17,12 +17,14 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 use stdClass;
 
 class Invoice extends Model
 {
     /** @use HasFactory<InvoiceFactory> */
     use HasFactory;
+    use Searchable;
 
     public $guarded = [];
 
@@ -153,5 +155,21 @@ class Invoice extends Model
                 'status' => InvoiceStatus::SENT,
             ]);
         }
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'to' => implode(', ', $this->to),
+            'usage' => $this->usage,
+            'greeting' => $this->greeting,
+            'mail_email' => $this->mail_email,
+            'status' => $this->status->value,
+        ];
     }
 }

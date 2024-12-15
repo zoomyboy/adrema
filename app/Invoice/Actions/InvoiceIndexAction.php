@@ -19,9 +19,9 @@ class InvoiceIndexAction
     /**
      * @return LengthAwarePaginator<Invoice>
      */
-    public function handle(InvoiceFilterScope $filter): LengthAwarePaginator
+    public function handle(InvoiceFilterScope $filter)
     {
-        return Invoice::withFilter($filter)->with('positions')->paginate(15);
+        return $filter->getQuery()->query(fn ($q) => $q->with('positions'));
     }
 
     public function asController(ActionRequest $request): Response
@@ -32,7 +32,7 @@ class InvoiceIndexAction
         $filter = InvoiceFilterScope::fromRequest($request->input('filter', ''));
 
         return Inertia::render('invoice/Index', [
-            'data' => InvoiceResource::collection($this->handle($filter)),
+            'data' => InvoiceResource::collection($this->handle($filter)->paginate(15)),
         ]);
     }
 }

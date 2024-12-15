@@ -1,6 +1,7 @@
 <?php
 
 use App\Form\Models\Form;
+use App\Invoice\Models\Invoice;
 use App\Member\Member;
 
 return [
@@ -153,7 +154,16 @@ return [
                 'pagination' => [
                     'maxTotalHits' => 1000000,
                 ]
-            ]
+            ],
+            Invoice::class => [
+                'filterableAttributes' => ['to', 'usage', 'greeting', 'mail_email', 'status', 'id'],
+                'searchableAttributes' => ['to', 'usage', 'greeting', 'mail_email', 'status', 'id'],
+                'sortableAttributes' => [],
+                'displayedAttributes' => ['to', 'usage', 'greeting', 'mail_email', 'status', 'id'],
+                'pagination' => [
+                    'maxTotalHits' => 1000000,
+                ]
+            ],
         ],
     ],
 
