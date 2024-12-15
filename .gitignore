@@ -40,3 +40,4 @@ Homestead.json
 /public/sprite.svg
 /.php-cs-fixer.cache
 /groups.sql
+/.phpunit.cache
