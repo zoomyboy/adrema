@@ -80,20 +80,23 @@ it('testItShowsEmptyFilters', function () {
     $this->callFilter('form.participant.index', ['data' => []], ['form' => $form])->assertJsonPath('meta.filter.data.check', ParticipantFilterScope::$nan);
 });
 
-it('sorts by active colums sorting by default', function () {
+it('sorts by active colums sorting by default', function (array $sorting, string $by, bool $direction) {
     $this->login()->loginNami()->withoutExceptionHandling();
     $form = Form::factory()->fields([
         $this->checkboxField('check'),
         $this->checkboxField('vorname'),
     ])->create();
-    $form->update(['meta' => ['active_columns' => [], 'sorting' => ['by' => 'vorname', 'direction' => true]]]);
+    $form->update(['meta' => ['active_columns' => [], 'sorting' => $sorting]]);
 
     sleep(2);
     $this->callFilter('form.participant.index', [], ['form' => $form])
         ->assertOk()
-        ->assertJsonPath('meta.filter.sort.by', 'vorname')
-        ->assertJsonPath('meta.filter.sort.direction', true);
-});
+        ->assertJsonPath('meta.filter.sort.by', $by)
+        ->assertJsonPath('meta.filter.sort.direction', $direction);
+})->with([
+    [['by' => 'vorname', 'direction' => true], 'vorname', true],
+    [['by' => 'created_at', 'direction' => true], 'created_at', true],
+]);
 
 
 it('testItDisplaysHasNamiField', function () {

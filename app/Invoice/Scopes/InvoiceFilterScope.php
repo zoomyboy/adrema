@@ -12,7 +12,7 @@ use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 /**
- * @extends Filter<Invoice>
+ * @extends ScoutFilter<Invoice>
  */
 #[MapInputName(SnakeCaseMapper::class)]
 #[MapOutputName(SnakeCaseMapper::class)]

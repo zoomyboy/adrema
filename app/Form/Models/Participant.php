@@ -112,6 +112,6 @@ class Participant extends Model implements Preventable
     /** @return array<string, mixed> */
     public function toSearchableArray(): array
     {
-        return [...$this->data, 'parent-id' => $this->parent_id];
+        return [...$this->data, 'parent-id' => $this->parent_id, 'created_at' => $this->created_at->timestamp];
     }
 }

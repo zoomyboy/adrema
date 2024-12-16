@@ -6,9 +6,9 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use App\Invoice\Models\Invoice;
 use App\Invoice\Resources\InvoiceResource;
 use App\Invoice\Scopes\InvoiceFilterScope;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Scout\Builder;
 use Lorisleiva\Actions\ActionRequest;
 
 class InvoiceIndexAction
@@ -17,9 +17,9 @@ class InvoiceIndexAction
 
 
     /**
-     * @return LengthAwarePaginator<Invoice>
+     * @return Builder<Invoice>
      */
-    public function handle(InvoiceFilterScope $filter)
+    public function handle(InvoiceFilterScope $filter): Builder
     {
         return $filter->getQuery()->query(fn ($q) => $q->with('positions'));
     }

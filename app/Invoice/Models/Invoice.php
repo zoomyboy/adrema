@@ -122,15 +122,6 @@ class Invoice extends Model
             ->where('last_remembered_at', '<=', now()->subWeeks($weeks));
     }
 
-    /**
-     * @param  Builder<self> $query
-     * @return Builder<self>
-     */
-    public function scopeWithFilter(Builder $query, InvoiceFilterScope $filter): Builder
-    {
-        return $filter->apply($query);
-    }
-
     public function getMailRecipient(): stdClass
     {
         return (object) [
