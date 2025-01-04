@@ -149,7 +149,7 @@ class ShowTest extends TestCase
             ->for(Group::factory())
             ->for(Nationality::factory()->name('deutsch'))
             ->for(Subscription::factory()->forFee())
-            ->create(['firstname' => 'Max', 'lastname' => 'Muster']);
+            ->create(['firstname' => 'Max', 'lastname' => 'Muster', 'has_vk' => false, 'has_svk' => false]);
 
         $response = $this->get("/member/{$member->id}");
 
