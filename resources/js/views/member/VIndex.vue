@@ -48,6 +48,24 @@
                     size="sm"
                     @update:model-value="setFilter('ausstand', $event)"
                 ></f-switch>
+                <f-select
+                    id="has_vk"
+                    name="has_vk"
+                    :model-value="getFilter('has_vk')"
+                    label="Verhaltenskodex unterschrieben"
+                    size="sm"
+                    :options="meta.boolean_filter"
+                    @update:model-value="setFilter('has_vk', $event)"
+                ></f-select>
+                <f-select
+                    id="has_svk"
+                    name="has_svk"
+                    :model-value="getFilter('has_svk')"
+                    label="SVK unterschrieben"
+                    size="sm"
+                    :options="meta.boolean_filter"
+                    @update:model-value="setFilter('has_svk', $event)"
+                ></f-select>
                 <f-multipleselect
                     id="group_ids"
                     :options="meta.groups"

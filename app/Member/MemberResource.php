@@ -163,6 +163,10 @@ class MemberResource extends JsonResource
                 'activity_ids' => [],
                 'subactivity_ids' => []
             ],
+            'boolean_filter' => [
+                ['id' => true, 'name' => 'Ja'],
+                ['id' => false, 'name' => 'Nein'],
+            ],
             'default' => [
                 'gender_id' => null,
                 'salutation' => '',
