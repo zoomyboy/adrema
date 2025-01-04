@@ -202,6 +202,30 @@ class MemberIndexTest extends EndToEndTestCase
         ]])->assertInertiaCount('data.data', 1);
     }
 
+    public function testItFiltersForSvkPrevention(): void
+    {
+        Member::factory()->defaults()->create(['has_svk' => true]);
+        Member::factory()->defaults()->create(['has_svk' => false]);
+        Member::factory()->defaults()->create(['has_svk' => false]);
+
+        sleep(1);
+        $this->callFilter('member.index', ['has_svk' => true])->assertInertiaCount('data.data', 1);
+        $this->callFilter('member.index', ['has_svk' => false])->assertInertiaCount('data.data', 2);
+        $this->callFilter('member.index', ['has_svk' => null])->assertInertiaCount('data.data', 3);
+    }
+
+    public function testItFiltersForVkPrevention(): void
+    {
+        Member::factory()->defaults()->create(['has_vk' => true]);
+        Member::factory()->defaults()->create(['has_vk' => false]);
+        Member::factory()->defaults()->create(['has_vk' => false]);
+
+        sleep(1);
+        $this->callFilter('member.index', ['has_vk' => true])->assertInertiaCount('data.data', 1);
+        $this->callFilter('member.index', ['has_vk' => false])->assertInertiaCount('data.data', 2);
+        $this->callFilter('member.index', ['has_vk' => null])->assertInertiaCount('data.data', 3);
+    }
+
     public function testGroupOfMembershipsFilterCanBeEmpty(): void
     {
         $mitglied = Activity::factory()->create();

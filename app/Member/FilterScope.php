@@ -46,6 +46,8 @@ class FilterScope extends ScoutFilter
         public array $exclude = [],
         public ?bool $hasFullAddress = null,
         public ?bool $hasBirthday = null,
+        public ?bool $hasSvk = null,
+        public ?bool $hasVk = null,
     ) {
     }
 
@@ -84,6 +86,12 @@ class FilterScope extends ScoutFilter
             }
             if ($this->hasBirthday === true) {
                 $filter->push('birthday IS NOT NULL');
+            }
+            if ($this->hasSvk !== null) {
+                $filter->push('has_svk = ' . ($this->hasSvk ? 'true' : 'false'));
+            }
+            if ($this->hasVk !== null) {
+                $filter->push('has_vk = ' . ($this->hasVk ? 'true' : 'false'));
             }
             if ($this->ausstand === true) {
                 $filter->push('ausstand > 0');

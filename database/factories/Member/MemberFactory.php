@@ -37,6 +37,8 @@ class MemberFactory extends Factory
             'email' => $this->faker->safeEmail(),
             'recertified_at' => null,
             'keepdata' => false,
+            'has_svk' => $this->faker->boolean(),
+            'has_vk' => $this->faker->boolean(),
         ];
     }
 

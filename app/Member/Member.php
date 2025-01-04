@@ -544,6 +544,8 @@ class Member extends Model implements Geolocatable
             'bill_kind' => $this->bill_kind?->value,
             'group_id' => $this->group->id,
             'group_name' => $this->group->inner_name ?: $this->group->name,
+            'has_vk' => $this->has_vk,
+            'has_svk' => $this->has_svk,
             'links' => [
                 'show' => route('member.show', ['member' => $this], false),
                 'edit' => route('member.edit', ['member' => $this], false),

@@ -138,7 +138,7 @@ return [
         'key' => env('MEILI_MASTER_KEY', null),
         'index-settings' => [
             Member::class => [
-                'filterableAttributes' => ['address', 'birthday', 'ausstand', 'bill_kind', 'group_id', 'memberships', 'id'],
+                'filterableAttributes' => ['address', 'birthday', 'ausstand', 'bill_kind', 'group_id', 'memberships', 'has_vk', 'has_svk', 'id'],
                 'searchableAttributes' => ['fullname', 'address'],
                 'sortableAttributes' => ['lastname', 'firstname'],
                 'displayedAttributes' => ['age_group_icon', 'group_name', 'links', 'is_leader', 'lastname', 'firstname', 'fullname', 'address', 'ausstand', 'birthday', 'id', 'memberships', 'bill_kind', 'group_id'],
