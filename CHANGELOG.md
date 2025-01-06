@@ -1,5 +1,13 @@
 # Letzte Änderungen
 
+### 1.12.4
+
+-   Filter Mitglieder nach Verhaltenskodex
+
+### 1.12.3
+
+-   Volltextsuche für Rechnungen
+
 ### 1.12.2
 
 -   Zuschussliste Gallier
