@@ -90,8 +90,8 @@ class MassStoreActionTest extends TestCase
 
         $this->assertDatabaseCount('invoices', 1);
         $this->assertDatabaseCount('invoice_positions', 2);
-        $this->assertDatabaseHas('invoice_positions', ['description' => 'beitrag Max Muster']);
-        $this->assertDatabaseHas('invoice_positions', ['description' => 'beitrag Jane Muster']);
+        $this->assertDatabaseHas('invoice_positions', ['description' => 'beitrag Max Muster', 'price' => 4466]);
+        $this->assertDatabaseHas('invoice_positions', ['description' => 'beitrag Jane Muster', 'price' => 4466]);
     }
 
     public function testItSeparatesBillKinds(): void
@@ -104,5 +104,22 @@ class MassStoreActionTest extends TestCase
 
         $this->assertDatabaseCount('invoices', 2);
         $this->assertDatabaseCount('invoice_positions', 2);
+    }
+
+    public function testItSeparatesSubscriptions(): void
+    {
+        $member1 = Member::factory()->defaults()->emailBillKind()
+            ->for(Subscription::factory()->forFee()->children([new Child('beitrag1 {name}', 4466)]))
+            ->create(['firstname' => 'Member1', 'lastname' => 'ln']);
+        $member2 = Member::factory()->defaults()->sameFamilyAs($member1)->emailBillKind()
+            ->for(Subscription::factory()->forFee()->children([new Child('beitrag2 {name}', 4467)]))
+            ->create(['firstname' => 'Member2']);
+
+        $this->postJson(route('invoice.mass-store'), ['year' => now()->addYear()->year])->assertOk();
+        $invoice = Invoice::first();
+
+        $this->assertDatabaseCount('invoice_positions', 2);
+        $this->assertDatabaseHas('invoice_positions', ['invoice_id' => $invoice->id, 'member_id' => $member1->id, 'description' => 'beitrag1 Member1 ln', 'price' => 4466]);
+        $this->assertDatabaseHas('invoice_positions', ['invoice_id' => $invoice->id, 'member_id' => $member2->id, 'description' => 'beitrag2 Member2 ln', 'price' => 4467]);
     }
 }

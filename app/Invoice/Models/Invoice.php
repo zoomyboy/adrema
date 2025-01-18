@@ -49,7 +49,6 @@ class Invoice extends Model
      */
     public static function createForMember(Member $member, Collection $members, int $year, Subscription $subscription = null): self
     {
-        $subscription = $subscription ?: $member->subscription;
         $invoice = new self([
             'to' => [
                 'name' => 'Familie ' . $member->lastname,
@@ -66,7 +65,8 @@ class Invoice extends Model
 
         $positions = collect([]);
         foreach ($members as $member) {
-            foreach ($subscription->children as $child) {
+            $memberSubscription = $subscription ?: $member->subscription;
+            foreach ($memberSubscription->children as $child) {
                 $positions->push([
                     'description' => str($child->name)->replace('{name}', $member->firstname . ' ' . $member->lastname)->replace('{year}', (string) $year),
                     'price' => $child->amount,
