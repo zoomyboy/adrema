@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.6
+
+-   Fix: Beiträge von Familienmitgliedern splitten
+
 ### 1.12.5
 
 -   Fix: Synchronisieren von bestehenden Beiträgen aus NaMi
