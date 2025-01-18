@@ -7,6 +7,7 @@ use App\Country;
 use App\Fee;
 use App\Gender;
 use App\Group;
+use App\Member\Member;
 use App\Nationality;
 use App\Payment\Subscription;
 use App\Region;
@@ -140,5 +141,22 @@ it('testItPullsMemberWithNoSubscription', function () {
 
     $this->assertDatabaseHas('members', [
         'subscription_id' => null,
+    ]);
+});
+
+it('doesnt set first subscription if fee matches', function () {
+    $this->loginNami();
+    Subscription::factory()->forFee(55)->create();
+    $otherSubscription = Subscription::factory()->forFee(55)->create();
+    $member = Member::factory()->defaults()->inNami(1001)->create(['subscription_id' => $otherSubscription->id]);
+    app(MemberFake::class)->shows(1000, 1001, [
+        'beitragsartId' => 55,
+    ]);
+
+    app(PullMemberAction::class)->handle(1000, 1001);
+
+    $this->assertDatabaseHas('members', [
+        'subscription_id' => $otherSubscription->id,
+        'id' => $member->id,
     ]);
 });

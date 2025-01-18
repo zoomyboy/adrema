@@ -22,7 +22,8 @@ class InsertMemberAction
     {
         $region = Region::firstWhere('nami_id', $member->regionId ?: -1);
 
-        return Member::updateOrCreate(['nami_id' => $member->id], [
+
+        $payload = [
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
             'joined_at' => $member->joinedAt,
@@ -51,7 +52,16 @@ class InsertMemberAction
             'mitgliedsnr' => $member->memberId,
             'version' => $member->version,
             'keepdata' => $member->keepdata,
-        ]);
+        ];
+
+        // Dont update subscription if fee id of existing member's subscription is already the same
+        if ($existing = Member::nami($member->id)) {
+            if ($existing->subscription && $existing->subscription->fee->nami_id === $member->feeId) {
+                $payload['subscription_id'] = $existing->subscription->id;
+            }
+        }
+
+        return Member::updateOrCreate(['nami_id' => $member->id], $payload);
     }
 
     public function getSubscription(NamiMember $member): ?Subscription
