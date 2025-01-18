@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.5
+
+-   Fix: Synchronisieren von bestehenden Beiträgen aus NaMi
+
 ### 1.12.4
 
 -   Filter Mitglieder nach Verhaltenskodex
