@@ -3,8 +3,8 @@
 echo "drop database scoutrobot;" | sudo mysql
 echo "create database scoutrobot;" | sudo mysql
 
-ssh -l stammsilva zoomyboy.de "cd /usr/share/webapps/nami_silva && docker compose exec db mysqldump -udb -p$SCOUTROBOT_DB_PASSWORD db" > db.tmp
-sudo mysql scoutrobot < db.tmp
+ssh -l stamm-silva zoomyboy.de "cd /usr/share/webapps/adrema_silva && docker compose exec db mysqldump -udb -p$SCOUTROBOT_DB_PASSWORD db" > db.tmp
+sudo mysql adrema < db.tmp
 rm db.tmp
 
 echo 'app(\App\Form\FormSettings::class)->fill(["registerUrl" => "http://stammsilva.test/anmeldung/{slug}/register", "clearCacheUrl" => "http://stammsilva.test/adrema/clear-cache"])->save();' | php artisan tinker
