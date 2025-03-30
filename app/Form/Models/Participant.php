@@ -33,7 +33,7 @@ class Participant extends Model implements Preventable
     ];
 
     /**
-     * @return BelongsTo<Form, self>
+     * @return BelongsTo<Form, $this>
      */
     public function form(): BelongsTo
     {
@@ -41,7 +41,7 @@ class Participant extends Model implements Preventable
     }
 
     /**
-     * @return HasMany<self>
+     * @return HasMany<Participant, $this>
      */
     public function children(): HasMany
     {
@@ -49,7 +49,7 @@ class Participant extends Model implements Preventable
     }
 
     /**
-     * @return BelongsTo<Member, self>
+     * @return BelongsTo<Member, $this>
      */
     public function member(): BelongsTo
     {

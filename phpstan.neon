@@ -30,9 +30,6 @@ parameters:
     ignoreErrors:
         -
             message: "#but does not specify its types: TData#"
-
-        -
-            message: "#cast\\(\\) has parameter \\$properties#"
         -
             message: "#^Method App\\\\Activity\\:\\:sluggable\\(\\) return type has no value type specified in iterable type array\\.$#"
             count: 1

@@ -2,12 +2,13 @@
 
 namespace App\Member;
 
+use Database\Factories\Member\BankAccountFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BankAccount extends Model
 {
-    /** @use HasFactory<\Database\Factories\\App\Member\BankAccountFactory> */
+    /** @use HasFactory<BankAccountFactory> */
     use HasFactory;
 
     public $guarded = [];

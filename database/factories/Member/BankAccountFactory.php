@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Member;
 
 use App\Member\BankAccount;
 use Illuminate\Database\Eloquent\Factories\Factory;

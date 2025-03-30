@@ -23,7 +23,7 @@ class Maildispatcher extends Model
     ];
 
     /**
-     * @return BelongsTo<Mailgateway, self>
+     * @return BelongsTo<Mailgateway, $this>
      */
     public function gateway(): BelongsTo
     {

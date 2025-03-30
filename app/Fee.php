@@ -22,7 +22,7 @@ class Fee extends Model
     public $timestamps = false;
 
     /**
-     * @return HasMany<Subscription>
+     * @return HasMany<Subscription, $this>
      */
     public function subscriptions(): HasMany
     {

@@ -62,7 +62,7 @@ class Form extends Model implements HasMedia
     }
 
     /**
-     * @return HasMany<Participant>
+     * @return HasMany<Participant, $this>
      */
     public function participants(): HasMany
     {

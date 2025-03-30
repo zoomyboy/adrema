@@ -26,7 +26,7 @@ class Group extends Model
     ];
 
     /**
-     * @return BelongsTo<self, self>
+     * @return BelongsTo<Group, $this>
      */
     public function parent(): BelongsTo
     {
@@ -34,7 +34,7 @@ class Group extends Model
     }
 
     /**
-     * @return HasMany<self>
+     * @return HasMany<Group, $this>
      */
     public function children(): HasMany
     {

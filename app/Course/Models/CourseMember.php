@@ -17,7 +17,7 @@ class CourseMember extends Model
     public $guarded = [];
 
     /**
-     * @return BelongsTo<Course, self>
+     * @return BelongsTo<Course, $this>
      */
     public function course(): BelongsTo
     {
@@ -25,7 +25,7 @@ class CourseMember extends Model
     }
 
     /**
-     * @return BelongsTo<Member, self>
+     * @return BelongsTo<Member, $this>
      */
     public function member(): BelongsTo
     {

@@ -196,7 +196,7 @@ class Member extends Model implements Geolocatable
 
     // ---------------------------------- Relations ----------------------------------
     /**
-     * @return BelongsTo<Country, self>
+     * @return BelongsTo<Country, $this>
      */
     public function country(): BelongsTo
     {
@@ -204,7 +204,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return BelongsTo<Gender, self>
+     * @return BelongsTo<Gender, $this>
      */
     public function gender(): BelongsTo
     {
@@ -212,7 +212,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return BelongsTo<Region, self>
+     * @return BelongsTo<Region, $this>
      */
     public function region(): BelongsTo
     {
@@ -223,7 +223,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return HasMany<InvoicePosition>
+     * @return HasMany<InvoicePosition, $this>
      */
     public function invoicePositions(): HasMany
     {
@@ -231,7 +231,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return BelongsTo<Confession, self>
+     * @return BelongsTo<Confession, $this>
      */
     public function confession(): BelongsTo
     {
@@ -239,7 +239,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return BelongsTo<Nationality, self>
+     * @return BelongsTo<Nationality, $this>
      */
     public function nationality(): BelongsTo
     {
@@ -247,7 +247,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return BelongsTo<Subscription, self>
+     * @return BelongsTo<Subscription, $this>
      */
     public function subscription(): BelongsTo
     {
@@ -255,7 +255,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return BelongsTo<Group, self>
+     * @return BelongsTo<Group, $this>
      */
     public function group(): BelongsTo
     {
@@ -263,7 +263,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return HasMany<CourseMember>
+     * @return HasMany<CourseMember, $this>
      */
     public function courses(): HasMany
     {
@@ -271,7 +271,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return HasMany<Membership>
+     * @return HasMany<Membership, $this>
      */
     public function memberships(): HasMany
     {
@@ -279,7 +279,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return HasMany<Membership>
+     * @return HasMany<Membership, $this>
      */
     public function leaderMemberships(): HasMany
     {
@@ -287,7 +287,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return HasMany<Membership>
+     * @return HasMany<Membership, $this>
      */
     public function ageGroupMemberships(): HasMany
     {
@@ -295,7 +295,7 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return HasOne<BankAccount>
+     * @return HasOne<BankAccount, $this>
      */
     public function bankAccount(): HasOne
     {

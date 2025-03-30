@@ -16,7 +16,7 @@ class InvoicePosition extends Model
     public $guarded = [];
 
     /**
-     * @return BelongsTo<Member, self>
+     * @return BelongsTo<Member, $this>
      */
     public function member(): BelongsTo
     {
@@ -24,7 +24,7 @@ class InvoicePosition extends Model
     }
 
     /**
-     * @return BelongsTo<Invoice, self>
+     * @return BelongsTo<Invoice, $this>
      */
     public function invoice(): BelongsTo
     {

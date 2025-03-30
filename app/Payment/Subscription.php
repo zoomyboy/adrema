@@ -25,7 +25,7 @@ class Subscription extends Model
     }
 
     /**
-     * @return BelongsTo<Fee, self>
+     * @return BelongsTo<Fee, $this>
      */
     public function fee(): BelongsTo
     {
@@ -33,7 +33,7 @@ class Subscription extends Model
     }
 
     /**
-     * @return HasMany<SubscriptionChild>
+     * @return HasMany<SubscriptionChild, $this>
      */
     public function children(): HasMany
     {

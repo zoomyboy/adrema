@@ -34,7 +34,7 @@ class Activity extends Model
     }
 
     /**
-     * @return BelongsToMany<Subactivity>
+     * @return BelongsToMany<Subactivity, $this>
      */
     public function subactivities(): BelongsToMany
     {

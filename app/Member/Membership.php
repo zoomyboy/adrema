@@ -32,7 +32,7 @@ class Membership extends Model
     ];
 
     /**
-     * @return BelongsTo<Activity, self>
+     * @return BelongsTo<Activity, $this>
      */
     public function activity(): BelongsTo
     {
@@ -40,7 +40,7 @@ class Membership extends Model
     }
 
     /**
-     * @return BelongsTo<Group, self>
+     * @return BelongsTo<Group, $this>
      */
     public function group(): BelongsTo
     {
@@ -48,7 +48,7 @@ class Membership extends Model
     }
 
     /**
-     * @return BelongsTo<Subactivity, self>
+     * @return BelongsTo<Subactivity, $this>
      */
     public function subactivity(): BelongsTo
     {
@@ -56,7 +56,7 @@ class Membership extends Model
     }
 
     /**
-     * @return BelongsTo<Member, self>
+     * @return BelongsTo<Member, $this>
      */
     public function member(): BelongsTo
     {

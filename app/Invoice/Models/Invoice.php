@@ -37,7 +37,7 @@ class Invoice extends Model
     ];
 
     /**
-     * @return HasMany<InvoicePosition>
+     * @return HasMany<InvoicePosition, $this>
      */
     public function positions(): HasMany
     {
