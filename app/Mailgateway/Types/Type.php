@@ -68,9 +68,9 @@ abstract class Type
     }
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return mixed
      */
-    public function toResource(): array
+    public function toResource()
     {
         return [
             'cls' => get_class($this),
@@ -93,8 +93,8 @@ abstract class Type
         }
 
         $this->list($name, $domain)
-             ->filter(fn ($listEntry) => $results->doesntContain(fn ($r) => $r->is($listEntry)))
-             ->each(fn ($listEntry) => $this->remove($name, $domain, $listEntry->email));
+            ->filter(fn ($listEntry) => $results->doesntContain(fn ($r) => $r->is($listEntry)))
+            ->each(fn ($listEntry) => $this->remove($name, $domain, $listEntry->email));
     }
 
     /**

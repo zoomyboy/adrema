@@ -39,7 +39,7 @@ class MassStoreAction
         foreach ($memberGroup as $members) {
             $invoice = Invoice::createForMember($members->first(), $members, $year);
             $invoice->save();
-            $invoice->positions()->createMany($invoice->positions);
+            $invoice->positions()->createMany($invoice->positions->toArray());
             $invoices->push($invoice->fresh('positions'));
         }
 

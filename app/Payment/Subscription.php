@@ -14,9 +14,6 @@ class Subscription extends Model
     /** @use HasFactory<SubscriptionFactory> */
     use HasFactory;
 
-    /**
-     * @var array<int, string>
-     */
     public $fillable = ['name', 'fee_id'];
 
     public function getAmount(): int

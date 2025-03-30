@@ -451,11 +451,6 @@ parameters:
             path: app/Form/Fields/NamiField.php
 
         -
-            message: "#^Method App\\\\Fileshare\\\\ConnectionTypes\\\\ConnectionType\\:\\:types\\(\\) should return Illuminate\\\\Support\\\\Collection\\<int, class\\-string\\<App\\\\Fileshare\\\\ConnectionTypes\\\\ConnectionType\\>\\> but returns Illuminate\\\\Support\\\\Collection\\<int, string\\>\\.$#"
-            count: 1
-            path: app/Fileshare/ConnectionTypes/ConnectionType.php
-
-        -
             message: "#^Call to an undefined method Phake\\\\Proxies\\\\StubberProxy\\:\\:check\\(\\)\\.$#"
             count: 1
             path: tests/Feature/Mailgateway/IndexTest.php
