@@ -80,12 +80,12 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "larastan/larastan": "^2.0",
+        "larastan/larastan": "^3.0",
         "laravel/envoy": "^2.8",
         "mockery/mockery": "^1.4.4",
         "orchestra/testbench": "^9.0",
         "pestphp/pest": "^3.0",
-        "phpstan/phpstan-mockery": "^1.1"
+        "phpstan/phpstan-mockery": "^2.0"
     },
     "config": {
         "optimize-autoloader": true,
