@@ -10,6 +10,7 @@ use App\Member\Member;
 use App\Setting\NamiSettings;
 use App\Subactivity;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Zoomyboy\LaravelNami\Data\BankAccount;
 use Zoomyboy\LaravelNami\Data\Member as NamiMember;
 
 class NamiPutMemberAction
@@ -47,6 +48,7 @@ class NamiPutMemberAction
             'id' => $member->nami_id,
             'version' => $member->version,
             'keepdata' => $member->keepdata,
+            'bankAccount' => BankAccount::from([]),
         ]);
         $response = $api->putMember($namiMember, $activity ? $activity->nami_id : null, $subactivity ? $subactivity->nami_id : null);
         Member::withoutEvents(function () use ($response, $member) {
