@@ -3,6 +3,7 @@
 namespace App\Lib\Editor;
 
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Support\EloquentCasts\DataEloquentCast;
 
 /** @todo replace blocks with actual block data classes */
 class EditorData extends Data implements Editorable
@@ -82,5 +83,11 @@ class EditorData extends Data implements Editorable
     public function toEditorData(): EditorData
     {
         return $this;
+    }
+
+    /** @return DataEloquentCast<self> */
+    public static function castUsing(array $arguments): DataEloquentCast
+    {
+        return new DataEloquentCast(static::class, $arguments);
     }
 }

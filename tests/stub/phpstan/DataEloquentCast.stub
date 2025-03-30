@@ -1,0 +1,13 @@
+<?php
+
+namespace Spatie\LaravelData\Support\EloquentCasts;
+
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
+/**
+ * @template TDto
+ * @implements CastsAttributes<TDto, TDto>
+ */
+class DataEloquentCast implements CastsAttributes
+{
+}

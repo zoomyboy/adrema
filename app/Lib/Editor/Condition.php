@@ -6,6 +6,7 @@ use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\Support\EloquentCasts\DataEloquentCast;
 
 class Condition extends Data
 {
@@ -41,5 +42,11 @@ class Condition extends Data
     public function isAll(): bool
     {
         return $this->mode === ConditionMode::ALL;
+    }
+
+    /** @return DataEloquentCast<self> */
+    public static function castUsing(array $arguments): DataEloquentCast
+    {
+        return new DataEloquentCast(static::class, $arguments);
     }
 }

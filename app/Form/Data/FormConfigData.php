@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Attributes\WithTransformer;
+use Spatie\LaravelData\Support\EloquentCasts\DataEloquentCast;
 
 class FormConfigData extends Data
 {
@@ -28,5 +29,11 @@ class FormConfigData extends Data
             fn ($carry, $current) => $carry->merge($current->fields->all()),
             new FieldCollection([])
         );
+    }
+
+    /** @return DataEloquentCast<self> */
+    public static function castUsing(array $arguments): DataEloquentCast
+    {
+        return new DataEloquentCast(static::class, $arguments);
     }
 }
