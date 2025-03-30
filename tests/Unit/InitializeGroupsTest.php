@@ -35,10 +35,10 @@ class InitializeGroupsTest extends TestCase
     public function testItSynchsAGroupWithASingleNodeAndNoChildren(): void
     {
         $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
-        $this->api->method('groups')->will($this->returnValueMap([
+        $this->api->method('groups')->willReturnMap([
             [null, collect([$parentGroup])],
             [$parentGroup, collect([])],
-        ]));
+        ]);
         $this->api->method('groups')->willReturn(collect([]));
 
         (new InitializeGroups($this->api))->handle();
@@ -55,10 +55,10 @@ class InitializeGroupsTest extends TestCase
     {
         $existingGroup = GroupModel::factory()->create(['nami_id' => 150, 'inner_name' => 'Def']);
         $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
-        $this->api->method('groups')->will($this->returnValueMap([
+        $this->api->method('groups')->willReturnMap([
             [null, collect([$parentGroup])],
             [$parentGroup, collect([])],
-        ]));
+        ]);
 
         (new InitializeGroups($this->api))->handle();
 
@@ -75,11 +75,11 @@ class InitializeGroupsTest extends TestCase
     {
         $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
         $subgroup = Group::from(['id' => 200, 'name' => 'subgroup', 'parentId' => 150]);
-        $this->api->method('groups')->will($this->returnValueMap([
+        $this->api->method('groups')->willReturnMap([
             [null, collect([$parentGroup])],
             [$parentGroup, collect([$subgroup])],
             [$subgroup, collect([])],
-        ]));
+        ]);
 
         (new InitializeGroups($this->api))->handle();
 
@@ -94,12 +94,12 @@ class InitializeGroupsTest extends TestCase
         $parentGroup = Group::from(['id' => 150, 'name' => 'lorem', 'parentId' => null]);
         $subgroup = Group::from(['id' => 200, 'name' => 'subgroup', 'parentId' => 150]);
         $subsubgroup = Group::from(['id' => 250, 'name' => 'subsubgroup', 'parentId' => 200]);
-        $this->api->method('groups')->will($this->returnValueMap([
+        $this->api->method('groups')->willReturnMap([
             [null, collect([$parentGroup])],
             [$parentGroup, collect([$subgroup])],
             [$subgroup, collect([$subsubgroup])],
             [$subsubgroup, collect([])],
-        ]));
+        ]);
 
         (new InitializeGroups($this->api))->handle();
 
@@ -111,11 +111,11 @@ class InitializeGroupsTest extends TestCase
         $existingSubgroup = GroupModel::factory()->create(['name' => 'Abc', 'inner_name' => 'Def', 'nami_id' => 200]);
         $parentGroup = Group::from(['id' => 150, 'name' => 'root', 'parentId' => null]);
         $subgroup = Group::from(['id' => 200, 'name' => 'child', 'parentId' => 150]);
-        $this->api->method('groups')->will($this->returnValueMap([
+        $this->api->method('groups')->willReturnMap([
             [null, collect([$parentGroup])],
             [$parentGroup, collect([$subgroup])],
             [$subgroup, collect([])],
-        ]));
+        ]);
 
         (new InitializeGroups($this->api))->handle();
 
