@@ -22,7 +22,6 @@ class InsertMemberAction
     {
         $region = Region::firstWhere('nami_id', $member->regionId ?: -1);
 
-
         $payload = [
             'firstname' => $member->firstname,
             'lastname' => $member->lastname,
@@ -61,7 +60,17 @@ class InsertMemberAction
             }
         }
 
-        return Member::updateOrCreate(['nami_id' => $member->id], $payload);
+        return tap(Member::updateOrCreate(['nami_id' => $member->id], $payload), function ($insertedMember) use ($member) {
+            $insertedMember->bankAccount()->updateOrCreate([
+                'iban' => $member->bankAccount->iban,
+                'bic' => $member->bankAccount->bic,
+                'blz' => $member->bankAccount->blz,
+                'account_number' => $member->bankAccount->accountNumber,
+                'person' => $member->bankAccount->person,
+                'bank_name' => $member->bankAccount->bankName,
+                'nami_id' => $member->bankAccount->id,
+            ]);
+        });
     }
 
     public function getSubscription(NamiMember $member): ?Subscription

@@ -34,6 +34,7 @@ use Zoomyboy\Osm\HasGeolocation;
 use Zoomyboy\Phone\HasPhoneNumbers;
 use App\Prevention\Enums\Prevention;
 use Database\Factories\Member\MemberFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property string $subscription_name
@@ -291,6 +292,14 @@ class Member extends Model implements Geolocatable
     public function ageGroupMemberships(): HasMany
     {
         return $this->memberships()->isAgeGroup()->active();
+    }
+
+    /**
+     * @return HasOne<BankAccount>
+     */
+    public function bankAccount(): HasOne
+    {
+        return $this->hasOne(BankAccount::class);
     }
 
     public static function booted()

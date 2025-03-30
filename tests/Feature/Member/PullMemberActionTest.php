@@ -88,6 +88,26 @@ it('testFetchWiederverwendenFlag', function (array $memberAttributes, array $sto
     [['regionId' => 999], ['region_id' => null]]
 ]);
 
+it('testFetchesKontoverbindung', function (array $memberAttributes, array $storedAttributes) {
+    $this->loginNami();
+    Region::factory()->inNami(999)->name('nicht-de')->create(['is_null' => true]);
+    app(MemberFake::class)->shows(1000, 1001, $memberAttributes);
+
+    app(PullMemberAction::class)->handle(1000, 1001);
+
+    $this->assertDatabaseHas('bank_accounts', [
+        'member_id' => Member::first()->id,
+        ...$storedAttributes
+    ]);
+})->with([
+    [['kontoverbindung' => ['iban' => '3300', 'bic' => 'SOLSDE']], ['iban' => '3300', 'bic' => 'SOLSDE']],
+    [['kontoverbindung' => ['id' => 33003]], ['nami_id' => 33003]],
+    [['kontoverbindung' => ['blz' => 111]], ['blz' => 111]],
+    [['kontoverbindung' => ['institut' => 'Sparkasse']], ['bank_name' => 'Sparkasse']],
+    [['kontoverbindung' => ['kontoinhaber' => 'Max']], ['person' => 'Max']],
+    [['kontoverbindung' => ['kontonummer' => '333']], ['account_number' => '333']],
+]);
+
 it('testItSetsFirstSubscriptionFromFee', function () {
     $this->loginNami();
     Region::factory()->inNami(999)->name('nicht-de')->create(['is_null' => true]);
