@@ -15,7 +15,6 @@ class Fee extends Model
     use HasFactory;
     use HasNamiField;
 
-    /** @var array<int, string> */
     public $fillable = ['name', 'nami_id'];
 
     /** @var bool */

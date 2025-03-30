@@ -8,7 +8,7 @@ use Spatie\LaravelData\Data;
 
 /**
  * @template T of Model
- * @property Builder $query
+ * @property Builder<T> $query
  */
 abstract class ScoutFilter extends Data
 {

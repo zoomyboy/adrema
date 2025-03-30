@@ -129,6 +129,7 @@ class Principal implements PrincipalBackendInterface
      */
     public function findByUri($uri, $principalPrefix)
     {
+        return null;
     }
 
     /**

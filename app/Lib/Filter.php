@@ -8,7 +8,7 @@ use Spatie\LaravelData\Data;
 
 /**
  * @template T of Model
- * @property Builder $query
+ * @property Builder<T> $query
  */
 abstract class Filter extends Data
 {
@@ -40,7 +40,7 @@ abstract class Filter extends Data
     }
 
     /**
-     * @return static(self<T>)
+     * @return static
      */
     public function toDefault(): self
     {
