@@ -31,7 +31,10 @@ class FormConfigData extends Data
         );
     }
 
-    /** @return DataEloquentCast<self> */
+    /**
+     * @param array<int, mixed> $arguments
+     * @return DataEloquentCast<self>
+     */
     public static function castUsing(array $arguments): DataEloquentCast
     {
         return new DataEloquentCast(static::class, $arguments);
