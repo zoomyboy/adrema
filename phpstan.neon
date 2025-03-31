@@ -500,3 +500,45 @@ parameters:
             message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\Relation\\<\\*, \\*, \\*\\>\\:\\:isTrying\\(\\)\\.$#"
             count: 1
             path: app/Membership/TestersBlock.php
+
+        -
+            message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:isLeader\(\)\.$#'
+            identifier: method.notFound
+            count: 1
+            path: app/Efz/EfzPendingBlock.php
+
+        -
+            message: '#^Method App\\Fileshare\\ConnectionTypes\\ConnectionType\:\:types\(\) should return Illuminate\\Support\\Collection\<int, class\-string\<App\\Fileshare\\ConnectionTypes\\ConnectionType\>\> but returns Illuminate\\Support\\Collection\<int, non\-falsy\-string\>\.$#'
+            identifier: return.type
+            count: 1
+            path: app/Fileshare/ConnectionTypes/ConnectionType.php
+
+        -
+            message: '#^Unable to resolve the template type TGroupKey in call to method Illuminate\\Support\\Collection\<int,App\\Form\\Models\\Participant\>\:\:groupBy\(\)$#'
+            identifier: argument.templateType
+            count: 1
+            path: app/Form/Actions/ExportSyncAction.php
+
+        -
+            message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) contains unresolvable type\.$#'
+            identifier: argument.unresolvableType
+            count: 1
+            path: app/Mailgateway/Resources/MailgatewayResource.php
+
+        -
+            message: '#^Parameter \#1 \$value of method Illuminate\\Support\\Collection\<\(int\|string\),array\<string, mixed\>\>\:\:prepend\(\) contains unresolvable type\.$#'
+            identifier: argument.unresolvableType
+            count: 1
+            path: app/Mailgateway/Resources/MailgatewayResource.php
+
+        -
+            message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:isLeader\(\)\.$#'
+            identifier: method.notFound
+            count: 1
+            path: app/Member/PsPendingBlock.php
+
+        -
+            message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<TRelatedModel of Illuminate\\Database\\Eloquent\\Model\>\:\:isTrying\(\)\.$#'
+            identifier: method.notFound
+            count: 1
+            path: app/Membership/TestersBlock.php
