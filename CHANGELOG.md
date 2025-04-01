@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.7
+
+-   Fix: Synchronisation von allen Mitgliedern bei Mail-Verteilern - nicht nur den ersten 20
+
 ### 1.12.6
 
 -   Fix: Beiträge von Familienmitgliedern splitten
