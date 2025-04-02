@@ -61,7 +61,7 @@ class InsertMemberAction
         }
 
         return tap(Member::updateOrCreate(['nami_id' => $member->id], $payload), function ($insertedMember) use ($member) {
-            $insertedMember->bankAccount()->updateOrCreate([
+            $insertedMember->bankAccount->update([
                 'iban' => $member->bankAccount->iban,
                 'bic' => $member->bankAccount->bic,
                 'blz' => $member->bankAccount->blz,

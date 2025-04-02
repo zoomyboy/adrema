@@ -304,12 +304,17 @@ class Member extends Model implements Geolocatable
 
     public static function booted()
     {
+        static::created(function (self $model): void {
+            $model->bankAccount()->create([]);
+        });
+
         static::deleting(function (self $model): void {
             $model->memberships->each->delete();
             $model->courses->each->delete();
             $model->invoicePositions->each(function ($position) {
                 $position->delete();
             });
+            $model->bankAccount()->delete();
         });
     }
 

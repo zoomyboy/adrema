@@ -12,4 +12,6 @@ class BankAccount extends Model
     use HasFactory;
 
     public $guarded = [];
+
+    public $primaryKey = 'member_id';
 }
