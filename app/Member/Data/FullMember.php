@@ -9,7 +9,8 @@ use Zoomyboy\LaravelNami\Data\Member as NamiMember;
 use Zoomyboy\LaravelNami\Data\MembershipEntry as NamiMembershipEntry;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 
-class FullMember extends Data {
+class FullMember extends Data
+{
     /**
      * @param DataCollection<int, NamiCourse> $courses
      * @param DataCollection<int, NamiMembershipEntry> $memberships
@@ -20,6 +21,6 @@ class FullMember extends Data {
         public DataCollection $courses,
         #[DataCollectionOf(NamiMembershipEntry::class)]
         public DataCollection $memberships,
-    ) {}
+    ) {
+    }
 }
-
