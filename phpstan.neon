@@ -8,6 +8,8 @@ parameters:
         - tests/stub/phpstan/TestResponse.stub
         - tests/stub/phpstan/Settings.stub
         - tests/stub/phpstan/DataEloquentCast.stub
+        - tests/stub/phpstan/File.stub
+        - tests/stub/phpstan/CastsAttributes.stub
 
     paths:
         - app
