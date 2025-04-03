@@ -2,9 +2,11 @@
 
 namespace Tests\RequestFactories;
 
+use App\Activity;
 use App\Country;
 use App\Nationality;
 use App\Payment\Subscription;
+use App\Subactivity;
 use Worksome\RequestFactories\RequestFactory;
 
 class MemberStoreRequestFactory extends RequestFactory
@@ -14,8 +16,14 @@ class MemberStoreRequestFactory extends RequestFactory
         $country = Country::factory()->create();
         $nationality = Nationality::factory()->create();
         $subscription = Subscription::factory()->forFee()->create();
+        $activity = Activity::factory()->inNami(89)->create();
+        $subactivity = Subactivity::factory()->inNami(90)->create();
 
         return [
+            'bank_account' => [
+                'iban' => '',
+                'bic' => '',
+            ],
             'address' => 'Bavert 50',
             'birthday' => '2013-02-19',
             'children_phone' => '+49 176 70512778',
@@ -47,6 +55,8 @@ class MemberStoreRequestFactory extends RequestFactory
             'country_id' => $country->id,
             'nationality_id' => $nationality->id,
             'subscription_id' => $subscription->id,
+            'first_activity_id' => $activity->id,
+            'first_subactivity_id' => $subactivity->id,
         ];
     }
 }

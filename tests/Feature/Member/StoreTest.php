@@ -23,6 +23,12 @@ use Zoomyboy\LaravelNami\Fakes\MemberFake;
 
 uses(DatabaseTransactions::class);
 
+beforeEach(function () {
+    Confession::factory()->create(['is_null' => true]);
+    PullMemberAction::shouldRun();
+    PullMembershipsAction::shouldRun();
+});
+
 it('can store a member', function () {
     app(MemberFake::class)->stores(55, 103);
     Fee::factory()->create();
@@ -34,9 +40,6 @@ it('can store a member', function () {
     $activity = Activity::factory()->inNami(89)->create();
     $subactivity = Subactivity::factory()->inNami(90)->create();
     $subscription = Subscription::factory()->forFee()->create();
-    Confession::factory()->create(['is_null' => true]);
-    PullMemberAction::shouldRun();
-    PullMembershipsAction::shouldRun();
 
     $response = $this
         ->from('/member/create')
@@ -85,6 +88,28 @@ it('can store a member', function () {
     ]);
 });
 
+it('can store iban and bic', function () {
+    app(MemberFake::class)->stores(55, 103);
+    Fee::factory()->create();
+    $this->withoutExceptionHandling()->login()->loginNami();
+
+    $this->post('/member', MemberStoreRequestFactory::new()->create([
+        'bank_account.iban' => '666',
+        'bank_account.bic' => 'SOLSDE',
+    ]))->assertSessionHasNoErrors();
+
+    $this->assertDatabaseHas('bank_accounts', [
+        'iban' => '666',
+        'bic' => 'SOLSDE',
+        'member_id' => Member::first()->id,
+    ]);
+
+    app(MemberFake::class)->assertStored(55, function ($payload) {
+        $bank = json_decode($payload['kontoverbindung'], true);
+        return $bank['iban'] === '666' && $bank['bic'] === 'SOLSDE';
+    });
+});
+
 it('testItStoresWiederverwendenFlag', function () {
     app(MemberFake::class)->stores(55, 103);
     Fee::factory()->create();
@@ -92,9 +117,6 @@ it('testItStoresWiederverwendenFlag', function () {
     $activity = Activity::factory()->inNami(89)->create();
     $subactivity = Subactivity::factory()->inNami(90)->create();
     $subscription = Subscription::factory()->forFee()->create();
-    $confesstion = Confession::factory()->create(['is_null' => true]);
-    PullMemberAction::shouldRun();
-    PullMembershipsAction::shouldRun();
 
     $this
         ->from('/member/create')

@@ -84,6 +84,9 @@ class MemberRequest extends FormRequest
             'salutation' => '',
             'comment' => '',
             'keepdata' => 'boolean',
+            'bank_account' => 'array|exclude',
+            'bank_account.iban' => 'nullable|string|max:255',
+            'bank_account.bic' => 'nullable|string|max:255',
         ];
     }
 
@@ -94,6 +97,7 @@ class MemberRequest extends FormRequest
             'group_id' => Group::where('nami_id', $settings->default_group_id)->firstOrFail()->id,
         ]);
         $member->updatePhoneNumbers()->save();
+        $member->bankAccount->update($this->input('bank_account'));
 
         if ($this->input('has_nami')) {
             $this->storeFreshMemberInNami($member);
