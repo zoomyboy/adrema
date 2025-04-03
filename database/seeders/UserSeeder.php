@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             'email' => config('init.email'),
             'email_verified_at' => now(),
             'password' => Hash::make(config('init.password')),
-            'name' => 'Adrema Benutzer',
+            'firstname' => 'Adrema',
+            'lastname' => 'Benutzer',
         ]);
     }
 }
