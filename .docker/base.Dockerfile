@@ -1,4 +1,4 @@
-FROM php:8.3.11-fpm as php
+FROM php:8.3.11-fpm AS php
 WORKDIR /app
 RUN ls /app
 RUN apt-get update
