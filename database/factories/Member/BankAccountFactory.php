@@ -27,7 +27,17 @@ class BankAccountFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'bank_name' => $this->faker->name(),
+            'bic' => $this->faker->swiftBicNumber(),
+            'iban' => $this->faker->iban('DE'),
+            'blz' => $this->faker->name(),
+            'person' => $this->faker->name(),
+            'account_number' => $this->faker->name(),
         ];
+    }
+
+    public function inNami(int $namiId): self
+    {
+        return $this->state(['nami_id' => $namiId]);
     }
 }

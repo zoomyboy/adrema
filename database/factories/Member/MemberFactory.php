@@ -93,6 +93,13 @@ class MemberFactory extends Factory
         return $this->state(['nami_id' => $namiId]);
     }
 
+    public function withBankAccount(BankAccountFactory $factory): self
+    {
+        return $this->afterCreating(function ($member) use ($factory) {
+            $member->bankAccount->update($factory->make()->toArray());
+        });
+    }
+
     public function sameFamilyAs(Member $member): self
     {
         return $this->state([

@@ -48,7 +48,16 @@ class NamiPutMemberAction
             'id' => $member->nami_id,
             'version' => $member->version,
             'keepdata' => $member->keepdata,
-            'bankAccount' => BankAccount::from([]),
+            'bankAccount' => BankAccount::from([
+                'bankName' => $member->bankAccount->bank_name,
+                'id' => $member->bankAccount->nami_id,
+                'memberId' => $member->mitgliedsnr,
+                'iban' => $member->bankAccount->iban,
+                'bic' => $member->bankAccount->bic,
+                'blz' => $member->bankAccount->blz,
+                'person' => $member->bankAccount->person,
+                'accountNumber' => $member->bankAccount->account_number,
+            ]),
         ]);
         $response = $api->putMember($namiMember, $activity ? $activity->nami_id : null, $subactivity ? $subactivity->nami_id : null);
         Member::withoutEvents(function () use ($response, $member) {
