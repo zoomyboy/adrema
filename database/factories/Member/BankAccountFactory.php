@@ -6,17 +6,10 @@ use App\Member\BankAccount;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @template TModel of \App\Member\BankAccount
- *
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<TModel>
+ * @extends Factory<BankAccount>
  */
 class BankAccountFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<TModel>
-     */
     protected $model = BankAccount::class;
 
     /**
