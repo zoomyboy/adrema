@@ -100,28 +100,22 @@ Bei dem Setup wird im Daten-Verzeichniss ein Ordner `./data/setup` angelegt. Hie
     git clone https://git.zoomyboy.de/silva/adrema.git
     ```
 
-2. Kopieren der Beispiel Docker-Compose für das Entwickeln und nach Wünschen anpassen
-
-    ```cmd
-    cp docker-compose.dev.yml docker-compose.yml
-    ```
-
-3. Kopieren der Beispiel Environmentvariablen-Datei
+2. Kopieren der Beispiel Environmentvariablen-Datei
 
     ```cmd
     cp .app.env.example .app.env
     ```
 
-4. Submodule aktuallisieren
+3. Submodule aktuallisieren
 
     ```cmd
     git submodule update --init
     ```
 
-5. Container erstellen
+4. Container erstellen
 
     ```cmd
     docker compose build
     ```
 
-6. Mit Schritt 3 und den folgenden der [Installation des Produktivsystems](#installation-des-produktivsystems) fortfahren
+5. Mit Schritt 3 und den folgenden der [Installation des Produktivsystems](#installation-des-produktivsystems) fortfahren
