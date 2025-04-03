@@ -32,16 +32,16 @@ Außerdem ist AdReMa auch problemlos auf Handys und Tablets bedienbar ("mobiles 
 
 ## Installation des Produktivsystems
 
-1. Herunterladen der Beispiel Docker-Compose
+1. Verschieben der Docker-Compose
 
     ```cmd
-    curl https://git.zoomyboy.de/silva/adrema/raw/branch/master/docker-compose.prod.yml -o docker-compose.yml
+    mv docker-compose.prod.yml docker-compose.yml
     ```
 
-2. Herunterladen der Beispiel Environmentvariablen-Datei
+2. Anwenden der Beispiel Environmentvariablen-Datei
 
     ```cmd
-    curl https://git.zoomyboy.de/silva/adrema/raw/branch/master/.app.env.example -o .app.env
+    mv .app.env.example .app.env
     ```
 
 3. In der `.app.env` notwendige Einstellungen vornehmen:
@@ -50,7 +50,8 @@ Außerdem ist AdReMa auch problemlos auf Handys und Tablets bedienbar ("mobiles 
     - Mail-Server Einstellungen `MAIL_PORT`, `MAIL_HOST`, `MAIL_USERNAME`, `MAIL_PASSWORD` und `MAIL_ENCRYPTION` anpassen
     - `MAIL_FROM_NAME`: Der Name, der als Absender von E-Mails gesetzt wird (z.B. `Stamm Bipi Service`)
     - `MAIL_FROM_ADDRESS`: Die dazu gehörige E-Mail-Adresse, die natürlich für antworten erreichbar sein sollte (z.B. `vorstand@stamm-bipi.de`)
-    - `DB_PASSWORD` und `MYSQL_PASSWORD`: Mit dem selben sicheren Passwort für die Datenbank versehen
+    - `DB_PASSWORD` und `MYSQL_PASSWORD`: Mit dem selben neu erstellten, sicheren Passwort für die Datenbank versehen
+    - `MEILI_MASTER_KEY` Mit einem neu erstellten, sicheren Passwort versehen
     - `USER_EMAIL` und `USER_PASSWORD`: Einstellen des standard Adrema Logins
 
 4. Container zur Gennerierung des App-Key starten
