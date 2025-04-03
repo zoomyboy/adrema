@@ -28,7 +28,7 @@ fi
 if [ $1 == "app" ]; then
     # --------------------------- ensure appkey is set ----------------------------
     wait_for_db
-    php -r '$connection = new PDO("mysql:host='$DB_HOST';dbname='$DB_DATABASE'", "'$DB_USERNAME'", "'$DB_PASSWORD'"); $connection->query("DESCRIBE migrations");' > /dev/null || php artisan migrate --seed --force
+    php -r '$connection = new PDO("mysql:host='$DB_HOST';dbname='$DB_DATABASE'", "'$DB_USERNAME'", "'$DB_PASSWORD'"); $connection->query("DESCRIBE migrations");' > /dev/null || ( php artisan migrate --seed --force && php artisan db:seed )
     su www-data -c 'php artisan migrate --force'
     php artisan scout:sync-index-settings
     php-fpm -F -R -O
