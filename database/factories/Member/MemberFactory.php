@@ -93,6 +93,11 @@ class MemberFactory extends Factory
         return $this->state(['nami_id' => $namiId]);
     }
 
+    public function notInNami(): self
+    {
+        return $this->state(['nami_id' => null]);
+    }
+
     public function withBankAccount(BankAccountFactory $factory): self
     {
         return $this->afterCreating(function ($member) use ($factory) {
