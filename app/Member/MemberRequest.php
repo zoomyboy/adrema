@@ -121,6 +121,7 @@ class MemberRequest extends FormRequest
         $namiSync = $member->isDirty(Member::$namiFields);
 
         $member->save();
+        $member->bankAccount->update($this->input('bank_account'));
 
         if ($this->input('has_nami') && null === $member->nami_id) {
             $this->storeFreshMemberInNami($member);

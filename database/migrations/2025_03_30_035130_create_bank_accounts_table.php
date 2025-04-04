@@ -1,5 +1,6 @@
 <?php
 
+use App\Member\Member;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +23,10 @@ return new class extends Migration
             $table->string('account_number')->nullable();
             $table->timestamps();
         });
+
+        foreach (Member::get() as $member) {
+            $member->bankAccount()->create([]);
+        }
     }
 
     /**

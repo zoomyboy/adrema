@@ -32,7 +32,7 @@ class UpdateTest extends TestCase
 
         $response = $this
             ->from("/member/{$member->id}")
-            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true]));
+            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'bank_account' => []]));
 
         $response->assertRedirect('/member');
         NamiPutMemberAction::spy()->shouldHaveReceived('handle')->withArgs(
@@ -51,7 +51,7 @@ class UpdateTest extends TestCase
 
         $response = $this
             ->from("/member/{$member->id}")
-            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::']));
+            ->patch("/member/{$member->id}", array_merge($member->getAttributes(), ['has_nami' => true, 'firstname' => '::firstname::', 'bank_account' => []]));
 
         $response->assertRedirect("/member/{$member->id}/edit?conflict=1");
     }
@@ -68,12 +68,37 @@ class UpdateTest extends TestCase
             'fax' => '02103 4455130',
             'children_phone' => '02103 4455130',
             'has_nami' => true,
+            'bank_account' => []
         ]));
 
         $this->assertDatabaseHas('members', [
             'main_phone' => '+49 2103 4455129',
             'fax' => '+49 2103 4455130',
             'children_phone' => '+49 2103 4455130',
+        ]);
+    }
+
+    public function testItUpdatesBankAccount(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = $this->member();
+        $this->fakeRequest();
+        NamiPutMemberAction::allowToRun();
+
+        $this->patch("/member/{$member->id}", array_merge($member->getAttributes(), [
+            'has_nami' => true,
+            'bank_account' => [
+                'iban' => 'DE1122',
+                'bic' => 'SOLSDE',
+                'person' => 'Max'
+            ]
+        ]));
+
+        $this->assertDatabaseHas('bank_accounts', [
+            'iban' => 'DE1122',
+            'bic' => 'SOLSDE',
+            'person' => 'Max',
+            'member_id' => $member->id,
         ]);
     }
 
@@ -87,6 +112,7 @@ class UpdateTest extends TestCase
         $this->patch("/member/{$member->id}", array_merge($member->getAttributes(), [
             'keepdata' => true,
             'has_nami' => true,
+            'bank_account' => []
         ]));
 
         $this->assertDatabaseHas('members', [
@@ -103,6 +129,7 @@ class UpdateTest extends TestCase
 
         $this->patch("/member/{$member->id}", array_merge($member->getAttributes(), [
             'location' => null,
+            'bank_account' => []
         ]));
 
         $this->assertDatabaseHas('members', [
@@ -120,6 +147,7 @@ class UpdateTest extends TestCase
             ->from("/member/{$member->id}")
             ->patch("/member/{$member->id}", array_merge($member->getAttributes(), [
                 'other_country' => 'englisch',
+                'bank_account' => []
             ]));
 
         $this->assertEquals('englisch', $member->fresh()->other_country);
@@ -141,6 +169,7 @@ class UpdateTest extends TestCase
             'has_nami' => true,
             'first_activity_id' => $activity->id,
             'first_subactivity_id' => $subactivity->id,
+            'bank_account' => []
         ])->assertSessionHasNoErrors();
 
         app(MemberFake::class)->assertStored($member->group->nami_id, [
@@ -163,6 +192,7 @@ class UpdateTest extends TestCase
             'has_nami' => true,
             'first_activity_id' => null,
             'first_subactivity_id' => null,
+            'bank_account' => []
         ])->assertSessionHasErrors([
             'first_activity_id' => 'Erste Tätigkeit ist erforderlich.',
             'first_subactivity_id' => 'Erste Untergliederung ist erforderlich.',
@@ -190,6 +220,7 @@ class UpdateTest extends TestCase
                 'multiply_pv' => true,
                 'multiply_more_pv' => true,
                 'salutation' => 'Doktor',
+                'bank_account' => []
             ]));
 
         $this->assertEquals('2021-02-01', $member->fresh()->ps_at->format('Y-m-d'));
