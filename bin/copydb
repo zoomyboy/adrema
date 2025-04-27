@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "drop database scoutrobot;" | sudo mysql
-echo "create database scoutrobot;" | sudo mysql
+echo "drop database adrema;" | sudo mysql
+echo "create database adrema;" | sudo mysql
 
 ssh -l stamm-silva zoomyboy.de "cd /usr/share/webapps/adrema_silva && docker compose exec db mysqldump -udb -p$SCOUTROBOT_DB_PASSWORD db" > db.tmp
 sudo mysql adrema < db.tmp
