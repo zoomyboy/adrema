@@ -84,20 +84,24 @@ class MemberRequest extends FormRequest
             'salutation' => '',
             'comment' => '',
             'keepdata' => 'boolean',
-            'bank_account' => 'array|exclude',
+            'bank_account' => 'array',
             'bank_account.iban' => 'nullable|string|max:255',
             'bank_account.bic' => 'nullable|string|max:255',
+            'bank_account.blz' => 'nullable|string|max:255',
+            'bank_account.bank_name' => 'nullable|string|max:255',
+            'bank_account.person' => 'nullable|string|max:255',
+            'bank_account.account_number' => 'nullable|string|max:255',
         ];
     }
 
     public function persistCreate(NamiSettings $settings): void
     {
         $member = new Member([
-            ...$this->validated(),
+            ...$this->dataToInsert(),
             'group_id' => Group::where('nami_id', $settings->default_group_id)->firstOrFail()->id,
         ]);
         $member->updatePhoneNumbers()->save();
-        $member->bankAccount->update($this->input('bank_account'));
+        $member->bankAccount->update($this->validated('bank_account'));
 
         if ($this->input('has_nami')) {
             $this->storeFreshMemberInNami($member);
@@ -116,12 +120,12 @@ class MemberRequest extends FormRequest
 
     public function persistUpdate(Member $member): void
     {
-        $member->fill($this->validated())->updatePhoneNumbers();
+        $member->fill($this->dataToInsert())->updatePhoneNumbers();
 
         $namiSync = $member->isDirty(Member::$namiFields);
 
         $member->save();
-        $member->bankAccount->update($this->input('bank_account'));
+        $member->bankAccount->update($this->validated('bank_account'));
 
         if ($this->input('has_nami') && null === $member->nami_id) {
             $this->storeFreshMemberInNami($member);
@@ -163,5 +167,10 @@ class MemberRequest extends FormRequest
         $member = request()->route('member');
         $when = fn () => true === $request->input('has_nami') && ($member === null || !$member->has_nami);
         $validator->sometimes($attribute, $rules, $when);
+    }
+
+    protected function dataToInsert(): array
+    {
+        return $this->safe()->except('bank_account');
     }
 }

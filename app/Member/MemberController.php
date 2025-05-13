@@ -51,7 +51,7 @@ class MemberController extends Controller
         session()->put('title', "Mitglied {$member->firstname} {$member->lastname} bearbeiten");
 
         return Inertia::render('member/VForm', [
-            'data' => new MemberResource($member),
+            'data' => new MemberResource($member->load('bankAccount')),
             'mode' => 'edit',
             'conflict' => '1' === $request->query('conflict', '0'),
             'meta' => MemberResource::meta(),

@@ -11,6 +11,7 @@ use App\Invoice\BillKind;
 use App\Invoice\Resources\InvoicePositionResource;
 use App\Lib\HasMeta;
 use App\Member\Data\NestedGroup;
+use App\Member\Resources\BankAccountResource;
 use App\Member\Resources\NationalityResource;
 use App\Member\Resources\RegionResource;
 use App\Membership\MembershipResource;
@@ -107,6 +108,7 @@ class MemberResource extends JsonResource
             'lon' => $this->lon,
             'group_name' => $this->group->name,
             'keepdata' => $this->keepdata,
+            'bank_account' => new BankAccountResource($this->whenLoaded('bankAccount')),
             'links' => [
                 'membership_index' => route('member.membership.index', ['member' => $this->getModel()]),
                 'invoiceposition_index' => route('member.invoice-position.index', ['member' => $this->getModel()]),

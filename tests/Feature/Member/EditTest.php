@@ -4,6 +4,7 @@ namespace Tests\Feature\Member;
 
 use App\Activity;
 use App\Country;
+use App\Member\BankAccount;
 use App\Member\Member;
 use App\Subactivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -87,5 +88,31 @@ class EditTest extends TestCase
         $this->assertInertiaHas([
             'bill_kind' => 'E-Mail',
         ], $response, 'data');
+    }
+
+    public function testItDisplaysBankAccount(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $member = Member::factory()
+            ->defaults()
+            ->emailBillKind()
+            ->withBankAccount(BankAccount::factory()->inNami(30)->state([
+                'bank_name' => 'Stadt',
+                'bic' => 'SOLSDE33',
+                'iban' => 'DE50',
+                'blz' => 'ssss',
+                'person' => 'Pill',
+                'account_number' => 'ddf',
+            ]))
+            ->create();
+
+        $response = $this->get(route('member.edit', ['member' => $member]));
+
+        $this->assertInertiaHas('Stadt', $response, 'data.bank_account.bank_name');
+        $this->assertInertiaHas('SOLSDE33', $response, 'data.bank_account.bic');
+        $this->assertInertiaHas('DE50', $response, 'data.bank_account.iban');
+        $this->assertInertiaHas('ssss', $response, 'data.bank_account.blz');
+        $this->assertInertiaHas('Pill', $response, 'data.bank_account.person');
+        $this->assertInertiaHas('ddf', $response, 'data.bank_account.account_number');
     }
 }
