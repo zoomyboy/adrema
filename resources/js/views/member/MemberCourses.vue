@@ -18,11 +18,13 @@
         <div v-else class="grow">
             <table class="custom-table custom-table-light custom-table-sm text-sm grow">
                 <thead>
-                    <th>Baustein</th>
-                    <th>Veranstaltung</th>
-                    <th>Veranstalter</th>
-                    <th>Datum</th>
-                    <th></th>
+                    <tr>
+                        <th>Baustein</th>
+                        <th>Veranstaltung</th>
+                        <th>Veranstalter</th>
+                        <th>Datum</th>
+                        <th></th>
+                    </tr>
                 </thead>
 
                 <tr v-for="(course, index) in data" :key="index">
