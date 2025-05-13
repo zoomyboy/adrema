@@ -169,6 +169,9 @@ class MemberRequest extends FormRequest
         $validator->sometimes($attribute, $rules, $when);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function dataToInsert(): array
     {
         return $this->safe()->except('bank_account');
