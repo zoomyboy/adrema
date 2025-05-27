@@ -19,6 +19,7 @@ class SettingStoreAction
     {
         return [
             'formmail' => 'array',
+            'yearlymail' => 'array',
         ];
     }
 
@@ -26,6 +27,7 @@ class SettingStoreAction
     {
         $settings = app(PreventionSettings::class);
         $settings->formmail = EditorData::from($request->formmail);
+        $settings->yearlymail = EditorData::from($request->yearlymail);
         $settings->save();
 
         Succeeded::message('Einstellungen gespeichert.')->dispatch();

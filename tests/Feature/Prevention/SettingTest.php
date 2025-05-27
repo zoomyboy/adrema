@@ -5,36 +5,34 @@ namespace Tests\Feature\Prevention;
 use App\Prevention\PreventionSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\EditorRequestFactory;
-use Tests\TestCase;
 
-class SettingTest extends TestCase
-{
+uses(DatabaseTransactions::class);
 
-    use DatabaseTransactions;
+it('testItOpensSettingsPage', function () {
+    test()->withoutExceptionHandling();
+    test()->login()->loginNami();
 
-    public function testItOpensSettingsPage(): void
-    {
-        $this->login()->loginNami();
+    test()->get('/setting/prevention')->assertComponent('setting/Prevention')->assertOk();
+});
 
-        $this->get('/setting/prevention')->assertComponent('setting/Prevention')->assertOk();
-    }
+it('receives settings', function () {
+    test()->login()->loginNami();
 
-    public function testItReceivesSettings(): void
-    {
-        $this->login()->loginNami();
+    $text = EditorRequestFactory::new()->text(50, 'lorem ipsum')->toData();
+    $yearlyMail = EditorRequestFactory::new()->text(50, 'lala dd')->toData();
+    app(PreventionSettings::class)->fill(['formmail' => $text, 'yearlymail' => $yearlyMail])->save();
 
-        $text = EditorRequestFactory::new()->text(50, 'lorem ipsum')->toData();
-        app(PreventionSettings::class)->fill(['formmail' => $text])->save();
+    test()->get('/api/prevention')
+        ->assertJsonPath('data.formmail.blocks.0.data.text', 'lorem ipsum')
+        ->assertJsonPath('data.yearlymail.blocks.0.data.text', 'lala dd');
+});
 
-        $this->get('/api/prevention')
-            ->assertJsonPath('data.formmail.blocks.0.data.text', 'lorem ipsum');
-    }
+it('testItStoresSettings', function () {
+    test()->login()->loginNami();
 
-    public function testItStoresSettings(): void
-    {
-        $this->login()->loginNami();
-
-        $this->post('/api/prevention', ['formmail' => EditorRequestFactory::new()->text(50, 'new lorem')->create()])->assertOk();
-        $this->assertTrue(app(PreventionSettings::class)->formmail->hasAll(['new lorem']));
-    }
-}
+    $formmail = EditorRequestFactory::new()->text(50, 'new lorem')->create();
+    $yearlyMail = EditorRequestFactory::new()->text(50, 'lala dd')->create();
+    test()->post('/api/prevention', ['formmail' => $formmail, 'yearlymail' => $yearlyMail])->assertOk();
+    test()->assertTrue(app(PreventionSettings::class)->formmail->hasAll(['new lorem']));
+    test()->assertTrue(app(PreventionSettings::class)->yearlymail->hasAll(['lala dd']));
+});
