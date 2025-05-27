@@ -13,18 +13,18 @@ class PreventionRememberAction
 {
     use AsAction;
 
-    public string $commandSignature = 'prevention:remember';
+    public string $commandSignature = 'prevention:remember-forms';
 
     public function handle(): void
     {
         $query = Participant::whereHas(
             'form',
-            fn ($form) => $form
+            fn($form) => $form
                 ->where('needs_prevention', true)
                 ->where('from', '>=', now())
         )
             ->where(
-                fn ($q) => $q
+                fn($q) => $q
                     ->where('last_remembered_at', '<=', now()->subWeeks(2))
                     ->orWhereNull('last_remembered_at')
             );
