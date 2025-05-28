@@ -2,6 +2,7 @@
 
 namespace App\Prevention\Enums;
 
+use App\Prevention\Data\PreventionData;
 use Illuminate\Support\Collection;
 
 enum Prevention
@@ -37,15 +38,15 @@ enum Prevention
     }
 
     /**
-     * @param array<int, self> $preventions
+     * @param Collection<int, PreventionData> $preventions
      * @return Collection<int, array{letter: string, value: bool, tooltip: string}>
      */
-    public static function items(array $preventions): Collection
+    public static function items(Collection $preventions): Collection
     {
         return collect(static::cases())->map(fn($case) => [
             'letter' => $case->letter(),
-            'value' => !in_array($case, $preventions),
-            'tooltip' => $case->tooltip(!in_array($case, $preventions)),
+            'value' => $preventions->pluck('type')->doesntContain($case),
+            'tooltip' => $case->tooltip($preventions->pluck('type')->doesntContain($case)),
         ]);
     }
 }
