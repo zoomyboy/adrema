@@ -22,14 +22,13 @@ class YearlyMail extends Mailable
 
     /**
      * Create a new message instance.
-     *
      * @param Collection<int, PreventionData> $preventions
      */
     public function __construct(public Preventable $preventable, public EditorData $bodyText, public Collection $preventions)
     {
         $this->settings = app(InvoiceSettings::class);
         $this->bodyText = $this->bodyText
-            ->replaceWithList('wanted', collect($preventions)->pluck('type')->map(fn($prevention) => $prevention->text())->toArray());
+            ->replaceWithList('wanted', $preventions->map(fn($prevention) => $prevention->text())->toArray());
     }
 
     /**

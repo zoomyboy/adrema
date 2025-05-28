@@ -14,8 +14,7 @@ class EditorData extends Data implements Editorable
         public string $version,
         public array $blocks,
         public int $time
-    ) {
-    }
+    ) {}
 
     public function placeholder(string $search, string $replacement): self
     {
@@ -30,7 +29,15 @@ class EditorData extends Data implements Editorable
      */
     public function hasAll(array $wanted): bool
     {
-        return collect($wanted)->first(fn ($search) => !str(json_encode($this->blocks))->contains($search)) === null;
+        return collect($wanted)->doesntContain(fn($search) => !str(json_encode($this->blocks))->contains($search));
+    }
+
+    /**
+     * @param array<int, string> $should
+     */
+    public function hasNot(string $should): bool
+    {
+        return !str(json_encode($this->blocks))->contains($should);
     }
 
     public static function default(): self
@@ -65,7 +72,7 @@ class EditorData extends Data implements Editorable
                     'type' => 'list',
                     'data' => [
                         'style' => 'unordered',
-                        'items' => collect($replacements)->map(fn ($replacement) => [
+                        'items' => collect($replacements)->map(fn($replacement) => [
                             'content' => $replacement,
                             'items' => [],
                         ]),

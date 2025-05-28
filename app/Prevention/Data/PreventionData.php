@@ -14,4 +14,12 @@ class PreventionData extends Data
     {
         return $this->expires->isSameDay($date);
     }
+
+    public function text(): string
+    {
+        return str($this->type->text())->when(
+            !$this->expiresAt(now()),
+            fn($str) => $str->append(' (fällig am ' . $this->expires->format('d.m.Y') . ')')
+        );
+    }
 }

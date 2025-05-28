@@ -49,7 +49,7 @@ class YearlyRememberAction
      */
     protected function createMail(Member $member, Collection $preventions): YearlyMail
     {
-        $body = app(PreventionSettings::class)->refresh()->formmail;
+        $body = app(PreventionSettings::class)->refresh()->yearlymail;
         return new YearlyMail($member, $body, $preventions);
     }
 }

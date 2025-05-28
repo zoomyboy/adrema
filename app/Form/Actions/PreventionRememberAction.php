@@ -41,7 +41,7 @@ class PreventionRememberAction
                 ->placeholder('formname', $participant->form->name)
                 ->append($participant->form->prevention_text);
 
-            Mail::send(new PreventionRememberMail($participant, $body));
+            Mail::send(new PreventionRememberMail($participant, $body, $participant->preventions()));
 
             $participant->update(['last_remembered_at' => now()]);
         }

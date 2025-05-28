@@ -279,7 +279,7 @@ it('testItRendersSetttingMail', function () {
     Mail::assertSent(PreventionRememberMail::class, fn($mail) => $mail->bodyText->hasAll([
         'lorem lala ' . $form->name,
         'erweitertes'
-    ]));
+    ]) && $mail->bodyText->hasNot(now()->format('d.m.Y')));
 });
 
 it('testItAppendsTextOfForm', function () {
@@ -320,7 +320,7 @@ it('displays body text in prevention remember mail', function () {
     $form = createForm();
     $participant = createParticipant($form);
 
-    $mail = new PreventionRememberMail($participant, EditorRequestFactory::new()->paragraphs(['ggtt'])->toData());
+    $mail = new PreventionRememberMail($participant, EditorRequestFactory::new()->paragraphs(['ggtt'])->toData(), collect([]));
     $mail->assertSeeInText('ggtt');
 });
 
@@ -341,4 +341,36 @@ it('renders yearly mail', function () {
     $mail
         ->assertSeeInText('ggtt')
         ->assertSeeInText('Stamm Beispiel');
+});
+
+it('renders setting of yearly mail', function () {
+    Mail::fake();
+    app(PreventionSettings::class)->fill([
+        'yearlymail' => EditorRequestFactory::new()->paragraphs(["{wanted}", "bbb"])->toData()
+    ])->save();
+    $member = createMember((['efz' =>  now()->subYears(5), 'ps_at' => now(), 'has_vk' => true]));
+
+    YearlyRememberAction::run();
+
+    Mail::assertSent(
+        YearlyMail::class,
+        fn($mail) => $mail->bodyText->hasAll(['erweitertes', 'bbb'])
+            && $mail->bodyText->hasNot(now()->format('d.m.Y'))
+    );
+});
+
+it('renders expires at date for preventions', function () {
+    Mail::fake();
+    app(PreventionSettings::class)->fill([
+        'yearlymail' => EditorRequestFactory::new()->paragraphs(["{wanted}"])->toData(),
+        'weeks' => 4,
+    ])->save();
+    createMember((['efz' =>  now()->subYears(5)->addWeeks(4), 'ps_at' => now(), 'has_vk' => true]));
+
+    YearlyRememberAction::run();
+
+    Mail::assertSent(YearlyMail::class, fn($mail) => $mail->bodyText->hasAll([
+        'erweitertes',
+        'am ' . now()->addWeeks(4)->format('d.m.Y'),
+    ]) && $mail->bodyText->hasNot(now()->format('d.m.Y')));
 });
