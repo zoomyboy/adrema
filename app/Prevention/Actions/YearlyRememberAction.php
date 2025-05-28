@@ -7,6 +7,7 @@ use App\Prevention\Data\PreventionData;
 use App\Prevention\Mails\YearlyMail;
 use App\Prevention\PreventionSettings;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -40,7 +41,11 @@ class YearlyRememberAction
                 continue;
             }
 
-            Mail::send($this->createMail($member, $preventions));
+            Cache::remember(
+                'prevention-' . $member->id,
+                (int) now()->diffInSeconds(now()->addWeeks($settings->freshRememberInterval)),
+                fn() => Mail::send($this->createMail($member, $preventions))
+            );
         }
     }
 

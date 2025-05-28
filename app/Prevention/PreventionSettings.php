@@ -11,6 +11,7 @@ class PreventionSettings extends LocalSettings
     public EditorData $formmail;
     public EditorData $yearlymail;
     public int $weeks;
+    public int $freshRememberInterval;
 
     public static function group(): string
     {
