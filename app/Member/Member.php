@@ -191,7 +191,7 @@ class Member extends Model implements Geolocatable
 
     protected function getAusstand(): int
     {
-        return (int) $this->invoicePositions()->whereHas('invoice', fn ($query) => $query->whereNeedsPayment())->sum('price');
+        return (int) $this->invoicePositions()->whereHas('invoice', fn($query) => $query->whereNeedsPayment())->sum('price');
     }
 
     // ---------------------------------- Relations ----------------------------------
@@ -339,7 +339,7 @@ class Member extends Model implements Geolocatable
         return $query->addSelect([
             'pending_payment' => InvoicePosition::selectRaw('SUM(price)')
                 ->whereColumn('invoice_positions.member_id', 'members.id')
-                ->whereHas('invoice', fn ($query) => $query->whereNeedsPayment()),
+                ->whereHas('invoice', fn($query) => $query->whereNeedsPayment()),
         ]);
     }
 
@@ -350,7 +350,7 @@ class Member extends Model implements Geolocatable
      */
     public function scopeWhereHasPendingPayment(Builder $query): Builder
     {
-        return $query->whereHas('invoicePositions', fn ($q) => $q->whereHas('invoice', fn ($q) => $q->whereNeedsPayment()));
+        return $query->whereHas('invoicePositions', fn($q) => $q->whereHas('invoice', fn($q) => $q->whereNeedsPayment()));
     }
 
     /**
@@ -499,7 +499,7 @@ class Member extends Model implements Geolocatable
             'name' => $this->fullname,
             'address' => $this->address,
             'zipLocation' => $this->zip . ' ' . $this->location,
-            'mglnr' => Lazy::create(fn () => 'Mglnr.: ' . $this->nami_id),
+            'mglnr' => Lazy::create(fn() => 'Mglnr.: ' . $this->nami_id),
         ]);
     }
 
@@ -508,7 +508,7 @@ class Member extends Model implements Geolocatable
      */
     public static function forSelect(): array
     {
-        return static::select(['id', 'firstname', 'lastname'])->get()->map(fn ($member) => ['id' => $member->id, 'name' => $member->fullname])->toArray();
+        return static::select(['id', 'firstname', 'lastname'])->get()->map(fn($member) => ['id' => $member->id, 'name' => $member->fullname])->toArray();
     }
 
     // -------------------------------- Geolocation --------------------------------
@@ -567,7 +567,7 @@ class Member extends Model implements Geolocatable
             'age_group_icon' => $this->ageGroupMemberships->first()?->subactivity->slug,
             'is_leader' => $this->leaderMemberships()->count() > 0,
             'memberships' => $this->memberships()->active()->get()
-                ->map(fn ($membership) => [...$membership->only('activity_id', 'subactivity_id'), 'both' => $membership->activity_id . '|' . $membership->subactivity_id, 'with_group' => $membership->group_id . '|' . $membership->activity_id . '|' . $membership->subactivity_id]),
+                ->map(fn($membership) => [...$membership->only('activity_id', 'subactivity_id'), 'both' => $membership->activity_id . '|' . $membership->subactivity_id, 'with_group' => $membership->group_id . '|' . $membership->activity_id . '|' . $membership->subactivity_id]),
         ];
     }
 }
