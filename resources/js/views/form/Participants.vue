@@ -21,7 +21,7 @@
                 </div>
             </div>
         </ui-popup>
-        <page-filter breakpoint="lg">
+        <page-filter>
             <template #buttons>
                 <f-text id="search" v-model="innerFilter.search" name="search" label="Suchen" size="sm"></f-text>
                 <ui-icon-button icon="plus" @click="editing = {participant: null, preview: JSON.stringify(meta.form_config)}">Hinzufügen</ui-icon-button>

@@ -72,7 +72,7 @@
                 </section>
             </form>
         </ui-popup>
-        <page-filter breakpoint="xl" :filterable="false">
+        <page-filter>
             <template #buttons>
                 <f-text id="search" :model-value="getFilter('search')" label="Suchen …" size="sm" @update:model-value="setFilter('search', $event)"></f-text>
                 <f-multipleselect

@@ -37,7 +37,7 @@
                 <span class="hidden xl:inline">Anwenden</span>
             </button>
         </ui-popup>
-        <page-filter breakpoint="xl">
+        <page-filter>
             <template #fields>
                 <f-switch
                     v-show="hasModule('bill')"
