@@ -1,6 +1,5 @@
 <template>
-    <div
-        class="fixed w-full w-[80vw] max-w-[40rem] shadow-2xl bg-gray-600 right-0 top-0 h-full flex flex-col group is-bright">
+    <div class="fixed shadow-2xl bg-gray-600 right-0 top-0 h-full flex flex-col group is-bright" :class="widths[max]">
         <suspense>
             <slot></slot>
 
@@ -18,4 +17,20 @@
 
 <script setup>
 defineEmits(['close']);
+
+const widths = {
+    40: 'w-full w-[80vw] max-w-[40rem]',
+    30: 'w-full w-[80vw] max-w-[30rem]',
+    20: 'w-full w-[80vw] max-w-[20rem]',
+    10: 'w-full w-[80vw] max-w-[10rem]',
+    0: '',
+};
+
+defineProps({
+    max: {
+        default: () => 40,
+        type: Number,
+        required: false,
+    },
+});
 </script>
