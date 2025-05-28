@@ -32,9 +32,6 @@ class EditorData extends Data implements Editorable
         return collect($wanted)->doesntContain(fn($search) => !str(json_encode($this->blocks))->contains($search));
     }
 
-    /**
-     * @param array<int, string> $should
-     */
     public function hasNot(string $should): bool
     {
         return !str(json_encode($this->blocks))->contains($should);
