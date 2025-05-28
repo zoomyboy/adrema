@@ -255,6 +255,18 @@ it('remembers members yearly', function ($date, $shouldSend) {
     [fn() => now()->subYears(5)->subDay(), false],
 ]);
 
+it('remembers yearly only once', function () {
+    Mail::fake();
+    createMember(['efz' => now()->subYears(5), 'ps_at' => now(), 'has_vk' => true]);
+
+    YearlyRememberAction::run();
+    YearlyRememberAction::run();
+    YearlyRememberAction::run();
+
+    Mail::assertSentCount(1);
+    Mail::assertSent(YearlyMail::class, fn($mail) => $mail->preventions->first()->expires->isSameDay(now()));
+});
+
 it('testItDoesntRememberParticipantThatHasNoMail', function () {
     Mail::fake();
     $form = createForm();

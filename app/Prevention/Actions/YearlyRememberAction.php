@@ -44,7 +44,10 @@ class YearlyRememberAction
             Cache::remember(
                 'prevention-' . $member->id,
                 (int) now()->diffInSeconds(now()->addWeeks($settings->freshRememberInterval)),
-                fn() => Mail::send($this->createMail($member, $preventions))
+                function () use ($member, $preventions) {
+                    Mail::send($this->createMail($member, $preventions));
+                    return 0;
+                }
             );
         }
     }
