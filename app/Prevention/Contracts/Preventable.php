@@ -16,5 +16,5 @@ interface Preventable
      */
     public function preventions(): array;
 
-    public function getMailRecipient(): stdClass;
+    public function getMailRecipient(): ?stdClass;
 }

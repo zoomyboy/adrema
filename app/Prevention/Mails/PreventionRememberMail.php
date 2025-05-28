@@ -25,7 +25,7 @@ class PreventionRememberMail extends Mailable
     {
         $this->settings = app(InvoiceSettings::class);
         $this->bodyText = $this->bodyText
-            ->replaceWithList('wanted', collect($preventable->preventions())->map(fn ($prevention) => $prevention->text())->toArray());
+            ->replaceWithList('wanted', collect($preventable->preventions())->map(fn($prevention) => $prevention->text())->toArray());
     }
 
     /**

@@ -94,7 +94,7 @@ class Participant extends Model implements Preventable
         return $this->member?->preventions($this->form->from) ?: [];
     }
 
-    public function getMailRecipient(): stdClass
+    public function getMailRecipient(): ?stdClass
     {
         return $this->getFields()->getMailRecipient();
     }
