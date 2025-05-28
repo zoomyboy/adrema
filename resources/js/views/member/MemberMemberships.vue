@@ -18,7 +18,14 @@
             label="Untertätigkeit"
             @update:modelValue="setSubactivityId(single, $event)"
         ></f-select>
-        <f-switch v-if="displayPromisedAt" id="has_promise" :model-value="single.promised_at !== null" label="Hat Versprechen" @update:modelValue="setPromisedAtSwitch(single, $event)"></f-switch>
+        <f-switch
+            v-if="displayPromisedAt"
+            id="has_promise"
+            name="has_promise"
+            :model-value="single.promised_at !== null"
+            label="Hat Versprechen"
+            @update:modelValue="setPromisedAtSwitch(single, $event)"
+        ></f-switch>
         <f-text v-show="displayPromisedAt && single.promised_at !== null" id="promised_at" v-model="single.promised_at" type="date" label="Versprechensdatum" size="sm"></f-text>
         <button type="submit" class="btn btn-primary">Absenden</button>
     </form>
