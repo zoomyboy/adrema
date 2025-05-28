@@ -1,5 +1,5 @@
 @component('mail::message')
-# Hallo {{ $preventable->member->fullname }},
+# Hallo {{ $preventable->getMailRecipient()->name }},
 
 <x-mail-view::editor :content="$bodyText->toArray()['blocks']"></x-mail-view::editor>
 
