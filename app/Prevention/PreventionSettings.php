@@ -12,6 +12,7 @@ class PreventionSettings extends LocalSettings
     public EditorData $yearlymail;
     public int $weeks;
     public int $freshRememberInterval;
+    public bool $active;
 
     public static function group(): string
     {
@@ -29,5 +30,18 @@ class PreventionSettings extends LocalSettings
     public function viewData(): array
     {
         return [];
+    }
+
+    /**
+     * @todo return int value here and handle this in vue with a number field that only expects integers
+     * @return array<string, mixed>
+     */
+    public function toFrontend(): array
+    {
+        return [
+            ...$this->toArray(),
+            'weeks' => (string) $this->weeks,
+            'freshRememberInterval' => (string) $this->freshRememberInterval,
+        ];
     }
 }

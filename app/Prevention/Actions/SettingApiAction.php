@@ -13,7 +13,7 @@ class SettingApiAction
     public function handle(): JsonResponse
     {
         return response()->json([
-            'data' => app(PreventionSettings::class)->toArray(),
+            'data' => app(PreventionSettings::class)->toFrontend(),
         ]);
     }
 }
