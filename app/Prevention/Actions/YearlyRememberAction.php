@@ -5,7 +5,6 @@ namespace App\Prevention\Actions;
 use App\Member\Member;
 use App\Prevention\Data\PreventionData;
 use App\Prevention\Mails\YearlyMail;
-use App\Prevention\Models\PreventionHistory;
 use App\Prevention\PreventionSettings;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
