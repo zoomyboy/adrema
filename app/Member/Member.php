@@ -13,6 +13,8 @@ use App\Nami\HasNamiField;
 use App\Nationality;
 use App\Payment\Subscription;
 use App\Pdf\Sender;
+use App\Prevention\Contracts\Preventable;
+use App\Prevention\Data\PreventionData;
 use App\Region;
 use App\Setting\NamiSettings;
 use Carbon\Carbon;
@@ -35,12 +37,14 @@ use Zoomyboy\Phone\HasPhoneNumbers;
 use App\Prevention\Enums\Prevention;
 use Database\Factories\Member\MemberFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
+use stdClass;
 
 /**
  * @property string $subscription_name
  * @property int    $pending_payment
  */
-class Member extends Model implements Geolocatable
+class Member extends Model implements Geolocatable, Preventable
 {
     use Notifiable;
     use HasNamiField;
@@ -192,6 +196,20 @@ class Member extends Model implements Geolocatable
     protected function getAusstand(): int
     {
         return (int) $this->invoicePositions()->whereHas('invoice', fn($query) => $query->whereNeedsPayment())->sum('price');
+    }
+
+    public function getMailRecipient(): ?stdClass
+    {
+        if (!$this->fullname) {
+            return null;
+        }
+
+        return (object) ['name' => $this->fullname, 'email' => $this->email];
+    }
+
+    public function preventableSubject(): string
+    {
+        return 'Nachweise erforderlich';
     }
 
     // ---------------------------------- Relations ----------------------------------
@@ -364,32 +382,47 @@ class Member extends Model implements Geolocatable
     }
 
     /**
-     * @return array<int, Prevention>
+     * @inheritdoc
      */
-    public function preventions(?Carbon $date = null): array
+    public function preventions(?Carbon $date = null): Collection
     {
         $date = $date ?: now();
 
-        /** @var array<int, Prevention> */
-        $preventions = [];
+        /** @var Collection<int, PreventionData> */
+        $preventions = collect([]);
 
         if ($this->efz === null || $this->efz->diffInYears($date) >= 5) {
-            $preventions[] = Prevention::EFZ;
+            $preventions->push(PreventionData::from([
+                'type' => Prevention::EFZ,
+                'expires' => $this->efz === null ? now() : $this->efz->addYears(5)
+            ]));
         }
 
         if (!$this->has_vk) {
-            $preventions[] = Prevention::VK;
+            $preventions->push(PreventionData::from([
+                'type' => Prevention::VK,
+                'expires' => now(),
+            ]));
         }
 
         if ($this->more_ps_at === null) {
             if ($this->ps_at === null) {
-                $preventions[] = Prevention::PS;
+                $preventions->push(PreventionData::from([
+                    'type' => Prevention::PS,
+                    'expires' => now(),
+                ]));
             } else if ($this->ps_at->diffInYears($date) >= 5) {
-                $preventions[] = Prevention::MOREPS;
+                $preventions->push(PreventionData::from([
+                    'type' => Prevention::MOREPS,
+                    'expires' => $this->ps_at->addYears(5),
+                ]));
             }
         } else {
             if ($this->more_ps_at === null || $this->more_ps_at->diffInYears($date) >= 5) {
-                $preventions[] = Prevention::MOREPS;
+                $preventions->push(PreventionData::from([
+                    'type' => Prevention::MOREPS,
+                    'expires' => $this->more_ps_at->addYears(5),
+                ]));
             }
         }
 

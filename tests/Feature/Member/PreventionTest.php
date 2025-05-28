@@ -13,14 +13,13 @@ use App\Lib\Editor\Condition;
 use App\Prevention\Mails\PreventionRememberMail;
 use App\Member\Member;
 use App\Member\Membership;
+use App\Prevention\Actions\YearlyRememberAction;
+use App\Prevention\Mails\YearlyMail;
 use App\Prevention\PreventionSettings;
-use Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Lib\CreatesFormFields;
 use Tests\RequestFactories\EditorRequestFactory;
-use Tests\TestCase;
 
 uses(DatabaseTransactions::class);
 uses(CreatesFormFields::class);
@@ -43,7 +42,17 @@ function createParticipant(Form $form): Participant
     ])->for(Member::factory()->defaults()->has(Membership::factory()->inLocal('€ LeiterIn', 'Wölfling')))->create();
 }
 
+function createMember(array $attributes): Member
+{
+    return Member::factory()->defaults()->has(Membership::factory()->inLocal('€ LeiterIn', 'Wölfling'))->create($attributes);
+}
+
 dataset('attributes', fn() => [
+    [
+        ['has_vk' => false, 'efz' => null, 'ps_at' => null],
+        [Prevention::EFZ, Prevention::VK, Prevention::PS]
+    ],
+
     [
         ['has_vk' => true, 'efz' => null, 'ps_at' => now()],
         [Prevention::EFZ]
@@ -174,7 +183,7 @@ it('testItDoesntRememberWhenParticipantDoesntHaveMember', function () {
     $this->assertNull($participant->fresh()->last_remembered_at);
 });
 
-it('testItRemembersNonLeaders', function () {
+it('doesnt remember non leaders', function () {
     Mail::fake();
     $form = createForm();
     $participant = createParticipant($form);
@@ -186,7 +195,7 @@ it('testItRemembersNonLeaders', function () {
 });
 
 
-it('testItRemembersMember', function ($attrs, $preventions) {
+it('remembers event participant', function ($attrs, $preventions) {
     Mail::fake();
     $form = createForm();
     $participant = createParticipant($form);
@@ -195,13 +204,56 @@ it('testItRemembersMember', function ($attrs, $preventions) {
     PreventionRememberAction::run();
 
     if (count($preventions)) {
-        Mail::assertSent(PreventionRememberMail::class, fn($mail) => $mail->preventable->preventions() === $preventions);
+        Mail::assertSent(PreventionRememberMail::class, fn($mail) => $mail->preventable->preventions()->pluck('type')->toArray() === $preventions);
         $this->assertNotNull($participant->fresh()->last_remembered_at);
     } else {
         Mail::assertNotSent(PreventionRememberMail::class);
         $this->assertNull($participant->fresh()->last_remembered_at);
     }
 })->with('attributes');
+
+it('sets due date in mail when not now', function () {
+    Mail::fake();
+    $form = createForm();
+    $form->update(['from' => now()->addMonths(8)]);
+    $participant = createParticipant($form);
+    $participant->member->update(['efz' =>  now()->subYears(5)->addMonth(), 'ps_at' => now(), 'has_vk' => true]);
+
+    PreventionRememberAction::run();
+
+    Mail::assertSent(PreventionRememberMail::class, fn($mail) => $mail->preventable->preventions()->first()->expires->isSameDay(now()->addMonth()));
+});
+
+it('notices a few weeks before', function ($date, bool $shouldSend) {
+    Mail::fake();
+    app(PreventionSettings::class)->fill(['weeks' => 2])->save();
+    createMember(['efz' => $date, 'ps_at' => now(), 'has_vk' => true]);
+
+    YearlyRememberAction::run();
+
+    $shouldSend
+        ? Mail::assertSent(YearlyMail::class, fn($mail) => $mail->preventions->first()->expires->isSameDay(now()->addWeeks(2)))
+        : Mail::assertNotSent(YearlyMail::class);
+})->with([
+    [fn() => now()->subYears(5)->addWeeks(2), true],
+    [fn() => now()->subYears(5)->addWeeks(2)->addDay(), false],
+    [fn() => now()->subYears(5)->addWeeks(2)->subDay(), false],
+]);
+
+it('remembers members yearly', function ($date, $shouldSend) {
+    Mail::fake();
+    createMember(['efz' => $date, 'ps_at' => now(), 'has_vk' => true]);
+
+    YearlyRememberAction::run();
+
+    $shouldSend
+        ? Mail::assertSent(YearlyMail::class, fn($mail) => $mail->preventions->first()->expires->isSameDay(now()))
+        : Mail::assertNotSent(YearlyMail::class);
+})->with([
+    [fn() => now()->subYears(5), true],
+    [fn() => now()->subYears(5)->addDay(), false],
+    [fn() => now()->subYears(5)->subDay(), false],
+]);
 
 it('testItDoesntRememberParticipantThatHasNoMail', function () {
     Mail::fake();
@@ -212,16 +264,6 @@ it('testItDoesntRememberParticipantThatHasNoMail', function () {
     PreventionRememberAction::run();
 
     Mail::assertNotSent(PreventionRememberMail::class);
-});
-
-it('testItRendersMail', function () {
-    InvoiceSettings::fake(['from_long' => 'Stamm Beispiel']);
-    $form = createForm();
-    $participant = createParticipant($form);
-    (new PreventionRememberMail($participant, app(PreventionSettings::class)->formmail))
-        ->assertSeeInText($participant->member->firstname)
-        ->assertSeeInText($participant->member->lastname)
-        ->assertSeeInText('Stamm Beispiel');
 });
 
 it('testItRendersSetttingMail', function () {
@@ -273,10 +315,30 @@ it('testItDoesntAppendTextTwice', function () {
     Mail::assertSent(PreventionRememberMail::class, fn($mail) => $mail->bodyText->hasAll(['oberhausen']) && !$mail->bodyText->hasAll(['siegburg']));
 });
 
-it('testItDisplaysBodyTextInMail', function () {
+/* ----------------------------------------- Mail contents ----------------------------------------- */
+it('displays body text in prevention remember mail', function () {
     $form = createForm();
     $participant = createParticipant($form);
 
     $mail = new PreventionRememberMail($participant, EditorRequestFactory::new()->paragraphs(['ggtt'])->toData());
     $mail->assertSeeInText('ggtt');
+});
+
+it('renders prevention mail for events with group name', function () {
+    InvoiceSettings::fake(['from_long' => 'Stamm Beispiel']);
+    $form = createForm();
+    $participant = createParticipant($form);
+    (new PreventionRememberMail($participant, app(PreventionSettings::class)->formmail, collect([])))
+        ->assertSeeInText('Max')
+        ->assertSeeInText('Muster')
+        ->assertSeeInText('Stamm Beispiel');
+});
+
+it('renders yearly mail', function () {
+    InvoiceSettings::fake(['from_long' => 'Stamm Beispiel']);
+    $member = createMember([]);
+    $mail = new YearlyMail($member, EditorRequestFactory::new()->paragraphs(['ggtt'])->toData(), collect([]));
+    $mail
+        ->assertSeeInText('ggtt')
+        ->assertSeeInText('Stamm Beispiel');
 });

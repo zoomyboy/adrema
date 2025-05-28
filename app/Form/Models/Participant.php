@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Scout\Searchable;
 use stdClass;
@@ -81,17 +82,12 @@ class Participant extends Model implements Preventable
         Mail::to($this->getMailRecipient())->queue(new ConfirmRegistrationMail($this));
     }
 
-    public function preventableLayout(): string
-    {
-        return 'mail.prevention.prevention-remember-participant';
-    }
-
     /**
      * @inheritdoc
      */
-    public function preventions(): array
+    public function preventions(): Collection
     {
-        return $this->member?->preventions($this->form->from) ?: [];
+        return $this->member?->preventions($this->form->from) ?: collect([]);
     }
 
     public function getMailRecipient(): ?stdClass

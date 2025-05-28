@@ -2,19 +2,19 @@
 
 namespace App\Prevention\Contracts;
 
-use App\Prevention\Enums\Prevention;
+use App\Prevention\Data\PreventionData;
+use Illuminate\Support\Collection;
 use stdClass;
 
 interface Preventable
 {
 
-    public function preventableLayout(): string;
     public function preventableSubject(): string;
 
     /**
-     * @return array<int, Prevention>
+     * @return Collection<int, PreventionData>
      */
-    public function preventions(): array;
+    public function preventions(): Collection;
 
     public function getMailRecipient(): ?stdClass;
 }

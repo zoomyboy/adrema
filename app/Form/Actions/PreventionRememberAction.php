@@ -33,7 +33,7 @@ class PreventionRememberAction
                 continue;
             }
 
-            if ($participant->getFields()->getMailRecipient() === null || count($participant->preventions()) === 0) {
+            if ($participant->getFields()->getMailRecipient() === null || $participant->preventions()->count() === 0) {
                 continue;
             }
 
