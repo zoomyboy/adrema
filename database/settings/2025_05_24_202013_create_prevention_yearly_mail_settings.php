@@ -12,5 +12,6 @@ return new class extends SettingsMigration
         $this->migrator->add('prevention.freshRememberInterval', 12);
         $this->migrator->add('prevention.active', false);
         $this->migrator->add('prevention.yearlyMemberFilter', FilterScope::from([])->toArray());
+        $this->migrator->add('prevention.preventAgainst', []);
     }
 };

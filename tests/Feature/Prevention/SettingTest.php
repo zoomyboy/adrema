@@ -3,6 +3,7 @@
 namespace Tests\Feature\Prevention;
 
 use App\Member\FilterScope;
+use App\Prevention\Enums\Prevention;
 use App\Prevention\PreventionSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\EditorRequestFactory;
@@ -27,6 +28,7 @@ it('receives settings', function () {
         'weeks' => 9,
         'freshRememberInterval' => 11,
         'active' => true,
+        'preventAgainst' => [Prevention::MOREPS->name],
         'yearlyMemberFilter' => FilterScope::from([
             'memberships' => [['group_ids' => [33]]],
             'search' => 'searchstring',
@@ -40,7 +42,10 @@ it('receives settings', function () {
         ->assertJsonPath('data.active', true)
         ->assertJsonPath('data.freshRememberInterval', '11')
         ->assertJsonPath('data.yearlyMemberFilter.search', 'searchstring')
-        ->assertJsonPath('data.yearlyMemberFilter.memberships.0.group_ids.0', 33);
+        ->assertJsonPath('data.yearlyMemberFilter.memberships.0.group_ids.0', 33)
+        ->assertJsonPath('data.preventAgainst', ['MOREPS'])
+        ->assertJsonPath('meta.preventAgainsts.0.name', 'erweitertes Führungszeugnis')
+        ->assertJsonPath('meta.preventAgainsts.0.id', 'EFZ');
 });
 
 it('testItStoresSettings', function () {
@@ -52,6 +57,7 @@ it('testItStoresSettings', function () {
         'weeks' => 9,
         'freshRememberInterval' => 11,
         'active' => true,
+        'preventAgainst' => ['EFZ'],
         'yearlyMemberFilter' => [
             'memberships' => [['group_ids' => 33]],
             'search' => 'searchstring',
@@ -64,4 +70,5 @@ it('testItStoresSettings', function () {
     test()->assertTrue(app(PreventionSettings::class)->active);
     test()->assertEquals([['group_ids' => 33]], app(PreventionSettings::class)->yearlyMemberFilter->memberships);
     test()->assertEquals('searchstring', app(PreventionSettings::class)->yearlyMemberFilter->search);
+    test()->assertEquals('EFZ', app(PreventionSettings::class)->preventAgainst[0]);
 });

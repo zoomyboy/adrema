@@ -15,6 +15,7 @@ class PreventionSettings extends LocalSettings
     public int $freshRememberInterval;
     public bool $active;
     public FilterScope $yearlyMemberFilter;
+    public array $preventAgainst;
 
     public static function group(): string
     {

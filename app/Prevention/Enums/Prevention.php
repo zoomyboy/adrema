@@ -49,4 +49,15 @@ enum Prevention
             'tooltip' => $case->tooltip($preventions->pluck('type')->doesntContain($case)),
         ]);
     }
+
+    /**
+     * @return array<int, string>
+     */
+    public static function values(): array
+    {
+        return collect(static::cases())->map(fn($case) => [
+            'id' => $case->name,
+            'name' => $case->text(),
+        ])->toArray();
+    }
 }

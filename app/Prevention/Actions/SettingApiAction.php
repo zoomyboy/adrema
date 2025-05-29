@@ -2,6 +2,7 @@
 
 namespace App\Prevention\Actions;
 
+use App\Prevention\Enums\Prevention;
 use App\Prevention\PreventionSettings;
 use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -14,6 +15,9 @@ class SettingApiAction
     {
         return response()->json([
             'data' => app(PreventionSettings::class)->toFrontend(),
+            'meta' => [
+                'preventAgainsts' => Prevention::values(),
+            ]
         ]);
     }
 }

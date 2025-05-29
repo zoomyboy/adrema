@@ -36,6 +36,7 @@ class SettingStoreAction
         $settings->freshRememberInterval = $request->freshRememberInterval;
         $settings->active = $request->active;
         $settings->yearlyMemberFilter = FilterScope::from($request->yearlyMemberFilter);
+        $settings->preventAgainst = $request->preventAgainst;
         $settings->save();
 
         Succeeded::message('Einstellungen gespeichert.')->dispatch();
