@@ -136,8 +136,8 @@ class MemberResource extends JsonResource
         $createActivities = Activity::remote()->with(['subactivities' => fn($q) => $q->remote()])->get();
 
         return [
-            'filterActivities' => Activity::where('is_filterable', true)->pluck('name', 'id'),
-            'filterSubactivities' => Subactivity::where('is_filterable', true)->pluck('name', 'id'),
+            'filterActivities' => Activity::where('is_filterable', true)->get()->map(fn($a) => ['id' => $a->id, 'name' => $a->name]),
+            'filterSubactivities' => Subactivity::where('is_filterable', true)->get()->map(fn($a) => ['id' => $a->id, 'name' => $a->name]),
             'formActivities' => $activities->pluck('name', 'id'),
             'formSubactivities' => $activities->map(function (Activity $activity) {
                 return ['subactivities' => $activity->subactivities->pluck('name', 'id'), 'id' => $activity->id];

@@ -56,6 +56,11 @@ export function useIndex(props, siteName) {
         reload(true);
     }
 
+    function setFilterObject(o) {
+        inner.filter.value = o;
+        reload(true);
+    }
+
     startListener();
     onBeforeUnmount(() => stopListener());
 
@@ -70,6 +75,8 @@ export function useIndex(props, siteName) {
         toFilterString,
         reloadPage,
         axios,
+        filter: inner.filter,
+        setFilterObject,
     };
 }
 

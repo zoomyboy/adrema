@@ -48,8 +48,7 @@ class FilterScope extends ScoutFilter
         public ?bool $hasBirthday = null,
         public ?bool $hasSvk = null,
         public ?bool $hasVk = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $options
@@ -110,20 +109,20 @@ class FilterScope extends ScoutFilter
             }
             if ($this->subactivityIds && $this->activityIds) {
                 $combinations = $this->combinations($this->activityIds, $this->subactivityIds)
-                    ->map(fn ($combination) => implode('|', $combination))
-                    ->map(fn ($combination) => str($combination)->wrap('"'));
+                    ->map(fn($combination) => implode('|', $combination))
+                    ->map(fn($combination) => str($combination)->wrap('"'));
                 $filter->push($this->inExpression('memberships.both', $combinations));
             }
 
             foreach ($this->memberships as $membership) {
-                $filter->push($this->inExpression('memberships.with_group', $this->possibleValuesForMembership($membership)->map(fn ($value) => str($value)->wrap('"'))));
+                $filter->push($this->inExpression('memberships.with_group', $this->possibleValuesForMembership($membership)->map(fn($value) => str($value)->wrap('"'))));
             }
 
             if (count($this->exclude)) {
                 $filter->push($this->notInExpression('id', $this->exclude));
             }
 
-            $andFilter = $filter->map(fn ($expression) => "($expression)")->implode(' AND ');
+            $andFilter = $filter->map(fn($expression) => "($expression)")->implode(' AND ');
 
             $options['filter'] = $this->implode(collect([$andFilter])->push($this->inExpression('id', $this->include)), 'OR');
             $options['sort'] = ['lastname:asc', 'firstname:asc'];
@@ -137,7 +136,7 @@ class FilterScope extends ScoutFilter
      */
     protected function implode(Collection $values, string $between): string
     {
-        return $values->filter(fn ($expression) => $expression)->implode(" {$between} ");
+        return $values->filter(fn($expression) => $expression)->implode(" {$between} ");
     }
 
     /**
@@ -177,7 +176,7 @@ class FilterScope extends ScoutFilter
         $membership['activity_ids'] = count($membership['activity_ids']) === 0 ? Activity::pluck('id')->toArray() : $membership['activity_ids'];
         $membership['subactivity_ids'] = count($membership['subactivity_ids']) === 0 ? Subactivity::pluck('id')->toArray() : $membership['subactivity_ids'];
         return $this->combinations($membership['group_ids'], $membership['activity_ids'], $membership['subactivity_ids'])
-            ->map(fn ($combination) => collect($combination)->implode('|'));
+            ->map(fn($combination) => collect($combination)->implode('|'));
     }
 
     /**
@@ -191,7 +190,7 @@ class FilterScope extends ScoutFilter
 
         if (!count($otherParts)) {
             /** @var Collection<int, Collection<int, int>> */
-            return collect($firstPart)->map(fn ($p) => [$p]);
+            return collect($firstPart)->map(fn($p) => [$p]);
         }
 
         /** @var Collection<int, mixed> */
