@@ -8,3 +8,5 @@ sudo mysql adrema < db.tmp
 rm db.tmp
 
 echo 'app(\App\Form\FormSettings::class)->fill(["registerUrl" => "http://stammsilva.test/anmeldung/{slug}/register", "clearCacheUrl" => "http://stammsilva.test/adrema/clear-cache"])->save();' | php artisan tinker
+
+exit 0
