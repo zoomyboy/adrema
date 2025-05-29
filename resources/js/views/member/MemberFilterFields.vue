@@ -20,7 +20,9 @@
 </template>
 
 <script setup>
-import {ref, watch} from 'vue';
+import {inject, ref, watch} from 'vue';
+
+const axios = inject('axios');
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -29,11 +31,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    meta: {
-        type: Object,
-        required: true,
-    },
 });
+
+const metaResponse = await axios.post('/api/member/search', {});
+const meta = ref(metaResponse.data.meta);
 
 const filter = ref({...props.modelValue});
 

@@ -19,7 +19,9 @@
         </ui-popup>
         <page-filter>
             <template #fields>
-                <member-filter :meta="meta" :model-value="filter" @update:model-value="setFilterObject($event)" />
+                <suspense>
+                    <member-filter-fields :model-value="filter" @update:model-value="setFilterObject($event)" />
+                </suspense>
             </template>
             <template #buttons>
                 <f-text id="search" :model-value="filter.search" label="Suchen …" size="sm" @update:model-value="setFilterObject({...filter, search: $event})"></f-text>
@@ -101,7 +103,7 @@ import Tags from './Tags.vue';
 import Actions from './index/Actions.vue';
 import {indexProps, useIndex} from '../../composables/useIndex.js';
 import {ref, defineProps} from 'vue';
-import MemberFilter from './MemberFilter.vue';
+import MemberFilterFields from './MemberFilterFields.vue';
 
 const single = ref(null);
 const deleting = ref(null);
