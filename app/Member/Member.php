@@ -204,6 +204,10 @@ class Member extends Model implements Geolocatable, Preventable
             return null;
         }
 
+        if (!$this->email) {
+            return null;
+        }
+
         return (object) ['name' => $this->fullname, 'email' => $this->email];
     }
 

@@ -22,8 +22,12 @@ class YearlyRememberAction
         $settings = app(PreventionSettings::class);
         $expireDate = now()->addWeeks($settings->weeks);
 
-
         foreach ($settings->yearlyMemberFilter->getQuery()->get() as $member) {
+            // @todo add this check to FilterScope
+            if ($member->getMailRecipient() === null) {
+                continue;
+            }
+
             $noticePreventions = $member->preventions($expireDate)
                 ->filter(fn($prevention) => $prevention->expiresAt($expireDate));
 
@@ -35,6 +39,11 @@ class YearlyRememberAction
         }
 
         foreach ($settings->yearlyMemberFilter->getQuery()->get() as $member) {
+            // @todo add this check to FilterScope
+            if ($member->getMailRecipient() === null) {
+                continue;
+            }
+
             $preventions = $member->preventions()
                 ->filter(fn($prevention) => $prevention->expiresAt(now()));
 

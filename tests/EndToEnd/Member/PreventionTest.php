@@ -10,6 +10,7 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Invoice\InvoiceSettings;
 use App\Lib\Editor\Condition;
+use App\Member\FilterScope;
 use App\Prevention\Mails\PreventionRememberMail;
 use App\Member\Member;
 use App\Member\Membership;
@@ -281,6 +282,29 @@ it('testItDoesntRememberParticipantThatHasNoMail', function () {
     PreventionRememberAction::run();
 
     Mail::assertNotSent(PreventionRememberMail::class);
+});
+
+it('doesnt send yearly mail when member has no mail', function () {
+    Mail::fake();
+    createMember(['efz' => now()->subYears(5), 'ps_at' => now(), 'has_vk' => true, 'email' => '', 'email_parents' => '']);
+
+    sleep(2);
+    YearlyRememberAction::run();
+
+    Mail::assertNotSent(YearlyMail::class);
+});
+
+it('doesnt send yearly mail when member doesnt match', function () {
+    Mail::fake();
+    app(PreventionSettings::class)->fill([
+        'yearlyMemberFilter' => FilterScope::from(['search' => 'Lorem Ipsum']),
+    ])->save();
+    createMember(['efz' => now()->subYears(5), 'ps_at' => now(), 'has_vk' => true, 'firstname' => 'Max', 'lastname' => 'Muster']);
+
+    sleep(2);
+    YearlyRememberAction::run();
+
+    Mail::assertNotSent(YearlyMail::class);
 });
 
 it('testItRendersSetttingMail', function () {
