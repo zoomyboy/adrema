@@ -5,26 +5,17 @@
     <f-multipleselect id="group_ids" :options="meta.groups" label="Gruppierungen" size="sm" v-model="filter.group_ids"></f-multipleselect>
     <f-select v-show="hasModule('bill')" id="billKinds" name="billKinds" :options="meta.billKinds" label="Rechnung" size="sm" v-model="filter.bill_kind"></f-select>
 
-    <div>
-        <div>nach mitgitedschaftren</div>
+    <div class="mt-5">
+        <f-checkboxes-label>nach Mitgliedschaften</f-checkboxes-label>
         <button class="btn btn-primary label mt-2" @click.prevent="filter.memberships = [...filter.memberships, {...meta.default_membership_filter}]">
             <ui-sprite class="w-3 h-3 xl:mr-2" src="plus"></ui-sprite>
             <span class="hidden xl:inline">Hinzufügen</span>
         </button>
-        <div v-for="(filter, index) in filter.memberships" :key="index" class="flex space-x-2 mt-2">
-            <f-multipleselect :id="`group_ids-multiple-${index}`" v-model="filter.group_ids" :options="meta.groups" label="Gruppierung" size="sm"></f-multipleselect>
+        <template v-for="(filter, index) in filter.memberships" :key="index">
+            <f-multipleselect :id="`group_ids-multiple-${index}`" class="mt-4" v-model="filter.group_ids" :options="meta.groups" label="Gruppierung" size="sm"></f-multipleselect>
             <f-multipleselect :id="`activity_ids-multiple-${index}`" v-model="filter.activity_ids" :options="meta.filterActivities" label="Tätigkeiten" size="sm"></f-multipleselect>
             <f-multipleselect :id="`subactivity_ids-multiple-${index}`" v-model="filter.subactivity_ids" :options="meta.filterSubactivities" label="Untertätigkeiten" size="sm"></f-multipleselect>
-        </div>
-        <button
-            class="btn btn-primary label mt-3"
-            @click.prevent="
-                setFilterObject({...filter, memberships: membershipFilters});
-                membershipFilters = null;
-            "
-        >
-            <span class="hidden xl:inline">Anwenden</span>
-        </button>
+        </template>
     </div>
 </template>
 
