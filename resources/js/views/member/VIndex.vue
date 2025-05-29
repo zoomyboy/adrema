@@ -19,9 +19,7 @@
         </ui-popup>
         <page-filter>
             <template #fields>
-                <suspense>
-                    <member-filter-fields :model-value="filter" @update:model-value="setFilterObject($event)" />
-                </suspense>
+                <member-filter-fields :model-value="filter" @update:model-value="setFilterObject($event)" />
             </template>
             <template #buttons>
                 <f-text id="search" :model-value="filter.search" label="Suchen …" size="sm" @update:model-value="setFilterObject({...filter, search: $event})"></f-text>

@@ -4,6 +4,7 @@ namespace App\Prevention\Actions;
 
 use App\Lib\Editor\EditorData;
 use App\Lib\Events\Succeeded;
+use App\Member\FilterScope;
 use App\Prevention\PreventionSettings;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -34,6 +35,7 @@ class SettingStoreAction
         $settings->weeks = $request->weeks;
         $settings->freshRememberInterval = $request->freshRememberInterval;
         $settings->active = $request->active;
+        $settings->yearlyMemberFilter = FilterScope::from($request->yearlyMemberFilter);
         $settings->save();
 
         Succeeded::message('Einstellungen gespeichert.')->dispatch();

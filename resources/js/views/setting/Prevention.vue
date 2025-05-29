@@ -20,6 +20,7 @@
                         <f-text id="fresh_remember_interval" v-model="data.freshRememberInterval" label="Bei Ablauf alle X Wochen erinnern" type="number" />
                     </div>
                     <f-editor v-if="active === 1" id="yearlymail" v-model="data.yearlymail" label="Jährliche Präventions-Erinnerung"></f-editor>
+                    <f-member-filter id="yearly_member_filter" v-model="data.yearlyMemberFilter" label="nur für folgende Mitglieder erlauben" />
                 </div>
             </form>
         </setting-layout>

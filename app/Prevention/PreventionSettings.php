@@ -3,6 +3,7 @@
 namespace App\Prevention;
 
 use App\Lib\Editor\EditorData;
+use App\Member\FilterScope;
 use App\Setting\LocalSettings;
 
 class PreventionSettings extends LocalSettings
@@ -13,6 +14,7 @@ class PreventionSettings extends LocalSettings
     public int $weeks;
     public int $freshRememberInterval;
     public bool $active;
+    public FilterScope $yearlyMemberFilter;
 
     public static function group(): string
     {
