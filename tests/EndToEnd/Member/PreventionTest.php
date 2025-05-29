@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Member;
+namespace Tests\EndToEnd\Member;
 
 use App\Prevention\Enums\Prevention;
 use App\Form\Actions\PreventionRememberAction;
@@ -18,11 +18,13 @@ use App\Prevention\Mails\YearlyMail;
 use App\Prevention\PreventionSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
+use Tests\EndToEndTestCase;
 use Tests\Lib\CreatesFormFields;
 use Tests\RequestFactories\EditorRequestFactory;
 
 uses(DatabaseTransactions::class);
 uses(CreatesFormFields::class);
+uses(EndToEndTestCase::class);
 
 function createForm(): Form
 {
@@ -229,6 +231,7 @@ it('notices a few weeks before', function ($date, bool $shouldSend) {
     app(PreventionSettings::class)->fill(['weeks' => 2])->save();
     createMember(['efz' => $date, 'ps_at' => now(), 'has_vk' => true]);
 
+    sleep(2);
     YearlyRememberAction::run();
 
     $shouldSend
@@ -244,6 +247,7 @@ it('remembers members yearly', function ($date, $shouldSend) {
     Mail::fake();
     createMember(['efz' => $date, 'ps_at' => now(), 'has_vk' => true]);
 
+    sleep(2);
     YearlyRememberAction::run();
 
     $shouldSend
@@ -259,6 +263,7 @@ it('remembers yearly only once', function () {
     Mail::fake();
     createMember(['efz' => now()->subYears(5), 'ps_at' => now(), 'has_vk' => true]);
 
+    sleep(2);
     YearlyRememberAction::run();
     YearlyRememberAction::run();
     YearlyRememberAction::run();
@@ -362,6 +367,7 @@ it('renders setting of yearly mail', function () {
     ])->save();
     $member = createMember((['efz' =>  now()->subYears(5), 'ps_at' => now(), 'has_vk' => true]));
 
+    sleep(2);
     YearlyRememberAction::run();
 
     Mail::assertSent(
@@ -379,6 +385,7 @@ it('renders expires at date for preventions', function () {
     ])->save();
     createMember((['efz' =>  now()->subYears(5)->addWeeks(4), 'ps_at' => now(), 'has_vk' => true]));
 
+    sleep(2);
     YearlyRememberAction::run();
 
     Mail::assertSent(YearlyMail::class, fn($mail) => $mail->bodyText->hasAll([
