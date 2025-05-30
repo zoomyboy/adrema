@@ -15,6 +15,10 @@ class PreventionSettings extends LocalSettings
     public int $freshRememberInterval;
     public bool $active;
     public FilterScope $yearlyMemberFilter;
+    /**
+     * @var array<int, string>
+     * @todo Create collection cast to Collection of enums
+     */
     public array $preventAgainst;
 
     public static function group(): string
