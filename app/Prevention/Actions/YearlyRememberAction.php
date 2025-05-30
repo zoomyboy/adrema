@@ -29,7 +29,8 @@ class YearlyRememberAction
             }
 
             $noticePreventions = $member->preventions($expireDate)
-                ->filter(fn($prevention) => $prevention->expiresAt($expireDate));
+                ->filter(fn($prevention) => $prevention->expiresAt($expireDate))
+                ->filter(fn($p) => $p->appliesToSettings($settings));
 
             if ($noticePreventions->count() === 0) {
                 continue;
@@ -45,7 +46,8 @@ class YearlyRememberAction
             }
 
             $preventions = $member->preventions()
-                ->filter(fn($prevention) => $prevention->expiresAt(now()));
+                ->filter(fn($prevention) => $prevention->expiresAt(now()))
+                ->filter(fn($p) => $p->appliesToSettings($settings));
 
             if ($preventions->count() === 0) {
                 continue;

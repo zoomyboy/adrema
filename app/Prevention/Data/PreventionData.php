@@ -3,6 +3,7 @@
 namespace App\Prevention\Data;
 
 use App\Prevention\Enums\Prevention;
+use App\Prevention\PreventionSettings;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 
@@ -21,5 +22,10 @@ class PreventionData extends Data
             !$this->expiresAt(now()),
             fn($str) => $str->append(' (fällig am ' . $this->expires->format('d.m.Y') . ')')
         );
+    }
+
+    public function appliesToSettings(PreventionSettings $settings): bool
+    {
+        return in_array($this->type->name, $settings->preventAgainst);
     }
 }
