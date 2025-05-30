@@ -28,7 +28,7 @@ uses(CreatesFormFields::class);
 uses(EndToEndTestCase::class);
 
 beforeEach(function () {
-    app(PreventionSettings::class)->fill(['preventAgainst' => array_column(Prevention::values(), 'id')])->save();
+    app(PreventionSettings::class)->fill(['preventAgainst' => array_column(Prevention::values(), 'id'), 'active' => true])->save();
 });
 
 function createForm(): Form
@@ -302,6 +302,17 @@ it('doesnt remember when prevent against doesnt match', function () {
 it('doesnt send yearly mail when member has no mail', function () {
     Mail::fake();
     createMember(['efz' => now()->subYears(5), 'ps_at' => now(), 'has_vk' => true, 'email' => '', 'email_parents' => '']);
+
+    sleep(2);
+    YearlyRememberAction::run();
+
+    Mail::assertNotSent(YearlyMail::class);
+});
+
+it('doesnt send yearly mail when yearly sending is deactivated', function () {
+    Mail::fake();
+    app(PreventionSettings::class)->fill(['active' => false])->save();
+    createMember(['efz' => now()->subYears(5), 'ps_at' => now(), 'has_vk' => true]);
 
     sleep(2);
     YearlyRememberAction::run();

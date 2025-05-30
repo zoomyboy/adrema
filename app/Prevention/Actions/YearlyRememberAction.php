@@ -22,6 +22,10 @@ class YearlyRememberAction
         $settings = app(PreventionSettings::class);
         $expireDate = now()->addWeeks($settings->weeks);
 
+        if (!$settings->active) {
+            return;
+        }
+
         foreach ($settings->yearlyMemberFilter->getQuery()->get() as $member) {
             // @todo add this check to FilterScope
             if ($member->getMailRecipient() === null) {
