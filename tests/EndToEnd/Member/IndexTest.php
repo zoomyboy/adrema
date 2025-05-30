@@ -139,7 +139,8 @@ class IndexTest extends EndToEndTestCase
         sleep(1);
         $this->get('/member')
             ->assertInertiaPath("data.meta.formSubactivities.{$activity->id}.{$subactivity->id}", 'Biber')
-            ->assertInertiaPath("data.meta.filterSubactivities.{$subactivity->id}", 'Biber')
+            ->assertInertiaPath("data.meta.filterSubactivities.0.name", 'Biber')
+            ->assertInertiaPath("data.meta.filterSubactivities.0.id", $activity->id)
             ->assertInertiaPath("data.meta.formActivities.{$activity->id}", '€ Mitglied');
     }
 
