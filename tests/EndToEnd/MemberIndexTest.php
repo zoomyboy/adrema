@@ -41,6 +41,11 @@ class MemberIndexTest extends EndToEndTestCase
         $this->callFilter('member.index', [])->assertInertiaPath('data.meta.default.country_id', Country::firstWhere('name', 'Deutschland')->id);
     }
 
+    public function testItGetsDefaultBankAccount(): void
+    {
+        $this->callFilter('member.index', [])->assertInertiaPath('data.meta.default.bank_account.bic', '');
+    }
+
     public function testItHandlesAddress(): void
     {
         Member::factory()->defaults()->create(['address' => '']);

@@ -133,7 +133,7 @@ class MemberResource extends JsonResource
         }
 
         $activities = Activity::with('subactivities')->get();
-        $createActivities = Activity::remote()->with(['subactivities' => fn ($q) => $q->remote()])->get();
+        $createActivities = Activity::remote()->with(['subactivities' => fn($q) => $q->remote()])->get();
 
         return [
             'filterActivities' => Activity::where('is_filterable', true)->pluck('name', 'id'),
@@ -155,7 +155,7 @@ class MemberResource extends JsonResource
             'genders' => Gender::pluck('name', 'id'),
             'billKinds' => BillKind::forSelect(),
             'nationalities' => Nationality::pluck('name', 'id'),
-            'members' => Member::ordered()->get()->map(fn ($member) => ['id' => $member->id, 'name' => $member->fullname]),
+            'members' => Member::ordered()->get()->map(fn($member) => ['id' => $member->id, 'name' => $member->fullname]),
             'links' => [
                 'index' => route('member.index'),
                 'create' => route('member.create'),
@@ -210,6 +210,14 @@ class MemberResource extends JsonResource
                 'multiply_pv' => false,
                 'multiply_more_pv' => false,
                 'keepdata' => false,
+                'bank_account' => [
+                    'iban' => '',
+                    'bic' => '',
+                    'blz' => '',
+                    'bank_name' => '',
+                    'person' => '',
+                    'account_number' => '',
+                ]
             ]
         ];
     }
