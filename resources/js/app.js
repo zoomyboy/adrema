@@ -1,16 +1,15 @@
-import {createApp, h, defineAsyncComponent} from 'vue';
-import {Head, createInertiaApp, Link as ILink} from '@inertiajs/vue3';
+import { createApp, h, defineAsyncComponent } from 'vue';
+import { Head, createInertiaApp, Link as ILink } from '@inertiajs/vue3';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import {Plugin as FloatingVue, options as FloatingVueOptions} from './lib/floatingVue.js';
-import {createPinia, PiniaVuePlugin} from 'pinia';
+import { Plugin as FloatingVue, options as FloatingVueOptions } from './lib/floatingVue.js';
+import { createPinia, PiniaVuePlugin } from 'pinia';
 import Echo from './lib/echo.js';
-import requireModules from './lib/requireModules.js';
 
 import AppLayout from './layouts/AppLayout.vue';
 import hasModule from './mixins/hasModule.js';
 import hasFlash from './mixins/hasFlash.js';
-import {Toast, options as toastOptions, interceptor as toastInterceptor} from './lib/toast.js';
+import { Toast, options as toastOptions, interceptor as toastInterceptor } from './lib/toast.js';
 
 // ---------------------------------- Assets -----------------------------------
 import '../css/app.css';
@@ -35,8 +34,8 @@ createInertiaApp({
 
         return page;
     },
-    setup({el, App, props, plugin}) {
-        var app = createApp({pinia, render: () => h(App, props)})
+    setup({ el, App, props, plugin }) {
+        var app = createApp({ pinia, render: () => h(App, props) })
             .use(plugin)
             .use(FloatingVue, FloatingVueOptions)
             .use(Toast, toastOptions)
@@ -47,9 +46,6 @@ createInertiaApp({
             .mixin(hasModule)
             .mixin(hasFlash);
 
-        requireModules(import.meta.glob('./components/form/*.vue'), app, 'f');
-        requireModules(import.meta.glob('./components/ui/*.vue'), app, 'ui');
-        requireModules(import.meta.glob('./components/page/*.vue', {eager: true}), app, 'page');
         app.component(
             'FSinglefile',
             defineAsyncComponent(() => import('!/medialibrary-helper/assets/components/SingleFile.vue'))

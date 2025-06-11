@@ -54,6 +54,10 @@
         "forceConsistentCasingInFileNames": true,
         // See <https://github.com/vuejs/vue-cli/pull/5688>
         "skipLibCheck": true,
-        "types": ["vite/client"]
-    }
+        "types": ["vite/client"],
+        "paths": {
+            "@/*": ["./resources/js/*"]
+        }
+    },
+    "include": ["**/*", "resources/js/components/components.d.ts"]
 }
