@@ -4,175 +4,71 @@
             <page-toolbar-button :href="meta.links.index" color="primary" icon="undo">zurück</page-toolbar-button>
             <page-toolbar-button :href="data.links.edit" color="warning" icon="pencil">bearbeiten</page-toolbar-button>
         </template>
-        <div class="p-3 grid gap-3 this-grid grow">
-            <ui-box heading="Stammdaten" class="area-stamm hidden xl:block">
-                <stamm :inner="inner" />
-            </ui-box>
-            <ui-box heading="Kontakt" class="area-kontakt hidden xl:block">
-                <kontakt :inner="inner" />
-            </ui-box>
-            <ui-box class="area-stammkontakt block xl:hidden">
-                <tabs v-model="tabs.stammkontakt">
-                    <stamm v-show="tabs.stammkontakt.active === 'stamm'" :inner="inner" />
-                    <kontakt v-show="tabs.stammkontakt.active === 'kontakt'" :inner="inner" />
-                </tabs>
-            </ui-box>
+        <div class="p-3 grid gap-3 xl:grid-rows-[max-content_1fr] xl:grid-cols-[max-content_max-content_max-content_1fr] grow">
+            <section class="mobile hidden xl:contents">
+                <ui-box heading="Stammdaten">
+                    <stamm :inner="props.data" />
+                </ui-box>
+                <ui-box heading="Kontakt">
+                    <kontakt :inner="props.data" />
+                </ui-box>
+                <ui-box heading="Prävention">
+                    <prae :inner="props.data" />
+                </ui-box>
+                <ui-box heading="System">
+                    <system :inner="props.data" />
+                </ui-box>
+                <ui-box class="col-span-full">
+                    <ui-tabs v-model="tabs.membershipcourse.active" :entries="tabs.membershipcourse.entries" />
+                    <memberships v-show="tabs.membershipcourse.active === 0" :value="props.data.memberships" />
+                    <courses v-show="tabs.membershipcourse.active === 1" :value="props.data.courses" />
+                    <payments v-show="tabs.membershipcourse.active === 2" :value="props.data.invoicePositions" />
+                    <div v-show="tabs.membershipcourse.active === 3" class="h-full flex items-center justify-center text-gray-400 text-center">Keine Karte vorhanden</div>
+                </ui-box>
+            </section>
 
-            <ui-box container-class="" heading="Prävention" class="area-praev hidden xl:block">
-                <prae :inner="inner" />
-            </ui-box>
-            <ui-box heading="System" class="area-system hidden xl:block">
-                <system :inner="inner" />
-            </ui-box>
-            <ui-box class="area-praesystem block xl:hidden">
-                <tabs v-model="tabs.praesystem">
-                    <prae v-show="tabs.praesystem.active === 'prae'" :inner="inner" />
-                    <system v-show="tabs.praesystem.active === 'system'" :inner="inner" />
-                </tabs>
-            </ui-box>
-
-            <ui-box class="area-membershipcourse hidden xl:block">
-                <tabs v-model="tabs.membershipcourse">
-                    <courses v-show="tabs.membershipcourse.active === 'course'" :value="inner.courses" />
-                    <memberships v-show="tabs.membershipcourse.active === 'membership'" :value="inner.memberships" />
-                </tabs>
-            </ui-box>
-            <ui-box heading="Ausbildungen" class="area-courses xl:hidden">
-                <courses :value="inner.courses" />
-            </ui-box>
-            <ui-box heading="Mitgliedschaften" class="area-memberships xl:hidden">
-                <memberships :value="inner.memberships" />
-            </ui-box>
-
-            <ui-box heading="Zahlungen" class="area-payments">
-                <payments :value="inner.invoicePositions" />
-            </ui-box>
-
-            <ui-box heading="Karte" container-class="grow" class="area-map hidden xl:flex">
-                <div class="h-full flex items-center justify-center text-gray-400 text-center">Keine Karte vorhanden</div>
-            </ui-box>
+            <section class="mobile contents xl:hidden">
+                <ui-box heading="Stammdaten"> <stamm :inner="props.data" /> </ui-box>
+                <ui-box heading="Kontakt"> <kontakt :inner="props.data" /> </ui-box>
+                <ui-box heading="Prävention"> <prae :inner="props.data" /> </ui-box>
+                <ui-box heading="System"> <system :inner="props.data" /> </ui-box>
+                <ui-box heading="Mitgliedschaften"> <memberships :value="props.data.memberships" /> </ui-box>
+                <ui-box heading="Ausbildungen"> <courses :value="props.data.courses" /> </ui-box>
+                <ui-box heading="Zahlungen"> <payments :value="props.data.invoicePositions" /> </ui-box>
+                <ui-box heading="Karte"> <div class="h-full flex items-center justify-center text-gray-400 text-center">Keine Karte vorhanden</div> </ui-box>
+            </section>
         </div>
     </page-layout>
 </template>
 
-<script>
-import {defineAsyncComponent} from 'vue';
+<script lang="ts" setup>
+import {defineAsyncComponent, ref} from 'vue';
 
-export default {
-    props: {
-        data: {},
-        meta: {},
-    },
-    data: function () {
-        return {
-            inner: {},
-            tabs: {
-                stammkontakt: {
-                    children: {
-                        stamm: 'Stammdaten',
-                        kontakt: 'Kontakt',
-                    },
-                    active: 'stamm',
-                },
-                praesystem: {
-                    children: {
-                        system: 'System',
-                        prae: 'Prävention',
-                    },
-                    active: 'system',
-                },
-                membershipcourse: {
-                    children: {
-                        membership: 'Mitgliedschaften',
-                        course: 'Ausbildungen',
-                    },
-                    active: 'membership',
-                },
-            },
-        };
-    },
+const stamm = defineAsyncComponent(() => import('./boxes/Stamm.vue'));
+const kontakt = defineAsyncComponent(() => import('./boxes/Kontakt.vue'));
+const prae = defineAsyncComponent(() => import('./boxes/Prae.vue'));
+const courses = defineAsyncComponent(() => import('./boxes/Courses.vue'));
+const system = defineAsyncComponent(() => import('./boxes/System.vue'));
+const payments = defineAsyncComponent(() => import('./boxes/Payments.vue'));
+const memberships = defineAsyncComponent(() => import('./boxes/Memberships.vue'));
 
-    methods: {},
-
-    components: {
-        stamm: defineAsyncComponent(() => import('./boxes/Stamm.vue')),
-        kontakt: defineAsyncComponent(() => import('./boxes/Kontakt.vue')),
-        prae: defineAsyncComponent(() => import('./boxes/Prae.vue')),
-        courses: defineAsyncComponent(() => import('./boxes/Courses.vue')),
-        system: defineAsyncComponent(() => import('./boxes/System.vue')),
-        payments: defineAsyncComponent(() => import('./boxes/Payments.vue')),
-        memberships: defineAsyncComponent(() => import('./boxes/Memberships.vue')),
-        tabs: defineAsyncComponent(() => import('./Tabs.vue')),
+const tabs = ref({
+    stammkontakt: {
+        active: 0,
+        entries: [{title: 'Stammdaten'}, {title: 'Kontakt'}],
     },
-
-    created() {
-        this.inner = this.data;
+    praesystem: {
+        active: 0,
+        entries: [{title: 'System'}, {title: 'Prävention'}],
     },
-};
+    membershipcourse: {
+        active: 0,
+        entries: [{title: 'Mitgliedschaften'}, {title: 'Ausbildungen'}, {title: 'Zahlungen'}, {title: 'Karte'}],
+    },
+});
+
+const props = defineProps<{
+    data: object,
+    meta: object,
+}>();
 </script>
-
-<style scoped>
-.this-grid {
-    grid-template-areas:
-        'stammkontakt'
-        'praesystem'
-        'courses'
-        'memberships'
-        'payments';
-    grid-template-columns: 1fr;
-}
-
-@media screen and (min-width: 1280px) {
-    .this-grid {
-        grid-template-areas:
-            'stamm kontakt praev system'
-            'membershipcourse membershipcourse membershipcourse membershipcourse'
-            'payments payments map map';
-        grid-template-columns: max-content max-content max-content 1fr;
-    }
-}
-
-.area-stamm {
-    grid-area: stamm;
-}
-
-.area-kontakt {
-    grid-area: kontakt;
-}
-
-.area-praev {
-    grid-area: praev;
-}
-
-.area-courses {
-    grid-area: courses;
-}
-
-.area-system {
-    grid-area: system;
-}
-
-.area-memberships {
-    grid-area: memberships;
-}
-
-.area-payments {
-    grid-area: payments;
-}
-
-.area-map {
-    grid-area: map;
-}
-
-.area-stammkontakt {
-    grid-area: stammkontakt;
-}
-
-.area-membershipcourse {
-    grid-area: membershipcourse;
-}
-
-.area-praesystem {
-    grid-area: praesystem;
-}
-</style>
