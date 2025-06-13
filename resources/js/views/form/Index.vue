@@ -148,36 +148,41 @@
 
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
-                <th>Name</th>
-                <th>Von</th>
-                <th>Bis</th>
-                <th>Anzahl TN</th>
-                <th />
+                <tr>
+                    <th>Name</th>
+                    <th>Von</th>
+                    <th>Bis</th>
+                    <th>Anzahl TN</th>
+                    <th />
+                </tr>
             </thead>
 
-            <tr v-for="(form, index) in data" :key="index">
-                <td>
-                    <div v-text="form.name" />
-                </td>
-                <td>
-                    <div v-text="form.from_human" />
-                </td>
-                <td>
-                    <div v-text="form.to_human" />
-                </td>
-                <td>
-                    <div v-text="form.participants_count" />
-                </td>
-                <td>
-                    <div class="flex space-x-2">
-                        <ui-action-button tooltip="Bearbeiten" class="btn-warning" icon="pencil" @click.prevent="edit(form)" />
-                        <ui-action-button tooltip="Teilnehmende anzeigen" class="btn-info" icon="user" @click.prevent="showParticipants(form)" />
-                        <ui-action-button :href="form.links.frontend" target="_BLANK" tooltip="zur Anmeldeseite" class="btn-info" icon="eye" />
-                        <ui-action-button :href="form.links.export" target="_BLANK" tooltip="als Tabellendokument exportieren" class="btn-info" icon="document" />
-                        <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="deleting = form" />
-                    </div>
-                </td>
-            </tr>
+            <tbody>
+                <tr v-for="(form, index) in data" :key="index">
+                    <td>
+                        <div v-text="form.name" />
+                    </td>
+                    <td>
+                        <div v-text="form.from_human" />
+                    </td>
+                    <td>
+                        <div v-text="form.to_human" />
+                    </td>
+                    <td>
+                        <div v-text="form.participants_count" />
+                    </td>
+                    <td>
+                        <div class="flex space-x-2">
+                            <ui-action-button tooltip="Bearbeiten" class="btn-warning" icon="pencil" @click.prevent="edit(form)" />
+                            <ui-action-button tooltip="Teilnehmende anzeigen" class="btn-info" icon="user" @click.prevent="showParticipants(form)" />
+                            <ui-action-button :href="form.links.frontend" target="_BLANK" tooltip="zur Anmeldeseite" class="btn-info" icon="eye" />
+                            <ui-action-button tooltip="Kopieren" class="btn-info" icon="copy" @click="onCopy(form)" />
+                            <ui-action-button :href="form.links.export" target="_BLANK" tooltip="als Tabellendokument exportieren" class="btn-info" icon="document" />
+                            <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="deleting = form" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
         </table>
         <div class="px-6">
             <ui-pagination class="mt-4" :value="meta" @reload="reloadPage" />
@@ -222,6 +227,11 @@ const allFields = computed(() => {
 
     return result;
 });
+
+function onCopy(form) {
+    single.value = {...meta.value.default, ...form};
+    single.value.id = null;
+}
 
 function setTemplate(template) {
     active.value = 0;
