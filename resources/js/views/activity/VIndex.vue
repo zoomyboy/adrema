@@ -3,6 +3,7 @@
         <template #toolbar>
             <page-toolbar-button :href="meta.links.create" color="primary" icon="plus">Tätigkeit erstellen</page-toolbar-button>
             <page-toolbar-button :href="meta.links.membership_masslist" color="primary" icon="pencil">Mitgliedschaften zuweisen</page-toolbar-button>
+            <page-toolbar-button :href="meta.links.membership_index" color="primary" icon="eye">Mitgliedschaften anschauen</page-toolbar-button>
         </template>
         <ui-popup v-if="deleting !== null" heading="Bitte bestätigen" @close="deleting = null">
             <div>
@@ -16,22 +17,22 @@
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm table">
             <thead>
                 <th>Name</th>
-                <th></th>
+                <th />
             </thead>
 
             <tr v-for="(activity, index) in data" :key="index">
-                <td v-text="activity.name"></td>
+                <td v-text="activity.name" />
                 <td>
                     <div class="flex space-x-1">
-                        <i-link v-tooltip="`Bearbeiten`" :href="activity.links.edit" class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil"></ui-sprite></i-link>
-                        <a v-tooltip="`Entfernen`" href="#" class="inline-flex btn btn-danger btn-sm" @click.prevent="deleting = activity"><ui-sprite src="trash"></ui-sprite></a>
+                        <i-link v-tooltip="`Bearbeiten`" :href="activity.links.edit" class="inline-flex btn btn-warning btn-sm"><ui-sprite src="pencil" /></i-link>
+                        <a v-tooltip="`Entfernen`" href="#" class="inline-flex btn btn-danger btn-sm" @click.prevent="deleting = activity"><ui-sprite src="trash" /></a>
                     </div>
                 </td>
             </tr>
         </table>
 
         <div class="px-6">
-            <ui-pagination class="mt-4" :value="meta" :only="['data']"></ui-pagination>
+            <ui-pagination class="mt-4" :value="meta" :only="['data']" />
         </div>
     </page-layout>
 </template>

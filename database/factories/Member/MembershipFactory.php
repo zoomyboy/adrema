@@ -4,6 +4,7 @@ namespace Database\Factories\Member;
 
 use App\Activity;
 use App\Group;
+use App\Member\Member;
 use App\Member\Membership;
 use App\Subactivity;
 use Carbon\Carbon;
@@ -28,6 +29,10 @@ class MembershipFactory extends Factory
             'from' => now()->subMonths(3),
             'promised_at' => null,
         ];
+    }
+
+    public function defaults(): self {
+        return $this->for(Member::factory()->defaults())->for(Group::factory())->for(Activity::factory())->for(Subactivity::factory());
     }
 
     public function inNami(int $namiId): self

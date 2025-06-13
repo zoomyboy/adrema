@@ -4,7 +4,6 @@ namespace App\Invoice\Scopes;
 
 use App\Invoice\Enums\InvoiceStatus;
 use App\Invoice\Models\Invoice;
-use App\Lib\Filter;
 use App\Lib\ScoutFilter;
 use Laravel\Scout\Builder;
 use Spatie\LaravelData\Attributes\MapInputName;

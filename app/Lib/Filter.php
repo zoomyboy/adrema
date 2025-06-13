@@ -14,10 +14,12 @@ abstract class Filter extends Data
 {
 
     /**
-     * @param Builder<T> $query
      * @return Builder<T>
      */
-    abstract public function apply(Builder $query): Builder;
+    abstract public function getQuery(): Builder;
+
+    /** @var Builder<T> */
+    protected Builder $query;
 
     /**
      * @param array<string, mixed>|string|null $request
@@ -36,14 +38,6 @@ abstract class Filter extends Data
      */
     public static function fromPost(?array $post = null): static
     {
-        return static::factory()->withoutMagicalCreation()->from($post ?: [])->toDefault();
-    }
-
-    /**
-     * @return static
-     */
-    public function toDefault(): self
-    {
-        return $this;
+        return static::factory()->withoutMagicalCreation()->from($post ?: []);
     }
 }

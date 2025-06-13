@@ -2,6 +2,8 @@
 
 namespace App\Lib;
 
+use Spatie\LaravelData\PaginatedDataCollection;
+
 /** @mixin \Illuminate\Http\Resources\Json\JsonResource */
 trait HasMeta
 {
@@ -40,5 +42,13 @@ trait HasMeta
     public static function meta(): array
     {
         return [];
+    }
+
+    public static function collectPages(mixed $items): array {
+        $source = parent::collect($items, PaginatedDataCollection::class)->toArray();
+        return [
+            ...parent::collect($items, PaginatedDataCollection::class)->toArray(),
+            'meta' => [...$source['meta'], ...static::meta()]
+        ];
     }
 }

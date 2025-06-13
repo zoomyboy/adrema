@@ -1,10 +1,10 @@
-import {ref, inject, computed, onBeforeUnmount} from 'vue';
-import {router} from '@inertiajs/vue3';
+import { ref, inject, computed, onBeforeUnmount } from 'vue';
+import { router } from '@inertiajs/vue3';
 import useQueueEvents from './useQueueEvents.js';
 
 export function useIndex(props, siteName) {
     const axios = inject('axios');
-    const {startListener, stopListener} = useQueueEvents(siteName, () => reload(false));
+    const { startListener, stopListener } = useQueueEvents(siteName, () => reload(false));
     const rawProps = JSON.parse(JSON.stringify(props));
     const inner = {
         data: ref(rawProps.data),
@@ -40,7 +40,7 @@ export function useIndex(props, siteName) {
     }
 
     function reloadPage(page) {
-        reload(false, {page: page});
+        reload(false, { page: page });
     }
 
     function can(permission) {
@@ -83,10 +83,10 @@ export function useIndex(props, siteName) {
 const indexProps = {
     data: {
         default: () => {
-            return {data: [], meta: {}};
+            return { data: [], meta: {} };
         },
         type: Object,
     },
 };
 
-export {indexProps};
+export { indexProps };
