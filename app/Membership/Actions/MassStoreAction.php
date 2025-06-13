@@ -10,6 +10,7 @@ use App\Maildispatcher\Actions\ResyncAction;
 use App\Member\Member;
 use App\Member\Membership;
 use App\Subactivity;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -26,7 +27,12 @@ class MassStoreAction
     {
         return [
             'group_id' => 'required|numeric|exists:groups,id',
-            'activity_id' => 'required|numeric|exists:activities,id',
+            'activity_id' => ['required', 'numeric', 'exists:activities,id', function($key, $value, $fail) {
+                $activity = Activity::findOrFail($value);
+                if ($activity->subactivities->pluck('id')->doesntContain(request()->subactivity_id)) {
+                    return $fail(':attribute ist nicht vorhanden.');
+                }
+            }],
             'subactivity_id' => 'required|numeric|exists:subactivities,id',
             'members' => 'array',
             'members.*' => 'numeric|exists:members,id',
@@ -64,7 +70,7 @@ class MassStoreAction
         });
     }
 
-    public function asController(ActionRequest $request): void
+    public function asController(ActionRequest $request): JsonResponse
     {
         /**
          * @var array{members: array<int, int>, group_id: int, activity_id: int, subactivity_id: int}
@@ -77,6 +83,16 @@ class MassStoreAction
             Subactivity::findOrFail($input['subactivity_id']),
             $input['members'],
         );
+
+        return response()->json([], 200);
+    }
+
+    public function getValidationAttributes(): array {
+        return [
+            'activity_id' => 'Tätigkeit',
+            'subactivity_id' => 'Untertätigkeit',
+            'group_id' => 'Gruppe',
+        ];
     }
 
     /**
