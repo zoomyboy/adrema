@@ -119,10 +119,22 @@ class TestCase extends BaseTestCase
             /** @var TestResponse */
             $response = $this;
             $props = data_get($response->viewData('page'), 'props');
+            Assert::assertTrue(Arr::has($props, $path), 'Failed that key ' . $path . ' is in Response.');
             Assert::assertNotNull($props);
             $json = new AssertableJsonString($props);
             $json->assertPath($path, $value);
             return $this;
+        });
+
+        TestResponse::macro('assertInertiaPathArray', function ($arr) {
+            /** @var TestResponse */
+            $response = $this;
+
+            foreach ($arr as $key => $value) {
+                $response->assertInertiaPath($key, $value);
+            }
+
+            return $response;
         });
 
         TestResponse::macro('assertInertiaCount', function ($path, $count) {
@@ -168,6 +180,14 @@ class TestCase extends BaseTestCase
             /** @var TestResponse */
             $response = $this;
             Assert::assertTrue(Arr::has($response->json(), $path), 'Failed that key ' . $path . ' is in Response.');
+
+            return $this;
+        });
+
+        TestResponse::macro('assertNull', function (string $path) {
+            /** @var TestResponse */
+            $response = $this;
+            $response->assertHasJsonPath($path)->assertJsonPath($path, null);
 
             return $this;
         });
