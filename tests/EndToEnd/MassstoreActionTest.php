@@ -63,7 +63,7 @@ it('cannot create membership when activity and subactivity doesnt belong togethe
     ])->assertJsonValidationErrors(['activity_id' => 'Tätigkeit ist nicht vorhanden.']);
 });
 
-it('testItDeletesAMembership', function() {
+it('deletes a membership', function() {
     MembershipDestroyAction::partialMock()->shouldReceive('handle')->once();
     MembershipStoreAction::partialMock()->shouldReceive('handle')->never();
     ResyncAction::partialMock()->shouldReceive('handle')->once();
@@ -73,7 +73,7 @@ it('testItDeletesAMembership', function() {
     MassStoreAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, []);
 });
 
-it('testItRollsbackWhenDeletionFails', function() {
+it('rolls back when deletion fails', function() {
     app(MembershipFake::class)
         ->shows(3, ['id' => 55])
         ->shows(3, ['id' => 56])

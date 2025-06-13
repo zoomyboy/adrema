@@ -73,7 +73,9 @@ use App\Membership\Actions\IndexAction as MembershipIndexAction;
 use App\Membership\Actions\ListForGroupAction;
 use App\Membership\Actions\MassListAction;
 use App\Membership\Actions\MassStoreAction;
+use App\Membership\Actions\MemberIndexAction;
 use App\Membership\Actions\MembershipDestroyAction;
+use App\Membership\Actions\MembershipIndexAction as ActionsMembershipIndexAction;
 use App\Membership\Actions\MembershipStoreAction;
 use App\Membership\Actions\MembershipUpdateAction;
 use App\Payment\SubscriptionController;
@@ -140,13 +142,14 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/member/{member}/invoice-position', PaymentPositionIndexAction::class)->name('member.invoice-position.index');
 
     // --------------------------------- membership --------------------------------
-    Route::get('/member/{member}/membership', MembershipIndexAction::class)->name('member.membership.index');
+    Route::get('/member/{member}/membership', MemberIndexAction::class)->name('member.membership.index');
     Route::post('/member/{member}/membership', MembershipStoreAction::class)->name('member.membership.store');
     Route::patch('/membership/{membership}', MembershipUpdateAction::class)->name('membership.update');
     Route::delete('/membership/{membership}', MembershipDestroyAction::class)->name('membership.destroy');
     Route::post('/api/membership/member-list', ListForGroupAction::class)->name('membership.member-list');
     Route::post('/api/membership/masslist', MassStoreAction::class)->name('membership.masslist.store');
     Route::get('/membership/masslist', MassListAction::class)->name('membership.masslist.index');
+    Route::get('/membership', ActionsMembershipIndexAction::class)->name('membership.index');
 
     // ----------------------------------- group ----------------------------------
     Route::get('/group', GroupIndexAction::class)->name('group.index');
