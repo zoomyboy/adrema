@@ -98,6 +98,12 @@ class MemberFactory extends Factory
         return $this->state(['nami_id' => null]);
     }
 
+    public function name(string $name): self
+    {
+        [$firstname, $lastname] = explode(' ', $name);
+        return $this->state(compact('firstname', 'lastname'));
+    }
+
     public function withBankAccount(BankAccountFactory $factory): self
     {
         return $this->afterCreating(function ($member) use ($factory) {
