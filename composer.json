@@ -50,7 +50,7 @@
         "cviebrock/eloquent-sluggable": "^11.0",
         "doctrine/dbal": "^3.1",
         "guzzlehttp/guzzle": "^7.0.1",
-        "inertiajs/inertia-laravel": "^1.0",
+        "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/horizon": "^5.0",
         "laravel/pail": "^1.1",
