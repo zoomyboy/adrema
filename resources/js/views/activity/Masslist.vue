@@ -1,27 +1,26 @@
 <template>
     <page-layout>
         <template #right>
-            <f-save-button form="actionform"></f-save-button>
+            <f-save-button form="actionform" />
         </template>
         <form id="actionform" class="grow p-3" @submit.prevent="submit">
             <div class="flex space-x-3">
-                <f-select
-                    :model-value="meta.activity_id"
-                    :options="props.activities"
-                    label="Tätigkeit"
-                    size="sm"
-                    name="activity_id"
-                    @update:model-value="meta = {...meta, activity_id: $event, subactivity_id: null}"
-                ></f-select>
-                <f-select v-model="meta.subactivity_id" :options="props.subactivities[meta.activity_id]" name="subactivity_id" label="Untertätigkeit" size="sm"></f-select>
-                <f-select v-model="meta.group_id" :options="props.groups" label="Gruppierung" size="sm" name="group_id"></f-select>
-                <f-text id="search_text" v-model="searchText" label="Suchen …" size="sm"></f-text>
+                <f-select :model-value="meta.activity_id"
+                          :options="props.activities"
+                          label="Tätigkeit"
+                          size="sm"
+                          name="activity_id"
+                          @update:model-value="meta = {...meta, activity_id: $event, subactivity_id: null}"
+                />
+                <f-select v-model="meta.subactivity_id" :options="props.subactivities[meta.activity_id]" name="subactivity_id" label="Untertätigkeit" size="sm" />
+                <f-select v-model="meta.group_id" :options="props.groups" label="Gruppierung" size="sm" name="group_id" />
+                <f-text id="search_text" v-model="searchText" label="Suchen …" size="sm" />
             </div>
             <div class="grid gap-2 grid-cols-6 mt-4">
-                <f-switch v-for="member in members.hits" :id="`member-${member.id}`" :key="member.id" v-model="selected" :value="member.id" :label="member.fullname" size="sm"></f-switch>
+                <f-switch v-for="member in members.hits" :id="`member-${member.id}`" :key="member.id" v-model="selected" :value="member.id" :label="member.fullname" size="sm" />
             </div>
             <div class="px-6">
-                <ui-search-pagination class="mt-4" :value="members" @reload="reloadReal($event)"></ui-search-pagination>
+                <ui-search-pagination class="mt-4" :value="members" @reload="reloadReal($event)" />
             </div>
         </form>
     </page-layout>
