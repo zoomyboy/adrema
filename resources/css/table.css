@@ -1,10 +1,10 @@
 .custom-table {
     width: 100%;
-    & > thead > th {
+    & > thead > th, & > thead > tr > th {
         @apply text-left px-6 text-gray-200 font-semibold py-3 border-gray-600 border-b;
     }
 
-    & > tr {
+    & > tr, & > tbody > tr {
         @apply text-gray-200 transition-all duration-300 rounded hover:bg-gray-800;
         & > td {
             @apply py-1 px-6;
@@ -12,10 +12,10 @@
     }
 
     &.custom-table-sm {
-        & > thead > th {
+        & > thead > th, & > thead > tr > th {
             @apply px-3 py-2;
         }
-        & > tr {
+        & > tr, & > tbody > tr {
             & > td {
                 @apply py-1 px-3;
             }
@@ -23,20 +23,11 @@
     }
 
     &.custom-table-light {
-        & > thead > th {
+        & > thead > th, & > thead >  tr > th {
             @apply border-gray-500;
         }
-        & > td {
-            &:hover {
-                @apply bg-gray-700;
-            }
+        & > tr, & > tbody > tr {
+            @apply hover:bg-gray-700;
         }
     }
-
-}
-.custom-table > * {
-    display: table-row;
-}
-.custom-table > * > * {
-    display: table-cell;
 }
