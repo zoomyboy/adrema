@@ -1,5 +1,10 @@
 # Letzte Änderungen
 
+### 1.12.13
+
+-   Kopieren von bestehenden Veranstaltungen
+-   Präventions-Erinnerung automatisch versenden
+
 ### 1.12.11
 
 -   Fix: Bank Account mit abrufen wenn Mitglied editiert wird
