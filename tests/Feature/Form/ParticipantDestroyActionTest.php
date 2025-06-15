@@ -5,23 +5,24 @@ namespace Tests\Feature\Form;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\Lib\CreatesFormFields;
 
-class ParticipantDestroyActionTest extends FormTestCase
-{
+uses(DatabaseTransactions::class);
+uses(CreatesFormFields::class);
 
-    use DatabaseTransactions;
+beforeEach(function () {
+    test()->setUpForm();
+});
 
-    public function testItCanDestroyAParticipant(): void
-    {
-        $this->login()->loginNami()->withoutExceptionHandling();
-        $form = Form::factory()
-            ->has(Participant::factory())
-            ->sections([])
-            ->create();
+it('testItCanDestroyAParticipant', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $form = Form::factory()
+        ->has(Participant::factory())
+        ->sections([])
+        ->create();
 
-        $this->deleteJson(route('participant.destroy', ['participant' => $form->participants->first()]))
-            ->assertOk();
+    $this->deleteJson(route('participant.destroy', ['participant' => $form->participants->first()]))
+        ->assertOk();
 
-        $this->assertDatabaseCount('participants', 0);
-    }
-}
+    $this->assertDatabaseCount('participants', 0);
+});

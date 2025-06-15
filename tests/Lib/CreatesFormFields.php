@@ -13,11 +13,54 @@ use App\Form\Fields\NumberField;
 use App\Form\Fields\RadioField;
 use App\Form\Fields\TextareaField;
 use App\Form\Fields\TextField;
-use Faker\Generator;
+use App\Form\FormSettings;
+use App\Form\Models\Form;
+use App\Member\Member;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\TestResponse;
 use Tests\Feature\Form\FormtemplateFieldRequest;
 
 trait CreatesFormFields
 {
+
+
+    /**
+     * @param array<string, mixed> $attributes
+     */
+    public function createMember(array $attributes, ?callable $factoryCallback = null): Member
+    {
+        return call_user_func($factoryCallback ?: fn ($factory) => $factory, Member::factory()->defaults())
+            ->create($attributes);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    public function register(Form $form, array $payload): TestResponse
+    {
+        return $this->postJson(route('form.register', ['form' => $form]), $payload);
+    }
+
+    public function setUpForm() {
+        app(FormSettings::class)->fill(['clearCacheUrl' => 'http://event.com/clear-cache'])->save();
+
+        Http::fake(function ($request) {
+            if ($request->url() === 'http://event.com/clear-cache') {
+                return Http::response('', 200);
+            }
+        });
+
+        Storage::fake('temp');
+    }
+
+    protected function assertFrontendCacheCleared(): void
+    {
+        Http::assertSent(fn ($request) => $request->url() === 'http://event.com/clear-cache'
+            && $request->method() === 'GET'
+        );
+    }
+
     protected static function namiField(?string $key = null): FormtemplateFieldRequest
     {
         return FormtemplateFieldRequest::type(NamiField::class)->key($key ?? static::randomKey());

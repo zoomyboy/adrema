@@ -5,32 +5,33 @@ namespace Tests\Feature\Form;
 use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\Lib\CreatesFormFields;
 
-class ParticipantFieldsActionTest extends FormTestCase
-{
+uses(DatabaseTransactions::class);
+uses(CreatesFormFields::class);
 
-    use DatabaseTransactions;
+beforeEach(function () {
+    test()->setUpForm();
+});
 
-    public function testItShowsParticipantsFields(): void
-    {
-        $this->login()->loginNami()->withoutExceptionHandling();
-        $participant = Participant::factory()->data(['vorname' => 'Max', 'select' => ['A', 'B']])
-            ->for(Form::factory()->sections([
-                FormtemplateSectionRequest::new()->name('Sektion')->fields([
-                    $this->textField('vorname')->name('Vorname'),
-                    $this->checkboxesField('select')->options(['A', 'B', 'C']),
-                ])
+it('testItShowsParticipantsFields', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $participant = Participant::factory()->data(['vorname' => 'Max', 'select' => ['A', 'B']])
+        ->for(Form::factory()->sections([
+            FormtemplateSectionRequest::new()->name('Sektion')->fields([
+                $this->textField('vorname')->name('Vorname'),
+                $this->checkboxesField('select')->options(['A', 'B', 'C']),
+            ])
 
-            ]))
-            ->create();
+        ]))
+        ->create();
 
-        $this->callFilter('participant.fields', [], ['participant' => $participant->id])
-            ->assertOk()
-            ->assertJsonPath('data.id', $participant->id)
-            ->assertJsonPath('data.config.sections.0.name', 'Sektion')
-            ->assertJsonPath('data.config.sections.0.fields.0.key', 'vorname')
-            ->assertJsonPath('data.config.sections.0.fields.0.value', 'Max')
-            ->assertJsonPath('data.config.sections.0.fields.1.key', 'select')
-            ->assertJsonPath('data.config.sections.0.fields.1.value', ['A', 'B']);
-    }
-}
+    $this->callFilter('participant.fields', [], ['participant' => $participant->id])
+        ->assertOk()
+        ->assertJsonPath('data.id', $participant->id)
+        ->assertJsonPath('data.config.sections.0.name', 'Sektion')
+        ->assertJsonPath('data.config.sections.0.fields.0.key', 'vorname')
+        ->assertJsonPath('data.config.sections.0.fields.0.value', 'Max')
+        ->assertJsonPath('data.config.sections.0.fields.1.key', 'select')
+        ->assertJsonPath('data.config.sections.0.fields.1.value', ['A', 'B']);
+});
