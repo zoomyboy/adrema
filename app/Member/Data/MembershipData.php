@@ -7,7 +7,7 @@ use App\Group;
 use Spatie\LaravelData\Data;
 use App\Lib\Data\DateData;
 use App\Lib\Data\RecordData;
-use App\Lib\HasMeta;
+use App\Lib\HasDataMeta;
 use App\Member\Membership;
 use App\Membership\FilterScope;
 use App\Subactivity;
@@ -15,8 +15,11 @@ use App\Subactivity;
 class MembershipData extends Data
 {
 
-    use HasMeta;
+    use HasDataMeta;
 
+    /**
+     * @param array<string, string> $links
+     */
     public function __construct(
         public int $id,
         public RecordData $activity,
@@ -49,6 +52,9 @@ class MembershipData extends Data
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function meta(): array {
         return [
             'activities' => RecordData::collect(Activity::get()),

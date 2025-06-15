@@ -21,7 +21,7 @@ class MassStoreAction
     use TracksJob;
 
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
@@ -87,6 +87,9 @@ class MassStoreAction
         return response()->json([], 200);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getValidationAttributes(): array {
         return [
             'activity_id' => 'Tätigkeit',

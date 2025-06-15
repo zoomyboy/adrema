@@ -16,7 +16,7 @@ class FormIndexAction
     use AsAction;
 
     /**
-     * @return LengthAwarePaginator<Form>
+     * @return LengthAwarePaginator<int, Form>
      */
     public function handle(string $filter): LengthAwarePaginator
     {

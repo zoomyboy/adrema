@@ -16,7 +16,7 @@ class NamiSearchAction
     /**
      * @param array<string, mixed> $params
      *
-     * @return LengthAwarePaginator<MemberEntry>
+     * @return LengthAwarePaginator<int, MemberEntry>
      */
     public function handle(Api $api, int $page, array $params, int $perPage = 10): LengthAwarePaginator
     {
@@ -36,7 +36,7 @@ class NamiSearchAction
     }
 
     /**
-     * @return LengthAwarePaginator<MemberEntry>
+     * @return LengthAwarePaginator<int, MemberEntry>
      */
     public function asController(ActionRequest $request): LengthAwarePaginator
     {

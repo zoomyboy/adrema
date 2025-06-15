@@ -14,7 +14,7 @@ class FormtemplateIndexAction
     use AsAction;
 
     /**
-     * @return LengthAwarePaginator<Formtemplate>
+     * @return LengthAwarePaginator<int, Formtemplate>
      */
     public function handle(): LengthAwarePaginator
     {

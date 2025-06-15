@@ -16,7 +16,7 @@ class FormApiListAction
 
     /**
      * @param string $filter
-     * @return LengthAwarePaginator<Form>
+     * @return LengthAwarePaginator<int, Form>
      */
     public function handle(string $filter, int $perPage): LengthAwarePaginator
     {

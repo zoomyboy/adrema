@@ -14,7 +14,7 @@ class SearchAction
     use AsAction;
 
     /**
-     * @return LengthAwarePaginator<array<string, mixed>>
+     * @return LengthAwarePaginator<int, array<string, mixed>>
      */
     public function handle(ActionRequest $request): LengthAwarePaginator
     {

@@ -419,11 +419,6 @@ parameters:
             path: app/Mailgateway/Resources/MailgatewayResource.php
 
         -
-            message: "#^Generic type Illuminate\\\\Pagination\\\\LengthAwarePaginator\\<int, App\\\\Member\\\\Member\\> in PHPDoc tag @return specifies 2 template types, but class Illuminate\\\\Pagination\\\\LengthAwarePaginator supports only 1\\: TValue$#"
-            count: 1
-            path: app/Member/Actions/SearchAction.php
-
-        -
             message: "#^Class Plugins\\\\Test\\\\ServiceProvider not found\\.$#"
             count: 1
             path: tests/Unit/Plugin/PluginTest.php
