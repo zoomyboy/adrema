@@ -200,7 +200,7 @@ import ConditionsForm from './ConditionsForm.vue';
 import { useToast } from 'vue-toastification';
 
 const props = defineProps(indexProps);
-const { meta, data, reloadPage, create, single, edit, cancel, submit, remove, getFilter, setFilter } = useIndex(props.data, 'form');
+const { meta, data, reloadPage, reload, create, single, edit, cancel, submit, remove, getFilter, setFilter } = useIndex(props.data, 'form');
 const axios = inject('axios');
 const toast = useToast();
 
@@ -228,9 +228,9 @@ const allFields = computed(() => {
     return result;
 });
 
-function onCopy(form) {
-    single.value = {...meta.value.default, ...form};
-    single.value.id = null;
+async function onCopy(form) {
+    await axios.post(form.links.copy, {});
+    reload(false);
 }
 
 function setTemplate(template) {
