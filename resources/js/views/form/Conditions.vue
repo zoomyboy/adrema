@@ -1,54 +1,49 @@
 <template>
     <ui-note v-if="locked" class="mt-2" type="danger">
-        Dieses Formular wurde bereits bearbeitet.<br />
+        Dieses Formular wurde bereits bearbeitet.<br>
         Bitte speichere es erst ab und editiere dann die Bedingungen.
     </ui-note>
 
     <div v-else>
-        <f-select :id="`mode-${id}`" :name="`mode-${id}`" :model-value="modelValue.mode" :options="modeOptions" label="Modus" @update:model-value="changeMode"></f-select>
+        <f-select :id="`mode-${id}`" :name="`mode-${id}`" :model-value="modelValue.mode" :options="modeOptions" label="Modus" @update:model-value="changeMode" />
 
         <ui-icon-button class="mt-4 mb-2" icon="plus" @click="addCondition">Bedingung einfügen</ui-icon-button>
 
         <div v-for="(condition, index) in modelValue.ifs" :key="index" class="grid grid-cols-[1fr_1fr_1fr_max-content] gap-2">
-            <f-select
-                :id="`field-${index}-${id}`"
-                :model-value="condition.field"
-                :options="fieldOptions"
-                :name="`field-${index}-${id}`"
-                label="Feld"
-                @update:model-value="update(index, 'field', $event)"
-            ></f-select>
-            <f-select
-                :id="`comparator-${index}-${id}`"
-                :options="comparatorOptions"
-                :model-value="condition.comparator"
-                :name="`comparator-${index}-${id}`"
-                label="Vergleich"
-                @update:model-value="update(index, 'comparator', $event)"
-            ></f-select>
-            <f-select
-                v-if="condition.field && ['isEqual', 'isNotEqual'].includes(condition.comparator) && ['RadioField', 'DropdownField', 'GroupField'].includes(getField(condition.field).type)"
-                :id="`value-${index}-${id}`"
-                v-model="condition.value"
-                :options="getOptions(condition.field)"
-                :name="`value-${index}-${id}`"
-                label="Wert"
-            ></f-select>
-            <f-multipleselect
-                v-if="condition.field && ['isIn', 'isNotIn'].includes(condition.comparator) && ['RadioField', 'DropdownField', 'GroupField'].includes(getField(condition.field).type)"
-                :id="`value-${index}-${id}`"
-                v-model="condition.value"
-                :options="getOptions(condition.field)"
-                label="Wert"
-            ></f-multipleselect>
-            <f-switch
-                v-if="condition.field && condition.comparator && ['CheckboxField'].includes(getField(condition.field).type)"
-                :id="`value-${index}-${id}`"
-                v-model="condition.value"
-                :name="`value-${index}-${id}`"
-                label="Wert"
-            ></f-switch>
-            <ui-action-button tooltip="Löschen" icon="trash" class="btn-danger self-end h-8" @click="remove(index)"></ui-action-button>
+            <f-select :id="`field-${index}-${id}`"
+                      :model-value="condition.field"
+                      :options="fieldOptions"
+                      :name="`field-${index}-${id}`"
+                      label="Feld"
+                      @update:model-value="update(index, 'field', $event)"
+            />
+            <f-select :id="`comparator-${index}-${id}`"
+                      :options="comparatorOptions"
+                      :model-value="condition.comparator"
+                      :name="`comparator-${index}-${id}`"
+                      label="Vergleich"
+                      @update:model-value="update(index, 'comparator', $event)"
+            />
+            <f-select v-if="condition.field && ['isEqual', 'isNotEqual'].includes(condition.comparator) && ['RadioField', 'DropdownField', 'GroupField'].includes(getField(condition.field).type)"
+                      :id="`value-${index}-${id}`"
+                      v-model="condition.value"
+                      :options="getOptions(condition.field)"
+                      :name="`value-${index}-${id}`"
+                      label="Wert"
+            />
+            <f-multipleselect v-if="condition.field && ['isIn', 'isNotIn'].includes(condition.comparator) && ['RadioField', 'DropdownField', 'GroupField'].includes(getField(condition.field).type)"
+                              :id="`value-${index}-${id}`"
+                              v-model="condition.value"
+                              :options="getOptions(condition.field)"
+                              label="Wert"
+            />
+            <f-switch v-if="condition.field && condition.comparator && ['CheckboxField'].includes(getField(condition.field).type)"
+                      :id="`value-${index}-${id}`"
+                      v-model="condition.value"
+                      :name="`value-${index}-${id}`"
+                      label="Wert"
+            />
+            <ui-action-button tooltip="Löschen" icon="trash" class="btn-danger self-end h-8" @click="remove(index)" />
         </div>
     </div>
 </template>
@@ -103,7 +98,7 @@ function changeMode(mode) {
 }
 
 function update(index, key, value) {
-    var inner = {...props.modelValue};
+    const inner = {...props.modelValue};
     if (key === 'comparator') {
         var old = inner.ifs[index];
         inner.ifs[index] = {
