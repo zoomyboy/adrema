@@ -11,9 +11,6 @@ class FormCopyAction
 {
     use AsAction;
 
-    /**
-     * @param array<string, mixed> $attributes
-     */
     public function handle(Form $form): Form
     {
         $newForm = $form->replicate();
