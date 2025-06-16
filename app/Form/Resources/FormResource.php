@@ -61,6 +61,7 @@ class FormResource extends JsonResource
                 'is_dirty' => route('form.is-dirty', $this->getModel()),
                 'frontend' => str(app(FormSettings::class)->registerUrl)->replace('{slug}', $this->slug),
                 'export' => route('form.export', $this->getModel()),
+                'copy' => route('form.copy', $this->getModel()),
             ]
         ];
     }

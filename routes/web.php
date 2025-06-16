@@ -23,6 +23,7 @@ use App\Fileshare\Actions\FileshareStoreAction;
 use App\Fileshare\Actions\FileshareUpdateAction;
 use App\Fileshare\Actions\ListFilesAction;
 use App\Form\Actions\ExportAction as ActionsExportAction;
+use App\Form\Actions\FormCopyAction;
 use App\Form\Actions\FormDestroyAction;
 use App\Form\Actions\FormIndexAction;
 use App\Group\Actions\GroupBulkstoreAction;
@@ -179,6 +180,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::get('/participant/{participant}/fields', ParticipantFieldsAction::class)->name('participant.fields');
     Route::patch('/participant/{participant}', ParticipantUpdateAction::class)->name('participant.update');
     Route::post('/form/{form}/participant', ParticipantStoreAction::class)->name('form.participant.store');
+    Route::post('/form/{form}/copy', FormCopyAction::class)->name('form.copy');
 
     // ------------------------------------ fileshare -----------------------------------
     Route::post('/fileshare', FileshareStoreAction::class)->name('fileshare.store');

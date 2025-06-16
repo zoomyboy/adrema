@@ -3,12 +3,14 @@
 namespace Tests;
 
 use App\Group;
+use App\Lib\Events\Succeeded;
 use App\Member\Member;
 use App\Setting\NamiSettings;
 use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
@@ -191,5 +193,17 @@ class TestCase extends BaseTestCase
 
             return $this;
         });
+    }
+
+    public function fakeMessages() {
+        Event::fake([Succeeded::class]);
+
+        return $this;
+    }
+
+    public function assertSuccessMessage(string $message) {
+        Event::assertDispatched(Succeeded::class, fn ($event) => $event->message === $message);
+
+        return $this;
     }
 }

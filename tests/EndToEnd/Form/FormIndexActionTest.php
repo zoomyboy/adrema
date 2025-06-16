@@ -145,6 +145,15 @@ class FormIndexActionTest extends FormTestCase
         $this->callFilter('form.index', [])->assertInertiaPath('data.data.0.links.frontend', 'https://example.com/form/zem-2024/register');
     }
 
+    public function testItDisplaysCopyUrl(): void
+    {
+        $this->withoutExceptionHandling()->login()->loginNami();
+        $form = Form::factory()->create();
+
+        sleep(1);
+        $this->callFilter('form.index', [])->assertInertiaPath('data.data.0.links.copy', route('form.copy', $form));
+    }
+
     public function testItDoesntReturnInactiveForms(): void
     {
         $this->withoutExceptionHandling()->login()->loginNami();
