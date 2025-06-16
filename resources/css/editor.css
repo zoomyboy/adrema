@@ -5,14 +5,14 @@
 .ce-settings__button,
 .ce-toolbar__settings-btn,
 .cdx-button,
-.ce-popover,
+.ce-popover__container,
 .ce-toolbar__plus:hover {
     @apply bg-primary-700;
     color: inherit;
 }
 
-.ce-inline-tool-input {
-    @apply bg-primary-700 text-primary-200 placeholder-primary-500;
+.cdx-search-field {
+    @apply bg-primary-600;
 }
 
 .ce-block--selected {
