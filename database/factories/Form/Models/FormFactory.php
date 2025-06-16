@@ -47,8 +47,8 @@ class FormFactory extends Factory
             'description' => EditorRequestFactory::new()->toData(),
             'excerpt' => $this->faker->words(10, true),
             'config' => ['sections' => []],
-            'from' => $this->faker->dateTimeBetween('+1 week', '+4 weeks')->format('Y-m-d'),
-            'to' => $this->faker->dateTimeBetween('+1 week', '+4 weeks')->format('Y-m-d'),
+            'from' => $this->faker->dateTimeBetween('+1 week', '+3 weeks')->format('Y-m-d'),
+            'to' => $this->faker->dateTimeBetween('+4 week', '+6 weeks')->format('Y-m-d'),
             'registration_from' => $this->faker->dateTimeBetween(Carbon::parse('-2 weeks'), now())->format('Y-m-d H:i:s'),
             'registration_until' => $this->faker->dateTimeBetween(now(), Carbon::parse('+2 weeks'))->format('Y-m-d H:i:s'),
             'mail_top' => EditorRequestFactory::new()->toData(),
@@ -65,7 +65,7 @@ class FormFactory extends Factory
      */
     public function sections(array $sections): self
     {
-        return $this->state(['config' => ['sections' => array_map(fn ($section) => $section->create(), $sections)]]);
+        return $this->state(['config' => ['sections' => array_map(fn($section) => $section->create(), $sections)]]);
     }
 
     /**
