@@ -1,13 +1,12 @@
 <template>
-    <v-notification class="fixed z-40 right-0 bottom-0 mb-3 mr-3"></v-notification>
+    <v-notification class="fixed z-40 right-0 bottom-0 mb-3 mr-3" />
 
     <!-- ******************************** Sidebar ******************************** -->
-    <div
-        class="fixed z-40 bg-gray-800 p-6 w-56 top-0 h-screen border-r border-gray-600 border-solid flex flex-col justify-between transition-all"
-        :class="{
-            '-left-[14rem]': !menuStore.isShifted,
-            'left-0': menuStore.isShifted,
-        }"
+    <div class="fixed z-40 bg-gray-800 p-6 w-56 top-0 h-screen border-r border-gray-600 border-solid flex flex-col justify-between transition-all"
+         :class="{
+             '-left-[14rem]': !menuStore.isShifted,
+             'left-0': menuStore.isShifted,
+         }"
     >
         <div class="grid gap-2">
             <v-link href="/" menu="dashboard" icon="loss">Dashboard</v-link>
@@ -29,13 +28,13 @@
             <v-link icon="logout" href="/logout" @click.prevent="$inertia.post('/logout')">Abmelden</v-link>
         </div>
         <a v-if="menuStore.hideable" href="#" class="absolute right-0 top-0 mr-2 mt-2" @click.prevent="menuStore.hide()">
-            <ui-sprite src="close" class="w-5 h-5 text-gray-300"></ui-sprite>
+            <ui-sprite src="close" class="w-5 h-5 text-gray-300" />
         </a>
     </div>
 
-    <slot></slot>
+    <slot />
 
-    <page-search-modal v-if="searchVisible" @close="searchVisible = false"></page-search-modal>
+    <page-search-modal v-if="searchVisible" @close="searchVisible = false" />
 </template>
 
 <script>
