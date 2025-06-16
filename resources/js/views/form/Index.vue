@@ -80,13 +80,13 @@
                     <div>
                         <ui-tabs v-model="activeMailTab" :entries="mailTabs" />
                         <f-editor v-if="activeMailTab === 0" id="mail_top" v-model="single.mail_top" name="mail_top" label="E-Mail-Teil 1" :rows="8" conditions required>
-                            <template #conditions="{data, resolve}">
-                                <conditions-form id="mail_top_conditions" :single="single" :value="data" @save="resolve" />
+                            <template #conditions="{cData, resolve}">
+                                <conditions-form id="mail_top_conditions" :single="single" :value="cData" @save="resolve" />
                             </template>
                         </f-editor>
                         <f-editor v-if="activeMailTab === 1" id="mail_bottom" v-model="single.mail_bottom" name="mail_bottom" label="E-Mail-Teil 2" :rows="8" conditions required>
-                            <template #conditions="{data, resolve}">
-                                <conditions-form id="mail_bottom_conditions" :single="single" :value="data" @save="resolve" />
+                            <template #conditions="{d, resolve}">
+                                <conditions-form id="mail_bottom_conditions" :single="single" :value="d" @save="resolve" />
                             </template>
                         </f-editor>
                     </div>

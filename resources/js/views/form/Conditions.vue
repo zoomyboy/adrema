@@ -100,7 +100,7 @@ function changeMode(mode) {
 function update(index, key, value) {
     const inner = {...props.modelValue};
     if (key === 'comparator') {
-        var old = inner.ifs[index];
+        const old = inner.ifs[index];
         inner.ifs[index] = {
             field: old.field,
             comparator: value,
@@ -108,7 +108,6 @@ function update(index, key, value) {
         };
     }
     if (key === 'field') {
-        var old = inner.ifs[index];
         inner.ifs[index] = {
             field: value,
             comparator: null,
