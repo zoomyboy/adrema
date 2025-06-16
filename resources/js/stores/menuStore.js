@@ -1,5 +1,5 @@
-import {defineStore} from 'pinia';
-import {router} from '@inertiajs/vue3';
+import { defineStore } from 'pinia';
+import { router } from '@inertiajs/vue3';
 
 export const menuStore = defineStore('menu', {
     state: () => ({
