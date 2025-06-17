@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.16
+
+-   Mitgliedschaften können nun bei Mitgliedschaften-Übersicht gelöscht werden
+
 ### 1.12.15
 
 -   Bestätigung wird eingeblendet beim Kopieren eines Events
