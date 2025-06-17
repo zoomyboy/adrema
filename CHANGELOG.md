@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.17
+
+-   Fix: Mitgliedschaften werden beim Sammel-Speichern nicht mehr doppelt angelegt
+
 ### 1.12.16
 
 -   Mitgliedschaften können nun bei Mitgliedschaften-Übersicht gelöscht werden
