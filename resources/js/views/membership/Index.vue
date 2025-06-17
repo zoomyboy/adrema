@@ -43,6 +43,7 @@
                     <th>Beginn</th>
                     <th>Ende</th>
                     <th>Aktiv</th>
+                    <th>Aktion</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,6 +55,9 @@
                     <td v-text="membership.from.human" />
                     <td v-text="membership.to?.human" />
                     <td><ui-bool :value="membership.isActive" /></td>
+                    <td>
+                        <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="onDelete(membership)" />
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -66,9 +70,14 @@
 
 <script lang="js" setup>
 import {useIndex, indexProps} from '@/composables/useIndex.js';
+import useSwal from '@/stores/swalStore.ts';
 
+const swal = useSwal();
 const props = defineProps(indexProps);
+const {data, meta, getFilter, setFilter, axios} = useIndex(props.data, 'membership');
 
-const {data, meta, getFilter, setFilter} = useIndex(props.data, 'memberships');
-
+async function onDelete(membership) {
+    await swal.confirm('Mitgliedschaft löschen', `Mitgliedschaft von ${membership.member.fullname} löschen`);
+    await axios.delete(membership.links.destroy);
+}
 </script>
