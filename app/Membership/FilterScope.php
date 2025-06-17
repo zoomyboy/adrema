@@ -25,7 +25,7 @@ class FilterScope extends Filter
 
     public function getQuery(): Builder
     {
-        $query = (new Membership())->newQuery();
+        $query = Membership::orderByRaw('member_id, activity_id, subactivity_id');
 
         if ($this->active === true) {
             $query = $query->active();
