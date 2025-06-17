@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.15
+
+-   Bestätigung wird eingeblendet beim Kopieren eines Events
+
 ### 1.12.14
 
 -   Bilder werden nun mitkopiert beim Kopieren eines Events
