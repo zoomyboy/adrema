@@ -1,22 +1,21 @@
 <template>
     <div>
         <div class="flex flex-col group" :for="id" :class="sizeClass(size)">
-            <f-label v-if="label" :required="required" :value="label"></f-label>
+            <f-label v-if="label" :required="required" :value="label" />
             <div class="relative w-full h-full">
-                <div :id="id" :class="[fieldAppearance, paddingX, paddingY]"></div>
-                <f-hint v-if="hint" :value="hint"></f-hint>
+                <div :id="id" :class="[fieldAppearance, paddingX, paddingY]" />
+                <f-hint v-if="hint" :value="hint" />
             </div>
         </div>
 
-        <ui-popup
-            v-if="condition !== null"
-            heading="Bedingungen"
-            @close="
-                condition.resolve(condition.data);
-                condition = null;
-            "
+        <ui-popup v-if="condition !== null"
+                  heading="Bedingungen"
+                  @close="
+                      condition.resolve(condition.data);
+                      condition = null;
+                  "
         >
-            <slot name="conditions" :data="condition.data" :resolve="condition.resolve" :reject="condition.reject"></slot>
+            <slot name="conditions" :data="condition.data" :resolve="condition.resolve" :reject="condition.reject" />
         </ui-popup>
     </div>
 </template>
@@ -106,10 +105,10 @@ class ConditionTune {
     wrap(blockContent) {
         this.wrapper = document.createElement('div');
 
-        var tooltip = document.createElement('div');
+        const tooltip = document.createElement('div');
         tooltip.setAttribute('data-tooltip', '');
 
-        var content = document.createElement('div');
+        const content = document.createElement('div');
         content.setAttribute('data-content', '');
 
         content.appendChild(blockContent);
@@ -144,7 +143,7 @@ class ConditionTune {
             'Bedingung ' +
             this.data.ifs
                 .map((i) => {
-                    var parts = [i.field];
+                    const parts = [i.field];
 
                     if (i.comparator === 'isEqual' || i.comparator === 'isIn') {
                         parts.push('=');
@@ -191,7 +190,7 @@ class ConditionTune {
 }
 
 onMounted(async () => {
-    var tools = {
+    const tools = {
         paragraph: {
             class: Paragraph,
             shortcut: 'CTRL+P',
@@ -225,7 +224,7 @@ onMounted(async () => {
         },
     };
 
-    var tunes = [];
+    const tunes = [];
 
     if (props.conditions) {
         tools.condition = {

@@ -1,15 +1,15 @@
 <template>
     <ui-popup v-if="selecting !== false" heading="Resource auswählen" @close="selecting = false">
-        <ui-remote-selector :value="selecting" @input="set"></ui-remote-selector>
+        <ui-remote-selector :value="selecting" @input="set" />
     </ui-popup>
     <label class="flex flex-col group" :for="id" :class="sizeClass(size)">
-        <f-label v-if="label" :required="false" :value="label"></f-label>
+        <f-label v-if="label" :required="false" :value="label" />
         <div class="relative flex-none flex">
             <div class="w-full flex flex-col justify-center" :class="[fieldHeight, fieldAppearance, paddingX]" @click.prevent="selecting = modelValue === null ? null : {...modelValue}">
-                <div v-if="modelValue !== null" v-text="modelValue.resource"></div>
+                <div v-if="modelValue !== null" v-text="modelValue.resource" />
                 <div v-else>Datei auswählen</div>
             </div>
-            <f-hint v-if="hint" :value="hint"></f-hint>
+            <f-hint v-if="hint" :value="hint" />
         </div>
     </label>
 </template>

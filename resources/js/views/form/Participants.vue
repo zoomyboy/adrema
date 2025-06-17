@@ -1,16 +1,15 @@
 <template>
     <div>
         <ui-popup v-if="editing !== null" heading="Mitglied bearbeiten" closeable full @close="editing = null">
-            <event-form
-                :value="editing.preview"
-                :base-url="meta.base_url"
-                style="--primary: hsl(181, 75%, 26%); --secondary: hsl(181, 75%, 35%); --font: hsl(181, 84%, 78%); --circle: hsl(181, 86%, 16%)"
-                as-form
-                @save="updateParticipant($event.detail[0])"
-            ></event-form>
+            <event-form :value="editing.preview"
+                        :base-url="meta.base_url"
+                        style="--primary: hsl(181, 75%, 26%); --secondary: hsl(181, 75%, 35%); --font: hsl(181, 84%, 78%); --circle: hsl(181, 86%, 16%)"
+                        as-form
+                        @save="updateParticipant($event.detail[0])"
+            />
         </ui-popup>
         <ui-popup v-if="assigning !== null" heading="Mitglied zuweisen" closeable @close="assigning = null">
-            <member-assign @assign="assign"></member-assign>
+            <member-assign @assign="assign" />
         </ui-popup>
         <ui-popup v-if="deleting !== null" heading="Teilnehmer*in löschen?" @close="deleting = null">
             <div>
@@ -23,62 +22,58 @@
         </ui-popup>
         <page-filter>
             <template #buttons>
-                <f-text id="search" v-model="innerFilter.search" name="search" label="Suchen" size="sm"></f-text>
+                <f-text id="search" v-model="innerFilter.search" name="search" label="Suchen" size="sm" />
                 <ui-icon-button icon="plus" @click="editing = {participant: null, preview: JSON.stringify(meta.form_config)}">Hinzufügen</ui-icon-button>
-                <f-switch v-if="meta.has_nami_field" id="group_participants" v-model="groupParticipants" label="Gruppieren" size="sm" name="group_participants"></f-switch>
-                <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm"></f-multipleselect>
+                <f-switch v-if="meta.has_nami_field" id="group_participants" v-model="groupParticipants" label="Gruppieren" size="sm" name="group_participants" />
+                <f-multipleselect id="active_columns" v-model="activeColumnsConfig" :options="meta.columns" label="Aktive Spalten" size="sm" />
             </template>
 
             <template #fields>
                 <template v-for="(filter, index) in meta.filters">
-                    <f-select
-                        v-if="filter.base_type === 'CheckboxField'"
-                        :id="`filter-field-${index}`"
-                        :key="`filter-field-${index}`"
-                        v-model="innerFilter.data[filter.key]"
-                        :null-value="meta.default_filter_value"
-                        :name="`filter-field-${index}`"
-                        :options="checkboxFilterOptions"
-                        :label="filter.name"
-                        size="sm"
-                    ></f-select>
-                    <f-select
-                        v-if="filter.base_type === 'DropdownField'"
-                        :id="`filter-field-${index}`"
-                        :key="`filter-field-${index}`"
-                        v-model="innerFilter.data[filter.key]"
-                        :null-value="meta.default_filter_value"
-                        :name="`filter-field-${index}`"
-                        :options="dropdownFilterOptions(filter)"
-                        :label="filter.name"
-                        size="sm"
-                    ></f-select>
-                    <f-select
-                        v-if="filter.base_type === 'RadioField'"
-                        :id="`filter-field-${index}`"
-                        :key="`filter-field-${index}`"
-                        v-model="innerFilter.data[filter.key]"
-                        :null-value="meta.default_filter_value"
-                        :name="`filter-field-${index}`"
-                        :options="dropdownFilterOptions(filter)"
-                        :label="filter.name"
-                        size="sm"
-                    ></f-select>
+                    <f-select v-if="filter.base_type === 'CheckboxField'"
+                              :id="`filter-field-${index}`"
+                              :key="`filter-field-${index}`"
+                              v-model="innerFilter.data[filter.key]"
+                              :null-value="meta.default_filter_value"
+                              :name="`filter-field-${index}`"
+                              :options="checkboxFilterOptions"
+                              :label="filter.name"
+                              size="sm"
+                    />
+                    <f-select v-if="filter.base_type === 'DropdownField'"
+                              :id="`filter-field-${index}`"
+                              :key="`filter-field-${index}`"
+                              v-model="innerFilter.data[filter.key]"
+                              :null-value="meta.default_filter_value"
+                              :name="`filter-field-${index}`"
+                              :options="dropdownFilterOptions(filter)"
+                              :label="filter.name"
+                              size="sm"
+                    />
+                    <f-select v-if="filter.base_type === 'RadioField'"
+                              :id="`filter-field-${index}`"
+                              :key="`filter-field-${index}`"
+                              v-model="innerFilter.data[filter.key]"
+                              :null-value="meta.default_filter_value"
+                              :name="`filter-field-${index}`"
+                              :options="dropdownFilterOptions(filter)"
+                              :label="filter.name"
+                              size="sm"
+                    />
                 </template>
             </template>
         </page-filter>
         <table cellspacing="0" cellpadding="0" border="0" class="custom-table custom-table-sm">
             <thead>
-                <ui-th
-                    v-for="column in activeColumns"
-                    :key="column.id"
-                    :column="column.id"
-                    :label="column.name"
-                    :value="getSort"
-                    sortable
-                    @update:model-value="setSort(column.id, {filter: toFilterString(innerFilter)})"
-                ></ui-th>
-                <th></th>
+                <ui-th v-for="column in activeColumns"
+                       :key="column.id"
+                       :column="column.id"
+                       :label="column.name"
+                       :value="getSort"
+                       sortable
+                       @update:model-value="setSort(column.id, {filter: toFilterString(innerFilter)})"
+                />
+                <th />
             </thead>
 
             <template v-for="(participant, index) in data" :key="index">
@@ -86,21 +81,21 @@
                     <td v-for="(column, columnindex) in activeColumns" :key="column.id">
                         <div class="flex items-center space-x-2">
                             <button v-if="columnindex === 0 && participant.member_id === null" v-tooltip="`kein Mitglied zugewiesen. Per Klick zuweisen`" @click.prevent="assigning = participant">
-                                <ui-sprite src="warning-triangle" class="text-yellow-400 w-5 h-5"></ui-sprite>
+                                <ui-sprite src="warning-triangle" class="text-yellow-400 w-5 h-5" />
                             </button>
                             <ui-table-toggle-button v-if="columnindex === 0 && groupParticipants" :value="participant" :level="0" :active="isOpen(participant.id)" @toggle="toggle(participant)">
-                                <prevention v-if="column.display_attribute === 'prevention_display'" :value="participant.prevention_items"></prevention>
-                                <span v-else v-text="participant[column.display_attribute]"></span>
+                                <prevention v-if="column.display_attribute === 'prevention_display'" :value="participant.prevention_items" />
+                                <span v-else v-text="participant[column.display_attribute]" />
                             </ui-table-toggle-button>
                             <div v-else>
-                                <prevention v-if="column.display_attribute === 'prevention_display'" :value="participant.prevention_items"></prevention>
-                                <span v-else v-text="participant[column.display_attribute]"></span>
+                                <prevention v-if="column.display_attribute === 'prevention_display'" :value="participant.prevention_items" />
+                                <span v-else v-text="participant[column.display_attribute]" />
                             </div>
                         </div>
                     </td>
                     <td>
-                        <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(participant)"><ui-sprite src="pencil"></ui-sprite></a>
-                        <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = participant"><ui-sprite src="trash"></ui-sprite></a>
+                        <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(participant)"><ui-sprite src="pencil" /></a>
+                        <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = participant"><ui-sprite src="trash" /></a>
                     </td>
                 </tr>
                 <template v-for="child in childrenOf(participant.id)" :key="child.id">
@@ -108,25 +103,25 @@
                         <td v-for="(column, columnindex) in activeColumns" :key="column.id">
                             <div class="flex items-center space-x-2">
                                 <ui-table-toggle-button v-if="columnindex === 0 && groupParticipants" :value="child" :level="1" :active="isOpen(child.id)" @toggle="toggle(child)">
-                                    <prevention v-if="column.display_attribute === 'prevention_display'" :value="child.prevention_items"></prevention>
-                                    <span v-else v-text="child[column.display_attribute]"></span>
+                                    <prevention v-if="column.display_attribute === 'prevention_display'" :value="child.prevention_items" />
+                                    <span v-else v-text="child[column.display_attribute]" />
                                 </ui-table-toggle-button>
                                 <div v-else>
-                                    <prevention v-if="column.display_attribute === 'prevention_display'" :value="child.prevention_items"></prevention>
-                                    <span v-else v-text="child[column.display_attribute]"></span>
+                                    <prevention v-if="column.display_attribute === 'prevention_display'" :value="child.prevention_items" />
+                                    <span v-else v-text="child[column.display_attribute]" />
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(child)"><ui-sprite src="pencil"></ui-sprite></a>
-                            <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = child"><ui-sprite src="trash"></ui-sprite></a>
+                            <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(child)"><ui-sprite src="pencil" /></a>
+                            <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = child"><ui-sprite src="trash" /></a>
                         </td>
                     </tr>
                 </template>
             </template>
         </table>
         <div class="px-6">
-            <ui-pagination class="mt-4" :value="meta" @reload="reloadPage($event, {filter: toFilterString(innerFilter)})"></ui-pagination>
+            <ui-pagination class="mt-4" :value="meta" @reload="reloadPage($event, {filter: toFilterString(innerFilter)})" />
         </div>
     </div>
 </template>
