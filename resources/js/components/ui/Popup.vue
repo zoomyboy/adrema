@@ -32,7 +32,6 @@ defineEmits<{
     close: [],
 }>();
 withDefaults(defineProps<{
-    visible: boolean,
     heading?: string,
     innerWidth?: string,
     full?: boolean,
