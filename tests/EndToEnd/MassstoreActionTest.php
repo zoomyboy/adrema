@@ -48,6 +48,16 @@ it('testItCreatesAMembership', function() {
     MassStoreAction::run($group, $activity, $subactivity, [$member->id]);
 });
 
+it('doesnt create a membership that already exists', function() {
+    MembershipDestroyAction::partialMock()->shouldReceive('handle')->never();
+    MembershipStoreAction::partialMock()->shouldReceive('handle')->never();
+    $member = Member::factory()->defaults()
+        ->has(Membership::factory()->in('Leiter*in', 10, 'Rover', 11)->inNami(55))
+        ->create();
+
+    MassStoreAction::run($member->memberships->first()->group, $member->memberships->first()->activity, $member->memberships->first()->subactivity, [$member->id]);
+});
+
 it('cannot create membership when activity and subactivity doesnt belong together', function() {
     $this->login()->loginNami();
     $member = Member::factory()->defaults()->create();

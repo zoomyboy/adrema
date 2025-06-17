@@ -54,9 +54,7 @@ class MassStoreAction
             Membership::where($attributes)->active()->whereNotIn('member_id', $members)->get()
                 ->each(fn ($membership) => MembershipDestroyAction::run($membership->id));
 
-            collect($members)
-                ->except(Membership::where($attributes)->active()->pluck('member_id'))
-                ->map(fn ($memberId) => Member::findOrFail($memberId))
+            Member::whereIn('id', $members)->whereDoesntHave('memberships', fn ($q) => $q->where($attributes))->get()
                 ->each(fn ($member) => MembershipStoreAction::run(
                     $member,
                     $activity,
@@ -64,7 +62,6 @@ class MassStoreAction
                     $group,
                     null,
                 ));
-
 
             ResyncAction::dispatch();
         });
