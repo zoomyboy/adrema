@@ -32,6 +32,8 @@
         </a>
     </div>
 
+    <page-popups />
+
     <slot />
 
     <page-search-modal v-if="searchVisible" @close="searchVisible = false" />

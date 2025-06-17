@@ -25,6 +25,7 @@ declare module 'vue' {
     PageFullLayout: typeof import('@/components/page/FullLayout.vue')['default']
     PageHeader: typeof import('@/components/page/Header.vue')['default']
     PageLayout: typeof import('@/components/page/Layout.vue')['default']
+    PagePopups: typeof import('@/components/page/Popups.vue')['default']
     PageSearchModal: typeof import('@/components/page/SearchModal.vue')['default']
     PageTitle: typeof import('@/components/page/Title.vue')['default']
     PageToolbarButton: typeof import('@/components/page/ToolbarButton.vue')['default']

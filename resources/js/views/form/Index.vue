@@ -198,6 +198,7 @@ import Participants from './Participants.vue';
 import Conditions from './Conditions.vue';
 import ConditionsForm from './ConditionsForm.vue';
 import { useToast } from 'vue-toastification';
+import useSwal from '@/stores/swalStore.ts';
 
 const props = defineProps(indexProps);
 const { meta, data, reloadPage, reload, create, single, edit, cancel, submit, remove, getFilter, setFilter } = useIndex(props.data, 'form');
@@ -212,6 +213,7 @@ const active = ref(0);
 const activeMailTab = ref(0);
 const tabs = [{ title: 'Allgemeines' }, { title: 'Beschreibung' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }, { title: 'Prävention' }];
 const mailTabs = [{ title: 'vor Daten' }, { title: 'nach Daten' }];
+const swal = useSwal();
 
 const allFields = computed(() => {
     if (!single.value) {
@@ -229,6 +231,7 @@ const allFields = computed(() => {
 });
 
 async function onCopy(form) {
+    await swal.confirm('Diese Veranstaltung kopieren?', 'Nach dem Kopieren wird die Veranstaltung auf inaktiv gesetzt. Bitte aktiviere den Filter "inaktive zeigen", um die kopierte Veranstaltung zu sehen.');
     await axios.post(form.links.copy, {});
     reload(false);
 }
