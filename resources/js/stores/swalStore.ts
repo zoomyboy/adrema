@@ -6,6 +6,7 @@ interface Popup {
     id: string;
     title: string;
     body: string;
+    icon: string|null;
     confirmButton: string;
     cancelButton: string;
     resolve: (id: string) => void;
@@ -28,6 +29,7 @@ export default defineStore('swal', {
                         resolve,
                         reject,
                         id: uuidv4(),
+                        icon: 'warning-triangle-light',
                     });
                 }).then((id) => {
                     this.remove(id);

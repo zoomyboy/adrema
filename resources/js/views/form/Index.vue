@@ -5,22 +5,6 @@
             <page-toolbar-button color="primary" icon="plus" @click.prevent="create">Veranstaltung erstellen</page-toolbar-button>
         </template>
 
-        <ui-popup v-if="deleting !== null" :heading="`Veranstaltung ${deleting.name} löschen?`" @close="deleting = null">
-            <div>
-                <p class="mt-4">Diese Veranstaltung löschen?</p>
-                <div class="grid grid-cols-2 gap-3 mt-6">
-                    <a href="#"
-                       class="text-center btn btn-danger"
-                       @click.prevent="
-                           remove(deleting);
-                           deleting = null;
-                       "
-                    >Veranstaltung löschen</a>
-                    <a href="#" class="text-center btn btn-primary" @click.prevent="deleting = null">Abbrechen</a>
-                </div>
-            </div>
-        </ui-popup>
-
         <ui-popup v-if="single !== null && single.config === null" heading="Vorlage auswählen" @close="cancel">
             <div class="mt-3 grid gap-3 grid-cols-2">
                 <a v-for="(template, index) in meta.templates" :key="index" class="py-2 px-3 border rounded bg-zinc-800 hover:bg-zinc-700 transition" href="#" @click.prevent="setTemplate(template)">
@@ -178,7 +162,7 @@
                             <ui-action-button :href="form.links.frontend" target="_BLANK" tooltip="zur Anmeldeseite" class="btn-info" icon="eye" />
                             <ui-action-button tooltip="Kopieren" class="btn-info" icon="copy" @click="onCopy(form)" />
                             <ui-action-button :href="form.links.export" target="_BLANK" tooltip="als Tabellendokument exportieren" class="btn-info" icon="document" />
-                            <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="deleting = form" />
+                            <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="onDelete(form)" />
                         </div>
                     </td>
                 </tr>
@@ -205,7 +189,6 @@ const { meta, data, reloadPage, reload, create, single, edit, cancel, submit, re
 const axios = inject('axios');
 const toast = useToast();
 
-const deleting = ref(null);
 const showing = ref(null);
 const fileSettingPopup = ref(null);
 
@@ -234,6 +217,11 @@ async function onCopy(form) {
     await swal.confirm('Diese Veranstaltung kopieren?', 'Nach dem Kopieren wird die Veranstaltung auf inaktiv gesetzt. Bitte aktiviere den Filter "inaktive zeigen", um die kopierte Veranstaltung zu sehen.');
     await axios.post(form.links.copy, {});
     reload(false);
+}
+
+async function onDelete(form) {
+    await swal.confirm('Diese Veranstaltung löschen?', `Die Veranstaltung ${form.name} wird gelöscht werden.`);
+    await remove(form);
 }
 
 function setTemplate(template) {

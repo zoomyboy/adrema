@@ -9,7 +9,10 @@
                     <ui-sprite src="close" class="text-zinc-400 w-6 h-6" />
                 </a>
             </div>
-            <h3 v-if="heading" class="font-semibold text-primary-200 text-xl" v-html="heading" />
+            <div class="flex justify-center">
+                <ui-sprite v-if="icon" class="text-yellow-700 size-28" :src="icon" />
+            </div>
+            <h3 v-if="heading" class="font-semibold text-primary-200 text-xl" :class="{'text-center mt-5': icon !== null}" v-html="heading" />
             <div class="text-primary-100 group is-popup grow flex flex-col">
                 <suspense>
                     <div>
@@ -24,21 +27,15 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        heading: {
-            type: String,
-            default: () => '',
-        },
-        innerWidth: {
-            default: () => 'max-w-xl',
-            type: String,
-        },
-        full: {
-            type: Boolean,
-            default: () => false,
-        },
-    },
-};
+<script lang="ts" setup>
+defineEmits<{
+    close: [],
+}>();
+withDefaults(defineProps<{
+    visible: boolean,
+    heading?: string,
+    innerWidth?: string,
+    full?: boolean,
+    icon?: string|null,
+}>(), {innerWidth: 'max-w-xl', full: false, heading: '', icon: null});
 </script>

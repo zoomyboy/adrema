@@ -31,6 +31,12 @@
             @apply bg-yellow-500 text-yellow-100;
         }
     }
+    &.btn-default {
+        @apply bg-gray-700 text-gray-300;
+        &:not(.disabled):hover {
+            @apply bg-gray-500 text-gray-100;
+        }
+    }
     &.btn-info {
         @apply bg-blue-700 text-blue-300;
         &:not(.disabled):hover {

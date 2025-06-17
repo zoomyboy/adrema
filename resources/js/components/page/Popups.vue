@@ -1,18 +1,17 @@
 <template>
-    <div>
-        <ui-popup v-for="(popup, index) in swal.popups" :key="index" :heading="popup.title">
-            <div class="space-y-4 mt-4">
-                <div v-text="popup.body" />
-                <div class="space-x-4">
-                    <ui-button type="button" class="btn-danger" @click.prevent="popup.resolve(popup.id)">{{ popup.confirmButton }}</ui-button>
-                    <ui-button type="button" class="btn-success" @click.prevent="popup.reject(popup.id)">{{ popup.cancelButton }}</ui-button>
-                </div>
+    <ui-popup v-for="(popup, index) in swal.popups" :key="index" :icon="popup.icon" :heading="popup.title" @close="popup.reject(popup.id)">
+        <div class="mt-4">
+            <div class="text-center" v-text="popup.body" />
+            <div class="flex justify-center space-x-4 mt-8">
+                <ui-button type="button" class="btn-primary" @click.prevent="popup.resolve(popup.id)">{{ popup.confirmButton }}</ui-button>
+                <ui-button type="button" class="btn-default" @click.prevent="popup.reject(popup.id)">{{ popup.cancelButton }}</ui-button>
             </div>
-        </ui-popup>
-    </div>
+        </div>
+    </ui-popup>
 </template>
 
 <script lang="ts" setup>
 import useSwal from '@/stores/swalStore.ts';
 const swal = useSwal();
 </script>
+
