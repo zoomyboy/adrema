@@ -9,6 +9,7 @@ use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use App\Invoice\InvoiceSettings;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 
 class CityFrankfurtMainDocument extends ContributionDocument
 {
@@ -21,8 +22,8 @@ class CityFrankfurtMainDocument extends ContributionDocument
      * @param Collection<int, Collection<int, MemberData>> $members
      */
     public function __construct(
-        public string $dateFrom,
-        public string $dateUntil,
+        public Carbon $dateFrom,
+        public Carbon $dateUntil,
         public string $zipLocation,
         public ?Country $country,
         public Collection $members,

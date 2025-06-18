@@ -17,8 +17,8 @@ class CitySolingenDocument extends ContributionDocument
      * @param Collection<int, MemberData> $members
      */
     final private function __construct(
-        public string $dateFrom,
-        public string $dateUntil,
+        public Carbon $dateFrom,
+        public Carbon $dateUntil,
         public string $zipLocation,
         public Collection $members,
         public string $eventName,

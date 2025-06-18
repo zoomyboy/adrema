@@ -8,6 +8,7 @@ use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use App\Member\Member;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 
 class CityRemscheidDocument extends ContributionDocument
 {
@@ -19,8 +20,8 @@ class CityRemscheidDocument extends ContributionDocument
      * @param Collection<int, Collection<int, Member>> $children
      */
     public function __construct(
-        public string $dateFrom,
-        public string $dateUntil,
+        public Carbon $dateFrom,
+        public Carbon $dateUntil,
         public string $zipLocation,
         public ?Country $country,
         public Collection $leaders,

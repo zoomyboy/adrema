@@ -8,6 +8,7 @@ use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 
 class RdpNrwDocument extends ContributionDocument
 {
@@ -18,8 +19,8 @@ class RdpNrwDocument extends ContributionDocument
      * @param Collection<int, Collection<int, MemberData>> $members
      */
     public function __construct(
-        public string $dateFrom,
-        public string $dateUntil,
+        public Carbon $dateFrom,
+        public Carbon $dateUntil,
         public string $zipLocation,
         public ?Country $country,
         public Collection $members,

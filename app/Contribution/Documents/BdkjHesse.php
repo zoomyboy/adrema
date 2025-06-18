@@ -18,8 +18,8 @@ class BdkjHesse extends ContributionDocument
      * @param Collection<int, Collection<int, MemberData>> $members
      */
     public function __construct(
-        public string $dateFrom,
-        public string $dateUntil,
+        public Carbon $dateFrom,
+        public Carbon $dateUntil,
         public string $zipLocation,
         public ?Country $country,
         public Collection $members,
