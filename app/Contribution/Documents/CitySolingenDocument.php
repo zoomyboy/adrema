@@ -2,6 +2,7 @@
 
 namespace App\Contribution\Documents;
 
+use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\Data\MemberData;
 use App\Invoice\InvoiceSettings;
 use Carbon\Carbon;
@@ -30,28 +31,14 @@ class CitySolingenDocument extends ContributionDocument
     /**
      * {@inheritdoc}
      */
-    public static function fromRequest(array $request): static
+    public static function fromPayload(HasContributionData $request): static
     {
         return new static(
-            dateFrom: $request['dateFrom'],
-            dateUntil: $request['dateUntil'],
-            zipLocation: $request['zipLocation'],
-            members: MemberData::fromModels($request['members']),
-            eventName: $request['eventName'],
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromApiRequest(array $request): static
-    {
-        return new static(
-            dateFrom: $request['dateFrom'],
-            dateUntil: $request['dateUntil'],
-            zipLocation: $request['zipLocation'],
-            members: MemberData::fromApi($request['member_data']),
-            eventName: $request['eventName'],
+            dateFrom: $request->dateFrom(),
+            dateUntil: $request->dateUntil(),
+            zipLocation: $request->zipLocation(),
+            members: $request->members(),
+            eventName: $request->eventName(),
         );
     }
 
@@ -75,8 +62,6 @@ class CitySolingenDocument extends ContributionDocument
 
     public function checkboxes(): string
     {
-        $output = '';
-
         $firstRow = collect(['B' => 'Jugendbildungsmaßnahme', 'G' => 'Gruppenleiter/innenschulung', 'FK' => 'Ferienkolonie', 'F' => 'Freizeitnaßnahme'])->map(function ($item, $key) {
             return ($this->type === $key ? '\\checkedcheckbox' : '\\checkbox') . '{' . $item . '}';
         })->implode(' & ') . ' \\\\';

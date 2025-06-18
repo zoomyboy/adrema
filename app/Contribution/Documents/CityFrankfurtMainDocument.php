@@ -2,6 +2,7 @@
 
 namespace App\Contribution\Documents;
 
+use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\Data\MemberData;
 use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
@@ -33,33 +34,15 @@ class CityFrankfurtMainDocument extends ContributionDocument
         $this->fromName = app(InvoiceSettings::class)->from_long;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromRequest(array $request): self
+    public static function fromPayload(HasContributionData $request): self
     {
         return new self(
-            dateFrom: $request['dateFrom'],
-            dateUntil: $request['dateUntil'],
-            zipLocation: $request['zipLocation'],
-            country: Country::where('id', $request['country'])->firstOrFail(),
-            members: MemberData::fromModels($request['members'])->chunk(15),
-            eventName: $request['eventName'],
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromApiRequest(array $request): self
-    {
-        return new self(
-            dateFrom: $request['dateFrom'],
-            dateUntil: $request['dateUntil'],
-            zipLocation: $request['zipLocation'],
-            country: Country::where('id', $request['country'])->firstOrFail(),
-            members: MemberData::fromApi($request['member_data'])->chunk(15),
-            eventName: $request['eventName'],
+            dateFrom: $request->dateFrom(),
+            dateUntil: $request->dateUntil(),
+            zipLocation: $request->zipLocation(),
+            country: $request->country(),
+            members: $request->members()->chunk(15),
+            eventName: $request->eventName(),
         );
     }
 

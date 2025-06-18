@@ -2,6 +2,7 @@
 
 namespace App\Contribution\Documents;
 
+use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\Data\MemberData;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
@@ -39,33 +40,15 @@ class BdkjHesse extends ContributionDocument
         return Carbon::parse($this->dateUntil)->format('d.m.Y');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromRequest(array $request): self
+    public static function fromPayload(HasContributionData $request): self
     {
         return new self(
-            dateFrom: $request['dateFrom'],
-            dateUntil: $request['dateUntil'],
-            zipLocation: $request['zipLocation'],
-            country: Country::where('id', $request['country'])->firstOrFail(),
-            members: MemberData::fromModels($request['members'])->chunk(20),
-            eventName: $request['eventName'],
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromApiRequest(array $request): self
-    {
-        return new self(
-            dateFrom: $request['dateFrom'],
-            dateUntil: $request['dateUntil'],
-            zipLocation: $request['zipLocation'],
-            country: Country::where('id', $request['country'])->firstOrFail(),
-            members: MemberData::fromApi($request['member_data'])->chunk(20),
-            eventName: $request['eventName'],
+            dateFrom: $request->dateFrom(),
+            dateUntil: $request->dateUntil(),
+            zipLocation: $request->zipLocation(),
+            country: $request->country(),
+            members: $request->members()->chunk(20),
+            eventName: $request->eventName(),
         );
     }
 

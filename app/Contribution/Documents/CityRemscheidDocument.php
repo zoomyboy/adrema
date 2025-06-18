@@ -2,7 +2,7 @@
 
 namespace App\Contribution\Documents;
 
-use App\Contribution\Data\MemberData;
+use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
@@ -32,40 +32,18 @@ class CityRemscheidDocument extends ContributionDocument
         $this->setEventName($eventName);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromRequest(array $request): self
+    public static function fromPayload(HasContributionData $request): self
     {
-        [$leaders, $children] = MemberData::fromModels($request['members'])->partition(fn ($member) => $member->isLeader);
+        [$leaders, $children] = $request->members()->partition(fn ($member) => $member->isLeader);
 
         return new self(
-            dateFrom: $request['dateFrom'],
-            dateUntil: $request['dateUntil'],
-            zipLocation: $request['zipLocation'],
-            country: Country::where('id', $request['country'])->firstOrFail(),
+            dateFrom: $request->dateFrom(),
+            dateUntil: $request->dateUntil(),
+            zipLocation: $request->zipLocation(),
+            country: $request->country(),
             leaders: $leaders->values()->toBase()->chunk(6),
             children: $children->values()->toBase()->chunk(20),
-            eventName: $request['eventName'],
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromApiRequest(array $request): self
-    {
-        $members = MemberData::fromApi($request['member_data']);
-        [$leaders, $children] = $members->partition(fn ($member) => $member->isLeader);
-
-        return new self(
-            dateFrom: $request['dateFrom'],
-            dateUntil: $request['dateUntil'],
-            zipLocation: $request['zipLocation'],
-            country: Country::where('id', $request['country'])->firstOrFail(),
-            leaders: $leaders->values()->toBase()->chunk(6),
-            children: $children->values()->toBase()->chunk(20),
-            eventName: $request['eventName'],
+            eventName: $request->eventName(),
         );
     }
 

@@ -2,11 +2,11 @@
 
 namespace App\Contribution\Actions;
 
+use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\ContributionFactory;
-use App\Contribution\Documents\ContributionDocument;
+use App\Contribution\Requests\GenerateRequest;
 use App\Rules\JsonBase64Rule;
 use Illuminate\Support\Facades\Validator;
-use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\Tex\BaseCompiler;
 use Zoomyboy\Tex\Tex;
@@ -15,23 +15,18 @@ class GenerateAction
 {
     use AsAction;
 
-    /**
-     * @param class-string<ContributionDocument> $document
-     * @param array<string, mixed>               $payload
-     */
-    public function handle(string $document, array $payload): BaseCompiler
+    public function handle(HasContributionData $request): BaseCompiler
     {
-        return Tex::compile($document::fromRequest($payload));
+        return Tex::compile($request->type()::fromPayload($request));
     }
 
-    public function asController(ActionRequest $request): BaseCompiler
+    public function asController(GenerateRequest $request): BaseCompiler
     {
-        $payload = $this->payload($request);
-        $type = data_get($payload, 'type');
+        $type = $request->type();
         ValidateAction::validateType($type);
-        Validator::make($payload, app(ContributionFactory::class)->rules($type))->validate();
+        Validator::make($request->payload(), app(ContributionFactory::class)->rules($type))->validate();
 
-        return $this->handle($type, $payload);
+        return $this->handle($request);
     }
 
     /**
@@ -42,13 +37,5 @@ class GenerateAction
         return [
             'payload' => [new JsonBase64Rule()],
         ];
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function payload(ActionRequest $request): array
-    {
-        return json_decode(rawurldecode(base64_decode($request->input('payload', ''))), true);
     }
 }

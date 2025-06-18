@@ -2,8 +2,8 @@
 
 namespace App\Contribution\Actions;
 
-use App\Contribution\Documents\ContributionDocument;
-use Lorisleiva\Actions\ActionRequest;
+use App\Contribution\Contracts\HasContributionData;
+use App\Contribution\Requests\GenerateApiRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\Tex\BaseCompiler;
 use Zoomyboy\Tex\Tex;
@@ -13,19 +13,19 @@ class GenerateApiAction
     use AsAction;
 
     /**
-     * @param class-string<ContributionDocument> $document
-     * @param array<string, mixed>               $payload
+     * @todo merge this with GenerateAction
      */
-    public function handle(string $document, array $payload): BaseCompiler
+    public function handle(HasContributionData $request): BaseCompiler
     {
-        return Tex::compile($document::fromApiRequest($payload));
+        return Tex::compile($request->type()::fromPayload($request));
     }
 
-    public function asController(ActionRequest $request): BaseCompiler
+    public function asController(GenerateApiRequest $request): BaseCompiler
     {
-        ValidateAction::validateType($request->input('type'));
+        $type = $request->type();
+        ValidateAction::validateType($type);
 
-        return $this->handle($request->input('type'), $request->input());
+        return $this->handle($request);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Contribution\Documents;
 
+use App\Contribution\Contracts\HasContributionData;
 use Zoomyboy\Tex\Document;
 use Zoomyboy\Tex\Template;
 
@@ -11,15 +12,7 @@ abstract class ContributionDocument extends Document
 
     abstract public static function getName(): string;
 
-    /**
-     * @param ContributionRequestArray $request
-     */
-    abstract public static function fromRequest(array $request): self;
-
-    /**
-     * @param ContributionApiRequestArray $request
-     */
-    abstract public static function fromApiRequest(array $request): self;
+    abstract public static function fromPayload(HasContributionData $request): self;
 
     /**
      * @return array<string, mixed>
