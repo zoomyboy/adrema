@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\Contribution;
 
+use App\Contribution\Documents\BdkjHesse;
+use App\Contribution\Documents\CityFrankfurtMainDocument;
+use App\Contribution\Documents\CityRemscheidDocument;
 use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Documents\CitySolingenDocument;
 use App\Contribution\Documents\WuppertalDocument;
@@ -103,7 +106,7 @@ dataset('validation', function () {
     ];
 });
 
-it('compiles documents via api', function (string $type, array $bodyChecks) {
+it('compiles documents via base64 param', function (string $type, array $bodyChecks) {
     $this->withoutExceptionHandling();
     Tex::spy();
     $this->login()->loginNami();
@@ -125,12 +128,12 @@ it('compiles documents via api', function (string $type, array $bodyChecks) {
     $response->assertOk();
     Tex::assertCompiled($type, fn ($document) => $document->hasAllContent($bodyChecks));
 })->with([
-    ["App\\Contribution\\Documents\\CitySolingenDocument", ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]],
-    ["App\\Contribution\\Documents\\RdpNrwDocument", ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]],
-    ["App\\Contribution\\Documents\\CityRemscheidDocument", ["Max", "Muster", "Jane"]],
-    ["App\\Contribution\\Documents\\CityFrankfurtMainDocument", ["Max", "Muster", "Jane"]],
-    ["App\\Contribution\\Documents\\BdkjHesse", ["Max", "Muster", "Jane"]],
-    ["App\\Contribution\\Documents\\WuppertalDocument", ["Max", "Muster", "Jane", "42777 SG", "15.06.1991", "16.06.1991"]],
+    [CitySolingenDocument::class, ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]],
+    [RdpNrwDocument::class, ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]],
+    [CityRemscheidDocument::class, ["Max", "Muster", "Jane"]],
+    [CityFrankfurtMainDocument::class, ["Max", "Muster", "Jane"]],
+    [BdkjHesse::class, ["Max", "Muster", "Jane"]],
+    [WuppertalDocument::class, ["Max", "Muster", "Jane", "42777 SG", "15.06.1991", "16.06.1991"]],
 ]);
 
 it('testItCompilesGroupNameInSolingenDocument', function () {
@@ -145,33 +148,37 @@ it('testItCompilesGroupNameInSolingenDocument', function () {
     Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Stamm BiPi']));
 });
 
-it('testItCompilesContributionDocumentsViaApi', function () {
+it('testItCompilesContributionDocumentsViaApi', function (string $type, array $bodyChecks) {
     $this->withoutExceptionHandling();
     Tex::spy();
     Gender::factory()->female()->create();
     Gender::factory()->male()->create();
     Passport::actingAsClient(Client::factory()->create(), ['contribution-generate']);
-    $country = Country::factory()->create();
-    Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
-    Member::factory()->defaults()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
 
     $response = $this->postJson('/api/contribution-generate', [
-        'country' => $country->id,
+        'country' => Country::factory()->create()->id,
         'dateFrom' => '1991-06-15',
         'dateUntil' => '1991-06-16',
         'eventName' => 'Super tolles Lager',
-        'type' => CitySolingenDocument::class,
+        'type' => $type,
         'zipLocation' => '42777 SG',
         'member_data' => [
-            ContributionMemberApiRequestFactory::new()->create(),
-            ContributionMemberApiRequestFactory::new()->create(),
+            ContributionMemberApiRequestFactory::new()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']),
+            ContributionMemberApiRequestFactory::new()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']),
         ],
     ]);
 
     $response->assertSessionDoesntHaveErrors();
     $response->assertOk();
-    Tex::assertCompiled(CitySolingenDocument::class, fn ($document) => $document->hasAllContent(['Super']));
-});
+    Tex::assertCompiled($type, fn ($document) => $document->hasAllContent($bodyChecks));
+})->with([
+    [CitySolingenDocument::class, ["Super tolles Lager", "Max Muster", "Jane Muster", "15.06.1991"]],
+    [RdpNrwDocument::class, ["Muster, Max", "Muster, Jane", "15.06.1991", "42777 SG"]],
+    [CityRemscheidDocument::class, ["Max", "Muster", "Jane"]],
+    [CityFrankfurtMainDocument::class, ["Max", "Muster", "Jane"]],
+    [BdkjHesse::class, ["Max", "Muster", "Jane"]],
+    [WuppertalDocument::class, ["Max", "Muster", "Jane", "42777 SG", "15.06.1991", "16.06.1991"]],
+]);
 
 it('testInputShouldBeBase64EncodedJson', function (string $payload) {
     $this->login()->loginNami();
