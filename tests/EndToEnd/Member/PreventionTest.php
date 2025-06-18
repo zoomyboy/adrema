@@ -415,7 +415,7 @@ it('renders setting of yearly mail', function () {
     app(PreventionSettings::class)->fill([
         'yearlymail' => EditorRequestFactory::new()->paragraphs(["{wanted}", "bbb"])->toData()
     ])->save();
-    $member = createMember((['efz' =>  now()->subYears(5), 'ps_at' => now(), 'has_vk' => true]));
+    createMember((['efz' =>  now()->subYears(5), 'ps_at' => now(), 'has_vk' => true]));
 
     sleep(2);
     YearlyRememberAction::run();
