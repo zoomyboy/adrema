@@ -25,17 +25,18 @@
                 </div>
             </div>
 
-            <button v-for="(compiler, index) in compilers" :key="index" class="btn btn-primary mt-3 inline-block" @click.prevent="submit(compiler.class)" v-text="compiler.title" />
+            <button v-for="(compiler, index) in compilers" :key="index" class="btn btn-primary mt-3 inline-block" @click.prevent="download('/contribution-generate', {...values, type: compiler.class})" v-text="compiler.title" />
         </form>
     </page-layout>
 </template>
 
 <script lang="js" setup>
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import useSearch from '../../composables/useSearch.js';
-const axios = inject('axios');
+import useDownloads from '@/composables/useDownloads.ts';
 
 const { searchString, results, clearSearch } = useSearch(['birthday IS NOT NULL', 'address IS NOT EMPTY']);
+const {download} = useDownloads();
 
 const props = defineProps({
     data: {},
@@ -55,12 +56,6 @@ const values = ref({
     ...props.data,
 });
 
-async function submit(compiler) {
-    values.value.type = compiler;
-    const payload = btoa(encodeURIComponent(JSON.stringify(values.value)));
-    await axios.get(`/contribution-generate?payload=${payload}&validate=1`);
-    window.open(`/contribution-generate?payload=${payload}`);
-}
 function onSubmitMemberResult(selected) {
     if (values.value.members.find((m) => m === selected.id) !== undefined) {
         values.value.members = values.value.members.filter((m) => m !== selected.id);
