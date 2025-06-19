@@ -3,6 +3,7 @@
 namespace App\Contribution\Actions;
 
 use App\Contribution\Contracts\HasContributionData;
+use App\Contribution\ContributionFactory;
 use App\Contribution\Requests\GenerateApiRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\Tex\BaseCompiler;
@@ -22,8 +23,7 @@ class GenerateApiAction
 
     public function asController(GenerateApiRequest $request): BaseCompiler
     {
-        $type = $request->type();
-        ValidateAction::validateType($type);
+        app(ContributionFactory::class)->validateType($request);
 
         return $this->handle($request);
     }

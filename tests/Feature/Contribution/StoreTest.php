@@ -39,6 +39,30 @@ it('compiles documents via base64 param', function (string $type, array $bodyChe
     Tex::assertCompiled($type, fn ($document) => $document->hasAllContent($bodyChecks));
 })->with('contribution-assertions');
 
+it('only validates', function (string $type) {
+    $this->withoutExceptionHandling();
+    Tex::spy();
+    $this->login()->loginNami();
+    $member1 = Member::factory()->defaults()->male()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']);
+    $member2 = Member::factory()->defaults()->female()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']);
+
+    $response = $this->call('GET', '/contribution-generate', [
+        'validate' => '1',
+        'payload' => ContributionRequestFactory::new()->type($type)->state([
+            'dateFrom' => '1991-06-15',
+            'dateUntil' => '1991-06-16',
+            'eventName' => 'Super tolles Lager',
+            'members' => [$member1->id, $member2->id],
+            'type' => $type,
+            'zipLocation' => '42777 SG',
+        ])->toBase64(),
+    ]);
+
+    $response->assertSessionDoesntHaveErrors();
+    $response->assertOk();
+    Tex::assertNotCompiled($type);
+})->with('contribution-assertions');
+
 it('testItCompilesGroupNameInSolingenDocument', function () {
     $this->withoutExceptionHandling()->login()->loginNami();
     Tex::spy();
@@ -91,8 +115,10 @@ it('testItValidatesInput', function (array $input, string $documentClass, string
     Country::factory()->create();
     Member::factory()->defaults()->create();
 
-    $this->postJson('/contribution-validate', ContributionRequestFactory::new()->type($documentClass)->state($input)->create())
-        ->assertJsonValidationErrors($errorField);
+    $this->json('GET', '/contribution-generate?'.http_build_query([
+        'payload' => ContributionRequestFactory::new()->type($documentClass)->state($input)->toBase64(),
+        'validate' => '1'
+    ]))->assertJsonValidationErrors($errorField);
 })->with('contribution-validation');
 
 it('testItValidatesInputBeforeGeneration', function (array $input, string $documentClass, string $errorField) {

@@ -25,4 +25,6 @@ interface HasContributionData {
     public function members(): Collection;
 
     public function country(): ?Country;
+
+    public function payload(): array;
 }

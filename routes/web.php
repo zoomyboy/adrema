@@ -11,7 +11,6 @@ use App\Activity\Api\SubactivityStoreAction;
 use App\Activity\Api\SubactivityUpdateAction;
 use App\Contribution\Actions\FormAction as ContributionFormAction;
 use App\Contribution\Actions\GenerateAction as ContributionGenerateAction;
-use App\Contribution\Actions\ValidateAction as ContributionValidateAction;
 use App\Course\Actions\CourseDestroyAction;
 use App\Course\Actions\CourseIndexAction;
 use App\Course\Actions\CourseStoreAction;
@@ -70,7 +69,6 @@ use App\Member\Actions\MemberResyncAction;
 use App\Member\Actions\MemberShowAction;
 use App\Member\Actions\SearchAction;
 use App\Member\MemberController;
-use App\Membership\Actions\IndexAction as MembershipIndexAction;
 use App\Membership\Actions\ListForGroupAction;
 use App\Membership\Actions\MassListAction;
 use App\Membership\Actions\MassStoreAction;
@@ -112,7 +110,6 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     // ------------------------------- Contributions -------------------------------
     Route::get('/contribution', ContributionFormAction::class)->name('contribution.form');
     Route::get('/contribution-generate', ContributionGenerateAction::class)->name('contribution.generate');
-    Route::post('/contribution-validate', ContributionValidateAction::class)->name('contribution.validate');
 
     // ----------------------------------- mail ------------------------------------
     Route::post('/api/mailgateway', StoreAction::class)->name('mailgateway.store');

@@ -2,6 +2,7 @@
 
 namespace App\Contribution;
 
+use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\Documents\BdkjHesse;
 use App\Contribution\Documents\ContributionDocument;
 use App\Contribution\Documents\RdpNrwDocument;
@@ -10,6 +11,7 @@ use App\Contribution\Documents\CitySolingenDocument;
 use App\Contribution\Documents\CityFrankfurtMainDocument;
 use App\Contribution\Documents\WuppertalDocument;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class ContributionFactory
@@ -58,5 +60,13 @@ class ContributionFactory
             ...$type::globalRules(),
             ...$type::rules(),
         ];
+    }
+
+    public function validateType(HasContributionData $request) {
+        Validator::make(['type' => $request->type()], $this->typeRule())->validate();
+    }
+
+    public function validatePayload(HasContributionData $request) {
+        Validator::make($request->payload(), $this->rules($request->type()))->validate();
     }
 }

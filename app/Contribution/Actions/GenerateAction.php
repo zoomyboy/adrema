@@ -6,7 +6,7 @@ use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\ContributionFactory;
 use App\Contribution\Requests\GenerateRequest;
 use App\Rules\JsonBase64Rule;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Zoomyboy\Tex\BaseCompiler;
 use Zoomyboy\Tex\Tex;
@@ -20,13 +20,14 @@ class GenerateAction
         return Tex::compile($request->type()::fromPayload($request));
     }
 
-    public function asController(GenerateRequest $request): BaseCompiler
+    public function asController(GenerateRequest $request): BaseCompiler|JsonResponse
     {
-        $type = $request->type();
-        ValidateAction::validateType($type);
-        Validator::make($request->payload(), app(ContributionFactory::class)->rules($type))->validate();
+        app(ContributionFactory::class)->validateType($request);
+        app(ContributionFactory::class)->validatePayload($request);
 
-        return $this->handle($request);
+        return $request->input('validate')
+            ? response()->json([])
+            : $this->handle($request);
     }
 
     /**
