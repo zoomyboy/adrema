@@ -27,12 +27,4 @@ class GenerateApiAction
 
         return $this->handle($request);
     }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function rules(): array
-    {
-        return [];
-    }
 }
