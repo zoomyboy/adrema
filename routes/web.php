@@ -34,6 +34,7 @@ use App\Form\Actions\FormtemplateStoreAction;
 use App\Form\Actions\FormtemplateUpdateAction;
 use App\Form\Actions\FormUpdateAction;
 use App\Form\Actions\FormUpdateMetaAction;
+use App\Form\Actions\GenerateContributionAction;
 use App\Form\Actions\IsDirtyAction;
 use App\Form\Actions\ParticipantAssignAction;
 use App\Form\Actions\ParticipantDestroyAction;
@@ -178,6 +179,7 @@ Route::group(['middleware' => 'auth:web'], function (): void {
     Route::patch('/participant/{participant}', ParticipantUpdateAction::class)->name('participant.update');
     Route::post('/form/{form}/participant', ParticipantStoreAction::class)->name('form.participant.store');
     Route::post('/form/{form}/copy', FormCopyAction::class)->name('form.copy');
+    Route::get('/form/{form}/contribution', GenerateContributionAction::class)->name('form.contribution');
 
     // ------------------------------------ fileshare -----------------------------------
     Route::post('/fileshare', FileshareStoreAction::class)->name('fileshare.store');
