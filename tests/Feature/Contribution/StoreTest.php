@@ -89,7 +89,7 @@ it('testItCompilesContributionDocumentsViaApi', function (string $type, array $b
         'eventName' => 'Super tolles Lager',
         'type' => $type,
         'zipLocation' => '42777 SG',
-        'member_data' => [
+        'members' => [
             ContributionMemberApiRequestFactory::new()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Max', 'lastname' => 'Muster']),
             ContributionMemberApiRequestFactory::new()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster']),
         ],

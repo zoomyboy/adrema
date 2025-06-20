@@ -23,7 +23,7 @@ class GenerateAction
     public function asController(GenerateRequest $request): BaseCompiler|JsonResponse
     {
         app(ContributionFactory::class)->validateType($request);
-        app(ContributionFactory::class)->validatePayload($request);
+        $request->validateContribution();
 
         return $request->input('validate')
             ? response()->json([])

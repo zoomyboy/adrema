@@ -26,8 +26,5 @@ interface HasContributionData {
 
     public function country(): ?Country;
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function payload(): array;
+    public function validateContribution(): void;
 }
