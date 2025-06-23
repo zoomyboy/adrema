@@ -6,6 +6,7 @@ use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
+use App\Form\Enums\SpecialType;
 use App\Member\Member;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
@@ -63,6 +64,18 @@ class CityRemscheidDocument extends ContributionDocument
             'dateUntil' => 'required|string|date_format:Y-m-d',
             'zipLocation' => 'required|string',
             'country' => 'required|integer|exists:countries,id',
+        ];
+    }
+
+    public static function requiredFormSpecialTypes(): array {
+        return [
+            SpecialType::FIRSTNAME,
+            SpecialType::LASTNAME,
+            SpecialType::ADDRESS,
+            SpecialType::BIRTHDAY,
+            SpecialType::ZIP,
+            SpecialType::LOCATION,
+            SpecialType::LEADER
         ];
     }
 }

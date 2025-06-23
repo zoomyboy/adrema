@@ -6,6 +6,7 @@ use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\Data\MemberData;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
+use App\Form\Enums\SpecialType;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -114,6 +115,17 @@ class BdkjHesse extends ContributionDocument
             'dateUntil' => 'required|string|date_format:Y-m-d',
             'country' => 'required|integer|exists:countries,id',
             'zipLocation' => 'required|string',
+        ];
+    }
+
+    public static function requiredFormSpecialTypes(): array {
+        return [
+            SpecialType::FIRSTNAME,
+            SpecialType::LASTNAME,
+            SpecialType::BIRTHDAY,
+            SpecialType::ZIP,
+            SpecialType::LOCATION,
+            SpecialType::GENDER,
         ];
     }
 }

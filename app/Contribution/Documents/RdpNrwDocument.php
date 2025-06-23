@@ -7,6 +7,7 @@ use App\Contribution\Data\MemberData;
 use App\Contribution\Traits\FormatsDates;
 use App\Contribution\Traits\HasPdfBackground;
 use App\Country;
+use App\Form\Enums\SpecialType;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
@@ -63,6 +64,17 @@ class RdpNrwDocument extends ContributionDocument
             'dateUntil' => 'required|string|date_format:Y-m-d',
             'country' => 'required|integer|exists:countries,id',
             'zipLocation' => 'required|string',
+        ];
+    }
+
+    public static function requiredFormSpecialTypes(): array {
+        return [
+            SpecialType::FIRSTNAME,
+            SpecialType::LASTNAME,
+            SpecialType::BIRTHDAY,
+            SpecialType::ZIP,
+            SpecialType::LOCATION,
+            SpecialType::GENDER,
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Contribution\Documents;
 
 use App\Contribution\Contracts\HasContributionData;
+use App\Form\Enums\SpecialType;
 use Zoomyboy\Tex\Document;
 use Zoomyboy\Tex\Template;
 
@@ -13,6 +14,11 @@ abstract class ContributionDocument extends Document
     abstract public static function getName(): string;
 
     abstract public static function fromPayload(HasContributionData $request): self;
+
+    /**
+     * @return array<int, SpecialType>
+     */
+    abstract public static function requiredFormSpecialTypes(): array;
 
     /**
      * @return array<string, mixed>
