@@ -100,6 +100,28 @@ it('testItCompilesContributionDocumentsViaApi', function (string $type, array $b
     Tex::assertCompiled($type, fn ($document) => $document->hasAllContent($bodyChecks));
 })->with('contribution-assertions');
 
+it('compiles when gender is null', function () {
+    $this->withoutExceptionHandling();
+    Tex::spy();
+    Passport::actingAsClient(Client::factory()->create(), ['contribution-generate']);
+
+    $response = $this->postJson('/api/contribution-generate', [
+        'country' => Country::factory()->create()->id,
+        'dateFrom' => '1991-06-15',
+        'dateUntil' => '1991-06-16',
+        'eventName' => 'Super tolles Lager',
+        'type' => CitySolingenDocument::class,
+        'zipLocation' => '42777 SG',
+        'members' => [
+            ContributionMemberApiRequestFactory::new()->create(['address' => 'Maxstr 44', 'zip' => '42719', 'firstname' => 'Jane', 'lastname' => 'Muster', 'gender' => null]),
+        ],
+    ]);
+
+    $response->assertSessionDoesntHaveErrors();
+    $response->assertOk();
+    Tex::assertCompiled(CitySolingenDocument::class, fn () => true);
+});
+
 it('testInputShouldBeBase64EncodedJson', function (string $payload) {
     $this->login()->loginNami();
 

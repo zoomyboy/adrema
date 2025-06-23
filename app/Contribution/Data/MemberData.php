@@ -47,7 +47,7 @@ class MemberData extends Data
         return collect($data)->map(fn ($member) => self::factory()->withoutMagicalCreation()->from([
             ...$member,
             'birthday' => Carbon::parse($member['birthday'])->toAtomString(),
-            'gender' => Gender::fromString($member['gender']),
+            'gender' => $member['gender'] ? Gender::fromString($member['gender']) : null,
             'isLeader' => $member['is_leader'],
         ]));
     }
