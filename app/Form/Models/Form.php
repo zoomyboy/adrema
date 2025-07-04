@@ -74,20 +74,20 @@ class Form extends Model implements HasMedia
     {
         $this->addMediaCollection('headerImage')
             ->singleFile()
-            ->maxWidth(fn () => 500)
-            ->forceFileName(fn (Form $model, string $name) => $model->slug)
-            ->convert(fn () => 'jpg')
+            ->maxWidth(fn() => 500)
+            ->forceFileName(fn(Form $model, string $name) => $model->slug)
+            ->convert(fn() => 'jpg')
             ->registerMediaConversions(function (Media $media) {
                 $this->addMediaConversion('square')->fit(Fit::Crop, 400, 400);
             });
         $this->addMediaCollection('mailattachments')
-            ->withDefaultProperties(fn () => [
+            ->withDefaultProperties(fn() => [
                 'conditions' => [
                     'mode' => 'all',
                     'ifs' => []
                 ],
             ])
-            ->withPropertyValidation(fn () => [
+            ->withPropertyValidation(fn() => [
                 'conditions.mode' => 'required|string|in:all,any',
                 'conditions.ifs' => 'array',
                 'conditions.ifs.*.field' => 'required',
@@ -101,7 +101,7 @@ class Form extends Model implements HasMedia
      */
     public function getRegistrationRules(): array
     {
-        return $this->getFields()->reduce(fn ($carry, $field) => [
+        return $this->getFields()->reduce(fn($carry, $field) => [
             ...$carry,
             ...$field->getRegistrationRules($this),
         ], []);
@@ -112,7 +112,7 @@ class Form extends Model implements HasMedia
      */
     public function getRegistrationMessages(): array
     {
-        return $this->getFields()->reduce(fn ($carry, $field) => [
+        return $this->getFields()->reduce(fn($carry, $field) => [
             ...$carry,
             ...$field->getRegistrationMessages($this),
         ], []);
@@ -123,7 +123,7 @@ class Form extends Model implements HasMedia
      */
     public function getRegistrationAttributes(): array
     {
-        return $this->getFields()->reduce(fn ($carry, $field) => [
+        return $this->getFields()->reduce(fn($carry, $field) => [
             ...$carry,
             ...$field->getRegistrationAttributes($this),
         ], []);
