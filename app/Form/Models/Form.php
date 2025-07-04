@@ -18,7 +18,6 @@ use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Zoomyboy\MedialibraryHelper\DefersUploads;
 
 /** @todo replace editor content with EditorData cast */
@@ -75,9 +74,9 @@ class Form extends Model implements HasMedia
         $this->addMediaCollection('headerImage')
             ->singleFile()
             ->maxWidth(fn() => 500)
-            ->forceFileName(fn(Form $model, string $name) => $model->slug)
+            ->forceFileName(fn(Form $model) => $model->slug)
             ->convert(fn() => 'jpg')
-            ->registerMediaConversions(function (Media $media) {
+            ->registerMediaConversions(function () {
                 $this->addMediaConversion('square')->fit(Fit::Crop, 400, 400);
             });
         $this->addMediaCollection('mailattachments')
