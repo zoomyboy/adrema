@@ -35,8 +35,14 @@
                                   collection="headerImage"
                                   required
                     />
-                    <f-text id="from" v-model="single.from" type="date" label="Von" required />
-                    <f-text id="to" v-model="single.to" type="date" label="Bis" required />
+                    <div class="grid gap-3 grid-cols-2">
+                        <f-text id="from" v-model="single.from" type="date" label="Von" required />
+                        <f-text id="to" v-model="single.to" type="date" label="Bis" required />
+                    </div>
+                    <div class="grid gap-3 grid-cols-2">
+                        <f-text id="zip" v-model="single.zip" label="PLZ" />
+                        <f-text id="location" v-model="single.location" label="Ort" />
+                    </div>
                     <f-text id="registration_from" v-model="single.registration_from" type="datetime-local" label="Registrierung von" required />
                     <f-text id="registration_until" v-model="single.registration_until" type="datetime-local" label="Registrierung bis" required />
                     <f-textarea id="excerpt"
