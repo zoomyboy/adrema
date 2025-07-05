@@ -3,7 +3,6 @@
 namespace App\Form\Actions;
 
 use App\Form\Models\Form;
-use App\Lib\Editor\Condition;
 use App\Lib\Events\Succeeded;
 use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -36,6 +35,8 @@ class FormUpdateAction
             'needs_prevention' => 'present|boolean',
             'prevention_text' => 'array',
             'prevention_conditions' => 'array',
+            'location' => 'present|nullable|string',
+            'zip' => 'present|nullable|string',
         ];
     }
 

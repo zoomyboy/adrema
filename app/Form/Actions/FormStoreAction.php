@@ -36,6 +36,8 @@ class FormStoreAction
             'needs_prevention' => 'present|boolean',
             'prevention_text' => 'array',
             'prevention_conditions' => 'array',
+            'zip' => 'present|nullable|string',
+            'location' => 'present|nullable|string',
         ];
     }
 

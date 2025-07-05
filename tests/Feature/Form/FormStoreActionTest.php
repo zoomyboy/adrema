@@ -32,6 +32,8 @@ it('testItStoresForm', function () {
         ->mailTop(EditorRequestFactory::new()->text(11, 'lala'))
         ->mailBottom(EditorRequestFactory::new()->text(12, 'lalab'))
         ->headerImage('htzz.jpg')
+        ->zip('12345')
+        ->location('Solingen')
         ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()->namiType(NamiType::BIRTHDAY)->forMembers(false)->hint('hhh')])])
         ->fake();
 
@@ -55,6 +57,8 @@ it('testItStoresForm', function () {
     $this->assertFalse($form->config->sections->get(0)->fields->get(0)->forMembers);
     $this->assertCount(1, $form->getMedia('headerImage'));
     $this->assertEquals('formname.jpg', $form->getMedia('headerImage')->first()->file_name);
+    $this->assertEquals('Solingen', $form->location);
+    $this->assertEquals('12345', $form->zip);
     Event::assertDispatched(Succeeded::class, fn(Succeeded $event) => $event->message === 'Veranstaltung gespeichert.');
     $this->assertFrontendCacheCleared();
 });
@@ -71,14 +75,16 @@ it('testItStoresDefaultSorting', function () {
     $this->assertFalse(false, $form->meta['sorting']['direction']);
 });
 
-it('testRegistrationDatesCanBeNull', function () {
+it('testValuesCanBeNull', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
 
-    $this->postJson(route('form.store'), FormRequest::new()->registrationFrom(null)->registrationUntil(null)->create())->assertOk();
+    $this->postJson(route('form.store'), FormRequest::new()->registrationFrom(null)->registrationUntil(null)->location(null)->zip(null)->create())->assertOk();
 
     $this->assertDatabaseHas('forms', [
         'registration_until' => null,
         'registration_from' => null,
+        'zip' => null,
+        'location' => null,
     ]);
 });
 

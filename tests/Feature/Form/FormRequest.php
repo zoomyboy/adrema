@@ -53,6 +53,8 @@ class FormRequest extends RequestFactory
             'export' => ExportData::from([])->toArray(),
             'needs_prevention' => $this->faker->boolean(),
             'prevention_text' => EditorRequestFactory::new()->create(),
+            'zip' => (string) $this->faker->numberBetween(10, 6666),
+            'location' => (string) $this->faker->city(),
             'prevention_conditions' => Condition::defaults()->toArray(),
         ];
     }
