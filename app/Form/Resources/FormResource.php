@@ -53,6 +53,8 @@ class FormResource extends JsonResource
             'needs_prevention' => $this->needs_prevention,
             'prevention_text' => $this->prevention_text,
             'prevention_conditions' => $this->prevention_conditions,
+            'zip' => $this->zip,
+            'location' => $this->location,
             'links' => [
                 'participant_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => null]),
                 'participant_root_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => -1]),
@@ -102,6 +104,8 @@ class FormResource extends JsonResource
                 'id' => null,
                 'export' => ExportData::from([]),
                 'prevention_conditions' => ['mode' => 'all', 'ifs' => []],
+                'zip' => '',
+                'location' => '',
             ],
             'section_default' => [
                 'name' => '',

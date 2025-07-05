@@ -31,6 +31,8 @@ class FormIndexActionTest extends FormTestCase
             ->registrationUntil('2023-04-01 05:00:00')
             ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()])])
             ->has(Participant::factory()->count(5))
+            ->zip('12345')
+            ->location('SG')
             ->create();
 
         sleep(1);
@@ -46,6 +48,8 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.data.0.from_human', '05.05.2023')
             ->assertInertiaPath('data.data.0.to_human', '07.06.2023')
             ->assertInertiaPath('data.data.0.from', '2023-05-05')
+            ->assertInertiaPath('data.data.0.zip', '12345')
+            ->assertInertiaPath('data.data.0.location', 'SG')
             ->assertInertiaPath('data.data.0.participants_count', 5)
             ->assertInertiaPath('data.data.0.to', '2023-06-07')
             ->assertInertiaPath('data.data.0.is_active', true)
@@ -70,7 +74,9 @@ class FormIndexActionTest extends FormTestCase
             ->assertInertiaPath('data.meta.base_url', url(''))
             ->assertInertiaPath('data.meta.namiTypes.0', ['id' => 'Vorname', 'name' => 'Vorname'])
             ->assertInertiaPath('data.meta.specialTypes.0', ['id' => 'Vorname', 'name' => 'Vorname'])
-            ->assertInertiaPath('data.meta.section_default.name', '');
+            ->assertInertiaPath('data.meta.section_default.name', '')
+            ->assertInertiaPath('data.meta.default.zip', '')
+            ->assertInertiaPath('data.meta.default.location', '');
     }
 
     public function testFormtemplatesHaveData(): void

@@ -57,6 +57,8 @@ class FormFactory extends Factory
             'is_private' => false,
             'export' => ExportData::from([]),
             'prevention_conditions' => Condition::defaults(),
+            'zip' => $this->faker->numberBetween(1100, 99999),
+            'location' => $this->faker->city(),
         ];
     }
 
