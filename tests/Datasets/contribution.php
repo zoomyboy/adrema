@@ -100,3 +100,13 @@ dataset('contribution-assertions', fn () => [
     [BdkjHesse::class, ["Max", "Muster", "Jane"]],
     [WuppertalDocument::class, ["Max", "Muster", "Jane", "42777 SG", "15.06.1991", "16.06.1991"]],
 ]);
+
+dataset('contribution-documents', fn () => [
+    CitySolingenDocument::class,
+    RdpNrwDocument::class,
+    CityRemscheidDocument::class,
+    CityFrankfurtMainDocument::class,
+    BdkjHesse::class,
+    WuppertalDocument::class,
+]);
+
