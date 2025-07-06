@@ -2,6 +2,7 @@
 
 namespace App\Form\Resources;
 
+use App\Contribution\Enums\Country;
 use App\Form\Data\ExportData;
 use App\Form\Enums\NamiType;
 use App\Form\Enums\SpecialType;
@@ -55,6 +56,7 @@ class FormResource extends JsonResource
             'prevention_conditions' => $this->prevention_conditions,
             'zip' => $this->zip,
             'location' => $this->location,
+            'country' => $this->country,
             'links' => [
                 'participant_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => null]),
                 'participant_root_index' => route('form.participant.index', ['form' => $this->getModel(), 'parent' => -1]),
@@ -85,6 +87,7 @@ class FormResource extends JsonResource
             'templates' => FormtemplateResource::collection(Formtemplate::get()),
             'namiTypes' => NamiType::forSelect(),
             'specialTypes' => SpecialType::forSelect(),
+            'countries' => Country::forSelect(),
             'default' => [
                 'description' => [],
                 'is_active' => true,
@@ -106,6 +109,7 @@ class FormResource extends JsonResource
                 'prevention_conditions' => ['mode' => 'all', 'ifs' => []],
                 'zip' => '',
                 'location' => '',
+                'country' => null,
             ],
             'section_default' => [
                 'name' => '',

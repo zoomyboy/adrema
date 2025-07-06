@@ -20,14 +20,15 @@
         <ui-popup v-if="single !== null && single.config !== null" :heading="`Veranstaltung ${single.id ? 'bearbeiten' : 'erstellen'}`" full @close="cancel">
             <div class="flex flex-col mt-3">
                 <ui-tabs v-model="active" :entries="tabs" />
-                <div v-show="active === 0" class="grid grid-cols-2 gap-3">
-                    <div class="flex space-x-3">
+                <div v-show="active === 0" class="grid grid-cols-4 gap-3">
+                    <div class="flex space-x-3 col-span-2">
                         <f-text id="name" v-model="single.name" class="grow" label="Name" required />
                         <f-switch id="is_active" v-model="single.is_active" name="is_active" label="Aktiv" />
                         <f-switch id="is_private" v-model="single.is_private" name="is_private" label="Privat" />
                     </div>
                     <f-singlefile id="header_image"
                                   v-model="single.header_image"
+                                  class="col-span-2"
                                   label="Bild"
                                   name="header_image"
                                   parent-name="form"
@@ -35,14 +36,11 @@
                                   collection="headerImage"
                                   required
                     />
-                    <div class="grid gap-3 grid-cols-2">
-                        <f-text id="from" v-model="single.from" type="date" label="Von" required />
-                        <f-text id="to" v-model="single.to" type="date" label="Bis" required />
-                    </div>
-                    <div class="grid gap-3 grid-cols-2">
-                        <f-text id="zip" v-model="single.zip" label="PLZ" />
-                        <f-text id="location" v-model="single.location" label="Ort" />
-                    </div>
+                    <f-text id="from" v-model="single.from" type="date" label="Von" required />
+                    <f-text id="to" v-model="single.to" type="date" label="Bis" required />
+                    <f-text id="zip" v-model="single.zip" label="PLZ" />
+                    <f-text id="location" v-model="single.location" label="Ort" />
+                    <f-select id="country" v-model="single.country" class="col-span-2" name="country" label="Land" :options="meta.countries" />
                     <f-text id="registration_from" v-model="single.registration_from" type="datetime-local" label="Registrierung von" required />
                     <f-text id="registration_until" v-model="single.registration_until" type="datetime-local" label="Registrierung bis" required />
                     <f-textarea id="excerpt"
@@ -50,6 +48,7 @@
                                 hint="Gebe hier eine kurze Beschreibung für die Veranstaltungs-Übersicht ein (Maximal 130 Zeichen)."
                                 label="Auszug"
                                 :rows="5"
+                                class="col-span-full"
                                 required
                     />
                 </div>

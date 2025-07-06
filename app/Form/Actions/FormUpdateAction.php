@@ -37,6 +37,7 @@ class FormUpdateAction
             'prevention_conditions' => 'array',
             'location' => 'present|nullable|string',
             'zip' => 'present|nullable|string',
+            'country' => 'nullable|string|max:255',
         ];
     }
 

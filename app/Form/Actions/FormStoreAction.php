@@ -38,6 +38,7 @@ class FormStoreAction
             'prevention_conditions' => 'array',
             'zip' => 'present|nullable|string',
             'location' => 'present|nullable|string',
+            'country' => 'nullable|string|max:255',
         ];
     }
 

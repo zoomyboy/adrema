@@ -118,16 +118,17 @@ it('testItUpdatesActiveState', function () {
     $this->assertTrue($form->fresh()->is_active);
 });
 
-it('updates zip and location', function () {
+it('updates meta info', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
     $form = Form::factory()->create();
-    $request = FormRequest::new()->zip('12345')->location('Musterstadt')->create();
+    $request = FormRequest::new()->zip('12345')->location('Musterstadt')->country('Schweiz')->create();
 
     $this->patchJson(route('form.update', ['form' => $form]), $request)->assertOk();
     test()->assertDatabaseHas('forms', [
         'id' => $form->id,
         'zip' => '12345',
         'location' => 'Musterstadt',
+        'country' => 'Schweiz',
     ]);
 });
 

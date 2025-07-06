@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Form;
 
+use App\Contribution\Enums\Country;
 use App\Fileshare\Data\FileshareResourceData;
 use App\Form\Data\ExportData;
 use App\Form\Enums\NamiType;
@@ -34,6 +35,7 @@ it('testItStoresForm', function () {
         ->headerImage('htzz.jpg')
         ->zip('12345')
         ->location('Solingen')
+        ->country('Schweiz')
         ->sections([FormtemplateSectionRequest::new()->name('sname')->fields([$this->textField()->namiType(NamiType::BIRTHDAY)->forMembers(false)->hint('hhh')])])
         ->fake();
 
@@ -59,6 +61,7 @@ it('testItStoresForm', function () {
     $this->assertEquals('formname.jpg', $form->getMedia('headerImage')->first()->file_name);
     $this->assertEquals('Solingen', $form->location);
     $this->assertEquals('12345', $form->zip);
+    $this->assertEquals(Country::CH, $form->country);
     Event::assertDispatched(Succeeded::class, fn(Succeeded $event) => $event->message === 'Veranstaltung gespeichert.');
     $this->assertFrontendCacheCleared();
 });

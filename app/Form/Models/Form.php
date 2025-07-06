@@ -2,6 +2,7 @@
 
 namespace App\Form\Models;
 
+use App\Contribution\Enums\Country;
 use App\Form\Actions\UpdateParticipantSearchIndexAction;
 use App\Form\Data\ExportData;
 use App\Form\Data\FieldCollection;
@@ -48,6 +49,7 @@ class Form extends Model implements HasMedia
         'to' => 'datetime',
         'registration_from' => 'datetime',
         'registration_until' => 'datetime',
+        'country' => Country::class
     ];
 
     /**
@@ -67,7 +69,6 @@ class Form extends Model implements HasMedia
     {
         return $this->hasMany(Participant::class);
     }
-
 
     public function registerMediaCollections(): void
     {
