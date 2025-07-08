@@ -29,7 +29,7 @@ class ContributionFactory
     ];
 
     /**
-     * @return Collection<int, array{title: string, class: class-string<ContributionDocument>}>
+     * @return Collection<int, array{name: string, id: class-string<ContributionDocument>}>
      */
     public function compilerSelect(): Collection
     {
