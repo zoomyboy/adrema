@@ -6,10 +6,14 @@ use App\Contribution\ContributionFactory;
 use App\Contribution\Documents\ContributionDocument;
 use App\Country;
 use App\Member\Member;
+use Tests\Lib\Queryable;
 use Worksome\RequestFactories\RequestFactory;
 
 class ContributionRequestFactory extends RequestFactory
 {
+
+    use Queryable;
+
     public function definition(): array
     {
         $compilers = collect(app(ContributionFactory::class)->compilerSelect())->pluck('class');
@@ -23,11 +27,6 @@ class ContributionRequestFactory extends RequestFactory
             'type' => $this->faker->randomElement($compilers),
             'zipLocation' => $this->faker->city,
         ];
-    }
-
-    public function toBase64(): string
-    {
-        return base64_encode(rawurlencode(json_encode($this->create())));
     }
 
     /**
