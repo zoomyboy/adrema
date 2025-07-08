@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.18
+
+-   Fix: Initialisierung klappt nun auch, wenn Mitgliedsnummer mit einer 0 beginnt
+
 ### 1.12.17
 
 -   Fix: Mitgliedschaften werden beim Sammel-Speichern nicht mehr doppelt angelegt
