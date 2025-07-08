@@ -16,7 +16,7 @@ class GenerateRequest extends ActionRequest implements HasContributionData {
     /**
      * @return array<string, string>
      */
-    protected function payloada(): array
+    protected function payload(): array
     {
         return json_decode(rawurldecode(base64_decode($this->input('payload', ''))), true);
     }

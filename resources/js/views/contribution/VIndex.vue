@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <button v-for="(compiler, index) in compilers" :key="index" class="btn btn-primary mt-3 inline-block" @click.prevent="download('/contribution-generate', {...values, type: compiler.class})" v-text="compiler.title" />
+            <button v-for="(compiler, index) in compilers" :key="index" class="btn btn-primary mt-3 inline-block" @click.prevent="download('/contribution-generate', {...values, type: compiler.id})" v-text="`Für ${compiler.name} erstellen`" />
         </form>
     </page-layout>
 </template>

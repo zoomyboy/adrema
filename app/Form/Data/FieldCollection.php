@@ -114,7 +114,12 @@ class FieldCollection extends Collection
         return $this->map(fn ($field) => $field->presentRaw())->toArray();
     }
 
-    private function findBySpecialType(SpecialType $specialType): ?Field
+    public function hasSpecialType(SpecialType $specialType): bool
+    {
+        return $this->findBySpecialType($specialType) !== null;
+    }
+
+    public function findBySpecialType(SpecialType $specialType): ?Field
     {
         return $this->first(fn ($field) => $field->specialType === $specialType);
     }

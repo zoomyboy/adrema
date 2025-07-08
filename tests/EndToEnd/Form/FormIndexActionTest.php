@@ -2,6 +2,7 @@
 
 namespace Tests\EndToEnd\Form;
 
+use App\Contribution\Documents\RdpNrwDocument;
 use App\Contribution\Enums\Country;
 use App\Fileshare\Data\FileshareResourceData;
 use App\Form\Data\ExportData;
@@ -65,6 +66,7 @@ it('testItDisplaysForms', function () {
         ->assertInertiaPath('data.data.0.registration_until', '2023-04-01 05:00:00')
         ->assertInertiaPath('data.data.0.links.participant_index', route('form.participant.index', ['form' => $form]))
         ->assertInertiaPath('data.data.0.links.export', route('form.export', ['form' => $form]))
+        ->assertInertiaPath('data.data.0.links.contribution', route('form.contribution', ['form' => $form]))
         ->assertInertiaPath('data.meta.links.store', route('form.store'))
         ->assertInertiaPath('data.meta.links.formtemplate_index', route('formtemplate.index'))
         ->assertInertiaPath('data.meta.default.name', '')
@@ -86,6 +88,8 @@ it('testItDisplaysForms', function () {
         ->assertInertiaPath('data.meta.namiTypes.0', ['id' => 'Vorname', 'name' => 'Vorname'])
         ->assertInertiaPath('data.meta.specialTypes.0', ['id' => 'Vorname', 'name' => 'Vorname'])
         ->assertInertiaPath('data.meta.section_default.name', '')
+        ->assertInertiaPath('data.meta.contribution_types.0.id', RdpNrwDocument::class)
+        ->assertInertiaPath('data.meta.contribution_types.0.name', 'RdP NRW')
         ->assertInertiaPath('data.meta.default.zip', '')
         ->assertInertiaPath('data.meta.default.location', '');
 });

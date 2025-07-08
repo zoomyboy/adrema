@@ -1,0 +1,167 @@
+<?php
+
+namespace Tests\Feature\Form;
+
+use App\Contribution\Documents\CitySolingenDocument;
+use App\Contribution\Documents\RdpNrwDocument;
+use App\Country;
+use App\Form\Enums\SpecialType;
+use App\Form\Models\Form;
+use App\Form\Models\Participant;
+use App\Form\Requests\FormCompileRequest;
+use App\Gender;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\Lib\CreatesFormFields;
+use Zoomyboy\Tex\Tex;
+
+uses(DatabaseTransactions::class);
+uses(CreatesFormFields::class);
+
+mutates(FormCompileRequest::class);
+
+beforeEach(function() {
+    Country::factory()->create();
+    Gender::factory()->male()->create();
+    Gender::factory()->female()->create();
+});
+
+it('doesnt create document when no special fields given', function (array $fields, string $field, string $message, string $type) {
+    $this->login()->loginNami();
+
+    $form = Form::factory()
+        ->fields($fields)
+        ->has(Participant::factory())
+        ->create();
+
+    $this->json('GET', route('form.contribution', [
+        'type' => $type,
+        'form' => $form,
+        'validate' => '1',
+    ]))->assertJsonValidationErrors([$field => $message]);
+})
+    ->with([
+        [fn() => [], 'FIRSTNAME', 'Kein Feld für Vorname vorhanden.'],
+        [fn() => [test()->textField('f')->specialType(SpecialType::FIRSTNAME)], 'LASTNAME', 'Kein Feld für Nachname vorhanden.'],
+        [fn() => [test()->textField('f')->specialType(SpecialType::FIRSTNAME), test()->textField('l')->specialType(SpecialType::LASTNAME)], 'BIRTHDAY', 'Kein Feld für Geburtsdatum vorhanden.'],
+        [fn() => [test()->textField('f')->specialType(SpecialType::FIRSTNAME), test()->textField('l')->specialType(SpecialType::LASTNAME), test()->dateField('b')->specialType(SpecialType::BIRTHDAY)], 'ZIP', 'Kein Feld für PLZ vorhanden.'],
+        [fn() => [test()->textField('f')->specialType(SpecialType::FIRSTNAME), test()->textField('l')->specialType(SpecialType::LASTNAME), test()->dateField('b')->specialType(SpecialType::BIRTHDAY), test()->dateField('p')->specialType(SpecialType::ZIP)], 'LOCATION', 'Kein Feld für Ort vorhanden.'],
+    ])->with('contribution-documents');
+
+it('validates special types of each document', function (string $type, array $fields, string $field,  string $message) {
+    $this->login()->loginNami();
+
+    $form = Form::factory()->fields([
+        test()->textField('f')->specialType(SpecialType::FIRSTNAME),
+        test()->textField('l')->specialType(SpecialType::LASTNAME),
+        test()->dateField('b')->specialType(SpecialType::BIRTHDAY),
+        test()->dateField('p')->specialType(SpecialType::ZIP),
+        test()->dateField('l')->specialType(SpecialType::LOCATION),
+        ...$fields,
+    ])
+        ->has(Participant::factory())
+        ->create();
+
+    $this->json('GET', route('form.contribution', [
+        'type' => $type,
+        'form' => $form,
+        'validate' => '1',
+    ]))->assertJsonValidationErrors([$field => $message]);
+})
+    ->with([
+        [CitySolingenDocument::class, [], 'ADDRESS', 'Kein Feld für Adresse vorhanden.'],
+        [RdpNrwDocument::class, [], 'GENDER', 'Kein Feld für Geschlecht vorhanden.'],
+    ]);
+
+it('throws error when not validating but fields are not present', function () {
+    $this->login()->loginNami();
+
+    $form = Form::factory()->fields([])
+        ->has(Participant::factory())
+        ->create();
+
+    $this->json('GET', route('form.contribution', [
+        'type' => CitySolingenDocument::class,
+        'form' => $form,
+    ]))->assertStatus(422);
+});
+
+it('throws error when form doesnt have meta', function () {
+    $this->login()->loginNami();
+
+    $form = Form::factory()->fields([])
+        ->has(Participant::factory())
+        ->zip('')
+        ->location('')
+        ->create();
+
+    $this->json('GET', route('form.contribution', [
+        'type' => CitySolingenDocument::class,
+        'form' => $form,
+    ]))->assertStatus(422)->assertJsonValidationErrors([
+        'zip' => 'PLZ ist erforderlich.',
+        'location' => 'Ort ist erforderlich.'
+    ]);
+});
+
+it('throws error when form doesnt have participants', function () {
+    $this->login()->loginNami();
+
+    $form = Form::factory()->fields([])->create();
+
+    $this->json('GET', route('form.contribution', [
+        'type' => CitySolingenDocument::class,
+        'form' => $form,
+        'validate' => '1',
+    ]))->assertJsonValidationErrors(['participants' => 'Veranstaltung besitzt noch keine Teilnehmer*innen.']);
+});
+
+it('creates document when fields are present', function () {
+    Tex::spy();
+    $this->login()->loginNami();
+
+    $form = Form::factory()->fields([
+        test()->textField('fn')->specialType(SpecialType::FIRSTNAME),
+        test()->textField('ln')->specialType(SpecialType::LASTNAME),
+        test()->dateField('bd')->specialType(SpecialType::BIRTHDAY),
+        test()->dateField('zip')->specialType(SpecialType::ZIP),
+        test()->dateField('loc')->specialType(SpecialType::LOCATION),
+        test()->dateField('add')->specialType(SpecialType::ADDRESS),
+    ])
+        ->has(Participant::factory()->data(['fn' => 'Baum', 'ln' => 'Muster', 'bd' => '1991-05-06', 'zip' => '33333', 'loc' => 'Musterstadt', 'add' => 'Laastr 4']))
+        ->create();
+
+    $this->json('GET', route('form.contribution', [
+        'type' => CitySolingenDocument::class,
+        'form' => $form,
+    ]))->assertOk();
+    Tex::assertCompiled(CitySolingenDocument::class, fn($document) => $document->hasAllContent(['Baum', 'Muster', '1991', 'Musterstadt', 'Laastr 4', '33333']));
+});
+
+
+it('creates document with form meta', function () {
+    Tex::spy();
+    $this->login()->loginNami();
+
+    $form = Form::factory()->fields([
+        test()->textField('fn')->specialType(SpecialType::FIRSTNAME),
+        test()->textField('ln')->specialType(SpecialType::LASTNAME),
+        test()->dateField('bd')->specialType(SpecialType::BIRTHDAY),
+        test()->dateField('zip')->specialType(SpecialType::ZIP),
+        test()->dateField('loc')->specialType(SpecialType::LOCATION),
+        test()->dateField('add')->specialType(SpecialType::ADDRESS),
+        test()->dateField('gen')->specialType(SpecialType::GENDER),
+    ])
+        ->has(Participant::factory()->data(['fn' => 'Baum', 'ln' => 'Muster', 'bd' => '1991-05-06', 'zip' => '33333', 'loc' => 'Musterstadt', 'add' => 'Laastr 4', 'gen' => 'weiblich']))
+        ->name('Sommerlager')
+        ->from('2008-06-20')
+        ->to('2008-06-22')
+        ->zip('12345')
+        ->location('Frankfurt')
+        ->create();
+
+    $this->json('GET', route('form.contribution', [
+        'type' => RdpNrwDocument::class,
+        'form' => $form,
+    ]))->assertOk();
+    Tex::assertCompiled(RdpNrwDocument::class, fn($document) => $document->hasAllContent(['20.06.2008', '22.06.2008', '12345 Frankfurt']));
+});

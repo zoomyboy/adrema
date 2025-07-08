@@ -166,6 +166,7 @@
                             <ui-action-button tooltip="Teilnehmende anzeigen" class="btn-info" icon="user" @click.prevent="showParticipants(form)" />
                             <ui-action-button :href="form.links.frontend" target="_BLANK" tooltip="zur Anmeldeseite" class="btn-info" icon="eye" />
                             <ui-action-button tooltip="Kopieren" class="btn-info" icon="copy" @click="onCopy(form)" />
+                            <ui-action-button tooltip="Zuschuss-Liste erstellen" class="btn-info" icon="contribution" @click="onGenerateContribution(form)" />
                             <ui-action-button :href="form.links.export" target="_BLANK" tooltip="als Tabellendokument exportieren" class="btn-info" icon="document" />
                             <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="onDelete(form)" />
                         </div>
@@ -188,11 +189,13 @@ import Conditions from './Conditions.vue';
 import ConditionsForm from './ConditionsForm.vue';
 import { useToast } from 'vue-toastification';
 import useSwal from '@/stores/swalStore.ts';
+import useDownloads from '@/composables/useDownloads.ts';
 
 const props = defineProps(indexProps);
 const { meta, data, reloadPage, reload, create, single, edit, cancel, submit, remove, getFilter, setFilter } = useIndex(props.data, 'form');
 const axios = inject('axios');
 const toast = useToast();
+const {download} = useDownloads();
 
 const showing = ref(null);
 const fileSettingPopup = ref(null);
@@ -222,6 +225,20 @@ async function onCopy(form) {
     await swal.confirm('Diese Veranstaltung kopieren?', 'Nach dem Kopieren wird die Veranstaltung auf inaktiv gesetzt. Bitte aktiviere den Filter "inaktive zeigen", um die kopierte Veranstaltung zu sehen.');
     await axios.post(form.links.copy, {});
     reload(false);
+}
+
+async function onGenerateContribution(form) {
+    const response = await swal.ask('Zuschussliste erstellen', 'Hiermit erstellst du eine Zuschussliste mit allen angemeldeten Mitgliedern. Bite wähle aus, für welche Organisation du eine Liste erstellen willst.', [
+        {
+            name: 'type',
+            label: 'Organisation',
+            required: true,
+            type: 'select',
+            options: meta.value.contribution_types,
+        }
+    ]);
+    await download(form.links.contribution, {type: response.type, validate: '1'});
+    await download(form.links.contribution, {type: response.type});
 }
 
 async function onDelete(form) {

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
 
+type Payload = Record<string, string|null>;
 
 interface Popup {
     id: string;
@@ -11,6 +12,16 @@ interface Popup {
     cancelButton: string;
     resolve: (id: string) => void;
     reject: (id: string) => void;
+    fields: SwalField[];
+    payload: Payload;
+}
+
+interface SwalField {
+    name: string;
+    label: string;
+    required: boolean;
+    type: 'select' | 'text';
+    options: [],
 }
 
 export default defineStore('swal', {
@@ -30,6 +41,8 @@ export default defineStore('swal', {
                         reject,
                         id: uuidv4(),
                         icon: 'warning-triangle-light',
+                        fields: [],
+                        payload: {},
                     });
                 }).then((id) => {
                     this.remove(id);
@@ -41,8 +54,40 @@ export default defineStore('swal', {
             });
         },
 
+        ask(title: string, body: string, fields: SwalField[] = []): Promise<Payload> {
+            return new Promise<Payload>((resolve, reject) =>  {
+                new Promise<string>((resolve, reject) => {
+                    const payload: Payload = {};
+                    fields.forEach(f => payload[f.name] = null);
+                    this.popups.push({
+                        title,
+                        body,
+                        confirmButton: 'Okay',
+                        cancelButton: 'Abbrechen',
+                        resolve,
+                        reject,
+                        id: uuidv4(),
+                        icon: 'warning-triangle-light',
+                        fields: fields,
+                        payload: payload,
+                    });
+                }).then((id) => {
+                    const p = this.find(id)?.payload;
+                    this.remove(id);
+                    resolve(p || {});
+                }).catch((id) => {
+                    this.remove(id);
+                    reject();
+                });
+            });
+        },
+
         remove(id: string) {
             this.popups = this.popups.filter(p => p.id !== id);
+        },
+
+        find(id: string): Popup|undefined {
+            return this.popups.find(p => p.id === id);
         }
     },
 });

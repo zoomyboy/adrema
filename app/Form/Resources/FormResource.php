@@ -15,6 +15,7 @@ use App\Group;
 use App\Lib\Editor\EditorData;
 use App\Lib\HasMeta;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Contribution\ContributionFactory;
 
 /**
  * @mixin Form
@@ -66,6 +67,7 @@ class FormResource extends JsonResource
                 'frontend' => str(app(FormSettings::class)->registerUrl)->replace('{slug}', $this->slug),
                 'export' => route('form.export', $this->getModel()),
                 'copy' => route('form.copy', $this->getModel()),
+                'contribution' => route('form.contribution', $this->getModel()),
             ]
         ];
     }
@@ -88,6 +90,7 @@ class FormResource extends JsonResource
             'namiTypes' => NamiType::forSelect(),
             'specialTypes' => SpecialType::forSelect(),
             'countries' => Country::forSelect(),
+            'contribution_types' => app(ContributionFactory::class)->compilerSelect(),
             'default' => [
                 'description' => [],
                 'is_active' => true,

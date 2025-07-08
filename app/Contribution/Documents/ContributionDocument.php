@@ -37,11 +37,6 @@ abstract class ContributionDocument extends Document
         ];
     }
 
-    public static function buttonName(): string
-    {
-        return 'Für ' . static::getName() . ' erstellen';;
-    }
-
     public function setEventName(string $eventName): void
     {
         $this->eventName = $eventName;
