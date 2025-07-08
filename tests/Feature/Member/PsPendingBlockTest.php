@@ -15,7 +15,7 @@ class PsPendingBlockTest extends TestCase
 
     public function testItRendersContent(): void
     {
-        $this->withoutExceptionHandling()->withNamiSettings(12345, 'password', 101);
+        $this->withoutExceptionHandling()->withNamiSettings('12345', 'password', 101);
         $group = Group::factory()->inNami(101)->create();
 
         $noPsAtAll = Member::factory()
@@ -72,7 +72,7 @@ class PsPendingBlockTest extends TestCase
 
     public function testItExcludesForeignGroups(): void
     {
-        $this->withoutExceptionHandling()->withNamiSettings(12345, 'password', 101);
+        $this->withoutExceptionHandling()->withNamiSettings('12345', 'password', 101);
         Group::factory()->inNami(101)->create();
         $otherGroup = Group::factory()->inNami(55)->create();
 

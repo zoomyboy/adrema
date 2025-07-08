@@ -16,7 +16,7 @@ class NamiLoginCheckAction
      */
     public function handle(array $input): void
     {
-        Nami::freshLogin((int) $input['mglnr'], $input['password']);
+        Nami::freshLogin($input['mglnr'], $input['password']);
     }
 
     /**

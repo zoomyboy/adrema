@@ -71,7 +71,7 @@ class InitializeAction
 
     public function asController(ActionRequest $request, NamiSettings $settings): RedirectResponse
     {
-        $settings->mglnr = (int) $request->input('mglnr');
+        $settings->mglnr = $request->input('mglnr');
         $settings->password = $request->input('password');
         $settings->default_group_id = (int) $request->input('group_id');
         $settings->search_params = $request->input('params');

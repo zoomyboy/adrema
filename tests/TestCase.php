@@ -37,7 +37,7 @@ class TestCase extends BaseTestCase
         $this->initInertiaTestcase();
     }
 
-    public function loginNami(int $mglnr = 12345, string $password = 'password', int|Group $groupId = 55): static
+    public function loginNami(string $mglnr = '12345', string $password = 'password', int|Group $groupId = 55): static
     {
         Auth::success($mglnr, $password);
         $group = is_int($groupId)
@@ -49,7 +49,7 @@ class TestCase extends BaseTestCase
         return $this;
     }
 
-    public function withNamiSettings(int $mglnr = 12345, string $password = 'password', int $groupId = 55): self
+    public function withNamiSettings(string $mglnr = '12345', string $password = 'password', int $groupId = 55): self
     {
         NamiSettings::fake([
             'mglnr' => $mglnr,

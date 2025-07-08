@@ -21,7 +21,7 @@ class NamiGetSearchLayerAction
      */
     public function handle(array $input): Collection
     {
-        return Nami::login((int) $input['mglnr'], $input['password'])->searchLayerOptions(
+        return Nami::login($input['mglnr'], $input['password'])->searchLayerOptions(
             SearchLayer::from($input['layer'] ?: 0),
             $input['parent'] ?: null
         );

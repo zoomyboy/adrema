@@ -4,7 +4,6 @@ namespace App\Setting;
 
 use App\Group;
 use App\Initialize\Actions\NamiLoginCheckAction;
-use App\Nami\Actions\SettingSaveAction;
 use App\Setting\Contracts\Storeable;
 use Lorisleiva\Actions\ActionRequest;
 use Zoomyboy\LaravelNami\Api;
@@ -12,7 +11,7 @@ use Zoomyboy\LaravelNami\Nami;
 
 class NamiSettings extends LocalSettings implements Storeable
 {
-    public int $mglnr;
+    public string $mglnr;
 
     public string $password;
 
