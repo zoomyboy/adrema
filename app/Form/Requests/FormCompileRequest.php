@@ -64,6 +64,9 @@ class FormCompileRequest extends Data implements HasContributionData {
             $member = [];
             foreach ($fields as [$type, $name]) {
                 $f = $this->form->getFields()->findBySpecialType($type);
+                if (!$f) {
+                    continue;
+                }
                 $member[$name] = $participant->getFields()->find($f)->value;
             }
 

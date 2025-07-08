@@ -33,11 +33,7 @@ it('doesnt create document when no special fields given', function (array $field
         ->has(Participant::factory())
         ->create();
 
-    $this->json('GET', route('form.contribution', [
-        'type' => $type,
-        'form' => $form,
-        'validate' => '1',
-    ]))->assertJsonValidationErrors([$field => $message]);
+    generate($type, $form, true)->assertJsonValidationErrors([$field => $message]);
 })
     ->with([
         [fn() => [], 'FIRSTNAME', 'Kein Feld für Vorname vorhanden.'],
@@ -61,11 +57,7 @@ it('validates special types of each document', function (string $type, array $fi
         ->has(Participant::factory())
         ->create();
 
-    $this->json('GET', route('form.contribution', [
-        'type' => $type,
-        'form' => $form,
-        'validate' => '1',
-    ]))->assertJsonValidationErrors([$field => $message]);
+    generate($type, $form, true)->assertJsonValidationErrors([$field => $message]);
 })
     ->with([
         [CitySolingenDocument::class, [], 'ADDRESS', 'Kein Feld für Adresse vorhanden.'],
@@ -79,10 +71,7 @@ it('throws error when not validating but fields are not present', function () {
         ->has(Participant::factory())
         ->create();
 
-    $this->json('GET', route('form.contribution', [
-        'type' => CitySolingenDocument::class,
-        'form' => $form,
-    ]))->assertStatus(422);
+    generate(CitySolingenDocument::class, $form, false)->assertStatus(422);
 });
 
 it('throws error when form doesnt have meta', function () {
@@ -94,10 +83,7 @@ it('throws error when form doesnt have meta', function () {
         ->location('')
         ->create();
 
-    $this->json('GET', route('form.contribution', [
-        'type' => CitySolingenDocument::class,
-        'form' => $form,
-    ]))->assertStatus(422)->assertJsonValidationErrors([
+    generate(CitySolingenDocument::class, $form, false)->assertStatus(422)->assertJsonValidationErrors([
         'zip' => 'PLZ ist erforderlich.',
         'location' => 'Ort ist erforderlich.'
     ]);
@@ -108,11 +94,7 @@ it('throws error when form doesnt have participants', function () {
 
     $form = Form::factory()->fields([])->create();
 
-    $this->json('GET', route('form.contribution', [
-        'type' => CitySolingenDocument::class,
-        'form' => $form,
-        'validate' => '1',
-    ]))->assertJsonValidationErrors(['participants' => 'Veranstaltung besitzt noch keine Teilnehmer*innen.']);
+    generate(CitySolingenDocument::class, $form, true)->assertJsonValidationErrors(['participants' => 'Veranstaltung besitzt noch keine Teilnehmer*innen.']);
 });
 
 it('creates document when fields are present', function () {
@@ -130,10 +112,7 @@ it('creates document when fields are present', function () {
         ->has(Participant::factory()->data(['fn' => 'Baum', 'ln' => 'Muster', 'bd' => '1991-05-06', 'zip' => '33333', 'loc' => 'Musterstadt', 'add' => 'Laastr 4']))
         ->create();
 
-    $this->json('GET', route('form.contribution', [
-        'type' => CitySolingenDocument::class,
-        'form' => $form,
-    ]))->assertOk();
+    generate(CitySolingenDocument::class, $form, false)->assertOk();
     Tex::assertCompiled(CitySolingenDocument::class, fn($document) => $document->hasAllContent(['Baum', 'Muster', '1991', 'Musterstadt', 'Laastr 4', '33333']));
 });
 
@@ -159,9 +138,14 @@ it('creates document with form meta', function () {
         ->location('Frankfurt')
         ->create();
 
-    $this->json('GET', route('form.contribution', [
-        'type' => RdpNrwDocument::class,
-        'form' => $form,
-    ]))->assertOk();
+    generate(RdpNrwDocument::class, $form, false)->assertOk();
     Tex::assertCompiled(RdpNrwDocument::class, fn($document) => $document->hasAllContent(['20.06.2008', '22.06.2008', '12345 Frankfurt']));
 });
+
+function generate(string $document, Form $form, bool $validate) {
+    return test()->json('GET', route('form.contribution', [
+        'payload' => test()->filterString(['type' => $document]),
+        'form' => $form,
+        'validate' => $validate ? '1' : '0'
+    ]));
+}
