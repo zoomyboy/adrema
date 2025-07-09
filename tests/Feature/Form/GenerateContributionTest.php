@@ -141,7 +141,7 @@ it('creates document with participant data', function (array $defaultData, array
 it('creates document with is leader', function (array $defaultData, array $fields) {
     $form = Form::factory()->fields([
         ...$fields,
-        test()->dropdownField('leader')->options(['L', 'NL'])->specialType(SpecialType::LEADER),
+        test()->dropdownField('leader')->options(['L', 'NL']),
     ])
         ->has(Participant::factory()->data([...$defaultData, 'leader' => 'L']))
         ->leaderConditions(ConditionRequestFactory::new()->whenField('leader', 'L')->create())
