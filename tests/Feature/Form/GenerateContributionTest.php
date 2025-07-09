@@ -144,7 +144,7 @@ it('creates document with is leader', function (array $defaultData, array $field
         test()->dropdownField('leader')->options(['L', 'NL'])->specialType(SpecialType::LEADER),
     ])
         ->has(Participant::factory()->data([...$defaultData, 'leader' => 'L']))
-        ->leaderCondition(ConditionRequestFactory::new()->whenField('leader', 'L')->create())
+        ->leaderConditions(ConditionRequestFactory::new()->whenField('leader', 'L')->create())
         ->create();
 
     generate(RdpNrwDocument::class, $form, false)->assertOk();

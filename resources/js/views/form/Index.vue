@@ -115,6 +115,11 @@
                         <conditions id="prevention_conditions" v-model="single.prevention_conditions" :single="single" />
                     </ui-box>
                 </div>
+                <div v-if="active === 6">
+                    <ui-box heading="Bedingung für Leiter*in">
+                        <conditions id="leader_conditions" v-model="single.leader_conditions" :single="single" />
+                    </ui-box>
+                </div>
             </div>
             <template #actions>
                 <a href="#" @click.prevent="submit">
@@ -202,7 +207,7 @@ const fileSettingPopup = ref(null);
 
 const active = ref(0);
 const activeMailTab = ref(0);
-const tabs = [{ title: 'Allgemeines' }, { title: 'Beschreibung' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }, { title: 'Prävention' }];
+const tabs = [{ title: 'Allgemeines' }, { title: 'Beschreibung' }, { title: 'Formular' }, { title: 'Bestätigungs-E-Mail' }, { title: 'Export' }, { title: 'Prävention' }, {title: 'Zuschüsse'}];
 const mailTabs = [{ title: 'vor Daten' }, { title: 'nach Daten' }];
 const swal = useSwal();
 

@@ -72,7 +72,7 @@ class FormCompileRequest extends Data implements HasContributionData {
             }
 
             $members[] = [
-                'is_leader' => $participant->matchesCondition($participant->form->leader_condition),
+                'is_leader' => $participant->matchesCondition($participant->form->leader_conditions),
                 'gender' => 'weiblich',
                 ...$member,
             ];
