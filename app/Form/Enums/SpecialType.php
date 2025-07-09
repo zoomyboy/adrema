@@ -12,7 +12,6 @@ enum SpecialType: string
     case LOCATION = 'Ort';
     case ADDRESS = 'Adresse';
     case GENDER = 'Geschlecht';
-    case LEADER = 'LeiterIn';
 
     /**
      * @return array<int, array{name: string, id: string}>

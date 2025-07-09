@@ -71,7 +71,6 @@ class WuppertalDocument extends ContributionDocument
             SpecialType::ZIP,
             SpecialType::LOCATION,
             SpecialType::GENDER,
-            SpecialType::LEADER,
         ];
     }
 }

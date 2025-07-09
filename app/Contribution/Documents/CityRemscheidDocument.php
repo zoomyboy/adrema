@@ -75,7 +75,6 @@ class CityRemscheidDocument extends ContributionDocument
             SpecialType::BIRTHDAY,
             SpecialType::ZIP,
             SpecialType::LOCATION,
-            SpecialType::LEADER
         ];
     }
 }
