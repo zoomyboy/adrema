@@ -38,6 +38,7 @@ class FormUpdateAction
             'location' => 'present|nullable|string',
             'zip' => 'present|nullable|string',
             'country' => 'nullable|string|max:255',
+            'leader_conditions' => 'array',
         ];
     }
 

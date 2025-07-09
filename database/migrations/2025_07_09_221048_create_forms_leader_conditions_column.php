@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('forms', function (Blueprint $table) {
-            $table->json('leader_condition')->after('name')->default(json_encode(['mode' => 'all', 'ifs' => []]));
+            $table->json('leader_conditions')->after('name')->default(json_encode(['mode' => 'all', 'ifs' => []]));
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('forms', function (Blueprint $table) {
-            $table->dropColumn('leader_condition');
+            $table->dropColumn('leader_conditions');
         });
     }
 };

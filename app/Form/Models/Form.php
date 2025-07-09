@@ -50,7 +50,7 @@ class Form extends Model implements HasMedia
         'registration_from' => 'datetime',
         'registration_until' => 'datetime',
         'country' => Country::class,
-        'leader_condition' => Condition::class,
+        'leader_conditions' => Condition::class,
     ];
 
     /**

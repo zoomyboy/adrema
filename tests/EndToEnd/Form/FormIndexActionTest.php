@@ -16,6 +16,7 @@ use Tests\RequestFactories\EditorRequestFactory;
 use Tests\Lib\CreatesFormFields;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\EndToEndTestCase;
+use Tests\RequestFactories\ConditionRequestFactory;
 
 uses(CreatesFormFields::class);
 uses(DatabaseTransactions::class);
@@ -24,6 +25,7 @@ uses(EndToEndTestCase::class);
 it('testItDisplaysForms', function () {
     Carbon::setTestNow(Carbon::parse('2023-03-03'));
     $this->login()->loginNami()->withoutExceptionHandling();
+    $leaderConditions = ConditionRequestFactory::new()->whenField('f', 'v');
     $form = Form::factory()
         ->name('lala')
         ->excerpt('fff')
@@ -39,7 +41,7 @@ it('testItDisplaysForms', function () {
         ->zip('12345')
         ->location('SG')
         ->country(Country::CH)
-        ->create();
+        ->create(['leader_conditions' => $leaderConditions->toData()]);
 
     sleep(1);
     $this->get(route('form.index'))
@@ -58,6 +60,7 @@ it('testItDisplaysForms', function () {
         ->assertInertiaPath('data.data.0.location', 'SG')
         ->assertInertiaPath('data.data.0.country', 'Schweiz')
         ->assertInertiaPath('data.data.0.participants_count', 5)
+        ->assertInertiaPath('data.data.0.leader_conditions', $leaderConditions->create())
         ->assertInertiaPath('data.data.0.to', '2023-06-07')
         ->assertInertiaPath('data.data.0.is_active', true)
         ->assertInertiaPath('data.data.0.is_private', false)

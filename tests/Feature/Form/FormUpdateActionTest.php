@@ -8,6 +8,7 @@ use App\Form\Models\Form;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\RequestFactories\EditorRequestFactory;
 use Tests\Lib\CreatesFormFields;
+use Tests\RequestFactories\ConditionRequestFactory;
 
 uses(DatabaseTransactions::class);
 uses(CreatesFormFields::class);
@@ -169,4 +170,17 @@ it('testItUpdatesPrevention', function () {
     $this->assertTrue($form->fresh()->needs_prevention);
     $this->assertEquals('lorem ipsum', $form->fresh()->prevention_text->blocks[0]['data']['text']);
     $this->assertEquals(['mode' => 'all', 'ifs' => [['field' => 'vorname', 'value' => 'Max', 'comparator' => 'isEqual']]], $form->fresh()->prevention_conditions->toArray());
+});
+
+it('updates leader conditions', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $form = Form::factory()->create();
+    $condition = ConditionRequestFactory::new()->whenField('A', 'TT')->create();
+    $payload = FormRequest::new()
+        ->preventionText(EditorRequestFactory::new()->text(10, 'lorem ipsum'))
+        ->state(['leader_conditions' => ConditionRequestFactory::new()->whenField('A', 'TT')])
+        ->create();
+
+    $this->patchJson(route('form.update', ['form' => $form]), $payload);
+    $this->assertEquals($condition, $form->fresh()->leader_conditions->toArray());
 });

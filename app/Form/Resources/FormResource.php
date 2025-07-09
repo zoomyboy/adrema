@@ -55,6 +55,7 @@ class FormResource extends JsonResource
             'needs_prevention' => $this->needs_prevention,
             'prevention_text' => $this->prevention_text,
             'prevention_conditions' => $this->prevention_conditions,
+            'leader_conditions' => $this->leader_conditions,
             'zip' => $this->zip,
             'location' => $this->location,
             'country' => $this->country,
