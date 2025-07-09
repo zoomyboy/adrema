@@ -4,12 +4,12 @@ namespace App\Form\Models;
 
 use App\Form\Data\FieldCollection;
 use App\Form\Data\FormConfigData;
+use App\Form\Editor\FormConditionResolver;
 use App\Form\Mails\ConfirmRegistrationMail;
-use App\Form\Scopes\ParticipantFilterScope;
+use App\Lib\Editor\Condition;
 use App\Member\Member;
 use App\Prevention\Contracts\Preventable;
 use Database\Factories\Form\Models\ParticipantFactory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -109,5 +109,9 @@ class Participant extends Model implements Preventable
     public function toSearchableArray(): array
     {
         return [...$this->data, 'parent-id' => $this->parent_id, 'created_at' => $this->created_at->timestamp];
+    }
+
+    public function matchesCondition(Condition $condition): bool {
+        return app(FormConditionResolver::class)->forParticipant($this)->filterCondition($condition);
     }
 }

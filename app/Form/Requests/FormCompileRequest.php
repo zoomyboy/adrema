@@ -6,6 +6,7 @@ use App\Contribution\Contracts\HasContributionData;
 use App\Contribution\Data\MemberData;
 use App\Contribution\Documents\ContributionDocument;
 use App\Country;
+use App\Form\Editor\FormConditionResolver;
 use App\Form\Enums\SpecialType;
 use App\Form\Models\Form;
 use Carbon\Carbon;
@@ -22,7 +23,7 @@ class FormCompileRequest extends Data implements HasContributionData {
      */
     public function type(): string
     {
-        $payload = json_decode(rawurldecode(base64_decode(request()->input('payload', ''))), true);
+        $payload = json_decode(rawurldecode(base64_decode(request()->input('payload'))), true);
 
         return $payload['type'];
     }
@@ -54,10 +55,10 @@ class FormCompileRequest extends Data implements HasContributionData {
             [SpecialType::FIRSTNAME, 'firstname'],
             [SpecialType::LASTNAME, 'lastname'],
             [SpecialType::BIRTHDAY, 'birthday'],
+            [SpecialType::GENDER, 'gender'],
             [SpecialType::ADDRESS, 'address'],
             [SpecialType::ZIP, 'zip'],
             [SpecialType::LOCATION, 'location'],
-            [SpecialType::GENDER, 'gender']
         ];
 
         foreach ($this->form->participants as $participant) {
@@ -71,7 +72,7 @@ class FormCompileRequest extends Data implements HasContributionData {
             }
 
             $members[] = [
-                'is_leader' => false,
+                'is_leader' => $participant->matchesCondition($participant->form->leader_condition),
                 'gender' => 'weiblich',
                 ...$member,
             ];

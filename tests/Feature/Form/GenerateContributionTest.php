@@ -12,6 +12,7 @@ use App\Form\Requests\FormCompileRequest;
 use App\Gender;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\Lib\CreatesFormFields;
+use Tests\RequestFactories\ConditionRequestFactory;
 use Zoomyboy\Tex\Tex;
 
 uses(DatabaseTransactions::class);
@@ -23,11 +24,11 @@ beforeEach(function() {
     Country::factory()->create();
     Gender::factory()->male()->create();
     Gender::factory()->female()->create();
+    Tex::spy();
+    $this->login()->loginNami();
 });
 
 it('doesnt create document when no special fields given', function (array $fields, string $field, string $message, string $type) {
-    $this->login()->loginNami();
-
     $form = Form::factory()
         ->fields($fields)
         ->has(Participant::factory())
@@ -44,8 +45,6 @@ it('doesnt create document when no special fields given', function (array $field
     ])->with('contribution-documents');
 
 it('validates special types of each document', function (string $type, array $fields, string $field,  string $message) {
-    $this->login()->loginNami();
-
     $form = Form::factory()->fields([
         test()->textField('f')->specialType(SpecialType::FIRSTNAME),
         test()->textField('l')->specialType(SpecialType::LASTNAME),
@@ -65,8 +64,6 @@ it('validates special types of each document', function (string $type, array $fi
     ]);
 
 it('throws error when not validating but fields are not present', function () {
-    $this->login()->loginNami();
-
     $form = Form::factory()->fields([])
         ->has(Participant::factory())
         ->create();
@@ -75,8 +72,6 @@ it('throws error when not validating but fields are not present', function () {
 });
 
 it('throws error when form doesnt have meta', function () {
-    $this->login()->loginNami();
-
     $form = Form::factory()->fields([])
         ->has(Participant::factory())
         ->zip('')
@@ -90,37 +85,73 @@ it('throws error when form doesnt have meta', function () {
 });
 
 it('throws error when form doesnt have participants', function () {
-    $this->login()->loginNami();
-
     $form = Form::factory()->fields([])->create();
 
     generate(CitySolingenDocument::class, $form, true)->assertJsonValidationErrors(['participants' => 'Veranstaltung besitzt noch keine Teilnehmer*innen.']);
 });
 
-it('creates document when fields are present', function () {
-    Tex::spy();
-    $this->login()->loginNami();
+dataset('default-form-contribution', fn () => [
+    [
+        ['fn' => 'Baum', 'ln' => 'Muster', 'bd' => '1991-05-06', 'zip' => '33333', 'loc' => 'Musterstadt', 'add' => 'Laastr 4', 'gen' => 'weiblich'],
+        fn () => [
+            test()->textField('fn')->specialType(SpecialType::FIRSTNAME),
+            test()->textField('ln')->specialType(SpecialType::LASTNAME),
+            test()->dateField('bd')->specialType(SpecialType::BIRTHDAY),
+            test()->dateField('zip')->specialType(SpecialType::ZIP),
+            test()->dateField('loc')->specialType(SpecialType::LOCATION),
+            test()->dateField('add')->specialType(SpecialType::ADDRESS),
+            test()->dateField('gen')->specialType(SpecialType::GENDER),
+        ]
+    ]
+]);
 
+dataset('form-contributions', fn () => [
+    [
+        [],
+        [],
+        CitySolingenDocument::class,
+        ['Baum', 'Muster', '1991', 'Musterstadt', 'Laastr 4', '33333'],
+    ],
+    [
+        ['gen' => 'männlich'],
+        [],
+        RdpNrwDocument::class,
+        ['{m}'],
+    ],
+    [
+        ['gen' => 'weiblich'],
+        [],
+        RdpNrwDocument::class,
+        ['{w}'],
+    ],
+]);
+
+it('creates document with participant data', function (array $defaultData, array $defaultFields, array $newData, array $newFields, string $document, array $expected) {
     $form = Form::factory()->fields([
-        test()->textField('fn')->specialType(SpecialType::FIRSTNAME),
-        test()->textField('ln')->specialType(SpecialType::LASTNAME),
-        test()->dateField('bd')->specialType(SpecialType::BIRTHDAY),
-        test()->dateField('zip')->specialType(SpecialType::ZIP),
-        test()->dateField('loc')->specialType(SpecialType::LOCATION),
-        test()->dateField('add')->specialType(SpecialType::ADDRESS),
+        ...$defaultFields,
+        ...$newFields,
     ])
-        ->has(Participant::factory()->data(['fn' => 'Baum', 'ln' => 'Muster', 'bd' => '1991-05-06', 'zip' => '33333', 'loc' => 'Musterstadt', 'add' => 'Laastr 4']))
+        ->has(Participant::factory()->data([...$defaultData, ...$newData]))
         ->create();
 
-    generate(CitySolingenDocument::class, $form, false)->assertOk();
-    Tex::assertCompiled(CitySolingenDocument::class, fn($document) => $document->hasAllContent(['Baum', 'Muster', '1991', 'Musterstadt', 'Laastr 4', '33333']));
-});
+    generate($document, $form, false)->assertOk();
+    Tex::assertCompiled($document, fn($document) => $document->hasAllContent($expected));
+})->with('default-form-contribution')->with('form-contributions');
 
+it('creates document with is leader', function (array $defaultData, array $fields) {
+    $form = Form::factory()->fields([
+        ...$fields,
+        test()->dropdownField('leader')->options(['L', 'NL'])->specialType(SpecialType::LEADER),
+    ])
+        ->has(Participant::factory()->data([...$defaultData, 'leader' => 'L']))
+        ->leaderCondition(ConditionRequestFactory::new()->whenField('leader', 'L')->create())
+        ->create();
+
+    generate(RdpNrwDocument::class, $form, false)->assertOk();
+    Tex::assertCompiled(RdpNrwDocument::class, fn($document) => $document->hasAllContent(['{L}']));
+})->with('default-form-contribution');
 
 it('creates document with form meta', function () {
-    Tex::spy();
-    $this->login()->loginNami();
-
     $form = Form::factory()->fields([
         test()->textField('fn')->specialType(SpecialType::FIRSTNAME),
         test()->textField('ln')->specialType(SpecialType::LASTNAME),

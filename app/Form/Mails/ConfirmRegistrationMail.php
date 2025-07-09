@@ -69,10 +69,8 @@ class ConfirmRegistrationMail extends Mailable
      */
     public function attachments()
     {
-        $conditionResolver = app(FormConditionResolver::class)->forParticipant($this->participant);
-
         return $this->participant->form->getMedia('mailattachments')
-            ->filter(fn ($media) => $conditionResolver->filterCondition(Condition::fromMedia($media)))
+            ->filter(fn ($media) => $this->participant->matchesCondition(Condition::fromMedia($media)))
             ->map(fn ($media) => Attachment::fromStorageDisk($media->disk, $media->getPathRelativeToRoot()))
             ->all();
     }
