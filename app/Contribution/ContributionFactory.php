@@ -65,4 +65,5 @@ class ContributionFactory
     public function validateType(HasContributionData $request): void {
         Validator::make(['type' => $request->type()], $this->typeRule())->validate();
     }
+}
 
