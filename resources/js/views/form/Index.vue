@@ -146,6 +146,7 @@
                     <th>Name</th>
                     <th>Von</th>
                     <th>Bis</th>
+                    <th>Tags</th>
                     <th>Anzahl TN</th>
                     <th />
                 </tr>
@@ -161,6 +162,13 @@
                     </td>
                     <td>
                         <div v-text="form.to_human" />
+                    </td>
+                    <td>
+                        <div class="bool-row">
+                            <ui-bool true-comment="aktiv" false-comment="inaktiv" :value="form.is_active">A</ui-bool>
+                            <ui-bool true-comment="private Veranstaltung" false-comment="nicht private Veranstaltung" :value="form.is_private">P</ui-bool>
+                            <ui-bool true-comment="Anmeldung möglich (lt. 'Registrierung von / bis')" false-comment="Anmeldeschluss erreicht" :value="form.is_in_dates">D</ui-bool>
+                        </div>
                     </td>
                     <td>
                         <div v-text="form.participants_count" />

@@ -190,6 +190,18 @@ class Form extends Model implements HasMedia
         return Sorting::from($this->meta['sorting']);
     }
 
+    public function isInDates(): bool {
+        if ($this->registration_from && $this->registration_from->gt(now())) {
+            return false;
+        }
+
+        if ($this->registration_until && $this->registration_until->lt(now())) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function canRegister(): bool
     {
         if (!$this->is_active) {
