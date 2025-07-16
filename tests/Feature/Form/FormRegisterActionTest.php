@@ -270,6 +270,14 @@ it('testItSavesParticipantAsModel', function () {
     $this->assertEquals('Abraham', $participants->first()->data['spitzname']);
 });
 
+
+it('cannot register when event is inactive', function () {
+    $this->login()->loginNami();
+    $form = Form::factory()->isActive(false)->create();
+
+    $this->register($form, [])->assertJsonValidationErrors(['event' => 'Anmeldung zzt nicht möglich.']);
+});
+
 it('testItCannotRegisterWhenRegistrationFromReached', function () {
     $this->login()->loginNami();
     $form = Form::factory()->registrationFrom(now()->addDay())->create();
