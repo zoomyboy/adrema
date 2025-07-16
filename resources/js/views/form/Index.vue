@@ -23,8 +23,8 @@
                 <div v-show="active === 0" class="grid grid-cols-4 gap-3">
                     <div class="flex space-x-3 col-span-2">
                         <f-text id="name" v-model="single.name" class="grow" label="Name" required />
-                        <f-switch id="is_active" v-model="single.is_active" name="is_active" label="Aktiv" />
-                        <f-switch id="is_private" v-model="single.is_private" name="is_private" label="Privat" />
+                        <f-switch id="is_active" v-model="single.is_active" name="is_active" label="Aktiv" hint="Inaktive Veranstaltungen werden außerhalb von Adrema wie nicht existierende Veranstaltungen betrachtet. Insbesondere ist eine Anmeldung dann nicht möglich und die Veranstaltung erscheint auch nicht in der Veranstaltungs-Übersicht." />
+                        <f-switch id="is_private" v-model="single.is_private" name="is_private" label="Privat" hint="Ist eine Veranstaltung privat, so wird diese nicht auf der Website angezeigt. Eine Anmeldung ist jedoch trotzdem möglich, wenn man über den Anmelde-Link verfügt." />
                     </div>
                     <f-singlefile id="header_image"
                                   v-model="single.header_image"
@@ -41,7 +41,7 @@
                     <f-text id="zip" v-model="single.zip" label="PLZ" />
                     <f-text id="location" v-model="single.location" label="Ort" />
                     <f-select id="country" v-model="single.country" class="col-span-2" name="country" label="Land" :options="meta.countries" />
-                    <f-text id="registration_from" v-model="single.registration_from" type="datetime-local" label="Registrierung von" required />
+                    <f-text id="registration_from" v-model="single.registration_from" type="datetime-local" label="Registrierung von" hint="Ist eine Anmeldung laut dieser zwei Datumsangaben möglich, kann man sich anmelden. Andernfalls wird die Veranstaltung (mit Beschreibungstext) auf der Übersichtsseite angezeigt, man kommt allerdings nicht zum Anmeldeformular." required />
                     <f-text id="registration_until" v-model="single.registration_until" type="datetime-local" label="Registrierung bis" required />
                     <f-textarea id="excerpt"
                                 v-model="single.excerpt"

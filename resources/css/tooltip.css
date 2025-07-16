@@ -1,3 +1,7 @@
+.v-popper__popper {
+    @apply max-w-lg;
+}
+
 .v-popper--theme-tooltip .v-popper__inner {
     @apply bg-primary-400 text-primary-800 px-3 py-1 text-sm;
 }

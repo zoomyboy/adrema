@@ -17,4 +17,4 @@ var options = {
     },
 };
 
-export {Plugin, options};
+export { Plugin, options };
