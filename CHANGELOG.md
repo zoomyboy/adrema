@@ -1,5 +1,10 @@
 # Letzte Änderungen
 
+### 1.12.19
+
+-   Zuschusslisten können nun aus Veranstaltungs-Daten erstellt werden
+-   Veranstaltungs-Übersicht zeigt nun Tags an
+
 ### 1.12.18
 
 -   Fix: Initialisierung klappt nun auch, wenn Mitgliedsnummer mit einer 0 beginnt
