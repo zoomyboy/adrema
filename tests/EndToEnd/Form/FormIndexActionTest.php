@@ -183,6 +183,22 @@ it('testItDoesntReturnInactiveForms', function () {
     $this->callFilter('form.index', ['inactive' => false])->assertInertiaCount('data.data', 2);
 });
 
+it('returns in dates', function () {
+    $this->withoutExceptionHandling()->login()->loginNami();
+    Form::factory()->create();
+
+    sleep(1);
+    $this->callFilter('form.index', [])->assertInertiaPath('data.data.0.is_in_dates', true);
+});
+
+it('returns not in dates', function () {
+    $this->withoutExceptionHandling()->login()->loginNami();
+    Form::factory()->registrationFrom(now()->addDay(2))->create();
+
+    sleep(1);
+    $this->callFilter('form.index', [])->assertInertiaPath('data.data.0.is_in_dates', false);
+});
+
 it('testItOrdersByStartDateDesc', function () {
     $this->withoutExceptionHandling()->login()->loginNami();
     $form1 = Form::factory()->from(now()->addDays(4))->to(now()->addYear())->create();

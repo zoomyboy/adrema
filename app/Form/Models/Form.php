@@ -204,18 +204,6 @@ class Form extends Model implements HasMedia
 
     public function canRegister(): bool
     {
-        if (!$this->is_active) {
-            return false;
-        }
-
-        if ($this->registration_from && $this->registration_from->gt(now())) {
-            return false;
-        }
-
-        if ($this->registration_until && $this->registration_until->lt(now())) {
-            return false;
-        }
-
-        return true;
+        return $this->is_active && $this->isInDates();
     }
 }
