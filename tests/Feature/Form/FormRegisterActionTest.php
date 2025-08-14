@@ -735,3 +735,23 @@ it('testItSetsRegionIfMemberIsDirectRegionMember', function () {
     $this->register($form, ['bezirk' => $bezirk->id, 'members' => [['id' => '5505']]])->assertOk();
     $this->assertEquals($bezirk->id, $form->participants->get(1)->data['bezirk']);
 });
+
+it('registers via later link', function () {
+    $this->login()->loginNami();
+    $form = Form::factory()->fields([])
+        ->registrationUntil(now()->subDay())
+        ->create();
+
+    $this->registerLater($form, [], str()->uuid())->assertOk();
+    $this->assertDatabaseCount('participants', 1);
+});
+
+it('checks signature of later link', function () {
+    $this->login()->loginNami();
+    $form = Form::factory()->fields([])
+        ->registrationUntil(now()->subDay())
+        ->create();
+
+    $this->registerLaterWithWrongSignature($form, [], str()->uuid())->assertStatus(422);
+    $this->assertDatabaseCount('participants', 0);
+});

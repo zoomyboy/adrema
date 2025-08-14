@@ -18,6 +18,7 @@ use App\Form\Models\Form;
 use App\Member\Member;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\Form\FormtemplateFieldRequest;
 
@@ -40,6 +41,22 @@ trait CreatesFormFields
     public function register(Form $form, array $payload): TestResponse
     {
         return $this->postJson(route('form.register', ['form' => $form]), $payload);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    public function registerLater(Form $form, array $payload, string $laterId): TestResponse
+    {
+        return $this->postJson(URL::signedRoute('form.register', ['form' => $form, 'later' => '1', 'id' => $laterId]), $payload);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    public function registerLaterWithWrongSignature(Form $form, array $payload, string $laterId): TestResponse
+    {
+        return $this->postJson(route('form.register', ['form' => $form, 'later' => '1', 'id' => $laterId, 'signature' => '-1']), $payload);
     }
 
     public function setUpForm() {

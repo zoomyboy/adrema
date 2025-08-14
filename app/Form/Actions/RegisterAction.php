@@ -7,6 +7,8 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Member\Member;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -20,13 +22,9 @@ class RegisterAction
      */
     public function handle(Form $form, array $input): Participant
     {
-        if (!$form->canRegister()) {
-            throw ValidationException::withMessages(['event' => 'Anmeldung zzt nicht möglich.']);
-        }
-
         $memberQuery = FieldCollection::fromRequest($form, $input)
             ->withNamiType()
-            ->reduce(fn ($query, $field) => $field->namiType->performQuery($query, $field->value), (new Member())->newQuery());
+            ->reduce(fn($query, $field) => $field->namiType->performQuery($query, $field->value), (new Member())->newQuery());
         $member = $form->getFields()->withNamiType()->count() && $memberQuery->count() === 1 ? $memberQuery->first() : null;
 
         $participant = $form->participants()->create([
@@ -34,7 +32,7 @@ class RegisterAction
             'member_id' => $member?->id,
         ]);
 
-        $form->getFields()->each(fn ($field) => $field->afterRegistration($form, $participant, $input));
+        $form->getFields()->each(fn($field) => $field->afterRegistration($form, $participant, $input));
 
         $participant->sendConfirmationMail();
         ExportSyncAction::dispatch($form->id);
@@ -77,8 +75,26 @@ class RegisterAction
 
     public function asController(ActionRequest $request, Form $form): JsonResponse
     {
+        if (!$form->canRegister() && !$this->isRegisteringLater($request)) {
+            throw ValidationException::withMessages(['event' => 'Anmeldung zzt nicht möglich.']);
+        }
+
         $participant = $this->handle($form, $request->validated());
 
         return response()->json($participant);
+    }
+
+    public function isRegisteringLater(ActionRequest $request): bool {
+        if (!is_array($request->query())) {
+            return false;
+        }
+
+        $validator = Validator::make($request->query(), [
+            'later' => 'required|numeric|in:1',
+            'id' => 'required|string|uuid:4',
+            'signature' => 'required|string',
+        ]);
+
+        return URL::hasValidSignature($request) && $validator->passes();
     }
 }
