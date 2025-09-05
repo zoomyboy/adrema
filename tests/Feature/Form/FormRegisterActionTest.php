@@ -11,6 +11,7 @@ use App\Group\Enums\Level;
 use Carbon\Carbon;
 use Database\Factories\Member\MemberFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Tests\Lib\CreatesFormFields;
 
@@ -738,12 +739,15 @@ it('testItSetsRegionIfMemberIsDirectRegionMember', function () {
 
 it('registers via later link', function () {
     $this->login()->loginNami();
+    $laterId = str()->uuid()->toString();
     $form = Form::factory()->fields([])
         ->registrationUntil(now()->subDay())
         ->create();
+    Cache::set('later_'.$laterId, $form->id);
 
-    $this->registerLater($form, [], str()->uuid())->assertOk();
+    $this->registerLater($form, [], $laterId)->assertOk();
     $this->assertDatabaseCount('participants', 1);
+    $this->assertNull(Cache::get('later_'.$laterId));
 });
 
 it('checks signature of later link', function () {
@@ -753,5 +757,18 @@ it('checks signature of later link', function () {
         ->create();
 
     $this->registerLaterWithWrongSignature($form, [], str()->uuid())->assertStatus(422);
+    $this->assertDatabaseCount('participants', 0);
+});
+
+it('checks if later links is from current form', function () {
+    $this->login()->loginNami();
+    $foreignForm = Form::factory()->create();
+    $form = Form::factory()->fields([])
+        ->registrationUntil(now()->subDay())
+        ->create();
+    $laterId = str()->uuid()->toString();
+    Cache::set('later_'.$laterId, $foreignForm->id);
+
+    $this->registerLater($form, [], $laterId)->assertStatus(422);
     $this->assertDatabaseCount('participants', 0);
 });

@@ -7,6 +7,7 @@ use App\Form\Models\Form;
 use App\Form\Models\Participant;
 use App\Member\Member;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -75,16 +76,20 @@ class RegisterAction
 
     public function asController(ActionRequest $request, Form $form): JsonResponse
     {
-        if (!$form->canRegister() && !$this->isRegisteringLater($request)) {
+        if (!$form->canRegister() && !$this->isRegisteringLater($request, $form)) {
             throw ValidationException::withMessages(['event' => 'Anmeldung zzt nicht möglich.']);
         }
 
         $participant = $this->handle($form, $request->validated());
 
+        if ($this->isRegisteringLater($request, $form)) {
+            Cache::forget('later_'.request('id'));
+        }
+
         return response()->json($participant);
     }
 
-    public function isRegisteringLater(ActionRequest $request): bool {
+    public function isRegisteringLater(ActionRequest $request, Form $form): bool {
         if (!is_array($request->query())) {
             return false;
         }
@@ -95,6 +100,10 @@ class RegisterAction
             'signature' => 'required|string',
         ]);
 
-        return URL::hasValidSignature($request) && $validator->passes();
+        if (!URL::hasValidSignature($request) || $validator->fails()) {
+            return false;
+        }
+
+        return Cache::get('later_'.data_get($validator->validated(), 'id')) === $form->id;
     }
 }

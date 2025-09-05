@@ -70,6 +70,7 @@ it('testItDisplaysForms', function () {
         ->assertInertiaPath('data.data.0.links.participant_index', route('form.participant.index', ['form' => $form]))
         ->assertInertiaPath('data.data.0.links.export', route('form.export', ['form' => $form]))
         ->assertInertiaPath('data.data.0.links.contribution', route('form.contribution', ['form' => $form]))
+        ->assertInertiaPath('data.data.0.links.laterlink', route('form.laterlink', ['form' => $form]))
         ->assertInertiaPath('data.meta.links.store', route('form.store'))
         ->assertInertiaPath('data.meta.links.formtemplate_index', route('formtemplate.index'))
         ->assertInertiaPath('data.meta.default.name', '')

@@ -179,6 +179,7 @@
                             <ui-action-button tooltip="Teilnehmende anzeigen" class="btn-info" icon="user" @click.prevent="showParticipants(form)" />
                             <ui-action-button :href="form.links.frontend" target="_BLANK" tooltip="zur Anmeldeseite" class="btn-info" icon="eye" />
                             <ui-action-button tooltip="Kopieren" class="btn-info" icon="copy" @click="onCopy(form)" />
+                            <ui-action-button tooltip="Nachmelde-Link kopieren" class="btn-info" icon="externallink" @click="copyLaterLink(form)" />
                             <ui-action-button tooltip="Zuschuss-Liste erstellen" class="btn-info" icon="contribution" @click="onGenerateContribution(form)" />
                             <ui-action-button :href="form.links.export" target="_BLANK" tooltip="als Tabellendokument exportieren" class="btn-info" icon="document" />
                             <ui-action-button tooltip="Löschen" class="btn-danger" icon="trash" @click.prevent="onDelete(form)" />
@@ -203,12 +204,14 @@ import ConditionsForm from './ConditionsForm.vue';
 import { useToast } from 'vue-toastification';
 import useSwal from '@/stores/swalStore.ts';
 import useDownloads from '@/composables/useDownloads.ts';
+import useClipboard from 'vue-clipboard3';
 
 const props = defineProps(indexProps);
 const { meta, data, reloadPage, reload, create, single, edit, cancel, submit, remove, getFilter, setFilter } = useIndex(props.data, 'form');
 const axios = inject('axios');
 const toast = useToast();
 const {download} = useDownloads();
+const {toClipboard} = useClipboard();
 
 const showing = ref(null);
 const fileSettingPopup = ref(null);
@@ -264,6 +267,12 @@ function setTemplate(template) {
     single.value.config = template.config;
     single.value.mail_top = template.mail_top;
     single.value.mail_bottom = template.mail_bottom;
+}
+
+async function copyLaterLink(form) {
+    const response = await axios.get(form.links.laterlink);
+    await toClipboard(response.data.url);
+    toast.success('Link in Zwischenablage kopiert');
 }
 
 async function saveFileConditions(conditions) {

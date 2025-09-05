@@ -70,6 +70,7 @@ class FormResource extends JsonResource
                 'export' => route('form.export', $this->getModel()),
                 'copy' => route('form.copy', $this->getModel()),
                 'contribution' => route('form.contribution', $this->getModel()),
+                'laterlink' => route('form.laterlink', $this->getModel()),
             ]
         ];
     }
