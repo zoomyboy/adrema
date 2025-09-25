@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.20
+
+-   Nachnelde-Link kann nun erstellt werden für Veranstaltungen
+
 ### 1.12.19
 
 -   Zuschusslisten können nun aus Veranstaltungs-Daten erstellt werden
