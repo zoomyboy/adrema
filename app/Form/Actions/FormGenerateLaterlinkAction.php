@@ -4,6 +4,7 @@ namespace App\Form\Actions;
 
 use App\Form\FormSettings;
 use App\Form\Models\Form;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -12,7 +13,7 @@ class FormGenerateLaterlinkAction
 {
     use AsAction;
 
-    public function asController(Form $form)
+    public function asController(Form $form): JsonResponse
     {
         $registerUrl = str(app(FormSettings::class)->registerUrl)->replace('{slug}', $form->slug)->toString();
         $laterId = str()->uuid()->toString();

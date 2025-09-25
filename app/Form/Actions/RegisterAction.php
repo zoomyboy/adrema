@@ -90,10 +90,6 @@ class RegisterAction
     }
 
     public function isRegisteringLater(ActionRequest $request, Form $form): bool {
-        if (!is_array($request->query())) {
-            return false;
-        }
-
         $validator = Validator::make($request->query(), [
             'later' => 'required|numeric|in:1',
             'id' => 'required|string|uuid:4',
