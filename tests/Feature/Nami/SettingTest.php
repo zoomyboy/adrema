@@ -2,12 +2,9 @@
 
 namespace Tests\Feature\Nami;
 
-use App\Invoice\InvoiceSettings;
 use App\Setting\NamiSettings;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 use Zoomyboy\LaravelNami\Authentication\Auth;
-use Zoomyboy\LaravelNami\Nami;
 
 uses(DatabaseTransactions::class);
 
