@@ -24,6 +24,7 @@ class SettingStoreAction
             'weeks' => 'required|numeric|gte:0',
             'freshRememberInterval' => 'required|numeric|gte:0',
             'active' => 'boolean',
+            'replyToMail' => 'nullable|string|email',
         ];
     }
 
@@ -33,6 +34,7 @@ class SettingStoreAction
         $settings->formmail = EditorData::from($request->formmail);
         $settings->yearlymail = EditorData::from($request->yearlymail);
         $settings->weeks = $request->weeks;
+        $settings->replyToMail = $request->replyToMail;
         $settings->freshRememberInterval = $request->freshRememberInterval;
         $settings->active = $request->active;
         $settings->yearlyMemberFilter = FilterScope::from($request->yearlyMemberFilter);

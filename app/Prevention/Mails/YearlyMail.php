@@ -6,6 +6,7 @@ use App\Invoice\InvoiceSettings;
 use App\Lib\Editor\EditorData;
 use App\Prevention\Contracts\Preventable;
 use App\Prevention\Data\PreventionData;
+use App\Prevention\PreventionSettings;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
@@ -19,6 +20,7 @@ class YearlyMail extends Mailable
     use Queueable, SerializesModels;
 
     public InvoiceSettings $settings;
+    public PreventionSettings $preventionSettings;
 
     /**
      * Create a new message instance.
@@ -27,6 +29,7 @@ class YearlyMail extends Mailable
     public function __construct(public Preventable $preventable, public EditorData $bodyText, public Collection $preventions)
     {
         $this->settings = app(InvoiceSettings::class);
+        $this->preventionSettings = app(PreventionSettings::class);
         $this->bodyText = $this->bodyText
             ->replaceWithList('wanted', $preventions->map(fn($prevention) => $prevention->text())->toArray());
     }
@@ -38,9 +41,15 @@ class YearlyMail extends Mailable
      */
     public function envelope()
     {
-        return (new Envelope(
+        $envelope = (new Envelope(
             subject: $this->preventable->preventableSubject(),
         ))->to($this->preventable->getMailRecipient()->email, $this->preventable->getMailRecipient()->name);
+
+        if ($this->preventionSettings->replyToMail !== null) {
+            $envelope->replyTo($this->preventionSettings->replyToMail);
+        }
+
+        return $envelope;
     }
 
     /**

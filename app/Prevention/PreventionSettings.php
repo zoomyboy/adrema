@@ -15,6 +15,7 @@ class PreventionSettings extends LocalSettings
     public int $freshRememberInterval;
     public bool $active;
     public FilterScope $yearlyMemberFilter;
+    public ?string $replyToMail;
     /**
      * @var array<int, string>
      * @todo Create collection cast to Collection of enums
@@ -49,6 +50,7 @@ class PreventionSettings extends LocalSettings
             ...$this->toArray(),
             'weeks' => (string) $this->weeks,
             'freshRememberInterval' => (string) $this->freshRememberInterval,
+            'replyToMail' => $this->replyToMail,
         ];
     }
 }

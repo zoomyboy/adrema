@@ -22,6 +22,7 @@
                     <f-editor v-if="active === 1" id="yearlymail" v-model="data.yearlymail" label="Jährliche Präventions-Erinnerung"></f-editor>
                     <f-member-filter id="yearly_member_filter" v-model="data.yearlyMemberFilter" label="nur für folgende Mitglieder erlauben" />
                     <f-multipleselect id="prevent_against" v-model="data.preventAgainst" :options="meta.preventAgainsts" label="An diese Dokumente erinnern" size="sm"></f-multipleselect>
+                    <f-text id="reply_to_mail" v-model="data.replyToMail" label="Reply-To-Adresse"></f-text>
                 </div>
             </form>
         </setting-layout>

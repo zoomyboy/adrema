@@ -11,6 +11,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     <f-text id="register_url" v-model="inner.registerUrl" label="Formular-Link"></f-text>
                     <f-text id="clear_cache_url" v-model="inner.clearCacheUrl" label="Frontend-Cache-Url"></f-text>
+                    <f-text id="reply_to_mail" v-model="inner.replyToMail" label="Reply-To-Adresse"></f-text>
                 </div>
             </form>
         </setting-layout>

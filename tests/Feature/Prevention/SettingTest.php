@@ -28,6 +28,7 @@ it('receives settings', function () {
         'weeks' => 9,
         'freshRememberInterval' => 11,
         'active' => true,
+        'replyToMail' => 'admin@example.com',
         'preventAgainst' => [Prevention::MOREPS->name],
         'yearlyMemberFilter' => FilterScope::from([
             'memberships' => [['group_ids' => [33]]],
@@ -41,6 +42,7 @@ it('receives settings', function () {
         ->assertJsonPath('data.weeks', '9')
         ->assertJsonPath('data.active', true)
         ->assertJsonPath('data.freshRememberInterval', '11')
+        ->assertJsonPath('data.replyToMail', 'admin@example.com')
         ->assertJsonPath('data.yearlyMemberFilter.search', 'searchstring')
         ->assertJsonPath('data.yearlyMemberFilter.memberships.0.group_ids.0', 33)
         ->assertJsonPath('data.preventAgainst', ['MOREPS'])
@@ -58,6 +60,7 @@ it('testItStoresSettings', function () {
         'freshRememberInterval' => 11,
         'active' => true,
         'preventAgainst' => ['EFZ'],
+        'replyToMail' => 'admin@example.com',
         'yearlyMemberFilter' => [
             'memberships' => [['group_ids' => 33]],
             'search' => 'searchstring',
@@ -66,6 +69,7 @@ it('testItStoresSettings', function () {
     test()->assertTrue(app(PreventionSettings::class)->formmail->hasAll(['new lorem']));
     test()->assertTrue(app(PreventionSettings::class)->yearlymail->hasAll(['lala dd']));
     test()->assertEquals(9, app(PreventionSettings::class)->weeks);
+    test()->assertEquals('admin@example.com', app(PreventionSettings::class)->replyToMail);
     test()->assertEquals(11, app(PreventionSettings::class)->freshRememberInterval);
     test()->assertTrue(app(PreventionSettings::class)->active);
     test()->assertEquals([['group_ids' => 33]], app(PreventionSettings::class)->yearlyMemberFilter->memberships);

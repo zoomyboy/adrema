@@ -248,6 +248,17 @@ it('notices a few weeks before', function ($date, bool $shouldSend) {
     [fn() => now()->subYears(5)->addWeeks(2)->subDay(), false],
 ]);
 
+it('sets reply to mail', function () {
+    Mail::fake();
+    app(PreventionSettings::class)->fill(['replyToMail' => 'admin@example.com'])->save();
+    createMember(['has_vk' => false]);
+
+    sleep(2);
+    YearlyRememberAction::run();
+
+    Mail::assertSent(YearlyMail::class, fn ($message) => $message->hasReplyTo('admin@example.com'));
+});
+
 it('remembers members yearly', function ($date, $shouldSend) {
     Mail::fake();
     createMember(['efz' => $date, 'ps_at' => now(), 'has_vk' => true]);

@@ -4,6 +4,7 @@ namespace App\Form\Mails;
 
 use App\Form\Data\FormConfigData;
 use App\Form\Editor\FormConditionResolver;
+use App\Form\FormSettings;
 use App\Form\Models\Participant;
 use App\Lib\Editor\Condition;
 use Illuminate\Bus\Queueable;
@@ -24,6 +25,8 @@ class ConfirmRegistrationMail extends Mailable
     /** @var array<int, mixed> */
     public array $bottomText;
 
+    public FormSettings $formSettings;
+
     /**
      * Create a new message instance.
      *
@@ -32,6 +35,7 @@ class ConfirmRegistrationMail extends Mailable
     public function __construct(public Participant $participant)
     {
         $conditionResolver = app(FormConditionResolver::class)->forParticipant($participant);
+        $this->formSettings = app(FormSettings::class);
         $this->fullname = $participant->getFields()->getFullname();
         $this->config = $participant->getConfig();
         $this->topText = $conditionResolver->makeBlocks($participant->form->mail_top);
@@ -45,9 +49,15 @@ class ConfirmRegistrationMail extends Mailable
      */
     public function envelope()
     {
-        return new Envelope(
+        $envelope = new Envelope(
             subject: 'Deine Anmeldung zu ' . $this->participant->form->name,
         );
+
+        if ($this->formSettings->replyToMail !== null) {
+            $envelope->replyTo($this->formSettings->replyToMail);
+        }
+
+        return $envelope;
     }
 
     /**

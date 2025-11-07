@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Form\Actions\SettingStoreAction;
 use App\Setting\Contracts\Storeable;
 use App\Setting\LocalSettings;
 use Lorisleiva\Actions\ActionRequest;
@@ -11,6 +10,7 @@ class FormSettings extends LocalSettings implements Storeable
 {
     public string $registerUrl;
     public string $clearCacheUrl;
+    public ?string $replyToMail;
 
     public static function group(): string
     {
@@ -19,7 +19,7 @@ class FormSettings extends LocalSettings implements Storeable
 
     public static function title(): string
     {
-        return 'Formulare';
+        return 'Veranstaltungen';
     }
 
     /**
@@ -30,6 +30,7 @@ class FormSettings extends LocalSettings implements Storeable
         return [
             'registerUrl' => 'present|string',
             'clearCacheUrl' => 'present|string',
+            'replyToMail' => 'nullable|string|email',
         ];
     }
 
@@ -47,6 +48,7 @@ class FormSettings extends LocalSettings implements Storeable
                 'data' => [
                     'registerUrl' => $this->registerUrl,
                     'clearCacheUrl' => $this->clearCacheUrl,
+                    'replyToMail' => $this->replyToMail,
                 ]
             ]
         ];

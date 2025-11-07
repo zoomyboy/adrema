@@ -4,6 +4,7 @@ namespace Tests\Feature\Form;
 
 use App\Form\Enums\NamiType;
 use App\Form\Enums\SpecialType;
+use App\Form\FormSettings;
 use App\Form\Mails\ConfirmRegistrationMail;
 use App\Form\Models\Form;
 use App\Group;
@@ -306,6 +307,22 @@ it('testItSendsEmailToParticipant', function () {
         ->assertOk();
 
     Mail::assertQueued(ConfirmRegistrationMail::class, fn($message) => $message->hasTo('example@test.test', 'Lala GG') && $message->hasSubject('Deine Anmeldung zu Ver2'));
+});
+
+it('sets reply to in email', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    app(FormSettings::class)->fill(['replyToMail' => 'reply@example.com'])->save();
+    $form = Form::factory()->name('Ver2')->fields([
+        $this->textField('vorname')->specialType(SpecialType::FIRSTNAME),
+        $this->textField('nachname')->specialType(SpecialType::LASTNAME),
+        $this->textField('email')->specialType(SpecialType::EMAIL),
+    ])
+        ->create();
+
+    $this->register($form, ['vorname' => 'Lala', 'nachname' => 'GG', 'email' => 'example@test.test'])
+        ->assertOk();
+
+    Mail::assertQueued(ConfirmRegistrationMail::class, fn($message) => $message->hasReplyTo('reply@example.com'));
 });
 
 it('testItDoesntSendEmailWhenNoMailFieldGiven', function () {
