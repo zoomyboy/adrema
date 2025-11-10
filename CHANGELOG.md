@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.21
+
+-   Reply-To-Header bei Versand von Prävention-und-Veranstaltungs-Mails kann nun eingestellt werden
+
 ### 1.12.20
 
 -   Nachnelde-Link kann nun erstellt werden für Veranstaltungen
