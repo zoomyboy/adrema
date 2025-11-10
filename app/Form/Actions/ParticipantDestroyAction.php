@@ -15,7 +15,7 @@ class ParticipantDestroyAction
 
     public function handle(int $participantId): void
     {
-        Participant::findOrFail($participantId)->delete();
+        Participant::findOrFail($participantId)->update(['cancelled_at' => now()]);
     }
 
     public function asController(Participant $participant): void

@@ -269,6 +269,15 @@ it('testItShowsPreventionState', function () {
         ->assertJsonPath('data.0.prevention_items.0.tooltip', 'erweitertes Führungszeugnis nicht vorhanden');
 });
 
+it('doesnt show cancelled participants', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $participant = Participant::factory()->for(Form::factory())->create(['cancelled_at' => now()]);
+
+    sleep(2);
+    $this->callFilter('form.participant.index', [], ['form' => $participant->form])
+        ->assertJsonCount(0, 'data');
+});
+
 it('test it orders participants by value', function (array $values, array $sorting, array $expected) {
     list($key, $direction) = $sorting;
     $this->login()->loginNami()->withoutExceptionHandling();

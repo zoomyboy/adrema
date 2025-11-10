@@ -24,5 +24,9 @@ it('testItCanDestroyAParticipant', function () {
     $this->deleteJson(route('participant.destroy', ['participant' => $form->participants->first()]))
         ->assertOk();
 
-    $this->assertDatabaseCount('participants', 0);
+    $this->assertDatabaseCount('participants', 1);
+    $this->assertDatabaseHas('participants', [
+        'cancelled_at' => now(),
+        'id' => $form->participants->first()->id,
+    ]);
 });

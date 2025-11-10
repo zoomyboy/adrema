@@ -54,6 +54,8 @@ class ParticipantFilterScope extends ScoutFilter
                 $filter->push('parent-id IS NULL');
             }
 
+            $filter->push('cancelled_at IS NULL');
+
             if ($this->parent !== null && $this->parent !== -1) {
                 $filter->push('parent-id = ' . $this->parent);
             }
