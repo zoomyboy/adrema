@@ -18,10 +18,10 @@ class UpdateParticipantSearchIndexAction
         $form->searchableUsing()->updateIndexSettings(
             $form->participantsSearchableAs(),
             [
-                'filterableAttributes' => [...$form->getFields()->filterables()->getKeys(), 'parent-id'],
+                'filterableAttributes' => [...$form->getFields()->filterables()->getKeys(), 'parent-id', 'cancelled_at'],
                 'searchableAttributes' => $form->getFields()->searchables()->getKeys(),
                 'sortableAttributes' => [...$form->getFields()->sortables()->getKeys(), 'id', 'created_at'],
-                'displayedAttributes' => [...$form->getFields()->filterables()->getKeys(), ...$form->getFields()->searchables()->getKeys(), 'id'],
+                'displayedAttributes' => [...$form->getFields()->filterables()->getKeys(), ...$form->getFields()->searchables()->getKeys(), 'id', 'cancelled_at'],
                 'pagination' => [
                     'maxTotalHits' => 1000000,
                 ]
