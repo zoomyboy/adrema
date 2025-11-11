@@ -31,25 +31,27 @@ class CreateExcelDocumentAction
     private function allSheet(Collection $participants): TableDocumentData
     {
         $document = TableDocumentData::from(['title' => 'Anmeldungen für ' . $this->form->name, 'sheets' => []]);
-        $headers = $this->form->getFields()->map(fn ($field) => $field->name)->toArray();
+        $headers = $this->form->getFields()->map(fn ($field) => $field->name)->push('Abgemeldet am')->toArray();
+        [$activeParticipants, $cancelledParticipants] = $participants->partition(fn ($participant) => $participant->cancelled_at === null);
 
         $document->addSheet(SheetData::from([
             'header' => $headers,
-            'data' => $participants
-                ->map(fn ($participant) => $this->form->getFields()->map(fn ($field) => $participant->getFields()->find($field)->presentRaw())->toArray())
-                ->toArray(),
+            'data' => $activeParticipants->map(fn ($participant) => $this->rowFor($participant))->toArray(),
             'name' => 'Alle',
+        ]));
+        $document->addSheet(SheetData::from([
+            'header' => $headers,
+            'data' => $cancelledParticipants->map(fn ($participant) => $this->rowFor($participant))->toArray(),
+            'name' => 'Abgemeldet',
         ]));
 
         if ($this->form->export->groupBy) {
-            $groups = $participants->groupBy(fn ($participant) => $participant->getFields()->findByKey($this->form->export->groupBy)->presentRaw());
+            $groups = $activeParticipants->groupBy(fn ($participant) => $participant->getFields()->findByKey($this->form->export->groupBy)->presentRaw());
 
-            foreach ($groups as $name => $participants) {
+            foreach ($groups as $name => $groupedParticipants) {
                 $document->addSheet(SheetData::from([
                     'header' => $headers,
-                    'data' => $participants
-                        ->map(fn ($participant) => $this->form->getFields()->map(fn ($field) => $participant->getFields()->find($field)->presentRaw())->toArray())
-                        ->toArray(),
+                    'data' => $groupedParticipants->map(fn ($participant) => $this->rowFor($participant))->toArray(),
                     'name' => $name,
                 ]));
             }
@@ -62,6 +64,13 @@ class CreateExcelDocumentAction
         }
 
         return $document;
+    }
+
+    /** @return array<string, mixed> */
+    public function rowFor(Participant $participant): array {
+        return $this->form->getFields()->map(fn ($field) => $participant->getFields()->find($field)->presentRaw())
+            ->put('Abgemeldet am', $participant->cancelled_at?->format('d.m.Y H:i:s') ?: '')
+            ->toArray();
     }
 
     private function tempPath(): string

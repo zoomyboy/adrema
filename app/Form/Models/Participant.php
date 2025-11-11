@@ -31,6 +31,7 @@ class Participant extends Model implements Preventable
     public $casts = [
         'data' => 'json',
         'last_remembered_at' => 'datetime',
+        'cancelled_at' => 'datetime',
     ];
 
     /**
