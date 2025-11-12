@@ -73,7 +73,7 @@ class CreateExcelDocumentAction
     public function rowsFor(Collection $participants): array {
         return $participants->map(fn ($participant) => $participant->getFields()->presentValues()
             ->put('Abgemeldet am', $participant->cancelled_at?->format('d.m.Y H:i:s') ?: '')
-            ->prepend('ID', $participant->id)
+            ->prepend((string) $participant->id, 'ID')
         )->toArray();
     }
 

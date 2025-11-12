@@ -111,7 +111,7 @@ class FieldCollection extends Collection
      */
     public function presentValues(): Collection
     {
-        return $this->mapWithKeys(fn ($field) => [$field->name => $field->present()]);
+        return $this->mapWithKeys(fn ($field) => [$field->name => $field->presentRaw()]);
     }
 
     public function hasSpecialType(SpecialType $specialType): bool
