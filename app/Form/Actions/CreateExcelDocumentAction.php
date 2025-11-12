@@ -36,12 +36,12 @@ class CreateExcelDocumentAction
 
         $document->addSheet(SheetData::from([
             'header' => $headers,
-            'data' => $activeParticipants->map(fn ($participant) => $this->rowFor($participant))->toArray(),
+            'data' => $this->rowsFor($activeParticipants),
             'name' => 'Alle',
         ]));
         $document->addSheet(SheetData::from([
             'header' => $headers,
-            'data' => $cancelledParticipants->map(fn ($participant) => $this->rowFor($participant))->toArray(),
+            'data' => $this->rowsFor($cancelledParticipants),
             'name' => 'Abgemeldet',
         ]));
 
@@ -51,7 +51,7 @@ class CreateExcelDocumentAction
             foreach ($groups as $name => $groupedParticipants) {
                 $document->addSheet(SheetData::from([
                     'header' => $headers,
-                    'data' => $groupedParticipants->map(fn ($participant) => $this->rowFor($participant))->toArray(),
+                    'data' => $this->rowsFor($groupedParticipants),
                     'name' => $name,
                 ]));
             }
@@ -66,12 +66,15 @@ class CreateExcelDocumentAction
         return $document;
     }
 
-    /** @return array<string, mixed> */
-    public function rowFor(Participant $participant): array {
-        return $participant->getFields()->presentValues()
+    /**
+     * @param Collection<int, Participant> $participants
+     * @return array<int, array<string, mixed>>
+     */
+    public function rowsFor(Collection $participants): array {
+        return $participants->map(fn ($participant) => $participant->getFields()->presentValues()
             ->put('Abgemeldet am', $participant->cancelled_at?->format('d.m.Y H:i:s') ?: '')
             ->prepend('ID', $participant->id)
-            ->toArray();
+        )->toArray();
     }
 
     private function tempPath(): string
