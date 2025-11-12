@@ -99,19 +99,19 @@ class FieldCollection extends Collection
     }
 
     /**
-     * @return array<int, string>
+     * @return Collection<int, string>
      */
-    public function names(): array
+    public function names(): Collection
     {
-        return $this->map(fn ($field) => $field->name)->toArray();
+        return $this->map(fn ($field) => $field->name);
     }
 
     /**
-     * @return array<int, string>
+     * @return Collection<string, string>
      */
-    public function presentValues(): array
+    public function presentValues(): Collection
     {
-        return $this->map(fn ($field) => $field->presentRaw())->toArray();
+        return $this->mapWithKeys(fn ($field) => [$field->name => $field->present()]);
     }
 
     public function hasSpecialType(SpecialType $specialType): bool

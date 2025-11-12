@@ -31,7 +31,7 @@ class CreateExcelDocumentAction
     private function allSheet(Collection $participants): TableDocumentData
     {
         $document = TableDocumentData::from(['title' => 'Anmeldungen für ' . $this->form->name, 'sheets' => []]);
-        $headers = $this->form->getFields()->map(fn ($field) => $field->name)->push('Abgemeldet am')->prepend('ID')->toArray();
+        $headers = $this->form->getFields()->names()->push('Abgemeldet am')->prepend('ID')->toArray();
         [$activeParticipants, $cancelledParticipants] = $participants->partition(fn ($participant) => $participant->cancelled_at === null);
 
         $document->addSheet(SheetData::from([
@@ -68,7 +68,7 @@ class CreateExcelDocumentAction
 
     /** @return array<string, mixed> */
     public function rowFor(Participant $participant): array {
-        return $this->form->getFields()->map(fn ($field) => $participant->getFields()->find($field)->presentRaw())
+        return $participant->getFields()->presentValues()
             ->put('Abgemeldet am', $participant->cancelled_at?->format('d.m.Y H:i:s') ?: '')
             ->prepend('ID', $participant->id)
             ->toArray();
