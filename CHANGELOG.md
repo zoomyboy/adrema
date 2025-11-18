@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.22
+
+-   Bei Mitgliedern wird nun auch die geschäftliche tel-nr aktualisiert
+
 ### 1.12.21
 
 -   Reply-To-Header bei Versand von Prävention-und-Veranstaltungs-Mails kann nun eingestellt werden
