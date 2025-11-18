@@ -157,6 +157,18 @@ it('testItSetsLocationToNull', function () {
     ]);
 });
 
+it('updates work phone', function () {
+    $this->withoutExceptionHandling()->login()->loginNami();
+    $member = factory()->notInNami()->create();
+    fakeRequest();
+    NamiPutMemberAction::allowToRun();
+
+    $this->patch("/member/{$member->id}", MemberUpdateRequestFactory::new()->noNami()->create([
+        'work_phone' => '+49 212 1353688',
+    ]));
+    test()->assertDatabaseHas('members', ['work_phone' => '+49 212 1353688']);
+});
+
 it('testItUpdatesContact', function () {
     $this->withoutExceptionHandling()->login()->loginNami();
     $member = factory()->notInNami()->create();

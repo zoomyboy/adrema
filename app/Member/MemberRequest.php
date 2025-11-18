@@ -75,6 +75,7 @@ class MemberRequest extends FormRequest
             'send_newspaper' => 'boolean',
             'main_phone' => ['nullable', new ValidPhoneRule('Telefon (Eltern)')],
             'mobile_phone' => ['nullable', new ValidPhoneRule('Handy (Eltern)')],
+            'work_phone' => ['nullable', new ValidPhoneRule('Tel geschäftlich')],
             'invoice_address' => '',
             'gender_id' => 'nullable|exists:genders,id',
             'region_id' => 'nullable|exists:regions,id',
