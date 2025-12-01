@@ -39,6 +39,10 @@ class ParticipantFactory extends Factory
         return $this->state(['data' => $data]);
     }
 
+    public function cancelled(): self {
+        return $this->state(['cancelled_at' => now()->subWeek()]);
+    }
+
     public function nr(int $number): self
     {
         return $this->state(['member_id' => $number]);

@@ -32,7 +32,8 @@ class ParticipantFilterScope extends ScoutFilter
         public string $search = '',
         public array $options = [],
         public ?int $parent = null,
-        public ?Sorting $sort = null
+        public ?Sorting $sort = null,
+        public bool $showCancelled = false,
     ) {
     }
 
@@ -54,7 +55,11 @@ class ParticipantFilterScope extends ScoutFilter
                 $filter->push('parent-id IS NULL');
             }
 
-            $filter->push('cancelled_at IS NULL');
+            if ($this->showCancelled) {
+                $filter->push('cancelled_at IS NOT NULL');
+            } else {
+                $filter->push('cancelled_at IS NULL');
+            }
 
             if ($this->parent !== null && $this->parent !== -1) {
                 $filter->push('parent-id = ' . $this->parent);

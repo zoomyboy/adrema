@@ -78,6 +78,9 @@ it('testItShowsEmptyFilters', function () {
     $this->callFilter('form.participant.index', ['data' => ['check' => null]], ['form' => $form])->assertHasJsonPath('meta.filter.data.check')->assertJsonPath('meta.filter.data.check', null);
     $this->callFilter('form.participant.index', ['data' => ['check' => 'A']], ['form' => $form])->assertJsonPath('meta.filter.data.check', 'A');
     $this->callFilter('form.participant.index', ['data' => []], ['form' => $form])->assertJsonPath('meta.filter.data.check', ParticipantFilterScope::$nan);
+    $this->callFilter('form.participant.index', ['data' => []], ['form' => $form])->assertJsonPath('meta.filter.show_cancelled', false);
+    $this->callFilter('form.participant.index', ['show_cancelled' => true], ['form' => $form])->assertJsonPath('meta.filter.show_cancelled', true);
+    $this->callFilter('form.participant.index', ['show_cancelled' => false], ['form' => $form])->assertJsonPath('meta.filter.show_cancelled', false);
 });
 
 it('sorts by active colums sorting by default', function (array $sorting, string $by, bool $direction) {
@@ -184,6 +187,22 @@ it('testItFiltersParticipantsByRadioValue', function () {
         ->assertJsonCount(2, 'data');
     $this->callFilter('form.participant.index', ['data' => ['drop' => 'B']], ['form' => $form])
         ->assertJsonCount(4, 'data');
+});
+
+it('filters participants by cancelled at', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $form = Form::factory()
+        ->has(Participant::factory()->count(1))
+        ->has(Participant::factory()->cancelled()->count(2))
+        ->create();
+
+    sleep(2);
+    $this->callFilter('form.participant.index', [], ['form' => $form])
+        ->assertJsonCount(1, 'data');
+    $this->callFilter('form.participant.index', ['show_cancelled' => false], ['form' => $form])
+        ->assertJsonCount(1, 'data');
+    $this->callFilter('form.participant.index', ['show_cancelled' => true], ['form' => $form])
+        ->assertJsonCount(2, 'data');
 });
 
 it('testItPresentsNamiField', function () {

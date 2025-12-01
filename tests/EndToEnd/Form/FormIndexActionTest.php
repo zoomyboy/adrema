@@ -98,6 +98,18 @@ it('testItDisplaysForms', function () {
         ->assertInertiaPath('data.meta.default.location', '');
 });
 
+it('displays participants count', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    Form::factory()
+        ->has(Participant::factory()->count(2))
+        ->has(Participant::factory()->cancelled()->count(3))
+        ->create();
+
+    sleep(1);
+    $this->get(route('form.index'))
+        ->assertInertiaPath('data.data.0.participants_count', 2);
+});
+
 it('testFormtemplatesHaveData', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
     Formtemplate::factory()->name('tname')->sections([FormtemplateSectionRequest::new()->name('sname')->fields([

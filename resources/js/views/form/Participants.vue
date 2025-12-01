@@ -29,6 +29,7 @@
             </template>
 
             <template #fields>
+                <f-switch id="show_cancelled" v-model="innerFilter.show_cancelled" label="Abgemeldete zeigen" size="sm" name="show_cancelled" />
                 <template v-for="(filter, index) in meta.filters">
                     <f-select v-if="filter.base_type === 'CheckboxField'"
                               :id="`filter-field-${index}`"

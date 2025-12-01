@@ -20,7 +20,7 @@ class FormIndexAction
      */
     public function handle(string $filter): LengthAwarePaginator
     {
-        return FormFilterScope::fromRequest($filter)->getQuery()->query(fn ($query) => $query->withCount('participants'))->paginate(15);
+        return FormFilterScope::fromRequest($filter)->getQuery()->query(fn ($query) => $query->withCount(['participants' => fn ($q) => $q->whereNull('cancelled_at')]))->paginate(15);
     }
 
     public function asController(ActionRequest $request): Response
