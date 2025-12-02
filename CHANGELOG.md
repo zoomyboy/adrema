@@ -1,5 +1,10 @@
 # Letzte Änderungen
 
+### 1.12.23
+
+-   Veranstaltungs-Teilnehmer*innen können nun abgemeldet statt vollständig gelöscht werden.
+-   Beim Excel-Export wird eine Spalte "ID" angezeigt mit der ID des TNs
+
 ### 1.12.22
 
 -   Bei Mitgliedern wird nun auch die geschäftliche tel-nr aktualisiert
