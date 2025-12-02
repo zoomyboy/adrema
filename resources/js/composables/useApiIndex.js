@@ -47,8 +47,10 @@ export function useApiIndex(firstUrl, siteName = null) {
         single.value = null;
     }
 
-    async function remove(model) {
-        await axios.delete(model.links.destroy);
+    async function remove(model, force = true) {
+        await axios.delete(model.links.destroy, {
+            headers: { 'X-Force': force ? '1' : '0' }
+        });
         await reload();
     }
 

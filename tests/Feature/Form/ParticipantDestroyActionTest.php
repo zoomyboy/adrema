@@ -14,7 +14,7 @@ beforeEach(function () {
     test()->setUpForm();
 });
 
-it('testItCanDestroyAParticipant', function () {
+it('cancels a participant', function () {
     $this->login()->loginNami()->withoutExceptionHandling();
     $form = Form::factory()
         ->has(Participant::factory())
@@ -29,4 +29,17 @@ it('testItCanDestroyAParticipant', function () {
         'cancelled_at' => now(),
         'id' => $form->participants->first()->id,
     ]);
+});
+
+it('testItCanDestroyAParticipant', function () {
+    $this->login()->loginNami()->withoutExceptionHandling();
+    $form = Form::factory()
+        ->has(Participant::factory())
+        ->sections([])
+        ->create();
+
+    $this->deleteJson(route('participant.destroy', ['participant' => $form->participants->first()]), [], ['X-Force' => '1'])
+        ->assertOk();
+
+    $this->assertDatabaseCount('participants', 0);
 });

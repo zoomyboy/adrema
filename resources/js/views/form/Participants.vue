@@ -11,9 +11,10 @@
         <ui-popup v-if="assigning !== null" heading="Mitglied zuweisen" closeable @close="assigning = null">
             <member-assign @assign="assign" />
         </ui-popup>
-        <ui-popup v-if="deleting !== null" heading="Teilnehmer*in löschen?" @close="deleting = null">
+        <ui-popup v-if="deleting !== null" heading="Teilnehmer*in abmelden?" @close="deleting = null">
             <div>
-                <p class="mt-4">Den*Die Teilnehmer*in löschen?</p>
+                <p class="mt-4">Den*Die Teilnehmer*in abmelden?</p>
+                <f-switch class="mt-2" v-model="deleting.force" name="force_delete" id="force_delete" label="löschen statt abmelden (permanent)" size="sm" />
                 <div class="grid grid-cols-2 gap-3 mt-6">
                     <a href="#" class="text-center btn btn-danger" @click.prevent="handleDelete">Mitglied loschen</a>
                     <a href="#" class="text-center btn btn-primary" @click.prevent="deleting = null">Abbrechen</a>
@@ -96,7 +97,7 @@
                     </td>
                     <td>
                         <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(participant)"><ui-sprite src="pencil" /></a>
-                        <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = participant"><ui-sprite src="trash" /></a>
+                        <a v-tooltip="`Abmelden`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = {model: participant, force: false}"><ui-sprite src="trash" /></a>
                     </td>
                 </tr>
                 <template v-for="child in childrenOf(participant.id)" :key="child.id">
@@ -115,7 +116,7 @@
                         </td>
                         <td>
                             <a v-tooltip="`Bearbeiten`" href="#" class="ml-2 inline-flex btn btn-warning btn-sm" @click.prevent="editReal(child)"><ui-sprite src="pencil" /></a>
-                            <a v-tooltip="`Löschen`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = child"><ui-sprite src="trash" /></a>
+                            <a v-tooltip="`Abmelden`" href="#" class="ml-2 inline-flex btn btn-danger btn-sm" @click.prevent="deleting = {model: child, force: false}"><ui-sprite src="trash" /></a>
                         </td>
                     </tr>
                 </template>
@@ -210,7 +211,7 @@ const sortingConfig = computed({
 });
 
 async function handleDelete() {
-    await remove(deleting.value);
+    await remove(deleting.value.model, deleting.value.force);
     deleting.value = null;
 }
 

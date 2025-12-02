@@ -6,6 +6,7 @@ use App\Form\Models\Participant;
 use App\Lib\JobMiddleware\JobChannels;
 use App\Lib\JobMiddleware\WithJobState;
 use App\Lib\Queue\TracksJob;
+use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ParticipantDestroyAction
@@ -13,14 +14,20 @@ class ParticipantDestroyAction
     use AsAction;
     use TracksJob;
 
-    public function handle(int $participantId): void
+    public function handle(int $participantId, bool $force): void
     {
-        Participant::findOrFail($participantId)->update(['cancelled_at' => now()]);
+        $participant = Participant::findOrFail($participantId);
+
+        if ($force) {
+            $participant->delete();
+        } else {
+            $participant->update(['cancelled_at' => now()]);
+        }
     }
 
-    public function asController(Participant $participant): void
+    public function asController(ActionRequest $request, Participant $participant): void
     {
-        $this->startJob($participant->id);
+        $this->startJob($participant->id, $request->header('X-Force') === '1');
     }
 
     /**
