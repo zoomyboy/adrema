@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.24
+
+-   Gruppen werden nun wöchentlich aus NaMi neu abgerufen
+
 ### 1.12.23
 
 -   Veranstaltungs-Teilnehmer*innen können nun abgemeldet statt vollständig gelöscht werden.
