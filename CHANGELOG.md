@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.25
+
+-   Ein Bug wurde behoben, sodass nun wieder Bedingungen für Formular-Mails vergeben werden können
+
 ### 1.12.24
 
 -   Gruppen werden nun wöchentlich aus NaMi neu abgerufen
