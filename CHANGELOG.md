@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.26
+
+-   Felder im Form-Builder können nun verschoben und kopiert werden
+
 ### 1.12.25
 
 -   Ein Bug wurde behoben, sodass nun wieder Bedingungen für Formular-Mails vergeben werden können

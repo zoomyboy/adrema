@@ -11,6 +11,17 @@
                 <f-text id="sectionform-name" v-model="singleSection.model.name" label="Name"></f-text>
                 <f-textarea id="sectionform-intro" v-model="singleSection.model.intro" label="Einleitung"></f-textarea>
             </asideform>
+            <asideform
+                v-if="moving !== null"
+                heading="Feld verschieben nach Sektion …"
+                @close="moving = null"
+            >
+                <div class="mt-3 grid gap-3">
+                    <a v-for="(section, index) in modelValue.sections" :key="index" class="py-2 px-3 border rounded bg-zinc-800 hover:bg-zinc-700 transition" href="#" @click.prevent="moveFieldToSection(index)">
+                        <span v-text="section.name"></span>
+                    </a>
+                </div>
+            </asideform>
             <asideform v-if="singleSection !== null && singleSection.mode === 'reorder'" heading="Felder ordnen" @close="singleSection = null" @submit="storeSection">
                 <draggable v-model="singleSection.model.fields" item-key="key" :component-data="{class: 'mt-3 grid gap-3'}">
                     <template #item="{element}">
@@ -59,6 +70,8 @@
                 @editFields="startReordering($event.detail[0])"
                 @deleteSection="deleteSection($event.detail[0])"
                 @active="updateActive($event.detail[0])"
+                @copy-field="copyField($event.detail[0], $event.detail[1])"
+                @move-field="moving = {section: $event.detail[0], field: $event.detail[1]}"
             ></event-form>
         </ui-box>
     </form>
@@ -83,6 +96,7 @@ import Draggable from 'vuedraggable';
 
 const singleSection = ref(null);
 const singleField = ref(null);
+const moving = ref(null);
 const active = ref(null);
 
 async function onReorder() {
@@ -122,6 +136,29 @@ function editSection(sectionIndex) {
         model: { ...inner.value.sections[sectionIndex] },
         index: sectionIndex,
         mode: 'edit',
+    };
+}
+function moveFieldToSection(newSectionIndex) {
+    if (!moving.value) {
+        return;
+    }
+    singleField.value = {
+        model: JSON.parse(JSON.stringify(inner.value.sections[moving.value.section].fields[moving.value.field])),
+        sectionIndex: newSectionIndex,
+        index: null,
+    };
+    storeField();
+    deleteField(moving.value.section, moving.value.field);
+    moving.value = null;
+}
+
+function copyField(sectionIndex, fieldIndex) {
+    var field = JSON.parse(JSON.stringify(inner.value.sections[sectionIndex].fields[fieldIndex]));
+    field.name = field.name + ' - Kopie';
+    singleField.value = {
+        model: field,
+        sectionIndex: sectionIndex,
+        index: null,
     };
 }
 
