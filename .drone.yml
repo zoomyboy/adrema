@@ -34,7 +34,7 @@ steps:
     - name: node_submodules
       image: node:20.15.0-slim
       commands:
-          - cd packages/adrema-form && npm ci && npm run build && rm -R node_modules && cd ../../
+          - cd packages/adrema-form && npm ci && npm run build-import && rm -R node_modules && cd ../../
 
     - name: node
       image: node:20.15.0-slim

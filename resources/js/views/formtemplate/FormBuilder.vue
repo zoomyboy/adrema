@@ -67,7 +67,7 @@
 <script lang="js" setup>
 import { watch, computed, ref } from 'vue';
 import { snakeCase } from 'change-case';
-import '!/adrema-form/dist/main.js';
+import '!/adrema-form/dist/assets/main.js';
 import Asideform from './Asideform.vue';
 import TextareaField from './TextareaField.vue';
 import TextField from './TextField.vue';
