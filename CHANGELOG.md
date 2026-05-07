@@ -1,5 +1,9 @@
 # Letzte Änderungen
 
+### 1.12.27
+
+-   Bei Rechnungs-und Erinnerungsmails wird nun der Stammesname angezeigt. Zudm kann eine ReplyTo gesetzt werden, wenn gewünscht
+
 ### 1.12.26
 
 -   Felder im Form-Builder können nun verschoben und kopiert werden
