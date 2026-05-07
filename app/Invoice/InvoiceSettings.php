@@ -18,6 +18,7 @@ class InvoiceSettings extends LocalSettings implements Storeable
     public ?string $zip;
     public ?string $iban;
     public ?string $bic;
+    public ?string $replyTo;
     public ?int $rememberWeeks;
 
     public static function group(): string
@@ -43,6 +44,7 @@ class InvoiceSettings extends LocalSettings implements Storeable
                 'iban' => $this->iban,
                 'bic' => $this->bic,
                 'rememberWeeks' => $this->rememberWeeks,
+                'replyTo' => $this->replyTo,
             ]
         ];
     }
@@ -64,6 +66,7 @@ class InvoiceSettings extends LocalSettings implements Storeable
             'iban' => '',
             'bic' => '',
             'rememberWeeks' => '',
+            'replyTo' => '',
         ];
     }
 

@@ -1,7 +1,7 @@
 @component('mail::message')
 # {{ $invoice->greeting }},
 
-Im Anhang findet ihr die aktuelle Rechnung des Stammes Silva für das laufende Jahr. Bitte begleicht diese bis zum angegebenen Datum.
+Im Anhang findet ihr die aktuelle Rechnung an {{$settings->from}} für das laufende Jahr. Bitte begleicht diese bis zum angegebenen Datum.
 
 @component('mail::subcopy')
 

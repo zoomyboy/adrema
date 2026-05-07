@@ -2,6 +2,7 @@
 
 namespace App\Invoice\Mails;
 
+use App\Invoice\InvoiceSettings;
 use App\Invoice\Models\Invoice;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -12,6 +13,8 @@ class RememberMail extends Mailable
     use Queueable;
     use SerializesModels;
 
+    public InvoiceSettings $settings;
+
     /**
      * Create a new message instance.
      *
@@ -19,6 +22,7 @@ class RememberMail extends Mailable
      */
     public function __construct(public Invoice $invoice, public string $filename)
     {
+        $this->settings = app(InvoiceSettings::class);
     }
 
     /**
@@ -30,7 +34,7 @@ class RememberMail extends Mailable
     {
         return $this->markdown('mail.invoice.remember')
             ->attach($this->filename)
-            ->replyTo('kasse@stamm-silva.de')
-            ->subject('Zahlungserinnerung | DPSG Stamm Silva');
+            ->when($this->settings->replyTo, fn ($mail) => $mail->replyTo($this->settings->replyTo))
+            ->subject('Zahlungserinnerung | '.$this->settings->from_long);
     }
 }

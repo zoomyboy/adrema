@@ -33,7 +33,8 @@ class SettingTest extends TestCase
             'zip' => '12345',
             'iban' => 'DE05',
             'bic' => 'SOLSDE',
-            'rememberWeeks' => 6
+            'rememberWeeks' => 6,
+            'replyTo' => 'reply@example.com',
         ])->save();
 
         $this->get(route('setting.data', ['settingGroup' => 'bill']))
@@ -49,7 +50,8 @@ class SettingTest extends TestCase
             ->assertInertiaPath('data.zip', '12345')
             ->assertInertiaPath('data.iban', 'DE05')
             ->assertInertiaPath('data.bic', 'SOLSDE')
-            ->assertInertiaPath('data.rememberWeeks', 6);
+            ->assertInertiaPath('data.rememberWeeks', 6)
+            ->assertInertiaPath('data.replyTo', 'reply@example.com');
     }
 
     public function testItReturnsTabs(): void
@@ -78,7 +80,8 @@ class SettingTest extends TestCase
             'zip' => '12345',
             'iban' => 'DE05',
             'bic' => 'SOLSDE',
-            'rememberWeeks' => 10
+            'rememberWeeks' => 10,
+            'replyTo' => 'reply@example.com2',
         ]);
 
         $response->assertRedirect('/setting/bill');
@@ -86,6 +89,7 @@ class SettingTest extends TestCase
         $this->assertEquals('DPSG Stamm Muster', $settings->from_long);
         $this->assertEquals('DE05', $settings->iban);
         $this->assertEquals('SOLSDE', $settings->bic);
+        $this->assertEquals('reply@example.com2', $settings->replyTo);
         $this->assertEquals(10, $settings->rememberWeeks);
     }
 }

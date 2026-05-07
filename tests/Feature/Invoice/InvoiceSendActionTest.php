@@ -48,6 +48,7 @@ class InvoiceSendActionTest extends TestCase
         Tex::spy();
         Storage::fake('temp');
         $this->withoutExceptionHandling()->login()->loginNami();
+        app(InvoiceSettings::class)->fill(['from_long' => 'Stammname', 'replyTo' => 'reply@mail.com'])->save();
         $invoice = Invoice::factory()
             ->to(ReceiverRequestFactory::new()->name('Familie Muster'))
             ->has(InvoicePosition::factory()->withMember(), 'positions')
@@ -57,7 +58,13 @@ class InvoiceSendActionTest extends TestCase
 
         InvoiceSendAction::run();
 
-        Mail::assertSent(RememberMail::class, fn ($mail) => $mail->build() && $mail->hasTo('max@muster.de', 'Familie Muster') && Storage::disk('temp')->path('zahlungserinnerung-fur-familie-muster.pdf') === $mail->filename && Storage::disk('temp')->exists('zahlungserinnerung-fur-familie-muster.pdf'));
+        Mail::assertSent(RememberMail::class, fn ($mail) => $mail->build()
+            && $mail->hasTo('max@muster.de', 'Familie Muster')
+            && $mail->hasSubject('Zahlungserinnerung | Stammname')
+            && Storage::disk('temp')->path('zahlungserinnerung-fur-familie-muster.pdf') === $mail->filename
+            && Storage::disk('temp')->exists('zahlungserinnerung-fur-familie-muster.pdf')
+            && $mail->hasReplyTo('reply@mail.com')
+        );
         Tex::assertCompiled(RememberDocument::class, fn ($document) => 'Familie Muster' === $document->toName);
         $this->assertEquals(now()->format('Y-m-d'), $invoice->fresh()->last_remembered_at->format('Y-m-d'));
     }
